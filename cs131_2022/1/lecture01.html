@@ -196,7 +196,8 @@ and you may find it hard to tear yourself away from the code
 * Example equation:
 
 $$
-\frac{x \in dom\ \rho}{\langle VAR(x), \xi, \phi, \rho \rangle \Downarrow
+\frac{x \in dom\ \rho}{\langle \operatorname{VAR}(x),
+\xi, \phi, \rho \rangle \Downarrow
 \langle \rho(x), \xi, \phi, \rho \rangle}
 \newline
 \label{}\tag{FormalVar}
@@ -208,7 +209,8 @@ $$
 ## Operational semantics
 
 $$
-\frac{x \in dom\ \rho}{\langle VAR(x), \xi, \phi, \rho \rangle \Downarrow
+\frac{x \in dom\ \rho}{\langle \operatorname{VAR}(x),
+\xi, \phi, \rho \rangle \Downarrow
 \langle \rho(x), \xi, \phi, \rho \rangle}
 \newline
 \label{}\tag{FormalVar}
@@ -221,7 +223,8 @@ $$
 ## Operational semantics
 
 $$
-\frac{x \in dom\ \rho}{\langle VAR(x), \xi, \phi, \rho \rangle \Downarrow
+\frac{x \in dom\ \rho}{\langle \operatorname{VAR}(x),
+\xi, \phi, \rho \rangle \Downarrow
 \langle \rho(x), \xi, \phi, \rho \rangle}
 \newline
 \label{}\tag{FormalVar}
@@ -229,28 +232,30 @@ $$
 
 * What this rule says:
   * _Given_ that $x$ is in the variable environment $\rho$,
-  * to evaluate a variable reference $VAR(x)$,
+  * to evaluate a variable reference $\operatorname{VAR}(x)$,
   * look it up in $\rho$ (giving $\rho(x)$, its value in $\rho$),
   * without changing any of the environments.
 ---
 ## Operational semantics
 
 $$
-\frac{x \in dom\ \rho}{\langle VAR(x), \xi, \phi, \rho \rangle \Downarrow
+\frac{x \in dom\ \rho}{\langle \operatorname{VAR}(x),
+\xi, \phi, \rho \rangle \Downarrow
 \langle \rho(x), \xi, \phi, \rho \rangle}
 \newline
 \label{}\tag{FormalVar}
 $$
 
 
-* $VAR(x)$ is a constructor of the algebraic datatype representing the
-  _abstract syntax_ of the language that is being described
+* $\operatorname{VAR}(x)$ is a constructor of the algebraic datatype
+  representing the _abstract syntax_ of the language that is being described
 * We will have much more to say about abstract syntax shortly
 ---
 ## Operational semantics
 
 $$
-\frac{x \in dom\ \rho}{\langle VAR(x), \xi, \phi, \rho \rangle \Downarrow
+\frac{x \in dom\ \rho}{\langle \operatorname{VAR}(x),
+\xi, \phi, \rho \rangle \Downarrow
 \langle \rho(x), \xi, \phi, \rho \rangle}
 \newline
 \label{}\tag{FormalVar}
@@ -266,6 +271,9 @@ $$
 * We will not normally ask you to write your own inference rules
 
 * We _will_ expect you to be able to read and understand inference rules we give you
+
+---
+## Operational semantics
 
 * There are two broad classes of operational semantics inference rules:
   * _small-step_ semantics
@@ -379,10 +387,7 @@ error will mean the code can't run (like in OCaml)
   * (Lots of amateur language designers have done it)
 
 * Some of these languages have become quite well-known
-  * Perl
-  * Python
-  * Ruby
-  * Javascript
+  * Perl, Python, Ruby, Javascript
 ---
 ## Side note
 
@@ -432,7 +437,8 @@ with static types (_Typed $\mu$Scheme_)
   * kinds
 
 * _Typed $\mu$Scheme_ is also rather painful to program in
-  * lots of type annotations!
+  (lots of type annotations!)
+
 ---
 ## Languages we'll implement
 
@@ -462,9 +468,32 @@ with static types (_Typed $\mu$Scheme_)
 
 * A typical interpreter has these stages:
 
+---
+## Overview of implementations
+
+* A typical interpreter has these stages:
+
 * **Parsing**: convert concrete syntax to abstract syntax
+
+---
+## Overview of implementations
+
+* A typical interpreter has these stages:
+
 * **Simplification**: compile abstract syntax to simpler intermediate representation(s)
+
+---
+## Overview of implementations
+
+* A typical interpreter has these stages:
+
 * **Type checking**: validate static types (typed languages only)
+
+---
+## Overview of implementations
+
+* A typical interpreter has these stages:
+
 * **Evaluation**: compute result value, update environment(s)
 
 ---
@@ -482,6 +511,7 @@ with static types (_Typed $\mu$Scheme_)
       1
       (* n (factorial (- n 1)))))
 ```
+
 ---
 ## Parsing
 
@@ -496,10 +526,21 @@ with static types (_Typed $\mu$Scheme_)
 
 * That means: it's a single (usually multiline) string
 
+---
+## Parsing
+
+```
+(define (factorial n)
+  (if (= n 0)
+      1
+      (* n (factorial (- n 1)))))
+```
+
 * Strings are hard to work with programmatically
   * too little structure!
 
 * So we convert it into a different form
+
 ---
 ## Parsing: S-expressions
 
@@ -666,8 +707,11 @@ Define ("factorial",
   make the evaluator simpler to write
   * Sometimes optimizations can also be done
 
-* This is the only part of the course that can be considered to be about
-  "compiling"
+---
+## Compiling to intermediate representation (IR)
+
+* Conversion to IR is the only part of the course
+  that can be considered to be about "compiling"
 
 ---
 ## Evaluation
@@ -676,9 +720,10 @@ Define ("factorial",
   _environments_ and compute the result of evaluating the forms
 
 * Evaluating expressions returns a value
-  * and may or may not change environment(s)
+  * may or may not change environment(s)
 
 * Evaluating definitions always changes the environment(s)
+
 ---
 ## "What about compilers?"
 
@@ -688,11 +733,9 @@ Define ("factorial",
 * Main differences:
   * no evaluator!
   * many more steps after generation of AST
+    (several successive IRs)
+  * many code optimizations along the way
 
-* Compilers typically convert ASTs into _several_
-  intermediate representations (IRs), some very different from the AST
-
-* Also optimize code in various ways along the way
 ---
 ## "What about compilers?"
 
