@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- <section data-background-color="#ffffd0"> -->
+          <section data-markdown>
+            <textarea data-template>
+# CS 131:<br>Programming Languages
+## _Lecture 1_:<br>Introduction
+---
+## Today
+
+* Overall structure of the course
+* Subject matter: What is covered and not covered
+* Prerequisites
+* Textbook
+* Theory
+* Languages we will implement
+* Overview of programming language implementation
+---
+## Logistics
+
+* Lectures: MWF, 3 PM
+* Weekly or biweekly assignments
+  * due Friday, 2 AM
+* No exams!
+---
+## Subject matter
+
+* This is a course on _implementing programming languages_
+
+* It is _not_ a course on "compilers"
+
+* We will implement several different programming languages
+
+* These implementations will be _interpreters_ and will not be optimized for speed
+---
+## Subject matter
+
+* Goal: to understand how programming languages work internally
+
+* Not a goal: to write industrial-strength language implementations with
+state-of-the-art performance
+---
+## However...
+
+* We'll find that the terms "interpreter" and "compiler" are very blurry
+  * You can't implement an interpreter without doing _some_ "compilation"
+* More so for some languages than others
+---
+## _Warning!_
+
+* Implementing programming languages can be VERY VERY ADDICTIVE!
+
+* It seems to bring out the "control freak" aspect of some programmers,
+and you may find it hard to tear yourself away from the code
+
+* (Especially true for languages you design yourself!)
+---
+## Subject matter
+
+* We are mainly interested in:
+  * What are the _fundamental_ differences between programming languages?
+  * How do these differences affect the implementation?
+
+* We will see that small additions to a language can require large changes in
+  the implementation strategies
+---
+## Syntax and parsing
+
+* We will _not_ be covering parsing theory
+
+* Two reasons:
+  * It's relatively uninteresting (in my opinion)
+  * Implementing parsers is relatively easy using parser generating tools
+
+* If you think that "all programming languages are the same except for syntax"
+  we hope that this course will make you change your mind!
+---
+## Syntax and parsing
+
+* Instead, all of our languages will use the simplest possible syntax, which is
+  _"S-expression"_ syntax
+
+* If you've ever programmed in a Lisp dialect (_e.g._ Scheme, Clojure, Racket),
+  you have seen this syntax already
+---
+## Syntax and parsing
+
+* Scheme example:
+
+```
+(define (factorial n)
+  (if (= n 0)
+      1
+      (* n (factorial (- n 1)))))
+```
+---
+## Syntax and parsing
+
+* Reasons for this choice:
+  * We don't have to waste time figuring out the optimal syntax
+    for each new language
+  * We don't have to add syntax for every new feature we add to a language
+  * We don't have to remember new syntax either!
+  * The parser implementation is trivial and easy to understand
+
+---
+## Syntax and parsing
+
+* Downsides:
+  * Most people don't enjoy using this syntax as much as a syntax
+    specifically tailored to a given language
+---
+## Typical assignment
+
+* A typical assignment will involve a particular programming language we are
+  implementing
+
+* You will be given a starting code base which contains a partial implementation
+  of the language
+
+---
+## Typical assignment
+
+* Then, you will:
+  * complete the implementation (if necessary)
+  * write functions in the language
+  * implement new features in the language
+  * write functions using the new features
+
+---
+## Prerequisites
+
+* All of our implementations will be in the OCaml language
+
+* Therefore, knowledge of this language is an **absolute hard prerequisite**
+
+* CS 4 with OCaml is sufficient background to take this course
+---
+## Why OCaml?
+
+* OCaml is a near-ideal language for implementing interpreters (and compilers!)
+
+* Useful features include:
+  * algebraic data types (especially!)
+  * functional programming support
+  * high level of abstraction
+  * module system
+  * garbage collection
+  * speed!
+---
+## Textbook
+
+* This course is based on a not-yet-published textbook: _Programming
+  Languages: Build, Prove, and Compare_ by Norman Ramsey
+
+* We will not be covering the entire book (1500 pages!)
+
+* Ramsey's book uses _C_ and _Standard ML_ as the implementation languages;
+  we use only OCaml
+---
+## Textbook
+
+* We won't be implementing all of Ramsey's languages either
+
+* However, most of the course material and most of the exercises come from this
+  book
+---
+## Textbook
+
+* We can't distribute the PDF of the book for copyright reasons
+
+  * However, we will provide material from some parts of the book that
+    will be needed in doing the homework
+  * _e.g._ operational semantics equations
+---
+## Operational semantics
+
+* _Operational semantics_ is a mathematical way of specifying how a particular
+  programming language is evaluated
+
+* One sub-goal of this course is to get you comfortable with reading operational
+  semantics equations
+
+* They seem intimidating at first, but all they are is a compressed description
+  of the evaluation rules of a language
+---
+## Operational semantics
+
+* Example equation:
+
+$$
+\frac{x \in dom\ \rho}{\langle VAR(x), \xi, \phi, \rho \rangle \Downarrow
+\langle \rho(x), \xi, \phi, \rho \rangle}
+\newline
+\label{}\tag{FormalVar}
+$$
+
+* This is called an _inference rule_
+* Its _label_ is $\text{FormalVar}$, which allows us to refer to it later
+---
+## Operational semantics
+
+$$
+\frac{x \in dom\ \rho}{\langle VAR(x), \xi, \phi, \rho \rangle \Downarrow
+\langle \rho(x), \xi, \phi, \rho \rangle}
+\newline
+\label{}\tag{FormalVar}
+$$
+
+* The part(s) above the line are the _premises_
+* The part(s) below the line are the _conclusions_
+* _If_ the part(s) above the line are true, _then_ so are the parts below the line
+---
+## Operational semantics
+
+$$
+\frac{x \in dom\ \rho}{\langle VAR(x), \xi, \phi, \rho \rangle \Downarrow
+\langle \rho(x), \xi, \phi, \rho \rangle}
+\newline
+\label{}\tag{FormalVar}
+$$
+
+* What this rule says:
+  * _Given_ that $x$ is in the variable environment $\rho$,
+  * to evaluate a variable reference $VAR(x)$,
+  * look it up in $\rho$ (giving $\rho(x)$, its value in $\rho$),
+  * without changing any of the environments.
+---
+## Operational semantics
+
+$$
+\frac{x \in dom\ \rho}{\langle VAR(x), \xi, \phi, \rho \rangle \Downarrow
+\langle \rho(x), \xi, \phi, \rho \rangle}
+\newline
+\label{}\tag{FormalVar}
+$$
+
+
+* $VAR(x)$ is a constructor of the algebraic datatype representing the
+  _abstract syntax_ of the language that is being described
+* We will have much more to say about abstract syntax shortly
+---
+## Operational semantics
+
+$$
+\frac{x \in dom\ \rho}{\langle VAR(x), \xi, \phi, \rho \rangle \Downarrow
+\langle \rho(x), \xi, \phi, \rho \rangle}
+\newline
+\label{}\tag{FormalVar}
+$$
+
+* Inference rules like this can describe the exact workings of
+  language evaluators and type systems
+  * More concise and specific than spoken-language descriptions
+  * Also independent of the implementation language
+---
+## Operational semantics
+
+* We will not normally ask you to write your own inference rules
+
+* We _will_ expect you to be able to read and understand inference rules we give you
+
+* There are two broad classes of operational semantics inference rules:
+  * _small-step_ semantics
+  * _large-step_ semantics
+
+* We will see examples of both classes as we proceed
+---
+## Languages we'll implement
+
+* We will implement several different programming languages
+
+* Some will be imperative, some mostly-functional
+
+* There will be
+  * untyped,
+  * dynamically-typed,
+  * and statically-typed languages.
+---
+## Languages we'll implement
+
+* First language: _Imp_
+
+* This is an "untyped" imperative language
+* "Untyped" here means that the only type of values will be integers
+  * (So no type checking!)
+
+* The goal is to get comfortable with the basics of language implementation
+  in as simple a setting as possible
+---
+## Languages we'll implement
+
+* Sample Imp code:
+
+```
+(val result 1)
+(define factorial (n)
+  (begin
+    (set result 1)
+    (while (> n 0)
+      (begin
+        (set result (* result n))
+        (set n (- n 1))))
+    result))
+```
+---
+## Languages we'll implement
+
+* Second language: _Micro-Scheme_ or _$\mu$Scheme_
+
+* A "dynamically-typed" language
+  * multiple types, checked at run-time
+  * types: integers, booleans, symbols, lists, functions
+
+* First-class functions (`lambda` forms)
+---
+## Languages we'll implement
+
+* Example of $\mu$Scheme code:
+
+```
+(let-rec
+  ((factorial
+     (lambda (n)
+        (if (= n 0)
+            1
+            (* n (factorial (- n 1)))))))
+  (factorial 10))
+```
+---
+## Languages we'll implement
+
+* Third language: _$\mu$Scheme+_
+
+* This extends $\mu$Scheme with control operators:
+  * `break`
+  * `continue`
+  * `return`
+  * `throw`
+  * `try-catch`
+
+* This will turn out to require major changes to the interpreter!
+---
+## Languages we'll implement
+
+* Example of $\mu$Scheme+ code:
+
+```
+(define (factorial x)
+  (let ((result 1))
+    (begin
+      (while #t
+        (begin
+          (if (<= x 0) (break) nil)
+          (set result (* result x))
+          (set x (- x 1))))
+      result)))
+```
+---
+## Languages we'll implement
+
+* After this, we will implement _statically typed_ languages
+
+* This means that types will be checked before running the program, and a type
+error will mean the code can't run (like in OCaml)
+
+* We will implement (at least) two statically-typed languages this year
+---
+## Side note
+
+* Implementing dynamically-typed languages is fairly easy
+  * (Lots of amateur language designers have done it)
+
+* Some of these languages have become quite well-known
+  * Perl
+  * Python
+  * Ruby
+  * Javascript
+---
+## Side note
+
+* Implementing statically-typed languages is _much_ harder
+
+* Implementing statically-typed languages with _polymorphic type systems_
+and _type inference_ is even harder
+  * Very few language designers ever implement this kind of language
+
+* And yet, you will do it in this course!
+---
+## Languages we'll implement
+
+* The first statically-typed language we will implement is _Imp_ with static
+types (_Typed Imp_)
+
+* Recall that _Imp_ is "untyped" (all types are integers)
+
+* We will extend _Imp_ with booleans, array types, and the "unit" type
+
+* Like _Imp_, the implementation is fairly simple
+---
+## Languages we'll implement
+
+* Example of _Typed Imp_ code:
+
+```
+(val result 1)
+; note type annotation on x:
+(define int factorial ((x : int))
+  (begin
+    (set result 1)
+    (while (> x 0)
+      (begin
+        (set result (* result x))
+        (set x (- x 1))))
+    result))
+```
+---
+## Languages we'll implement
+
+* The second statically-typed language we will implement is _$\mu$Scheme_
+with static types (_Typed $\mu$Scheme_)
+
+* This implementation is _much_ more involved
+  * polymorphic types
+  * kinds
+
+* _Typed $\mu$Scheme_ is also rather painful to program in
+  * lots of type annotations!
+---
+## Languages we'll implement
+
+* Example of _Typed $\mu$Scheme_ code:
+
+```
+(val-rec  ; top-level recursive definition
+  (forall (’a) ((list ’a) -> int)) ; type
+  length                           ; name
+  (type-lambda [’a]                ; value
+    (lambda ([xs : (list ’a)])
+      (if ((@ null? ’a) xs)
+          0
+          (+ 1 ((@ length ’a) ((@ cdr ’a) xs)))))))
+```
+---
+<!-- EXTRA SECTION GOES HERE -->
+## Overview of implementations
+
+* Programming language interpreters and compilers are fairly complex programs
+
+* However, they have a very standardized structure
+
+* Here, we will give you an overview of this structure
+---
+## Overview of implementations
+
+* A typical interpreter has these stages:
+
+* **Parsing**: convert concrete syntax to abstract syntax
+* **Simplification**: compile abstract syntax to simpler intermediate representation(s)
+* **Type checking**: validate static types (typed languages only)
+* **Evaluation**: compute result value, update environment(s)
+
+---
+## Parsing
+
+* We divide parsing into two parts:
+  * language-independent (conversion to S-expressions)
+  * language-dependent
+
+* Let's consider this code:
+
+```
+(define (factorial n)
+  (if (= n 0)
+      1
+      (* n (factorial (- n 1)))))
+```
+---
+## Parsing
+
+```
+(define (factorial n)
+  (if (= n 0)
+      1
+      (* n (factorial (- n 1)))))
+```
+
+* This code is in the _concrete syntax_ of the language
+
+* That means: it's a single (usually multiline) string
+
+* Strings are hard to work with programmatically
+  * too little structure!
+
+* So we convert it into a different form
+---
+## Parsing: S-expressions
+
+```
+(define (factorial n)
+  (if (= n 0)
+      1
+      (* n (factorial (- n 1)))))
+```
+
+* The syntax is just a bunch of nested lists, symbols, and numbers
+
+* This syntax is known as "S-expression" syntax
+
+* Used in languages derived from Lisp (Scheme, Racket, Clojure, Common Lisp)
+---
+## Parsing: S-expressions
+
+```
+(define (factorial n)
+  (if (= n 0)
+      1
+      (* n (factorial (- n 1)))))
+```
+
+* The first step of parsing is to convert this into an equivalent OCaml data structure
+---
+## Parsing: S-expressions
+
+* Here is the S-expression type definition:
+
+```
+type expr =
+  | Int  of loc * int
+  | Id   of loc * string
+  | List of loc * expr list
+```
+
+* `loc` is a type for source code locations
+  * used in error reporting, but otherwise uninteresting
+---
+## Parsing: S-expressions
+
+* The conversion happens in two stages:
+  * _Lexing_ converts the raw string form into a list of tokens
+  * _Parsing_ proper converts the list of tokens into one or more `expr` values
+---
+## Parsing: S-expressions
+
+* After lexing our code, we will have a list of tokens like this
+  (ignoring locations):
+
+```
+[TOK_LPAREN, TOK_ID "define",
+ TOK_LPAREN, TOK_ID "factorial", TOK_ID "n", TOK_RPAREN,
+ TOK_LPAREN, TOK_ID "if",
+ TOK_LPAREN, TOK_ID "=", TOK_ID "n", TOK_INT 0, TOK_RPAREN,
+ TOK_INT 1,
+ TOK_LPAREN, TOK_ID "*", TOK_ID "n",
+ TOK_LPAREN, TOK_ID "factorial",
+ TOK_LPAREN, TOK_ID "-", TOK_ID "n", TOK_INT 1,
+ TOK_RPAREN, TOK_RPAREN, TOK_RPAREN, TOK_RPAREN, TOK_RPAREN]
+```
+<!-- .element class="smaller" -->
+
+* This is the input to the parser proper
+---
+## Parsing: S-expressions
+
+* After parsing our code, we will have an S-expression like this
+  (ignoring locations):
+
+```
+LIST[
+  ID["define"], LIST[ID["factorial"], ID["n"]],
+  LIST[ID["if"], LIST[ID["="], ID["n"], INT[0]],
+    INT[1],
+    LIST[ID["*"], ID["n"],
+      LIST[ID["factorial"], LIST[ID["-"], ID["n"], INT[1]]]
+    ]]]
+```
+<!-- .element class="smaller" -->
+
+* This is our first abstract representation of the `factorial` code
+---
+## Parsing: Language-specific
+
+* We use S-expressions because they are easy to parse and completely general
+
+* However, they are not suitable as input to an evaluator
+
+---
+## Parsing: Language-specific
+
+* We need to convert the S-expression representation to a representation that is
+  specific to a given language
+
+* _That_ representation will be the input to the evaluator
+  (at least for simple evaluators)
+
+* This representation is known as an _abstract syntax tree_
+  (or _AST_ for short)
+
+---
+## NOTE!
+
+* The vast majority of "real" languages do not use S-expressions
+
+* They go directly from concrete syntax to a language-specific AST
+
+* Consequently, if they want to extend the language,
+  they have to add to/rewrite the parser
+
+---
+## NOTE!
+
+* With S-expression syntax:
+  * we just have to add to the code that converts from S-expressions to
+    language-specific AST forms
+  * No changes to the concrete syntax parser are needed!
+---
+## Parsing: Language-specific
+
+* Here is what language-specific AST types might look like:
+
+```
+type expr =
+  | Literal of int
+  | Var     of string
+  | If      of expr * expr * expr
+  | Lambda  of string list * expr
+  | Call    of expr * expr list
+
+type def = Define of string * expr
+```
+
+* (Actually it's more complicated than this)
+---
+## Parsing: Language-specific
+
+* Here is what the `factorial` code would look like in that abstract syntax:
+
+```
+Define ("factorial",
+  Lambda (["n"],
+    If (Call (Var "=", [Var "n", Literal 0]),
+        Literal 1,
+        Call (Var "*",
+          [Var "n",
+           Call (Var "factorial",
+                 [Call (Var "-",
+                        [Var "n", Literal 1])])]))))
+```
+
+* _This_ will be the input to the language evaluator
+
+---
+## Compiling to intermediate representation (IR)
+
+* Some (not all) of our languages will convert the AST to an intermediate
+  representation (IR) before evaluation
+
+* The goal is to simplify the language, get rid of redundant constructs, and
+  make the evaluator simpler to write
+  * Sometimes optimizations can also be done
+
+* This is the only part of the course that can be considered to be about
+  "compiling"
+
+---
+## Evaluation
+
+* The evaluator will take the AST (or IR) form(s) and one or more
+  _environments_ and compute the result of evaluating the forms
+
+* Evaluating expressions returns a value
+  * and may or may not change environment(s)
+
+* Evaluating definitions always changes the environment(s)
+---
+## "What about compilers?"
+
+* Compilers have a front-end which is similar/identical
+  to what we've already described
+
+* Main differences:
+  * no evaluator!
+  * many more steps after generation of AST
+
+* Compilers typically convert ASTs into _several_
+  intermediate representations (IRs), some very different from the AST
+
+* Also optimize code in various ways along the way
+---
+## "What about compilers?"
+
+* Compilers usually output the final representation to a file, _e.g._
+  * x86 or ARM machine code, or
+  * LLVM IR, or
+  * bytecode (Java, Python)
+
+* Then it's the job of another program to actually execute the code
+---
+## "What about compilers?"
+
+* Some languages (like OCaml) have multiple ways of compiling code
+  * to machine code
+  * to bytecode
+  * to bytecode which is immediately executed<br/>
+    (`ocaml` interpreter)
+
+* There are many possibilities!
+---
+## "What about compilers?"
+
+* Although compilers are interesting, our main concern is
+  exploring the space of language design
+
+* Interpreters help us understand how languages work internally
+
+* Compilers are about optimizing code for production use
+---
+## Next time
+
+* We will start digging into the _Imp_ language
+
+            </textarea>
+          </section>
+      </div>
+    </div>
+    <script src="plugin/math/math.js"></script>
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <!-- Uncomment if you want syntax highlighting. -->
+    <!--
+    <link rel="stylesheet" href="plugin/highlight/arduino-light.css">
+    -->
+    <style>
+/* MCV: My new reveal.js styles. */
+
+.reveal {
+  font-family: "Arial", sans-serif;
+  font-size: 28pt;
+  font-weight: normal;
+  color: #000; 
+}
+
+.reveal .slide-number {
+  background: white;
+  /* border: 1px solid black; */
+}
+
+.reveal .slide-number-a {
+  background: white;
+  color: black;
+  font-size: 24px;
+}
+
+.reveal .slides h1 {
+  text-align: center;
+  text-transform: none;
+  padding: 150px 0 20px 0;
+  font-size: 64pt;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif;
+  font-weight: normal;
+  color: #4f271c;
+  background: #d0d0f0;
+  margin-bottom: 0.5em;
+}
+
+.reveal h2 { 
+  text-transform: none;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif !important;
+  /* text-shadow: 2px 2px 3px #a0a0a0; */
+  color: #4f271c !important;
+  font-size: 60pt !important;
+  font-weight: normal !important;
+  /* background: #d0d0d0; */
+  width: 80% !important;
+  margin-left: 10%;
+}
+
+/* First level bullet color. */
+.reveal .slides ul li::marker {
+  color: #3891a7;
+}
+
+/* Second level bullet spacing. */
+.reveal .slides ul li ul {
+  margin-top: 0px;
+}
+
+.reveal .slides li {
+  margin-top: 10px;
+}
+
+/* Second level bullet color. */
+.reveal .slides ul li ul li::marker {
+  color: #3891a7;
+}
+
+.reveal li {
+  font-size: 36pt !important;
+}
+
+.reveal li ul li {
+  font-size: 32pt !important;
+}
+
+.reveal ul {
+  width: 80% !important;
+  text-align: left !important;
+}
+
+.katex-display > .katex {
+  color: #0040b0 !important;
+}
+
+.katex-display > .katex > .katex-html > .tag {
+  color: #808080 !important;
+  margin-right: 100px !important;
+}
+
+.katex > .katex-html {
+  color: #0040b0 !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.katex {
+  font-size: 1.1em !important;
+}
+
+.reveal pre {
+  margin-left: 200px !important;
+  width: 75% !important;
+  font-size: 24pt !important;
+}
+
+.reveal pre.smaller {
+  font-size: 20pt !important;
+}
+
+.reveal code {
+  color: #0040b0 !important;
+  font-size: 90%;
+}
+
+.reveal li ul li code {
+  font-size: 80%;
+}
+
+    </style>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        katex: {
+          version: 'latest',
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            "\\eqref": "\\href{###1}{(\\text{#1})}",
+            "\\ref": "\\href{###1}{\\text{#1}}",
+            "\\label": "\\htmlId{#1}{}",
+          },
+        },
+        plugins: [ 
+          RevealMarkdown,
+          RevealHighlight,
+          RevealMath.KaTeX,
+        ],
+        center: false,
+        controls: false,
+        disableLayout: true,  // set to true to use custom CSS for layout
+        showSlideNumber: 'all',
+        slideNumber: true,
+        transition: 'none',
+      });
+    </script>
+  </body>
+</html>
