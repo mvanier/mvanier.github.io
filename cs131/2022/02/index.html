@@ -48,32 +48,30 @@
 
 * Here are the expression forms:
 
-```
-<exp> ::=
-  | <literal>
-  | <variable-name>
-  | (set <variable-name> <exp>)
-  | (if <exp> <exp> <exp>)
-  | (while <exp> <exp>)
-  | (begin {<exp>})
-  | (<function-name> {<exp>})
-```
+<pre><code>&lt;&ZeroWidthSpace;exp&gt; ::=
+  | &lt;&ZeroWidthSpace;literal&gt;
+  | &lt;&ZeroWidthSpace;variable-name&gt;
+  | (<em>set</em> &lt;&ZeroWidthSpace;variable-name&gt; &lt;&ZeroWidthSpace;exp&gt;)
+  | (<em>if</em> &lt;&ZeroWidthSpace;exp&gt; &lt;&ZeroWidthSpace;exp&gt; &lt;&ZeroWidthSpace;exp&gt;)
+  | (<em>while</em> &lt;&ZeroWidthSpace;exp&gt; &lt;&ZeroWidthSpace;exp&gt;)
+  | (<em>begin</em> {&lt;&ZeroWidthSpace;exp&gt;})
+  | (&lt;&ZeroWidthSpace;function-name&gt; {&lt;&ZeroWidthSpace;exp&gt;})
+</code></pre>
 
 * The `::=` means "can be any of the following"
 
 ---
 ## Expressions
 
-```
-<exp> ::=
-  | <literal>
-  | <variable-name>
-  | (set <variable-name> <exp>)
-  | (if <exp> <exp> <exp>)
-  | (while <exp> <exp>)
-  | (begin {<exp>})
-  | (<function-name> {<exp>})
-```
+<pre><code>&lt;&ZeroWidthSpace;exp&gt; ::=
+  | &lt;&ZeroWidthSpace;literal&gt;
+  | &lt;&ZeroWidthSpace;variable-name&gt;
+  | (<em>set</em> &lt;&ZeroWidthSpace;variable-name&gt; &lt;&ZeroWidthSpace;exp&gt;)
+  | (<em>if</em> &lt;&ZeroWidthSpace;exp&gt; &lt;&ZeroWidthSpace;exp&gt; &lt;&ZeroWidthSpace;exp&gt;)
+  | (<em>while</em> &lt;&ZeroWidthSpace;exp&gt; &lt;&ZeroWidthSpace;exp&gt;)
+  | (<em>begin</em> {&lt;&ZeroWidthSpace;exp&gt;})
+  | (&lt;&ZeroWidthSpace;function-name&gt; {&lt;&ZeroWidthSpace;exp&gt;})
+</code></pre>
 
 * Alternatives are identified with the leading `|` symbol
   * (like OCaml type declarations)
@@ -81,19 +79,18 @@
 ---
 ## Expressions
 
-```
-<exp> ::=
-  | <literal>
-  | <variable-name>
-  | (set <variable-name> <exp>)
-  | (if <exp> <exp> <exp>)
-  | (while <exp> <exp>)
-  | (begin {<exp>})
-  | (<function-name> {<exp>})
-```
+<pre><code>&lt;&ZeroWidthSpace;exp&gt; ::=
+  | &lt;&ZeroWidthSpace;literal&gt;
+  | &lt;&ZeroWidthSpace;variable-name&gt;
+  | (<em>set</em> &lt;&ZeroWidthSpace;variable-name&gt; &lt;&ZeroWidthSpace;exp&gt;)
+  | (<em>if</em> &lt;&ZeroWidthSpace;exp&gt; &lt;&ZeroWidthSpace;exp&gt; &lt;&ZeroWidthSpace;exp&gt;)
+  | (<em>while</em> &lt;&ZeroWidthSpace;exp&gt; &lt;&ZeroWidthSpace;exp&gt;)
+  | (<em>begin</em> {&lt;&ZeroWidthSpace;exp&gt;})
+  | (&lt;&ZeroWidthSpace;function-name&gt; {&lt;&ZeroWidthSpace;exp&gt;})
+</code></pre>
 
 * `<exp>` means "expression"
-* `set`, `if`, `while`, `begin` are keywords
+* *`set`*, *`if`*, *`while`*, *`begin`* are keywords
 * `<literal>` is a literal number
 
 ---
@@ -287,15 +284,14 @@
 
 * Here is the BNF syntax for top-level forms:
 
-```
-<def> ::=
-  | (val <variable-name> <exp>)
-  | (define <function-name> ({<variable-name>}) <exp>)
-  | (use <file-name>)
-  | (check-expect <exp> <exp>)
-  | (check-error <exp>)
-  | <exp>
-```
+<pre><code>&lt;&ZeroWidthSpace;def&gt; ::=
+  | (<em>val</em> &lt;&ZeroWidthSpace;variable-name&gt; &lt;&ZeroWidthSpace;exp&gt;)
+  | (<em>define</em> &lt;&ZeroWidthSpace;function-name&gt; ({&lt;&ZeroWidthSpace;variable-name&gt;}) &lt;&ZeroWidthSpace;exp&gt;)
+  | (<em>use</em> &lt;&ZeroWidthSpace;file-name&gt;)
+  | (<em>check-expect</em> &lt;&ZeroWidthSpace;exp&gt; &lt;&ZeroWidthSpace;exp&gt;)
+  | (<em>check-error</em> &lt;&ZeroWidthSpace;exp&gt;)
+  | &lt;&ZeroWidthSpace;exp&gt;
+</code></pre>
 
 * Top-level forms are sometimes called "statements"
   to distinguish them from "expressions"
@@ -635,18 +631,17 @@ and either functions or values
 
 * Pathological example:
 
-```
-;; define global variable x (in global var env)
->>> (val x 10)
+<pre><code>;; define global variable x (in global var env)
+&gt;&gt;&gt; (val <em>x</em> 10)
 variable x = 10
 ;; define function x in (in global function env)
 ;; arg x is in local var env when function called
->>> (define x (x) (* x 2))
+&gt;&gt;&gt; (define <em>x</em> (<em>x</em>) (* <em>x</em> 2))
 function x defined
 ;; call function x with argument value x
->>> (x x)
+&gt;&gt;&gt; (<em>x</em> <em>x</em>)
 20
-```
+</code></pre>
 
 ---
 ## Operational semantics
@@ -1734,6 +1729,18 @@ $$
 .reveal ul {
   width: 80% !important;
   text-align: left !important;
+}
+
+.reveal code em {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal em code {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
 }
 
 .katex-display > .katex {
