@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- <section data-background-color="#ffffd0"> -->
+          <section data-markdown>
+            <textarea data-template>
+# CS 131:<br>Programming Languages
+## _Lecture 3_:<br>The _Imp_ Language: the code
+---
+## Today
+
+* Walkthrough of the _Imp_ language code base
+  * Abstract syntax tree (AST)
+  * Conversion from S-expressions to AST expressions
+
+---
+## Overview
+
+* We've described the _Imp_ language in some detail
+  * BNF grammar
+  * Expression forms
+  * Definition forms
+  * Operational semantics
+
+* In this lecture, we will connect these to OCaml code
+that actually implements the interpreter
+
+---
+## Caveat
+
+* The source code of the _Imp_ interpreter is around 700 lines long
+* We will not cover every line in detail
+  * but you will need to read the code to do the assignment, so you'll see it anyway!
+* Instead, we will focus on the most interesting/representative parts
+
+---
+## Caveat
+
+* We will ignore certain parts
+  * Error handling
+  * Unit testing
+  * REPL interface
+
+---
+## Structure of the interpreter
+
+* The input is a string in the _concrete syntax_ of the language
+
+* The "generic" parser converts it to one or more _S-expressions_
+
+* The language-specific parser converts S-expressions
+  into _Abstract Syntax Tree_ (AST) forms
+
+---
+## Structure of the interpreter
+
+* The language evaluator takes AST forms
+  and the current environment(s) of the language and:
+  * updates the environment(s)
+  * returns a value
+
+---
+## Structure of the interpreter
+
+* AST forms naturally divide into two groups:
+  * expressions
+  * definitions
+
+* _Expressions_ work by returning values
+  * also may update some environments
+
+---
+## Structure of the interpreter
+
+* AST forms naturally divide into two groups:
+  * expressions
+  * definitions
+
+* _Definitions_ work exclusively by updating environments
+  * values returned are only for informational purposes
+    _e.g._ printing the name of a function just defined in the REPL
+
+---
+## Expressions: BNF
+
+* Recall the BNF (Backus-Naur Form) representation of the expression syntax:
+
+<pre><code>&lt;&#8203;exp&gt; ::=
+  | &lt;&#8203;literal&gt;
+  | &lt;&#8203;variable-name&gt;
+  | (<em>set</em> &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (<em>if</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>while</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>begin</em> {&lt;&#8203;exp&gt;})
+  | (&lt;&#8203;function-name&gt; {&lt;&#8203;exp&gt;})
+</code></pre>
+
+---
+## Expressions: OCaml
+
+* This corresponds directly to the `exp` type,
+  which is part of the AST representation in OCaml:
+
+```
+type exp =
+  | Literal of loc * int
+  | Var     of loc * id
+  | Set     of loc * id * exp
+  | If      of loc * exp * exp * exp
+  | While   of loc * exp * exp
+  | Begin   of loc * exp list
+  | Call    of loc * id * exp list
+```
+
+* `loc` is a type of source code locations
+
+---
+## Definitions: BNF
+
+* Recall the BNF (Backus-Naur Form) representation
+  of the definition (top-level statement) syntax:
+
+<pre><code>&lt;&#8203;def&gt; ::=
+  | (<em>val</em> &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (<em>define</em> &lt;&#8203;function-name&gt; ({&lt;&#8203;variable-name&gt;}) &lt;&#8203;exp&gt;)
+  | (<em>use</em> &lt;&#8203;file-name&gt;)
+  | (<em>check-expect</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>check-error</em> &lt;&#8203;exp&gt;)
+  | &lt;&#8203;exp&gt;
+</code></pre>
+
+---
+## Definitions: OCaml
+
+* This corresponds directly to the `def` type,
+  which is also part of the AST representation in OCaml:
+
+```
+type def =
+  | Val         of loc * id * exp
+  | Define      of loc * id * id list * exp
+  | Use         of loc * string
+  | CheckExpect of loc * exp * exp
+  | CheckError  of loc * exp
+  | Exp         of loc * exp
+```
+
+* We will only be concerned with `Val`, `Define` and `Exp` forms
+
+---
+## From concrete syntax to S-expressions
+
+* The conversion from concrete syntax to S-expressions
+  is handled by code in the `sexpr` library
+  * provided to you
+  * not included in the line count of the interpreter
+
+---
+## From concrete syntax to S-expressions
+
+* The code takes in strings (or filenames) and returns a list of S-expressions
+
+* S-expressions contain location information for each sub-form
+  * necessary for error reporting
+
+---
+## S-expression $\rightarrow$ AST
+
+* The first processing step in the _Imp_ interpreter
+  is to convert S-expressions into AST forms
+* (This is what we will refer to as "parsing" below)
+* Here is the S-expression datatype:
+
+```
+(* File: Sexpr.ml *)
+type expr =
+   | Int  of loc * int        (* literal integer *)
+   | Id   of loc * string     (* identifier *)
+   | List of loc * expr list  (* list of exprs *)
+```
+
+---
+## S-expression $\rightarrow$ AST
+
+* Conceptually, an S-expression is either an _atom_ or a list of S-expressions
+
+* Our atom types are:
+  * integer literals
+  * identifiers
+
+* In more "practical" languages, would probably have more literal data types
+  * _e.g._ strings, floating-point numbers, _etc._
+
+---
+## Parsing overview
+
+* _Imp_ language top-level statements are parsed into AST forms
+  by the function `parse_def`
+  * This is used for `define` statements, `val` statements, unit tests, _etc._
+
+* _Imp_ language expressions are parsed into AST forms
+  by the function `parse_exp`
+* Used for literals, variables, `if` expressions, function calls _etc._
+
+* We'll look at `parse_exp` first
+
+---
+## Parsing expressions
+
+* The function `parse_exp` has this structure:
+
+<pre><code>let rec <em>parse_expr</em> = function
+  | &lt;&#8203;case for literals&gt;
+  | &lt;&#8203;case for variables&gt;
+  | &lt;&#8203;case for set expressions&gt;
+  | &lt;&#8203;case for if expressions&gt;
+  | &lt;&#8203;case for while expressions&gt;
+  | &lt;&#8203;case for begin expressions&gt;
+  | &lt;&#8203;case for function calls&gt;
+  | &lt;&#8203;otherwise, error&gt;
+</code></pre>
+
+---
+## Parsing expressions: literals
+
+* Integer literals are easy:
+
+<pre><code>let rec parse_expr = function
+  | <em>Int (l, i)</em> -&gt; Literal (l, i)
+  | ...
+</code></pre>
+
+* `l` is the source code location information
+
+---
+## Parsing expressions: variables
+
+* Variables are a bit more complicated
+* You might think it would be as simple as:
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | <em>Id (l, s)</em> -&gt; Var (l, s)
+  | ...
+</code></pre>
+
+* But this misses an important thing (what?)
+* _Hint_: What _can't_ be an identifier?
+
+---
+## Parsing expressions: variables
+
+* Keywords shouldn't be usable as variable names
+  * otherwise, you get weird errors and error messages
+
+* Need a list of keywords:
+
+```
+let keywords =
+  ["val"; "define"; "use"; "check-expect";
+   "check-error"; "set"; "if"; "while"; "begin"]
+```
+
+* Before you allow a name to be a variable, check that it isn't a keyword
+
+---
+## Parsing expressions: variables
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | <em>Id (l, name)</em> -&gt;
+    if List.mem name keywords
+    then raise (Syntax_err
+      (l, "keywords can't be variable names"))
+    else Var (l, name)
+  | ...
+</code></pre>
+
+* Now, any attempt to use a keyword as a variable name will raise a
+  `Syntax_err` exception
+
+---
+## Parsing expressions: `set`
+
+* `set` expressions are more interesting
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | <em>List (l, [Id (_, "set"); Id (_, name); e])</em> -&gt;
+      if List.mem name keywords
+      then raise (Syntax_err
+        (l, "keywords can't be variable names"))
+      else Set (l, name, parse_expr e)
+  | ...
+</code></pre>
+
+* The S-expression pattern matches anything of the form `(set <name> <e>)`
+
+---
+## Parsing expressions: `set`
+
+* `set` expressions are more interesting
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | <em>List (l, [Id (_, "set"); Id (_, name); e])</em> -&gt;
+      if List.mem name keywords
+      then raise (Syntax_err
+        (l, "keywords can't be variable names"))
+      else Set (l, name, parse_expr e)
+  | ...
+</code></pre>
+
+* (S-expressions become cumbersome
+  when you write them in their OCaml form!)
+
+---
+## Parsing expressions: `set`
+
+* `set` expressions are more interesting
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | List (l, [Id (_, "set"); Id (_, name); e]) -&gt;
+      <em>if List.mem name keywords</em>
+      <em>then raise (Syntax_err</em>
+        <em>(l, "keywords can't be variable names"))</em>
+      else Set (l, name, parse_expr e)
+  | ...
+</code></pre>
+
+* Again, have to check that the identifier is not a keyword
+
+---
+## Parsing expressions: `set`
+
+* `set` expressions are more interesting
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | List (l, [Id (_, "set"); Id (_, name); e]) -&gt;
+      if List.mem name keywords
+      then raise (Syntax_err
+        (l, "keywords can't be variable names"))
+      else <em>Set (l, name, parse_expr e)</em>
+  | ...
+</code></pre>
+
+* Have to recursively call `parse_expr` on the subexpression `e`
+
+---
+## Parsing expressions: `set`
+
+* Not all `set` expressions are valid:
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | List (l, [Id (_, "set"); Id (_, name); e]) -&gt;
+      if List.mem name keywords
+      then raise (Syntax_err
+        (l, "keywords can't be variable names"))
+      else Set (l, name, parse_expr e)
+  | <em>List (l, Id (_, "set") :: _) -&gt;</em>
+    <em>raise (Syntax_err (l, "invalid \"set\""))</em>
+  | ...
+</code></pre>
+
+* `set` has to be followed by a (non-keyword) identifier
+   and exactly one expression
+
+---
+## Parsing expressions: `set`
+
+* Not all `set` expressions are valid:
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | List (l, [Id (_, "set"); Id (_, name); e]) -&gt;
+      if List.mem name keywords
+      then raise (Syntax_err
+        (l, "keywords can't be variable names"))
+      else Set (l, name, parse_expr e)
+  | <em>List (l, Id (_, "set") :: _) -&gt;</em>
+    <em>raise (Syntax_err (l, "invalid \"set\""))</em>
+  | ...
+</code></pre>
+
+* Most forms have similar error-handling code
+  * (We won't show it any more)
+
+---
+## Parsing expressions: `if`
+
+* Conditionals (`if` expressions) are straightforward:
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | <em>List (l, [Id (_, "if"); e1; e2; e3])</em> -&gt;
+    If (l, parse_expr e1,   (* test *)
+           parse_expr e2,   (* "then" case *)
+           parse_expr e3)   (* "else" case *)
+  | ... (* code for invalid if expressions *)
+  | ...
+</code></pre>
+
+---
+## Parsing expressions: `while`
+
+* Loops (`while` expressions) are also straightforward:
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | <em>List (l, [Id (_, "while"); e1; e2])</em> -&gt;
+    While (l, parse_expr e1, parse_expr e2)
+  | ... (* code for invalid while expressions *)
+  | ...
+</code></pre>
+
+---
+## Parsing expressions: `begin`
+
+* Sequence (`begin`) expressions:
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | <em>List (l, Id (_, "begin") :: es)</em> -&gt;
+    Begin (l, List.map parse_expr es)
+  | ...
+</code></pre>
+
+* Note that a `begin` expression can have an arbitrary number of subexpressions
+* There are no special error cases for `begin` expressions (why?)
+
+---
+## Parsing expressions: function calls
+
+* Anything else is assumed to be a function call:
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | <em>List (l, Id (_, fname) :: es)</em> -&gt;
+    if List.mem fname keywords
+    then raise (Syntax_err
+      (l, "keywords can't be function names"))
+    else Call (l, fname, List.map parse_expr es)
+  | ...
+</code></pre>
+
+---
+## Parsing expressions: function calls
+
+* Anything else is assumed to be a function call:
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | List (l, <em>Id (_, fname)</em> :: es) -&gt;
+    if List.mem fname keywords
+    then raise (Syntax_err
+      (l, "keywords can't be function names"))
+    else Call (l, fname, List.map parse_expr es)
+  | ...
+</code></pre>
+
+* The first element of the list must be an identifier
+
+---
+## Parsing expressions: function calls
+
+* Anything else is assumed to be a function call:
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | List (l, Id (_, <em>fname</em>) :: es) -&gt;
+    if List.mem fname keywords
+    then raise (Syntax_err
+      (l, "keywords can't be function names"))
+    else Call (l, fname, List.map parse_expr es)
+  | ...
+</code></pre>
+
+* That identifier is the function name `fname`
+
+---
+## Parsing expressions: function calls
+
+* Anything else is assumed to be a function call:
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | List (l, Id (_, fname) :: <em>es</em>) -&gt;
+    if List.mem fname keywords
+    then raise (Syntax_err
+      (l, "keywords can't be function names"))
+    else Call (l, fname, List.map parse_expr es)
+  | ...
+</code></pre>
+
+* The rest of the expressions are the arguments
+
+---
+## Parsing expressions: function calls
+
+* Anything else is assumed to be a function call:
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | List (l, Id (_, fname) :: es) -&gt;
+    <em>if List.mem fname keywords</em>
+    <em>then raise (Syntax_err</em>
+      <em>(l, "keywords can't be function names"))</em>
+    else Call (l, fname, List.map parse_expr es)
+  | ...
+</code></pre>
+
+* Check that the function name isn't a keyword
+
+
+---
+## Parsing expressions: function calls
+
+* Anything else is assumed to be a function call:
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | List (l, Id (_, fname) :: es) -&gt;
+    if List.mem fname keywords
+    then raise (Syntax_err
+      (l, "keywords can't be function names"))
+    else <em>Call (l, fname, List.map parse_expr es)</em>
+  | ...
+</code></pre>
+
+* Otherwise convert to a `Call` form
+
+---
+## Parsing expressions
+
+* If an S-expression doesn't match any of these forms, it's an error:
+
+<pre><code>let rec parse_expr = function
+  | ...
+  | <em>List (l, _)</em> -&gt;
+    <em>raise (Syntax_err (l, "unrecognized form"))</em>
+</code></pre>
+
+* Examples: `((foo bar) baz)` or `(1 2 3)`
+* Throw away form, use location in `Syntax_err` exception
+
+---
+## Parsing definitions
+
+* That's all the expressions
+* Now let's look at top-level forms (mainly definitions)
+
+---
+## Parsing definitions
+
+* The function `parse_def` has this structure:
+
+<pre><code>let rec <em>parse_def</em> = function
+  | &lt;&#8203;case for val statements&gt;
+  | &lt;&#8203;case for define statements&gt;
+  | &lt;&#8203;case for use statements&gt;
+  | &lt;&#8203;case for check-expect statements&gt;
+  | &lt;&#8203;case for check-error statements&gt;
+  | &lt;&#8203;case for top-level expressions&gt;
+</code></pre>
+
+* We will ignore `use`, `check-expect` and `check-error` statements
+
+---
+## Parsing definitions
+
+* Here is the code for `val` statements:
+
+<pre><code>let parse_def = function
+  | <em>List (l, [Id (_, "val"); Id (_, name); init])</em>
+    -&gt; if List.mem name keywords
+       then raise (Syntax_err
+         (l, "keywords can't be variable names"))
+       else Val (l, name, parse_expr init)
+  | ...
+</code></pre>
+
+---
+## Parsing definitions
+
+* Here is the code for `val` statements:
+
+<pre><code>let parse_def = function
+  | List (l, [Id (_, "val"); Id (_, name); init])
+    -&gt; <em>if List.mem name keywords</em>
+       <em>then raise (Syntax_err</em>
+         <em>(l, "keywords can't be variable names"))</em>
+       else Val (l, name, parse_expr init)
+  | ...
+</code></pre>
+
+* Make sure new variable name isn't a keyword
+  * (Omitting other error cases for `val`)
+
+---
+## Parsing definitions
+
+* Here is the code for `val` statements:
+
+<pre><code>let parse_def = function
+  | List (l, [Id (_, "val"); Id (_, name); init])
+    -&gt; if List.mem name keywords
+       then raise (Syntax_err
+         (l, "keywords can't be variable names"))
+       else <em>Val (l, name, parse_expr init)</em>
+  | ...
+</code></pre>
+
+* Otherwise make a `Val` form
+
+---
+## Parsing definitions
+
+* Here is the code for `val` statements:
+
+<pre><code>let parse_def = function
+  | List (l, [Id (_, "val"); Id (_, name); init])
+    -&gt; if List.mem name keywords
+       then raise (Syntax_err
+         (l, "keywords can't be variable names"))
+       else Val (l, name, <em>parse_expr init</em>)
+  | ...
+</code></pre>
+
+* Also parse the expression which determines
+  the initial value of the variable
+
+---
+## Parsing definitions
+
+* Here is the code for `define` statements:
+
+<pre><code>let parse_def = function
+  | ...
+  | List (l, [Id (_, "define");
+              Id (_, fname);
+              List (_, args); body]) -&gt;
+    if (* check if fname is a keyword *)
+    then (* handle error *)
+    else
+    ...
+  | ...
+</code></pre>
+
+---
+## Parsing definitions
+
+* Here is the code for `define` statements:
+
+<pre><code>    ...
+    else
+      let to_argname = <em>(* &lt;&#8203;check arg valid&gt; *)</em> in
+      let args' = List.map to_argname args in
+        if <em>(* &lt;&#8203;names are unique&gt; *)</em>
+        then Define (l, fname, args', parse_expr body)
+        else raise (Syntax_err
+          (l, "non-unique formal parameter names"))
+  | ...
+</code></pre>
+
+---
+## Parsing definitions
+
+* Code for `<check arg valid>`:
+
+<pre class="smaller"><code><em>&lt;&#8203;check arg valid&gt;</em> ==
+  let err l name =
+    raise (Syntax_err (l, name ^ " used as formal parameter"))
+  in
+    function
+      | Id   (l, name) -&gt;
+        if List.mem name keywords
+        then err l "keyword"
+        else name
+      | List (l, _) -&gt; err l "list"
+      | Int  (l, _) -&gt; err l "int"
+</code></pre>
+
+* If the argument is an identifier and not a keyword, return it
+* Otherwise it's a syntax error
+
+---
+## Parsing definitions
+
+* Code for `<names are unique>`:
+
+<pre><code><em> &lt;&#8203;names are unique&gt;</em> ==
+  StringSet.cardinal (StringSet.of_list args')
+    = List.length args'
+</code></pre>
+
+* `StringSet` is a module for a set of strings
+  * (Made using the `Set.Make` functor)
+
+* If the set made from the argument list
+  has a length (cardinality) equal to the list length,
+  all names are unique
+
+---
+## Parsing definitions
+
+* We'll skip over the conversions for `use` statements,
+  `check-expect` statements and `check-error` statements
+
+* The code is straightforward ("boilerplate") code
+
+* Anything else is assumed to be a top-level expression
+
+---
+## Parsing definitions
+
+* The final case is for top-level expressions:
+
+<pre><code>let parse_def = function
+  | ...
+  | other -&gt;   (* assume an expression *)
+    let exp = parse_expr other in
+    let l = loc_of_exp exp in
+      Exp (l, exp)
+</code></pre>
+
+---
+## Parsing definitions
+
+* The final case is for top-level expressions:
+
+<pre><code>let parse_def = function
+  | ...
+  | other -&gt;   (* assume an expression *)
+    let exp = parse_expr other in
+    let l = loc_of_exp exp in
+      Exp (l, exp)
+</code></pre>
+
+* `loc_of_exp` is a helper function which computes the location of any
+  expression
+
+---
+## Parsing definitions
+
+* The final case is for top-level expressions:
+
+<pre><code>let parse_def = function
+  | ...
+  | other -&gt;   (* assume an expression *)
+    let exp = parse_expr other in
+    let l = loc_of_exp exp in
+      Exp (l, exp)
+</code></pre>
+
+* `Exp` form is for top-level expressions only
+  * All other expressions are subexpressions of other forms
+
+---
+## Next time
+
+* We've covered all the parsing code
+
+* Now we need to take the AST forms and the environments and:
+  * for expressions: return result and update environments
+  * for definitions: update environments
+
+* We'll cover this code next time
+
+            </textarea>
+          </section>
+      </div>
+    </div>
+    <script src="plugin/math/math.js"></script>
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <!-- Uncomment if you want syntax highlighting. -->
+    <!--
+    <link rel="stylesheet" href="plugin/highlight/arduino-light.css">
+    -->
+    <style>
+/* MCV: My new reveal.js styles. */
+
+.reveal {
+  font-family: "Arial", sans-serif;
+  font-size: 28pt;
+  font-weight: normal;
+  color: #000; 
+}
+
+.reveal .slide-number {
+  background: white;
+  /* border: 1px solid black; */
+}
+
+.reveal .slide-number-a {
+  background: white;
+  color: black;
+  font-size: 24px;
+}
+
+.reveal .slides h1 {
+  text-align: center;
+  text-transform: none;
+  padding: 150px 0 20px 0;
+  font-size: 64pt;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif;
+  font-weight: normal;
+  color: #4f271c;
+  background: #d0d0f0;
+  margin-bottom: 0.5em;
+}
+
+.reveal h2 { 
+  text-transform: none;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif !important;
+  /* text-shadow: 2px 2px 3px #a0a0a0; */
+  color: #4f271c !important;
+  font-size: 60pt !important;
+  font-weight: normal !important;
+  /* background: #d0d0d0; */
+  width: 80% !important;
+  margin-left: 10%;
+}
+
+/* First level bullet color. */
+.reveal .slides ul li::marker {
+  color: #3891a7;
+}
+
+/* Second level bullet spacing. */
+.reveal .slides ul li ul {
+  margin-top: 0px;
+}
+
+.reveal .slides li {
+  margin-top: 10px;
+}
+
+/* Second level bullet color. */
+.reveal .slides ul li ul li::marker {
+  color: #3891a7;
+}
+
+.reveal li {
+  font-size: 36pt !important;
+}
+
+.reveal li ul li {
+  font-size: 32pt !important;
+}
+
+.reveal ul {
+  width: 80% !important;
+  text-align: left !important;
+}
+
+.reveal code em {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal em code {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.katex-display > .katex {
+  color: #0040b0 !important;
+}
+
+.katex-display > .katex > .katex-html > .tag {
+  color: #808080 !important;
+  margin-right: 100px !important;
+}
+
+.katex > .katex-html {
+  color: #0040b0 !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.katex {
+  font-size: 1.1em !important;
+}
+
+.reveal pre {
+  margin-left: 200px !important;
+  width: 75% !important;
+  font-size: 24pt !important;
+}
+
+.reveal pre.smaller {
+  font-size: 20pt !important;
+}
+
+.reveal code {
+  color: #0040b0 !important;
+  font-size: 90%;
+}
+
+.reveal li ul li code {
+  font-size: 80%;
+}
+
+    </style>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        katex: {
+          version: 'latest',
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            "\\eqref": "\\href{###1}{(\\text{#1})}",
+            "\\ref": "\\href{###1}{\\text{#1}}",
+            "\\label": "\\htmlId{#1}{}",
+          },
+        },
+        plugins: [ 
+          RevealMarkdown,
+          // RevealHighlight,
+          RevealMath.KaTeX,
+        ],
+        center: false,
+        controls: false,
+        disableLayout: false,  // set to true to use custom CSS for layout
+        showSlideNumber: 'all',
+        slideNumber: true,
+        transition: 'none',
+        width: 1280,
+        height: 800,
+      });
+    </script>
+  </body>
+</html>
