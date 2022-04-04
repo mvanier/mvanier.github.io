@@ -158,7 +158,7 @@ type imp_func =
 ## Primitive functions
 
 * Primitive functions are collected in the `prims` list
-* This forms the initial basis
+* This forms the _initial basis_
 
 ```
 let prims =
@@ -200,8 +200,8 @@ let prims =
   }
 </code></pre>
 
-* `global_funcs` is $\phi$, `global_vars` is $\xi$,
-   and `local_vars` is $\rho$
+* Recall: `global_funcs`: $\phi$, `global_vars`: $\xi$,
+   `local_vars`: $\rho$
 
 ---
 ## Environments
@@ -304,7 +304,7 @@ let rec eval_expr env exp =
 ---
 ## Evaluation: literals
 
-* Again, literals are easy:
+* Literals are easy:
 
 <pre><code>let rec eval_expr env exp =
   match exp with
@@ -603,7 +603,7 @@ let rec eval_expr env exp =
 ---
 ## Evaluation: `if`
 
-<pre><code>  | If (l, cond, t, e) -&gt;
+<pre><code>  | If (l, cond, <em>t</em>, e) -&gt;
     let (env', v) = eval_expr env cond in
       <em>if v &lt;&#8203;&gt; 0 then</em>
         <em>eval_expr env' t</em>
@@ -616,7 +616,7 @@ let rec eval_expr env exp =
 ---
 ## Evaluation: `if`
 
-<pre><code>  | If (l, cond, t, e) -&gt;
+<pre><code>  | If (l, cond, t, <em>e</em>) -&gt;
     let (env', v) = eval_expr env cond in
       if v &lt;&#8203;&gt; 0 then
         eval_expr env' t
@@ -646,7 +646,7 @@ let rec eval_expr env exp =
 ---
 ## Evaluation: `while`
 
-<pre><code>  | While (l, cond, body) -&gt;
+<pre><code>  | While (l, <em>cond</em>, body) -&gt;
     let (env', v) = <em>eval_expr env cond</em> in
       if v = 0 then
         (env', 0)
@@ -669,12 +669,12 @@ let rec eval_expr env exp =
           eval_expr env'' (While (l, cond, body))
 </code></pre>
 
-* If it's `0`, return the updated environment and `0`
+* If it's `0` (false), return the updated environment and `0`
 
 ---
 ## Evaluation: `while`
 
-<pre><code>  | While (l, cond, body) -&gt;
+<pre><code>  | While (l, cond, <em>body</em>) -&gt;
     let (env', v) = eval_expr env cond in
       if v = 0 then
         (env', 0)
@@ -707,7 +707,7 @@ let rec eval_expr env exp =
       if v = 0 then
         (env', 0)
       else
-        let (env'', _) = eval_expr env' body in
+        let (<em>env''</em>, _) = eval_expr env' body in
           <em>eval_expr env'' (While (l, cond, body))</em>
 </code></pre>
 
@@ -745,7 +745,7 @@ let rec eval_expr env exp =
 
 * Look up the function definition:
 
-<pre><code>  | Call (l, fn, args) -&gt;
+<pre><code>  | Call (l, <em>fn</em>, args) -&gt;
     <em>let f =</em>
       <em>try</em>
         <em>SM.find fn env.global_funcs</em>
@@ -762,7 +762,7 @@ let rec eval_expr env exp =
 
 * Evaluate the arguments:
 
-<pre><code>  | Call (l, fn, args) -&gt;
+<pre><code>  | Call (l, fn, <em>args</em>) -&gt;
     &lt;&#8203;look up function definition&gt;
     let (env', args') = <em>List.fold_left</em>
         <em>(fun (e, ars) a -&gt;</em>
@@ -813,7 +813,7 @@ let rec eval_expr env exp =
     &lt;&#8203;run the function&gt;
 </code></pre>
 
-* Reverse the list because the argument values are in reverse order
+* Reverse the list because the argument values are collected in reverse order
 
 ---
 ## Evaluation: function calls
@@ -846,7 +846,7 @@ let rec eval_expr env exp =
 </code></pre>
 
 * `eval_function` called with location `l`,
-  function name `fn`, function `f`, argument values `arg`
+  function name `fn`, function `f`, argument values `args''`
   and environment `env'`
 
 ---
@@ -871,7 +871,7 @@ let rec eval_expr env exp =
 
 * `eval_function` looks like this:
 
-<pre><code>let rec eval_expr env exp = ...
+<pre class="smaller"><code>let rec eval_expr env exp = ...
 and <em>eval_function</em> loc name f actuals env =
   match f with
     | PrimFunction func -&gt; (env, func loc actuals)
@@ -965,7 +965,7 @@ and eval_function loc name f actuals env =
 ---
 ## Evaluation: function calls
 
-<pre><code>let rec eval_expr env exp = ...
+<pre class="smaller"><code>let rec eval_expr env exp = ...
 and eval_function loc name f actuals env =
   match f with
     | PrimFunction func -&gt; (env, func loc actuals)
@@ -1149,7 +1149,7 @@ type result =
 <pre><code>let rec eval_def env def =
   match def with
     | ...
-    | Exp (_, e) -&gt;
+    | Exp (_, <em>e</em>) -&gt;
       <em>let env', v = eval_expr env e in</em>
         ({env' with global_vars =
             SM.add "_" v env'.global_vars},
@@ -1196,7 +1196,10 @@ type result =
 ---
 ## Next time
 
-* A new language: micro-Scheme ($\mu$Scheme)
+* That's it for the _Imp_ language!
+  * (Aside from assignment 1)
+
+* Next up: a new language: micro-Scheme<br/>($\mu$Scheme)
 
             </textarea>
           </section>
