@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- <section data-background-color="#ffffd0"> -->
+          <section data-markdown>
+            <textarea data-template>
+# CS 131:<br>Programming Languages
+## _Lecture 5_:<br>The _$\mu$Scheme_ Language
+---
+## Today
+
+* Introduction to the _$\mu$Scheme_ language:
+  * Types
+  * Environments
+  * Syntactic forms
+  * Evaluation rules (informally)
+
+---
+## Overview
+
+* Previously, we've presented the _Imp_ language
+
+* This was good for learning about language implementation,
+  but too simple for serious use
+
+---
+## Overview
+
+* Now we turn to a miniature version of the _Scheme_ programming language,
+  called<br/>_$\mu$Scheme_ (pronounced "micro-Scheme")
+
+* _$\mu$Scheme_ is a much more full-featured language
+
+* We will focus on the differences between<br/>_$\mu$Scheme_ and _Imp_
+
+---
+## About Scheme
+
+* _Scheme_ is a direct descendent of _Lisp_,
+  which was one of the first programming languages
+  * first version invented by John McCarthy in 1958;
+    first implementation was by Steve Russell
+  * Lisp was the first AI language,
+    and the first well-known language
+    to acquire functional programming features
+
+---
+## About Scheme
+
+* Lisp was intended to allow code to generate code programmatically
+
+* It included a feature called `eval` which would evaluate code specified as data
+
+* The idea was that sufficiently sophisticated programs could intelligently
+reprogram themselves and/or generate more complex programs
+
+---
+## About Scheme
+
+* Here's a quote from an interview with John McCarthy:
+
+> "Steve Russell said, look, why don't I program this `eval`..., and I said
+> to him, ho, ho, you're confusing theory with practice, this `eval` is intended
+> for reading, not for computing. But he went ahead and did it. That is, he
+> compiled the `eval` in my paper into [IBM] 704 machine code, fixing bugs, and
+> then advertised this as a Lisp interpreter, which it certainly was."
+
+---
+## About Scheme
+
+* Scheme is a "cleaned-up" version of Lisp
+  designed by Gerry Sussman and Guy Steele in 1976
+* (development continues to this day)
+
+---
+## About Scheme
+
+* Best known implementation of Scheme is probably _Racket_,
+  which has many extensions over "standard" Scheme
+  * (Was used for teaching CS 4 for many years)
+
+* Scheme is also a cousin/ancestor of OCaml
+
+---
+## Types
+
+* _Imp_ had only one type: integers
+
+* _$\mu$Scheme_ has a much richer set of types
+
+* In pseudo-OCaml:
+
+<pre><code>&lt;&#8203;value&gt; ::=
+  | Unit
+  | Nil
+  | Bool of bool
+  | Num of int
+  | Sym of id
+  | Pair of (value, value)
+  | Closure of (&lt;&#8203;env&gt;, &lt;&#8203;formals&gt;, &lt;&#8203;exp&gt;)
+  | Primitive of &lt;&#8203;primitive&gt;
+</code></pre>
+
+---
+## Types
+
+<pre><code>&lt;&#8203;value&gt; ::=
+  | <em>Unit</em>
+  | Nil
+  | Bool of bool
+  | Num of int
+  | Sym of id
+  | Pair of (value, value)
+  | Closure of (&lt;&#8203;env&gt;, &lt;&#8203;formals&gt;, &lt;&#8203;exp&gt;)
+  | Primitive of &lt;&#8203;primitive&gt;
+</code></pre>
+
+* `Unit` values are returned from constructs that conceptually "don't return anything"
+  * _e.g._ `while` loops, `print` primitives
+  * not printed, but can be entered as `#u`
+
+---
+## Types
+
+<pre><code>&lt;&#8203;value&gt; ::=
+  | Unit
+  | <em>Nil</em>
+  | Bool of bool
+  | Num of int
+  | Sym of id
+  | Pair of (value, value)
+  | Closure of (&lt;&#8203;env&gt;, &lt;&#8203;formals&gt;, &lt;&#8203;exp&gt;)
+  | Primitive of &lt;&#8203;primitive&gt;
+</code></pre>
+
+* `Nil` values are used to represent empty lists
+* Can be entered as `nil`
+
+---
+## Types
+
+<pre><code>&lt;&#8203;value&gt; ::=
+  | Unit
+  | Nil
+  | <em>Bool of bool</em>
+  | Num of int
+  | Sym of id
+  | Pair of (value, value)
+  | Closure of (&lt;&#8203;env&gt;, &lt;&#8203;formals&gt;, &lt;&#8203;exp&gt;)
+  | Primitive of &lt;&#8203;primitive&gt;
+</code></pre>
+
+* `Bool` values are booleans (`#t` for true and `#f` for false)
+
+---
+## Types
+
+<pre><code>&lt;&#8203;value&gt; ::=
+  | Unit
+  | Nil
+  | Bool of bool
+  | <em>Num of int</em>
+  | Sym of id
+  | Pair of (value, value)
+  | Closure of (&lt;&#8203;env&gt;, &lt;&#8203;formals&gt;, &lt;&#8203;exp&gt;)
+  | Primitive of &lt;&#8203;primitive&gt;
+</code></pre>
+
+* `Num` values are integers
+
+---
+## Types
+
+<pre><code>&lt;&#8203;value&gt; ::=
+  | Unit
+  | Nil
+  | Bool of bool
+  | Num of int
+  | <em>Sym of id</em>
+  | Pair of (value, value)
+  | Closure of (&lt;&#8203;env&gt;, &lt;&#8203;formals&gt;, &lt;&#8203;exp&gt;)
+  | Primitive of &lt;&#8203;primitive&gt;
+</code></pre>
+
+* `Sym` values are symbols
+* Write them using single quotes _i.e._ `'a 'x 'foo`
+  * Or as special `quote` form: `(quote a)` _etc._
+
+---
+## Types
+
+<pre><code>&lt;&#8203;value&gt; ::=
+  | Unit
+  | Nil
+  | Bool of bool
+  | Num of int
+  | Sym of id
+  | <em>Pair of (value, value)</em>
+  | Closure of (&lt;&#8203;env&gt;, &lt;&#8203;formals&gt;, &lt;&#8203;exp&gt;)
+  | Primitive of &lt;&#8203;primitive&gt;
+</code></pre>
+
+* `Pair` values are pairs of values
+
+* Used for building compound data structures (lists, trees, _etc._)
+
+---
+## Types
+
+<pre><code>&lt;&#8203;value&gt; ::=
+  | Unit
+  | Nil
+  | Bool of bool
+  | Num of int
+  | Sym of id
+  | <em>Pair of (value, value)</em>
+  | Closure of (&lt;&#8203;env&gt;, &lt;&#8203;formals&gt;, &lt;&#8203;exp&gt;)
+  | Primitive of &lt;&#8203;primitive&gt;
+</code></pre>
+
+* Note that lists are just a chain of pairs ending in `nil`
+
+---
+## Types
+
+<pre><code>&lt;&#8203;value&gt; ::=
+  | Unit
+  | Nil
+  | Bool of bool
+  | Num of int
+  | Sym of id
+  | Pair of (value, value)
+  | <em>Closure of (&lt;&#8203;env&gt;, &lt;&#8203;formals&gt;, &lt;&#8203;exp&gt;)</em>
+  | Primitive of &lt;&#8203;primitive&gt;
+</code></pre>
+
+* `Closure` values are user-defined functions
+
+* Unlike _Imp_, these are first-class values,
+  and they store their definition environment `<env>`
+
+---
+## _Aside_: Closures
+
+* Why is it important that a function stores ("closes over")
+  the environment in which it was defined?
+
+---
+## _Aside_: Closures
+
+* Answer: so that the names used in the function
+  have the _same meaning_ every time the function is called
+  * can't redefine the meaning of names
+  * so a function that works can't be made to fail later
+    because a name has a new meaning
+
+---
+## _Aside_: Closures
+
+* Caveat: some Scheme implementations
+  allow names defined at the top-level of the program to be changed;
+  functions that use them see the change
+
+---
+## Types
+
+<pre><code>&lt;&#8203;value&gt; ::=
+  | Unit
+  | Nil
+  | Bool of bool
+  | Num of int
+  | Sym of id
+  | Pair of (value, value)
+  | Closure of (&lt;&#8203;env&gt;, &lt;&#8203;formals&gt;, &lt;&#8203;exp&gt;)
+  | <em>Primitive of &lt;&#8203;primitive&gt;</em>
+</code></pre>
+
+* `Primitive` values are primitive functions
+* They are also first-class values
+* Otherwise, the same as _Imp_ primitives
+
+---
+## Environments
+
+* Another major difference between _Imp_ and _$\mu$Scheme_
+  is in their representation of environments
+
+* _Imp_ had three simple environments
+  * global functions
+  * global variables
+  * local variables
+
+---
+## Environments
+
+* Another major difference between _Imp_ and _$\mu$Scheme_
+  is in their representation of environments
+
+* In contrast, $\mu$Scheme only has _one_ kind of environment
+  * Functions and other values are stored in the _same_ environments
+
+---
+## Environments
+
+* In addition, environments
+  * are stored in user-defined functions (making them closures)
+  * (effectively) contain pointers to their enclosing environment
+  * consist of mappings between names and _locations_, not names and values
+
+* This makes environments simpler, more regular,
+  and more powerful than in _Imp_
+
+---
+## Environments
+
+* An environment is actually a map between a string (identifier)
+  and a location (`value ref`).
+
+* Our environments will not actually have pointers to enclosing environments
+  * Instead, they will simply add local bindings to a previous environment
+    to create a new environment
+  * This will allow us to do some optimizations later on
+
+---
+## Syntactic forms
+
+* Most of the syntactic forms in _$\mu$Scheme_ are the same as those in _Imp_
+
+* We will go through them now, paying particular attention to new forms
+
+* As usual, we will use BNF notation to describe the syntax
+
+---
+## Syntactic forms: definitions
+
+* Definition forms have the same syntax as in _Imp_:
+
+<pre><code>&lt;&#8203;def&gt; ::=
+  | (val &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (define &lt;&#8203;function-name&gt; ({&lt;&#8203;variable-name&gt;}) &lt;&#8203;exp&gt;)
+  | (use &lt;&#8203;file-name&gt;)
+  | (check-expect &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (check-error &lt;&#8203;exp&gt;)
+  | &lt;&#8203;exp&gt;
+</code></pre>
+
+---
+## Syntactic forms: expressions
+
+* Expression forms have some _Imp_ forms plus some new ones:
+
+<pre><code>exp ::=
+  | &lt;&#8203;literal&gt;
+  | &lt;&#8203;variable-name&gt;
+  | (set &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (if &lt;&#8203;exp&gt; &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (while &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (begin {&lt;&#8203;exp&gt;})
+  | (&lt;&#8203;let-keyword&gt; ({[variable-name &lt;&#8203;exp&gt;]}) &lt;&#8203;exp&gt;)
+  | (lambda ({&lt;&#8203;variable-name&gt;}) &lt;&#8203;exp&gt;)
+
+let-keyword ::= let | let* | letrec
+</code></pre>
+
+---
+## Syntactic forms: literals
+
+<pre><code>exp ::=
+  | <em>&lt;&#8203;literal&gt;</em>
+  | &lt;&#8203;variable-name&gt;
+  | (set &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (if &lt;&#8203;exp&gt; &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (while &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (begin {&lt;&#8203;exp&gt;})
+  | (&lt;&#8203;let-keyword&gt; ({[variable-name &lt;&#8203;exp&gt;]}) &lt;&#8203;exp&gt;)
+  | (lambda ({&lt;&#8203;variable-name&gt;}) &lt;&#8203;exp&gt;)
+
+let-keyword ::= let | let | letrec
+</code></pre>
+
+* `<literal>` form now includes unit, booleans, symbols, and quoted expressions
+
+---
+## Syntactic forms: literals
+
+* Examples:
+  * unit: `#u` for unit (like `()` in OCaml)
+  * booleans: `#t` for true, `#f` for false
+  * symbols: `'foo` _etc._ or `(quote foo)`
+  * quoted expressions: `'(foo bar baz)` becomes a list of symbols
+
+---
+## Syntactic forms: expressions
+
+* New forms:
+
+<pre><code>exp ::=
+  | &lt;&#8203;literal&gt;
+  | &lt;&#8203;variable-name&gt;
+  | (set &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (if &lt;&#8203;exp&gt; &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (while &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (begin {&lt;&#8203;exp&gt;})
+  | <em>(&lt;&#8203;let-keyword&gt; ({[variable-name &lt;&#8203;exp&gt;]}) &lt;&#8203;exp&gt;)</em>
+  | <em>(lambda ({&lt;&#8203;variable-name&gt;}) &lt;&#8203;exp&gt;)</em>
+
+<em>let-keyword ::= let | let* | letrec</em>
+</code></pre>
+
+---
+## Syntactic forms: expressions
+
+<pre><code>exp ::=
+  | &lt;&#8203;literal&gt;
+  | &lt;&#8203;variable-name&gt;
+  | (set &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (if &lt;&#8203;exp&gt; &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (while &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (begin {&lt;&#8203;exp&gt;})
+  | <em>(&lt;&#8203;let-keyword&gt; ({[variable-name &lt;&#8203;exp&gt;]}) &lt;&#8203;exp&gt;)</em>
+  | (lambda ({&lt;&#8203;variable-name&gt;}) &lt;&#8203;exp&gt;)
+
+<em>let-keyword ::= let | let* | letrec</em>
+</code></pre>
+
+* The "let" forms are used to define local variables
+  that are in scope for one expression `<exp>`
+
+---
+## Syntactic forms: expressions
+
+<pre><code>exp ::=
+  | &lt;&#8203;literal&gt;
+  | &lt;&#8203;variable-name&gt;
+  | (set &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (if &lt;&#8203;exp&gt; &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (while &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (begin {&lt;&#8203;exp&gt;})
+  | <em>(&lt;&#8203;let-keyword&gt; ({[variable-name &lt;&#8203;exp&gt;]}) &lt;&#8203;exp&gt;)</em>
+  | (lambda ({&lt;&#8203;variable-name&gt;}) &lt;&#8203;exp&gt;)
+
+<em>let-keyword ::= let | let* | letrec</em>
+</code></pre>
+
+* (This is similar to OCaml's `let` form)
+
+---
+## Syntactic forms: `let`
+
+* A simple `let` form can bind one or more variables
+  which are in scope in the body of the `let`:
+
+<pre><code>&gt;&gt;&gt; (let ([x (+ 4 2)]
+          [y 42])
+      (+ x y))
+48
+</code></pre>
+
+---
+## Syntactic forms: `let`
+
+<pre><code>&gt;&gt;&gt; (let (<em>[x (+ 4 2)]</em>
+          <em>[y 42])</em>
+      (+ x y))
+48
+</code></pre>
+
+* These are the _bindings_
+* They bind the variable names `x` and `y` in the body of the `let`
+
+---
+## Syntactic forms: `let`
+
+<pre><code>&gt;&gt;&gt; (let ([x (+ 4 2)]
+          [y 42])
+      <em>(+ x y)</em>)
+48
+</code></pre>
+
+* This is the _body_
+* Given the bindings, this is what the `let` expression evaluates to
+* Here, `x` is bound to `6` and `y` is bound to `42`
+
+---
+## Syntactic forms: `let`
+
+<pre><code>&gt;&gt;&gt; (let (<em>(</em>x (+ 4 2)<em>)</em>
+          <em>(</em>y 42<em>)</em>)
+      (+ x y))
+48
+</code></pre>
+
+* We can use parentheses instead of square brackets
+  * (but square brackets are more readable)
+
+---
+## Syntactic forms: `let`
+
+<pre><code>&gt;&gt;&gt; (let (<em>(</em>x (+ 4 2)<em>)</em>
+          <em>(</em>y 42<em>)</em>)
+      (+ x y))
+48
+</code></pre>
+
+* In fact, can substitute square brackets for parentheses
+  anywhere in $\mu$Scheme as long as they match up correctly
+  * This is true of all of our languages<br/>(even _Imp_)
+
+---
+## Syntactic forms: `let`
+
+* Variables defined in a `let` are not visible outside the body of the `let`:
+
+<pre><code>&gt;&gt;&gt; (begin
+      (let ([x 10])
+        (+ x x))
+      <em>(* x 10)</em>)  ; outside the let
+<em>Unknown name: x</em>
+</code></pre>
+
+---
+## Syntactic forms: `let`
+
+* Empty `let`s are not allowed:
+
+<pre><code>&gt;&gt;&gt; (let)
+<em>Syntax error: invalid "let"</em>
+</code></pre>
+
+* However, the list of bindings can be empty:
+
+<pre><code>&gt;&gt;&gt; (let <em>()</em> (+ 2 3))
+5
+</code></pre>
+
+* (but there's no reason to do this)
+
+---
+## Syntactic forms: `let`
+
+* Bindings can't refer to each other:
+
+<pre><code>&gt;&gt;&gt; (let ([<em>x</em> 10]
+          [y (+ <em>x</em> 1)])
+      (+ x y))
+<em>Unknown name: x</em>
+</code></pre>
+
+* Rule: everything in the expressions part of the bindings
+  has to be evaluated _without_ the bindings
+
+---
+## Syntactic forms: `let`
+
+* If you want bindings to refer to previous bindings, you can nest `let`s:
+
+<pre><code>&gt;&gt;&gt; (let ([<em>x</em> 10])
+      (let ([y (+ <em>x</em> 1)])
+        (+ x y)))
+21
+</code></pre>
+
+* However, this is tedious, so there is a shortcut: `let*`
+
+---
+## Syntactic forms: `let*`
+
+* With `let*` this becomes:
+
+<pre><code>&gt;&gt;&gt; (let* ([<em>x</em> 10]
+           [y (+ <em>x</em> 1)])
+        (+ x y))
+21
+</code></pre>
+
+* `let*` is thus a kind of syntactic sugar<br/>for nested `let`s
+
+---
+## Syntactic forms: `letrec`
+
+* However, `let*` doesn't allow a binding's expression
+  to refer to upcoming bindings
+
+* This is important if you want to define _e.g._ mutually-recursive functions
+
+---
+## Syntactic forms: `letrec`
+
+* For this, we have to use `letrec` (like OCaml's `let rec` form)
+  * (Actually, this is necessary to define _any_ recursive local function)
+
+* We will come back to this after we discuss the `lambda` form
+
+---
+## Syntactic forms: `lambda`
+
+* CS 4 should have made it clear that the ability
+  to use functions as data is very powerful
+
+* $\mu$Scheme allows us to do this using the `lambda` form
+
+* A `lambda` is just an anonymous function
+  * The name comes from "lambda calculus"
+
+* The syntax is just <br/>`(lambda ({<variable-name>}) <exp>)`
+
+---
+## Syntactic forms: `lambda`
+
+* Examples:
+
+<pre><code>&gt;&gt;&gt; ((<em>lambda</em> (x y) (* x y)) 5 6)
+30
+&gt;&gt;&gt; (val mul (<em>lambda</em> (x y) (* x y)))
+val mul = &lt;&#8203;function&gt;
+&gt;&gt;&gt; (mul 5 6)
+30
+</code></pre>
+
+---
+## Syntactic forms: `lambda`
+
+* A `lambda` expression is no different from a function defined with `define`
+except that it has no name
+
+* Functions live in the same environments as non-function values
+
+---
+## Syntactic forms: `lambda`
+
+* Therefore,
+
+<pre><code>(define mul (x y) (* x y))
+</code></pre>
+
+* is just syntactic sugar for:
+
+<pre><code>(val mul (<em>lambda</em> (x y) (* x y)))
+</code></pre>
+
+---
+## _Aside_: `define`
+
+* `define` can be used to define recursive functions at the top level
+
+<pre><code>&gt;&gt;&gt; (define fact (n)
+...   (if (= n 0) 1 (* n (fact (- n 1)))))
+val fact = &lt;&#8203;user function&gt;
+&gt;&gt;&gt; (fact 10)
+3628800
+</code></pre>
+
+* (Also true in _Imp_)
+
+---
+## _Aside_: `define`
+
+* This shows that
+
+<pre><code>(define fact (n) ...)
+</code></pre>
+
+* is not the same as:
+
+<pre><code>(val fact (lambda (n) ...)
+</code></pre>
+
+* if the function being defined is recursive
+
+---
+## Syntactic forms: `lambda`
+
+* Recall from CS 4: `let` expressions can be desugared to `lambda`; this:
+
+<pre><code>(<em>let</em> ([x 10]
+      [y (+ 42 100)])
+  (+ x y))
+</code></pre>
+
+* is the same as this:
+
+<pre><code>((<em>lambda</em> (x y) (+ x y)) 10 (+ 42 100))
+</code></pre>
+
+---
+## Syntactic forms: `lambda`
+
+* However, this desugaring is not generally worth it
+  * (Also won't work for `letrec`)
+
+---
+## _Aside_: Intermediate representations
+
+* So far, we've seen two different forms
+  which can be interpreted in terms of other forms:
+  * `let*` can be converted to nested `let`s
+  * `define` can be converted to a `val` and a `lambda`
+
+---
+## _Aside_: Intermediate representations
+
+* These are interpreted by converting one form to another
+  and then interpreting the resulting form
+
+* This conversion can be done at the S-expression level
+  (if the language uses S-expressions)
+
+* Or we can convert the entire AST tree to a simpler form
+  called an "intermediate representation" (IR)
+
+---
+## _Aside_: Intermediate representations
+
+* Why convert from AST to IR?
+  * Less tedious than manipulating S-expressions directly
+  * IR is an OCaml datatype, so get usual benefits of that
+  * Simpler interpreter (fewer cases)
+  * More efficient interpreter (conversions aren't done on-the-fly)
+
+---
+## _Aside_: Intermediate representations
+
+* Cost of conversion:
+  * Having to define a new datatype for IR
+  * Having to convert from AST to IR
+  * lots of "boilerplate" trivial conversions
+
+---
+## _Aside_: Intermediate representations
+
+* Many language implementations consist of many different IR conversions,
+  implementing simplifications, optimizations, and changes of representation
+
+---
+## _Aside_: Intermediate representations
+
+* If taken to the extreme, you have a _compiler_,
+  which converts all the way from concrete syntax
+  to the machine language of a computer
+
+* Interpreters are just compilers that "don't go all the way"
+  and have an evaluator for the last IR (which may just be the AST)
+
+---
+## Syntactic forms: `letrec`
+
+* OK, let's look at `letrec` again
+
+* `letrec` is used to define _local recursive functions_
+
+* _N.B._ can't use `val` or `define` inside function bodies
+
+* Let's try to just use `let` and see how it goes...
+
+---
+## Syntactic forms: `letrec`
+
+<pre><code>&gt;&gt;&gt; (let ([<em>f</em> (lambda (n)
+               (if (= n 0)
+                   1
+                   (* n (<em>f</em> (- n 1)))))])
+      (f 10))
+<em>Unknown name: f</em>
+</code></pre>
+
+* Problem: `lambda` expression bound to `f` can't refer to `f`!
+
+* We could fix it using something like the <br/> Y combinator,
+  but that's too much work
+
+* Instead, we use a `letrec` form
+
+---
+## Syntactic forms: `letrec`
+
+* With `letrec`:
+
+<pre><code>&gt;&gt;&gt; (<em>letrec</em> ([<em>f</em> (lambda (n)
+                  (if (= n 0)
+                      1
+                      (* n (<em>f</em> (- n 1)))))])
+      (f 10))
+3628800
+</code></pre>
+
+---
+## Syntactic forms: `letrec`
+
+* `letrec` also works with mutually-recursive functions:
+
+<pre><code>&gt;&gt;&gt; (<em>letrec</em> ([<em>even?</em> (lambda (n)
+                      (if (= n 0) #t (<em>odd?</em>  (- n 1))))]
+             [<em>odd?</em>  (lambda (n)
+                      (if (= n 0) #f (<em>even?</em> (- n 1))))])
+      (<em>even?</em> 1001))
+#f
+</code></pre>
+
+---
+## Syntactic forms: `letrec`
+
+* `letrec` requirement: the variable names in the `letrec`
+  must have values by the time they are used, or it's a run-time error:
+
+<pre><code>&gt;&gt;&gt; (letrec ([x <em>y</em>]
+             [<em>y</em> (+ x 10)])
+      (+ x y))
+<em>Attempt to read from an unspecified value: y</em>
+</code></pre>
+
+* If expressions are all `lambda` expressions (the usual case),
+  everything works correctly
+
+* Semantics of `letrec` are the most subtle ones in all of $\mu$Scheme!
+
+---
+## Next time
+
+* We'll go over the operational semantics of _$\mu$Scheme_
+
+            </textarea>
+          </section>
+      </div>
+    </div>
+    <script src="plugin/math/math.js"></script>
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <!-- Uncomment if you want syntax highlighting. -->
+    <!--
+    <link rel="stylesheet" href="plugin/highlight/arduino-light.css">
+    -->
+    <style>
+/* MCV: My new reveal.js styles. */
+
+.reveal {
+  font-family: "Arial", sans-serif;
+  font-size: 28pt;
+  font-weight: normal;
+  color: #000; 
+}
+
+.reveal .slide-number {
+  background: white;
+  /* border: 1px solid black; */
+}
+
+.reveal .slide-number-a {
+  background: white;
+  color: black;
+  font-size: 24px;
+}
+
+.reveal .slides h1 {
+  text-align: center;
+  text-transform: none;
+  padding: 150px 0 20px 0;
+  font-size: 64pt;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif;
+  font-weight: normal;
+  color: #4f271c;
+  background: #d0d0f0;
+  margin-bottom: 0.5em;
+}
+
+.reveal h2 { 
+  text-transform: none;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif !important;
+  /* text-shadow: 2px 2px 3px #a0a0a0; */
+  color: #4f271c !important;
+  font-size: 60pt !important;
+  font-weight: normal !important;
+  /* background: #d0d0d0; */
+  width: 80% !important;
+  margin-left: 10%;
+}
+
+/* First level bullet color. */
+.reveal .slides ul li::marker {
+  color: #3891a7;
+}
+
+/* Second level bullet spacing. */
+.reveal .slides ul li ul {
+  margin-top: 0px;
+}
+
+.reveal .slides li {
+  margin-top: 10px;
+}
+
+/* Second level bullet color. */
+.reveal .slides ul li ul li::marker {
+  color: #3891a7;
+}
+
+.reveal li {
+  font-size: 36pt !important;
+}
+
+.reveal li ul li {
+  font-size: 32pt !important;
+}
+
+.reveal ul {
+  width: 80% !important;
+  text-align: left !important;
+}
+
+.reveal code em {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal em code {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.katex-display > .katex {
+  color: #0040b0 !important;
+}
+
+.katex-display > .katex > .katex-html > .tag {
+  color: #808080 !important;
+  margin-right: 100px !important;
+}
+
+.katex > .katex-html {
+  color: #0040b0 !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.katex {
+  font-size: 1.1em !important;
+}
+
+.reveal pre {
+  margin-left: 200px !important;
+  width: 75% !important;
+  font-size: 24pt !important;
+}
+
+.reveal pre.smaller {
+  font-size: 20pt !important;
+}
+
+.reveal code {
+  color: #0040b0 !important;
+  font-size: 90%;
+}
+
+.reveal pre code {
+  /* max vertical size of code block */
+  max-height: 700px !important;
+}
+
+.reveal li ul li code {
+  font-size: 80%;
+}
+
+    </style>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        katex: {
+          version: 'latest',
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            "\\eqref": "\\href{###1}{(\\text{#1})}",
+            "\\ref": "\\href{###1}{\\text{#1}}",
+            "\\label": "\\htmlId{#1}{}",
+          },
+        },
+        plugins: [ 
+          RevealMarkdown,
+          // RevealHighlight,
+          RevealMath.KaTeX,
+        ],
+        center: false,
+        controls: false,
+        disableLayout: false,  // set to true to use custom CSS for layout
+        showSlideNumber: 'all',
+        slideNumber: true,
+        transition: 'none',
+        width: 1280,
+        height: 800,
+      });
+    </script>
+  </body>
+</html>
