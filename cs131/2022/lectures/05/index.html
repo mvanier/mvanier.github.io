@@ -288,7 +288,7 @@ reprogram themselves and/or generate more complex programs
 ---
 ## Environments
 
-* Another major difference between _Imp_ and _$\mu$Scheme_
+* Another major difference between _Imp_ and<br/>_$\mu$Scheme_
   is in their representation of environments
 
 * _Imp_ had three simple environments
@@ -299,7 +299,7 @@ reprogram themselves and/or generate more complex programs
 ---
 ## Environments
 
-* Another major difference between _Imp_ and _$\mu$Scheme_
+* Another major difference between _Imp_ and<br/>_$\mu$Scheme_
   is in their representation of environments
 
 * In contrast, $\mu$Scheme only has _one_ kind of environment
@@ -320,7 +320,7 @@ reprogram themselves and/or generate more complex programs
 ## Environments
 
 * An environment is actually a map between a string (identifier)
-  and a location (`value ref`).
+  and a location (`value ref`)
 
 * Our environments will not actually have pointers to enclosing environments
   * Instead, they will simply add local bindings to a previous environment
@@ -385,6 +385,7 @@ let-keyword ::= let | let | letrec
 </code></pre>
 
 * `<literal>` form now includes unit, booleans, symbols, and quoted expressions
+  as well as integers
 
 ---
 ## Syntactic forms: literals
@@ -595,7 +596,7 @@ let-keyword ::= let | let | letrec
 * For this, we have to use `letrec` (like OCaml's `let rec` form)
   * (Actually, this is necessary to define _any_ recursive local function)
 
-* We will come back to this after we discuss the `lambda` form
+* We will come back to this after we discuss the<br/>`lambda` form
 
 ---
 ## Syntactic forms: `lambda`
@@ -603,7 +604,7 @@ let-keyword ::= let | let | letrec
 * CS 4 should have made it clear that the ability
   to use functions as data is very powerful
 
-* $\mu$Scheme allows us to do this using the `lambda` form
+* $\mu$Scheme allows us to do this using the<br/>`lambda` form
 
 * A `lambda` is just an anonymous function
   * The name comes from "lambda calculus"
@@ -647,10 +648,10 @@ except that it has no name
 ---
 ## _Aside_: `define`
 
-* `define` can be used to define recursive functions at the top level
+* `define` can also be used to define recursive functions at the top level
 
-<pre><code>&gt;&gt;&gt; (define fact (n)
-...   (if (= n 0) 1 (* n (fact (- n 1)))))
+<pre><code>&gt;&gt;&gt; (define <em>fact</em> (n)
+...   (if (= n 0) 1 (* n (<em>fact</em> (- n 1)))))
 val fact = &lt;&#8203;user function&gt;
 &gt;&gt;&gt; (fact 10)
 3628800
@@ -663,12 +664,12 @@ val fact = &lt;&#8203;user function&gt;
 
 * This shows that
 
-<pre><code>(define fact (n) ...)
+<pre><code>(define <em>fact</em> (n) ...)
 </code></pre>
 
 * is not the same as:
 
-<pre><code>(val fact (lambda (n) ...)
+<pre><code>(val <em>fact</em> (lambda (n) ...)
 </code></pre>
 
 * if the function being defined is recursive
@@ -691,8 +692,8 @@ val fact = &lt;&#8203;user function&gt;
 ---
 ## Syntactic forms: `lambda`
 
-* However, this desugaring is not generally worth it
-  * (Also won't work for `letrec`)
+* However, this desugaring is not generally<br/>worth the effort
+  * (And it also won't work for `letrec`)
 
 ---
 ## _Aside_: Intermediate representations
@@ -700,7 +701,7 @@ val fact = &lt;&#8203;user function&gt;
 * So far, we've seen two different forms
   which can be interpreted in terms of other forms:
   * `let*` can be converted to nested `let`s
-  * `define` can be converted to a `val` and a `lambda`
+  * `define` can sometimes be converted to a `val` and a `lambda`
 
 ---
 ## _Aside_: Intermediate representations
@@ -729,7 +730,7 @@ val fact = &lt;&#8203;user function&gt;
 * Cost of conversion:
   * Having to define a new datatype for IR
   * Having to convert from AST to IR
-  * lots of "boilerplate" trivial conversions
+  * lots of "boilerplate" trivial conversions for forms that aren't changed
 
 ---
 ## _Aside_: Intermediate representations
