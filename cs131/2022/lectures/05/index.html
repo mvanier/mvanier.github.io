@@ -263,7 +263,7 @@ reprogram themselves and/or generate more complex programs
 ---
 ## _Aside_: Closures
 
-* Caveat: some Scheme implementations
+* Caveat: some Scheme implementations (including _$\mu$Scheme_!)
   allow names defined at the top-level of the program to be changed;
   functions that use them see the change
 
@@ -342,11 +342,11 @@ reprogram themselves and/or generate more complex programs
 * Definition forms have the same syntax as in _Imp_:
 
 <pre><code>&lt;&#8203;def&gt; ::=
-  | (val &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
-  | (define &lt;&#8203;function-name&gt; ({&lt;&#8203;variable-name&gt;}) &lt;&#8203;exp&gt;)
-  | (use &lt;&#8203;file-name&gt;)
-  | (check-expect &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
-  | (check-error &lt;&#8203;exp&gt;)
+  | (<em>val</em> &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (<em>define</em> &lt;&#8203;function-name&gt; ({&lt;&#8203;variable-name&gt;}) &lt;&#8203;exp&gt;)
+  | (<em>use</em> &lt;&#8203;file-name&gt;)
+  | (<em>check-expect</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>check-error</em> &lt;&#8203;exp&gt;)
   | &lt;&#8203;exp&gt;
 </code></pre>
 
@@ -358,14 +358,14 @@ reprogram themselves and/or generate more complex programs
 <pre><code>exp ::=
   | &lt;&#8203;literal&gt;
   | &lt;&#8203;variable-name&gt;
-  | (set &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
-  | (if &lt;&#8203;exp&gt; &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
-  | (while &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
-  | (begin {&lt;&#8203;exp&gt;})
+  | (<em>set</em> &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (<em>if</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>while</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>begin</em> {&lt;&#8203;exp&gt;})
   | (&lt;&#8203;let-keyword&gt; ({[variable-name &lt;&#8203;exp&gt;]}) &lt;&#8203;exp&gt;)
-  | (lambda ({&lt;&#8203;variable-name&gt;}) &lt;&#8203;exp&gt;)
+  | (<em>lambda</em> ({&lt;&#8203;variable-name&gt;}) &lt;&#8203;exp&gt;)
 
-let-keyword ::= let | let* | letrec
+let-keyword ::= <em>let</em> | <em>let*&ZeroWidthSpace;</em> | <em>letrec</em>
 </code></pre>
 
 ---
@@ -545,7 +545,7 @@ let-keyword ::= let | let | letrec
 ---
 ## Syntactic forms: `let`
 
-* Bindings can't refer to each other:
+* `let` bindings can't refer to each other:
 
 <pre><code>&gt;&gt;&gt; (let ([<em>x</em> 10]
           [y (+ <em>x</em> 1)])
@@ -646,7 +646,7 @@ except that it has no name
 </code></pre>
 
 ---
-## _Aside_: `define`
+## _Aside_: `define` and `val`
 
 * `define` can also be used to define recursive functions at the top level
 
@@ -660,9 +660,9 @@ val fact = &lt;&#8203;user function&gt;
 * (Also true in _Imp_)
 
 ---
-## _Aside_: `define`
+## _Aside_: `define` and `val`
 
-* This shows that
+* You might therefore think that
 
 <pre><code>(define <em>fact</em> (n) ...)
 </code></pre>
@@ -673,6 +673,30 @@ val fact = &lt;&#8203;user function&gt;
 </code></pre>
 
 * if the function being defined is recursive
+
+---
+## _Aside_: `define` and `val`
+
+* Actually, the equivalence:
+
+<pre><code>(define f (n) ...) == (val f (lambda (n) ...))
+</code></pre>
+
+* always holds!
+
+* (There are special `val` rules in the evaluator to make this work.)
+
+---
+## _Aside_: `define` and `val`
+
+* So you _can_ define factorial this way:
+
+<pre><code>(val fact
+  (lambda (n)
+    (if (= n 0)
+        1
+        (* n (fact (- n 1))))))
+</code></pre>
 
 ---
 ## Syntactic forms: `lambda`
