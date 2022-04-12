@@ -10,8 +10,8 @@
         <!-- <section data-background-color="#ffffd0"> -->
           <section data-markdown>
             <textarea data-template>
-# CS 131:<br>Programming Languages
-## _Lecture 7_:<br>The _$\mu$Scheme_ Language, part 3: the code
+# CS 131:<br/>Programming Languages
+## _Lecture 7_:<br/>The _$\mu$Scheme_ Language, part 3: the code
 ---
 ## Today
 
@@ -29,10 +29,87 @@
   * _e.g._ `use`, unit tests
 
 ---
+## Abstract syntax tree
+
+<pre><code>type id = string
+
+type expr =
+  | Literal of loc * int
+  | Quote   of loc * Sexpr.expr
+  | Var     of loc * id
+  | Set     of loc * id * expr
+  | If      of loc * expr * expr * expr
+  | While   of loc * expr * expr
+  | Begin   of loc * expr list
+  ... (* continued... *)
+</code></pre>
+
+---
+## Abstract syntax tree
+
+<pre><code>type id = string
+
+type expr =
+  | Literal of loc * int
+  | Quote   of loc * <em>Sexpr.expr</em>
+  | Var     of loc * id
+  | Set     of loc * id * expr
+  | If      of loc * expr * expr * expr
+  | While   of loc * expr * expr
+  | Begin   of loc * expr list
+  ... (* continued... *)
+</code></pre>
+
+* `Sexpr.expr` is an S-expression, _not_ an AST expression
+
+---
+## Abstract syntax tree
+
+<pre><code>type expr =
+  ...  (* previous slide *)
+  | <em>Let</em>     of loc * (id * expr) list * expr
+  | <em>LetStar</em> of loc * (id * expr) list * expr
+  | <em>LetRec</em>  of loc * (id * expr) list * expr
+  | <em>Lambda</em>  of loc * id list * expr
+  | Call    of loc * expr * expr list
+
+(* continued... *)
+</code></pre>
+
+* New `let` and `lambda` expressions
+
+---
+## Abstract syntax tree
+
+<pre><code>type def =
+  | Val         of loc * id * expr
+  | Define      of loc * id * id list * expr
+  | Exp         of loc * expr
+  | Use         of loc * string
+  | CheckExpect of loc * expr * expr
+  | CheckError  of loc * expr
+</code></pre>
+
+* Nothing new here...
+
+---
+## AST and IR expressions
+
+* Recall:
+  * In _Imp_, we converted S-expressions to AST forms,
+    then evaluated the AST forms
+
+  * In _$\mu$Scheme_, we convert S-expressions to AST forms,
+    convert those to IR forms, then evaluate the IR forms
+
+* The IR is basically a desugared AST
+  * _e.g._ `let*` to nested `let`s
+
+---
 ## Values and environments
 
-* One major difference between _Imp_ and _$\mu$Scheme_ is in the values of the
-languages
+* One major difference between _Imp_ and<br/>_$\mu$Scheme_
+  is in the values of the languages
 
 * _Imp_ only has integers as values
 
@@ -42,10 +119,47 @@ languages
 ---
 ## Values and environments
 
+<pre><code>type <em>env</em> = ((<em>value</em> ref) StringMap.t)
+and <em>value</em> =
+  | PrimFuncVal of (loc -&gt; <em>value</em> list -&gt; <em>value</em>)
+  | UserFuncVal of id list * expr * <em>env</em>
+  | IntVal      of int
+  | BoolVal     of bool
+  | SymVal      of id
+  | PairVal     of <em>value</em> * <em>value</em>
+  | NilVal
+  | UnitVal
+  | Unspecified of id
+</code></pre>
+
+* `env` and `value` are mutually recursive types<br/>
+  (each depends on the other)
+
+---
+## Values and environments
+
 <pre><code>type env = ((value ref) StringMap.t)
-and value = 
-  | PrimFuncVal of (value list -&gt; loc -&gt; value)
-  | UserFuncVal of id list * expr * env
+and value =
+  | PrimFuncVal of (loc -&gt; value list -&gt; value)
+  | UserFuncVal of <em>id</em> list * expr * env
+  | IntVal      of int
+  | BoolVal     of bool
+  | SymVal      of <em>id</em>
+  | PairVal     of value * value
+  | NilVal
+  | UnitVal
+  | Unspecified of <em>id</em>
+</code></pre>
+
+* `id` is a type synonym for `string`
+
+---
+## Values and environments
+
+<pre><code>type env = ((value ref) StringMap.t)
+and value =
+  | PrimFuncVal of (loc -&gt; value list -&gt; value)
+  | UserFuncVal of id list * <em>expr</em> * env
   | IntVal      of int
   | BoolVal     of bool
   | SymVal      of id
@@ -55,15 +169,14 @@ and value =
   | Unspecified of id
 </code></pre>
 
-* `id` is a type synonym for `string`
-* `expr` is an AST expression
+* `expr` is an IR expression
 
 ---
 ## Values and environments
 
 <pre><code>type env = ((value ref) StringMap.t)
-and value = 
-  | PrimFuncVal of (value list -&gt; loc -&gt; value)
+and value =
+  | PrimFuncVal of (loc -&gt; value list -&gt; value)
   | UserFuncVal of id list * expr * env
   | IntVal      of int
   | BoolVal     of bool
@@ -78,50 +191,6 @@ and value =
 * These are values used to initialize `letrec` bindings
 
 ---
-## Abstract syntax tree
-
-<pre><code>type id = string
-
-type expr = 
-  | Literal of loc * int
-  | Quote   of loc * Sexpr.expr
-  | Var     of loc * id
-  | Set     of loc * id * expr
-  | If      of loc * expr * expr * expr
-  | While   of loc * expr * expr
-  | Begin   of loc * expr list
-  ... (* continued on next slide... *)
-</code></pre>
-
-* `Sexpr.expr` is an S-expression, _not_ an AST expression
-
----
-## Abstract syntax tree
-
-<pre><code>type expr = 
-  ...  (* previous slide *)
-  | Let     of loc * (id * expr) list * expr
-  | LetStar of loc * (id * expr) list * expr
-  | LetRec  of loc * (id * expr) list * expr
-  | Lambda  of loc * id list * expr
-  | Call    of loc * expr * expr list
-
-(* continued on next slide... *)
-</code></pre>
-
----
-## Abstract syntax tree
-
-<pre><code>type def = 
-  | Val         of loc * id * expr
-  | Define      of loc * id * id list * expr
-  | Exp         of loc * expr
-  | Use         of loc * string
-  | CheckExpect of loc * expr * expr
-  | CheckError  of loc * expr
-</code></pre>
-
----
 ## Evaluator
 
 * Now we'll look at the code for the evaluator (in `eval.ml`)
@@ -134,13 +203,8 @@ type expr =
 
 * The evaluator in the student code doesn't work!
 
-* You will be heavily modifying it and adding to it, including some of the code
-that follows.
-
-* Also: it doesn't evaluate AST expressions but IR (intermediate
-representation) expressions.
-
-* IR is AST with some desugaring _e.g._ `let*` to nested `let`s
+* You will be heavily modifying it and adding to it,
+  including some of the code that follows
 
 * You will also be modifying/extending the AST and IR datatypes
 
@@ -203,11 +267,11 @@ representation) expressions.
 <pre class="smaller"><code>let rec eval_expr env expr =
   match expr with
     ...
-    | Var (l, s) -&gt; 
-      begin 
+    | Var (l, s) -&gt;
+      begin
         match Env.lookup l env s with
-          | <em>Unspecified s -&gt;</em> 
-            let msg = Printf.sprintf 
+          | <em>Unspecified s -&gt;</em>
+            let msg = Printf.sprintf
               "attempt to read from an unspecified value: %s" s
             in Error.unspecified_err l msg
           | other -&gt; other
@@ -226,11 +290,11 @@ representation) expressions.
     | Set (l, s, e) -&gt;
       begin
         match Env.lookup l env s with
-          | <em>Unspecified s -&gt;</em> 
-            let msg = Printf.sprintf 
+          | <em>Unspecified s -&gt;</em>
+            let msg = Printf.sprintf
               "attempt to write to an unspecified value: %s" s
             in Error.unspecified_err l msg
-          | other -&gt; 
+          | other -&gt;
             (Env.set l env s (eval_expr env e); UnitVal)
       end
     ...
@@ -247,11 +311,11 @@ representation) expressions.
     | Set (l, s, e) -&gt;
       begin
         match Env.lookup l env s with
-          | Unspecified s -&gt; 
-            let msg = Printf.sprintf 
+          | Unspecified s -&gt;
+            let msg = Printf.sprintf
               "attempt to write to an unspecified value: %s" s
             in Error.unspecified_err l msg
-          | other -&gt; 
+          | other -&gt;
             (Env.set l env s (eval_expr env e); <em>UnitVal</em>)
       end
     ...
@@ -269,11 +333,11 @@ representation) expressions.
   match expr with
     ...
     | If (l, cond, t, e) -&gt;
-      if truthy l (eval_expr env cond) 
+      if truthy l (eval_expr env cond)
       then eval_expr env t
       else eval_expr env e
     | While (l, cond, body) -&gt;
-      if truthy l (eval_expr env cond) then 
+      if truthy l (eval_expr env cond) then
         (ignore (eval_expr env body);
          eval_expr env expr)
       else <em>UnitVal</em>
@@ -321,10 +385,10 @@ representation) expressions.
   match expr with
     ...
     | <em>Let (_, bindings, body)</em> -&gt;
-      let bindings' = 
-        List.map (fun (name, expr) -&gt; 
-          (name, eval_expr env expr)) 
-          bindings 
+      let bindings' =
+        List.map (fun (name, expr) -&gt;
+          (name, eval_expr env expr))
+          bindings
       in
       let env' = bind_all env bindings' in
         eval_expr env' body
@@ -336,8 +400,8 @@ representation) expressions.
 
 * `let` uses `bind_all` helper function:
 
-<pre><code>let bind_all env bindings = 
-  List.fold_left 
+<pre><code>let <em>bind_all</em> env bindings =
+  List.fold_left
     (fun e (k, v) -&gt; Env.bind e k v)
     env bindings
 </code></pre>
@@ -348,6 +412,8 @@ representation) expressions.
 * `let*` is compiled away in the AST to IR conversion
   * Much easier than implementing the operational semantics!
   * (Could also write this conversion into the operational semantics)
+    <!-- SMILEY at end of line -->
+    * (Exercise for the student &#x263a;)
 
 ---
 ## Evaluator: expressions
@@ -358,18 +424,126 @@ representation) expressions.
   match expr with
     ...
     | <em>LetRec (l, bindings, body)</em> -&gt;
-      let placeholders = 
-        List.map (fun (name, _) -&gt; 
+      let placeholders =
+        List.map (fun (name, _) -&gt;
           (name, Unspecified name)) bindings in
       let env' = bind_all env placeholders in
-      let vals = List.map 
-        (fun (name, e) -&gt; (name, eval_expr env' e)) bindings 
+      let vals = List.map
+        (fun (name, e) -&gt; (name, eval_expr env' e)) bindings
       in
-      (List.iter 
+      (List.iter
         (fun (name, v) -&gt; Env.set l env' name v) vals;
         eval_expr env' body)
     ...
 </code></pre>
+
+---
+## Evaluator: expressions
+
+* `letrec` is interesting:
+
+<pre class="smaller"><code>let rec eval_expr env expr =
+  match expr with
+    ...
+    | LetRec (l, bindings, body) -&gt;
+      <em>let placeholders =</em>
+        <em>List.map (fun (name, _) -&gt;</em>
+          <em>(name, Unspecified name)) bindings in</em>
+      let env' = bind_all env placeholders in
+      let vals = List.map
+        (fun (name, e) -&gt; (name, eval_expr env' e)) bindings
+      in
+      (List.iter
+        (fun (name, v) -&gt; Env.set l env' name v) vals;
+        eval_expr env' body)
+    ...
+</code></pre>
+
+* Bind all names to `Unspecified` values
+
+---
+## Evaluator: expressions
+
+* `letrec` is interesting:
+
+<pre class="smaller"><code>let rec eval_expr env expr =
+  match expr with
+    ...
+    | LetRec (l, bindings, body) -&gt;
+      let placeholders =
+        List.map (fun (name, _) -&gt;
+          (name, Unspecified name)) bindings in
+      <em>let env' = bind_all env placeholders in</em>
+      let vals = List.map
+        (fun (name, e) -&gt; (name, eval_expr env' e)) bindings
+      in
+      (List.iter
+        (fun (name, v) -&gt; Env.set l env' name v) vals;
+        eval_expr env' body)
+    ...
+</code></pre>
+
+* Add those bindings to the environment `env`
+
+---
+## Evaluator: expressions
+
+* `letrec` is interesting:
+
+<pre class="smaller"><code>let rec eval_expr env expr =
+  match expr with
+    ...
+    | LetRec (l, bindings, body) -&gt;
+      ...
+      <em>let vals = List.map</em>
+        <em>(fun (name, e) -&gt; (name, eval_expr env' e)) bindings</em>
+      <em>in</em>
+      (List.iter
+        (fun (name, v) -&gt; Env.set l env' name v) vals;
+        eval_expr env' body)
+    ...
+</code></pre>
+
+* Evaluate the binding expressions in the new environment `env'`
+
+---
+## Evaluator: expressions
+
+* `letrec` is interesting:
+
+<pre class="smaller"><code>let rec eval_expr env expr =
+  match expr with
+    ...
+    | LetRec (l, bindings, body) -&gt;
+      ...
+      let vals = List.map
+        (fun (name, e) -&gt; (name, eval_expr env' e)) bindings
+      in
+      (<em>List.iter</em>
+        <em>(fun (name, v) -&gt; Env.set l env' name v) vals;</em>
+        eval_expr env' body)
+    ...
+</code></pre>
+
+* Update the `letrec` bindings with the newly-computed values
+
+---
+## Evaluator: expressions
+
+* `letrec` is interesting:
+
+<pre class="smaller"><code>let rec eval_expr env expr =
+  match expr with
+    ...
+    | LetRec (l, bindings, body) -&gt;
+      ...
+      (List.iter
+        (fun (name, v) -&gt; Env.set l env' name v) vals;
+        <em>eval_expr env' body</em>)
+    ...
+</code></pre>
+
+* Evaluate the body expression of the `letrec` in the environment `env'`
 
 ---
 ## Evaluator: expressions
@@ -379,7 +553,7 @@ representation) expressions.
 <pre><code>let rec eval_expr env expr =
   match expr with
     ...
-    | <em>Lambda (_, formals, body)</em> -&gt; 
+    | <em>Lambda (_, formals, body)</em> -&gt;
       UserFuncVal (formals, body, env)
     ...
 </code></pre>
@@ -410,10 +584,10 @@ representation) expressions.
             Error.call_err l ~expected:(List.length formals)
               ~found:(List.length actuals)
           else
-            let env'' = 
+            let env'' =
               bind_all env' (List.combine formals actuals) in
             eval_expr env'' body
-        | other -&gt; Error.type_err l 
+        | other -&gt; Error.type_err l
             ~expected:"function" ~found:(string_of_value other)
 </code></pre>
 
@@ -430,10 +604,10 @@ two-tuples
 ---
 ## Aside: labelled arguments
 
-<pre><code>let uscheme_err l i = 
+<pre><code>let uscheme_err l i =
   raise (UScheme_err (l, i))
 
-let type_err l <em>~expected ~found</em> = 
+let type_err l <em>~expected ~found</em> =
   uscheme_err l (TypeError (expected, found))
 </code></pre>
 
@@ -467,7 +641,7 @@ as a value
         let v = eval_expr env e in
           (Env.set l env name v; (env, v))
       else
-        let env' = 
+        let env' =
           Env.bind env name (<em>Unspecified name</em>) in
         let v = eval_expr env' e in
           (Env.set l env' name v; (env', v))
@@ -485,9 +659,7 @@ as a value
   match def with
     ...
     (* `Define` is removed in the AST to IR conversion *)
-
     | <em>Exp (l, e)</em> -&gt; eval_def env (Val (l, "_", e))
-
     | <em>Use (l, filename)</em> -&gt; ...
     | <em>CheckExpect (l, _, _)</em>
     | <em>CheckError  (l, _)</em> -&gt; Error.unit_test_err l
