@@ -56,7 +56,7 @@
   match expr with
     ...
     | If (l, test, t, e) -&gt;
-      if truthy l (_eval_expr env test_) then
+      if truthy l (<em>eval_expr env test</em>) then
         <em>eval_expr env t</em>
       else
         <em>eval_expr env e</em>
@@ -96,7 +96,7 @@
 ## Overview
 
 * We'll present the code top-down,
-  focussing on the differences between _$\mu$Scheme_ and _$\mu$Scheme+_
+  focusing on the differences between _$\mu$Scheme_ and<br/>_$\mu$Scheme+_
 
 ---
 ## Overview
@@ -112,10 +112,24 @@
 ## Overview
 
 * The `eval_expr` function evaluates expressions
-  * arguments: an environment and an expression
-  * returns: an environment (possibly with updated bindings) and a value
 
-* This is where the similarity to _$\mu$Scheme_'s code ends
+* In _$\mu$Scheme_:
+  * arguments: an environment and an expression
+  * returns:
+    * an environment (possibly with updated bindings)
+    * a value
+
+---
+## Overview
+
+* The `eval_expr` function evaluates expressions
+
+* In _$\mu$Scheme+_:
+  * arguments: an environment, an expression and a frame stack
+  * returns:
+    * an environment (possibly with updated bindings)
+    * a frame stack (possibly modified)
+    * a value
 
 ---
 ## Overview
@@ -669,7 +683,7 @@ $$
 
 * `begin` divides into two cases:
 
-<pre><code>let reduce_expr e env context =
+<pre class="smaller"><code>let reduce_expr e env context =
   match e with
     ...
     | <em>Begin (_, [])</em> -&gt; (Value UnitVal, env, context)
@@ -684,7 +698,7 @@ $$
 
 * `begin` divides into two cases:
 
-<pre><code>let reduce_expr e env context =
+<pre class="smaller"><code>let reduce_expr e env context =
   match e with
     ...
     | <em>Begin (_, [])</em> -&gt; (Value UnitVal, env, context)
@@ -701,7 +715,7 @@ $$
 
 * `begin` divides into two cases:
 
-<pre><code>let reduce_expr e env context =
+<pre class="smaller"><code>let reduce_expr e env context =
   match e with
     ...
     | <em>Begin (_, [])</em> -&gt; (Value UnitVal, env, context)
@@ -1053,7 +1067,7 @@ $$
 
 * Function application is simple:
 
-<pre><code>let reduce_expr e env context =
+<pre class="smaller"><code>let reduce_expr e env context =
   match e with
     ...
     | <em>Call (l, func, args)</em> -&gt;
