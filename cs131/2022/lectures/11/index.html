@@ -420,15 +420,81 @@
 
 * The code is quite simple:
 
-<pre><code>let eval_val_in_frame v env frame context =
+<pre class="smaller"><code>let eval_val_in_frame v env frame context =
   match frame with
     ...
-    | <em>BeginFrame (_, [])</em> -&gt; (Value v, env, context)
+    | BeginFrame (_, []) -&gt; (Value v, env, context)
+    | BeginFrame (l, e :: es) -&gt;
+      let context' = stack_push l (BeginFrame (l, es)) context
+      in (Expr e, env, context')
+    ...
+</code></pre>
+---
+## `BeginFrame`
+
+* The code is quite simple:
+
+<pre class="smaller"><code>let eval_val_in_frame v env frame context =
+  match frame with
+    ...
+    | <em>BeginFrame (_, []) -&gt; (Value v, env, context)</em>
+    | BeginFrame (l, e :: es) -&gt;
+      let context' = stack_push l (BeginFrame (l, es)) context
+      in (Expr e, env, context')
+    ...
+</code></pre>
+
+* Empty `begin` just returns the value `v`
+---
+## `BeginFrame`
+
+* The code is quite simple:
+
+<pre class="smaller"><code>let eval_val_in_frame v env frame context =
+  match frame with
+    ...
+    | BeginFrame (_, []) -&gt; (Value v, env, context)
     | <em>BeginFrame (l, e :: es)</em> -&gt;
       let context' = stack_push l (BeginFrame (l, es)) context
       in (Expr e, env, context')
     ...
 </code></pre>
+
+* Non-empty `begin`...
+
+---
+## `BeginFrame`
+
+* The code is quite simple:
+
+<pre class="smaller"><code>let eval_val_in_frame v env frame context =
+  match frame with
+    ...
+    | BeginFrame (_, []) -&gt; (Value v, env, context)
+    | BeginFrame (l, e :: es) -&gt;
+      <em>let context' = stack_push l (BeginFrame (l, es)) context</em>
+      in (Expr e, env, context')
+    ...
+</code></pre>
+
+* ...pushes all but first expr back onto stack
+
+---
+## `BeginFrame`
+
+* The code is quite simple:
+
+<pre class="smaller"><code>let eval_val_in_frame v env frame context =
+  match frame with
+    ...
+    | BeginFrame (_, []) -&gt; (Value v, env, context)
+    | BeginFrame (l, e :: es) -&gt;
+      let context' = stack_push l (BeginFrame (l, es)) context
+      in <em>(Expr e, env, context')</em>
+    ...
+</code></pre>
+
+* ...and evaluates the first expr
 
 ---
 ## More complex frames
@@ -659,7 +725,7 @@
             ~found: (List.length actuals)
         else
           <em>let fenv' = bind_all fenv</em>
-            <em>List.combine formals actuals)</em>
+            <em>(List.combine formals actuals)</em>
           in
             (Expr body, fenv', context')
     | other -&gt; ...
@@ -746,10 +812,14 @@
 }
 </code></pre>
 
+<div class="smaller">
+
 * This contains everything except one of the binding expressions,
   which is assumed to be currently evaluating
-* A `LetFrame` just wraps a `let_frame` value
+* A `LetFrame` just wraps a `let_frame` value<br/>
   (with a `loc` in case errors occur)
+
+</div>
 
 ---
 ## `LetFrame`
@@ -888,7 +958,7 @@
 ---
 ## `LetFrame`
 
-<pre><code>  match unevaled_bindings with
+<pre class="smaller"><code>  match unevaled_bindings with
     | [] -&gt; ...
     | <em>(name, expr) :: remainder</em> -&gt;
       let new_bindings =
@@ -906,7 +976,7 @@
 ---
 ## `LetFrame`
 
-<pre><code>  match unevaled_bindings with
+<pre class="smaller"><code>  match unevaled_bindings with
     | [] -&gt; ...
     | (name, expr) :: remainder -&gt;
       <em>let new_bindings =</em>
@@ -926,7 +996,7 @@
 ---
 ## `LetFrame`
 
-<pre><code>  match unevaled_bindings with
+<pre class="smaller"><code>  match unevaled_bindings with
     | [] -&gt; ...
     | (<em>name</em>, expr) :: remainder -&gt;
       let new_bindings =
@@ -946,7 +1016,7 @@
 ---
 ## `LetFrame`
 
-<pre><code>  match unevaled_bindings with
+<pre class="smaller"><code>  match unevaled_bindings with
     | [] -&gt; ...
     | (name, expr) :: <em>remainder</em> -&gt;
       let new_bindings =
@@ -966,7 +1036,7 @@
 ---
 ## `LetFrame`
 
-<pre><code>  match unevaled_bindings with
+<pre class="smaller"><code>  match unevaled_bindings with
     | [] -&gt; ...
     | (name, expr) :: remainder -&gt;
       let new_bindings =
@@ -986,7 +1056,7 @@
 ---
 ## `LetFrame`
 
-<pre><code>  match unevaled_bindings with
+<pre class="smaller"><code>  match unevaled_bindings with
     | [] -&gt; ...
     | (name, <em>expr</em>) :: remainder -&gt;
       let new_bindings =
@@ -1006,6 +1076,8 @@
 ---
 ## `LetStarFrame`
 
+<div class="smaller">
+
 * We also use a `let_frame` on the context stack
   when evaluating `let*` expressions
 
@@ -1015,6 +1087,8 @@
   but we didn't because of laziness
 
 * Instead, we leave `evaled_bindings` empty (empty list)
+
+</div>
 
 ---
 ## `LetStarFrame`
