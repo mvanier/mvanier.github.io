@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- <section data-background-color="#ffffd0"> -->
+          <section data-markdown>
+            <textarea data-template>
+# CS 131:<br/>Programming Languages
+## _Lecture 17_:<br/>The _Typed $\mu$Scheme_ Language:<br/>Substitution
+
+---
+## Previously
+
+* Kinds
+* Operational semantics of type checking in _Typed $\mu$Scheme_
+
+---
+## Today
+
+* Type equivalence
+* Type renaming
+* Free and bound type variables
+* Capture-avoiding substitution
+
+---
+## Type checking
+
+* Assignment 5 will require you
+  to write the type checker for _Typed $\mu$Scheme_
+
+* Last time, we covered the fundamental rules
+  of kind and type checking in the language
+
+* However, there are still some important topics we didn't cover
+
+* This lecture will give you enough information
+  to actually do the assignment!
+
+---
+## Type checking
+
+* These topics involve the way type variables work,
+  and how to substitute actual types for type variables
+
+* It may sound trivial, but there are a _lot_ of subtleties to it!
+
+* One way that this manifests itself:
+  real language implementations have often had subtle bugs
+  that were related to mistakes in the substitution process
+
+---
+## Type equivalence
+
+* Many type checking rules require the ability to check
+  if two types are "the same"
+
+* Example: the "then" and "else" branches of an `if`
+  must both have the same type
+
+* Why is this difficult to do?
+
+---
+## Type equivalence
+
+* For many types, it _isn't_ difficult
+  * Comparing two concrete types like `int` and `float` for equality
+    is trivial
+  * Even two (non-polymorphic) function types
+    can easily be compared for equality
+
+* In fact, as long as the type has no type variables,
+  structural comparison is all you need
+
+* When type variables exist, it becomes harder
+
+---
+## Type equivalence
+
+* Consider these two types:
+ * $\forall \alpha: \alpha \to \alpha$
+ * $\forall \beta: \beta \to \beta$
+
+* Are these "the same" type?
+  * Structurally, no
+  * But in terms of what they _represent_, yes!
+
+---
+## Type equivalence
+
+* Consider these two types:
+ * $\forall \alpha: \alpha \to \alpha$
+ * $\forall \beta: \beta \to \beta$
+
+* We say they are "equivalent"
+  * (The technical name is (confusingly)<br/>"$\alpha$-equivalent",
+    which means<br/>"equivalent modulo renaming")
+
+---
+## Type equivalence
+
+* Consider these two types:
+ * $\forall \alpha: \alpha \to \alpha$
+ * $\forall \beta: \beta \to \beta$
+
+* We will use the $\equiv$ operator to denote this kind of equality
+
+---
+## Type equivalence
+
+* The $\equiv$ operator relates types that are "observationally equivalent"
+
+* This means that as far as the program is concerned,
+  there is no way to tell that they are different
+  * You could swap one type for the other, and it would make no difference
+
+---
+## Type equivalence
+
+* The $\equiv$ operator relates types that are "observationally equivalent"
+
+* So it looks like the $\equiv$ relation means
+  that you can rename a type variable to anything you want,
+  and it doesn't change the meaning
+
+---
+## Variable capture
+
+* One problem: not all renamings are alike!
+* Consider the type $\forall \alpha : \alpha \to \beta$
+* If we rename $\alpha$ to $\gamma$,
+  we get $\forall \gamma : \gamma \to \beta$
+  * Are these equivalent?
+
+* What if we rename $\alpha$ to $\beta$?
+  * Are these equivalent?
+
+---
+## Variable capture
+
+* If we rename $\alpha$ to $\beta$ in
+  $\forall \alpha : \alpha \to \beta$,
+  we get $\forall \beta : \beta \to \beta$,
+  which is a completely different type!
+
+* We say that the (bad) renaming has _captured_ the type variable $\alpha$
+
+* How do we avoid this?
+
+---
+## Avoiding variable capture
+
+* We want to be able to tell if two types are "equal"
+  in the sense that matters to the programs we are running
+  * In other words "equivalent"<br/>(the $\equiv$ operator)
+
+* If we can substitute the type variable names in the types
+  to make them the same _without causing variable capture_, we can do this
+
+---
+## Avoiding variable capture
+
+* We want to be able to tell if two types are "equal"
+  in the sense that matters to the programs we are running
+  * In other words "equivalent"<br/>(the $\equiv$ operator)
+
+* If we do it _incorrectly_,
+  we may conclude that two unequal types are actually equal
+  * Like $\forall \alpha : \alpha \to \alpha$
+    and $\forall \beta : \alpha \to \beta$
+    after substituting $\alpha$ for $\beta$ in the latter
+
+---
+## Important points
+
+* The specific names of type variables _don't matter_
+
+* The purpose of a type variable is to tell you
+  _where_ you need to substitute a type
+  when you assign a concrete type to the variable
+
+* It's very important that _different_ type variables
+  in a polymorphic type _stay different_,
+  because otherwise you may get (type) variable capture
+
+---
+## Important points
+
+* In _Typed $\mu$Scheme_, type variables occur
+  in both `forall` type expressions and<br/>`type-lambda` value expressions
+
+* Some type variables are _bound_
+  by an enclosing `forall` or `type-lambda`,
+  while others are (locally) _free_
+
+---
+## Important points
+
+* When we rename a bound variable,
+  we mustn't rename it to something
+  that will cause us to capture a free variable
+
+* If we can rename two types without capturing variables
+  so that they are identical, the types are equivalent
+
+---
+## Rules for type equivalence
+
+* Obviously, this is a complicated thing to do
+
+* We need a set of rules that will guide us to a correct implementation
+
+* We will write these rules as inference rules
+  (just like operational semantics!)
+
+---
+## Rules for type equivalence
+
+$$
+\\
+$$
+
+$$
+\frac{}{\alpha\equiv\alpha}
+$$
+
+$$
+\label{}\tag{EquivTyVars}
+$$
+
+* Two identical type variables are equivalent
+
+---
+## Rules for type equivalence
+
+$$
+\\
+$$
+
+$$
+\frac{}{\mu\equiv\mu}
+$$
+
+$$
+\label{}\tag{EquivTyConstrs}
+$$
+
+* Two identical type constructors are equivalent
+
+---
+## Rules for type equivalence
+
+$$
+\frac
+{
+\tau_i\equiv\tau_i'\\,, \\;
+1\leq i \leq n \hspace{1.5em}
+\tau\equiv\tau'
+}
+{
+\tau_1\times\cdots\times\tau_n\to\tau\\,\equiv\\,
+\tau_1'\times\cdots\times\tau_n'\to\tau'
+}
+$$
+
+$$
+\label{}\tag{EquivFuncs}
+$$
+
+* Two function types are equivalent if
+---
+## Rules for type equivalence
+
+$$
+\frac
+{
+\tau_i\equiv\tau_i'\\,, \\;
+1\leq i \leq n \hspace{1.5em}
+\tau\equiv\tau'
+}
+{
+\tau_1\times\cdots\times\tau_n\to\tau\\,\equiv\\,
+\tau_1'\times\cdots\times\tau_n'\to\tau'
+}
+$$
+
+$$
+\label{}\tag{EquivFuncs}
+$$
+
+* Two function types are equivalent if
+  * they have the same number of argument types
+---
+## Rules for type equivalence
+
+$$
+\frac
+{
+\tau_i\equiv\tau_i'\\,, \\;
+1\leq i \leq n \hspace{1.5em}
+\tau\equiv\tau'
+}
+{
+\tau_1\times\cdots\times\tau_n\to\tau\\,\equiv\\,
+\tau_1'\times\cdots\times\tau_n'\to\tau'
+}
+$$
+
+$$
+\label{}\tag{EquivFuncs}
+$$
+
+* Two function types are equivalent if
+  * all the argument types $\tau_i$ and $\tau_i'$ are equivalent for all $i$
+---
+## Rules for type equivalence
+
+$$
+\frac
+{
+\tau_i\equiv\tau_i'\\,, \\;
+1\leq i \leq n \hspace{1.5em}
+\tau\equiv\tau'
+}
+{
+\tau_1\times\cdots\times\tau_n\to\tau\\,\equiv\\,
+\tau_1'\times\cdots\times\tau_n'\to\tau'
+}
+$$
+
+$$
+\label{}\tag{EquivFuncs}
+$$
+
+* Two function types are equivalent if
+  * the return types $\tau$ and $\tau'$ are equivalent
+
+---
+## Rules for type equivalence
+
+$$
+\frac
+{
+\tau_i\equiv\tau_i'\\,, \\;
+1\leq i \leq n, \hspace{1.5em}
+\tau\equiv\tau'
+}
+{
+\tau(\tau_1,\ldots,\tau_n)
+\\,\equiv\\,
+\tau'(\tau'_1,\ldots,\tau'_n)
+}
+$$
+
+$$
+\label{}\tag{EquivTyApps}
+$$
+
+* Two type applications
+  (type constructor applied to type arguments, like `(list int)`)
+  are equivalent if
+---
+## Rules for type equivalence
+
+$$
+\frac
+{
+\tau_i\equiv\tau_i'\\,, \\;
+1\leq i \leq n, \hspace{1.5em}
+\tau\equiv\tau'
+}
+{
+\tau(\tau_1,\ldots,\tau_n)
+\\,\equiv\\,
+\tau'(\tau'_1,\ldots,\tau'_n)
+}
+$$
+
+$$
+\label{}\tag{EquivTyApps}
+$$
+
+* Two type applications
+  (type constructor applied to type arguments, like `(list int)`)
+  are equivalent if
+  * the type constructors $\tau$ and $\tau'$ are equivalent
+---
+## Rules for type equivalence
+
+$$
+\frac
+{
+\tau_i\equiv\tau_i'\\,, \\;
+1\leq i \leq n, \hspace{1.5em}
+\tau\equiv\tau'
+}
+{
+\tau(\tau_1,\ldots,\tau_n)
+\\,\equiv\\,
+\tau'(\tau'_1,\ldots,\tau'_n)
+}
+$$
+
+$$
+\label{}\tag{EquivTyApps}
+$$
+
+* Two type applications
+  (type constructor applied to type arguments, like `(list int)`)
+  are equivalent if
+  * there are the same numbers of type arguments
+---
+## Rules for type equivalence
+
+$$
+\frac
+{
+\tau_i\equiv\tau_i'\\,, \\;
+1\leq i \leq n, \hspace{1.5em}
+\tau\equiv\tau'
+}
+{
+\tau(\tau_1,\ldots,\tau_n)
+\\,\equiv\\,
+\tau'(\tau'_1,\ldots,\tau'_n)
+}
+$$
+
+$$
+\label{}\tag{EquivTyApps}
+$$
+
+* Two type applications
+  (type constructor applied to type arguments, like `(list int)`)
+  are equivalent if
+  * the type arguments $\tau_i$ and $\tau_i'$ are equivalent for all $i$
+
+---
+## Rules for type equivalence
+
+$$
+\frac
+{
+\tau\equiv\tau'
+}
+{
+\forall\alpha_1,\ldots,\alpha_n\\>.\\>\tau
+\equiv
+\forall\alpha_1,\ldots,\alpha_n\\>.\\>\tau'
+}
+$$
+
+$$
+\label{}\tag{EquivTyQuants}
+$$
+
+* Two universally quantified types (`forall` types) are equivalent if
+  * the types $\tau$ and $\tau'$ are equivalent
+  * there are the same number of type variables
+  * corresponding type variables $\alpha_i$ are identical
+
+---
+## Rules for type equivalence
+
+$$
+\frac
+{
+\beta \notin \text{ftv}(\tau)
+\hskip{2em}
+\beta \notin {\alpha_1,\ldots,\alpha_n}
+}
+{
+\forall\alpha_1,\ldots,\alpha_n\\>.\\>\tau
+\equiv
+\forall\alpha_1,\ldots,\alpha_{i-1},
+\beta,\alpha_{i+1},\ldots,\alpha_n
+\\>.\\>\tau
+[
+\alpha_i\mapsto\beta
+]
+}
+\\\\
+$$
+
+$$
+\label{}\tag{EquivTyRenamed}
+$$
+
+* If two `forall` types have are the same number of type variables
+  but they aren't identical, the two types may still be equivalent
+
+---
+## Rules for type equivalence
+
+$$
+\frac
+{
+\beta \notin \text{ftv}(\tau)
+\hskip{2em}
+\beta \notin {\alpha_1,\ldots,\alpha_n}
+}
+{
+\forall\alpha_1,\ldots,\alpha_n\\>.\\>\tau
+\equiv
+\forall\alpha_1,\ldots,\alpha_{i-1},
+\beta,\alpha_{i+1},\ldots,\alpha_n
+\\>.\\>\tau
+[
+\alpha_i\mapsto\beta
+]
+}
+\\\\
+$$
+
+$$
+\label{}\tag{EquivTyRenamed}
+$$
+
+* You can rename a variable $\alpha_i$ in a `forall` type to $\beta$ if:
+  * $\beta$ is not a free type variable in the type $\tau$
+  * $\beta$ is not one of $\alpha_1,\ldots,\alpha_n$
+
+---
+## Rules for type equivalence
+
+$$
+\frac
+{
+\beta \notin \text{ftv}(\tau)
+\hskip{2em}
+\beta \notin {\alpha_1,\ldots,\alpha_n}
+}
+{
+\forall\alpha_1,\ldots,\alpha_n\\>.\\>\tau
+\equiv
+\forall\alpha_1,\ldots,\alpha_{i-1},
+\beta,\alpha_{i+1},\ldots,\alpha_n
+\\>.\\>\tau
+[
+\alpha_i\mapsto\beta
+]
+}
+\\\\
+$$
+
+$$
+\label{}\tag{EquivTyRenamed}
+$$
+
+* In that case, you replace $\alpha_i$ with $\beta$
+  in the list of bound type variables,
+  and you replace $\tau$ with $\tau[\alpha_i\mapsto\beta]$
+
+---
+## Rules for type equivalence
+
+$$
+\frac{\tau\equiv\tau'}{\tau'\equiv\tau}
+$$
+
+$$
+\label{}\tag{TySymmetry}
+$$
+
+* $\text{TySymmetry}$ says that type equivalence is symmetric
+  * (You can also prove that it's reflexive and transitive)
+
+---
+## Type substitution
+
+* The $\tau[\alpha_i\mapsto\beta]$ expression conceals something important
+
+* The $\mapsto$ operator means "substitutes",
+  so $\tau[\alpha_i\mapsto\beta]$ means
+  "the type $\tau$,
+  with $\beta$ substituted for all free occurrences of $\alpha_i$"
+
+* So if we want to define type equivalence,
+  we have to define what "type substitution" means
+
+---
+## Type substitution
+
+* However, before we do that, we have to talk about a few other things first
+
+---
+## Free and bound type variables
+
+* In a particular (type or value) expression,
+  type variables can occur _free_ or _bound_
+
+* This is a relative concept;
+  if a type variable is free at the top level, it's an error
+
+* However, at any moment during type checking,
+  we may be looking at a subexpression
+  which has an associated type environment $\Gamma$
+  which may have free type variables
+
+---
+## Free and bound type variables
+
+* A _bound_ type variable
+  is one that occurs inside a `forall` form (type level)
+  or a `type-lambda` form (value level)
+
+* Examples:
+
+<pre><code>;; type level
+(forall ['a] ('a -&gt; 'a)) <em>;; 'a is bound</em>
+(forall ['a] ('b -&gt; 'b)) <em>;; 'b is free</em>
+
+;; value level
+(type-lambda ['a] (lambda ([x : 'a]) x)) <em>;; 'a is bound</em>
+(type-lambda ['b] (lambda ([x : 'a]) x)) <em>;; 'a is free</em>
+</code></pre>
+
+---
+## Free and bound type variables
+
+* Since we are dealing with type substitution here,
+  we'll list the inference rules
+  for determining the free type variables in a type
+
+* You won't have to implement this, but you will need to use it!
+
+---
+## Free type variables: inference rules
+
+$$
+\\
+$$
+
+$$
+\frac
+{}
+{\alpha \in \text{ftv}(\alpha)}
+$$
+
+$$
+\label{}\tag{FreeTyVar}
+$$
+
+---
+## Free type variables: inference rules
+
+$$
+\\
+$$
+
+$$
+\frac
+{\alpha \in \text{ftv}(\tau_i)}
+{\alpha \in \text{ftv}(\tau(\tau_1,\ldots,\tau_n))}
+$$
+
+$$
+\label{}\tag{FreeTyConApp1}
+$$
+
+---
+## Free type variables: inference rules
+
+$$
+\\
+$$
+
+$$
+\frac
+{\alpha \in \text{ftv}(\tau)}
+{\alpha \in \text{ftv}(\tau(\tau_1,\ldots,\tau_n))}
+$$
+
+$$
+\label{}\tag{FreeTyConApp2}
+$$
+
+---
+## Free type variables: inference rules
+
+$$
+\frac
+{\alpha \in \text{ftv}(\tau_i)}
+{\alpha \in \text{ftv}(\tau_1\times\cdots\times\tau_n\rightarrow\tau)}
+$$
+
+$$
+\label{}\tag{FreeTyFun1}
+$$
+
+$$
+\frac
+{\alpha \in \text{ftv}(\tau)}
+{\alpha \in \text{ftv}(\tau_1\times\cdots\times\tau_n\rightarrow\tau)}
+$$
+
+$$
+\label{}\tag{FreeTyFun2}
+$$
+
+---
+## Free type variables: inference rules
+
+$$
+\frac
+{\alpha_i \in \text{ftv}(\tau)\quad 1 \leq i \leq n}
+{\alpha_i\enspace \text{is bound in}
+\enspace \forall \alpha_1,\ldots,\alpha_n \\>.\\> \tau}
+$$
+
+$$
+\label{}\tag{FreeTyForall1}
+$$
+
+$$
+\frac
+{\alpha \in \text{ftv}(\tau)\quad \alpha \neq \alpha_i \quad 1 \leq i \leq n}
+{\alpha \in \text{ftv}(\hspace{1mu}\forall \alpha_1,\ldots,\alpha_n \\>.\\> \tau)}
+$$
+
+$$
+\label{}\tag{FreeTyForall2}
+$$
+
+---
+## Renaming and substitution
+
+* Free and bound variables are very important for type substitution
+  because we _only_ substitute into free variables,
+  never into bound variables
+
+* This is true for both _renaming_ and _substitution_
+  * Renaming: change one type variable into another type variable
+  * Substitution: substitute a type for a type variable
+
+---
+## Renaming and substitution
+
+* Free and bound variables are very important for type substitution
+  because we _only_ substitute into free variables,
+  never into bound variables
+
+* Renaming is thus a special case of substitution
+  * and we'll implement it that way
+
+---
+## Renaming and substitution
+
+* If we're renaming the quantified variables in a `forall` type,
+  we only rename the occurrences of these variables
+  that are free in the body of the `forall`
+
+* If we're substituting for a type variable in some type,
+  we substitute only for free occurrences of that variable in the type
+
+---
+## Renaming and substitution
+
+* You _never_ substitute into a _bound_ occurrence of a type variable!
+
+<pre><code>;; OK to substitute into 'c, not 'a
+('c -&gt; (forall ('a) ('a -&gt; 'c)))
+
+;; OK to substitute into 'c, not 'b
+('c -&gt; (forall ('b) ('b -&gt; 'c)))
+</code></pre>
+
+* Otherwise you get "variable capture" and the meaning of the type changes
+
+---
+## Renaming and substitution
+
+* You can't rename a free variable to the same name as a bound variable
+
+<pre><code>;; OK to rename 'c to 'b, but not to 'a
+('c -&gt; (forall ('a) ('a -&gt; 'c)))
+
+;; Renaming 'c to 'a would give:
+;; ('a -&gt; (forall ('a) ('a -&gt; 'a)))
+;; which is not the same type!
+</code></pre>
+
+---
+## Renaming and substitution
+
+* You can't substitute into a free variable
+  an expression which contains a bound variable (unless you rename it)
+
+<pre class="smaller"><code>; Substitute ('b -&gt; 'b) for 'c
+('c -&gt; (forall ('a) ('a -&gt; 'c)))
+; Gives: (('b -&gt; 'b) -&gt; (forall ('a) ('a -&gt; ('b -&gt; 'b))))
+
+; Can't substitute ('a -&gt; 'a) for 'c
+('c -&gt; (forall ('a) ('a -&gt; 'c)))
+; Would give: (('a -&gt; 'a) -&gt; (forall ('a) ('a -&gt; ('a -&gt; 'a)))
+; i.e. variable capture
+</code></pre>
+
+---
+## Renaming and substitution
+
+* It's clear that renaming and substitution are subtle,
+  and there are a number of serious pitfalls
+  that can easily break a type system
+
+* As before, we will spell out the correct substitution rules
+  using math notation (inference rules)
+
+* This will give us renaming too,
+  since renaming is a special case of substitution
+
+---
+## Substitution rules
+
+* We will give the rules for substituting a single type $\tau$
+  for a single type variable $\alpha$
+
+* The more general case of substituting $n$ types
+  for $n$ type variables is obtained
+  by applying these rules repeatedly for each substitution
+
+---
+## Substitution rules
+
+* Easy cases:
+
+---
+## Substitution rules
+
+* Easy cases:
+
+$$
+\frac
+{}
+{\alpha[\alpha\mapsto\tau] \equiv \tau}
+$$
+
+$$
+\label{}\tag{SubTyVarSame}
+$$
+
+---
+## Substitution rules
+
+* Easy cases:
+
+$$
+\frac
+{\alpha\neq\alpha'}
+{\alpha'[\alpha\mapsto\tau] \equiv \alpha'}
+$$
+
+$$
+\label{}\tag{SubTyVarDiff}
+$$
+
+---
+## Substitution rules
+
+* Easy cases:
+
+$$
+\frac
+{}
+{\mu[\alpha\mapsto\tau] \equiv \mu}
+$$
+
+$$
+\label{}\tag{SubTyCon}
+$$
+
+---
+## Substitution rules
+
+* Type constructor applications and function types
+
+---
+## Substitution rules
+
+* Type constructor applications and function types
+
+$$
+\frac
+{}
+{
+(\tau'(\tau_1',\ldots,\tau_n'))[\alpha\mapsto\tau]
+\equiv
+(\tau'[\alpha\mapsto\tau])
+(\tau_1'[\alpha\mapsto\tau],\ldots,\tau_n'[\alpha\mapsto\tau])
+}
+$$
+
+$$
+\label{}\tag{SubTyConApp}
+$$
+
+---
+## Substitution rules
+
+* Type constructor applications and function types
+
+$$
+\frac
+{}
+{
+(\tau_1'\times\cdots\times\tau_n'\rightarrow\tau)
+[\alpha\mapsto\tau]
+\equiv
+\tau_1'[\alpha\mapsto\tau]\times\cdots\times\tau_n'[\alpha\mapsto\tau]
+\rightarrow
+\tau'[\alpha\mapsto\tau]
+}
+$$
+
+$$
+\label{}\tag{SubTyFun}
+$$
+
+---
+## Substitution rules
+
+* Substitution into a quantified type is for free variables only,
+  and it may not capture a free type variable of $\tau$:
+
+$$
+\frac
+{
+\alpha\notin\{\alpha_1,\ldots,\alpha_n\}
+\quad
+\text{ftv}(\tau)
+\cap
+\{\alpha_1,\ldots,\alpha_n\}
+= \emptyset
+}
+{
+(
+\forall
+\alpha_1,\ldots,\alpha_n
+\\,.\\,
+\tau'
+)
+[\alpha\mapsto\tau]
+\equiv
+\forall
+\alpha_1,\ldots,\alpha_n
+\\,.\\,
+(\tau'[\alpha\mapsto\tau])
+}
+$$
+
+$$
+\label{}\tag{SubTyForall}
+$$
+
+---
+## Substitution rules
+
+* If you want to substitute,
+  but substitution would lead to variable capture,
+  you can avoid capture by substituting into an equivalent type:
+
+$$
+\frac
+{\tau'\equiv\tau''}
+{
+\tau'
+[\alpha\mapsto\tau]
+\equiv
+\tau''
+[\alpha\mapsto\tau]
+}
+$$
+
+$$
+\label{}\tag{TySubEquiv}
+$$
+
+* For instance, if $\alpha$ is a free variable in $\tau'$,
+  rename $\alpha$ in $\tau'$ to something else to get $\tau''$,
+  then do the substitution
+
+---
+## Assignment 5
+
+* Assignment 5 will ask you to complete
+  a partial implementation of the type checker for _Typed $\mu$Scheme_
+
+---
+## Assignment 5
+
+* Assignment 5 will ask you to complete
+  a partial implementation of the type checker for _Typed $\mu$Scheme_
+
+* First, you will need to complete the implementation
+  of capture-avoiding substitution
+  * (using the equations just given)
+
+---
+## Assignment 5
+
+* Assignment 5 will ask you to complete
+  a partial implementation of the type checker for _Typed $\mu$Scheme_
+
+* Then, you will implement type checking
+  for expressions and some definition forms
+
+---
+## Assignment 5
+
+* Assignment 5 will ask you to complete
+  a partial implementation of the type checker for _Typed $\mu$Scheme_
+
+* Many (most?) of the cases are simple, but a few are complex
+  * Use the equations given last class to determine what to do
+
+---
+## Assignment 5
+
+* Assignment 5 also has an extensive test suite that should catch most errors
+
+            </textarea>
+          </section>
+      </div>
+    </div>
+    <script src="plugin/math/math.js"></script>
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <!-- Uncomment if you want syntax highlighting. -->
+    <!--
+    <link rel="stylesheet" href="plugin/highlight/arduino-light.css">
+    -->
+    <style>
+/* MCV: My new reveal.js styles. */
+
+.reveal {
+  font-family: "Arial", sans-serif;
+  font-size: 28pt;
+  font-weight: normal;
+  color: #000; 
+}
+
+.reveal .slide-number {
+  background: white;
+  /* border: 1px solid black; */
+}
+
+.reveal .slide-number-a {
+  background: white;
+  color: black;
+  font-size: 24px;
+}
+
+.reveal .slides h1 {
+  text-align: center;
+  text-transform: none;
+  padding: 150px 0 20px 0;
+  font-size: 64pt;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif;
+  font-weight: normal;
+  color: #4f271c;
+  background: #d0d0f0;
+  margin-bottom: 0.5em;
+}
+
+.reveal h2 { 
+  text-transform: none;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif !important;
+  /* text-shadow: 2px 2px 3px #a0a0a0; */
+  color: #4f271c !important;
+  font-size: 60pt !important;
+  font-weight: normal !important;
+  /* background: #d0d0d0; */
+  width: 80% !important;
+  margin-left: 10%;
+}
+
+/* First level bullet color. */
+.reveal .slides ul li::marker {
+  color: #3891a7;
+}
+
+/* Second level bullet spacing. */
+.reveal .slides ul li ul {
+  margin-top: 0px;
+}
+
+.reveal .slides li {
+  margin-top: 10px;
+}
+
+/* Second level bullet color. */
+.reveal .slides ul li ul li::marker {
+  color: #3891a7;
+}
+
+.reveal li {
+  font-size: 36pt !important;
+}
+
+.reveal .smaller li {
+  font-size: 32pt !important;
+}
+
+.reveal li ul li {
+  font-size: 32pt !important;
+}
+
+.reveal li .smaller ul li {
+  font-size: 28pt !important;
+}
+
+.reveal ul {
+  width: 80% !important;
+  text-align: left !important;
+}
+
+.reveal code em {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal em code {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal code .comment {
+  color: #cc44cc !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+.katex-display > .katex {
+  color: #0040b0 !important;
+}
+
+.katex-display > .katex > .katex-html > .tag {
+  color: #808080 !important;
+  margin-right: 100px !important;
+}
+
+.katex > .katex-html {
+  color: #0040b0 !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.katex {
+  font-size: 1.1em !important;
+}
+
+.reveal pre {
+  margin-left: 200px !important;
+  width: 75% !important;
+  font-size: 24pt !important;
+}
+
+.reveal pre.smaller {
+  font-size: 20pt !important;
+}
+
+.reveal code {
+  color: #0040b0 !important;
+  font-size: 90%;
+}
+
+.reveal pre code {
+  /* max vertical size of code block */
+  max-height: 700px !important;
+}
+
+.reveal li ul li code {
+  font-size: 80%;
+}
+
+    </style>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        katex: {
+          version: 'latest',
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            "\\eqref": "\\href{###1}{(\\text{#1})}",
+            "\\ref": "\\href{###1}{\\text{#1}}",
+            "\\label": "\\htmlId{#1}{}",
+          },
+        },
+        plugins: [ 
+          RevealMarkdown,
+          // RevealHighlight,
+          RevealMath.KaTeX,
+        ],
+        center: false,
+        controls: false,
+        disableLayout: false,  // set to true to use custom CSS for layout
+        showSlideNumber: 'all',
+        slideNumber: true,
+        transition: 'none',
+        width: 1280,
+        height: 800,
+      });
+    </script>
+  </body>
+</html>
