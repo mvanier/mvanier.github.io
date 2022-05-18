@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- <section data-background-color="#ffffd0"> -->
+          <section data-markdown>
+            <textarea data-template>
+# CS 131:<br/>Programming Languages
+## _Lecture 19_:<br/>The _Nano-ML_ Language: Operational Semantics
+
+---
+## Previously
+
+* The _Nano-ML_ language
+* Type inference
+
+---
+## Today
+
+* Operational semantics of _Nano-ML_
+  * Evaluation
+  * Type checking
+
+---
+## Changes from Typed uScheme
+
+* Environments in _Nano-ML_ are different from _Typed $\mu$Scheme_
+  * They map names to values, not to value references
+
+* This will have a number of effects on the operational semantics
+  * (mostly making it simpler)
+
+---
+## Changes from Typed uScheme
+
+* From the perspective of the operational semantics,
+  the "abstract machine" that evaluates expressions has no locations or store
+
+* Evaluating an expression just produces a value
+  * The store can't be updated, because there is no store to update!
+
+---
+## Expressions
+
+* We're now going to give the operational semantics rules for evaluating
+  expressions
+
+* The form of evaluation judgments for expressions is:
+  $\langle e, \rho \rangle \Downarrow v$
+  where $e$ is the expression, $\rho$ is the environment, and $v$ is a value
+
+---
+## Expressions: Literals
+
+$$
+\\
+$$
+
+$$
+\frac
+{}
+{\langle \hspace{0.05em} \text{LITERAL}(v), \rho \rangle \Downarrow v}
+$$
+
+$$
+\label{}\tag{Literal}
+$$
+
+* A literal value just evaluates to itself, duh
+
+---
+## Expressions: Variables
+
+$$
+\\
+$$
+
+$$
+\frac
+{x \in \text{dom}\ \rho}
+{
+\langle \hspace{0.05em}
+\text{VAR}(x), \rho
+\rangle
+\Downarrow
+\rho(x)
+}
+$$
+
+$$
+\label{}\tag{Var}
+$$
+
+* A variable is just looked up in the value environment $\rho$
+
+---
+## Expressions: `if`
+
+* `if` is evaluated as usual
+
+---
+## Expressions: `if`
+
+* `if` is evaluated as usual
+
+$$
+\frac
+{
+\langle
+e_1, \rho
+\rangle
+\Downarrow
+v_1
+\hskip{0.8em}
+v_1
+\neq
+\text{BOOLV}(\text{\verb|#f|})
+\hskip{0.8em}
+\langle
+e_2, \rho
+\rangle
+\Downarrow
+v_2
+}
+{
+\langle \hspace{0.05em}
+\text{IF}(e_1, e_2, e_3), \rho
+\rangle
+\Downarrow
+v_2
+}
+$$
+
+$$
+\label{}\tag{IfTrue}
+$$
+
+$$
+\\
+$$
+
+$$
+\frac
+{
+\langle
+e_1, \rho
+\rangle
+\Downarrow
+v_1
+\hskip{0.8em}
+v_1
+=
+\text{BOOLV}(\text{\verb|#f|})
+\hskip{0.8em}
+\langle
+e_3, \rho
+\rangle
+\Downarrow
+v_3
+}
+{
+\langle \hspace{0.05em}
+\text{IF}(e_1, e_2, e_3), \rho
+\rangle
+\Downarrow
+v_3
+}
+$$
+
+$$
+\label{}\tag{IfFalse}
+$$
+
+---
+## Expressions: `begin`
+
+* As is `begin`:
+
+---
+## Expressions: `begin`
+
+* As is `begin`:
+
+$$
+\frac
+{}
+{
+\langle
+\text{BEGIN}(), \rho
+\rangle
+\Downarrow
+\text{\verb|#u|}
+}
+$$
+
+$$
+\label{}\tag{EmptyBegin}
+$$
+
+---
+## Expressions: `begin`
+
+* As is `begin`:
+
+$$
+\frac
+{
+\begin{aligned}
+\langle e_1, \rho \rangle &\Downarrow v_1
+\\\\
+\langle e_2, \rho \rangle &\Downarrow v_2
+\\\\
+&\vdots
+\\\\
+\langle e_n, \rho \rangle &\Downarrow v_n
+\end{aligned}
+}
+{
+\langle
+\text{BEGIN}(e_1, e_2, \dots, e_n), \rho
+\rangle
+\Downarrow
+v_n
+}
+$$
+
+$$
+\label{}\tag{Begin}
+$$
+
+---
+## Expressions: `lambda`
+
+$$
+\\
+$$
+
+$$
+\frac
+{
+}
+{
+\langle
+\text{LAMBDA}(\langle x_1,\dots,x_n \rangle, e), \rho
+\rangle
+\Downarrow
+(\\!|
+\text{LAMBDA}(\langle x_1,\dots,x_n \rangle, e), \rho
+|\\!)
+}
+$$
+
+$$
+\label{}\tag{MkClosure}
+$$
+
+* As usual, a `lambda` expression is packaged up
+  with the value environment at creation time to make a closure
+
+---
+## Expressions: apply (closure)
+
+$$
+\frac
+{
+\begin{aligned}
+\langle
+e, \rho
+\rangle
+\Downarrow
+(\\!|
+\text{LAMBDA}(\langle x_1,\dots,x_n \rangle, \ &e_c), \rho_c
+|\\!)
+\\\\
+\langle
+e_i, \rho
+\rangle
+\Downarrow v_i, \ \ 1 \leq i \leq n
+\\\\
+\langle
+e_c,\ \rho_c\\{
+x_1 \mapsto v_1,
+\dots ,
+x_n \mapsto v_n&
+\\}
+\rangle
+\Downarrow v&
+\end{aligned}
+}
+{
+\langle
+\text{APPLY}(e, e_1, \dots , e_n), \rho)
+\rangle
+\Downarrow v
+}
+$$
+
+$$
+\label{}\tag{ApplyClosure}
+$$
+
+* This rule is simpler than in _Typed $\mu$Scheme_
+  because we don't have to deal with locations
+
+---
+## Expressions: apply (primitive)
+
+$$
+\frac
+{
+\begin{aligned}
+\langle
+e, \rho
+\rangle
+&\Downarrow
+\text{PRIMITIVE}(\ f)
+\\\\
+\langle
+e_i, \rho
+\rangle
+&\Downarrow v_i, \ \ 1 \leq i \leq n
+\\\\
+f&(v_1, \dots, v_n) = v
+\end{aligned}
+}
+{
+\langle
+\text{APPLY}(e, e_1, \dots , e_n), \rho)
+\rangle
+\Downarrow v
+}
+$$
+
+$$
+\label{}\tag{ApplyPrimitive}
+$$
+
+* Nothing remarkable about applying primitive functions
+
+---
+## Expressions: `let`
+
+$$
+\frac
+{
+\begin{aligned}
+\langle e_i, \rho \rangle
+&\Downarrow v_i, \ \ 1 \leq i \leq n
+\\\\
+\langle
+e,
+\rho\\{
+x_1 \mapsto &v_1,
+\dots
+x_n \mapsto v_n
+\\}
+\rangle \Downarrow v
+\end{aligned}
+}
+{
+\langle
+\text{LET}(\langle
+x_1, e_1,
+\dots,
+x_n, e_n
+\rangle, e),
+\rho
+\rangle
+\Downarrow
+v
+}
+\\\\
+$$
+
+$$
+\label{}\tag{Let}
+$$
+
+* `let` is also simpler than in _Typed $\mu$Scheme_ because we don't have to deal
+with locations
+
+---
+## Expressions: `let*`
+
+$$
+\frac
+{
+\begin{aligned}
+\langle
+e_1, \rho_0
+\rangle
+\Downarrow
+v_1
+\hskip{0.1in}
+&\hskip{0.1in}
+\rho_1 = \rho_0\\{x_1 \mapsto v_1\\}
+\\\\
+&\ \vdots
+\\\\
+\langle
+e_n, \rho_{n-1}
+\rangle
+\Downarrow
+v_n
+\hskip{0.1in}
+&\hskip{0.1in}
+\rho_n = \rho_{n-1}\\{x_n \mapsto v_n\\}
+\\\\
+\langle
+e, \\, &\rho_n
+\rangle
+\Downarrow
+v
+\end{aligned}
+}
+{
+\langle
+\text{LETSTAR}(\langle
+x_1, e_1,
+\dots,
+x_n, e_n
+\rangle,e), \rho_0
+\rangle
+\Downarrow
+v
+}
+$$
+
+$$
+\label{}\tag{LetStar}
+$$
+
+* Of course, in reality we'll just desugar `let*` to nested `let`s
+  (as all right-thinking people do)
+
+---
+## Expressions: `letrec`
+
+$$
+\frac
+{
+\begin{aligned}
+e_1 \dots e_n\ \text{are all}\ &\text{LAMBDA expressions}
+\\\\
+\rho' = \rho\\{
+x_1 \mapsto &\,v_1
+\dots
+x_n \mapsto v_n
+\\}
+\\\\
+\langle
+e_1,\hspace{0.05em} \rho'
+\rangle
+\Downarrow
+v_1
+\hskip{1em}
+&\dots
+\hskip{1em}
+\langle
+e_n,\hspace{0.05em} \rho'
+\rangle
+\Downarrow
+v_n
+\\\\
+\langle
+e,\hspace{0.05em} \rho'
+&\rangle
+\Downarrow
+v
+\end{aligned}
+}
+{
+\langle
+\text{LETREC}(\langle
+x_1, e_1,
+\dots,
+x_n, e_n
+\rangle, e),
+\rho
+\rangle
+\Downarrow
+v
+}
+$$
+
+$$
+\label{}\tag{LetRec}
+$$
+
+* The `letrec` rule only allows functions (`lambda` expressions) as the bound
+  values
+
+---
+## Definitions
+
+* Now we present the operational semantics rules for definitions
+
+* The form of judgments for definitions is extremely simple
+  (much simpler than<br/>_Typed $\mu$Scheme_!) because
+  there is no store to keep track of
+
+* The judgments have the form $\langle d, \rho \rangle \rightarrow \rho'$
+
+* In other words: a definition updates the environment, and that's all
+
+---
+## Definitions: `val`
+
+$$
+\frac
+{
+\langle e, \rho \rangle \Downarrow v
+}
+{
+\langle
+\text{VAL}(x, e), \rho
+\rangle
+\rightarrow
+\rho \\{ x \mapsto v \\}
+}
+$$
+
+$$
+\label{}\tag{Val}
+$$
+
+* `val` in _Nano-ML_ is simpler than in <br/>_Typed $\mu$Scheme_
+
+* `val` _always_ creates a new binding
+
+* If the name is already bound, `val` still creates a new binding, which
+shadows the old one
+
+---
+## Definitions: `val`
+
+$$
+\frac
+{
+\langle e, \rho \rangle \Downarrow v
+}
+{
+\langle
+\text{VAL}(x, e), \rho
+\rangle
+\rightarrow
+\rho \\{ x \mapsto v \\}
+}
+$$
+
+$$
+\label{}\tag{Val}
+$$
+
+* `val` in _Nano-ML_ is simpler than in <br/>_Typed $\mu$Scheme_
+
+  * (This is exactly how OCaml works)
+
+---
+## Definitions: `val-rec`
+
+$$
+\frac
+{
+\rho' = \rho
+\\{
+f \mapsto
+(\\!|
+\text{LAMBDA}(\langle
+x_1, \dots, x_n
+\rangle, e),
+\rho'
+|\\!)
+\\}
+}
+{
+\langle
+\text{VALREC}(\, f,
+\text{LAMBDA}(\langle
+x_1, \dots, x_n
+\rangle, e)),
+\rho
+\rangle
+\rightarrow
+\rho'
+}
+$$
+
+$$
+\label{}\tag{Valrec}
+$$
+
+---
+## Definitions: `val-rec`
+
+$$
+\frac
+{
+\rho' = \rho
+\\{
+f \mapsto
+(\\!|
+\text{LAMBDA}(\langle
+x_1, \dots, x_n
+\rangle, e),
+\rho'
+|\\!)
+\\}
+}
+{
+\langle
+\text{VALREC}(\, f,
+\text{LAMBDA}(\langle
+x_1, \dots, x_n
+\rangle, e)),
+\rho
+\rangle
+\rightarrow
+\rho'
+}
+$$
+
+$$
+\label{}\tag{Valrec}
+$$
+
+* Note that this definition is circular
+  * We require that the $LAMBDA$ form created contains
+    the same environment that it is a part of
+
+---
+## Definitions: `val-rec`
+
+$$
+\frac
+{
+\rho' = \rho
+\\{
+f \mapsto
+(\\!|
+\text{LAMBDA}(\langle
+x_1, \dots, x_n
+\rangle, e),
+\rho'
+|\\!)
+\\}
+}
+{
+\langle
+\text{VALREC}(\, f,
+\text{LAMBDA}(\langle
+x_1, \dots, x_n
+\rangle, e)),
+\rho
+\rangle
+\rightarrow
+\rho'
+}
+$$
+
+$$
+\label{}\tag{Valrec}
+$$
+
+* This is an implementation detail, which we can ignore for now
+  * (one of the nice things about operational semantics!)
+
+---
+## Definitions: `define`
+
+$$
+\frac
+{
+\langle
+\text{VALREC}(\hspace{0.05em} f,
+\text{LAMBDA}(
+\langle
+x_1, \dots, x_n
+\rangle, e)),
+\rho
+\rangle
+\rightarrow
+\rho'
+}
+{
+\langle
+\text{DEFINE}(\hspace{0.05em} f, \langle
+x_1, \dots, x_n
+\rangle, e), \rho
+\rangle
+\rightarrow
+\rho'
+}
+$$
+
+$$
+\label{}\tag{Define}
+$$
+
+* $\text{DEFINE}(\hspace{0.05em} f, a, e)$ is just syntactic sugar for
+  $\text{VALREC}(\hspace{0.05em} f, \text{LAMBDA}(a, e))$
+
+---
+## Definitions: top-level expressions
+
+$$
+\frac
+{
+\langle
+\text{VAL}(\text{\verb|_|}, e), \rho
+\rangle
+\rightarrow
+\rho'
+}
+{
+\langle
+\text{EXP}(e), \rho
+\rangle
+\rightarrow
+\rho'
+}
+$$
+
+$$
+\label{}\tag{Exp}
+$$
+
+* This is the usual rule
+
+---
+## Type system
+
+* Now we're going to discuss the type system
+  and give its operational semantics
+
+---
+## Type system: elements
+
+* The type system has these elements:
+
+  * Type variables _e.g._ $\alpha$, $\beta$ _etc._
+
+* Type constructors (described generically as $\mu$ or more specifically as
+`int`, `list` _etc._)
+
+* Type constructor application: $\tau (\tau_1, \dots, \tau_n)$
+
+* Quantification using $\forall$
+
+---
+## Type system: restriction
+
+* Types in _Nano-ML_ are restricted compared to _Typed $\mu$Scheme_
+
+* A type quantified with $\forall$ can _only_ appear at the top level
+  * can't pass such a type as an argument to a type constructor
+
+* We enforce this by changing the syntax of types
+
+---
+## Type system: syntax
+
+* The symbol $\tau$ stands for a type built with type variables ($\alpha$),
+type constructors ($\mu$), and constructor application
+($\tau\\,(\tau_1, \dots, \tau_n)$)
+
+$$
+\tau\\; ::= \\;\alpha \enspace 
+  | \enspace\mu\enspace | \enspace\tau\\,(\tau_1, \dots, \tau_n)
+$$
+
+* A $\tau$ is called a _type_
+
+---
+## Type system: syntax
+
+* The symbol $\sigma$ stands for a type
+  quantified over a list of type variables $\alpha_1, \dots, \alpha_n$:
+
+$$
+\sigma\\; ::= \\;\forall\\, \alpha_1, \dots , \alpha_n\\; . \\;\tau
+$$
+
+* A $\sigma$ is called a _type scheme_
+
+* A type with no type variables can still be a type scheme (the list of type
+variables is empty)
+
+---
+## More notation
+
+* We again use $\Gamma$ to represent the _type environment_
+
+* There is no need for a kind environment in this language,
+  so we don't need to use $\Delta$ for that
+
+* $\Gamma$ maps a term variable name to a _type scheme_, not a type
+  * (Type schemes serve the same role as types do in _Typed $\mu$Scheme_)
+
+---
+## Typing rules
+
+* We are now going to present the typing rules for the language
+
+* These are similar to typing rules we've seen before, with one major
+difference: they are _nondeterministic_
+
+---
+## Typing rules
+
+* Some type rules will have type variables
+
+* Nondeterministic rules simply assert that there is _some_ way
+  to assign types to these type variables that will make the rule work
+
+* Determining _what_ types we need to assign to type variables to make the
+rules work is not the responsibility of the operational semantics
+
+* We will deal with this next lecture
+
+---
+## Typing rules: expressions
+
+* Now we'll present the typing rules for expressions
+
+---
+## Typing rules: literals
+
+* Literals have trivial typing judgments
+
+$$
+\frac
+{}
+{\Gamma \vdash \text{LITERAL}(\text{\verb|#u|}) : \text{unit}}
+$$
+
+$$
+\label{}\tag{LiteralUnit}
+$$
+
+$$
+\frac
+{}
+{\Gamma \vdash \text{LITERAL}(\text{\verb|#t|}) : \text{bool}}
+$$
+
+$$
+\label{}\tag{LiteralTrue}
+$$
+
+$$
+\frac
+{}
+{\Gamma \vdash \text{LITERAL}(\text{\verb|#f|}) : \text{bool}}
+$$
+
+$$
+\label{}\tag{LiteralFalse}
+$$
+
+$$
+\frac
+{}
+{\Gamma \vdash \text{LITERAL}(\text{<int>}) : \text{int}}
+$$
+
+$$
+\label{}\tag{LiteralInt}
+$$
+
+---
+## Typing rules: variables
+
+$$
+\\
+$$
+
+$$
+\frac
+{
+\Gamma(x) = \sigma \quad \tau <: \sigma
+}
+{
+\Gamma \vdash x : \tau
+}
+$$
+
+$$
+\label{}\tag{Var}
+$$
+
+* The symbol $<:$ means "is an instance of"
+* $\tau <: \tau'$ means: there is a substitution $\theta$ ...
+  * (a mapping from type variables to types)
+* ...that will convert $\tau$ into $\tau'$ _i.e._ $\tau' = \theta \tau$
+
+---
+## Typing rules: variables
+
+$$
+\\
+$$
+
+$$
+\frac
+{
+\Gamma(x) = \sigma \quad \tau <: \sigma
+}
+{
+\Gamma \vdash x : \tau
+}
+$$
+
+$$
+\label{}\tag{Var}
+$$
+
+* There are some restrictions on the substitution, which we'll see later
+
+---
+## Typing rules: variables
+
+$$
+\\
+$$
+
+$$
+\frac
+{
+\Gamma(x) = \sigma \quad \tau <: \sigma
+}
+{
+\Gamma \vdash x : \tau
+}
+$$
+
+$$
+\label{}\tag{Var}
+$$
+
+* $\sigma$ is a _type scheme_, not a type
+  * Difference: a type scheme can contain type variables
+
+---
+## Typing rules: variables
+
+$$
+\\
+$$
+
+* Note that this typing rule is _nondeterministic_
+
+* It doesn't say what the type $\tau$ _is_,
+it only says what it _can_ be
+
+* _Any_ type $\tau$ that is an instance of the type scheme $\sigma$
+can be the type of the variable $x$
+
+---
+## Typing rules: variables
+
+$$
+\\
+$$
+
+* We will actually pick the _most general_ type that works in the
+context in which the variable is found
+
+* This is not the only typing rule that will be nondeterministic
+
+---
+## Typing rules: `if`
+
+$$
+\\
+$$
+
+$$
+\frac
+{
+\Gamma \vdash e_1 : \text{bool}
+\quad
+\Gamma \vdash e_2 : \tau
+\quad
+\Gamma \vdash e_3 : \tau
+}
+{
+\Gamma \vdash IF(e_1, e_2, e_3) : \tau
+}
+$$
+
+$$
+\label{}\tag{If}
+$$
+
+* Nothing unusual here
+
+---
+## Typing rules: `begin`
+
+$$
+\frac
+{
+}
+{
+\Gamma \vdash BEGIN() : \text{unit}
+}
+$$
+
+$$
+\label{}\tag{EmptyBegin}
+$$
+
+$$
+\frac
+{
+\Gamma \vdash e_i : \tau_i, \quad 1 \leq i \leq n
+}
+{
+\Gamma \vdash BEGIN(e_1, \dots, e_n) : \tau_n
+}
+$$
+
+$$
+\label{}\tag{Begin}
+$$
+
+* We could force the $e_i$ where $i < n$ to have type $\text{unit}$,
+but we won't
+  * (OCaml issues a warning in this case)
+
+---
+## Typing rules: apply
+
+$$
+\frac
+{
+\Gamma \vdash e_i : \tau_i
+\quad
+1 \leq i \leq n
+\quad
+\Gamma \vdash e : \tau_1 \times \cdots \times \tau_n \rightarrow \tau
+}
+{
+\Gamma \vdash \text{APPLY}(e, e_1, \dots, e_n) : \tau
+}
+$$
+
+$$
+\label{}\tag{Apply}
+$$
+
+* This is another standard (deterministic) rule
+
+---
+## Typing rules: `lambda`
+
+$$
+\frac
+{
+\Gamma\\{
+x_1 \mapsto \tau_1, \dots,
+x_n \mapsto \tau_n
+\\} \vdash e : \tau
+}
+{
+\Gamma \vdash \text{LAMBDA}(\langle
+x_1, \dots, x_n
+\rangle, e) : \tau_1 \times \cdots \times \tau_n \rightarrow \tau
+}
+$$
+
+$$
+\label{}\tag{Lambda}
+$$
+
+* `lambda` rule is also nondeterministic
+
+---
+## Typing rules: `lambda`
+
+$$
+\frac
+{
+\Gamma\\{
+x_1 \mapsto \tau_1, \dots,
+x_n \mapsto \tau_n
+\\} \vdash e : \tau
+}
+{
+\Gamma \vdash \text{LAMBDA}(\langle
+x_1, \dots, x_n
+\rangle, e) : \tau_1 \times \cdots \times \tau_n \rightarrow \tau
+}
+$$
+
+$$
+\label{}\tag{Lambda}
+$$
+
+* No matter how polymorphic the actual argument types $\tau_i$ are, when
+checking types the type variables have to be set to specific values for _all_
+types
+
+* The type checker has to pick types for all type variables so that this type
+checks
+
+---
+## Typing rules: `lambda`
+
+* Example of something that isn't allowed:
+
+<pre><code>&gt;&gt;&gt; (val too-poly
+      (lambda (empty-list)
+        (pair (cons 1 empty-list)
+              (cons #t empty-list))))
+type error: cannot make int equal to bool
+</code></pre>
+
+* Here, `empty-list` should be the empty list value `nil`
+* It has the type `(forall ('a) (list 'a))`
+* However, `'a` can only be instantiated
+  to a single type for the _entire_ function body
+
+---
+## Typing rules: `lambda`
+
+* Example of something that isn't allowed:
+
+<pre><code>&gt;&gt;&gt; (val too-poly
+      (lambda (empty-list)
+        (pair (cons 1 empty-list)
+              (cons #t empty-list))))
+type error: cannot make int equal to bool
+</code></pre>
+
+* It can't have one type for<br/>`(cons 1 empty-list)`
+  and another for<br/>`(cons #t empty-list)`
+
+  * This restriction exists in OCaml too!
+
+---
+## Typing rules: `lambda`
+
+* Example of something that isn't allowed:
+
+<pre><code>&gt;&gt;&gt; (val too-poly
+      (lambda (empty-list)
+        (pair (cons 1 empty-list)
+              (cons #t empty-list))))
+type error: cannot make int equal to bool
+</code></pre>
+
+* So the `empty-list` argument loses its polymorphism during type checking
+
+* Put differently, the type variables are set for all uses of the argument
+
+---
+## Typing rules: `lambda`
+
+* Example of something that isn't allowed:
+
+<pre><code>&gt;&gt;&gt; (val too-poly
+      (lambda (empty-list)
+        (pair (cons 1 empty-list)
+              (cons #t empty-list))))
+type error: cannot make int equal to bool
+</code></pre>
+
+* Or: inside a function, a formal parameter has _just one type_
+
+---
+## Typing rules: `lambda`
+
+* Example of something that isn't allowed:
+
+<pre><code>&gt;&gt;&gt; (val too-poly
+      (lambda (empty-list)
+        (pair (cons 1 empty-list)
+              (cons #t empty-list))))
+type error: cannot make int equal to bool
+</code></pre>
+
+* Without this, type checking wouldn't be decidable
+
+* We say that formal parameters are<br/>"lambda-bound"
+
+---
+## Typing rules: `let`
+
+* We will approach `let` in stages
+
+* First, let's look at a (hypothetical) restricted version of `let` where only
+a single name gets bound (non-recursively); we'll call it `let1`
+
+  * (It doesn't actually exist in the language)
+
+---
+## Typing rules: `let1`
+
+* Here's the typing rule for `let1`:
+
+$$
+\frac
+{
+\begin{aligned}
+\Gamma \vdash e' : \tau'
+\quad
+\text{ftv}(\tau') &- \text{ftv}(\Gamma) =
+\\{
+\alpha_1, \dots, \alpha_n
+\\}
+\\\\
+\Gamma \\{
+x \mapsto
+\forall \alpha_1, \\,&\dots, \alpha_n . \tau'
+\\}
+\vdash e : \tau
+\end{aligned}
+}
+{
+\Gamma \vdash \text{LET1}(x, e', e) : \tau
+}
+$$
+
+$$
+\label{}\tag{Let1}
+$$
+
+* $\tau'$ can have free type variables that aren't free
+  in the context $\Gamma$ as well as some that are
+
+---
+## Typing rules: `let1`
+
+* Here's the typing rule for `let1`:
+
+$$
+\frac
+{
+\begin{aligned}
+\Gamma \vdash e' : \tau'
+\quad
+\text{ftv}(\tau') &- \text{ftv}(\Gamma) =
+\\{
+\alpha_1, \dots, \alpha_n
+\\}
+\\\\
+\Gamma \\{
+x \mapsto
+\forall \alpha_1, \\,&\dots, \alpha_n . \tau'
+\\}
+\vdash e : \tau
+\end{aligned}
+}
+{
+\Gamma \vdash \text{LET1}(x, e', e) : \tau
+}
+$$
+
+$$
+\label{}\tag{Let1}
+$$
+
+* If a free type variable is also free in $\Gamma$,
+  it means the same thing in $\tau'$
+
+---
+## Typing rules: `let1`
+
+* Here's the typing rule for `let1`:
+
+$$
+\frac
+{
+\begin{aligned}
+\Gamma \vdash e' : \tau'
+\quad
+\text{ftv}(\tau') &- \text{ftv}(\Gamma) =
+\\{
+\alpha_1, \dots, \alpha_n
+\\}
+\\\\
+\Gamma \\{
+x \mapsto
+\forall \alpha_1, \\,&\dots, \alpha_n . \tau'
+\\}
+\vdash e : \tau
+\end{aligned}
+}
+{
+\Gamma \vdash \text{LET1}(x, e', e) : \tau
+}
+$$
+
+$$
+\label{}\tag{Let1}
+$$
+
+* We take the set of type variables that are free in $\tau'$ but _not_ free in
+$\Gamma$ and generalize $\tau'$ over those to make a $\forall$ type
+
+---
+## Typing rules: `let1`
+
+* Here's the typing rule for `let1`:
+
+$$
+\frac
+{
+\begin{aligned}
+\Gamma \vdash e' : \tau'
+\quad
+\text{ftv}(\tau') &- \text{ftv}(\Gamma) =
+\\{
+\alpha_1, \dots, \alpha_n
+\\}
+\\\\
+\Gamma \\{
+x \mapsto
+\forall \alpha_1, \\,&\dots, \alpha_n . \tau'
+\\}
+\vdash e : \tau
+\end{aligned}
+}
+{
+\Gamma \vdash \text{LET1}(x, e', e) : \tau
+}
+$$
+
+$$
+\label{}\tag{Let1}
+$$
+
+* We extend $\Gamma$ with a binding between $x$ and the generalized type, and
+compute the type of $e$; this is the type of the `let1` as a whole
+
+---
+## Typing rules: `let1`
+
+* This way of typing `let` is sometimes called "Milner's `let`" after Robin
+Milner, who discovered it
+
+* It turns out that you can have more general types for `let`-bound variables
+than for `lambda`-bound variables!
+
+---
+## Typing rules: `let1`
+
+* Example:
+
+<pre class="smaller"><code>&gt;&gt;&gt; (val not-too-poly
+      (let ((empty-list '()))
+        (pair (cons 1 empty-list) (cons #t empty-list))))
+(pair (1) (#t)) : (pair (list int) (list bool))
+</code></pre>
+
+* Note that the polymorphic `empty-list` value's type variable is instantiated
+differently in two different places
+  * This works in OCaml too!
+
+---
+## Typing rules: `let1`
+
+* One consequence: the `let`/`lambda` equivalence
+  that we're so fond of doesn't work in this language!
+
+* `let`-bound variables are much less restricted than `lambda`-bound variables
+
+---
+## Typing rules: `let1`
+
+* The reason for this is that we don't know
+  what a `lambda`-bound variable will stand for
+  (_i.e._ what the `lambda` will be applied to),
+  but we always know what a `let`-bound variable will be bound to
+  * like a `lambda` applied to a specific argument
+
+* Therefore, the `let` has more information to make a typing judgment
+
+---
+## Typing rules: `let1`
+
+* Milner's `let` can be written in terms of a function called
+$\text{generalize}$, which takes a type (like $\tau$) and a set of constrained
+type variables (like those in $\Gamma$; we'll call them $\mathcal{A}$)
+
+$$
+\text{generalize}(\tau, \mathcal{A}) =
+\forall \alpha_1, \dots, \alpha_n . \tau,
+\\\\
+\text{where} \\; \\{
+\alpha_1, \dots, \alpha_n
+\\} =
+\text{ftv}(\tau) - \mathcal{A}
+$$
+
+* For us, $\mathcal{A}$ is just $\text{ftv}(\Gamma)$
+
+---
+## Typing rules: `let1`
+
+* Using this function, the `let1` rule becomes:
+
+$$
+\frac
+{
+\begin{aligned}
+\Gamma \vdash e' : \tau'
+\quad
+\sigma = \text{generalize}(\tau', \text{ftv}(\Gamma))
+\quad
+\Gamma \\{
+x \mapsto \sigma
+\\}
+\vdash e : \tau
+\end{aligned}
+}
+{
+\Gamma \vdash \text{LET1}(x, e', e) : \tau
+}
+$$
+
+$$
+\label{}\tag{Let1}
+$$
+
+* Recall: $\sigma$ is a _type scheme_, not a type (in our terminology)
+  * (_i.e._ it's a polymorphic type)
+
+---
+## Typing rules: full `let`
+
+* This rule can easily be extended to the full `let` rule:
+
+$$
+\frac
+{
+\begin{gather*}
+\Gamma \vdash e_i : \tau_i, \quad 1 \leq i \leq n
+\\\\
+\sigma_i = \text{generalize}(\tau_i, \text{ftv}(\Gamma)),
+\quad 1 \leq i \leq n
+\\\\
+\Gamma \\{
+x_1 \mapsto \sigma_1,
+\dots,
+x_n \mapsto \sigma_n
+\\}
+\vdash e : \tau
+\end{gather*}
+}
+{
+\Gamma \vdash \text{LET}(\langle
+x_1, e_1, \dots, x_n, e_n
+\rangle, e) : \tau
+}
+$$
+
+$$
+\label{}\tag{Let}
+$$
+
+---
+## Typing rules: `let*`
+
+* `let*` is annoying to treat mathematically
+
+* Since we're just going to desugar it to nested `let`s anyway,
+we might as well bake that into our type checker
+
+---
+## Typing rules: `let*`
+
+* Empty `let*`:
+
+$$
+\frac
+{
+\Gamma \vdash e : \tau
+}
+{
+\Gamma \vdash \text{LETSTAR}(\langle \rangle, e) : \tau
+}
+$$
+
+$$
+\label{}\tag{EmptyLetStar}
+$$
+
+---
+## Typing rules: `let*`
+
+* Non-empty `let*`:
+
+$$
+\frac
+{
+\Gamma \vdash \text{LET}(\langle x_1, e_1 \rangle,
+\text{LETSTAR}(\langle
+x_2, e_2, \dots, x_n, e_n
+\rangle, e)) : \tau
+\quad n > 0
+}
+{
+\Gamma \vdash \text{LETSTAR}(\langle
+x_1, e_1, \dots, x_n, e_n
+\rangle, e) : \tau
+}
+$$
+
+$$
+\label{}\tag{LetStar}
+$$
+
+---
+## Typing rules: `letrec`
+
+$$
+\frac
+{
+\begin{gather*}
+\Gamma' = \Gamma \\{
+x_1 \mapsto \tau_1, \dots, x_n \mapsto \tau_n
+\\}
+\\\\
+\Gamma' \vdash e_i : \tau_i,
+\quad
+1 \leq i \leq n
+\\\\
+\sigma_i = \text{generalize}(\tau_i, \text{ftv}(\Gamma)),
+\quad
+1 \leq i \leq n
+\\\\
+\Gamma\\{
+x_1 \mapsto \sigma_1, \dots, x_n \mapsto \sigma_n
+\\} \vdash e : \tau
+\end{gather*}
+}
+{
+\Gamma \vdash \text{LETREC}(\langle
+x_1, e_1, \dots, x_n, e_n
+\rangle, e): \tau
+}
+$$
+
+$$
+\label{}\tag{LetRec}
+$$
+
+<div class="smaller">
+
+* The `letrec` rule is similar to `let`, but the $e_i$s are checked
+in a type environment $\Gamma'$ containing the bindings for the $x_i$s
+instead of just $\Gamma$
+
+</div>
+
+---
+## Typing rules: `letrec`
+
+$$
+\frac
+{
+\begin{gather*}
+\Gamma' = \Gamma \\{
+x_1 \mapsto \tau_1, \dots, x_n \mapsto \tau_n
+\\}
+\\\\
+\Gamma' \vdash e_i : \tau_i,
+\quad
+1 \leq i \leq n
+\\\\
+\sigma_i = \text{generalize}(\tau_i, \text{ftv}(\Gamma)),
+\quad
+1 \leq i \leq n
+\\\\
+\Gamma\\{
+x_1 \mapsto \sigma_1, \dots, x_n \mapsto \sigma_n
+\\} \vdash e : \tau
+\end{gather*}
+}
+{
+\Gamma \vdash \text{LETREC}(\langle
+x_1, e_1, \dots, x_n, e_n
+\rangle, e): \tau
+}
+$$
+
+$$
+\label{}\tag{LetRec}
+$$
+
+<div class="smaller">
+
+* So $\Gamma'$ is defined in terms of itself using the $\tau_i$s
+
+</div>
+
+---
+## Typing rules: `letrec`
+
+$$
+\frac
+{
+\begin{gather*}
+\Gamma' = \Gamma \\{
+x_1 \mapsto \tau_1, \dots, x_n \mapsto \tau_n
+\\}
+\\\\
+\Gamma' \vdash e_i : \tau_i,
+\quad
+1 \leq i \leq n
+\\\\
+\sigma_i = \text{generalize}(\tau_i, \text{ftv}(\Gamma)),
+\quad
+1 \leq i \leq n
+\\\\
+\Gamma\\{
+x_1 \mapsto \sigma_1, \dots, x_n \mapsto \sigma_n
+\\} \vdash e : \tau
+\end{gather*}
+}
+{
+\Gamma \vdash \text{LETREC}(\langle
+x_1, e_1, \dots, x_n, e_n
+\rangle, e): \tau
+}
+$$
+
+$$
+\label{}\tag{LetRec}
+$$
+
+* Subtle point: within $\Gamma'$,
+  the types of the $e_i$s are _not_ polymorphic
+
+---
+## Typing rules: `letrec`
+
+$$
+\frac
+{
+\begin{gather*}
+\Gamma' = \Gamma \\{
+x_1 \mapsto \tau_1, \dots, x_n \mapsto \tau_n
+\\}
+\\\\
+\Gamma' \vdash e_i : \tau_i,
+\quad
+1 \leq i \leq n
+\\\\
+\sigma_i = \text{generalize}(\tau_i, \text{ftv}(\Gamma)),
+\quad
+1 \leq i \leq n
+\\\\
+\Gamma\\{
+x_1 \mapsto \sigma_1, \dots, x_n \mapsto \sigma_n
+\\} \vdash e : \tau
+\end{gather*}
+}
+{
+\Gamma \vdash \text{LETREC}(\langle
+x_1, e_1, \dots, x_n, e_n
+\rangle, e): \tau
+}
+$$
+
+$$
+\label{}\tag{LetRec}
+$$
+
+* In other words, all type variables inside all `letrec` bindings
+will be bound to exactly _one_ type per type variable
+
+---
+## Typing rules: `letrec`
+
+$$
+\frac
+{
+\begin{gather*}
+\Gamma' = \Gamma \\{
+x_1 \mapsto \tau_1, \dots, x_n \mapsto \tau_n
+\\}
+\\\\
+\Gamma' \vdash e_i : \tau_i,
+\quad
+1 \leq i \leq n
+\\\\
+\sigma_i = \text{generalize}(\tau_i, \text{ftv}(\Gamma)),
+\quad
+1 \leq i \leq n
+\\\\
+\Gamma\\{
+x_1 \mapsto \sigma_1, \dots, x_n \mapsto \sigma_n
+\\} \vdash e : \tau
+\end{gather*}
+}
+{
+\Gamma \vdash \text{LETREC}(\langle
+x_1, e_1, \dots, x_n, e_n
+\rangle, e): \tau
+}
+$$
+
+$$
+\label{}\tag{LetRec}
+$$
+
+* Once all the $e_i$ types are fixed,
+  they are generalized for use inside the body expression $e$
+
+<!--
+// TODO: I really need an example here.
+-->
+
+---
+## Typing rules: definitions
+
+* Now we'll present the typing rules for definitions
+
+---
+## Typing rules: `val`
+
+$$
+\frac
+{
+\Gamma \vdash e : \tau
+\quad
+\sigma = \text{generalize}(\tau, \text{ftv}(\Gamma))
+}
+{
+\langle
+\text{VAL}(x, e), \Gamma
+\rangle
+\rightarrow
+\Gamma \\{
+x \mapsto \sigma
+\\}
+}
+$$
+
+$$
+\label{}\tag{Val}
+$$
+
+* A `val` is typed like a `let1` without the body expression
+
+---
+## Typing rules: `val-rec`
+
+$$
+\frac
+{
+\Gamma \\{
+x \mapsto \tau
+\\}
+\vdash e : \tau
+\quad
+\sigma = \text{generalize}(\tau, \text{ftv}(\Gamma))
+}
+{
+\langle
+\text{VALREC}(x, e), \Gamma
+\rangle
+\rightarrow
+\Gamma \\{
+x \mapsto \sigma
+\\}
+}
+$$
+
+$$
+\label{}\tag{ValRec}
+$$
+
+* The rule for `val-rec` requires that a recursive value be defined in the
+environment used to find its type
+
+* This is basically a `letrec` with one binding and no body
+
+---
+## Typing rules: `define`
+
+$$
+\frac
+{
+\langle
+\text{VALREC}(\\, f, \text{LAMBDA}(\langle x_1, \dots, x_n \rangle, e)),
+\Gamma
+\rangle
+\rightarrow
+\Gamma'
+}
+{
+\langle
+\text{DEFINE}(\\, f, \langle x_1, \dots, x_n \rangle, e),
+\Gamma
+\rangle
+\rightarrow
+\Gamma'
+}
+$$
+
+$$
+\label{}\tag{Define}
+$$
+
+* As usual, `define` is syntactic sugar for a<br/>
+  `val-rec` binding to a `lambda`
+
+---
+## Typing rules: `exp`
+
+$$
+\frac
+{
+\langle \text{VAL}(\text{\verb|_|}, e), \Gamma \rangle \rightarrow \Gamma'
+}
+{
+\langle \text{EXP}(e), \Gamma \rangle \rightarrow \Gamma'
+}
+$$
+
+$$
+\label{}\tag{Exp}
+$$
+
+* Also as usual, a top-level binding is syntactic sugar
+  for a binding to the `_` variable
+
+---
+## Next time
+
+* We'll look more deeply into type inference
+
+            </textarea>
+          </section>
+      </div>
+    </div>
+    <script src="plugin/math/math.js"></script>
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <!-- Uncomment if you want syntax highlighting. -->
+    <!--
+    <link rel="stylesheet" href="plugin/highlight/arduino-light.css">
+    -->
+    <style>
+/* MCV: My new reveal.js styles. */
+
+.reveal {
+  font-family: "Arial", sans-serif;
+  font-size: 28pt;
+  font-weight: normal;
+  color: #000; 
+}
+
+.reveal .slide-number {
+  background: white;
+  /* border: 1px solid black; */
+}
+
+.reveal .slide-number-a {
+  background: white;
+  color: black;
+  font-size: 24px;
+}
+
+.reveal .slides h1 {
+  text-align: center;
+  text-transform: none;
+  padding: 150px 0 20px 0;
+  font-size: 64pt;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif;
+  font-weight: normal;
+  color: #4f271c;
+  background: #d0d0f0;
+  margin-bottom: 0.5em;
+}
+
+.reveal h2 { 
+  text-transform: none;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif !important;
+  /* text-shadow: 2px 2px 3px #a0a0a0; */
+  color: #4f271c !important;
+  font-size: 60pt !important;
+  font-weight: normal !important;
+  /* background: #d0d0d0; */
+  width: 80% !important;
+  margin-left: 10%;
+}
+
+/* First level bullet color. */
+.reveal .slides ul li::marker {
+  color: #3891a7;
+}
+
+/* Second level bullet spacing. */
+.reveal .slides ul li ul {
+  margin-top: 0px;
+}
+
+.reveal .slides li {
+  margin-top: 10px;
+}
+
+/* Second level bullet color. */
+.reveal .slides ul li ul li::marker {
+  color: #3891a7;
+}
+
+.reveal li {
+  font-size: 36pt !important;
+}
+
+.reveal .smaller li {
+  font-size: 32pt !important;
+}
+
+.reveal li ul li {
+  font-size: 32pt !important;
+}
+
+.reveal li .smaller ul li {
+  font-size: 28pt !important;
+}
+
+.reveal ul {
+  width: 80% !important;
+  text-align: left !important;
+}
+
+.reveal code em {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal em code {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal code .comment {
+  color: #cc44cc !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+.reveal blockquote {
+  text-align: left !important;
+  color: #668888 !important;
+}
+
+.katex-display > .katex {
+  color: #0040b0 !important;
+}
+
+.katex-display > .katex > .katex-html > .tag {
+  color: #808080 !important;
+  margin-right: 100px !important;
+}
+
+.katex > .katex-html {
+  color: #0040b0 !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.katex {
+  font-size: 1.1em !important;
+}
+
+.reveal pre {
+  margin-left: 200px !important;
+  width: 75% !important;
+  font-size: 24pt !important;
+}
+
+.reveal pre.smaller {
+  font-size: 20pt !important;
+}
+
+.reveal code {
+  color: #0040b0 !important;
+  font-size: 90%;
+}
+
+.reveal pre code {
+  /* max vertical size of code block */
+  max-height: 700px !important;
+}
+
+.reveal li ul li code {
+  font-size: 80%;
+}
+
+    </style>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        katex: {
+          version: 'latest',
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            "\\eqref": "\\href{###1}{(\\text{#1})}",
+            "\\ref": "\\href{###1}{\\text{#1}}",
+            "\\label": "\\htmlId{#1}{}",
+          },
+        },
+        plugins: [ 
+          RevealMarkdown,
+          // RevealHighlight,
+          RevealMath.KaTeX,
+        ],
+        center: false,
+        controls: false,
+        disableLayout: false,  // set to true to use custom CSS for layout
+        showSlideNumber: 'all',
+        slideNumber: true,
+        transition: 'none',
+        width: 1280,
+        height: 800,
+      });
+    </script>
+  </body>
+</html>
