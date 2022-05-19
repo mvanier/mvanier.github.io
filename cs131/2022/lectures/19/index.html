@@ -468,8 +468,8 @@ e_n,\hspace{0.05em} \rho'
 v_n
 \\\\
 \langle
-e,\hspace{0.05em} \rho'
-&\rangle
+e,&\\, \rho'
+\rangle
 \Downarrow
 v
 \end{aligned}
@@ -580,7 +580,7 @@ x_1, \dots, x_n
 }
 {
 \langle
-\text{VALREC}(\, f,
+\text{VALREC}(\hspace{0.05em} f,
 \text{LAMBDA}(\langle
 x_1, \dots, x_n
 \rangle, e)),
@@ -592,7 +592,7 @@ x_1, \dots, x_n
 $$
 
 $$
-\label{}\tag{Valrec}
+\label{}\tag{ValRec}
 $$
 
 ---
@@ -614,7 +614,7 @@ x_1, \dots, x_n
 }
 {
 \langle
-\text{VALREC}(\, f,
+\text{VALREC}(\hspace{0.05em} f,
 \text{LAMBDA}(\langle
 x_1, \dots, x_n
 \rangle, e)),
@@ -626,11 +626,11 @@ x_1, \dots, x_n
 $$
 
 $$
-\label{}\tag{Valrec}
+\label{}\tag{ValRec}
 $$
 
 * Note that this definition is circular
-  * We require that the $LAMBDA$ form created contains
+  * We require that the `lambda` form created contains
     the same environment that it is a part of
 
 ---
@@ -652,7 +652,7 @@ x_1, \dots, x_n
 }
 {
 \langle
-\text{VALREC}(\, f,
+\text{VALREC}(\hspace{0.05em} f,
 \text{LAMBDA}(\langle
 x_1, \dots, x_n
 \rangle, e)),
@@ -664,7 +664,7 @@ x_1, \dots, x_n
 $$
 
 $$
-\label{}\tag{Valrec}
+\label{}\tag{ValRec}
 $$
 
 * This is an implementation detail, which we can ignore for now
@@ -775,6 +775,8 @@ $$
 $$
 
 * A $\tau$ is called a _type_
+  * Not always a "real" type; type variables occur without quantifiers
+  * Example: $\alpha \rightarrow \alpha$
 
 ---
 ## Type system: syntax
@@ -788,8 +790,8 @@ $$
 
 * A $\sigma$ is called a _type scheme_
 
-* A type with no type variables can still be a type scheme (the list of type
-variables is empty)
+* A type with no type variables can still be a type scheme
+  (the list of type variables is empty)
 
 ---
 ## More notation
@@ -1517,6 +1519,8 @@ $$
 $$
 \label{}\tag{LetStar}
 $$
+
+* `let`'s move on...
 
 ---
 ## Typing rules: `letrec`
