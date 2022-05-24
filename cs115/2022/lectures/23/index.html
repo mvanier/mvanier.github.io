@@ -369,12 +369,9 @@ iter n r = r <em>`seq`</em> iter (n - 1) (n * r)
 ## Strictness annotations
 
 * A strictness annotation is just a `!` before the function argument
-* Requires the compiler extension:
 
-<pre><code>{-# LANGUAGE BangPatterns #-}
-</code></pre>
-
-* Or just &nbsp; `:set -XBangPatterns` &nbsp; in &nbsp; `ghci`
+* Strictness annotations are informally referred to as "bang patterns"
+  * "bang" is slang for the `!` (exclamation mark)
 
 ---
 ## Strictness annotations
@@ -448,7 +445,6 @@ iter n <em>!</em>r = iter (n - 1) (n * r)
 
 * This is a list, each of whose elements is reduced to WHNF
 * Note the strictness annotation `!` in the `Cons` constructor
-* _N.B._ You _don't_ need the `BangPatterns` extension to do this!
 
 ---
 ## Constructors
@@ -487,7 +483,6 @@ iter n <em>!</em>r = iter (n - 1) (n * r)
 <pre><code>let <em>!</em>x = ... in ...
 </code></pre>
 
-* This _does_ require the `BangPatterns` extension to work
 
 ---
 ## Evaluating to normal form
@@ -645,8 +640,7 @@ ghci&gt; let lst' = force lst
 ---
 ## The `force` function
 
-<pre><code>ghci&gt; :set -XBangPatterns
-ghci&gt; import Control.DeepSeq
+<pre><code>ghci&gt; import Control.DeepSeq
 ghci&gt; let lst = [1 + 1, 2 + 2, 3 + 3, undefined]
 ghci&gt; let !lst' = force lst
 *** Exception: Prelude.undefined
@@ -752,13 +746,24 @@ ghci&gt; let !lst' = force lst
 ---
 ## Further study
 
+* I _strongly_ recommend reading the GHC user guide:
+  * `https://downloads.haskell.org/ghc/latest/docs/html/users_guide`
+
+* Specific sections of interest:
+  * `ghci` documentation
+  * GHC optional language extensions<br/>(*tons* of them!)
+  * GHC debugger
+
+---
+## Further study
+
 * Mailing lists:
   * `Haskell-cafe`
   * `Haskell-beginners`
 
 * Haskell Reddit site is full of useful information
   * blog posts
-  * papers
+  * discussion of research papers
   * announcements of new libraries/programs
 
 * Haskell IRC channel is great for real-time help
