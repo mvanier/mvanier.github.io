@@ -632,8 +632,8 @@ ghci&gt; let lst' = force lst
   * so the `force lst` is still wrapped in a thunk
   * _i.e._ `force` hasn't been forced!
 
-* To fix this, we can use a strictness annotation to force the 
-  `force lst` thunk
+* To fix this, we can try to use a strictness annotation
+  to force the `force lst` thunk
 
 * Let's try it again
 
@@ -643,12 +643,25 @@ ghci&gt; let lst' = force lst
 <pre><code>ghci&gt; import Control.DeepSeq
 ghci&gt; let lst = [1 + 1, 2 + 2, 3 + 3, undefined]
 ghci&gt; let !lst' = force lst
+</code></pre>
+
+* Still doesn't work &#9785;
+
+---
+## The `force` function
+
+<pre><code>ghci&gt; import Control.DeepSeq
+ghci&gt; let lst = [1 + 1, 2 + 2, 3 + 3, undefined]
+ghci&gt; let lst' = force lst in lst'
 *** Exception: Prelude.undefined
 </code></pre>
 
+* _This_ works!
 * So the `force` forced evaluation of the entire list to normal form
 * And the `undefined` value at the end of the list
   caused an exception to be signalled
+* But you actually have to _use_ the value for the forcing to happen
+  * subtle!
 
 ---
 ## Pitfalls with `deepseq`
