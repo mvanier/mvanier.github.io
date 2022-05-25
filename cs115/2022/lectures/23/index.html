@@ -483,6 +483,21 @@ iter n <em>!</em>r = iter (n - 1) (n * r)
 <pre><code>let <em>!</em>x = ... in ...
 </code></pre>
 
+---
+## Strict Haskell
+
+* Sometimes, you want all function arguments and data constructor arguments
+  to be evaluated to WHNF
+
+* It's a pain to have to put strictness annotations on all functions and
+  constructors!
+
+* If you turn on the `Strict`
+  language extension:<br/>`{-# LANGUAGE Strict #-}`<br/>
+  then all function arguments and data constructor arguments in the module
+  will act as if they have bang patterns (evaluate to WHNF)
+
+* Don't use this unless there is a compelling reason to!
 
 ---
 ## Evaluating to normal form
@@ -652,16 +667,28 @@ ghci&gt; let !lst' = force lst
 
 <pre><code>ghci&gt; import Control.DeepSeq
 ghci&gt; let lst = [1 + 1, 2 + 2, 3 + 3, undefined]
-ghci&gt; let lst' = force lst in lst'
+ghci&gt; let lst' = force lst in head lst'
 *** Exception: Prelude.undefined
 </code></pre>
 
-* _This_ works!
-* So the `force` forced evaluation of the entire list to normal form
-* And the `undefined` value at the end of the list
-  caused an exception to be signalled
-* But you actually have to _use_ the value for the forcing to happen
-  * subtle!
+* _This_ works, because:
+  * `head lst` forces evaluation of `lst'`,
+  * which will then force evaluation of the entire list to NF via `force`,
+  * and the `undefined` value at the end of the list
+    caused an exception to be signalled
+
+---
+## The `force` function
+
+* Without `force`, you get:
+
+<pre><code>ghci&gt; import Control.DeepSeq
+ghci&gt; let lst = [1 + 1, 2 + 2, 3 + 3, undefined]
+ghci&gt; let lst' = lst in head lst'
+2
+</code></pre>
+
+* The `undefined` value never gets evaluated, as you'd expect
 
 ---
 ## Pitfalls with `deepseq`
