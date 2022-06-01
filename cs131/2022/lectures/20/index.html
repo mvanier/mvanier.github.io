@@ -520,6 +520,32 @@ $$
   to establish their types $\tau_i$;
   these propagate to the conclusion
 
+---
+## Typing judgments with constraints: example
+
+* The $\text{IF}$ rule with constraints looks like this:
+
+$$
+\frac
+{
+C_1, \Gamma \vdash e_1 : \tau_1
+\quad
+C_2, \Gamma \vdash e_2 : \tau_2
+\quad
+C_3, \Gamma \vdash e_3 : \tau_3
+}
+{
+C_1 \land C_2 \land C_3 \land
+\tau_1 \sim \text{bool} \land
+\tau_2 \sim \tau_3,
+\Gamma \vdash \text{IF}(e_1, e_2, e_3) : \tau_2
+}
+$$
+
+$$
+\label{}\tag{If}
+$$
+
 * New constraints: $\tau_1 \sim \text{bool}$, $\tau_2 \sim \tau_3$
 
 ---
@@ -548,7 +574,6 @@ $$
 \label{}\tag{If}
 $$
 
-
 * If all constraints are satisfied, then $\tau_1 = \text{bool}$ and
   $\tau_2 = \tau_3$, so the rule is equivalent to the original
   $\text{IF}$ rule
@@ -571,11 +596,12 @@ e_1, \ldots, e_n : \tau_1, \ldots, \tau_n
 }
 $$
 
-* Often shorten $C_1 \land \ldots \land C_n$ to just $C$
-
 $$
 \label{}\tag{TypesOf}
 $$
+
+* Often shorten $C_1 \land \ldots \land C_n$ to just $C$
+
 
 ---
 ## Simpler notation for compound constraints
@@ -621,6 +647,11 @@ $$
 \label{}\tag{Apply}
 $$
 
+* Assume type $\alpha$ for return type of function
+
+* Then function type must be
+  $\tau_1 \times \cdots \times \tau_n \rightarrow \alpha$
+
 ---
 ## Example
 
@@ -630,10 +661,11 @@ $$
 
 $$
 \Gamma =
-\{+ : \forall . \text{int} \times \text{int} \rightarrow \text{int} \}
+\{\text{\tt +} : \\;
+\forall . \\, \text{int} \times \text{int} \rightarrow \text{int} \}
 $$
 
-* (Note the empty $\forall$ on the $+$ function, since this function
+* (Note the empty $\forall$ on the `+` function, since this function
   isn't polymorphic)
 
 ---
@@ -643,7 +675,10 @@ $$
 
 $$
 \cfrac{
-\cfrac{}{\text{\bf T}, \Gamma \vdash \text{\tt +} :
+\cfrac{
+\Gamma(\text{\tt +}) =
+\forall . \\, \text{int} \times \text{int} \rightarrow \text{int}
+}{\text{\bf T}, \Gamma \vdash \text{\tt +} :
 \text{int} \times \text{int}
 \rightarrow \text{int}}
 \quad
@@ -669,7 +704,10 @@ $$
 
 $$
 \cfrac{
-\cfrac{}{\text{\bf T}, \Gamma \vdash \text{\tt +} :
+\cfrac{
+\Gamma(\text{\tt +}) =
+\forall . \\, \text{int} \times \text{int} \rightarrow \text{int}
+}{\text{\bf T}, \Gamma \vdash \text{\tt +} :
 \text{int} \times \text{int}
 \rightarrow \text{int}}
 \quad
@@ -751,14 +789,14 @@ $$
 \begin{gather*}
 \Gamma(x) = \forall \\; \alpha_1, \ldots, \alpha_n \\, . \\, \tau
 \\\\
-\alpha_1, \ldots, \alpha_n
+\alpha_1', \ldots, \alpha_n'
 \\; \text{are fresh and distinct}
 \end{gather*}
 }{
 \text{\bf T}, \Gamma \vdash \text{VAR}(x) :
-((\alpha_1 \mapsto \alpha_1')
-\circ \cdots \circ
-(\alpha_n \mapsto \alpha_n')) \tau
+\\{ \alpha_1 \mapsto \alpha_1',
+\ldots,
+\alpha_n \mapsto \alpha_n' \\} \tau
 }
 $$
 
@@ -800,7 +838,10 @@ $$
 \text{\bf T}, \Gamma \vdash \text{\tt 1} : \text{\tt int}
 }
 \quad
-\cfrac{}{
+\cfrac{
+\Gamma(\text{\tt nil}) =
+\forall \alpha \\; . \\; (\text{\tt list} \\; \alpha)
+}{
 \text{\bf T}, \Gamma \vdash \text{\tt nil} :
 (\text{\tt list} \\; \alpha_2)
 }
@@ -820,7 +861,17 @@ $$
 ---
 ## Converting nondeterministic type rules to use constraints
 
-* We can simplify the constraint to:
+* We can simplify the constraint
+
+$$
+\text{\bf T} \land \text{\bf T} \land
+\alpha_1 \times (\text{\tt list} \\; \alpha_1) \rightarrow
+(\text{\tt list} \\; \alpha_1)
+\sim
+\text{\tt int} \times (\text{\tt list} \\; \alpha_2) \rightarrow \alpha_3
+$$
+
+* to:
 
 $$
 \alpha_1 \sim \text{\tt int} \land
@@ -833,7 +884,17 @@ $$
 ---
 ## Converting nondeterministic type rules to use constraints
 
-* We can simplify the constraint to:
+* We can simplify the constraint
+
+$$
+\text{\bf T} \land \text{\bf T} \land
+\alpha_1 \times (\text{\tt list} \\; \alpha_1) \rightarrow
+(\text{\tt list} \\; \alpha_1)
+\sim
+\text{\tt int} \times (\text{\tt list} \\; \alpha_2) \rightarrow \alpha_3
+$$
+
+* to:
 
 $$
 \alpha_1 \sim \text{\tt int} \land
@@ -848,7 +909,17 @@ $$
 ---
 ## Converting nondeterministic type rules to use constraints
 
-* We can simplify the constraint to:
+* We can simplify the constraint
+
+$$
+\text{\bf T} \land \text{\bf T} \land
+\alpha_1 \times (\text{\tt list} \\; \alpha_1) \rightarrow
+(\text{\tt list} \\; \alpha_1)
+\sim
+\text{\tt int} \times (\text{\tt list} \\; \alpha_2) \rightarrow \alpha_3
+$$
+
+* to:
 
 $$
 \alpha_1 \sim \text{\tt int} \land
@@ -899,6 +970,8 @@ $$
 * And $\mathcal{A}$ is usually the free type variables of $\Gamma$
   <br/>($\text{ftv}(\Gamma)$)
 
+* This makes sure we don't generalize over type variables
+  which are already being used in $\Gamma$
 
 ---
 ## Generalization: `val` bindings
@@ -1199,7 +1272,7 @@ $$
 * which gives the `lambda` part the type:
 
 $$
-\alpha_2 \rightarrow (\text{\tt list} \\, \alpha_2)
+\alpha_2 \rightarrow (\text{\tt list} \\; \alpha_2)
 $$
 
 ---
@@ -1210,7 +1283,7 @@ $$
 $$
 \text{\tt singleton} :
 \forall \alpha_2 \\, . \\,
-\alpha_2 \rightarrow (\text{\tt list} \\, \alpha_2)
+\alpha_2 \rightarrow (\text{\tt list} \\; \alpha_2)
 $$
 
 * which we prefer to write more simply as:
@@ -1218,7 +1291,7 @@ $$
 $$
 \text{\tt singleton} :
 \forall \alpha \\, . \\,
-\alpha \rightarrow (\text{\tt list} \\, \alpha)
+\alpha \rightarrow (\text{\tt list} \\; \alpha)
 $$
 
 * which is the type we expected
@@ -1350,6 +1423,7 @@ $$
 
 ---
 ## Adding extra constraints
+
 
 * We can also _add_ extra constraints to a rule, as long as the
   added constraints have a solution
@@ -1724,7 +1798,7 @@ C =
 \rightarrow \alpha_{5}
 $$
 
-* where: 
+* where:
   * $\alpha_2$, $\alpha_{3}$, $\alpha_{4}$ and $\alpha_{5}$ :
     fresh type variables
   * `cons` : $\alpha_{2} \times (\text{\tt list} \\; \alpha_{2})
@@ -1958,7 +2032,7 @@ $$
 (\text{\tt list} \\; (\text{\tt list} \\; \alpha_{1}))
 $$
 
-* At the `val` binding, this monotype is generalized to the 
+* At the `val` binding, this monotype is generalized to the
   polytype:
 
 $$
