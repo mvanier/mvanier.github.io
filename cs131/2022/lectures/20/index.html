@@ -83,7 +83,7 @@
 
 * Type schemes: have quantifiers
 
-  * "Empty" quantifiers allowed (_e.g._ $\forall . \text{int}$)
+  * "Empty" quantifiers allowed (_e.g._ $\forall . \\, \text{int}$)
 
 ---
 ## Types and type schemes
@@ -101,7 +101,7 @@
 
 * Non-quantified types also referred to as "monotypes"
 
-* Quantified types referred to as "polytypes"
+* Quantified types also referred to as "polytypes"
 
 ---
 ## The $<:$ notation<br/>(type schemes)
@@ -152,7 +152,7 @@ $$
 <pre class="smaller"><code>(define k (x y) x)
 ;; Both unit tests pass:
 (check-type k (forall ['a 'b] <em>('a 'b -&gt; 'a)</em>)) ; principal type
-(check-type k (forall ['a 'a] <em>('a 'a -&gt; 'a)</em>)) ; less general
+(check-type k (forall ['a]    <em>('a 'a -&gt; 'a)</em>)) ; less general
 </code></pre>
 
 ---
@@ -162,7 +162,7 @@ $$
 
 <pre class="smaller"><code>(define k (x y) x)
 (check-principal-type k (forall ['a 'b] <em>('a 'b -&gt; 'a)</em>)) ; pass
-(check-principal-type k (forall ['a 'a] <em>('a 'a -&gt; 'a)</em>)) ; fail
+(check-principal-type k (forall ['a]    <em>('a 'a -&gt; 'a)</em>)) ; fail
 </code></pre>
 
 ---
@@ -816,16 +816,13 @@ $$
 
   * (Obviously, this should be `(list int)`)
 
-* Let's write out the derivation...
-
----
-## Converting nondeterministic type rules to use constraints
+* Here's the derivation:
 
 $$
-\small
+\tiny
 \cfrac{
 \cfrac{
-\Gamma(\text{\tt cons}) = \forall \alpha .
+\Gamma(\text{\tt cons}) = \forall \alpha \\, . \\,
 \alpha \times (\text{\tt list} \\; \alpha)
 \rightarrow (\text{\tt list} \\; \alpha)
 }{
@@ -847,7 +844,7 @@ $$
 }
 }{
 \begin{gather*}
-\text{\bf T} \land \text{\bf T} \land
+\text{\bf T} \land \text{\bf T} \land \text{\bf T} \land
 \alpha_1 \times (\text{\tt list} \\; \alpha_1) \rightarrow
 (\text{\tt list} \\; \alpha_1)
 \sim
@@ -864,7 +861,7 @@ $$
 * We can simplify the constraint
 
 $$
-\text{\bf T} \land \text{\bf T} \land
+\text{\bf T} \land \text{\bf T} \land \text{\bf T} \land
 \alpha_1 \times (\text{\tt list} \\; \alpha_1) \rightarrow
 (\text{\tt list} \\; \alpha_1)
 \sim
@@ -887,7 +884,7 @@ $$
 * We can simplify the constraint
 
 $$
-\text{\bf T} \land \text{\bf T} \land
+\text{\bf T} \land \text{\bf T} \land \text{\bf T} \land
 \alpha_1 \times (\text{\tt list} \\; \alpha_1) \rightarrow
 (\text{\tt list} \\; \alpha_1)
 \sim
@@ -912,7 +909,7 @@ $$
 * We can simplify the constraint
 
 $$
-\text{\bf T} \land \text{\bf T} \land
+\text{\bf T} \land \text{\bf T} \land \text{\bf T} \land
 \alpha_1 \times (\text{\tt list} \\; \alpha_1) \rightarrow
 (\text{\tt list} \\; \alpha_1)
 \sim
@@ -1138,7 +1135,7 @@ $$
 
 $$
 \forall \alpha \\, . \\,
-  \alpha \rightarrow (\text{\tt list} \\, \alpha)
+  \alpha \rightarrow (\text{\tt list} \\; \alpha)
 $$
 
 ---
@@ -1152,7 +1149,7 @@ $$
 * We haven't shown a rule for `lambda`, but the `lambda` body will be
   checked in the type environment $\Gamma$ extended with a binding for
   `x` to a fresh type variable _e.g._
-  $\Gamma' = \Gamma \\{ x \mapsto \forall \\, . \\, \alpha_1 \\}$
+  $\Gamma' = \Gamma \\{ x \mapsto \forall . \\, \alpha_1 \\}$
 
 ---
 ## Generalization: example
@@ -1264,9 +1261,9 @@ $$
 * has the (non-unique) solution:
 
 $$
-\theta = \\{ \alpha_1 \rightarrow \alpha_2,
-\alpha_3 \rightarrow \alpha_2,
-\alpha_4 \rightarrow (\text{\tt list} \\, \alpha_2) \\}
+\theta = \\{ \alpha_1 \mapsto \alpha_2,
+\alpha_3 \mapsto \alpha_2,
+\alpha_4 \mapsto (\text{\tt list} \\; \alpha_2) \\}
 $$
 
 * which gives the `lambda` part the type:
@@ -1322,8 +1319,8 @@ $$
 
 * Assume that:
 
-  * we will add `x` to the type environment $\Gamma$ with the monotype
-    $\forall \\; . \\; \alpha_1$
+  * we will add `x` to the type environment $\Gamma$ with the
+    type scheme $\forall . \\; \alpha_1$
 
 ---
 ## Unsolvable constraints
@@ -1332,7 +1329,7 @@ $$
 
 * Assume that:
 
-  * `cons` is in $\Gamma$ with the polytype<br/>
+  * `cons` is in $\Gamma$ with the type scheme<br/>
     $\forall \alpha \\; . \\; \alpha \times (\text{\tt list} \\; \alpha)
     \rightarrow (\text{\tt list} \\; \alpha)$
 
@@ -1343,7 +1340,7 @@ $$
 
 * Assume that:
 
-  * we instantiate `cons` with the monotype
+ * we instantiate `cons` with the type<br/>
     $\alpha_2 \times (\text{\tt list} \\; \alpha_2)
     \rightarrow (\text{\tt list} \\; \alpha_2)$
 
@@ -1774,8 +1771,8 @@ $$
 \forall \alpha \\;. \\; \alpha \times
 (\text{\tt list} \\; \alpha)
 \rightarrow
-(\text{\tt list} \\; \alpha),
-\text{\tt y} : \alpha_1
+(\text{\tt list} \\; \alpha), \\,
+\text{\tt y} : \forall . \\; \alpha_1
 \\}
 $$
 
