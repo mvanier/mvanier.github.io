@@ -1,0 +1,778 @@
+
+
+<html>
+
+<head>
+<title>CS 11: reference material</title>
+</head>
+
+<body>
+
+<center>
+<h1>CS 11: reference material</h1>
+</center>
+<hr>
+<p>
+
+
+This page contains reference material that may be useful for students of
+CS 11 (Software Shop).  The material described here ranges from elementary to
+very advanced.
+
+<p>
+
+<hr>
+
+<h1>General interest</h1>
+
+<h2>books</h2>
+
+<ul>
+
+<li> Abelson and Sussman, <u>Structure and Interpretation of 
+     Computer Programs</u>
+
+<p>
+
+The "Feynman Lectures" of computer programming.  SICP (as it's known) is an
+extremely well-written guide to the fundamental ideas of programming.  It is
+very dense; each page requires careful reading.  The authors use the Scheme
+language (a dialect of lisp) to introduce programming concepts, and a bias
+towards functional programming styles is evident.  Nevertheless, the big
+ideas are relevant to all programming languages, and in our opinion all
+serious programmers should read this book.
+
+<p>
+
+<li> <u>Essentials of Programming Languages, 2nd Ed.</u> by Dan Friedman, 
+Mitchell Wand, Christopher Haynes
+
+<p>
+
+This book is the next step up after SICP.  The authors create a series of
+programming languages in scheme which instantiate different language design
+choices.  Good for advanced programmers with a serious interest in the
+implementation of computer languages.
+
+<p>
+
+<li> Steve Macguire, <u>Writing Solid Code</u>
+
+<p>
+
+This book contains a lot of useful information primarily aimed at C
+programmers.  Especially useful are the chapters on the use of the assert()
+macro and on debugging.
+
+<p>
+
+<li> <u>Object-Oriented Software Construction, 2nd Ed.</u> by Bertrand Meyer
+
+<p>
+
+This book gives an exhaustive analysis of the principles of object-oriented
+programming.  Meyer is the author of the Eiffel language, and his
+presentation is biased towards that world-view.  However, OOSC contains a lot
+of useful information.
+
+<p>
+
+<li> Gamma et. al. <u>Design Patterns</u>
+
+<p>
+
+<u>Design Patterns</u> (also called the gang-of-four book or GOF after its
+four authors) describes a number of code patterns often found in
+object-oriented code which simplify many common tasks.  The book is slanted
+towards C++ programmers, but the principles apply to all OO languages.
+
+<p>
+A site with many Prolog links is <a href="">here</a>.
+<li> Martin Fowler, <u>Refactoring</u>
+
+<p>
+
+Refactoring refers to the process of rewriting code to improve the design
+and/or implementation of some part of a program.  It applies both to
+high-level design and to low-level implementation details.  This book is a
+good introduction to the concept.  More information is available at the
+author's <a href="http://www.refactoring.com">web site</a>.
+
+<p>
+
+<li> Kent Beck, <u>Extreme Programming Explained</u>
+
+<p>
+
+Many different software methodologies exist.  Some of these are so
+heavyweight it feels like you need a congressional mandate in order to begin
+writing any code.  Extreme Programming (XP) is a much lighter-weight
+methodology that is gaining increasing support.  See also the author's <a
+href="http://www.extremeprogramming.org">web site</a>.
+
+</ul>
+
+<h2>web sites</h2>
+
+<ul>
+
+<li> The <a href="http://www.gnu.org">GNU</a> home page.
+
+<p>
+
+GNU (Gnu's Not Unix) is the name of the organization that originated the idea
+of free (as in speech, not as in beer) software.  Founded and run by the
+always provocative Richard Stallman, GNU represents a philosophy of free
+exchange of software for the common good.
+
+<p>
+
+<li> Eric Raymond's <a href="http://catb.org/esr/writings">writings</a>.
+
+<p>
+
+Eric Raymond is a leading open source and Linux advocate (see <a
+href="http://www.opensource.org">this site</a> for more on open source and
+its relation to free software in the GNU sense).  His writings, especially
+"The Cathedral and the Bazaar", are interesting examinations of why open
+source development works as well as it does.  He is rather full of himself,
+and like most advocates he tends to only see the positive side of his
+movement, but his writings are always interesting.
+
+<p>
+
+<li> The <a href="http://catb.org/esr/jargon/">jargon file</a>.
+
+<p>
+
+This is a somewhat Unix-centric collection of computer-related jargon.  Very
+amusing when you get tired of doing real work.
+
+<p>
+
+<li><a href="http://www.norvig.com/21-days.html">Teach Yourself Programming
+in Ten Years</a>.
+
+<p>
+
+A useful antidote to the "Teach Yourself &lt;language X&gt; in 21 days/24
+hours" books. 
+
+<p>
+
+<li> <a href="http://freeworld.thc.org/root/phun/unmaintain.html">
+How to write unmaintainable code</a>.
+
+<p>A must-read for any programmer.  It sounds preposterous, but most programmers
+run into code like this sooner or later.  Mainly oriented to C/C++/java
+programs.
+
+<p>
+
+<li> <a href="http://esolangs.org/wiki/Esoteric_programming_language">Esoteric
+Programming Languages</a>.
+
+<p>Think you've seen it all when it comes to programming languages?  This site
+will cure you of that misconception.  One particularly interesting language
+is <a
+href="http://www.eleves.ens.fr:8080/home/madore/programs/unlambda">unlambda</a>.
+If you like this sort of thing, also check out the <a
+href="http://www.ioccc.org">International Obfuscated C Code Contest</a>.
+
+</ul>
+
+<hr>
+
+<h1>C</h1>
+
+C is a low-level imperative language originally designed for system
+programming as a replacement for assembly language.  It has become ubiquitous
+both as a language for developing applications as well as a language for
+implementing other computer languages.  However, use of C is on the decline
+as scripting languages and java are used more frequently.  Nevertheless, a
+strong knowledge of C is essential for serious programmers.
+
+<h2>books</h2>
+
+<ul>
+<li> Kernighan and Ritchie, <u>The C Programming Language, 2nd Ed.</u>
+<p>A concise and complete description of the C language.
+
+<p>
+
+<li> Peter van der Linden, <u>Expert C Programming: Deep C Secrets</u>
+<p>This book, despite its numerous typos, is one of the few books that
+explains what is going on at the machine level during compilation and
+execution of a C program.
+
+</ul>
+
+<hr>
+
+<h1>C++</h1>
+
+C++ is an extension of C that supports object-oriented and generic
+programming.  It is a comparatively difficult language to learn, for these
+reasons:
+
+<ul>
+<li> The language is very large and very complex.
+<li> There are many subtle pitfalls.
+<li> To master C++ you have to learn (at least) two new programming
+     paradigms (object-oriented programming and generic programming).
+     In particular, learning object-oriented programming requires learning 
+     a great deal about design issues.
+<li> Most compilers do not support the entire C++ standard at the moment.
+<li> Programmers who know C may be tempted to use C idioms even though
+     there are better C++ idioms (<i>e.g.</i>using "char *" instead of
+     "string" for strings.
+</ul>
+
+<p>
+
+However, C++ is a very powerful language which can be used effectively in
+cases where performance is critical.
+
+<h2>books</h2>
+
+<ul>
+
+<li> Andrew Koenig and Barbara Moo, <u>Accelerated C++</u>
+
+<p>
+
+This book is probably the best overall introduction to C++.  However, it
+relies heavily on the standard template library and doesn't get around to
+object-oriented programming until comparatively late in the book.
+
+<p>
+
+<li> Stan Lippman, <u>Essential C++</u>
+
+<p>
+
+This book is a concise introduction to the major features of C++.  Useful for
+someone who wants to pick up the main features of the language quickly.
+
+<p>
+
+<li> Bjarne Stroustrup, <u>The C++ Programming Language, Special Ed.</u>
+
+<p>
+
+This is the standard reference book by the author of the language.  It will
+take you a long time to get through the whole thing.  Covers the entire
+language.  Not easy reading.
+
+<p>
+
+<li> Stan Lippman and Josee Lajoie, <u>The C++ Primer</u>
+
+<p>
+
+A good tutorial that also covers the entire language.  Very long.
+
+<p>
+
+<li> Scott Meyers, <u>Effective C++</u> and <u>More Effective C++</u>
+
+<p>
+
+Essential style guides for writing C++.  If you want to avoid C++ pitfalls you
+<u>must</u> read these books.  Meyers has also written a book called
+<u>Essential STL</u> which I have not read but which comes highly recommended.
+
+<p>
+
+<li> Andrei Alexandrescu, <u>Modern C++ Design: Generic Programming and Design
+                           Patterns Applied</u>
+
+<p>
+
+Not for the faint-hearted.  This book explains some of the outer limits of
+C++, involving some amazing coding styles made possible by templates.  Will
+make your head explode, but very cool.
+
+<p>
+
+<li> Stan Lippman, <u>Inside the C++ Object Model</u>
+
+<p>
+
+This book explains in detail what is going on at the machine level when a C++
+program is compiled and run.  Mainly for advanced programmers.
+
+</ul>
+
+<h2>web sites</h2>
+
+<ul>
+
+<li> <a href="http://www.research.att.com/~bs">Bjarne Stroustrup's home
+page</a>.
+
+<p>
+
+Contains a very interesting FAQ on C++.  Don't criticize C++ until you've
+read it.
+
+<p>
+
+<li> <a href="http://www.hpl.hp.com/personal/Hans_Boehm/gc">
+A garbage collector for C and C++</a>.
+
+<p>
+
+Despite the fact that C and C++ are designed for manual memory management
+(with all the problems that that entails), it is possible to use automatic
+garbage collection as well.  This page describes a freely-available
+implementation of a garbage collector which works with C and C++.
+
+<p>
+
+</ul>
+
+<hr>
+
+<h1>java</h1>
+
+Java is a relatively new object-oriented language developed at Sun
+Microsystems.  It is simpler than C++ and avoids the most problematic
+features of that language.  The java environment is based around a portable
+bytecode and bytecode interpretation, which makes it extremely portable.
+
+<h2>books</h2>
+
+<ul>
+
+<li> Gosling et al, <u>The Java Programming Language</u>
+
+<p>
+
+This book explains the entire java language clearly and succinctly.  It does
+not discuss the enormous java API, however.
+
+<p>
+
+</ul>
+
+<h2>web sites</h2>
+
+<ul>
+
+<li> The main <a href="http://java.sun.com">Java web page</a> at Sun
+Microsystems.
+
+<p> 
+
+This page has links to a variety of Java tutorials.  You can also download
+the latest JDK here.
+
+<p>
+
+<li> The <a href="http://java.sun.com/j2se/1.3/docs/api/index.html">
+Java API</a> on-line reference.
+
+
+</ul>
+
+<hr>
+
+<h1>Objective CAML (ocaml)</h1>
+
+Objective CAML (ocaml) is a language which provides full support for
+functional programming and a strong, polymorphically-typed static type
+system.  In practice, this means that the ocaml compiler catches a larger
+number of errors at compile time than almost any other language.  The
+language features many advanced constructs such as variant records and
+built-in pattern matching, as well as an object system.  Ocaml is also
+extremely fast, rivalling C speed for most tasks.  Those who have used ocaml
+generally find it an extremely pleasant language to work in, despite the
+somewhat odd syntax.
+
+<h2>books</h2>
+
+<ul>
+
+<li> Cousineau and Mauny, <u>The Functional Approach to Programming</u>
+
+<p>
+
+This book is, to our knowledge, the only English-language book on Caml.  It
+does not use Objective Caml but an earlier dialect called Caml light.
+However, the differences are minor.  The book is excellent, but its main
+focus is on teaching functional programming rather than Caml programming
+<i>per se</i>.
+
+</ul>
+
+<h2>web sites</h2>
+
+<ul>
+
+<li> The <a href="http://www.ocaml.org">ocaml home page</a>.
+
+<p>
+
+<li> Yet another <a href="http://pauillac.inria.fr/caml">ocaml home page</a>.
+
+<p>
+
+<li> <a href="http://pauillac.inria.fr/caml/ocaml/htmlman/index.html">
+Documentation</a> for the latest ocaml release.
+
+<p>
+
+</ul>
+
+<hr>
+
+<h1>scheme and lisp</h1>
+
+Scheme and lisp are languages that feature a parenthesized prefix syntax and
+a mostly-functional programming paradigm.  Historically, lisp has mainly been
+used for artificial intelligence applications while scheme has mainly been a
+language used to teach programming concepts.  Both languages can be used
+outside these domains, however.
+
+<h2>books</h2>
+
+<ul>
+
+<li> <u>SICP</u>, as mentioned above.
+
+<p>
+
+<li> <u>Scheme and the Art of Programming</u> by George Springer and Dan
+Friedman.
+
+<li> <u>Simply Scheme</u> by Brian Harvey and Matthew Wright.
+
+<p>
+
+These last two books are a more gentle introduction to scheme than SICP.
+
+<p>
+
+<li> <u>The Little Schemer</u> and <u>The Seasoned Schemer</u> by Dan
+Friedman and Matthias Felleisen.
+
+<p>
+
+These two books are short introductions to scheme written in a
+question-and-answer format.  They teach how to think about problems in a
+functional/recursive way, and are very useful as a companion to SICP, for
+instance.
+
+<p>
+
+<li> <u>ANSI Common Lisp</u> and <u>On Lisp</u>, by Paul Graham.
+
+<p>
+
+These two books describe Common Lisp, which is less elegant than scheme but
+more practical for serious programming tasks (and much faster if used
+correctly).  <u>ANSI Common Lisp</u> is a very thorough description of the
+language, while <u>On Lisp</u> is (among other things) the most complete
+introduction to Lisp macros available anywhere.  Lisp macros allow you to
+customize lisp syntax to your application, and are one of the amazing
+features of lisp.
+
+<p>
+
+</ul>
+
+<h2>web sites</h2>
+
+<ul>
+
+<li> The <a href="http://www.swiss.ai.mit.edu/projects/scheme/index.html">
+scheme home page</a> at MIT.
+
+<p>
+
+<li> <a href="http://www.swiss.ai.mit.edu/projects/scheme/documentation">
+MIT scheme reference material</a>.
+
+<p>
+
+<li> <a href="http://www.ccs.neu.edu/scheme">PLT scheme</a>.
+
+<p>
+
+Another solid implementation of scheme.  Home of the well-known DrScheme
+implementation.  PLT software can be downloaded <a
+href="http://www.cs.rice.edu/CS/PLT/packages">here</a>.
+
+<p>
+
+<li> <a
+href="http://www.cs.rice.edu/~dorai/t-y-scheme/t-y-scheme-Z-H-1.html">
+Teach Yourself Scheme in Fixnum Days</a>.
+
+<p>
+
+A nice tutorial on scheme.
+
+<p>
+
+<li> <a href="http://www.cs.indiana.edu/scheme-repository/home.html">
+The Internet Scheme Repository</a>.
+
+<p>
+
+Tons of scheme-related stuff.  I especially like the list of <a
+href="http://www.cs.indiana.edu/scheme-repository/doc.publications.html">
+publications</a>.
+
+<p>
+
+<li> <a href="http://sbcl.sourceforge.net">Steel Bank Common Lisp</a>
+
+<p>
+
+Probably the best open-source common lisp implementation.
+
+<p>
+
+</ul>
+
+<hr>
+
+<h1>python</h1>
+
+Python is probably the best "scripting language" available today.  Scripting
+languages emphasize ease of programming, rapid development, and easy
+connection to libraries written in C, C++, and java.  Python also has the
+advantages of being object-oriented, extremely readable, cross-platform, and
+extremely easy to learn.
+
+<h2>books</h2>
+
+<ul>
+
+<li> <u>Learning Python</u> by Mark Lutz (O'Reilly and Associates)
+
+<p>
+
+A clearly-written tutorial.
+
+<p>
+
+</ul>
+
+<h2>web sites</h2>
+
+<ul> 
+
+<li> The <a href="http://www.python.org">Python home page</a>.
+
+<p>
+
+The main site to look for information on python.
+
+<p>
+
+<li> The <u>comp.lang.python</u> news group.
+
+<p>
+
+<li> The <a href="http://www.jython.org">Jython</a> home page.
+
+<p>
+
+Jython is an implementation of python written entirely in java, and providing
+easy scripting of java components.
+
+<p>
+
+</ul>
+
+<hr>
+
+<h1>Other interesting languages</h1>
+
+<ul>
+<li> <a href="http://www.mathworks.com">Matlab</a>
+
+<p>
+
+Matlab is far from elegant as a programming environment, but it is an
+indispensable tool for most scientists.  The programming language uses
+two-dimensional arrays (matrices) as the primary data types, and most
+operations can work on both scalars and matrices.
+
+<p>
+
+<li> <a href="http://www.wolfram.com">Mathematica</a>
+
+<p>
+
+Mathematica is the primary computer algebra system in use today.  Its
+programming language borrows heavily from Lisp and many other languages.
+
+<p>
+
+<li> Fortran
+
+<p>
+
+Fortran is an extremely archaic language which survives because of the large
+amount of scientific and engineering code written in it.  Some Fortran
+compilers can produce extremely efficient code (faster than C in some cases),
+and many scientists (unfortunately) do all of their work in Fortran.
+Learning to program in Fortran can create bad mental habits that are
+extremely difficult to overcome, and those who learn to program in Fortran
+first often have great difficulties learning other computer languages.
+
+<p>
+
+<li> <a href="http://www.csharp-station.com">C#</a>
+
+<p>
+
+C# is a new language from Microsoft, which is being positioned as a
+competitor to java.  Despite its source, the language appears to be
+well-designed and improves on java in a number of respects.
+
+<p>
+
+<li> Eiffel
+
+<p>
+
+Eiffel is a pure object-oriented language with an advanced assertion system
+known as Design by Contract that facilitates the design of correct software,
+as well as a number of other features.  The canonical Eiffel site is <a
+href="http://www.eiffel.com">here</a>.  A good free Eiffel compiler is the <a
+href="http://www.loria.fr/projets/SmallEiffel/index.html">GNU SmallEiffel</a>
+compiler.
+
+<p>
+
+
+<li> <a href="http://www.haskell.org">Haskell</a>
+
+<p>
+
+Haskell is a so-called lazy functional language.  Programs in Haskell do not
+use any assignment statements whatsoever.  Reasoning about programs is
+particularly easy in Haskell, though the lack of imperative features makes
+the language challenging to learn.
+
+<p>
+
+<li> <a href="http://cm.bell-labs.com/cm/cs/what/smlnj/index.html">
+Standard ML</a>
+
+<p>
+
+Standard ML is quite similar to ocaml.  It has a nicer syntax but is not as
+practical for most uses (and is slower).
+
+<p>
+
+<li> <a href="http://www.smalltalk.org">Smalltalk</a>
+
+<p>Smalltalk is the earliest of the object-oriented programming languages still
+in use today.  It has a small but fanatical following.  Programming in
+Smalltalk is quite different from programming in Java or C++.  Smalltalk is
+dynamically-typed, and emphasizes interactive development and easy
+modifiability.  The language itself is incredibly simple.  <a
+href="http://www.squeak.org">Squeak</a> is an interesting recent
+implementation of Smalltalk.</p>
+
+<li> Prolog
+
+<p>Prolog is a logic programming language.  In such languages, you program by
+describing the problem to be solved rather than by describing a series of steps
+to solve it, and the computer figures out how to solve it.  One free
+implementation is <a href="http://gprolog.org">GNU prolog</a>.  A site with many
+Prolog links is <a
+href="http://www.whoishostingthis.com/resources/prolog/">here</a>.  Another
+interesting logic programming language is <a
+href="http://minikanren.org/">miniKanren</a>.  A logic programming language with
+static typing is <a
+href="http://www.mercurylang.org">Mercury</a>.</p>
+
+<li> <a href="http://www.perl.org">Perl</a>
+
+<p>Perl is a scripting language widely used for web development.  As a language,
+perl is very powerful but violates nearly every rule of good programming
+language design.  Perl code is typically extremely difficult to decipher
+after it's written.  We believe that Python is a superior alternative to perl
+for almost all tasks for which perl is used.</p>
+
+<li> tcl
+
+<p>
+
+Tcl ("tool command language") is a simple scripting language with a very nice
+graphical toolkit called Tk.  Tcl is inferior to python for scripting tasks,
+so its use is not recommended.
+
+<p>
+
+<li> <a href="http://www.forth.org">Forth</a>
+
+<p>
+
+Forth is a stack-based threaded interpreted language with an unusual postfix
+syntax.  Forth is interesting from a language design standpoint but is quite
+cumbersome to use and tends to lead to unreadable code.  Forth is really only
+useful in embedded applications.  A good free implementation of Forth is <a
+href="http://www.complang.tuwien.ac.at/forth/gforth">gforth</a>.
+
+<p>
+
+<li> Dylan
+
+<p>
+
+Dylan is a language which is very similar to scheme or lisp but which has an
+infix syntax.  A free implementation is <a
+href="http://www.gwydiondylan.org">Gwydion Dylan</a>.
+
+<p>
+
+<li> <a href="http.jsoftware.com">J</a>
+
+<p>
+
+J is a dialect of APL, an array-based programming language which was infamous
+for requiring a strange set of characters and which typically resulted in
+incredibly short (and incomprehensible) programs.  J uses ascii characters
+only, and is more functional than APL, but code written in J is still
+basically write-only.
+
+<p>
+
+</ul>
+
+
+
+<hr>
+<table width="100%" cellpadding=0><tr>
+<td width="33%">
+Go <a href="../../index.html">back</a>
+to my home page.
+
+<td width="33%" align=center><i>Last updated April 11, 2017</i>
+
+
+<!-- 
+<td width="10%">
+<img src=../../PythonPowered.gif>
+-->
+
+</table>
+
+<p>
+<address>
+Mike Vanier
+(<a href="mailto:mvanier@cs.caltech.edu">mvanier@cs.caltech.edu</a>)
+</address>
+</body>
+</html>
+
+

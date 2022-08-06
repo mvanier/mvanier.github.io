@@ -1,0 +1,9 @@
+#! /bin/sh
+
+# Get rid of temporary emacs save files.
+find . -name '*~' -exec rm {} \;
+
+# Save the files.
+rsync . -rtplzv --delete -e ssh \
+login.cs.caltech.edu:/home/mvanier/public_html/extra
+

@@ -1,0 +1,1580 @@
+
+
+<html>
+
+<head>
+<title>Mike Vanier: opinions</title>
+</head>
+
+<body>
+
+<center>
+<h1>Scalable computer programming languages</h1>
+</center>
+<hr>
+<p>
+
+
+<div align=right> 
+<table width=90%><tr><td>
+<span class=epigraph>
+
+<p>
+<i>There will always be things we wish to say in our programs that in all known
+languages can only be said poorly.
+</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- Alan Perlis
+
+</span>
+</td></tr></table>
+</div>
+
+<h2><b>NOTE</b></h2>
+
+If you're going to send me email comments about this article, please keep a
+few things in mind:
+
+<ol>
+
+<li><p>I wrote this article a long time ago (in 2001, if memory serves), and
+frankly I'm not that interested in discussing it anymore.  These days I'd
+rather write programs and teach programming languages than write opinion
+pieces.</p></li>
+
+<li><p>The article accurately reflects my opinions as of the time I wrote it,
+but may not accurately reflect my current opinions.</p></li>
+
+<li><p>I didn't post this article to reddit.com or to any other site.  I have
+no interest in drumming up traffic to this page.</p></li>
+
+<li><p>I've received some surprisingly hostile emails from people who
+disagree with me.  To those people: please realize that this is a rant, an
+opinion piece.  If you don't agree with me, feel free to write your own
+opinion piece.  But name-calling and trolling just makes you look bad and
+undercuts your own arguments.  I won't respond to trolls, even if they also
+have some good points to make.  If you can't talk civilly, talk to someone
+else.  I am continually astonished by how angry comparative discussions of
+programming languages can get.  Can't we all get along?  There are more
+important things to get mad about, like cancer, world hunger, nuclear
+proliferation, etc.</p></li>
+
+<li><p>That said, I welcome constructive comments.  In fact, I've received a
+number of insightful comments, and I've added some notes at the end
+summarizing some of the feedback I've received as well as some of the ways my
+views have shifted since I originally wrote this.</p></li>
+
+</ol>
+
+<h2>Introduction</h2>
+
+Computer programmers often use the word <b>scalable</b> to describe a
+desirable feature of a program or algorithm.  The idea is that something that
+is scalable not only works for very small scale jobs but is equally effective
+(or nearly as effective) when the job in question is much larger (or, more
+commonly, when the job grows from being small to being large).  A trivial
+example of poor scalability might be an inefficient algorithm used in a
+prototype implementation of a program.  It works fine as long as only very
+small data sets are being used, but it breaks down when larger data sets are
+used because the computation takes so much time that the program effectively
+grinds to a halt.  This kind of scalability is well understood by any decent
+programmer.  A different kind of scalability is represented by the
+architecture of a computer program.  A program that can't easily be extended
+to cope with new requirements is called <u>brittle</u>, which is the opposite
+of scalable.  Since effectively all programs that are successful grow new
+parts, a nonscalable program usually will require a total rewrite when the
+requirements change, which is very wasteful.  The usual reason for this kind
+of non-scalability is poor design abstraction; too many fundamental design
+decisions have been hard-wired into the code in so many places that it is
+difficult to change them all without introducing lots of bugs.  Many, many
+books have been written about good program design; a classic is Abelson and
+Sussman's <a href="http://mitpress.mit.edu/sicp/sicp.html">Structure and
+Interpretation of Computer Programs</a>, which covers this and much more
+interesting material as well and is highly recommended.  But that's not what
+I want to talk about here.  What I want to talk about is what makes
+<u>computer programming languages</u> scalable or not.  I want to show that
+the notion of scalability is every bit as valid when applied to programming
+languages as it is when applied to programs or algorithms.  I'll also discuss
+several well-known and not so well-known programming languages from this
+perspective and give some concrete recommendations, as well as discuss some
+of the social factors which hinder progress in this field.
+
+<h2>What is a scalable computer language?</h2>
+
+Simply put, a scalable computer language is a language that one can write
+very large programs in (and extend very large programs that have already been
+written) without feeling an undue amount of pain.  In a scalable programming
+language, the difficulty of managing the complexity of the program goes up
+roughly linearly with the size of the program.  Conversely, a nonscalable
+computer language is one in which increasing the size and scope of a problem
+tends to make the program much harder to manage (<i>i.e.</i> the complexity
+of the program goes up much more than linearly with its size).
+
+<h2>Aspects of a programming language that affect scalability</h2>
+
+<h3>Garbage collection: very, very good</h3>
+
+Garbage collection (GC) means that the computer language (literally, the
+computer language's runtime system) automatically manages the reclamation
+("freeing") of memory that is no longer being used.  This is a <b>huge</b>
+win for the programmer, and can dramatically increase the scalability of the
+language.  The reason is simple.  It's usually obvious where one has to
+allocate memory.  It can be very difficult to know exactly when it's safe to
+free it.  This is especially true when references to the allocated memory are
+passed around, returned from functions, stored in multiple data structures
+that are later deleted (or not), etc. etc.  The effects of this are very
+insidious.  Languages without GC implicitly discourage the programmer from
+using all but the simplest data structures, because more often than not, the
+memory management problem quickly becomes intractable when using more complex
+data structures.  What usually happens in practice is that the programmer
+rolls his/her own (bad) garbage collector (maybe a reference counter), with
+performance that is usually worse than what you would get if you used a
+language with GC built in.
+
+<p>
+
+I saw a rather stark example of this recently.  One of the things I do
+professionally is teach the C programming language to Caltech undergraduates.
+I emphasized how important it was to always free memory that had been
+allocated.  However, many of my students simply ignored me, and their code
+was littered with memory leaks.  I got so tired of writing "this code has a
+memory leak here" on their assignments that I wrote a very simple memory leak
+checker.  They are now required to write code that passes through the memory
+leak checker without any reported leaks before they submit their
+assignments.  However, I was somewhat dismayed to find that my own answers to
+the assignments had a couple of subtle memory leaks as well!  Since I have
+more than ten years of C programming experience, and have worked on several
+very large projects, this suggests to me that manual memory management is
+much harder than I'd previously supposed it to be.
+
+<p>
+
+There is a cost to GC, both in time and space efficiency.  Well-designed
+garbage collectors (especially generational GC) can be extremely efficient
+(more efficient, for instance, than naive approaches such as reference
+counting).  However, in order to do this they tend to have significantly
+greater space usages than programs without GC (I've heard estimates on the
+order of 50% more total space used).  On the other hand, a program that
+leaks memory has the greatest space usage of all.  I've wasted way too much
+of my life hunting down memory leaks in large C programs, and I have no
+interest in continuing to do so.
+
+<p>
+
+In conclusion, I would say that of all the items I'm discussing here, GC is
+the single most important one to ensure that a programming language is
+scalable.  This is why programmers who move from a language without GC (say
+C++) to one of roughly equivalent abstractive power but with GC (say Java)
+invariably say how much happier they are now that they don't have to worry
+about memory management and can concentrate on the algorithms they're trying
+to write.  Personally, I'd rather pull my own teeth out than write a large
+project in a language without GC.
+
+<h3>Direct access to memory and pointer arithmetic: very bad</h3>
+
+Some computer languages, notably C and C++, allow the programmer to directly
+interact with memory addresses through pointers, as well as allowing pointer
+arithmetic (incrementing and decrementing pointer variables).  This kind of
+low-level programming is sometimes necessary (<i>e.g.</i> when writing device
+drivers) and sometimes simply useful (<i>e.g.</i> when micro-optimizing code
+that has to run as fast as possible).  However, my (imperfect) understanding
+of the issue is that programming with pointers makes precise garbage
+collection impossible, or nearly so.  There is a kind of GC called
+"conservative" garbage collection (<a
+href="http://www.hpl.hp.com/personal/Hans_Boehm/gc/">here</a> is a free
+implementation of the Boehm-Demers conservative GC) which can work with
+languages like C and C++. It's certainly better than nothing, but there are
+no guarantees that all memory will be managed correctly (<i>i.e.</i> memory
+leaks are unlikely, but possible).  In practice, this supposedly isn't a
+problem, but I note with some interest that very little C/C++ code that I've
+seen actually uses conservative GC, and those that do are usually in code
+that is implementing a language that includes GC.
+
+<p>
+
+The scalability cost of pointers goes far beyond just making GC harder.
+Pointers (and especially pointer arithmetic) tend to destroy any safety
+guarantees you might want to be able to make about a program.  It's not hard
+to see why.  When you have a pointer to (say) an integer, and you can add
+1,000,000 to that pointer and dereference some random region of memory which
+may or may not be part of your program's run-time image, all hell can break
+loose.  If you're lucky, you'll just get a core dump and your program will
+terminate.  If you're not so lucky, some part of the program memory will be
+corrupted, leading to mysterious bugs that are extremely difficult to track
+down, because they manifest themselves far away from where the original
+problem was.  This leads to a huge increase in debugging times, which
+dramatically hurts programmer productivity.  As the program gets larger, the
+opportunities for this kind of problem increase, which represents a
+significant barrier to scalability.
+
+<p>
+
+The usual argument in favor of direct pointer manipulations is that they make
+it possible to write faster code.  This is often true; I've seen cases where
+using pointer arithmetic judiciously increased the speed of a program by a
+factor of five.  However, the reverse is also often true; many program
+optimizations (normally performed automatically by the compiler) are rendered
+much more difficult or impossible in code that uses pointers.  In other
+words, languages that enable micro-optimizations often make
+macro-optimizations impossible.
+
+<p>
+
+The author of the <a href="http://www.eiffel.com">Eiffel</a> language,
+Bertrand Meyer, has said that (I'm paraphrasing) "you can have pointer
+arithmetic, or you can have correct programs, but you can't have both".  I
+agree with him.  I think that direct memory access through pointers is the
+single biggest barrier to programming language scalability.
+
+<p>
+
+None of this is meant to imply that pointers and pointer arithmetic don't
+have their place; they are crucial for low-level close-to-the-metal
+programming.  However, large programs written at a low level are simply not
+scalable.  The right way to use languages like C is to implement small,
+focused low-level components of applications written primarily in
+higher-level languages.  In fact, this is also the right way to use C++; you
+write some low-level classes that use pointers in some of their methods and
+then encapsulate these methods so you never have to expose the pointer
+manipulations to a user of the class.  This would be nearly ideal, except
+that the compiler has no way to enforce this; you can always use pointers if
+you want to.
+
+<p>
+
+By the way, there is an interesting language called <a
+href="http://www.research.att.com/projects/cyclone/">Cyclone</a> which is
+essentially a "safe" variant of C.  It has three different types of pointers,
+some of which allow pointer arithmetic and some of which don't.  Pointer
+arithmetic in cyclone is always checked for safety.  This language is thus
+much safer than C; the run-time cost varies from negligible to substantial.
+However, cyclone doesn't correct the other problems with C (described below),
+so I wouldn't describe it as particularly scalable.
+
+<h3>Static type checking: mostly very good</h3>
+
+A <b>statically typed</b> language is one where each data item has a specific
+type which cannot be changed for the duration of the program.  In addition,
+variables have specific types, and you can't assign a value of a different
+type to that variable.  There are a number of issues related to static
+typing, and there is a lot of confusion about these issues, so I'll try to
+summarize the main points here.
+
+<h4>Advantages of static type checking</h4>
+
+The primary scalability advantage of static type checking is that a great
+number of errors are caught at compile time, rather than at run time.  Thus,
+in a statically typed language with a well-designed type system, most of the
+trivial errors will be caught by the compiler, which leaves the programmer
+free to concentrate on the more interesting parts of the program.  This
+increases productivity as well as programmer happiness ;-)  Furthermore, if
+the type system extends to the module system (see below), then any use of an
+imported module will be type-checked as well.  This rules out large classes
+of errors in the use of external modules written by others just as it does in
+the code one writes for oneself.  This, in turn, makes it easier to re-use
+other people's code with confidence, which makes the language significantly
+more scalable.
+
+<p>
+
+In addition, static type checking leads to significantly faster code than
+dynamic (run-time) type checking.  If the compiler knows that 'a' and 'b'
+both represent small integers, and it needs to compute 'a + b', then it can
+insert the code for addition of small integers right into the program.  If
+the only thing that's known about 'a' and 'b' is that they represent objects
+that might be integers, or floats, or strings, then the decision on what to
+do has to be deferred until run time.  Type checking at run time is
+expensive.  Therefore, in addition to the other advantages of static typing,
+you also get faster code.
+
+<h4>Type declarations vs. type inference</h4>
+
+The usual reason why many programmers don't like static type checking is
+that type declarations are verbose and detract from the purity of the
+algorithm.  This is certainly the case in most statically typed languages; a
+particularly egregious example is Java, where you can have statements like
+this:
+
+<pre>
+
+Foo foo = new Foo();  // Declare a new object of type Foo.
+
+</pre>
+
+You have to use the word "foo" three times to get the message across!  What
+most programmers don't realize is that there is an alternative.  Languages
+with <b>type inference</b> can figure out the types of almost all variables
+from their context, which means that the programmer doesn't have to type in
+declarations.  A good example of this is the <a
+href="http://www.ocaml.org">objective CAML (Ocaml)</a> programming language.
+This leads to code that is as concise as code written in dynamically typed
+languages like Scheme or Python but with all the benefits of static typing.
+
+<h4>Type casting</h4>
+
+Unfortunately for scalability, some languages (notably C and C++, again) have
+mechanisms for <u>type casting</u>, which is basically an escape hatch that
+allows you to tell the compiler "I know I said that this value was of type X,
+but from now on you can pretend that it's actually of type Y, and I'll take
+the responsibility".  This feature is necessary in C because the type system
+is extremely weak (it's not nearly as necessary in C++ and is generally
+considered bad programming style).  It's also possible (and often necessary)
+to cast between types in Java (almost always from a superclass to a
+subclass), but if the cast fails then an exception is thrown, whereas in C,
+the cast never fails (and anything can happen if you cast an object to the
+wrong type).  In conclusion, unchecked type casting is bad, and languages
+that require a lot of it are less scalable than those that don't.  Note that
+the majority of the type casting in Java (which is checked) is simply to get
+around the lack of parameterized types, so even checked type casting may
+indicate a weakness in the language.
+
+<h4>Static vs. dynamic type checking</h4>
+
+The relative virtues of static versus dynamic type checking are one of the
+great holy wars amongst computer language researchers and users.  In contrast
+to static type checking (described above), in dynamic type systems objects,
+not variables, have types.  A variable in these system is simply a binding to
+an object, and it can be bound to (for instance) an integer one moment, a
+string another moment, and a list another moment.  This means that operations
+which require particular types for their arguments (<i>e.g.</i> addition)
+have to check these types at run-time instead of at compile time.  This leads
+to significant performance penalties, as well as a loss of safety; a type
+error is not normally caught until run-time.  On the other hand, dynamic
+typing is incredibly expressive, much more so than any static type system.
+This is a big topic that I don't intend to explore here (it would be an essay
+all by itself).  Suffice it to say that a lot of the flexibility of dynamic
+types can be recovered in a statically typed language if the type system is
+powerful enough.  A good example of a statically typed language with a very
+powerful type system is, once again, <a href="http://www.ocaml.org">Ocaml</a>
+(get the idea that I like that language yet? ;-)).  
+
+<p>
+
+Another (weak) argument in favor of dynamic type checking is that dynamically
+typed languages tend to be much less verbose than statically typed ones,
+which means that the algorithm can often be expressed more clearly and
+succinctly.  However, statically typed languages with type inference like
+(ahem) Ocaml circumvent this problem, as mentioned above.
+
+<p>
+
+If static type checking is just too restrictive for your tastes, then
+dynamically typed languages like Lisp, Scheme, Python, Ruby or Smalltalk are
+quite pleasant to program in, although my view is that the lack of static
+type checking hurts the scalability of these languages substantially.  What
+typically happens in large projects written in these languages is that
+extensive unit tests are written to catch type errors as well as logical
+errors (the Smalltalk community has been particularly aggressive about
+promoting this approach; see Kent Beck's <a
+href="http://www.extremeprogramming.org">extreme programming</a> site for
+much more on this, which is not limited to Smalltalk or to dynamically typed
+languages).
+
+<p>
+
+Another interesting approach is "soft typing", which is a cross between
+static type checking and dynamic type checking.  Roughly speaking, it allows
+the same expressiveness as dynamic typing, but will statically check the
+types of everything that it can, and if it can't decide whether some program
+element is correctly typed at compile time it will check it at run time.
+This approach is used in the <a href="http://www.gwydiondylan.org">Dylan</a>
+language (and also in Common Lisp, to a greater or lesser extent depending on
+the compiler) and is being actively developed from both the theoretical and
+practical standpoints by the <a href="http://www.plt-scheme.org">PLT
+Scheme</a> team of computer language researchers/implementors.  I look
+forward to seeing what they come up with.
+
+<h3>Exception handling: good</h3>
+
+Exception handling is a useful feature for making code more robust and also
+cleaner.  The basic idea is that some operations can fail for various
+reasons, making it impossible to return a desired value.  For instance,
+reading a line from a text file is impossible if the file pointer is already
+at the end of the file.  In primitive languages like C, the only solution is
+to return an error code and laboriously test for it whenever the function is
+called.  However, since a C function can only return one value, the real
+return value of the function has to be kludged as a writable parameter of the
+function, which is very messy and bug-prone (since it requires that the user
+manipulate pointers).  With exception handling, when an exceptional condition
+occurs an exception is thrown, and it unwinds the call stack until it reaches
+a suitable exception handler.  This feature is so useful that almost all new
+languages incorporate it.  Interestingly, exceptions also work much better in
+the presence of garbage collection; avoiding memory leaks in a language like
+C++ that has exception handling but has no GC is quite tricky (see Scott
+Meyers' books <u>Effective C++</u> and <u>More Effective C++</u> for an
+extensive description of this issue).  This is yet another argument for
+garbage collection (as if we needed one).
+
+<h3>Run-time error checking: good</h3>
+
+Dynamically typed languages do all their error checking at run time.  Most of
+this error checking is to ensure that operations are called with
+correctly typed arguments.  This is costly and somewhat error-prone when
+compared to languages that can do all their type checking at compile time.
+However, even in statically-typed languages, there arise situations which
+can't be handled by the type system alone.  More precisely, there arise
+situations where any reasonable (decidable, efficient) type system can't know
+at compile time that an error is going to happen.  In order to deal with this
+you need run-time error checking.  Here are some typical examples.
+
+<h4>Array bounds violations</h4>
+
+If an attempt is made to access an array outside of its bounds (<i>e.g.</i>
+trying to access the 100th element of a 10-element array), then an array
+bounds violation occurs.  Scalable languages will always catch this error and
+will usually throw an exception so that either the program can deal with it
+or the person running the program knows that something bad happened (ideally
+a stack trace will be printed in the latter case).  Checking for array bounds
+violations has a significant cost, however, so ideally the compiler will have
+an option that permits the user to disable this check if speed is more
+important than safety.  Note that array bounds violations are never caught in
+C programs; instead, they cause fun problems like core dumps and memory
+corruption.
+
+<h4>Arithmetic errors</h4>
+
+Another class of errors that can normally only be caught efficiently at run
+time are arithmetic errors.  The classic example of this is integer division
+by zero.  Again, scalable languages will throw an exception in this case.
+Other integer arithmetic errors such as overflows also typically raise
+exceptions in many languages.  In contrast, floating point errors such as 1.0
+/ 0.0 (= infinity), -1.0 / 0.0 (= -infinity) and 0.0 / 0.0 (= not-a-number or
+NaN) do not normally raise exceptions even in otherwise very safe languages
+(such as Java or Ocaml).  The reason for this is not clear to me (apparently
+it's written into the IEEE floating-point arithmetic standards and nobody
+wants to challenge it), and frankly, I think that this is a mistake.  Like
+array bounds checking, it's good to have a compiler option to disable
+arithmetic error checking if speed is more important than safety for a given
+application.  This is a generally useful principle: make the language safe by
+default, and give the programmer the option of trading safety for speed,
+ideally without requiring him/her to rewrite any code.
+
+<h3>Assertions and contracts: very good</h3>
+
+Most languages (even C) provide an "assert" feature, which allows the
+programmer to state that at a given point in a program a particular
+relationship must be true.  For instance, in a C program you might say:
+
+<pre>assert(i == 100);</pre> 
+
+meaning "at this point in the program, 'i' should have the value 100, and if
+it doesn't something is wrong."  This is a kind of built-in sanity checking
+for your program.  It is possible to disable assertion checks during
+compilation as well.  Typically, asserts are enabled while developing a
+program and disabled after the program is completed in order to speed up the
+program.  Some languages (notably Eiffel) have a much more elaborate
+assertion system known as "Design by Contract" which includes separate kinds
+of assertion checks for preconditions of functions, postconditions of
+functions, class invariants, loop invariants and variants, and much more, all
+incorporated into the object system of the language.  If used correctly, this
+is a huge win.  Bugs will tend to show up much closer to where they occurred,
+which makes debugging vastly easier.  This in turn makes the language much
+more scalable.
+
+<h3>Support for abstractions</h3>
+
+In general, the more support a language provides for developing abstractions,
+the better.  Good abstraction capabilities mean you can say more with less
+code, and less code means fewer bugs and shorter development times, which
+leads to better scalability.  There are lots of worthwhile language features
+I won't discuss here; instead, I'll single out the ones that have the most
+effect on language scalability.
+
+<h4>Module systems: very good</h4>
+
+Frankly, a language without a good module system is useless for developing
+large programs.  A module system allows the programmer to develop and test
+parts of a program in isolation, and then combine these parts at a later
+time.  Modules are usually used to implement reusable code libraries
+containing data structures and functions representing some interesting aspect
+of the problem domain (for instance, operations on linked lists).  Once a
+module is written and debugged, any other program can then import and use the
+code in that module.  This is a huge win, since fundamental data structures
+and operations don't have to be re-written for every program (which is called
+"reinventing the wheel" in programmer jargon).  This allows the programmer to
+write code much more rapidly and with a much greater confidence of success,
+and is thus a vital component of scalable computer languages.
+
+<h4>Object-oriented programming: good</h4>
+
+Object-oriented programming (OOP) is often presented as the cure to all
+programming problems.  It is not.  However, some kinds of applications
+benefit greatly from the object-oriented paradigm.  The basic idea in OOP is
+that programs are decomposed into "objects" which have "methods".  Methods
+are functions that have access to the internal state of the object.  Only the
+methods corresponding to an object can access that internal state, so if the
+state changes in an unexpected way, one of the methods must have been
+responsible for it.  This is called "data hiding" or "encapsulation".  Also,
+in OOP it is possible to create new classes of objects by inheritance; this
+means that the new object class is a version of the old object class, but
+with some new methods and/or new data.  Finally, and most importantly,
+calling object methods is "polymorphic"; this basically means that the
+appropriate method to run on an object is chosen at run time rather than at
+compile time.  Certain kinds of programming tasks (such as simulations) are
+well suited to the OO paradigm, while other tasks (such as compilers) don't
+really need OO.  In general, it's good if a language supports OO, but I
+prefer languages that don't force you to use OO for all programs.  It is
+often claimed that programs written in the OO style are easier to extend and
+modify than non-OO programs.  I think this is an exaggeration.  If you have
+to subclass a class every time you want to add a new method, your program
+will start to look very kludgy very fast.  Nevertheless, OO is a useful
+abstraction technique to have available.
+
+<h4>Functional programming: good</h4>
+
+The "dual" to the OOP paradigm, if you will, is the functional programming
+(FP) paradigm.  Instead of decomposing a program into a group of objects,
+functional programs decompose a program into a group of functions.  Like OO,
+functional programming requires a language that supports certain language
+features.  The primary feature is that in a functional language, functions
+are "first-class", which means that they can be treated as data (<i>i.e.</i>
+they can be passed as arguments to a function, returned from a function,
+and/or created on the fly inside a function).  Another crucial feature is the
+ability to define recursive functions efficiently (technically, there has to
+be tail-recursion optimization).  It turns out that if you have these
+capabilities, then you can do without loop statements (<i>e.g.</i>
+<tt>for</tt> and <tt>while</tt> loops in C), instead using recursion to
+implement the loop.  In addition, functional programs typically avoid using
+mutable data (assignment statements) as much as possible.  They also tend to
+use a lot of very small functions instead of a few large functions.  The
+advantages of FP include:
+
+<ul>
+<li> Many algorithms can be expressed much more concisely and elegantly.
+<li> Not using mutable data removes a large class of potential bugs.
+<li> Functional programs are much easier to verify for correctness than
+     non-functional ones.
+<li> Higher-order functions (functions that take functions as input and/or
+     return functions as output) can be used to factor out common programming
+     idioms.  This makes it easy to modify one kind of program to do related
+     tasks.
+</ul>
+
+I don't have nearly enough space here to go into this in detail.  If you're
+interested, you should read Abelson and Sussman's <a
+href="http://mitpress.mit.edu/sicp/sicp.html">Structure and Interpretation of
+Computer Programs</a>, which goes into great detail on this subject.  Suffice
+it to say that having support for the functional style can make a computer
+language much more scalable.  Unfortunately, very few languages support this
+style (examples include Lisp, Scheme, Ocaml, Standard ML, and Haskell),
+apparently because average programmers find the functional style "hard to
+understand" and because FP has a (largely but not entirely undeserved)
+reputation for inefficiency (in fact, the efficiency of FP depends enormously
+on the details of the language implementation).
+
+<h4>Macros: mostly good</h4>
+
+By "macros" I mean structural macros like in Lisp, not textual substitution
+macros like in C.  Structural macros can be a very useful abstraction device;
+they allow the programmer to encapsulate programming idioms that are often
+repeated and which cannot be expressed as higher-order functions.  A good
+example of this would be macros to implement control constructs.  In most
+languages, you are stuck with the control constructs (<tt>if</tt>,
+<tt>for</tt>, <tt>while</tt>) that are provided by the language, but in Lisp
+you can define your own using macros.  Macros are very interesting (see Paul
+Graham's book <a href="http://www.paulgraham.com/onlisp.html">On Lisp</a> for
+much more on them).  They have some problems as well:
+
+<ul>
+<li> They can make debugging substantially more complicated.
+<li> They can in some cases make code harder to understand, because macros
+     (at least in Lisp) look like functions but behave in a totally different
+     manner.
+<li> Writing effective macros is non-trivial.
+</ul>
+
+Nonetheless, when used correctly macros can increase the abstraction level of
+a program dramatically, which is good for scalability.
+
+<h3>Components</h3>
+
+"Components" is a vague word in the context of computer languages, but here
+I'm using it to represent a single unit of functionality that can be composed
+with other parts of a program.  It's sort of like a library, but more
+self-contained.  There are a number of component architectures around (Java
+beans, CORBA, Microsoft COM); some, like Java beans, only support one
+language, while others support a whole range of languages.  One big
+attraction of components is that they can be language-independent and even
+location-independent.  However, if a language specifically supports one (or
+many) component architectures it's a big win for scalability because then you
+can re-use components written by another developer (and maybe in another
+language).  This is usually just a library issue, but some languages (C#
+being a notable example) are designed specifically to make component
+development easier.  This is a good thing, but I don't have the space to go
+into it here.
+
+<h3>Syntax and readability</h3>
+
+Syntax is not the most interesting aspect of computer languages; in fact,
+it's probably the least interesting aspect, which is odd considering that it
+seems to be the only aspect that most programmers ever learn ;-) Syntax does
+make a difference to scalability, however.  In my opinion, it's not that
+important that a syntax be "familiar" (which in practice means "like C
+syntax"); rather, the important issue is how consistent it is.  Very baroque
+and inconsistent syntaxes with dozens of strange exceptions to general rules
+(C++ and (especially) Perl are the worst offenders here) make programs very
+hard to understand and maintain, simply because nobody ever remembers all the
+special cases.  At the other extreme, very minimalistic and simple syntaxes
+like Lisp syntax are difficult for many people to get used to (though
+personally, I quite like Lisp's syntax).  Python is a good example of a
+language that has a very friendly syntax both for new programmers and
+experts.
+
+<h2>The scalability of different programming languages</h2>
+
+In this section I'll make more specific comments about how some programming
+languages stack up in terms of their scalability.  I can't cover every
+programming language, but I'll try to cover a representative sample.
+
+<h3>C</h3>
+
+<div align=right> 
+<table width=90%><tr><td>
+<span class=epigraph>
+
+<p>
+<i>C combines all the power of assembly language with all the ease of use of
+assembly language.
+</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- unknown
+<p>
+<i>I'd just like to take this moment to point out that C has all the
+expressive power of two dixie cups and a string.</i>
+<p>
+
+&nbsp;&nbsp;&nbsp;&nbsp;-- Jamie Zawinski, in the source code for xkeycaps
+
+<p>
+
+<i>There is a point in your life when you realize that you have written enough
+destructors, and have spent enough time tracking down a memory leak, and you
+have spend enough time tracking down memory corruption, and you have spent
+enough time using low-level insecure functions, and you have implemented way
+too many linked lists.</i>
+
+<p>
+
+&nbsp;&nbsp;&nbsp;&nbsp;-- Miguel de Icaza
+
+<p>
+<i>Greenspun's Tenth Rule of Programming: "Any sufficiently complicated C or
+     Fortran program contains an ad-hoc, informally-specified bug-ridden
+     slow implementation of half of Common Lisp."</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- Philip Greenspun
+
+
+<p>
+<i>Your superior intellect is no match for our puny weapons.</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- unknown, via Aaron Stern
+
+</span>
+</td></tr></table>
+</div>
+
+<p>
+
+I'll be blunt: C is a <b>horrible</b> language for developing large projects
+in.  C contains almost all of the bad language features described above and
+almost none of the good ones.  Furthermore, some of the good features it does
+have (like static type checking) are so corrupted by type casting that they
+are much less useful than they would otherwise be.  C also offers essentially
+no abstraction capabilities whatsoever except for arrays (which are really
+just pointers in disguise) and structs (ditto).
+
+<p>
+
+Does that mean that C is a useless language?  Far from it.  It has its place,
+and its place is a vital one.  C is an excellent language for writing code
+that has to interface directly with the machine ("bare-metal" programming).
+It is also a good language for implementing better languages in ;-) The Ocaml
+runtime engine, for instance, is written in C (with some help from assembly
+language).  C is useful for writing the 1% of your application that
+absolutely, positively, has to run as fast as possible.  However, if you're
+trying to write a large application entirely in C you are in for a miserable
+time.  Instead, you're better off picking a good language that has a C
+foreign-function interface (FFI), so you can "drop down" into C when you
+really need to (which hopefully won't be that often).
+
+<p>
+
+Some people (particularly novice programmers who have no idea what they're
+talking about) are under the illusion that because C offers such direct
+control over the machine, it's the only "real" programming language for "true
+hackers".  If that were true, all "true hackers" (whatever that means) would
+be writing code in assembly language, which is much closer to the machine
+than C is.  I hope some of the quotes above, some of which are from
+world-famous open-source hackers, will help to dispel this myth.  If not,
+then I recommend that you try to write a really large program (> 100,000
+lines of code) in C, and tell me what you think at the end of that
+experience.  I think you'll find my arguments much more persuasive.
+
+<h3>C++</h3>
+
+<div align=right> 
+<table width=90%><tr><td>
+<span class=epigraph>
+
+<p>
+<i>C++ : an octopus made by nailing extra legs onto a dog.
+
+</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- off smalltalk.org
+
+<p>
+<i>Think of C++ as an object-oriented assembly language.</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- off the guile Scheme mailing list
+
+<p>
+<i>C makes it easy to shoot yourself in the foot.  C++ makes it harder, but
+when you do, you blow your whole leg off.
+</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- Bjarne Stroustrup
+
+<p>
+<i>Programming in C++ is premature optimization.
+</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- off comp.lang.python
+
+</span>
+</td></tr></table>
+</div>
+
+C++ adds object-oriented and generic programming features to C, along with a
+host of other features.  This can significantly improve the abstraction level
+of C++ programs relative to C programs, and this should make the language
+more scalable.  Unfortunately, the presence of pointers and the absence of
+GC, in my opinion, undoes all the benefits of the useful features and makes
+C++ non-scalable (for instance, NONE of the standard template library (STL)
+container classes use GC).  In addition, C++ is so mind-bogglingly complex,
+with so many odd features that interact in peculiar ways, that it's almost
+impossible to master.  I will readily admit that I'd rather write a large
+application in C++ than in C, but that's like saying I'd rather eat rotting
+meat than swallow sulfuric acid ;-)
+
+<p>
+
+To be fair, I have to point out that there is some really neat stuff possible
+in C++ using templates (typically lumped under the name "template
+metaprogramming"; see the book <u>Modern C++ Design</u> by Andrei
+Alexandrescu for more information.).  This is very much wizard-level
+programming (which is OK), but to my mind it doesn't even come close to
+compensating for the lack of GC.  What <u>would</u> make C++ a more scalable
+language is (a) including a garbage collector as part of the standard
+library, and (b) having some way to restrict the use of pointers to
+particular modules that need direct pointer access (such as very low-level
+data structures).  I'm not very optimistic that this will ever happen, but I
+hope it does.
+
+<h3>Java and C#</h3>
+
+Java and C# are more recent languages which have learned from the mistakes of
+the past.  They both have GC, neither have pointers, and they both support
+object-oriented programming.  This makes programming in these languages
+comparatively non-painful, and they scale well.  Both also have interesting
+mechanisms for achieving platform independence (which is beyond the scope of
+the present discussion).  C# is part of the .NET framework, which (in theory)
+permits a considerable amount of inter-language interaction; this is in my
+opinion a huge win, but is also beyond the scope of the present discussion.
+Both languages tend to be quite verbose, which is off-putting to many people
+(including me), but that's not that big an issue.  C# also contains an
+interesting mechanism for using unsafe code (<i>i.e.</i> code which uses
+pointers and doesn't use GC) but encapsulated in modules specifically marked
+"unsafe" (an idea borrowed from the Modula-3 language, which is now sadly all
+but defunct).  If you feel you can't live without the ability to program with
+pointers, but you don't need them for most of your code, that's the right way
+to go.
+
+<p>
+
+The abstraction level of both C# and Java is mediocre; it's much better than
+C, somewhat weaker (!) than C++, and not nearly as good as languages that
+support both object-oriented and functional programming (such as Lisp and
+Ocaml).  Therefore, I find programming in these languages to be pretty boring
+and tedious.  Many of the scalability features in these languages are not,
+strictly speaking, part of the languages at all but of the environment(s)
+built up around the languages.  For instance, the support for components,
+versioning, packaging and documentation generation are all features of the
+environments.  I hope we will soon start to see these kinds of meta-features
+in better languages than Java or C#.
+
+<h3>Eiffel</h3>
+
+Eiffel is a very cleanly-designed object-oriented language that has been
+specifically designed to be scalable.  It has a number of interesting
+features, including:
+
+<ul>
+
+<li> There is a very strong assertional system implementing "design by
+contract" (see above), which is totally incorporated into the object-oriented
+framework, so subclasses cannot break assertions of their superclasses
+(though there are theoretical arguments about whether this was done the right
+way).
+
+<li> Multiple inheritance is handled in what I consider a very simple and
+effective way; any naming conflicts must be resolved by renaming the
+inherited classes.
+
+<li> Inheritance can be controlled at a finer granularity than the
+private/protected/public modifiers seen in C++, Java, and C#.
+
+</ul>
+
+There are many other features as well.  Eiffel's author, Bertrand Meyer, has
+written a number of books about the language and the ideas behind it, of
+which the most comprehensive is <a
+href="http://www.amazon.com/exec/obidos/ASIN/0136291554/qid=1026381921/sr=1-1/ref=sr_1_1/104-8331145-1938319">Object-oriented
+Software Construction</a>.
+
+<p>
+
+Eiffel has a few deficiencies.  The syntax is very verbose (there are
+something like 70 keywords) and also quite unfamiliar.  The theory behind
+Eiffel rules out some language features that we have come to expect, like
+multiple exit points from loops.  Many familiar features are found in a
+completely unfamiliar form.  Classes are the only module units, which I think
+is abusing the notion of class (and which leads to the excessive use of
+multiple inheritance in situations in which it isn't really needed).  These
+deficiencies are not show-stoppers, however.
+
+<p>
+
+More significantly, functional programming isn't supported (although the last
+time I checked something analogous to function pointers was in the process of
+being added to Eiffel; I'm not sure what the current situation is).  Also,
+the type system has some holes in it that require link-time analysis to make
+sure that a program is correctly typed.  This is a problem if you want to
+create shared libraries (although I admit I don't know all the details).
+
+<p>
+
+In conclusion, I would say that Eiffel is quite a scalable language,
+certainly more so than C++, Java, or C#.  I personally find the lack of
+support for functional programming quite stifling, but I'd rather program in
+Eiffel than in Java, C++, or C# any day.
+
+<h3>Python and Smalltalk</h3>
+
+I'm lumping together Python and Smalltalk, two quite different languages,
+because they are both dynamically typed languages which support
+object-oriented programming.  One difference is that it's possible to program
+in a non-OO manner in Python, whereas Smalltalk is nothing but objects, all
+the way down.  From a scalability perspective, both languages are safe,
+excellent for prototyping, and generally enjoyable to work in.  On the other
+hand, the lack of static type checking hurts their scalability (not to
+mention their efficiency), and to compensate for this most serious Python and
+Smalltalk programmers spend a lot of time writing test suites (which is a
+good idea, but the test suites can be much smaller in statically typed
+languages since you get type safety for free).  I have much more experience
+with Python than with Smalltalk, and I can say unequivocally that it's a
+great language for writing small programs, but when the program source code
+is longer than about a thousand lines I start wishing I had a type checker.
+
+<h3>Perl</h3>
+
+<div align=right> 
+<table width=90%><tr><td>
+<span class=epigraph>
+
+<p>
+<i>Python: executable pseudocode.  Perl: executable line noise.</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- off comp.lang.python
+
+</span>
+</td></tr></table>
+</div>
+
+I am not a fan of Perl.  Basically, I think that Perl is simply Python with
+an incredibly obfuscated syntax and a few extra features that nobody really
+needs.  Perl is incredibly non-scalable; I dare you to try to understand any
+Perl program of more than a hundred lines or so.  The fault is not just the
+syntax; the semantics of the language are full of little oddities
+(<i>e.g.</i> overloading on the return type of a function), and frankly, I
+recommend that you just stay away from Perl.  Maybe Perl 6 will not be as
+painful; but then, maybe it won't.  I'll check again when Perl 6 actually
+happens.
+
+<p>
+
+Parenthetically, one cool thing that <u>has</u> come out (actually, that is
+in the process of coming out) of the Perl 6 effort is an amazingly cool
+project called <a href="http://www.parrotcode.org/">Parrot</a>, which is a
+virtual machine targeted at dynamic languages.  The goal is to have a common
+virtual machine for running Perl, Python, Ruby, Scheme etc.  I like this
+project very much, so please check it out.
+
+
+<h3>Common Lisp and Scheme</h3>
+
+<div align=right> 
+<table width=90%><tr><td>
+<span class=epigraph>
+<p>
+<i>Most people are just too damn dumb to recognise how great Lisp is.</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- off slashdot
+<p>
+<i>[Lisp] is the only computer language that is beautiful.</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- Neal Stephenson
+<p>
+<i>The journey of a thousand miles begins with an open parenthesis.</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- Rainer Joswig
+<p>
+<i>Will write code that writes code that writes code for food.</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- Martin Rodgers
+<p>
+<i>Those who do not understand lisp are doomed to re-implement it.</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- attributed to Erik Naggum, off comp.lang.lisp
+
+</span>
+</td></tr></table>
+</div>
+
+Lisp is, quite simply, a brilliant computer language.  There are two forms of
+Lisp that are still alive today (three if you count Dylan, but I discuss that
+below): Common Lisp and Scheme.  Their differences are mostly irrelevant for
+the discussion here, so I'll lump them together for the most part.
+
+<p>
+
+Here are some of Lisp's interesting features.
+
+<ul>
+<li> It has an incredibly simple and unambiguous syntax (which is admittedly
+     a little peculiar when you first encounter it).
+<li> It fully supports functional programming (and was the first language to
+     do so).
+<li> It has garbage collection (and was the first language to have it).
+<li> There are no pointers in Lisp code.
+<li> There are no type declarations.
+<li> Structural macros are a fundamental part of the language, and because of
+     the simple syntax are easier to write than in any other language.
+</ul>
+
+One of the consequences of all these features is that it is extremely easy to
+implement new programming paradigms within the Lisp language.  For instance,
+you can implement a full object-oriented system (or several different
+incompatible OO systems) within the Lisp language itself.  For this reason,
+Lisp is sometimes referred to as a "language laboratory".  Because of this,
+Lisp programmers often write their programs bottom-up by effectively writing
+a new program-specific language for the application and then writing the
+application in that language.  Paul Graham's book <a
+href="http://www.paulgraham.com/onlisp.html">On Lisp</a> discusses this
+approach in great detail.  Lisp is also an incredibly dynamic and flexible
+language; code can be compiled on the fly and modules can be re-loaded as
+needed.  Despite this, Lisp compilers exist that are very efficient and can
+routinely produce code that is only (say) 1.5 times slower than optimized C
+code.
+
+<p>
+
+The only serious drawback that Lisp has is that it relies mainly on dynamic
+typing.  This is great for interactive exploration, but becomes an obstacle
+as the size of a program gets larger.  Common Lisp at least allows type
+declarations, which the compiler is free to check for consistency (or to
+ignore).  However, it's not easy to get the kind of absolute type safety in a
+Lisp program that you'd get in (say) an Ocaml program.  Still, I really like
+Lisp and I think that every serious programmer needs to learn it.  Also, at
+least one implementation of Scheme (the <a
+href="http://www.plt-scheme.org">PLT Scheme</a> implementation) promises to
+provide a usable type checker in the near future, which I look forward to.
+
+<h3>Dylan</h3>
+
+Dylan is a dialect of Lisp that uses a more conventional infix syntax and
+that has a number of features that improve the language's scalability
+relative to Lisp.  Most notably, it allows (and encourages) the use of type
+declarations in code.  If these type declarations can be checked at compile
+time, they are; otherwise they're checked at run time.  This is a real win
+for the programmer.  Unfortunately, dylan hasn't yet caught on, but there is
+a team of open source hackers at <a
+href="http://www.gwydiondylan.org">Gwydion Dylan</a> that are hard at work
+trying to bring Dylan back from obscurity.  I hope they succeed, because
+Dylan has the potential to be a very scalable language, and is perhaps the
+only language that combines the best features of scripting languages and
+scalable languages.
+
+<h3>Objective CAML (Ocaml) and Standard ML</h3>
+
+<div align=right> 
+<table width=90%><tr><td>
+<span class=epigraph>
+<p>
+<i>
+There is a joke about American engineers and French engineers. The American
+team brings a prototype to the French team. The French team's response is:
+"Well, it works fine in practice; but how will it hold up in theory?"
+</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- unknown
+<p>
+<i>
+Perl, C, FORTRAN, Pascal and AWK are purely procedural (not even OO)
+languages. Functional languages are to large reflecting telescopes what these
+languages are to binoculars.
+</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- off slashdot
+<p>
+<i>The best and the brightest in the programming languages field are working
+on functional programming languages.
+</i>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;-- Bjarne Stroustrup (paraphrased from an interview)
+</span>
+</td></tr></table>
+</div>
+
+I've saved the best for last ;-) As you've probably gathered from my comments
+above, I am a <u>big</u> fan of the <a href="http://www.ocaml.org">Objective
+CAML</a> language (usually referred to as Ocaml).  Ocaml is being developed
+by a team of researchers at INRIA, a computer science research institute in
+France.  The curious acronym CAML stands for "Categorical Abstract Machine
+Language" and is basically a historical artifact; I won't discuss it further.
+Ocaml is closely related to another language called <a
+href="http://cm.bell-labs.com/cm/cs/what/smlnj/">Standard ML</a>.  However,
+since Ocaml provides almost all of the features of Standard ML and many more,
+I won't discuss Standard ML further either.
+
+<p>
+
+What does Ocaml provide that makes it so great, and in particular makes it
+such a scalable language?
+
+<ul>
+<li> Garbage collection.
+<li> No pointers.
+<li> Extremely fast compilation to bytecode.
+<li> Compilation to extremely efficient native code (often faster than
+C++, often comparable to C speeds).
+<li> Static type checking with type inference (one of the few languages that
+has this; you can't imagine how cool this is until you use it).
+<li> Full support for functional programming.
+<li> Full support for imperative and object-oriented programming.
+<li> A great module system.
+<li> Polymorphically-typed functions (functions that are generic over entire
+classes of types).
+<li> Algebraic data types, which make creating complex data structures
+incredibly easy.
+<li> Functors (functions which create customized data types parameterized on an
+input type or set of types).
+<li> A programmable preprocessor (camlp4) that can be used to change the
+language syntax (!).
+</ul>
+
+I don't expect you to understand all of these features, but I also don't have
+the patience to explain them all here; go to the web site for more
+information.  The point is that Ocaml has almost all of the typical features
+that I've identified as giving a computer language more scalability, and
+several other features that are found almost nowhere else that also enhance
+the scalability.  It's also incredibly efficient for such a sophisticated
+language; a lot of Ocaml code is quite competitive with C code that does the
+same task (sometimes the Ocaml code is even faster).  For this reason, Ocaml
+is by far my favorite computer language and the one I consider first when
+contemplating writing a new program.
+
+<p>
+
+Having said that, I have to add that Ocaml is a long way from perfect.  The
+syntax is a little weird in many places.  The language has a fairly long
+learning curve.  There is not enough good documentation and far too few
+books.  The standard library is much smaller than what you'd find in (say)
+Java.  On the other hand, none of these problems are show-stoppers, and I
+predict that Ocaml is going to become a major force in the world of
+programming languages in the next ten years, especially among very high-level
+hackers.
+
+<h2>Social considerations</h2>
+
+Given all the comments I've made above, the obvious question is: why do
+people continue to use lousy non-scalable programming languages when there
+are good alternatives that will make their lives much easier?  In this
+section I'd like to look into the factors that prevent programmers from
+learning and using scalable programming languages.
+
+<h3>Ignorance</h3>
+
+Most programmers, even professional programmers, know next to nothing about
+programming languages.  Most programmers have probably never even heard of
+any languages other than C, C++, Java, C#, Visual Basic, Fortran, and (maybe)
+Perl.  That's too bad, because there isn't a great language in that entire
+list.  What this shows is that people who develop and use good languages have
+got to get better at getting the word out.  For my part, I would recommend
+that anyone reading this go out and learn Ocaml (especially!), Lisp and/or
+Scheme, Python, Smalltalk, and Eiffel, especially if they think that "all
+languages are the same".
+
+<h3>The learning curve</h3>
+
+As somebody who loves to learn new programming languages and paradigms, I
+hate to admit this, but one of the biggest reasons bad languages persist is
+that most people <u>hate</u> learning new programming languages.  They would
+rather stick to a shitty language that they more-or-less understand than take
+the one month or so to become familiar with a new language.  This is an
+example of a very, very general phenomenon both in computing and elsewhere,
+which is that nobody ever wants to learn anything new.  I think this is
+because learning is very painful for most people (I say I <u>think</u> so
+because I've always really enjoyed learning and so I can't relate to this at
+all).  This would make sense if learning a new language wasn't worthwhile
+(let's face it, it's a lot of work), but as I've tried to show above, there
+are huge differences between good languages and bad ones, and if the only
+language you know is a bad one, then learning a good one is most definitely
+worthwhile.
+
+<p>
+
+In addition, the learning problem becomes much, much worse when the new
+language embodies a different programming paradigm (e.g. functional
+programming), even when the language also supports more familiar paradigms.
+I see this even in Caltech undergrads, who supposedly have the highest
+average SAT scores of any group of students in the world.  Most of them
+already know how to program in C when they get here, and we teach them Scheme
+in a mostly-functional style that is totally unfamiliar to them.  It's
+remarkable how much difficulty they have with this, big SAT scores
+notwithstanding.
+
+<p>
+
+Finally, it's true (but absolutely amazing to me) that small differences in
+syntax between computer languages can make it incredibly difficult for
+someone who has mastered one language to learn another.  This is why Java and
+C# (correctly) adopted a C-like syntax; it's not that it's better, it's just
+more familiar and thus is less likely to be rejected.  Programmers are an odd
+lot; they will often reject a language based on the most trivial criteria
+(<i>e.g.</i> whether or not the language uses semicolons to separate
+statements).
+
+<h3>Misconceptions</h3>
+
+There are a lot of stupid misconceptions about programming languages that
+make people not want to learn new ones.  The most common ones are:
+
+<ul>
+<li> All programming languages are basically the same.
+<li> Code written in anything but C is going to be incredibly slow.
+<li> Code written in any language with garbage collection is going to be
+     incredibly slow.
+<li> "Real programmers" only write code in C.
+</ul>
+
+I've also heard some truly incredible howlers by people who should know
+better, such as "in Lisp, lists are the only data type" (this was written in
+the book <a
+href="http://www.amazon.com/exec/obidos/ASIN/0201309777/qid%3D1026355071/sr%3D11-1/ref%3Dsr%5F11%5F1/104-5836020-3882342">Generative
+Programming</a>, which was published in 2000, and is completely, utterly
+false).
+
+<p>
+
+I hope I've helped to dispel some of these misconceptions in the material
+I've written above.
+
+<h3>Sacrificing everything for speed</h3>
+
+One serious obstacle to the adoption of good programming languages is the
+notion that everything has to be sacrificed for speed.  In computer languages
+as in life, speed kills.  It's not that I like slow programs, but the notion
+that speed is the only important attribute of a program (as opposed to
+correctness, maintainability, extensibility, readability etc.) is simply
+wrong.  In fact, most programs only have a small core (maybe 20%) that
+absolutely needs to be fast surrounded by a much larger infrastructure of
+code that doesn't need to run all that quickly.  If you're going to write
+your entire application in a non-scalable language like C because only 20%
+of the program requires it, then that's a real shame.  It's especially ironic
+because most good languages have a foreign function interface (FFI) into C
+which allows you to write that 20% in C and use the better language for the
+rest of the code.  However, most programmers can't be bothered learning an
+FFI any more than they can be bothered learning a new computer language.  In
+addition, most programmers who are obsessed with speed never even bother to
+profile their code to find out where the bottlenecks are, presumably because
+they can't be bothered to learn how to use a profiler either.  Do you detect
+a pattern here?
+
+<p>
+
+Fortunately, the rise of Java and scripting languages, and the success of
+projects that have used those languages, have made the speed obsession much
+less of a factor than it used to be.
+
+<h3>Sacrificing everything for bit-level control</h3>
+
+Another factor hindering the adoption of scalable programming languages is
+the idea that a programming language <u>must</u> give you intimate, bit-level
+control over every data structure or it isn't any good.  If you believe this,
+think back on all the programs you've ever written.  How many of them
+actually needed this kind of bit-level control?  In my case, the answer is
+zero, and unless you spend a lot of time writing device drivers, your answer
+is probably pretty low too.  Nevertheless, bit-level control is a nice
+feature, and that's precisely what C is good at.  This is why any good
+language worth its salt has a C FFI.
+
+<h3>Sacrificing everything for the lowest common denominator</h3>
+
+Another major factor hindering the acceptance of new computer languages is
+the lowest common denominator.  Programmers overwhelmingly prefer to learn a
+language that everybody else knows.  There are some good reasons for this:
+
+<ul>
+<li> It makes it much easier to find a job.
+<li> A popular language usually has a lot more libraries available.
+<li> It's much easier to find new programmers to work on a project if
+     it's written in a language that a lot of people know.
+</ul>
+
+However, this is a chicken-and-egg situation.  If nobody ever learns a new
+language, then no progress is going to be made in the field.  In fact, there
+are only two successful models of language adoption that I know of:
+
+<ul>
+<li> The language is massively promoted by a company with a lot of money
+     (<i>e.g.</i> Java and Sun, C# and Microsoft).
+<li> The language spreads in a "grass-roots" fashion (C, C++, Perl, Python).
+</ul>
+
+Since I can hardly expect large corporations to espouse genuinely good
+technology, I think that the  only way for scalable programming languages to
+catch on is through the grass-roots method.  I believe that Ocaml is starting
+to gain market share this way.  And, truth be told, Java and C# aren't
+<u>that</u> bad even though they are corporate-sponsored.  They are
+reasonably scalable languages with a mediocre abstraction capability.  But we
+can do much better.
+
+<h2>Conclusions and recommendations</h2>
+
+I've tried to show that there are many aspects of computer languages that can
+have large effects on their scalability, and I've discussed how different
+languages compare in this regard.  To recap, a scalable language would
+ideally have:
+
+<ul>
+<li> garbage collection
+<li> no pointers or pointer arithmetic
+<li> a foreign function interface to the C language
+<li> static type checking with type inference
+<li> support for exception handling
+<li> run-time error checking for errors that can't be caught at
+     compile time, like array bounds violations and division by zero
+<li> support for assertions and design by contract
+<li> a powerful, statically checked module system
+<li> support for object-oriented programming
+<li> support for functional programming
+<li> structural macros
+<li> support for components
+<li> a simple, consistent and readable syntax
+</ul>
+
+<p>
+
+If you've read this far and agree with many of my observations, then my
+recommendation to you is simple: learn some new languages.  In particular,
+learn all of the languages that I've discussed above, even the ones I put
+down.  Write sizable programs in all of these languages.  This will not only
+be fun, but it will teach more about what makes a computer language scalable
+than you will ever learn by reading.  And if you only want to learn
+<u>one</u> programming language out of all the ones I mentioned, please do
+yourself a favor and learn Ocaml.  It's not perfect, but it's the best
+language I've ever used.  If you have the time to learn <u>two</u> languages,
+the other language should be Common Lisp or Scheme.
+
+<p>
+
+Have fun!
+
+<a name="EPILOGUE"><h2>Epilogue: May 2003</h2></a>
+
+<p>Since writing the original version of this article, I've had some experiences
+which have modified some of my views.  Most importantly, I am not as high on
+Ocaml as I was then.  While I still think Ocaml is an outstanding language in
+many respects, there are significant things I don't like about it.  I wanted
+to use Ocaml as the language for a large project I wanted to work on, but
+found very quickly that I couldn't use it the way I wanted.  The object
+system doesn't support multimethods (which is no surprise; very few languages
+do), and there were certain features I wanted that called for multimethods.
+In C++ or Java, you can fake multimethods because you have run-time type
+identification (RTTI).  But the Ocaml developers refuse to add this feature
+to Ocaml on quasi-religious grounds; the idea of having programs which cannot
+be proven to be type-safe at compile time goes against everything they
+believe in.  No matter if the type violations give rise to a safe exception
+just like dividing by zero does; they won't hear of it.  So I'm not using
+Ocaml for that project.
+
+<p>I've also had more experience with both Java and C++ since writing the first
+version of this article.  I haven't changed my opinion of Java much; the best
+thing about it is that it comes with a huge variety of useful libraries.  The
+upcoming "Tiger" release of Java will add several new language features which
+will make programming in Java much less painful (notably generics and
+autoboxing), which I welcome.  I think Java is a fine language for many types
+of applications, but it doesn't have the qualities of coolness that make me
+fall in love with a language, and the abstraction level is still less than
+many other languages, including C++.  Speaking of C++, I now understand
+better why C++ is the way it is.  Even though C++ is monstrously complex, the
+ability to write code that moves smoothly from a bit-level of abstraction to
+a fairly high level of abstraction is extremely valuable for many projects,
+especially ones where efficiency is paramount.  I intend to do more C++
+programming and also to use the Boehm-Demers conservative GC to see how
+effective it is in combination with C++'s other features.
+
+<p>Martin Rodgers (author of one of the quotes above) sent me an email where he
+said that his main criterion for scalability is that a language not put a
+glass ceiling on abstraction.  This is the classic Lisp programmer's
+viewpoint, and I am very sympathetic to it.  One of the big challenges in
+programming language design is to get languages with the flexibility of Lisp
+but with more static guarantees.  The ML family of languages are a compromise
+between static type safety and Lisp-like flexibility.  I look forward to
+future developments in this area.
+
+<a name="EPILOGUE2"><h2>Epilogue 2: July 2006</h2></a>
+
+<p>This article got posted to reddit.com and probably some other places, so
+I've been getting a lot of comments on it.  Here is my response to some of
+the ones I found most interesting.</p>
+
+<p>Julian Morrison sent me this email:</p>
+
+<quote>
+<i>There's a very important feature you missed, and it's the real explanation
+for the success of Java: separable, atomic, pre-packaged, versioned
+functionality. Jarballs. Those, more than anything else, make reusability
+real. Java programming is about plugging together ready-built parts. Nothing
+else comes close.</i>
+</quote>
+
+<p>I have to agree with him on this, and it's a major omission from the
+discussion above (the component stuff is sort of related to this).  I don't
+find Java to be a very inspiring language, but I like the Java infrastructure
+a lot (the same comment applies to C#).  With Java, you can download packages
+and have pretty good confidence that everything will work as it should (with
+some caveats that I'll mention below).  There are a bunch of features of the
+Java infrastructure that make this possible: bytecode, having the same
+virtual platform on every real platform, versioning, metadata, etc. but they
+all result in a chunk of code which (ideally) "just works".  In fact, it
+doesn't always "just work" but it "just works" more often than in most other
+languages I've used.  To give an example, I tried to install a podcasting
+program which was written in Python, but which used Python interfaces to a
+number of libraries written in C or C++.  I couldn't get it to work (and I've
+been doing this for a <i>long</i> time) because of all the version skew
+problems.  This wasn't Python's fault as a language; it was the fact that the
+Python packages didn't track the C/C++ versions that were being used well
+enough.  This is much less likely to happen in Java, for the reasons
+mentioned above and also because using code written in C/C++ as part of a
+Java program (<i>i.e.</i> through JNI) is less necessary (here's where
+JIT-compiling pays off big time).</p>
+
+<p>On the other hand, my colleague Donnie Pinkston, who has forgotten more
+about Java than I'll ever know, has pointed out that it's very easy to get
+into classloader hell for projects that define their own classloaders (which
+apparently is often necessary), so it's not all a bed of roses.  But I think
+there is a point to be made that Java gets some of the large-scale issues
+less wrong than most languages.  These issues tend to be boring non-sexy
+things that don't excite my computer language sense, but they are absolutely
+essential in practice.  If nobody can install your program, nobody can use
+it.  And yes, I think I've spent as much time typing
+"<code>configure;make;make install</code>" as anyone, and I don't think
+that's good enough.  Material for another rant.</p>
+
+
+<p>One person mentioned that Common Lisp has multimethods, which is true
+(it's part of CLOS, the Common Lisp Object System).  Multimethods are very
+cool (some languages, like <a
+href="http://people.csail.mit.edu/jrb/goo/">Goo</a>, build them in right from
+the start); my impression, though, is that they're hard to implement
+efficiently.  One day I'll build a language with multimethods to find out for
+myself.</p>
+
+<p>Someone argued that I'd been too hard on Ocaml for claiming that it's not
+able to fake multimethods.  All I can say is: try it, and see how easy you
+think it is.  I still think Ocaml is a great language, by the way.</p>
+
+<p>One person argued for Lisp's scalability on a number of levels, which
+essentially comes down to Paul Graham's argument that in Lisp, you extend the
+language towards the problem instead of coding the problem down to the
+language (which I mention above).  Two key features that enable this are a
+uniform syntax and syntactic macros.  I'm definitely a fan of uniform syntax
+(for one thing, it lessens the conceptual load of learning the language) and
+of syntactic macros.  However, macros have interesting and complex
+interactions with module systems, and many people feel that Common Lisp
+didn't get this right.  Matthew Flatt's paper <a
+href="http://citeseer.ist.psu.edu/flatt02composable.html">Compilable and
+Composable Macros</a> goes into the PLT Scheme macro/module system, which is
+an interesting new approach to this problem that tries to be the best of both
+worlds.  Also, there has been a lot of recent work on "multi-stage
+programming", which generalizes the notion of compile-time computation to an
+arbitrary number of stages (compile-time, run-time, link-time, whatever) and
+also can incorporate static type checking.  This seems extremely promising to
+me.  <a href="http://web.cecs.pdx.edu/~sheard/">Tim Sheard</a> has a number
+of papers on this and related subjects, as well as links to other work.</p>
+
+<p>Julian Noble (an ex-Caltecher!) asked me about Forth, a language that he
+is intimately familiar with (he wrote a book called <a
+href="http://www.amazon.com/gp/product/0963277502/sr=8-1/qid=1153088845/ref=sr_1_1/102-6855408-4889703?ie=UTF8">Scientific
+Forth</a> on (you guessed it) scientific computing in Forth).  Forth was my
+first love among programming languages (I read Leo Brodie's <a
+href="http://www.amazon.com/gp/product/0138430799/qid=1153088900/sr=1-1/ref=sr_1_1/102-6855408-4889703?s=books&v=glance&n=283155">Starting
+Forth</a> a long time ago), and I've had kind of a love/hate relationship
+with it ever since.  You can do cool things in Forth that are nearly
+impossible to do in other languages (like change the lexical syntax), but it
+always seems to me that things that are fairly easy to do in other languages
+are hard to do in Forth.  I could write a very long article explaining this
+in detail, and I probably will one day.  Also, Forth has the "write-only"
+quality that I dislike about Perl, only even more so (though mitigated
+somewhat by the very uniform syntactic and semantic model).  I've written two
+experimental languages to try to get at the essence of what I like about
+Forth without the things I don't like; I haven't gotten there yet.  (By the
+way, writing Forth-like languages seems to be a rite of passage for computer
+language geeks.)  I agree with Julian that Forth is a very easy language to
+debug, and also that it's a language that everyone with a serious interest in
+computer languages should study.</p>
+
+<p>I pretty much stand by my statements on C++ that I expressed in the first
+epilogue.  C++ is a terrifically powerful language, but it's extremely
+complex and there are so many ways to shoot yourself in the foot that it's
+hard to use.  I've started to think of C++ as a giant macro system around C,
+which makes a lot of the design decisions easier to understand.  Stan
+Lippman's book <a
+href="http://www.amazon.com/gp/product/0201834545/sr=8-1/qid=1153089850/ref=pd_bbs_1/102-6855408-4889703?ie=UTF8">Inside
+the C++ Object Model</a> is essential reading if you want to understand C++
+better, though the book is somewhat out of date.</p>
+
+<p>Since writing the last epilogue, I've gotten very enamored of <a
+href="http://www.haskell.org">Haskell</a>, which I've been interested in for
+a long time.  It was actually a couple of my students (Brandon Moore and
+Aaron Plattner) who turned me (back) on to Haskell.  Haskell has come a long
+way in the last few years, and is now starting to be used for serious
+applications.  I think Haskell has the potential to be the most scalable
+language ever, but the learning curve is monstrous.  The great thing about
+Haskell is that its purely-functional nature allows you to combine components
+arbitrarily, and they always work the way you expect!  Al Barr once described
+this to me as the "snap-together" quality of a language, and Haskell code
+snaps together very nicely.  However, there's a cost; dealing with I/O and
+mutable state requires more work than in most languages (though the type
+system does give you nice guarantees about which functions can do I/O or
+state manipulation and which ones can't).  Another interesting thing: the
+"point-free" style of programming in Haskell reminds me a lot of Forth!  In
+Forth you create new functions by concatenating old functions; in Haskell you
+do the same thing, but with a function composition operator between the
+functions (of course, it's not _quite_ that simple, but it's close).  So
+maybe I've come full circle:  Haskell is Forth, lambda calculus is SKI
+combinators, and I need to up my medication ;-)</p>
+
+
+<h2>References</h2>
+
+<ol>
+
+<li> <a href="http://mitpress.mit.edu/sicp/sicp.html">Structure and
+Interpretation of Computer Programs</a>, by Hal Abelson, Gerry Sussman and
+Julie Sussman (the full text is online, but you really should buy a copy
+;-)).
+
+<p>
+
+<li> The <a
+href="http://www.hpl.hp.com/personal/Hans_Boehm/gc/">Boehm-Demers</a>
+conservative garbage collector (Hans Boehm's page).
+
+<p>
+
+<li> The <a href="http://www.eiffel.com">Eiffel</a> programming language.
+
+<p>
+
+<li> The <a href="http://www.research.att.com/projects/cyclone/">Cyclone</a>
+programming language.
+
+<p>
+
+<li> The <a href="http://www.ocaml.org">objective CAML (Ocaml)</a>
+programming language.
+
+<p>
+
+<li> The <a href="http://www.extremeprogramming.org">extreme programming</a>
+home page.
+
+<p>
+
+<li> The <a href="http://www.gwydiondylan.org">Gwydion Dylan</a> home page.
+GD is an open-source implementation of the Dylan language.
+
+<p>
+
+<li> The <a href="http://www.plt-scheme.org">PLT Scheme</a> home page.  PLT
+Scheme is an outstanding implementation of the <a
+href="http://www.swiss.ai.mit.edu/projects/scheme/">Scheme</a> programming
+language, with many innovative features.
+
+<p>
+
+<li> Scott Meyers, <u>Effective C++, 2nd Ed.</u> and <u>More Effective C++</u>.
+Addison-Wesley, 1997 and 1995 (respectively).
+
+<p>
+
+<li> Andrei Alexandrescu, <u>Modern C++ Design</u>.  Addison-Wesley, 2001.
+
+<p>
+
+<li> Paul Graham, <a href="http://www.paulgraham.com/onlisp.html">On
+Lisp</a>.
+
+<p>
+
+<li> Bertrand Meyer, <a
+href="http://www.amazon.com/exec/obidos/ASIN/0136291554/qid=1026381921/sr=1-1/ref=sr_1_1/104-8331145-1938319">Object-oriented
+Software Construction</a>.  Prentice-Hall, 2000.
+
+<p>
+
+<li> The <a href="http://www.gwydiondylan.org">Gwydion Dylan</a>
+implementation of the Dylan language.
+
+<p>
+
+<li> The <a href="http://cm.bell-labs.com/cm/cs/what/smlnj/">Standard ML of
+New Jersey (SML/NJ)</a> implementation of the Standard ML language.
+
+<p>
+
+<li> The <a href="http://www.haskell.org">Haskell</a> home page.
+
+</ol>
+
+
+
+<hr>
+<table width="100%" cellpadding=0><tr>
+<td width="33%">
+Go <a href="../../index.html">back</a>
+to my home page.
+
+<td width="33%" align=center><i>Last updated April 11, 2017</i>
+
+
+<!-- 
+<td width="10%">
+<img src=../../PythonPowered.gif>
+-->
+
+</table>
+
+<p>
+<address>
+Mike Vanier
+(<a href="mailto:mvanier@cs.caltech.edu">mvanier@cs.caltech.edu</a>)
+</address>
+</body>
+</html>
+
+

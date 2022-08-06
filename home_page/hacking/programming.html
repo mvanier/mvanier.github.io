@@ -1,0 +1,1187 @@
+
+
+<html>
+
+<head>
+<title>Mike Vanier: programming resume</title>
+</head>
+
+<body>
+
+<center>
+<h1>Michael C. Vanier: computer programming skills resume</h1>
+</center>
+<hr>
+<p>
+
+
+<p>Most of my thesis work involved building realistic computer simulations of
+the brain (specifically the mammalian olfactory cortex).  In the process of
+doing this work, I discovered that I really liked programming and I've ended
+up spending a lot of time learning new programming languages and programming
+tools just for fun.  I have a particular fondness for unusual programming
+languages and new programming paradigms, which I guess is why I'm making a
+living teaching programming now ;-)</p>
+
+<p>I've also periodically done part-time jobs to make extra money, all of which
+have been programming-related.  I describe my computer skills and the jobs
+I've worked on below.</p>
+
+<p><b>NOTE:</b> Some parts of this document are obsolete and need an
+overhaul.  What this means in practice is that I actually know and have
+worked on more stuff than is in this document, though I try to keep it
+reasonably up to date.  The HTML also needs to be cleaned up.</p>
+
+<hr/>
+
+<p/>
+
+<u>Index:</u>
+
+<ul>
+<li> <a href="#PROJECTS">Large programming projects</a> I've worked on
+<li> <a href="#NET">Internet-related</a> tools I know
+<li> <a href="#OS">Operating systems</a> I know
+<li> <a href="#LANGUAGES">Programming languages</a> I know
+<li> <a href="#MY_LANGUAGES">Programming languages</a> I've written or worked on
+<li> <a href="#MY_PROJECTS">Other programming projects</a> of mine
+<li> <a href="#TOOLS">Other programming tools I</a> know
+<li> <a href="#OTHER">Other programming-related stuff</a> about me
+</ul>
+
+<p/>
+
+<hr/>
+
+<h1><a name="PROJECTS">Large programming projects I've worked on</a></h1>
+
+<dl>
+
+<dt> <a name="GENESIS"><a
+href="http://www.genesis-sim.org/GENESIS/">GENESIS</a></a>
+
+<dd> GENESIS is a large program which enables its users to do realistic
+simulations of neural structures ranging from synapses and single neurons
+to whole networks of neurons.  GENESIS is written in C but includes a
+script language of its own which is used to write the simulations.  New
+GENESIS commands and simulation objects can be written by the user.  I've
+written several libraries of objects/functions in GENESIS, including much
+of the current synaptic library (newconn), a parameter-searching library, a
+utility functions library, a cell parameter file parser (cellreader), and a
+number of object libraries which implement various neural structures
+related to my modeling work in the olfactory cortex.  So far, this amounts
+to about 60,000 lines of C code I've written from scratch, along with about
+10-20,000 lines of C code that I've made significant modifications to.
+I also wrote a <a href="#PYTHON">Python</a> interface to GENESIS, 
+which amounted to ripping out the existing GENESIS script language 
+(which has numerous major and minor defects) and replacing it with Python. 
+
+<p/>
+
+<dt> <a name="PSI">Personal Spider, Inc.</a>
+
+<dd> During the dot-com boom, I was one of the core programmers in an
+internet startup company called Personal Spider Inc. (PSI).  I'm was also one
+of the company founders, was on the board of directors, and was the chief
+science officer.  I've done a limited amount of management of other
+programmers as well.  Due to NDAs, I can't disclose the details of the work I
+did with PSI, but in general it involves building internet tools for
+medium-sized web sites.  There was a considerable amount of
+pattern-recognition and language processing work involved as well, which
+nicely leveraged a lot of the skills I've learned in the course of my work at
+Caltech.  The code was entirely in <a href="#PYTHON">Python</a>.  This
+company failed to secure adequate funding and is now defunct.
+
+<p/>
+
+<dt> <a name="TANNER">Tspice and Wedit</a>
+
+<dd> I worked part-time for 18 months at <a
+href="http://www.tanner.com">Tanner Research Inc.</a> as a programmer.
+While there I worked on several projects, using a combination of C, C++ and
+<a href="#PYTHON">Python</a> as programming languages.  All of these
+involved developing tools for simulating VLSI circuits.  Most of my work
+was on Unix platforms, mainly Sun Solaris. The projects included:
+
+<p/>
+
+<ul>
+<li> Porting two graphically-oriented software packages from Windows to
+     Unix.  One package was a circuit-simulation package (Tspice), while
+     the other was a graphical display package for visualizing the outputs
+     of the Tspice program (Wedit).
+<p/>
+
+<li> Enhancing the Tspice circuit simulation program so it could work over
+     a network.  This was Unix-specific.
+<p/>
+
+<li> Adding capabilities to the Tspice circuit simulation program;
+specifically, I modified the program to:
+
+<ul>
+<li> support dependent voltage and current sources (VCCS, VCVS, CCCS, CCVS)
+whose branch characteristic equations were polynomials in the dependent
+source values.
+<li> handle impact ionization parameters in a broad class of transistor
+models.
+</ul>
+<p/>
+
+
+<li> Working on adding algorithms to the Tspice simulation package to make
+     it work on parallel computers.
+</UL>
+
+
+<p/>
+
+<dt> <a name="GAMBIT">Gambit</a>
+
+<dd> I worked for several months with Richard McKelvey in the Department of
+Humanities and Social Sciences at Caltech.  I'm did a variety of programming
+jobs involving the <a href=
+"http://masada.hss.caltech.edu/~gambit/Gambit.html">Gambit</a> game-theory
+simulator, which is written in C++.  Originally, I was working on building a
+GUI record/playback system.  I built a prototype, but the project money ran
+out after that. I also ported the gambit GUI to use the wxxt-1.67
+implementation of <a
+href="http://web.ukonline.co.uk/julian.smart/wxwin/">wxWindows</a> for Unix
+using Xt widgets only (i.e. which doesn't require Motif), and set up a CVS
+code archive.
+
+
+<p/>
+
+<dt> <a name="DATABASE">A database-backed web site</a>
+
+<dd> This was a prototype for a commercial web site that involved collecting
+form data from individuals, storing the results in a database, computing
+values based on those results, and returning these results to the user.  In
+other words, it was like every other commercial web site on the planet.  I
+used <a href="#PYTHON">Python</a>, <a href="#SQL">MySQL</a>, <a
+href="#PHP">PHP</a>, and <a href="#APACHE">apache</a> to build the site.
+Interestingly, the person I worked for on this project turned out to be
+dishonest, and he still owes me over $1000 for the work I did for him.
+
+<p/>
+
+<dt> <a name="GNUSHOGI"><a href="gnushogi/gnushogi.html">GNU shogi</a></a>
+
+<dd> This is my hobby project.  GNU shogi is a program that plays shogi
+(Japanese chess), and it's part of the <a href="http://www.gnu.org">GNU</a>
+project.  The program is described in great detail in the link above.
+
+<p/>
+
+</dl>
+
+<hr/>
+
+<h1><a name="NET">Internet-related tools I know</a></h1>
+
+This is just a set of links to items on the rest of the page.  Not all of
+these items are limited to being used for internet site development,
+but they all can be useful when building/maintaining a site.
+
+<dl>
+<dd> The <a href="#HTML">HTML</a> Hypertext Markup Language.
+<dd> The <a href="#JAVA">Java</a> programming language.
+<dd> The <a href="#JAVASCRIPT">Javascript</a> programming language.
+<dd> The <a href="#PERL">Perl</a> scripting language.
+<dd> The <a href="#PYTHON">Python</a> scripting language.
+<dd> The <a href="#TCL">Tcl</a> scripting language.
+<dd> The <a href="#PHP">PHP</a> server-side scripting language.
+<dd> The <a href="#CGI">CGI</a> Common Gateway Interface for making active
+web pages.
+<dd> The <a href="#SQL">SQL</a> Structured Query Language for databases.
+<dd> The <a href="#APACHE">Apache</a> web server.
+</dl>
+
+<hr/>
+
+<h1><a name="OS">Operating systems I know</a></h1>
+
+I'm a hard-core Unix user.  I usually use <a
+href="http://www.linux.org">Linux</a> now, but I have a lot of experience
+working on SunOS 4.1.x and Solaris 2.x and some experience with Digital Unix,
+Irix (SGI Unix), and HPUX.  I know much less about programming in a Windows
+or Mac environment, although I have always been able to get what I want done
+in those environments if I have to.
+
+<hr/>
+
+<h1><a name="LANGUAGES">Programming languages I know</a></h1>
+
+Here are the computer languages I know.  I've also included some comments
+regarding which projects I've used these languages for and some of my
+opinions on the languages themselves.  I can and do learn new computer
+languages regularly; it's kind of a hobby of mine.
+
+<h2><u>Languages I know well</u></h2>
+
+<h3>General-purpose</h3>
+
+<dl>
+
+<dt> C
+
+<dd> I've written over 60,000 lines of C, most of which is simulation code
+for the <a href="#GENESIS">GENESIS</a> neural simulator.  I've also
+maintained and cleaned up large bodies of C code that I've inherited from
+other people.  I use the gcc compiler (GNU C compiler) exclusively now,
+although I've used other compilers in the past.  I don't like programming in
+C.  It's fast, but it's lousy for structuring large bodies of code, and you
+end up spending an absurd amount of time debugging memory problems (array
+bound overruns, memory leaks).  Furthermore, the lack of garbage collection
+discourages you from using any but the most trivial data structures.
+
+<p/>
+
+<dt> C++
+
+<dd> I've worked on a couple of medium-to-large projects in C++ (the <a
+href="#TANNER">Wedit</a> program and the <a href="#GAMBIT">Gambit</a>
+game-theory simulator), mostly on maintaining, porting, and/or extending
+previously-existing projects.  I've also written some neural network
+simulations in C++.  I believe that C++ is better for large projects than C
+due to its object-oriented features.  It's also probably the fastest OO
+language.  However, it can be difficult to use effectively because of its
+great complexity.  And, as mentioned for C, the lack of garbage collection
+discourages you from using many kinds of data structures, although C++ is at
+least far superior to C in this regard because of destructors.  In addition,
+there are freely-available conservative garbage collectors for C++ such as
+the <a href="http://www.hpl.hp.com/personal/Hans_Boehm/gc">Boehm-Demers
+GC</a> which could in theory make C++ programming much more pleasant (I say
+in theory because I've never done it in C++, although I have done it in C).
+One thing I will say about C++ is that, unlike Perl, where the language seems
+arbitrarily complex for no good reason, the complexity in C++ is an accurate
+reflection of the kinds of things that are typically done in the language.
+Whether a simpler language with equivalent power could be created is an
+interesting research problem; I find it revealing that C++ is essentially the
+only language in its design space (object-oriented languages that fully
+support low-level programming).  Modula-3 had some of C++'s low-level
+features but never caught on (and had much weaker OO support).
+
+<p/>
+
+<dt> <a name="JAVA">Java</a>
+
+<dd> The largest Java program I've written was a prototype neural simulator
+in Java (as an exploration of the language as a possible future
+implementation language for <a href="#GENESIS">GENESIS</a>).  This came to
+about 7000 lines of code.  Java is nicer in most ways than C++.  It's safer,
+cleaner, and has very few weird features.  Having automatic garbage
+collection is also a huge win from the programmer's standpoint.  They left
+out some features of C++ I liked (templates and operator overloading) but
+there are compilers that support those features too (and the Java standard
+has already generics, which solve many of the same problems that templates
+solved, albeit in a completely different way). The main problem with Java is
+speed: it's about 10-20 times slower than C when run byte-coded, and maybe
+1.5-3 times slower when using a JIT (just-in-time compiler).  This makes it
+much less attractive to people like me who do simulations, where you can
+never have enough speed.  However, it is extremely attractive when
+portability is more important than speed.  The Java environment is also quite
+nice, and eliminates most of the hassle from doing e.g. portable graphics or
+network programming.  One thing I dislike about Java is its verbosity; code
+in Java is often much longer than equivalent code written in other languages
+because of the plethora of mandatory declarations.
+
+<p/>
+
+<dt> <a name="PYTHON">Python</a>
+
+<dd> Python is my scripting language of choice.  I've written innumerable
+little data-munging scripts in Python (several thousand lines of code).  I've
+also made a version of the <a href="#GENESIS">GENESIS</a> neural simulator
+that used Python as its extension language instead of the standard GENESIS
+script language.  I built a networked version of the <a
+href="#TANNER">Tspice</a> circuit simulation program using Python to handle
+the networking connections between the graphical interface and the computing
+engine.  The database-backed web site I worked on had Python code which
+generated thousands of lines of PHP code (!).  The <a href="#PSI">Personal
+Spider</a> project is written entirely in Python.  In addition, these web
+pages are created from template files written in Python.  
+
+<p/>
+
+I like Python because it can do everything <a href="#PERL">Perl</a> does, but
+it's much cleaner in design, is object-oriented, and the code is more
+readable than in any other computer language I know of.  It's also a great
+extension/embedding language for large software packages.  Check out the <a
+href="http://www.python.org">Python home page</a> for more details.
+
+<p/>
+
+<dt><a name="PHP">PHP</a>
+
+<dd><p>I worked on a fairly large <a href="#DATABASE">prototype of a
+commercial web site</a> involving putting a database up on a web site where
+PHP was the server-side scripting language.  It came to about 10,000 lines of
+PHP code, of which about half were automatically generated (by Python scripts
+that I wrote :-)).  Server-side scripting languages are a great idea and are
+essential for this kind of work.  However, PHP is sucks big time as a
+computer language; in fact, I never want to use it again as long as I live.
+The way arrays are implemented is particularly hilarious.  (Maybe the
+language has improved now; I don't know.)  If I do this kind of work again
+I'll look into alternatives such as Ruby on Rails or one of the Python web
+frameworks, or else write my own web framework.</p></dd>
+
+<dt> <a name="LISP">Lisp and Scheme</a>
+
+<dd> I've done bits and pieces of Lisp and Scheme programming (Scheme is a
+dialect of Lisp) but no very large projects.  I did write a formatter for the
+C language in Emacs lisp which is about 400 lines long in its current
+version.  I've written a prototype implementation of a computer language in
+Scheme, but I switched to <a href="#OCAML">Ocaml</a> for the final
+implementation.
+
+<p/>
+
+I've read several books on Lisp and Scheme (e.g. Abelson and Sussman's
+"Structure and Interpretation of Computer Programs" and Graham's "ANSI Common
+Lisp" and "On Lisp") and subscribe or have subscribed to several mailing
+lists for various implementations of Scheme.  Finally, I teach Scheme as part
+of the <a href="http://www.cs.caltech.edu/courses/cs1">CS 1</a> course at
+Caltech.
+
+<p/>
+
+I like Lisp and Scheme a lot, because they're among the most flexible,
+powerful and extensible computer languages ever invented (not surprising,
+considering that they're based on lambda calculus).  Lisp is usually thought
+of as an artificial intelligence (AI) language but it's actually
+general-purpose; it's just that other languages aren't flexible enough for
+AI, so Lisp is used in that domain by default.  Lisp has a prefix syntax
+which uses lots of parentheses that many people find ugly and hard to
+understand, but I've found that you get used to it quickly (and I actually
+prefer it because it's so unambiguous).  Also, most people think Lisp is
+slow, but it's not: several Common Lisp systems have compilers that can
+produce code which is almost as fast as C (<i>e.g.</i> within a factor of 2).
+A good recent example of this is <a href="http://sbcl.sourceforge.net">Steel
+Bank Common Lisp</a>.
+
+<p/>
+
+The reason Lisp and Scheme are important is that they're virtually the only
+computer languages that combine the following:
+<p/>
+<ul>
+
+<li> full support for both imperative and functional programming (OK, <a
+href="#OCAML">Ocaml</a> also gives you this, but Lisp is more general).
+
+<li> macros, which allow you to write code that writes code.  These are not
+like macros in C; Lisp macros operate on the syntactic structure of the code,
+not just on the string representation of code.  Macros are one of the key
+elements that make it possible to implement support for new programming
+paradigms (<i>e.g.</i> object-oriented programming, logic programming) within
+the language itself.  Read Paul Graham's book <a
+href="http://www.paulgraham.com/onlisp.html">On Lisp</a> (currently out of
+print, but downloadable for free) for much more on macros.
+
+</ul>
+
+<p/>
+
+I used to be keen on <a
+href="http://www.gnu.org/software/guile/guile.html">Guile</a>, a dialect of
+Scheme designed to be a scripting language, but that project has had a number
+of problems, the most serious of which is a chronic lack of decent
+documentation.  Right now I advocate <a
+href="http://www.plt-scheme.org/software/mzscheme">mzscheme</a>, the Scheme
+implementation for the <a href="http://www.drscheme.org/">Dr. Scheme</a>
+project.  Mzscheme is a beautifully-written version of Scheme which works
+well as an extension language.  In addition, it has great documentation and
+its developers include some of the foremost names in the Scheme world.  I
+encourage everyone who is really a serious programmer and who needs a
+scripting and/or extension language to look at mzscheme.  Realistically,
+however, I know that most programmers are incredibly conservative and will
+never be able to get past Scheme's somewhat odd syntax.
+
+<p/>
+
+<dt> <a name="OCAML"><a href="http://www.ocaml.org">Objective CAML</a>
+(Ocaml)</a> and <a href="http://www.smlnj.org">Standard ML</a>
+
+<dd> These languages have strong static polymorphic type systems and mainly
+support functional programming with strict evaluation, although they also
+support imperative programming.  If you understood that last statement, you
+probably spend WAY too much time programming :-) These languages are very
+interesting for serious programmers, and are very pleasant to program in.
+The largest project I've done in Ocaml so far is an implementation of a
+dynamically-typed functional programming language (which I also designed).
+This language is basically a cross between Forth and Scheme; the Ocaml code
+came to about 4500 lines of code, which is pretty small for a full language
+implementation.
+
+<p/>
+
+Ocaml, in particular, is so great that it has become one of my languages of
+choice for new projects.  Just look at what it gives you:
+
+<p/>
+
+<ul>
+<li> full support for imperative, functional, and object-oriented programming;
+<li> amazingly fast execution (often beats C++ on speed tests);
+<li> strong static polymorphic type-checking (this catches a HUGE number of
+bugs at compile time);
+<li> a very powerful type system, which lets you describe the program
+structurally in terms of its types so that if it passes the type checker it
+is almost "correct by construction";
+<li> type inference, so you usually don't have to declare types;
+<li> a very efficient generational garbage collector;
+<li> portable bytecode compilation or fast native-code compilation;
+<li> a large standard library;
+<li> a large user base;
+<li> a powerful module system with functors and separate compilation;
+<li> language customization using camlp4 (caml pretty-printer and
+preprocessor);
+<li> a foreign function interface to C code;
+<li> and lots more ;-)
+</ul>
+
+<p/>
+
+Ocaml only has two problems.  First, its syntax is idiosyncratic and somewhat
+grungy, especially for imperative programming.  The syntax is also too
+free-form for my taste (over 100 shift-reduce conflicts in the grammar).  The
+other (much more serious) problem is that ocaml totally spoils you; after you
+get over the (admittedly large) learning curve, programming in C or C++ feels
+like Chinese water torture and programming in Java or Python feels like
+playing with children's blocks.  On the positive side, you'll probably
+program five times as fast and spend 1/5 the time debugging as you would in
+those languages.  Ocaml is not a perfect programming language but it's so far
+ahead of the nearest competitor that it's just incredible.  Incidentally, the
+CAML in ocaml stands for "Categorical Abstract Machine Language"; I hope that
+clears <u>that</u> up ;-)
+
+<p/>
+
+<dt> <a name="HASKELL"><a href="http://www.haskell.org">Haskell</a></a>
+
+<dd> Ah, Haskell... how do I love thee?  Let me count the ways... ;-)
+
+<p/>
+
+Haskell is my new favorite language, even though I recognize that it isn't
+yet suitable for many tasks.  It's the most beautiful computer language I've
+ever used.  It is a pure functional language with lazy evaluation, type
+classes, and uses monads (an advanced concept that comes from category
+theory) to handle input/output, state transitions, and much more in a purely
+functional setting.  Well-written Haskell code is so concise and elegant it
+will make you cry.  If C code is one step up from assembly language, good
+Haskell code is one step down from poetry, or from a beautiful mathematical
+theorem.  And one of the things I like most about it is that it was two of my
+students (Brandon Moore and Aaron Plattner) who were responsible for turning
+me on to Haskell (being a teacher has its perks).  Haskell also has an
+incredibly rich and deep literature, a very active user base consisting of
+some of the smartest programmers in the world, and is just a joy to use.
+
+<p/>
+
+I think the big lesson of Haskell is <b>compositionality</b>: the ability to
+take small things and build bigger things out of them.  This is much like the
+component concept you see in large-scale programming, but brought down to the
+micro-level: <u>every</u> piece of code in Haskell is essentially a black-box
+component, because the language is completely referentially transparent
+(that's what "purely functional" means, after all).  I used to think I
+understood functional programming well when I programmed in Scheme and Ocaml,
+but learning Haskell has shown me that pure functional programming is
+potentially much more powerful than impure functional programming (which is
+what Scheme and Ocaml represent).
+
+<p/>
+
+I could go on for pages about how great Haskell is, but instead I'll just
+point you to the <a href="http://www.haskell.org">Haskell home page</a>.
+
+<p/>
+
+<dt> Forth
+
+<dd> I've played around with Forth for years and have done some simple neural
+network simulations in it.  Forth is a low-level but extensible and
+interactive threaded-interpreted language which is mainly used for embedded
+systems programming due to its low memory usage.  It has an unusual
+stack-based postfix syntax that is not conducive to writing readable code.
+It's a lot of fun to play with, because you can extend any part of the
+language (the implementation is completely exposed, for better or for worse),
+and most of the language is written in itself.  It's also fast for an
+interpreted language.  However, it's too slow for serious simulation work and
+too difficult to use for scripting, so I don't use it anymore, except when I
+get bored :-) To me, Forth is a fascinating example of a language that is too
+simple for its own good <i>i.e.</i> it violates Einstein's dictum of "make
+everything as simple as possible, but no simpler".  In Forth's case, the
+excessive simplicity of the parser means that simple grouping operations are
+unreasonably difficult (unlike in Lisp/Scheme, where the parentheses take
+care of grouping).  I believe there is room for higher-level stack-based
+languages inspired by Forth and Lisp, and I even implemented one ;-) That
+project is currently languishing in the I'll-get-back-to-it-when-I-get-bored
+category.
+
+</dl>
+
+<h3>Special-purpose</h3>
+
+<dl>
+
+<dt> <a name="SQL">SQL</a>
+
+<dd> The <a href="#DATABASE">database-backed web site project</a> mentioned
+above required me to learn SQL; I used the MySQL system and had no serious
+problems with it (although the version I used had some annoying limitations).
+SQL isn't a true programming language (it isn't Turing-complete), and the
+syntax is pretty gross (pseudo-English, emphasis on the pseudo) but it's well
+suited for its purpose, which is accessing data from relational databases.
+For the <a href="#PSI">Personal Spider</a> project we used Postgres SQL,
+which is free and avoids some of the limitations of MySQL.
+
+<p/>
+
+<dt> GENESIS neural simulation system
+
+<dd> The <a href="#GENESIS">GENESIS</a> neural simulation system forms a
+large part of my thesis work.  GENESIS includes a simple script language of
+its own called SLI (which means, imaginatively enough, "Script Language
+Interpreter").  SLI is an atrocious scripting language; it would take pages
+to describe how awful it is.  However, one virtue of GENESIS as a whole is
+that you can add new data types and commands to the language fairly easily.
+
+<p/>
+
+<dt> Matlab
+
+<dd> Matlab is the well-known data-analysis and numerical computation
+program.  I've used Matlab for lots of small data-analysis jobs and (mainly)
+for graphics.  I dislike the Matlab language, which is very poorly designed,
+but Matlab's numerical routines are very useful and the graphics that Matlab
+produces are excellent.
+
+<p/>
+
+<dt> Mathematica
+
+<dd> I use Mathematica whenever I have a really gnarly algebra or calculus
+problem to deal with.  I like it; it's a lot like Lisp with a nicer interface
+(although the Mathematica people don't give credit where it's due <i>e.g.</i>
+to the MacSyma program which predated it).  However, I don't like proprietary
+software, so I don't use it much.  I'd love to see an open-source program of
+comparable abilities.
+
+<p/>
+
+<dt> Unix shells: sh, csh, zsh
+
+<dd> I've written loads of shell scripts in sh, csh, and zsh (usually sh).  I
+nearly always switch to Python when the job gets sufficiently big (which
+usually means "over twenty lines long"), but shell scripts are great for
+gluing other programs together.  Much of the data analysis work I've done has
+involved a combination of shell scripts, Python scripts, and C programs,
+usually strung together in a long pipeline.
+
+<p/>
+
+<dt> make
+
+<dd> Make is the program used to coordinate a complex series of commands when
+compiling a program.  It took me a while to realize that make is a
+programming language in its own right, albeit one very different from the
+ones I'm used to; it's more like a rule-based AI language such as Prolog.
+The <a href="#GENESIS">GENESIS</a> Makefiles are pretty nasty and I've hacked
+on them extensively.  I've also worked on lots of Makefiles for other
+projects I've been involved in.  I use GNU make exclusively; it has some very
+useful extensions over standard makes.
+
+</dl>
+
+
+<h2><u>Languages I know a little</u></h2>
+
+<h3>General-purpose</h3>
+
+These are languages which I've played around with but haven't written
+substantial bodies of code in.
+
+<dl>
+
+<dt> <a name="CSHARP">C#</a>
+
+<dd> C# is Microsoft's answer to Java.  It has about a 90% overlap with
+Java, is good in the same ways that Java is, and is boring in the same ways
+that Java is.  C# has some improvements over Java (such as support for
+closures), but the differences are pretty minor.  More interesting than C#
+itself is the .NET virtual platform that it's built on.  This platform is
+multi-lingual, which would seem to provide the "holy grail" of easy language
+interoperability.  I haven't looked into this deeply, but I gather that what
+it really amounts to is that any language can interoperate with C# as long as
+it's sufficiently like C#.  Progress?  You be the judge.  I try to avoid
+languages with too close a connection to Microsoft, so I generally prefer
+Java to C# (although the <a href="http://www.mono-project.com">Mono</a> project
+appears to be a good free implementation of .NET and C#).
+
+<p/>
+
+<dt> <a name="PERL">Perl</a>
+
+<dd> Perl is a scripting language which combines the power of a lot of Unix
+tools into one language (<i>e.g.</i> sh, sed, awk, and some of C).  I've
+written many small throwaway scripts in Perl.  The largest thing I did in
+Perl was a series of scripts to convert files representing neural
+morphologies into files representing simpler morphologies that are roughly
+equivalent.  This is an essential part of my thesis work, and was about 2500
+line of Perl code.  Perl is quite fast for a scripting language, and is good
+for text and file manipulation, but it's very complex and I loathe its weird
+context dependencies and its syntax, which is full of funny magic characters
+and assorted bogosities too numerous to name here.  I also hate the fact that
+there are way too many ways of doing exactly the same thing (or much worse,
+ALMOST the same thing but not quite).  I find that most of the complexity in
+Perl is totally unnecessary and is mainly the result of bad design choices
+made early on, in contrast to Python, which has equivalent power but is much
+easier to learn and use.  I gave up Perl completely as soon as I learned
+Python, and so should you.
+
+<p/>
+
+<dt> <a name="TCL">Tcl/Tk</a>
+
+<dd> I've done some simple neural network simulations with a graphical
+interface in Tcl/Tk.  Tcl was the original Unix scripting language, and is
+quite simple to use.  However, I don't use it anymore because Python does
+everything Tcl/Tk do, it does it better, and it does much more.  Put simply,
+Tcl blows.
+
+<p/>
+
+<dt> Fortran
+
+<dd> Fortran was my first programming language, but I haven't done serious
+work in it for a long time.  It's an easy language to learn but a pain to
+use for anything but number-crunching.  Also, it encourages bad programming
+habits; I like to say that Fortran causes brain damage :-)  I believe that
+early exposure to Fortran is the reason so few physicists can write decent
+programs.
+
+<p/>
+
+<dt> Pascal
+
+<dd> I programmed in Pascal years ago, but I no longer do, because there are
+much better alternatives.  Pascal is clean, simple, very limited, and totally
+boring.
+
+<p/>
+
+<dt> <a name="JAVASCRIPT">Javascript</a>
+
+<dd> The client-side web scripting language.  I did a little Javascript
+hacking for a <a href="#DATABASE">database-backed web site project</a>. It's
+pretty straightforward.
+
+<p/>
+
+<dt> Eiffel
+
+<dd> Eiffel is a very nice object-oriented language that could potentially
+replace C++ or Java for many projects if enough people knew about it.  It has
+a very powerful object system and supports "Design by Contract", which is
+essentially an expanded assertion system that makes it much easier to make
+very reliable software.  Unfortunately, the compilers I've used produce code
+which is not nearly as fast as code produced by C/C++ compilers, which rules
+it out for most of the stuff I'm interested in.  In addition, it can't
+compete with Java for the things Java is best at (<i>e.g.</i> portable
+graphics).  Also, there is only one free implementation that I know of, the
+<a href="http://smarteiffel.loria.fr/">GNU SmartEiffel</a> compiler (which is
+very good).  Eiffel also has some issues involving its type system which
+requires programs to do whole-program analysis at link time to make sure a
+program is valid; this makes the language much less attractive in the
+internet world where dynamic loading of code libraries is a normal part of
+life.
+
+<p/>
+
+<dt> Smalltalk
+
+<dd> SmallTalk was one of the earliest object-oriented languages (not the
+first, though: Simula was the first).  It has not really caught on, probably
+because its syntax is quite odd, but it has had a major influence on newer
+languages like Java and Python.  There is a recent reimplementation called <a
+href="http://www.squeak.org">Squeak</a> which is really wonderful, is free
+software, and is attracting a lot of attention; if you're interested in
+Smalltalk, you should start there.  Although Smalltalk's syntax is odd, it's
+very consistent, and this makes Smalltalk extremely easy to learn; you could
+summarize the <u>entire language</u> in one page.  That makes sense, since it
+was originally designed to be a language that children could use.  Smalltalk
+has also been a heavy influence on other languages, notably the scripting
+language <a href="#RUBY">Ruby</a>.  All computer language designers should
+study Smalltalk carefully; there is much to learn from it.  Personally,
+studying Smalltalk gave me a big "aha!" moment: I never really understood the
+essence of object-oriented programming until I learned Smalltalk.
+
+<p/>
+
+<dt> Dylan
+
+<dd> Dylan is essentially a dialect of lisp with optional static typing and
+an infix syntax.  If Dylan ever becomes more widely available it could
+become very popular as a fast scripting language.  Definitely worth watching.
+
+<p/>
+
+<dt> <a name="RUBY">Ruby</a>
+
+<dd> Ruby is a scripting language that is sort of like a cross between Python
+and Smalltalk, with a dash of Perl thrown in for bad measure.  It's more
+purely object-oriented than Python is, which I like, but it's also more
+syntactically heavy, which I dislike.  If Python didn't exist, Ruby would be
+my scripting language of choice.
+
+<p/>
+
+<dt> <a href="http://www.jsoftware.com">J</a> and APL
+
+<dd> J is the modern dialect of APL, the famous array-processing language
+with all the funny characters.  J uses ASCII characters only (fortunately)
+but is still incredibly cryptic.  It's also proprietary, although free
+versions are available.  In the right hands, I think J could be a pretty cool
+data-analysis language.
+
+<p/>
+
+<dt> Modula-3
+
+<dd> Modula-3 is another object-oriented language descended from Pascal.
+It's no longer used much, but it was a major influence on Java and Python, so
+its genes live on :-) To me, one of its coolest features is the notion of an
+"unsafe module" that can perform low-level tasks usually done using C or C++.
+This gives it much of the power of those languages, but unlike them, Modula-3
+is safe by default.  The <a href="#CSHARP">C#</a> language adopted this
+feature.
+
+<p/>
+
+<dt> Prolog
+
+<dd> Prolog is basically an AI language which operates by defining facts
+and rules for deriving new facts from old ones.  I've read one book on
+Prolog but haven't done any real programming in it.  It looks fascinating,
+though: it's a whole new paradigm of programming.
+
+</dl>
+
+
+<h3>Special-purpose</h3>
+
+<dl>
+
+<dt> PostScript
+
+<dd> This is the well-known page description language.  Although most
+people don't realize it, it's actually a full programming language (with an
+odd postfix syntax similar to Forth).  I've hacked on some PostScript code
+(usually because a code generator had a bug in it) and have read at least
+one book on it, but I'm not an expert.
+
+<p/>
+
+<dt> m4 macro language
+
+<dd> I used this for setting up the automatic configuration for my hobby
+project (<a href="#GNUSHOGI">GNU shogi</a>).  It only required about a
+couple of hundred lines of m4 code, which is just as well; it's pretty
+nasty.
+
+<p/>
+
+<dt> sed, awk
+
+<dd> These are Unix text-processing mini-languages.  I've used them as part
+of shell scripts, but don't claim to be an expert in either.  Anything awk
+can do can usually be done better by Python or Perl anyway.
+
+</dl>
+
+
+<hr/>
+
+<h1><a name="MY_LANGUAGES">Programming languages I've written or worked on</a></h1>
+
+<dl>
+
+<dt>Genesis script language</dt>
+
+<dd><p>The <a href="#GENESIS">GENESIS</a> neural simulator I worked with for my
+Ph.D. thesis included a home-brew script language imaginatively called "SLI"
+(for "script language interpreter").  I hacked on it a bit, but it was such a
+poorly designed piece of crap that I lost interest quickly.  It served as a
+useful illustration of how not to design a language.</p></dd>
+
+<dt>Tap</dt>
+
+<dd><p>I wrote an interesting scripting language called "Tap" (named after
+the fake rock band "Spinal Tap").  I designed it myself and wrote it entirely
+from scratch in <a href="#OCAML">ocaml</a>.  The idea behind Tap was to
+create a hybrid of Forth and Scheme.  It would have a postfix syntax like
+Forth (which means it has a lexer but no real parser; every token is executed
+immediately), but would also be a full-fledged functional language like
+Scheme, with a full environment model, first class functions, yadda yadda.  I
+was interested to see if merging the Forth approach to programming with the
+Scheme approach would be interesting.  And, in fact, it was interesting.
+Here is some sample Tap code:</p>
+
+<pre>
+
+# Factorial, the mother of all examples.
+{ dup 0= { drop 1 } { dup 1- factorial * } if-else } 'factorial define
+10 factorial p
+
+# Tail-recursive factorial.
+{ 
+  { dup 0= { drop } { tuck * swap 1- iter } if-else } 'iter define
+  1 swap iter 
+} 'tr-factorial define
+
+# The applicative-order Y combinator.  Pretty intuitive, wouldn't you say?
+{
+  { { dup apply apply } block-push @ apply } block-put
+  { dup apply }
+  apply
+} 'y define
+
+# Factorial defined using the Y combinator.
+{
+  'fact define
+  {
+    dup 0 =
+    { drop 1 }
+    { dup 1- fact * }
+    if-else
+  }
+} y 'y-factorial define
+
+100 y-factorial p
+# Prints: 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
+# (nearly instantaneously).
+
+# Another way to do factorial, using the "linrec" combinator stolen from
+# the Joy language:
+
+{ 
+  # Here's how you do local variables in tap:
+  [ if-clause then-clause rec1-clause rec2-clause ] locals
+  { 
+    dup if-clause
+    { then-clause }
+    { rec1-clause f rec2-clause }
+    if-else
+  } 'f define
+  `f
+} 'linrec define
+
+
+{ 0= } { 1+ } { dup 1- } { * } linrec 'lr-factorial define
+
+# Testing the partial quote capability.  Full quoting (using the single quote
+# character) just puts the name being quoted on the stack.  Partial quoting
+# (using the backtick character) looks up the name and puts the resulting
+# value on the stack, even if it's a function.  The normal execution model is
+# to look up a name, execute it if it's a function, and otherwise put it on
+# the stack.  So partial quoting is useful for treating functions as data.
+
+{ dup * } 'squared define
+10 squared p  # Prints 100.
+10 `squared apply p  # Also prints 100.
+
+# Creating a new control structure.  "repeat" is actually built-in.
+
+{
+  [ block count ] locals
+  { count 0 > } { block count 1- 'count set! } while
+} 'repeat define
+
+# Drop an arbitrary number of elements from the stack.
+
+{ `drop swap repeat } 'ndrop define
+
+# Finding the roots of a quadratic equation.
+
+{ 
+  [ a b c ] locals
+  b dup * 4.0 a c * * - sqrt 'd define
+  b ~ d + 2.0 a * /       # ~ is the negation operator.
+  b ~ d - 2.0 a * /
+} 'solve-quadratic-equation define
+
+
+# While loop.  "while" is actually built-in.
+
+{ 
+  [ test block ] locals
+  { test { block iter } if } 'iter define
+  iter
+} 'while define
+
+# Closures.
+
+{ 'n define { n + } } 'add-n define
+10 add-n 'add-10 define
+
+# Another way to do closures.
+
+{ { + } block-push } 'add-n define
+10 add-n 'add-10b define
+
+# Quicksort.  Not as nice as the Haskell version :-(
+# I could probably do better than this.
+
+{
+  dup list-empty? not
+  {
+    list-split [ pivot rest ] locals
+    ( ) ( ) [ less greater ] locals
+
+    rest
+    { 
+      dup pivot < 
+      { less cons 'less set! }       
+      { greater cons 'greater set! } 
+      if-else
+    } list-for-each
+
+    less quicksort ( pivot ) list-append
+    greater quicksort list-append
+  } if
+} 'quicksort define
+
+</pre>
+
+<p>I learned a lot from working on Tap, even though I don't work on it or use
+the language any more.  I found that I had to fight the tendency to make the
+language overly complex, because ocaml made it so easy to make big changes
+(even stupid ones).  Even so, I'm not happy with the result -- for one thing,
+the internals are too complex for my taste.  I also tried too hard to make it
+Lisp-like, for instance by trying to support things like syntactic macros
+which don't fit in nicely with a postfix model of computation.  Similarly, I
+tried too hard to make the base syntax user-modifiable.  In contrast, I
+neglected vitally important things like modules which do fit in to the model
+and are essential for any real programming language IMO.  Also, using ocaml
+as the implementation language was a mixed blessing.  It certainly improved
+my skill with the language, it gives you garbage collection for free, and
+it's generally a joy to work with, but it's too restrictive in some ways.
+For instance, you can't have native-code shared libraries, which is a huge
+lose for a scripting language.</p>
+
+<p>Perhaps the biggest mistake I made with Tap is that I didn't have an
+application area defined before I started working on it.  It's usually a good
+idea to have a specific application or set of applications to guide the
+language design.</p>
+
+</p>
+
+</dd>
+
+<p/>
+
+<dt>Picoforth</dt>
+
+<dd><p>Picoforth is a Forth dialect (much more so than Tap, which was merely
+inspired by Forth).  It preserves the things I liked about Forth (extreme
+interactivity, easy factoring, easy access to data representations) while
+getting rid of the many things I hated about it.  Its goal was to be a
+scripting language for applications or libraries written in C (much like most
+scripting languages) and it's was written in C.  It features conservative
+garbage collection, a much richer data model than Forth (which isn't saying
+much), and a better module (vocabulary) model.  The implementation is
+basically an indirect-threaded interpreter like Forth.</p>
+
+<p>One of these days, though, I really have to sit down and write a Forth 
+implementation from scratch in assembly language, if only to teach myself
+assembly language.  That's how Chuck Moore did it originally, and if it's
+good enough for Chuck...</p>
+
+</dd>
+
+<dt>BogoScheme</dt>
+
+<dd><p>BogoScheme started as a tiny Scheme interpreter I wrote in a few hours
+in <a href="http://www.ocaml.org">ocaml</a> for an ocaml course I teach.
+There was nothing particularly interesting about the original version, aside
+from the fact that it was a Turing-complete Scheme interpreter in about 700
+lines of code, with first-class functions and correct lexical scoping.  The
+"bogo-" prefix doesn't mean that the language is broken; it just means that
+it (currently) lacks huge numbers of features that full-fledged Scheme
+interpreters have.  Also, I liked the idea that source code files would have
+names ending in <code>".bs"</code>.  Truth in advertising!</p>
+
+<p>Of course, no language ever stays small for long, and since I wrote
+BogoScheme I've been systematically expanding it, with the goal of making a
+full R6RS-compliant Scheme implementation (the R6RS standard isn't finalized
+yet, but a draft is available at <a
+href="http://www.r6rs.org"><tt>http://www.r6rs.org</tt></a>).  I also want to
+experiment with writing a Scheme compiler for the language, something I've
+been interested in ever since I read Abelson and Sussman's <a
+href="http://mitpress.mit.edu/sicp">Structure and Interpretation of Computer
+Programs</a>.  And, of course, it's really fun.</p>
+
+<p>My longer-term goal is to use BogoScheme as a vehicle for web
+programming.  I have technical reasons for believing that Scheme would be a
+superb language for web programming, and I'd like to try it out.  Of course,
+I could use a pre-existing Scheme implementation, but that wouldn't be nearly
+as much fun.</p>
+
+</dd>
+
+</dl>
+
+<hr/>
+
+<h1><a name="MY_PROJECTS">Other programming projects of mine</a></h1>
+
+<dl>
+
+<dt><tt>mosh</tt></dt>
+
+<dd><p><tt>mosh</tt> is a Unix shell I've written in Ocaml.  It's very
+primitive at the moment, but I want to expand it until I can ditch
+<tt>bash</tt> and <tt>zsh</tt> entirely (at least, for interactive use).  The
+goal of <tt>mosh</tt> is to be a superb <i>interactive</i> shell, not a shell
+scripting language.  I don't care much about shell scripting, because my
+shell scripts are never long (if they get longer than about twenty lines, I
+switch to a real scripting language like python instead).  However, I do care
+a lot about comfortable interaction with a shell, and I want to use
+<tt>mosh</tt> to experiment with new features while simultaneously avoiding
+the gigantic amount of cruft that plagues <tt>zsh</tt>.  Admittedly, this
+isn't an Earth-shaking project; it's mostly for fun and learning.  The name
+"<tt>mosh</tt>" stands for "<u>M</u>ike's <u>O</u>caml <u>SH</u>ell".</p>
+
+</dd>
+
+</dl>
+
+<hr/>
+
+<h1><a name="TOOLS">Other programming tools I know</a></h1>
+
+<dl>
+
+<dt> <a name="HTML">HTML</a>
+
+<dd> The hypertext document format.  Everyone knows HTML; it's pretty trivial.
+
+<p/>
+
+<dt><a name="APACHE">Apache web server</a>
+
+<dd><p>Apache is the most-used web server in the world, and is totally
+open-source.  I've compiled and set up an Apache server for my <a
+href="#DATABASE">database-backed web site project</a>.  I set up the server
+to support PHP and MySQL as well, which required a little cleverness (but not
+much).  I like Apache; it seems to be robust and effective.</p>
+
+<dt> <a name="TEX">TeX/LaTeX</a>
+
+<dd> The document-processing systems.  I use these to typeset all my
+scientific papers.  I hate LaTeX, but I don't have a better alternative.  I
+especially hate the TeX language that is at the heart of LaTeX.  Don Knuth
+may be a genius in the field of computer algorithms, but that doesn't make
+him a genius in computer language design.  Ugh.
+
+<p/>
+
+<dt> CORBA
+
+<dd> I've played around with CORBA a bit, mainly using a Python ORB called
+Fnorb.  I was once excited about the potential of CORBA for making network
+programming easier and for making it easy to integrate modules written in
+different languages, but now I've lost interest.  CORBA is too big, too
+bulky, and has too much overhead for my tastes.  Also, it has a
+design-by-committee feel to it.
+
+<p/>
+
+
+<dt> CVS and Subversion
+
+<dd><p>I have used CVS (Concurrent Version System) to manage source code
+revisions for several projects.  It's not perfect, but it gets the job done.
+I've also set up CVS archives for the <a href="#GAMBIT">Gambit</a> project
+and for other projects.  Then I switched to Subversion, which I preferred,
+but not by much.  Now I use <a href="http://abridgegame.org/darcs">Darcs</a>
+(written in <a href="#HASKELL">Haskell</a>, by the way).</p>
+
+<dt> Lex, Yacc and friends
+
+<dd><p>Lex and Yacc (or their GNU equivalents, flex and bison) are,
+respectively, lexer and parser generators.  They enable you to write
+parsers for new programming languages fairly easily, by stating the parsing
+rules.  I've done some work on Yacc for the <a href="#TANNER">Tspice</a>
+project, and I used lex extensively for my cellreader library in <a
+href="#GENESIS">GENESIS</a>.  I also know the Ocaml equivalents,
+<tt>ocamllex</tt> and <tt>ocamlyacc</tt>, quite well.</p>
+
+<p/>
+
+<dt> Emacs and Vim
+
+<dd> Emacs and Vim are two great programmer's text editors.  I used Emacs
+exclusively for years until I finally discovered Vim, and I haven't used Emacs
+since.  Vim's modal editing really saves time.
+
+<p/>
+
+<dt> SWIG
+
+<dd> <a href="http://www.swig.org">SWIG</a> (Simplified Wrapper and
+Interface Generator) is a nifty tool that makes it very easy to build
+scripting interfaces to C or C++ code.  I used it to build a version of <a
+href="#GENESIS">GENESIS</a> that used Python as its scripting language.
+
+<p/>
+
+<dt> autoconf
+
+<dd> autoconf is another cool tool that I used to automate the
+configuration process for my hobby project (<a href="#GNUSHOGI">GNU
+shogi</a>).  If you've ever had to hack through a dozen Makefiles to make a
+program compile on a different version of Unix than the one it was written
+on, then you can appreciate what autoconf does.  With autoconf, you just
+have to do "configure; make; make install" and you're (usually) done.
+
+</dl>
+
+
+<hr/>
+
+<h1><a name="OTHER">Other programming-related stuff about me</a></h1>
+
+I'm a member of the <a href="http://www.gnu.org">GNU project</a>.  This is
+because my hobby project, <a href="#GNUSHOGI">GNU shogi</a>, is a GNU project
+which I took over the maintainership of.
+
+
+<hr>
+<table width="100%" cellpadding=0><tr>
+<td width="33%">
+Go <a href="../index.html">back</a>
+to my home page.
+
+<td width="33%" align=center><i>Last updated April 11, 2017</i>
+
+
+<!-- 
+<td width="10%">
+<img src=../PythonPowered.gif>
+-->
+
+</table>
+
+<p>
+<address>
+Mike Vanier
+(<a href="mailto:mvanier@cs.caltech.edu">mvanier@cs.caltech.edu</a>)
+</address>
+</body>
+</html>
+
+
