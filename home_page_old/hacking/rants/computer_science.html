@@ -1,0 +1,437 @@
+
+
+<html>
+
+<head>
+<title>Mike Vanier: opinions</title>
+</head>
+
+<body>
+
+<center>
+<h1>Why I love computer science</h1>
+</center>
+<hr>
+<p>
+
+
+<p><b>NOTE:</b> This is an old essay (probably from about 2003), reposted by
+popular demand.</p>
+
+<hr/>
+
+<p>I have been a serious computer programmer for many years.  Until I joined
+the Caltech computer science department, however, I was not fully aware of
+how rich and varied the field of computer science really is.  Call it the
+fervor of the newly-converted religious zealot if you will, but I believe
+that computer science is an outstandingly beautiful field with a great deal
+to offer the rest of science.  This page is my attempt to describe why I
+think CS is such a beautiful science.  I will avoid all the usual reasons why
+people might think CS is good <i>e.g.</i> because so much of modern society
+depends on computers, or because it's easy to get a job when you have a CS
+degree.  I'm after more substantive reasons here.  I will add to this page
+periodically as I come up with new ideas and/or clarify my older ones.
+
+<h3>The take-home message</h3>
+
+<p>The reason why I think that computer science is a beautiful science is
+that it relates to the execution of programs on computers.  Computers are
+conceptually very simple machines which are by design finite and
+deterministic.  The requirement that computer programs run correctly on a
+finite and deterministic machine forces intellectual honesty on the field of
+computer science, whereby there are fewer gaps, holes, loose ends and
+implicit knowledge than in other fields.  I believe that other fields,
+notably mathematics, logic (yes, logic!), and physics can benefit from this
+kind of rigor.
+
+<h3>Vagueness is evil!</h3>
+
+<p>On a purely emotional level, I really loathe vagueness in science (or, for
+that matter, in philosophy and argumentation in general).  A vague argument
+is one that you can't be sure you understand, and if you can't understand it
+you can't make progress.  Furthermore, the pernicious effects of vagueness
+tend to be cumulative; when you don't understand one argument well, you are
+even less prepared to understand another argument that purports to build on
+the first one.  Most sciences include large amounts of vagueness.  The
+so-called "soft sciences" like psychology and biology don't even try to be
+precise except inasmuch as they use statistics to establish their points (and
+even then they usually don't use statistics very well).  Hard sciences like
+physics aren't much better (physicists are notorious for being sloppy with
+their mathematics).  But computer science is different, as I hope to show.
+
+<h3>Computer programs are abstractions made concrete</h3>
+
+<p>If you ask most people what the most fundamental science is, they will
+probably say physics.  Physics is the science that attempts to understand the
+fundamental laws of the universe.  Assuming a sufficiently perfect
+understanding of physics, you could hope to understand all of chemistry,
+biology, psychology, sociology etc. from that foundation (although I'm not
+saying that it's practical to do so).  What is the foundation of physics?
+Aside from experiments, it's mathematics.  What is the foundation of
+mathematics?  Most people would say set theory and logic.  But logic is a
+very abstract field indeed, and very few people, even mathematicians, study
+it seriously.  For instance, most mathematicians do not need a profound
+understanding of logic in order to do their mathematical work.
+
+<p>However, computer science also depends on logic for its foundations.
+There are many levels to this.  At the most obvious level, a computer program
+proceeds in a logical manner from its beginning to its end.  At a deeper
+level, logic guides the development of type systems for programming languages
+(see the book by Pierce in the references), and abstract logical ideas like
+decidability become extremely tangible in this context.  For instance, if a
+new computer language has an undecidable type system it will probably not be
+practically usable, so you have to <u>know</u> if it's decidable or not; it's
+not an abstract exercise.  Similarly, it's possible to use computer programs
+to clarify issues in logic that might be very obscure otherwise.  Gregory
+Chaitin shows how a simple <a
+href="http://www.umcs.maine.edu/~chaitin/lisp.html">lisp program</a> can
+demonstrate a result related to Godel's Incompleteness Theorem much more
+elegantly than a formal logical proof (actually, the lisp program <u>is</u>
+the proof, but you get the idea).  These are not isolated examples.  Any
+computer program is an abstraction, just like any mathematical proof is an
+abstraction.  However, a computer program is an <u>executable
+abstraction</u>, which is very different from a mathematical proof, which is
+not executable.  This leads me neatly into my next argument...
+
+<h3>Computer science is rigorous</h3>
+
+<p>Let's continue with the comparison between a mathematical proof and a
+computer program.  To do this, let's look at why mathematical proofs are so
+difficult to understand for most people.  I'll ignore trivial issues like
+notation.
+
+<p>First, any realistic mathematical proof will leave out a great many steps,
+which are considered to be the "required background knowledge" for anyone who
+wants to understand the proof.  By the way, a very interesting project called
+the <a href="http://metamath.org/">metamath</a> project is trying to create
+an online archive of mathematical proofs which are specified all the way to
+the bottom, starting from set theory.  But this is a very rare exception to
+the general rule.
+
+<p>Second, the arguments presented in a mathematical proof may be very
+rigorous, or they may occasionally have a "hand-waving" quality to them.
+From the standpoint of logic, this means that the inference rules are not
+always specified accurately, or are not believable if they are.  This is why
+you will sometimes read a mathematical proof and say "I understand the
+reasoning, but I just don't buy it".  Sometimes the reasoning employed
+conceals or skirts over very difficult material; for instance, Newton's
+original calculus used infinitesimals, which have long since been abandoned
+because it is difficult to formulate a rigorous mathematical theory using
+them. [Side note: Abraham Robinson's nonstandard analysis did exactly that,
+but it took several hundred years after Newton's death to get that far.]
+
+<p>Finally, it is rare to find a mathematical proof that doesn't have at
+least one significant typographical error in it (especially if it's written
+on a blackboard!).
+
+<p>All of these problems make mathematics much harder to learn than it should
+be; the learner is required to fill in the gaps, fix the errors and to take
+the dubious reasoning methods on faith in order to make any progress.
+
+<p>Now let's look at all these issues as they relate to computer programs.
+
+<p>First of all, a computer program has to be self-contained.  The only
+background knowledge is the syntactical and semantic rules of the language
+(which are (or should be) precisely specified and few in number), and the
+knowledge of how the available functions/objects work (which is generally
+available in the documentation for the language).  If all this information
+isn't available in some form, the program simply will not work, as the
+interpreter/compiler will not know what to do with the program.  This forces
+a certain intellectual honesty on the process of executing a program; nothing
+can be left unspecified.
+
+<p>The process of executing a computer program is completely deterministic.
+If you know the rules of the game, you know exactly how to get from a
+particular point in the computer program to all later points.  This is a good
+thing, too, since when the program doesn't do what you want it to do you can
+then use a debugger to trace the execution of the program, in as much detail
+as you want.
+
+<p>A typographical error in a computer program will have one of two effects.
+First, it may cause the program to fail during compilation or execution.
+Either way, you know that something is wrong.  Alternatively, the program can
+execute to completion but can produce wrong results.  Assuming you have some
+way of verifying the results (which is not always the case), you will again
+be alerted that something went wrong.  The point is that there is an inbuilt
+protection against various kinds of errors, particularly typographical
+errors, which isn't there in the mathematical proof.
+
+
+<h3>An example</h3>
+
+<p>There are many clever ways of specifying extremely simple abstract
+computational paradigms that are "Turing-complete" <i>i.e.</i> that can be
+used in principle to write any computer program (if you believe the
+Church-Turing thesis, which I won't cover here).  The most famous of these is
+the Turing machine.  An even simpler one is untyped lambda calculus, which
+has just three kinds of expressions:
+
+<ol>
+
+<li><p>Variables: <i>a, b, c</i>
+
+<li><p>Functions, also known as lambda expressions: <i>lambda x: e</i> where
+<i>x</i> is a variable and <i>e</i> is an expression.  If you supply a value
+for <i>x</i>, <i>e</i> is then evaluated with the value of <i>x</i> you
+supplied substituted for <i>x</i> in every place in <i>e</i> where there is
+an <i>x</i>.  Got that?  Good!
+
+<li><p>Function applications: <i>e1 e2</i>, which means to apply the function
+which is the value of <i>e1</i> to the expression <i>e2</i>.  <i>e1</i> has
+to evaluate to a function or it's an error.
+
+</ol>
+
+Amazingly enough, this simple system is powerful enough to do any computation
+whatsoever, as shown by Alonzo Church in 1936 (see his book or Pierce's book
+in the references for more information on lambda calculus).  An obvious
+question is: is there an even simpler system that can also do all possible
+computations?  It turns out that there is -- it's the SKI combinator system,
+described in great detail by Haskell Curry and colleagues in a two-volume set
+called <u>Combinatory Logic</u>.  We define three elementary functions called
+"combinators" which work as follows:
+
+<ul>
+<li> I x = x  (the "identity" or I combinator)
+<p>
+<li> K x y = x  (the K combinator)
+<p>
+<li> S x y z = x z (y z)  (the S combinator)
+</ul>
+
+With this system, you only need variables and function applications and you
+can compute anything that can be computed (again modulo Church-Turing).  So
+it's an even simpler system.
+
+<p>
+
+Now, as if that wasn't simple enough, one of the most basic theorems of
+combinatory logic is that you actually only need the S and K combinators; the
+I combinator can be derived as follows:
+
+<pre>
+
+I = S K K
+
+</pre>
+
+I've known about this for a long time, and occasionally I would play with the
+definitions to see if I could derive the theorem.  Most of the time, I would
+make a mistake and get the wrong answer.  I couldn't figure out what I was
+doing wrong until I wrote an interpreter for the SK system (using the
+language <a href="http://www.ocaml.org">ocaml</a>, which parenthetically is a
+wonderful language for building little interpreters like this).  In the
+process of doing this <i>i.e.</i> of building a computer program which could
+mechanically evaluate SKI combinator expressions, I figured out what my
+problem was.  It is this: the process of applying functions is
+left-associative.  In other words, the expressions:
+
+<pre>
+
+K x y = x
+S x y z = x z (y z)
+I = S K K
+
+</pre>
+
+really mean
+
+<pre>
+
+K x y = ((K x) y) = x
+S x y z = (((S x) y) z) = ((x z) (y z))
+I = ((S K) K)
+
+</pre>
+
+Knowing this, the derivation becomes trivial:
+
+<pre>
+S K K x = (((S K) K) x)
+        = ((K x) (K x))
+        = x
+</pre>
+
+because <tt>((K x) &lt;anything&gt;) = x</tt> (here <tt>&lt;anything&gt;</tt>
+is <tt>(K x)</tt>).  Since
+
+<pre>
+
+I x = x
+
+</pre>
+
+by definition, then 
+
+<pre>
+
+S K K x = I x
+((S K) K) x = I x
+((S K) K) = I (this is technically called an <i>eta reduction</i>)
+S K K = I
+
+</pre> 
+
+and we have our result.
+
+<p>
+
+What is significant about this result is not the result itself (cool though
+it is), it's how the use of the computer (specifically, the act of writing
+the interpreter) made it possible for me to understand the process by which
+the result is derived.  Of course, you could say that maybe all this shows is
+how stupid I am (no argument there), but if the example was considerably more
+complex you can just imagine how useful it would be to have a computer check
+every step of your work.  This leads me nicely into the final section...
+
+
+<h3>What can computer science offer the rest of science?</h3>
+
+I think computer science has a tremendous amount to offer the fields of logic
+and mathematics.  Specifically, I think that requiring all formulas to be
+executable by a finite, deterministic system (a computer program) could lead
+to a great increase in the level of rigor of these fields, would make it
+easier for students to learn existing results, would make it easier for
+practitioners to develop new results, and might possibly suggest whole new
+approaches based on which aspects of the mathematics or logics in question
+are difficult to translate into precise computer descriptions.
+
+<p>
+
+For instance, there are a number of different kinds of logic.  Most (all?) of
+these can fairly easily be translated into programming languages of some
+form.  Why isn't this a routine activity for logicians?
+
+<p>
+
+As for the rest of mathematics, I would like to see computers used routinely
+to fill in the gaps in published mathematical proofs (or to alert us to when
+those gaps can't be filled in), so that you never again have to say "I have
+no idea how the author got from point A to point B", although you might say
+"My God, what a lot of equations have to be written down to go from point A
+to point B!"  This is reminiscent of Whitehead and Russell's <u>Principia
+Mathematica</u> where hundreds of pages pass until the authors can prove that
+1 + 1 = 2.  Annoying though this might be, I think it's much better than
+hand-waving.
+
+<p>
+
+I can see that something similar might be possible in physics, but it would
+be much harder, since the level of rigor in most physics papers is quite low.
+Perhaps this means that computers can have an even bigger impact in physics
+than in mathematics.  I don't know, but it's something that's worth thinking
+about.
+
+<h3>Coda</h3>
+
+Since I'm talking about why I consider computer science beautiful, I can't
+resist putting in a plug for my favorite computer science textbook: Abelson
+and Sussman's <u>Structure and Interpretation of Computer Programs</u> (known
+as SICP for short).  This book has been described as the "Feynman lectures of
+computer science" which is pretty close to the mark, although I don't think
+Feynman even came close to the rigor, clarity and beauty of SICP.  It's a
+difficult book; I've read it through twice (more in some sections), done a
+large number of the exercises and taught a CS course out of it, and I still
+don't think I've absorbed all that it has to offer.  The theme is computer
+programming and the kinds of abstraction that are useful in building good
+programs.  Along the way, the authors throw so many little intellectual gems
+at you that it's absolutely breathtaking.  They have the shortest
+demonstration of the famous halting problem (which shows that some functions
+can't be computed) that I've ever seen.  They have the most coherent
+explanation of the Y combinator (a way of simulating recursion in a
+non-recursive language with higher-order functions) that I've ever seen (in
+an exercise!), and I've seen quite a few (it's a notoriously tricky concept).
+The material on streams at the end of chapter 3 is so beautiful it's worth
+the price of the (physical) book itself (although the book's contents are
+free now, since the book is available <a
+href="http://mitpress.mit.edu/sicp">online</a>).  And in the last two
+chapters they build a series of language interpreters and compilers that will
+show you exactly how a real computer language gets implemented (as well as
+showing various variations on the evaluation rules along the way, all of
+which are executable).  As if that wasn't good enough, there are some amazing
+<a
+href="http://www.amazon.com/exec/obidos/ASIN/0262011530/qid=1029325852/sr=2-2/ref=sr_2_2/102-8354101-7832132">reviews</a>
+of the book on amazon.com; they're divided about evenly between people like
+me who love the book and people who absolutely, positively despise it, which
+makes for fascinating (and often amusing) reading.
+
+
+<h3>References</h3>
+
+<ol>
+
+<li>Harold Abelson and Gerald Jay Sussman with Julie Sussman, <u>Structure
+and Interpretation of Computer Programs</u>.  Cambridge, Mass., MIT Press,
+1996. 
+
+<p>
+
+<li>Gregory Chaitin, <a
+href="http://www.umcs.maine.edu/~chaitin/lisp.html">Elegant LISP
+Programs</a>.  In: <u>The Limits of Mathematics</u>, New York:
+Springer-Verlag, 1998.
+
+<p>
+
+<li>Alonzo Church, <u>The Calculi of Lambda Conversion</u> Princeton:
+Princeton University Press, 1941.
+
+<p>
+
+<li>Haskell Curry and Richard Feys, <u>Combinatory Logic</u>, volume 1.
+Amsterdam, North-Holland Pub. Co., 1958.
+
+<p>
+
+<li>Benjamin C. Pierce, <u>Types and Programming Languages</u> Cambridge,
+Mass.: The MIT Press, 2002.
+
+<p>
+
+<li>Abraham Robinson, <u>Non-standard Analysis</u> Princeton: Princeton
+University Press, 1996 (reprint of the original 1974 edition).
+
+<p>
+
+<li>Alfred North Whitehead and Bertrand Russell, <u>Principia Mathematica</u>
+Cambridge University Press, 1989 (reprint).
+
+<p>
+
+<li>The <a href="http://www.ocaml.org">Objective CAML (ocaml)</a> programming
+language.
+
+<p>
+
+<li>The <a href="http://www.metamath.org">Metamath</a> home page.
+
+
+</ol>
+
+
+
+<hr>
+<table width="100%" cellpadding=0><tr>
+<td width="33%">
+Go <a href="../../index.html">back</a>
+to my home page.
+
+<td width="33%" align=center><i>Last updated April 11, 2017</i>
+
+
+<!-- 
+<td width="10%">
+<img src=../../PythonPowered.gif>
+-->
+
+</table>
+
+<p>
+<address>
+Mike Vanier
+(<a href="mailto:mvanier@cs.caltech.edu">mvanier@cs.caltech.edu</a>)
+</address>
+</body>
+</html>
+
+
