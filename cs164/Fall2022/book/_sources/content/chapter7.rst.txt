@@ -1,0 +1,563 @@
+Documenting your code
+=====================
+
+.. |eg| replace:: *e.g.*
+.. |ie| replace:: *i.e.*
+.. |etc| replace:: *etc.*
+.. |pyversion| replace:: 3.10.2
+.. |smiley|    image:: images/smiley.jpg
+   :width: 25px
+
+.. role::  raw-html(raw)
+    :format: html
+
+Overview
+--------
+
+*Documenting* your code means writing comments and explanations to make
+your code easier for other programmers to understand. Documentation
+doesn't affect the way your code runs, but it's still extremely
+important. Many beginning programmers comment sparsely or not at all,
+but when you write programs as part of a team (which is what most
+professional programmers do), good documentation is essential and can't
+be neglected. Remember: programs are not just written to make the
+computer understand what to do; they must also be able to communicate to
+other programmers what you intended. Those other programmers may be in
+charge of maintaining or extending your code, and you need to make sure
+that they understand the code they're working on.
+
+There are two ways to document code. The first way is using plain old
+comments. The second way uses Python *docstrings*, which is the
+preferred way to add documentation to your Python functions and modules.
+
+
+Topics
+------
+
+- Commenting and comment style
+- Docstrings
+
+
+Comments
+--------
+
+
+Syntax and style
+^^^^^^^^^^^^^^^^
+
+We've already seen that in Python, comments begin with a pound sign
+(``#``)  [1]_ and go to the end of the line. ::
+
+  # This is a comment.
+  # So is this.
+
+When you write a comment, please include at least one space after the
+``#`` character. This is good: ::
+
+  # A nice comment.
+
+and this is bad: ::
+
+  #A bad comment.
+
+This last comment is perfectly legal in Python, but it's hard to read.
+
+.. note::
+
+  There are a lot of "style guidelines" like this that will help you
+  write more readable code. The definitive set of style guidelines for
+  Python is PEP8_. However, PEP8 is a bit overwhelming for new programmers,
+  so we'll try to point out the most important style guidelines as we
+  come to them. [2]_ If you're ever confused about how to format your code,
+  you can consult PEP8.
+
+
+You can put comments after a line of code on the same line: ::
+
+  a = 42  # this is a comment
+
+This is OK as long as the line doesn't get too long. Lines shouldn't be
+longer than about 80 characters, because otherwise they are hard to
+read.  [3]_ If a comment can't easily fit on the end of a line, put it
+on the line *before* the line being commented on, not after. So this is
+good:  [4]_ ::
+
+  # Set the variable `a` to an interesting value.
+  a = 42
+
+and this is bad: ::
+
+  a = 42
+  # Set the variable `a` to an interesting value.
+
+
+Multiline comments?
+^^^^^^^^^^^^^^^^^^^
+
+Many computer languages (like Java and C++) also have special symbols for
+multiline comments (comments that span multiple lines), but Python does not.
+The closest Python comes to multiline comments are docstrings, which we'll
+discuss in the next section, but technically docstrings are not comments.
+
+If you *do* want a multiline comment, what you need to do is to make a
+bunch of single-line comments one after the other, like this: ::
+
+  # This is what Python
+  # considers to be a
+  # "multi-line"
+  # comment.
+
+Most text editors with Python support have some way of selecting
+multiple lines and commenting them all out by putting the ``#``
+character at the front of all of them.
+
+
+When to use comments
+^^^^^^^^^^^^^^^^^^^^
+
+Comments are mainly used inside of functions to explain what some code
+does if its meaning isn't obvious. **Don't use a comment to restate
+something obvious about the code.** However, if you are doing something
+clever or tricky, or even something you think that someone reading the
+code might not understand, adding a comment is a good idea.
+
+Here's an example of bad and good comments stolen from PEP8. This is
+bad: ::
+
+  x = x + 1   # Increment x.
+
+Here, you are restating something obvious about the code, so the comment
+is completely unnecessary.
+
+This is good: ::
+
+  x = x + 1   # Compensate for border.
+
+Not knowing what the context of the program is, it's not clear what "Compensate
+for border" might mean, but at least it isn't something that's obvious from the
+code.
+
+An example of tricky code that might deserve a comment is this: ::
+
+  n += n * (n % 2) * 4   # Multiply `n` by 5 only if `n` is odd.
+
+Hopefully you won't be writing much code like this.
+
+Note that if you never comment your code, or if you comment poorly, we will
+take marks off of your assignments. We expect you to write your code in a
+professional style, and good commenting is a big part of this professionalism.
+
+
+Docstrings
+----------
+
+Traditionally, one of the most common places to put a comment is right
+before a function, so you can tell the reader what the function does: ::
+
+  # Print out a hearty greeting.
+  def greet(name):
+      print('Hi there, {}!'.format(name))
+
+The only problem with this kind of comment is that Python's ``help``
+function can't use them. Once Python reads the comment, it discards it
+and it's gone. It would be great if there were a way to write a
+"comment" that would somehow be usable by Python's ``help`` function...
+
+...and there is such a way! It's called a *docstring*, which is short
+for "documentation string".
+
+
+Docstring syntax
+^^^^^^^^^^^^^^^^
+
+A docstring is just a regular Python string which happens to be the
+first thing inside:
+
+- a function body
+- a module
+- a class (covered later in the course)
+
+When you execute a docstring, the docstring itself doesn't *do* anything.
+However, Python "knows" about docstrings, so when it sees a string in one of
+those places it stores it as part of the function (or module, or class). Then
+it can use it later, as we'll see.
+
+Docstrings are normally written as triple-quoted strings, because very
+often the information you want to write spans more than one string.
+Python does not require docstrings to be triple-quoted, but the PEP8
+style guidelines do.
+
+
+Function docstrings
+^^^^^^^^^^^^^^^^^^^
+
+Here's our previous example with a docstring instead of a comment: ::
+
+  def greet(name):
+      """Print out a hearty greeting."""
+      print('Hi there, {}!'.format(name))
+
+Notice that even though this is a one-line docstring, we wrote it with
+triple quotes. That way, if we ever want to add more information and it
+needs to span more lines we don't have to change the quotes. We strongly
+recommend that you use triple-quoted strings for all docstrings. We also
+recommend that you use three double-quote characters (``"""``) not three
+single-quote characters (``'''``), since this is the PEP8 convention.
+
+Let's assume we wrote the ``greet`` function in a file called
+``greetings.py``. That makes it a Python module, so inside the Python
+interpreter, we can ``import`` it and run it:
+
+.. code-block:: pycon
+
+  >>> import greetings
+  >>> greetings.greet('Mike')
+  Hi there, Mike!
+
+as expected. Here's the good part: we can also get ``help`` on the
+function:
+
+.. code-block:: pycon
+
+  >>> help(greetings.greet)
+  Help on function greet in module greetings:
+
+  greet(name)
+      Print out a hearty greeting.
+
+.. note::
+
+  Python actually uses what's called a "pager" to print out the help
+  message. This allows you to read very long help messages a page at a
+  time. Hit the space bar to advance to the next page if there is one,
+  and hit the ``'q'`` key to dismiss the help message.
+
+Notice that the help message for the ``greet`` function is exactly the
+docstring that you wrote. Whatever you write in the docstring
+immediately becomes available to the ``help`` function.
+
+
+Module docstrings
+^^^^^^^^^^^^^^^^^
+
+Let's look at the entire module (in the file ``greetings.py``), with
+docstrings for each function: ::
+
+  # Module: greetings
+  # Filename: greetings.py
+
+
+  def greet(name):
+      """Print out a hearty greeting."""
+      print('Hi there, {}!'.format(name))
+
+
+  def insult(name):
+      """Print out a nasty insult."""
+      print('Get lost, {}!'.format(name))
+
+It looks good, but the comments at the beginning of the module seem out
+of place. In addition, they are completely unnecessary, so we'll start
+by fixing that: ::
+
+  # This module contains functions to print out various kinds of
+  # greeting messages.
+
+
+  def greet(name):
+      """Print out a hearty greeting."""
+      print('Hi there, {}!'.format(name))
+
+
+  def insult(name):
+      """Print out a nasty insult."""
+      print('Get lost, {}!'.format(name))
+
+That's a better comment, but the ``help`` function can't use it. So now
+we'll turn the comment into a *module docstring*: ::
+
+  """
+  This module contains functions to print out various kinds of
+  greeting messages.
+  """
+
+
+  def greet(name):
+      """Print out a hearty greeting."""
+      print('Hi there, {}!'.format(name))
+
+
+  def insult(name):
+      """Print out a nasty insult."""
+      print('Get lost, {}!'.format(name))
+
+Now it's looking professional. Let's fire up the interpreter:
+
+.. code-block:: pycon
+
+  >>> import greetings
+  >>> help(greetings)
+  Help on module greetings:
+
+  NAME
+      greetings
+
+  DESCRIPTION
+      This module contains functions to print out various kinds of
+      greeting messages.
+
+  FUNCTIONS
+      greet(name)
+          Print out a hearty greeting.
+
+      insult(name)
+          Print out a nasty insult.
+
+  FILE
+      /home/cs1/greetings.py
+
+This gives us all the information about the module we might want
+(assuming we've written good docstrings).
+
+
+What to put in docstrings
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+OK, that's the "how" of docstrings. More interesting is the "what" of
+docstrings |ie| "what should I write in a docstring?"
+
+The first rule is **write docstrings for every function and every module
+you create**. Don't skip writing a docstring because you think the
+purpose of the function is obvious; that may be true, but docstrings can
+also be used to generate external documentation for a module (like a web
+page), and in that case, you want somebody reading the documentation to
+know about all the functions in the module.  [5]_
+
+Docstrings are good documentation
+
+- for you
+- for you in the future (when you've forgotten what your code does)
+- for anyone else reading or using your code
+
+The most important thing that needs to be in docstrings is information
+that will let people understand how to correctly use the code.
+
+In a *function* docstring, you should describe:
+
+- what the function does (not how it does it)
+- what the function arguments mean (ideally one line per argument)
+- what the function returns
+- any other effect that the function has when run (|eg| printing to
+  the terminal, writing to a file, |etc|)
+
+What you *shouldn't* put in the docstring is a description of *how* the
+function works. That should go inside the function body in comments, and
+may be omitted entirely if the code is simple or "obvious". You should
+generally write comments in a function when the code is tricky or is
+doing something unintuitive. Of course, that's a judgment call.
+
+.. warning::
+
+  One thing you should **never** do is copy the problem description
+  verbatim from an assignment into a docstring. This is sometimes done
+  by students who are told to write docstrings but are too lazy or
+  rushed to write a real one. If you do this, expect to lose marks.
+
+In a *module* docstring, you should describe:
+
+- the purpose of the module
+- a general description of the kinds of functions in the module
+
+What you *shouldn't* put in the docstring is a detailed description of
+any of the functions. That should go into the function docstrings, and
+there is no need to repeat that information.
+
+
+The ``__main__`` module
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Let's try a dumb experiment: writing a function with a docstring in the
+Python interpreter. (It's dumb because functions written directly in the
+interpreter are throwaway functions because they disappear when you quit
+the interpreter.)
+
+.. code-block:: pycon
+
+  >>> def double(x):
+  ...     """This function returns twice the value of the argument `x`."""
+  ...     return 2 * x
+
+Now let's get some ``help`` on it:
+
+.. code-block:: pycon
+
+  >>> help(double)
+  Help on function double in module __main__:
+
+  double(x)
+      This function returns twice the value of the argument `x`.
+
+What does this ``module __main__`` thing referred to mean?
+
+``module __main__`` is the name that Python gives to a module which is
+either
+
+- the interactive interpreter
+- the module that was directly invoked by Python (if you're running
+  Python on a file)
+
+All other modules are referred to by their own names.
+
+Here, ``module __main__`` refers to the interactive interpreter. But if
+we ran Python on a file of code, it would refer to the file's module.
+Consider a file ``test.py`` containing this code: ::
+
+  """
+  Test module.
+  """
+
+
+  def double(x):
+      """This function returns twice the value of the argument `x`."""
+      return 2 * x
+
+
+  help(double)
+
+When you run this from the terminal, you get this output:
+
+.. code-block:: text
+
+  $ python test.py
+  Help on function double in module __main__:
+
+  double(x)
+      This function returns twice the value of the argument `x`.
+
+Notice that it says ``module __main__``, not ``module test``.
+
+On the other hand, if you import the module from the Python interactive
+interpreter, this happens:
+
+.. code-block:: text
+
+  $ python
+  >>> import test
+
+  Help on function double in module test:
+
+  double(x)
+      This function returns twice the value of the argument `x`.
+
+Now the module is referred to as module ``test``.
+
+
+The ``__name__`` special variable
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Python stores the name of the currently-executing module in a special
+variable called ``__name__``. Let's change the file ``test.py`` just a
+bit: ::
+
+  """
+  Test module.
+  """
+
+
+  def double(x):
+      """This function returns twice the value of the argument `x`."""
+      return 2 * x
+
+
+  print('My name is: {}'.format(__name__))
+
+Let's run it as a standalone file from the terminal:
+
+.. code-block:: text
+
+  $ python test.py
+  My name is: __main__
+
+Now let's ``import`` it from the interactive interpreter:
+
+.. code-block:: pycon
+
+  >>> import test
+  My name is: test
+
+We'll see a good use for the ``__name__`` variable in a future reading.
+
+.. note::
+
+  We haven't mentioned this before, but Python can run arbitrary code
+  when you import a module. Most of the time, the code in a module is
+  just function definitions (or maybe class or variable definitions)
+  which don't produce any output when run. But if there is |eg| a
+  ``print`` statement in the module at the top level, it gets run when
+  the module is imported and you will see the result. (But if you try
+  to import it a second time, Python doesn't reload it and you don't
+  see the result. Importing is not the same as reloading.) [6]_
+
+
+Improving our docstrings
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The docstrings we've written above are pretty uninspiring. We should
+take our own advice! So let's improve the ``test.py`` file by writing
+better docstrings. ::
+
+  """
+  This module is a test of Python's docstring functionality.
+  """
+
+
+  def double(x):
+      """
+      This function returns twice the value of the argument `x`.
+
+      Argument: `x` (an integer)
+      Return value: an integer
+      """
+      return 2 * x
+
+Here, we've split up the function docstring into multiple lines and
+given a general statement about what the function does, followed by a
+description of the argument and the return value.
+
+We aren't going to insist on this format for every single function you
+write, but it's definitely appropriate for longer functions (say, anything
+longer than ten lines).
+
+.. _PEP8: https://www.python.org/dev/peps/pep-0008/
+
+----
+
+.. rubric:: Footnotes
+
+.. [1]
+  This is also often called a "hash sign".
+
+.. [2]
+  The "PEP" in "PEP8" means "Python Enhancement Proposal" and is mainly
+  used for proposing and discussing possible improvements to the
+  language.
+
+.. [3]
+  PEP8 says they should be no more than 79 characters. Go figure.
+
+.. [4]
+  When referring to a Python variable name in a comment, we surround it
+  with backticks, so we write :literal:`\`a\`` and not just ``a``. You
+  don't have to do this, but it helps to make it clear that this is a
+  Python name and not a regular word. This convention comes from
+  Markdown, which is a syntax used for writing documents that get
+  converted into web pages.
+
+.. [5]
+  The only exception *might* be for a function which is never intended
+  to be used outside of the module. But for this course, write
+  docstrings for *all* functions.
+
+.. [6]
+  There *is* a way to force Python to reload a module,
+  but you don't need to know about it yet, or probably ever.

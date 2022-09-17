@@ -1,0 +1,170 @@
+Introduction
+============
+
+.. |eg| replace:: *e.g.*
+.. |ie| replace:: *i.e.*
+.. |etc| replace:: *etc.*
+.. |pyversion| replace:: 3.10.2
+
+.. role::  raw-html(raw)
+    :format: html
+
+
+Welcome!
+--------
+
+Welcome to CS 164!  This course is called *Compilers*, and is a course on
+implementing compilers, which are programs which convert program source code to
+code that can run directly on a computer.
+
+This book serves as the official course notes, so that lectures are less of a
+brain dump of details and more an opportunity to interactively go through
+course topics, answer questions, and get you thinking about compilers.
+In addition, we will be posting most of the course-related content in these
+pages, including:
+
+* the course syllabus
+* administrative details
+* instructions on how to set up your computer with the course software
+* assignments
+* coding notes and tips
+
+and anything else we consider useful.  Your feedback on these notes will be
+very helpful to us in improving them, so please let us know if anything is hard
+to understand or if something that should be here isn't.
+
+The course-related material we won't post here includes:
+
+* lecture slides
+* code tarballs
+* some administrative information *e.g* TA contact info
+
+These will be posted on the course Canvas page.
+
+Instructor and course staff
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The course instructor is Mike Vanier (mvanier@cms.caltech.edu).
+
+This year, there are no teaching assistants, but we (I) would definitely love
+to have some for next year, so after the course is over, please let me know if
+you want to become a TA for next year's course!
+
+Course prerequisites
+^^^^^^^^^^^^^^^^^^^^
+
+We will be writing all of our compilers [1]_ using the OCaml_ programming
+language (more on this below).  Caltech students normally learn this language
+in the CS 4 course, so this is a hard prerequisite for the class (unless you
+can convince us that you have an equivalent level of OCaml proficiency).
+
+In addition, two courses which may be helpful, but which are not strictly
+required, are:
+
+* **CS 131 (Interpreters).**  This course teaches you to implement a variety of
+  programming language interpreters.  If you've taken it, you've worked on
+  large-scale OCaml projects, which is helpful, and you know what an abstract
+  syntax tree (AST) is.
+
+* **CS 24 (Introduction to Computing Systems).**  This will mostly be useful for
+  the introduction to assembly language programming.  However, we will be
+  covering all assembly language instructions we will need in the assignments.
+
+Even if you haven't taken either course, you shouldn't be at a disadvantage.
+Also, all assignments will be completed by groups of 2 students, so you might
+want to pair up with a student who has taken one or both of these courses.
+
+The choice of programming language
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In principle, any programming language can be used to write a compiler. Many
+compiled languages, after "bootstrapping" their compiler from another language,
+then rewrite the compiler in the language being compiled (this is called
+"self-hosting").  Self-hosting serves as a test of the power of the language
+(any language that is powerful enough to write its own compiler has to be
+pretty powerful) and allows the language developers to only use the new
+language in later development (often called "eating one's own dog food").
+
+In this course, we are using the OCaml_ programming language exclusively.  Out
+of all the possible choices of programming language, why did we choose this
+comparatively obscure language for writing our compilers?
+
+Part of the reason is subjective: we like OCaml as a language, we are very
+familiar with it, and we find that it occupies a useful "sweet spot" between
+lower-level languages like C, Java and Python and very high-level languages
+like Haskell.  Its functional programming support is useful in reducing code
+duplication, and its impurity means that you can also use imperative code when
+it's desirable to do so.
+
+The main reason, though, is that OCaml is a language which is superbly
+well-adapted to the task of writing a compiler. [2]_  Features that are
+particularly helpful include:
+
+* **Very strong type checking.**  Compilers are large, complicated and subtle
+  programs, and we need all the help we can get in preventing and tracking
+  down errors.  OCaml's type checking is extremely stringent, to the point
+  that if your program compiles at all, there is a very good chance that it
+  will run correctly.  More importantly, type checking rules out almost all
+  trivial errors.
+
+* **Algebraic datatypes.**  These map almost perfectly to the structure of a
+  compiler's various intermediate languages, and provide an extremely
+  lightweight way to specify new datatypes.
+
+* **Garbage collection.**  Compilers are complicated enough without having
+  to worry about memory leaks from manual memory management.
+
+* **A fast compiler.**  Waiting for your compiler to compile isn't fun, and our
+  compilers will compile almost instantaneously.
+
+* **An excellent build system.**  The Dune_ build system makes compiling OCaml
+  projects nearly effortless.
+
+* **An excellent package manager.**  The `opam`_ package manager
+  makes installing new packages completely painless.
+
+* **Excellent serialization.** OCaml has the facility (not built-in,
+  but provided by libraries) to convert any complex datatype to an
+  "S-expression" (a simple and readable serialization format).
+  Since compilers consist of a series of code transformations,
+  being able to easily view the output of each transformation
+  is incredibly useful for debugging.
+
+There are other useful features of OCaml we will encounter as we proceed.
+
+One indication of how useful OCaml is as a language for writing compilers is to
+consider which languages' compilers were originally written in OCaml. [3]_
+These include:
+
+* the Rust_ language compiler
+
+* the Hack_ language compiler (a statically-typed PHP dialect from Facebook)
+
+* the Coq_ proof assistant (take CS 128 to learn all about Coq)
+
+and no doubt many more.
+
+.. _OCaml: https://www.ocaml.org/
+
+.. _Dune: https://dune.build/
+
+.. _`opam`: https://opam.ocaml.org/
+
+.. _Rust: https://rust-lang.org/
+
+.. _Hack: https://hacklang.org/
+
+.. _Coq: https://coq.inria.fr/
+
+----
+
+.. rubric:: Footnotes
+
+.. [1] Yes, there will be more than one of them! 
+
+.. [2] Jason Hickey, the last person to teach compilers at Caltech before this
+   course, referred to OCaml as "a near-perfect language for writing a
+   compiler".
+
+.. [3] In most of these cases, the compiler was eventually rewritten in the
+   language being compiled, so that the language could be self-hosted.

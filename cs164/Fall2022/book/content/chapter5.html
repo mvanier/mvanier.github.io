@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5. Objects and methods &mdash; The CS 164 book 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6. Modules" href="chapter6.html" />
+    <link rel="prev" title="4. Strings, part 2" href="chapter4.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> The CS 164 book
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">1. Introduction to Python, part 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">2. Introduction to Python, part 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">3. Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">4. Strings, part 2</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Objects and methods</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">5.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#topics">5.2. Topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#terminal-input">5.3. Terminal input</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-input-to-input-integers-and-other-non-strings">5.3.1. Using <code class="docutils literal notranslate"><span class="pre">input</span></code> to input integers and other non-strings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">5.4. Objects and methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#method-call-syntax-dot-syntax">5.5. Method call syntax (“dot syntax”)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strings-are-objects">5.6. Strings are objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#methods-vs-functions">5.7. Methods <em>vs.</em> functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#defining-methods">5.8. Defining methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-len-function">5.9. The <code class="docutils literal notranslate"><span class="pre">len</span></code> function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">6. Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">7. Documenting your code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">8. Lists</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">9. Loops (part 1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">10. Conditionals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11.html">11. Loops (part 2)</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The CS 164 book</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">5. </span>Objects and methods</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/content/chapter5.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="objects-and-methods">
+<h1><span class="section-number">5. </span>Objects and methods<a class="headerlink" href="#objects-and-methods" title="Permalink to this heading"></a></h1>
+<div class="section" id="overview">
+<h2><span class="section-number">5.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p>We’ve covered many of the essential aspects of Python programming, but
+we still have a way to go! In this chapter we’ll talk about what an
+“object” is, what “methods” do and how they are related to functions,
+and how Python is an “object-oriented language”. We will use strings as
+a simple example of an object, but we will see many more kinds of
+objects later on.  <a class="footnote-reference brackets" href="#id8" id="id1">1</a></p>
+</div>
+<div class="section" id="topics">
+<h2><span class="section-number">5.2. </span>Topics<a class="headerlink" href="#topics" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Terminal input using the <code class="docutils literal notranslate"><span class="pre">input</span></code> function</p></li>
+<li><p>Objects and methods</p></li>
+</ul>
+</div>
+<div class="section" id="terminal-input">
+<h2><span class="section-number">5.3. </span>Terminal input<a class="headerlink" href="#terminal-input" title="Permalink to this heading"></a></h2>
+<p>This is not really about objects and methods, but we have to put it
+somewhere, so we’re putting it here <a class="reference internal" href="../_images/smiley.jpg"><img alt="smiley" src="../_images/smiley.jpg" style="width: 25px;" /></a>.</p>
+<p>We’d like to be able to write interactive programs, where you (the user)
+and the program have a “dialogue”. You do something, the program
+responds, you respond to the program, and so forth. There are many ways
+to do this, but the most basic way is to allow the program to read a
+line of input typed at the terminal. When the program wants a response
+from you, it asks you for a line of input. You type it in and hit the
+return key, then the program does something with that line of input, and
+so on. In Python, we do this using the <code class="docutils literal notranslate"><span class="pre">input</span></code> function:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">input</span><span class="p">()</span>
+<span class="go">This is what you type.</span>
+<span class="go">&#39;This is what you type.&#39;</span>
+</pre></div>
+</div>
+<p>The line under the <code class="docutils literal notranslate"><span class="pre">input()</span></code> call is what you type literally at the
+keyboard (try it!). When you’re done, hit the return key and Python
+prints the string it received.</p>
+<p>This isn’t how you actually use <code class="docutils literal notranslate"><span class="pre">input</span></code>, of course. You almost always
+store the line read into a variable:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+<span class="go">This is my answer.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span>
+<span class="go">&#39;This is my answer.&#39;</span>
+</pre></div>
+</div>
+<p>Now you can use the value of <code class="docutils literal notranslate"><span class="pre">answer</span></code> to do something in your program.
+One other thing that would be nice is if <code class="docutils literal notranslate"><span class="pre">input</span></code> could print a
+<em>prompt</em>, which is a string that indicates what it is expecting of you.
+To use a prompt, add a string argument to <code class="docutils literal notranslate"><span class="pre">input</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Please answer &quot;yes&quot; or &quot;no&quot;: &#39;</span><span class="p">)</span>
+<span class="go">Please answer &quot;yes&quot; or &quot;no&quot;: yes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span>
+<span class="go">&#39;yes&#39;</span>
+</pre></div>
+</div>
+<p>The only thing that the user entered in this example was the word
+<code class="docutils literal notranslate"><span class="pre">yes</span></code>, which becomes the value of the <code class="docutils literal notranslate"><span class="pre">answer</span></code> variable.</p>
+<p>Questions for you:</p>
+<ul class="simple">
+<li><p>Why are the words <code class="docutils literal notranslate"><span class="pre">&quot;yes&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;no&quot;</span></code> in the prompt string written
+with double quotes?</p></li>
+<li><p>Why is there a blank space at the end of the prompt string?</p></li>
+</ul>
+<p>Type this example into Python yourself, and play around with it to get
+familiar with how the <code class="docutils literal notranslate"><span class="pre">input</span></code> function works.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>One thing we snuck in there is that <code class="docutils literal notranslate"><span class="pre">input</span></code> is a bit of an
+odd function; it can either take no arguments or one argument (a
+prompt string). Most functions take a specific number of arguments,
+but there are ways to define functions where the number of arguments
+can vary, and we’ll get to those in later chapters.</p>
+</div>
+<div class="section" id="using-input-to-input-integers-and-other-non-strings">
+<h3><span class="section-number">5.3.1. </span>Using <code class="docutils literal notranslate"><span class="pre">input</span></code> to input integers and other non-strings<a class="headerlink" href="#using-input-to-input-integers-and-other-non-strings" title="Permalink to this heading"></a></h3>
+<p>One thing to be careful about is that <code class="docutils literal notranslate"><span class="pre">input</span></code> <em>always</em> returns a
+string, even if you intended it to return <em>e.g.</em> an integer. For
+instance, look at this code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter an integer: &#39;</span><span class="p">)</span>
+<span class="n">j</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter another integer: &#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The sum of the two integers is </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Here’s a sample run:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Enter an integer: <span class="m">42</span>
+Enter another integer: <span class="m">101</span>
+The sum of the two integers is <span class="m">42101</span>
+</pre></div>
+</div>
+<p>What went wrong?</p>
+<p>Remember, computer languages are dumb and they don’t know what you want
+them to do unless you spell it out exactly. Here, the <code class="docutils literal notranslate"><span class="pre">input</span></code> function
+<em>always</em> returns a string, so the variables <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code> contain the
+strings <code class="docutils literal notranslate"><span class="pre">'42'</span></code> and <code class="docutils literal notranslate"><span class="pre">'101'</span></code>, respectively. When you “add” two
+strings, you actually concatenate them, so you get the result
+<code class="docutils literal notranslate"><span class="pre">'42101'</span></code>. To avoid this, you have to tell Python to convert the
+result of the <code class="docutils literal notranslate"><span class="pre">input</span></code> call to an integer using the <code class="docutils literal notranslate"><span class="pre">int</span></code> conversion
+function. Here’s the right way to do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter an integer: &#39;</span><span class="p">))</span>
+<span class="n">j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter another integer: &#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The sum of the two integers is </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now look at what happens when we run it:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Enter an integer: <span class="m">42</span>
+Enter another integer: <span class="m">101</span>
+The sum of the two integers is <span class="m">143</span>
+</pre></div>
+</div>
+<p>This time it works, because of the calls to the <code class="docutils literal notranslate"><span class="pre">int</span></code> function which
+converts the string output from <code class="docutils literal notranslate"><span class="pre">input</span></code> to integers. Again, please
+play around with this in the interpreter so you understand exactly how
+it works.</p>
+<p>You can convert strings to more than just integers. You can also convert
+strings to floating-point numbers with the <code class="docutils literal notranslate"><span class="pre">float</span></code> function:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pi</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;3.1415926&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pi</span>
+<span class="go">3.1415926</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mf">4.0</span> <span class="o">*</span> <span class="n">pi</span>
+<span class="go">12.5663704</span>
+</pre></div>
+</div>
+<p>OK, that’s enough about <code class="docutils literal notranslate"><span class="pre">input</span></code>. On to objects!</p>
+</div>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">5.4. </span>Objects and methods<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<p>You’ve probably heard the term “object-oriented” as in “Python (or Java,
+or C++) is an object-oriented programming language”. What does that
+mean?</p>
+<p>The exact meaning of “object-oriented” differs between languages, but
+for Python, it means that all data values are represented as <em>objects</em>.
+OK, great, so what is an object?</p>
+<p>An object is some kind of Python data along with some associated
+functions that act on the data. (You can think of the data and the
+functions as begin “bound together” to create an object.) The functions
+that act on the object are called <em>methods</em> to distinguish them from
+regular functions. Unlike a function, a method “belongs” to a particular
+object and has access to the object’s internal components.  <a class="footnote-reference brackets" href="#id9" id="id3">2</a></p>
+<p>Let’s look at the syntax of method calls.</p>
+</div>
+<div class="section" id="method-call-syntax-dot-syntax">
+<h2><span class="section-number">5.5. </span>Method call syntax (“dot syntax”)<a class="headerlink" href="#method-call-syntax-dot-syntax" title="Permalink to this heading"></a></h2>
+<p>We know that function calls have a very specific syntax: the name of the
+function, followed by a list of arguments in parentheses. Multiple
+arguments to a function are separated by commas. So function calls look
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">func1</span><span class="p">()</span>         <span class="c1"># no arguments</span>
+<span class="n">func2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>        <span class="c1"># one argument</span>
+<span class="n">func3</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>  <span class="c1"># three arguments</span>
+</pre></div>
+</div>
+<p>and so on. Method calls are almost exactly the same, except that instead of the
+name of the function, we have the name of the object, a dot (<code class="docutils literal notranslate"><span class="pre">.</span></code>), and <em>then</em>
+the name of the method. Here are some hypothetical method calls on a
+hypothetical object called <code class="docutils literal notranslate"><span class="pre">obj</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="o">.</span><span class="n">method1</span><span class="p">()</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">method2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">method3</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Method calls are like function calls <em>on an object</em>. If you like, you
+can think of the object as an extra argument to the method that happens
+to be placed in a weird location (before the dot).</p>
+<p>We will call the <code class="docutils literal notranslate"><span class="pre">obj.method</span></code> kind of syntax for method calls the “dot
+syntax”. As we’ll see in later chapters, this syntax is used for more
+than just method calls, though it’s mostly used for that.</p>
+</div>
+<div class="section" id="strings-are-objects">
+<h2><span class="section-number">5.6. </span>Strings are objects<a class="headerlink" href="#strings-are-objects" title="Permalink to this heading"></a></h2>
+<p>We’ve actually been working with Python objects already. Since all
+Python values are objects, even things like integers are objects (but we
+don’t usually use methods on integers). Strings are also objects, and
+there are a number of useful methods defined for strings. For instance: <a class="footnote-reference brackets" href="#id10" id="id4">3</a></p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;spam&#39;</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+<span class="go">&#39;SPAM&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;spam&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+<span class="go">&#39;SPAM&#39;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">upper</span></code> method on strings converts a string to its uppercase
+version. (Note that it doesn’t change the string, because strings are
+immutable; it simply creates a new string with the same characters but
+uppercased).</p>
+<p>Notice that you can call a method on a literal value (like <code class="docutils literal notranslate"><span class="pre">'spam'</span></code>)
+or on a variable that stands for that value (like <code class="docutils literal notranslate"><span class="pre">s</span></code>). Most of the
+time, we use methods on variables, but in this chapter we’ll often use
+methods on literal strings for convenience.</p>
+<p>Since methods are like functions, they have an argument list. In this
+case, the argument list is empty, so we have to put the open/close
+parentheses <code class="docutils literal notranslate"><span class="pre">()</span></code> after the name of the method. It’s pretty common to
+have methods that take no arguments; what that means is that the method
+only needs the name of the object to do what it’s doing. In this case,
+all the <code class="docutils literal notranslate"><span class="pre">upper</span></code> method needs to know about is the string object
+itself.</p>
+<p>You might think that it’s dumb that you have to include an empty pair of
+open/close parentheses to call a method with no arguments. But if you
+leave them off, the method never gets called:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;spam&#39;</span><span class="o">.</span><span class="n">upper</span>
+<span class="go">&lt;built-in method upper of str object at 0x109d3ee30&gt;</span>
+</pre></div>
+</div>
+<p>Python is basically saying here “yup, that’s a method all right”. If you
+want it to do something, you need the parentheses.  <a class="footnote-reference brackets" href="#id11" id="id5">4</a></p>
+<p>Here are some other methods on strings:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;SPAM&#39;</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="go">&#39;spam&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;spam&#39;</span><span class="o">.</span><span class="n">islower</span><span class="p">()</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;   string with spaces on each end    &#39;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="go">&#39;string with spaces on each end&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;Caltech&#39;</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;tech&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Python uses the special names <code class="docutils literal notranslate"><span class="pre">True</span></code> and <code class="docutils literal notranslate"><span class="pre">False</span></code> to stand for
+boolean (true/false) values.</p>
+</div>
+<p>Notice in particular the call to the <code class="docutils literal notranslate"><span class="pre">endswith</span></code> method. This is the
+first method call we’ve seen that has an argument in its argument list.</p>
+<p>The Python online documentation has a full list of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str">Python’s string methods</a>.
+You’re not expected to memorize them! Some of the more useful ones include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">capitalize</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">startswith</span></code> and <code class="docutils literal notranslate"><span class="pre">endswith</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">find</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">format</span></code> (we’ve seen this already)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">index</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">join</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lower</span></code> and <code class="docutils literal notranslate"><span class="pre">upper</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">strip</span></code></p></li>
+</ul>
+<p>Pick three methods from the above list and look up their definitions.
+Don’t memorize them; just remember enough so that when you come across a
+situation where they might be useful, you’ll know where to look.</p>
+</div>
+<div class="section" id="methods-vs-functions">
+<h2><span class="section-number">5.7. </span>Methods <em>vs.</em> functions<a class="headerlink" href="#methods-vs-functions" title="Permalink to this heading"></a></h2>
+<p>Let’s take a closer look at the <code class="docutils literal notranslate"><span class="pre">endswith</span></code> method:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;Caltech&#39;</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;tech&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>You might wonder why this wasn’t written as a regular function, <em>e.g.</em>
+something like this:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;Caltech&#39;</span><span class="p">,</span> <span class="s1">&#39;tech&#39;</span><span class="p">)</span> <span class="c1"># Doesn&#39;t work!</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">NameError</span>: <span class="n">name &#39;endswith&#39; is not defined</span>
+</pre></div>
+</div>
+<p>Python is telling you that there is no <code class="docutils literal notranslate"><span class="pre">endswith</span></code> function.</p>
+<p>In fact, <code class="docutils literal notranslate"><span class="pre">endswith</span></code> could have been written that way. Or you could
+define it that way if you really wanted to:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">endswith</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">suffix</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;Caltech&#39;</span><span class="p">,</span> <span class="s1">&#39;tech&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>There’s no reason to do this, though. One benefit of using methods
+instead of functions is that you can use the same method name on
+different objects and have it mean different things for each object.
+Usually, though, it’s better if the meaning is similar (even if it’s not
+identical), because otherwise it’s likely to be confusing. Not having to
+define new names for similar (but not identical) functionality means
+that code reads better and is more intuitive.</p>
+</div>
+<div class="section" id="defining-methods">
+<h2><span class="section-number">5.8. </span>Defining methods<a class="headerlink" href="#defining-methods" title="Permalink to this heading"></a></h2>
+<p>We will not go into the syntax for defining methods at this time. In
+fact, it’s almost identical to function definition syntax. (We will get
+to this when we discuss writing your own classes.) For now, we will use
+pre-written methods. Python’s extensive code libraries (called
+<em>modules</em>) and many built-in data structures mean that there are a lot
+of pre-written methods we can use right away.</p>
+</div>
+<div class="section" id="the-len-function">
+<h2><span class="section-number">5.9. </span>The <code class="docutils literal notranslate"><span class="pre">len</span></code> function<a class="headerlink" href="#the-len-function" title="Permalink to this heading"></a></h2>
+<p>As we mentioned above, there are many function-like things that can be
+written either as methods or as functions, at least in principle. Python
+is not always totally consistent in this regard.  <a class="footnote-reference brackets" href="#id12" id="id6">5</a> Some things are
+written as functions, others as methods, and sometimes you find the same
+functionality is provided by both a function <em>and</em> a method. Usually,
+though, a particular behavior is implemented as one or the other.</p>
+<p>As if this wasn’t confusing enough, consider the very useful built-in
+<code class="docutils literal notranslate"><span class="pre">len</span></code> function. (Notice that I said <em>function</em>, not <em>method</em>.) <code class="docutils literal notranslate"><span class="pre">len</span></code>
+takes a single argument and returns its “length”, whatever “length”
+means for that kind of data. We can use <code class="docutils literal notranslate"><span class="pre">len</span></code> on a lot of different
+kinds of Python objects. For instance, strings have a length:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;foobar&#39;</span><span class="p">)</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+<p>For a string, its <code class="docutils literal notranslate"><span class="pre">len</span></code> is the number of characters in the string.</p>
+<p>On the other hand, integers and boolean values don’t have a <code class="docutils literal notranslate"><span class="pre">len</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">TypeError</span>: <span class="n">object of type &#39;int&#39; has no len()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">TypeError</span>: <span class="n">object of type &#39;bool&#39; has no len()</span>
+</pre></div>
+</div>
+<p>Lists (which are another data type that we’ll meet shortly) also have a
+length:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<p>(Here, <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code> is Python’s syntax for a list of three integers:
+<code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, and <code class="docutils literal notranslate"><span class="pre">3</span></code>.) So <code class="docutils literal notranslate"><span class="pre">len</span></code> works on both strings and lists,
+but it should be clear that finding the length of a string is a
+different kind of operation than finding the length of a list. You might
+think, therefore, that Python should have made <code class="docutils literal notranslate"><span class="pre">len</span></code> a method on
+strings and lists, not a function. Why didn’t it?</p>
+<p>Well, actually, it did, but it pretends that it didn’t. When you say
+<code class="docutils literal notranslate"><span class="pre">len(x)</span></code> in Python, it internally calls a method called <code class="docutils literal notranslate"><span class="pre">__len__</span></code> on
+the object. Observe:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;foobar&#39;</span><span class="p">)</span>
+<span class="go">6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;foobar&#39;</span><span class="o">.</span><span class="fm">__len__</span><span class="p">()</span>
+<span class="go">6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="fm">__len__</span><span class="p">()</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<p>The only reason <code class="docutils literal notranslate"><span class="pre">len</span></code> is a function is that it’s used so often that the
+inventor of Python (Guido van Rossum) figured that it would be more pleasant to
+write it like a function than like a method. You can agree with this or not,
+but that’s how it is.  <a class="footnote-reference brackets" href="#id13" id="id7">6</a></p>
+<p>What’s more interesting is that this is a good example of a method
+(<code class="docutils literal notranslate"><span class="pre">__len__</span></code>) which has the same name for two different kinds of objects
+(strings and lists) but which does different things in each case. Both
+things are <em>conceptually</em> “lengths” but the details are different. This
+is common with methods: each object can use the same method names as
+other objects, but the meaning of these methods is specific to the
+object.</p>
+<p>One last thing: the <code class="docutils literal notranslate"><span class="pre">__len__</span></code> method uses a naming convention that
+we’ll see again. Names of methods that are used internally by Python for
+some important purpose are, by convention, written with two leading and
+two trailing underscores. There are a bunch of “special methods” like
+this that do a number of things, and we’ll meet some more of them very
+soon. Be aware, though, that this is <em>only</em> a convention. You could
+write your own methods with names like this, and Python would still
+accept it. However, please don’t do that! If you redefined a method like
+<code class="docutils literal notranslate"><span class="pre">__len__</span></code> your program might fail and it might be very hard for you to
+figure out why.</p>
+<hr class="docutils" />
+<p class="rubric">Footnotes</p>
+<dl class="footnote brackets">
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>In fact, in Python all data are represented as objects. Even
+functions are objects.</p>
+</dd>
+<dt class="label" id="id9"><span class="brackets"><a class="fn-backref" href="#id3">2</a></span></dt>
+<dd><p>That is, assuming the object <em>has</em> any internals. Some very simple
+objects, like integers, don’t have any internal components.</p>
+</dd>
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id4">3</a></span></dt>
+<dd><p>The word <code class="docutils literal notranslate"><span class="pre">spam</span></code> is often used in Python documentation to refer to
+an arbitrary string. Do a YouTube search for “Monty Python spam
+sketch” to see where it comes from.</p>
+</dd>
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id5">4</a></span></dt>
+<dd><p>Some object-oriented languages, like Ruby, don’t require you to use
+parentheses for methods with no arguments. You can waste an
+incredible amount of time arguing over whether this is a good or a
+bad thing.</p>
+</dd>
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id6">5</a></span></dt>
+<dd><p>Some languages, like Java or Ruby, try hard to be “pure”
+object-oriented languages. Python is more pragmatic; Python
+programmers use whatever seems best for the application at hand.</p>
+</dd>
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id7">6</a></span></dt>
+<dd><p>Every programming language has some features in it that some people
+don’t like. Most have features that almost everyone doesn’t like.
+Python is very good, but it isn’t perfect.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter4.html" class="btn btn-neutral float-left" title="4. Strings, part 2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter6.html" class="btn btn-neutral float-right" title="6. Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Michael C. Vanier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

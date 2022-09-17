@@ -1,0 +1,510 @@
+Introduction to Python, part 1
+==============================
+
+.. |eg| replace:: *e.g.*
+.. |ie| replace:: *i.e.*
+.. |etc| replace:: *etc.*
+.. |pyversion| replace:: 3.10.2
+
+.. role::  raw-html(raw)
+    :format: html
+
+
+Introduction
+------------
+
+Welcome to CS 1!  We're delighted that you're taking our course.  We hope you
+have a lot of fun and learn a lot in the process.
+
+This book serves as the official course notes, so that lectures are less of a
+brain dump of details and more an opportunity to interactively go through code
+examples, answer questions, and get you thinking about the programming process.
+You should ideally have read the relevant book chapter(s) before coming to
+lecture, so you can use class time to ask questions about the material and
+refine your understanding.  We will use the questions you ask in the lecture to
+improve the book.
+
+
+Topics
+^^^^^^
+
+This chapter is a general introduction to programming and Python followed by a
+short crash course on the most basic aspects of Python, which will be continued
+in the next chapter.
+
+
+Your programming background
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We are very well aware that students in CS 1 come from a very wide variety of
+backgrounds in terms of knowledge of computer programming.  Some of you have
+never programmed a computer before.  That's fine, you're in the right place!
+Others have some or perhaps even extensive programming experience.  We will try
+to make these notes accessible to everyone, and if there is a topic that you
+are very familiar with, we encourage you to skim (but not to skip) the notes on
+that topic.
+
+
+Programming as a thought process
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+[This section is for new programmers; experienced programmers can skip to the
+next section.]
+
+The hardest subjects to learn are usually those that force you to think in a
+different way than you're used to.  When you learn algebra, you have to
+generalize the arithmetic you've learned ("ten apples times three equals thirty
+apples") to allow for unknown quantities (variables) ("``x`` apples times ``y``
+equals ``xy`` apples").  That's a mental leap.  When you learn calculus you have
+to generalize what you know about functions to allow for operations like
+derivatives that take functions as arguments.  And when you learn programming
+for the first time, you have to learn to "think like a machine".  This is what
+we mean when we speak of programming as a thought process.  Thinking like a
+machine means understanding enough about how the computer works to be able to
+predict what the result of executing your code is going to be.
+
+Thinking like a machine isn't necessarily hard, but it is *different*.  The
+machine (the computer) works by iron-clad rules of logic, doing many very
+simple operations at blinding speed.  We write programs to tell computers what
+to do, and the computer will do *exactly* what we tell it to, no more and no
+less, whether it makes sense or not.  There is no room for error; if you get a
+single character wrong in your program, it will either do the wrong thing or
+not run at all.  The computer doesn't know or care what you "meant" it to do,
+only what you specifically *asked* it to do.  It is completely literal and
+completely unforgiving.  You should expect to spend a lot of time fixing
+mistakes in your programs (which are called "bugs") to finally get it to do the
+right thing.  Fortunately, the computer has a number of safeguards which
+prevent you from doing anything really horrible (so running a program is
+unlikely to physically destroy the computer itself, for instance); usually if
+you make a mistake it will just complain that something went wrong and halt, or
+else it'll just not do what you wanted it to.
+
+Learning to understand the very logical, very exact, very literal and
+incredibly picky way a computer works is going to take time.  We're not going
+to lie to you: programming can be incredibly frustrating.  But once you finally
+get it to do what you want, it's also incredibly satisfying, and with
+experience, the less frustrating it gets and the more satisfying it is.  (But
+the frustration never goes away entirely!)  We will be trying to help you learn
+to "think like a machine" all through this course.  Often, we will not give you
+the whole story about what is happening when we first introduce a topic,
+because to do that would take too long and be tedious.  But as we visit and
+revisit topics, we will fill in more and more of the gaps so that eventually
+you'll have a very good idea of what happens when your programs execute.  (To
+get a *really* deep understanding of all this, though, you'll have to take more
+courses than just CS 1!)  Don't worry; it's going to be fun!
+
+
+Program design as a thought process
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+[This section is for beginning and experienced programmers alike.]
+
+Even after you internalize the first thought process (thinking like a machine)
+you have to learn another thought process: how to *design* programs.  You will
+have to write many functions and programs in this course.  You'll be given a
+pretty precise description of what the function or program is supposed to do,
+and then you will have to write the code to do it.  This is a creative act!
+There is always going to be more than one way to solve all but the simplest
+problems, and there is never going to be an objectively "perfect" answer.  But
+for many programmers, even ones who understand the workings of a programming
+language quite well, it can be challenging to put together the elements of the
+programming language in the right way to solve a problem.  We call this
+activity *program design*.  As a creative act, we can't give exact rules on how
+to do it, but we *can* give guidelines, rules of thumb, and general wisdom that
+we and other programmers have accumulated over our programming careers. Knowing
+these guidelines and rules of thumb should help you when you have to write a
+function but don't know where to start.
+
+The details of the programming language we'll be teaching you (Python) will be
+in this book.  The thought process behind program design will mainly be covered
+in lectures, often by simply showing you a problem and walking through the
+steps needed to solve it.  That way, you'll see how experienced programmers
+think about a problem, and you can apply what you learn to your own programs.
+
+
+Programming jargon
+^^^^^^^^^^^^^^^^^^
+
+Another challenge for beginning programmers is that programming uses a lot of
+common words with very specific meanings that aren't the usual meanings.  Words
+like "list", "dictionary", "string", "files", "function", "interpreter" and so
+on mean very different things when used in a programming context than they
+would mean in everyday conversation.  We will try very hard to be incredibly
+clear on what a particular programming term means, especially if that meaning
+is different from the common meaning.  If you find a term confusing, let us
+know so we can improve this book!
+
+
+The choice of programming language
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We will be using the Python_ programming language exclusively in this course.
+Python is both an excellent first programming language, useful for teaching the
+basic concepts of programming, as well as an incredibly useful real-world
+language.  Perhaps most relevant to you, Python has in recent years emerged as
+one of the most important programming languages in science and data analysis,
+as well as one of the most-used languages in machine learning and artificial
+intelligence.  Python is easy to learn, incredibly versatile, very readable,
+and very consistent.  You may know some (or a lot!) of Python already, but even
+in that case we're pretty sure we're going to be teaching you some new things
+about it. [1]_
+
+We love Python both as a teaching language and as a language we use ourselves,
+but don't kid yourself: it's not the only good or useful programming language.
+If you take CS 2, you will learn Java; if you take CS 3 and/or CS 11, you will
+learn C and maybe also C++, and if you take CS 4 you will learn OCaml.  Serious
+programmers need to know more than one language, so think of this as the start
+of your programming journey.  Programming is a lot of fun, and we hope to show
+you why we love it so much and why it's so exciting to learn computer science.
+
+
+A brief history of Python
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Computer languages have weird names.  Some, like ``C``, are completely
+arbitrary and meaningless. [2]_ Others, like ``Java`` or ``Ruby``, are named
+after something (coffee and the gem stone).  ``Python`` is named after the
+British comedy group `Monty Python's Flying Circus`_.
+It was invented in the late 1980s by Guido van Rossum, a Dutch programmer who
+wanted a language that was easier to use than C for everyday tasks.  Guido was
+also a fan of the comedy group, so he named his language after them as an
+homage.
+
+Python has been under continual development ever since it was created, and the
+latest version of Python available as of this writing is Python |pyversion|.
+Python is now one of the most popular programming languages in use today.
+
+The Python web site is https://www.python.org.  It's good to bookmark it, because
+the Python documentation is hosted there, and you will definitely need it for
+this course.
+
+
+Code examples
+^^^^^^^^^^^^^
+
+In the supporting documents we will be going through all the details you need
+to know in order to get Python working on your computer, which IDE/editor to
+use [3]_, |etc|  We won't do that in this book, but instead we'll assume you
+can run Python code.  If you can't do that yet, don't worry; you should still
+be able to understand the code examples.  (You simply won't be able to run them
+yourselves yet.)  However, we strongly recommend that you do get Python set up
+as soon as possible and follow along with the readings by typing in the
+examples and playing around with them; you'll learn a lot more that way and
+it'll be more fun too.
+
+Here is a snippet of Python code: ::
+
+  print('Hello, world!')
+
+Believe it or not, this is a complete Python program!  When run from a terminal
+window, it will print the words ``Hello, world!`` to the terminal. [4]_
+
+.. note::
+
+  A "terminal" (more jargon!) is a program which allows you to directly type
+  commands to your computer.  Some of you may never have used a terminal, because
+  non-programmers typically have little use for one.  Programmers use them all
+  the time, and some of us spend most of our time on the computer working inside
+  a terminal.  Terminal programs include *Terminal.app* and *Iterm.app* (MacOS),
+  *Windows Terminal* (Windows), and many different programs for Linux.  You can
+  run Python programs directly from a terminal, and we'll show you lots of
+  examples of this.
+
+We will get into the details of Python below, but just so you aren't confused:
+the words ``'Hello, world!'`` in single quotes are a Python *string* (which is
+the way textual data is represented inside Python).  The word ``print`` stands
+for a built-in Python *function* which takes a single *argument* (in this case
+the string ``'Hello, world!'``) and prints it out to the terminal. [5]_ We'll
+talk more about functions in the next chapter, and we'll cover strings in
+detail after that.
+
+
+Source code files *vs.* the interactive interpreter
+---------------------------------------------------
+
+In this course, we will be working with Python in two distinct ways:
+
+- interactively, using the Python "interactive interpreter"
+- running code from files
+
+When you are writing your assignments, you will be using Python in both ways
+(though probably more the second than the first).  When we are giving lectures,
+we will use the interactive interpreter extensively, but we'll also often write
+code in a file and run it.  Sometimes we'll do it both ways.
+
+
+Source code files
+-----------------
+
+Python code that you write (using an editor) is called *source code*.  The
+"source" word implies that this is the first thing that is created in order to
+make a program.  "Files" are just data that is stored on a computer permanently
+|ie| they don't disappear when the computer is turned off.  Python source code
+files are plain text files with a specific suffix, which is ``.py``. Usually,
+the name of a source code file is in all lowercase letters; for instance, you
+might have one called ``lab1.py`` or ``sudoku.py``.
+
+Let's say we've written a file of Python code called ``hello.py`` which contains
+the following code: ::
+
+  print('Hello, world!')
+
+
+We can run this file by typing the following command at a terminal *command
+line*:
+
+.. code-block:: text
+
+  $ python hello.py
+
+The ``$`` is called a *prompt*; you don't type it.  (Your prompt may look
+different than this.) Inside a terminal there is a program called a "shell"
+which is running, and the shell is the program which interprets commands like
+this.  The shell prompt (the ``$`` above) is printed automatically when the
+shell is waiting for more input.  Then you type in the words ``python
+hello.py`` and hit the Return key (or the Enter key on some keyboards).  What
+this does is run the ``python`` program (which is the program that runs Python
+language files) on the file called ``hello.py``.
+
+If all goes well, the terminal should print out:
+
+.. code-block:: text
+
+  Hello, world!
+
+and return you to the prompt.
+
+.. note::
+
+  This assumes your computer is running either Linux or Mac OS X as its operating
+  system.  If it's running Windows, you can get to a terminal prompt like this by
+  installing the `Windows Subsystem for Linux`_,
+  but don't worry about this for now; there are other ways to run
+  Python programs on Windows.  The important thing to understand is that you can
+  run all the Python code in a single file with a single command.
+
+Python programs can be split between multiple files; such files are usually
+called "modules".  We'll talk more about modules in a future chapter.
+
+
+The Python interpreter
+----------------------
+
+It's also possible to enter all the code for a program on-the-fly by starting
+up the Python interpreter.  An "interpreter" or "interactive interpreter" is a
+program which reads lines of code you type and immediately runs them.  Python
+can work as an interpreter if you run the ``python`` program in the terminal
+with no arguments.
+
+.. code-block:: text
+
+  $ python
+
+This will cause the interactive Python interpreter to start up.  You'll know
+that's happened when you see the Python *prompt*, which looks like this:
+
+.. code-block:: pycon
+
+  >>>
+
+The prompt is how Python tells you it's waiting for you to type a line of code
+for it to execute.  (Don't confuse the Python prompt with the shell prompt; the
+Python prompt is only used to enter Python language statements, not to invoke
+arbitrary programs.)  Now you can enter expressions at the prompt:
+
+.. code-block:: pycon
+
+  >>> 1 + 1
+
+Hit Return (or Enter), and Python will helpfully print out:
+
+.. code-block:: pycon
+
+  2
+
+and print out the prompt again.  If you want to exit the interpreter, type
+"control d" |ie| hold down the "control" key on your keyboard while typing the
+letter ``d`` (lowercase).  This will exit the interpreter and return you to the
+shell prompt.
+
+.. note::
+
+  So we don't have to write "Return (or Enter)" over and over,
+  we'll always refer to the key that enters a line of text as
+  the Return key from now on.
+
+It's important to understand that the ``>>>`` prompt is *not* part of the Python
+language; it's just the way that the interactive Python interpreter lets you
+know that it is waiting for you to enter some code.
+
+There is more to say about the interactive interpreter; we will cover it as we
+get to it.
+
+
+Python as a calculator
+----------------------
+
+
+Arithmetic expressions
+^^^^^^^^^^^^^^^^^^^^^^
+
+One thing that is easy to do with Python is to use it as a kind of
+terminal-based calculator program.  You do this by starting the interactive
+interpreter and entering arithmetic expressions:
+
+.. code-block:: pycon
+
+  >>> 2 + 2
+  4
+  >>> 1.2 * 3.4
+  4.08
+  >>> 2 ** 16
+  65536
+  >>> (4 - 2) * (3 + 3)
+  12
+  >>> 1/6
+  0.16666666666666666
+
+and so on.  Note that some common operations use different operators than is
+customary in math:
+
+.. list-table:: Operators
+   :header-rows: 1
+
+   * - Operator symbol
+     - Meaning in Python
+
+   * - ``*``
+     - multiplication
+
+   * - ``/``
+     - division
+
+   * - ``**``
+     - to the power of
+
+This is done because common symbols like the "times" symbol (:raw-html:`&times;`)
+and the "divide" symbol (:raw-html:`&divide;`) can't be typed on a standard
+keyboard.  (Most programming languages use ``*`` and ``/`` for multiplication
+and division.) Traditional math notation uses superscripts for powers, which is
+also not easily typeable, so Python uses ``**``.  So ``2 ** 16`` means "2 to
+the power of 16".
+
+
+Numbers
+^^^^^^^
+
+Numbers in Python can be "integers" (no fractional part) or "floating point"
+(approximate real numbers).  Floating point numbers are a computer
+approximation to real numbers. Some real numbers (like :raw-html:`&pi;` or *e*)
+need an infinite number of decimal places to represent them exactly.  Computers
+don't have infinite storage, so the number is cut off after a certain number of
+decimal places, and we call this kind of number a "floating point" number (or
+"float" for short).
+
+.. code-block:: pycon
+
+  >>> 42
+  42
+  >>> 1.23
+  1.23
+  >>> 6.022e23
+  6.022e+23
+
+``42`` is an integer, and ``1.23`` and ``6.022e23`` are floating point numbers.
+The ``e`` means "exponent", so ``6.022e23`` means 6.022 :raw-html:`&times;`
+10 :sup:`23`. You can combine integers and floating-point numbers in arithmetic
+expressions:
+
+.. code-block:: pycon
+
+  >>> 42 + 1.23
+  43.23
+
+Python even lets you use complex numbers:
+
+.. code-block:: pycon
+
+  >>> (1.0+2.3j) * (3.4+4.5j)
+  (-6.949999999999999+12.32j)
+
+(Don't worry if you don't yet know what complex numbers are.) [6]_
+
+
+Operator precedence
+^^^^^^^^^^^^^^^^^^^
+
+When writing arithmetic expressions with different operators, sometimes there
+will be two reasonable ways to interpret the expression.  For instance: ::
+
+  1 + 2 * 3
+
+could mean either ::
+
+  1 + (2 * 3)
+
+or ::
+
+  (1 + 2) * 3
+
+The usual rule in math is to do multiplications (and divisions) before additions
+(and subtractions), so in fact Python evaluates this the first way:
+
+.. code-block:: pycon
+
+  >>> 1 + 2 * 3
+  7
+
+If you really want to evaluate it the second way, add the parentheses yourself:
+
+.. code-block:: pycon
+
+  >>> (1 + 2) * 3
+  9
+
+In computer-language-speak, we say that the ``*`` operator has a higher
+*precedence* than the ``+`` operator.  There are a lot of precedence rules in
+Python (and in most programming languages), but you don't generally have to
+think about them; things usually do what you expect.  Most of the time, all you
+need to remember is that:
+
+- ``*`` and ``/`` are higher precedence than ``+`` or ``-``
+- ``**`` is higher precedence than ``*`` or ``/``
+- ``=`` (assignment, next section) is lower than any of them
+- use parentheses if you need to force a different order of evaluation
+
+If you positively have to know what the relative precedences of different
+operators are, you should look at the Python language `precedence table`_.
+(This might be worth bookmarking.)
+
+.. _Python: https://www.python.org/
+.. _Monty Python's Flying Circus: https://en.wikipedia.org/wiki/Monty_Python%27s_Flying_Circus
+.. _precedence table: https://docs.python.org/3/reference/expressions.html#operator-precedence
+.. _Windows Subsystem for Linux: https://docs.microsoft.com/en-us/windows/wsl/install-win10
+
+----
+
+.. rubric:: Footnotes
+
+.. [1] And, of course, the Python language itself keeps evolving, so we have
+       to learn new things about it too!
+
+.. [2] It's actually called ``C`` because it's the successor to a language called ``B``.
+       We hope that clears that up.
+
+.. [3] Did you catch that? We just dropped two programming jargon terms on you:
+       "IDE" and "editor".  An "editor" is a program that allows you to write text
+       files, which is what programs are (or at least what they start out as), and
+       "IDE" stands for *Integrated Development Environment*, which is a kind of
+       super-editor that allows you to run and debug code as well as edit it.
+
+.. [4] It's a tradition for the first program you write in a new language to be one
+       that prints out the phrase ``"Hello, world!"``. This started with the C
+       programming language in the 1970s and persists to this day.
+
+.. [5] The ``print`` function can do much more than this, but this is the
+       simplest way to use it.
+
+.. [6] The long list of consecutive ``9``\s in ``(-6.949999999999999+12.32j)``
+       are due to roundoff error.
+

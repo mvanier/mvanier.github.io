@@ -1,0 +1,835 @@
+Strings, part 2
+===============
+
+.. |eg| replace:: *e.g.*
+.. |ie| replace:: *i.e.*
+.. |etc| replace:: *etc.*
+.. |pyversion| replace:: 3.10.2
+.. |smiley|    image:: images/smiley.jpg
+   :width: 25px
+
+.. role::  raw-html(raw)
+    :format: html
+
+Topics
+------
+
+This chapter continues our discussion of strings. We'll go into more depth on
+strings and what you can do with them.
+
+String operations
+-----------------
+
+There are many useful string operations that are built-in to Python. Some of
+them are operators (symbols) that work on strings; others are functions that
+work on strings. Still others are *methods* on string objects (methods will be
+covered in the next chapter).
+
+Indexing
+^^^^^^^^
+
+One basic thing we might want to do with a string is to extract a character
+from the string. We do this using Python's *indexing operator*, which is a pair
+of square brackets surrounding an integer index following the string or string
+variable.
+
+.. code-block:: pycon
+
+  >>> s = 'I am a string'
+  >>> s[0]
+  'I'
+  >>> s[1]
+  ' '
+  >>> s[2]
+  'a'
+
+The first character of the string is ``s[0]`` which is the character
+``'I'`` (actually a string of length 1). The second character is
+``s[1]``, which is a space character, the third is ``s[2]``, which is
+``'a'``, and so on. Locations of characters in a string are called
+*indices* (plural of *index*), and they start at ``0``, not ``1``. The
+same kind of indexing is used for all Python sequence types (|eg|
+lists, tuples as well as strings) and we'll discuss it in more detail
+when we talk about lists.
+
+You can also index literal strings:
+
+.. code-block:: pycon
+
+  >>> 'I am a string'[0]
+  'I'
+  >>> 'I am a string'[1]
+  ' '
+  >>> 'I am a string'[2]
+  'a'
+
+This is rarely useful, though.
+
+Length
+^^^^^^
+
+To get the "length" of a string (|ie| the number of characters in the
+string) use the built-in ``len`` function:
+
+.. code-block:: pycon
+
+  >>> len('')
+  0
+  >>> len('Caltech')
+  7
+  >>> len('MIT')
+  3
+
+Like the indexing operator, the ``len`` function can be used for any
+kind of sequence, not just for strings.
+
+Concatenation
+^^^^^^^^^^^^^
+
+A common operation with strings is combining two strings to make a
+bigger string. In Python, this is done using the ``+`` operator, as if
+you were "adding" the two strings together:
+
+.. code-block:: pycon
+
+  >>> 'foo' + 'bar'
+  'foobar'
+  >>> s1 = 'Cal'
+  >>> s2 = 'tech'
+  >>> s3 = s1 + s2
+  >>> s3
+  'Caltech'
+
+The technical name for this is *string concatenation*. Of course, this
+isn't really addition, but for convenience we use the ``+`` operator
+anyway. Which leads us to the next topic...
+
+Operator overloading
+^^^^^^^^^^^^^^^^^^^^
+
+Even though we like to use analogies between math and computer programming,
+there are lots of ways in which programs are different from math. One way is
+that operators like ``+`` are sometimes used for things that aren't arithmetic;
+string concatenation is a good example. We call this "operator overloading"; we
+are "overloading" the ``+`` operator to mean something that it wouldn't usually
+mean.
+
+Every programming language does operator overloading differently. Some don't
+allow it at all. Python overloads operators when it makes code easier to
+understand and more concise. We'll see other examples of this as we go along,
+including one right now.
+
+Pitfalls
+^^^^^^^^
+
+A *pitfall* is something that's easy to get wrong or easy to get confused
+about. We will talk a lot about pitfalls in this course.
+
+Here's a potential pitfall with string concatenation:
+
+.. code-block:: pycon
+
+  >>> s1 = '12'
+  >>> s2 = '34'
+  >>> s1 + s2
+  '1234'
+
+Were you expecting ``'46'``? When Python concatenates strings, it doesn't try
+to interpret the strings; it doesn't "know" that ``'12'`` is the string
+representation of a number.
+
+This doesn't work either:
+
+.. code-block:: pycon
+
+  >>> s1 = 12
+  >>> s2 = '34'
+  >>> s1 + s2
+  Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+  TypeError: unsupported operand type(s) for +: 'int' and 'str'
+
+Python won't auto-convert the string ``s2`` to an integer to make the addition
+work, nor will it auto-convert the integer ``s1`` to a string to make string
+concatenation work. In general, Python won't "guess" what you want; if it's not
+totally explicit, it will just fail. This may annoy you but it's actually a
+good thing.  [1]_
+
+String "multiplication"
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Python also overloads the multiplication (``*``) operator when used with an
+integer "multiplied" by a string or vice-versa. In this case, it means string
+replication: the string is copied that number of times to make a new string.
+
+.. code-block:: pycon
+
+  >>> s = 'foo'
+  >>> s
+  'foo'
+  >>> s * 3
+  'foofoofoo'
+  >>> 3 * s
+  'foofoofoo'
+  >>> s * s   # oops! can't multiply strings!
+  Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+  TypeError: can't multiply sequence by non-int of type 'str'
+
+The error message is telling us that we can only multiply a string by an
+integer, not by another string.
+
+.. code-block:: pycon
+
+  >>> s = 'foo'
+  >>> s * 0    # multiply string x 0 = empty string
+  ''
+  >>> 0 * s
+  ''
+  >>> -1 * s   # this doesn't reverse strings, sorry!
+  ''
+  >>> 0.5 * s  # half-characters not supported, sorry!
+  Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+  TypeError: can't multiply sequence by non-int of type 'float'
+
+Convert to string
+^^^^^^^^^^^^^^^^^
+
+If you need to explicitly convert something to a string, use the ``str``
+built-in function:
+
+.. code-block:: pycon
+
+  >>> str(12)
+  '12'
+  >>> str(1.234)
+  '1.234'
+  >>> str('foo')
+  'foo'
+
+Converting a string to a string doesn't change the string, as you might
+expect. But converting an integer or a float to a string creates a
+completely different kind of value.
+
+Printing to the terminal
+------------------------
+
+If you want to print a string to the terminal, you use the built-in
+``print`` function, which we've seen already:
+
+.. code-block:: pycon
+
+  >>> print(42)
+  42
+  >>> print(3.1415926)
+  3.1415926
+  >>> print('foobar')
+  foobar
+
+A few things to notice here:
+
+- ``print`` works on any Python value, not just strings. You don't have
+  to use the ``str`` function to convert values to strings inside the
+  ``print`` call; the ``print`` function takes care of that.
+
+- ``print`` advances to the next line after printing. Technically, what
+  it does is print a newline character after printing the Python value.
+  There is a way to suppress the newline character, which we'll see
+  below.
+
+- Printing to the terminal is *not* the same as returning a value from
+  a function. This is an easy thing to get confused about (a pitfall!).
+  Look at this:
+
+.. code-block:: pycon
+
+  >>> print(42)
+  42
+  >>> 42
+  42
+
+Looks the same, right? But what's happening is totally different. Let's
+say you had this Python code in a file: ::
+
+  print(42)
+  42
+
+When you ran this file though Python, only the first line would print
+anything. The second line wouldn't do anything at all. But in the Python
+interactive interpreter, Python automatically prints any expression
+entered, which makes it look like these are the same thing, which isn't
+the case.
+
+The difference is more obvious with strings:
+
+.. code-block:: pycon
+
+  >>> print('foobar')
+  foobar
+  >>> 'foobar'
+  'foobar'
+
+When the interactive interpreter prints the value of a string without
+using the ``print`` function, it adds the quotes so that you know the
+value is a string. Again, this won't happen if you wrote the Python code
+in a file; when you ran the file through Python you would just see: ::
+
+  foobar
+
+Suppressing the newline character
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As mentioned above, you can change the default behavior of printing a
+newline character after printing the value by adding an extra argument.
+
+Consider this code (we'll assume it's in a file): ::
+
+  # Normal use of print:
+  print(10)
+  print(20)
+  print(30)
+
+which results in this when run:
+
+.. code-block:: pycon
+
+  10
+  20
+  30
+
+Notice that each number is printed on a separate line. Now look at this:
+::
+
+  # Print without printing a newline at the end:
+  print(10, end='')
+  print(20, end='')
+  print(30, end='')
+
+which results in:
+
+.. code-block:: pycon
+
+  102030
+
+The ``end=''`` argument is called a *keyword argument*. We'll talk more
+about keyword arguments later in the course, but just take it on faith
+that this is what you need to do if you don't want to print a newline
+character after printing a value using the ``print`` function.
+
+Conversely, if you just want to print a newline character, just do this: ::
+
+  print()
+
+Writing |eg| ``print('')`` will also work, but it's bad style since it's more
+complicated than it needs to be.  [2]_
+
+Multiline strings
+-----------------
+
+Single-line strings are the default
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, a string in Python spans a single line only. If you try to
+extend the string to the next line, you get a syntax error:
+
+::
+
+   >>> 'this is a string'
+   'this is a string'
+   >>> 'I want to write a multiline string
+     File "<stdin>", line 1
+       'I want to write a multiline string
+                                          ^
+   SyntaxError: EOL while scanning string literal
+
+This error message says "while trying to read a string literal, Python
+encountered a newline (End Of Line or EOL) character, which is a syntax
+error". So that doesn't work.
+
+Manually creating multiline strings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Putting in newlines
+~~~~~~~~~~~~~~~~~~~
+
+You can create a multiline string manually by putting in newline
+characters:
+
+::
+
+   >>> s = 'I want to write a multiline string\nlike this.'
+   >>> s
+   'I want to write a multiline string\nlike this.'
+   >>> print(s)
+   I want to write a multiline string
+   like this.
+
+However, in this case the string you type still has to be all on one
+physical line, which is often not what you want.
+
+Concatenating strings and the line continuation character
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You could fix that by using string concatenation:
+
+::
+
+   >>> s = 'I want to write a multiline string\n' + \
+   'like this.'
+   >>> print(s)
+   I want to write a multiline string
+   like this.
+
+Since Python executes code a line at a time, and the string
+concatenation spans multiple lines, you have to write the *line
+continuation character* at the end of the line, which you type with a
+backslash followed by typing the Return (or Enter) key.  [3]_ If you
+don't, then this happens:
+
+::
+
+   >>> s = 'I want to write a multiline string\n' +
+     File "<stdin>", line 1
+       s = 'I want to write a multiline string\n' +
+                                                   ^
+   SyntaxError: invalid syntax
+
+This is not Python's finest error message, but it's telling you that the
+``+`` expression isn't finished.
+
+The point of all this is that you can manually create multiline strings,
+but it's a pain. You have to remember to put in the newline characters
+and the line continuation characters. You also have to type ``+``
+characters between the strings. There should be a better way.
+
+.. note::
+
+   The line continuation character can be used for any long Python
+   expression that won't fit on a single line, not just for
+   concatenating strings. For instance:
+
+   ::
+
+      first_20_ints = 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + \
+      16 + 17 + 18 + 19 + 20
+
+   Try not to use it, though, because it's ugly and hard to read. (But
+   it's better than having a line of 120 characters!)
+
+A better way: triple-quoted strings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The better way is to use *triple-quoted strings*. To do this you use not
+one, not two, but three (3) quote characters to both begin and end a
+string. You can use either kind of quote character (single quote (``'``)
+or double quote (``"``)) as long as all three of the quote characters
+are the same, and the same kind of quote characters are used at the
+beginning and end of the string.
+
+Triple-quoted strings can span multiple lines, though they don't have
+to.
+
+::
+
+   >>> '''I am a triple-quoted string!'''
+   'I am a triple-quoted string!'
+   >>> '''As a triple-quoted string,
+   I can span
+   multiple
+   lines!
+   '''
+   'As a triple-quoted string,\nI can span\nmultiple\nlines!\n'
+
+Notice that the Python interpreter converts triple-quoted strings to
+single-line strings before printing them back out. But if you use the
+``print`` function:
+
+::
+
+   >>> print('''As a triple-quoted string,
+   I can span
+   multiple
+   lines!
+   ''')
+   As a triple-quoted string,
+   I can span
+   multiple
+   lines!
+
+then you see the multiline-ness of the output string. Or we could bind a
+multiline string to a variable:
+
+::
+
+   >>> msg = '''
+   This is
+   a
+   multiline
+   string.'''
+   >>> print(msg)
+
+   This is
+   a
+   multiline
+   string.
+
+Why is there a blank line before the ``This is`` when using the
+``print`` function in this particular case? How could you modify the
+string ``msg`` so you didn't get the unwanted blank line?
+
+An application
+--------------
+
+A web page can be written as a single multiline string:
+
+::
+
+   '''<html>
+   <head>
+   <title>My home page</title>
+   </head>
+   <body>
+   <p>Welcome to my home page!</p>
+   </body>
+   </html>'''
+
+Don't worry if you don't understand the syntax. It's HTML (HyperText
+Markup Language), which is one of the most common ways to write a web
+page. Python doesn't understand HTML either; as far as Python is
+concerned, it's just a multiline string.
+
+Compare this to how we would write it without multiline strings:
+
+::
+
+   '<html>\n' + \
+   '<head>\n' + \
+   '<title>My home page</title>\n' + \
+   '</head>\n' + \
+   '<body>\n' + \
+   '<p>Welcome to my home page!</p>\n' + \
+   '</body>\n' + \
+   '</html>'
+
+Ouch! Now you see why multiline strings are useful!
+
+String formatting
+-----------------
+
+It's often the case that we want to print out a string which contains
+Python values embedded inside it. For instance, you might want to print
+the value of a Python expression while debugging, or maybe you're
+writing a report and you need to print out some data that the report
+summarizes. You can always convert a Python value to a string using the
+``str`` method and combine that with actual strings:
+
+::
+
+   >>> rainfall = 100
+   >>> print('The rainfall was ' + str(rainfall) + ' inches.'))
+   The rainfall was 100 inches.
+
+If you've programmed in Java before, you are probably used to this
+(except that in Java, you don't have to use the ``str()`` function). But
+in Python, we have better ways to do things!  [4]_
+
+The ``format`` method
+^^^^^^^^^^^^^^^^^^^^^
+
+A much more flexible way to do this is to use *string formatting*.
+String formatting works by creating a *template string*, which contains
+everything you want to print except for some *placeholders* where Python
+values should go. You supply the values that go into the placeholders
+later, and they are converted into strings and put into the template
+string, returning a new string. (Note that this has nothing to do with
+printing, though we usually do it right before printing the string.)
+
+::
+
+   >>> rainfall = 100
+   >>> s = 'The rainfall was {} inches.'.format(rainfall)
+   >>> print(s)
+   The rainfall was 100 inches.
+
+The important part is the ``.format(rainfall)`` part of the second line.
+This is a *method call* on the string ``'The rainfall was {} inches'``.
+We will talk more about method calls in the next chapter (they're the
+heart of object-oriented programming), but for now just take it on faith
+that this works. What it does is to convert the Python value
+``rainfall`` to a string and put it into the template string where the
+``{}`` placeholder characters are (removing the placeholder characters
+in the process). Then it returns the new string (the template string
+isn't changed).
+
+Normally we do everything inside a ``print`` call:
+
+::
+
+   >>> rainfall = 100
+   >>> print('The rainfall was {} inches.'.format(rainfall))
+   The rainfall was 100 inches.
+
+Using the ``.format`` method on strings is a bit heavy syntactically;
+we'll see a shortcut in later chapters.
+
+Format specifiers
+^^^^^^^^^^^^^^^^^
+
+.. note::
+
+   You may want to skip this section for now, and come back to it later.
+   Most of the time you won't need to use format specifiers, but if you
+   need to do very specific kinds of string formatting, the information
+   in this section will be helpful.
+
+   We will not give all the details here; instead, we'll present a
+   simplified version of what you can do with format specifiers. If you
+   do need the full details, see the Python documentation on
+   `string formatting`_.
+
+There are many, many things you can do with string formatting. If it's a
+floating-point number, you can specify the number of decimal places it
+has. You can specify a maximum width for the string which replaces the
+placeholder, or whether it's padded to the left or the right or
+centered. These specifiers go inside the ``{}`` placeholder characters.
+Most of the time, we just use ``{}`` because it's good enough for our
+needs. However, there are a few format specifiers that are generally
+useful, so we'll discuss those now.
+
+There are two parts to format specifiers:
+
+1. argument numbers
+
+2. formatting directives
+
+Both parts are optional. If you don't need either part, use ``{}``.
+
+The first part is the argument number of the ``format`` method call, which is
+an integer (``0`` or greater). So ``{0}`` means "the first argument in the
+``format`` call", ``{1}`` means "the second argument in the ``format`` call,
+|etc| If you don't specify this, Python chooses the next argument that hasn't
+already been used, so the first ``{}`` would get the first argument of the
+``format`` method call, the second ``{}`` would get the second, |etc|
+
+The second part of the format specifier starts with the colon (``:``)
+character and contains formatting directives.  [5]_ If you don't need
+the argument number, then the format specifier as a whole starts with
+the colon.
+
+Strings use the ``'s'`` directive. You can specify a string as having a
+particular *field width*, and it can be left-justified, centered, or
+right-justified within that width. If the string argument is smaller
+than the field width, spaces are used for padding.
+
+::
+
+   >>> '{:s}'.format('foo')
+   'foo'
+   >>> '{:10s}'.format('foo')    # field width 10
+   'foo       '
+   >>> '{:<10s}'.format('foo')   # field width 10, left (<) justified
+   'foo       '
+   >>> '{:^10s}'.format('foo')   # field width 10, center (^) justified
+   '   foo    '
+   >>> '{:>10s}'.format('foo')   # field width 10, right (>) justified
+   '       foo'
+
+Integers use the ``'d'`` directive. (The ``'d'`` stands for "decimal" or
+base 10. There are other ways to print integers that use different
+directives.) You can specify an integer has having a particular field
+width, and again it can be left-, center-, or right-justified. (Unlike
+strings, which are left-justified by default, numbers are
+right-justified by default.) ::
+
+   >>> '{:d}'.format(42)
+   '42'
+   >>> '{:10d}'.format(42)
+   '        42'
+   >>> '{:<10d}'.format(42)
+   '42        '
+   >>> '{:^10d}'.format(42)
+   '    42    '
+   >>> '{:>10d}'.format(42)
+   '        42'
+
+Floating-point numbers use either the ``'f'`` or the ``'g'`` directives. [6]_
+In addition to the field width and left-, center-, or right-justification
+specifiers already described, you can specify the number of decimal places to
+print using a decimal point followed by an integer: ::
+
+   >>> '{:f}'.format(3.14159265358979)
+   '3.141593'
+   >>> '{:.2f}'.format(3.14159265358979)
+   '3.14'
+   >>> '{:10.2f}'.format(3.14159265358979)
+   '      3.14'
+   >>> '{:<10.2f}'.format(3.14159265358979)
+   '3.14      '
+   >>> '{:^10.2f}'.format(3.14159265358979)
+   '   3.14   '
+   >>> '{:>10.2f}'.format(3.14159265358979)
+   '      3.14'
+   >>> '{:10.6f}'.format(3.14159265358979)
+   '  3.141593'
+   >>> '{:10.6f}'.format(3.1)
+   '  3.100000'
+
+The ``f`` directive will always use the specified number of decimal
+places, even if it means adding extra ("trailing") zeros. To suppress
+trailing zeros, use the ``g`` directive instead.
+
+::
+
+   >>> '{:g}'.format(3.14159265358979)
+   '3.14159'
+   >>> '{:.2g}'.format(3.14159265358979)
+   '3.1'
+   >>> '{:10.2g}'.format(3.14159265358979)
+   '       3.1'
+   >>> '{:<10.2g}'.format(3.14159265358979)
+   '3.1       '
+   >>> '{:^10.2g}'.format(3.14159265358979)
+   '   3.1    '
+   >>> '{:>10.2g}'.format(3.14159265358979)
+   '       3.1'
+   >>> '{:10.6g}'.format(3.14159265358979)
+   '   3.14159'
+   >>> '{:10.6g}'.format(3.1)
+   '       3.1'
+
+Notice also that the ``g`` directive uses the number after the decimal
+point to specify the total number of significant figures, *not* the
+number of decimal places.
+
+If you actually need to put curly braces inside format strings, you have
+to double them up:
+
+::
+
+   >>> '{{}}'.format()
+   '{}'
+   >>> '{{'.format()
+   '{'
+   >>> '}}'.format()
+   '}'
+
+There are a lot more things you can do with format strings, and we
+encourage you to consult the Python documentation if you need to do
+something more complicated than what we've described here.
+
+The application revisited
+-------------------------
+
+One problem with the multiline version of the web page given above is
+that it's totally *static*; it only represents a particular web page.
+Often you would like to create a template for a web page with things
+that can be added in later. A simple example would be to add the name of
+the user whose home page it is. Since the same code could be used for
+multiple users, it makes sense to write a template string with
+placeholders where the name should go. This leads to this kind of code:
+
+::
+
+   template = '''<html>
+   <head>
+   <title>{}'s home page</title>
+   </head>
+   <body>
+   <p>Welcome to {}'s home page!</p>
+   </body>
+   </html>'''
+
+   print(template.format('Mike', 'Mike'))
+
+When run, this will print out:
+
+::
+
+   <html>
+   <head>
+   <title>Mike's home page</title>
+   </head>
+   <body>
+   <p>Welcome to Mike's home page!</p>
+   </body>
+   </html>
+
+Things to notice:
+
+-  You can use the ``format`` method on a literal string or on a string
+   variable (here, the variable is called ``template``).
+
+-  You can have more than one placeholder (``{}``); here there are two.
+   They are filled in with arguments to the ``format`` method in order.
+   Here, both of them are the string ``'Mike'``.
+
+Now the multiline string is much more useful; you can use it to generate
+a whole family of similar web pages. (There are much more sophisticated
+web templating systems available in Python, but the idea is basically
+the same.)
+
+If you don't want to repeat the name ``Mike`` in the arguments to
+``format``, there is a way to do it:
+
+::
+
+   template = '''<html>
+   <head>
+   <title>{0}'s home page</title>
+   </head>
+   <body>
+   <p>Welcome to {0}'s home page!</p>
+   </body>
+   </html>'''
+
+   print(template.format('Mike'))
+
+The ``{0}`` formatting directive says to use "argument 0" which means
+the first argument of the ``format`` method.  [7]_
+
+In fact, Python is a great language for writing web page templates, and there
+are a number of very useful Python libraries designed specifically for that.
+(One popular one that we like a lot is the Jinja2_ library.) These are far more
+powerful than anything we've described here. (We will talk more about libraries
+in, you guessed it, later chapters.)
+
+.. _string formatting: https://docs.python.org/3/library/string.html#format-string-syntax
+.. _Jinja2: https://jinja.palletsprojects.com/
+
+----
+
+.. rubric:: Footnotes
+
+
+.. [1]
+   The "Zen of Python" states that "explicit is better than implicit"
+   and this is one example of that. To see the full Zen of Python, start
+   up the Python interpreter and type ``import this``.
+
+.. [2]
+   We will have much more to say about coding style later in the course.
+
+.. [3]
+   This is not a string escape because it's in source code, not inside a
+   string, but if you do it inside a string then the newline will simply
+   be ignored. There are some situations where you don't have to use a
+   backslash-return to continue a line, but it's never wrong to use it
+   if the statement doesn't all fit on one line.
+
+.. [4]
+   Actually, Java has better ways too, but they are much more verbose
+   than Python's ways.
+
+.. [5]
+   This is not standard terminology; the Python documentation also calls
+   these "format specifiers". I didn't want "format specifier" to mean
+   two different things.
+
+.. [6]
+   There is also an ``e`` directive for exponent notation, but you
+   probably don't need it.
+
+.. [7]
+   Programming languages almost always start counting from 0, not 1.
+

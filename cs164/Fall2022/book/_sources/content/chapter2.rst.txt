@@ -1,0 +1,634 @@
+Introduction to Python, part 2
+==============================
+
+.. |eg| replace:: *e.g.*
+.. |ie| replace:: *i.e.*
+.. |etc| replace:: *etc.*
+.. |pyversion| replace:: 3.10.2
+
+.. role::  raw-html(raw)
+    :format: html
+
+
+Topics
+------
+
+This chapter continues our crash course on the most basic aspects of Python
+started in the previous chapter.
+
+
+Variables and assignment
+------------------------
+
+Using Python as a calculator is useful but very limited.  Often we want to give
+names to interesting values, especially when we want to use them more than
+once.  Sometimes we also want to change those values.  In Python (and in most
+programming languages) we do this using *variables* and *assignment
+statements*.  A variable is a name that stands for a value (like a variable in
+algebra).  An assignment statement is how we associate a value with a name.  In
+Python:
+
+.. code-block:: pycon
+
+  >>> width = 10
+  >>> width
+  10
+
+Here, ``width`` is a variable and ``10`` is the value that it stands for.  When you
+type ``width`` in the interpreter, you get ``10`` back.  The ``=`` sign is the
+*assignment operator* that does the actual assignment.
+
+.. note::
+
+  The statement ``width = 10`` is an assignment, not an equality comparison!  If
+  you want to compare ``width`` with ``10`` to see if ``width`` currently equals ``10``,
+  you would have to type ``width == 10``.  You'd probably also want to use an ``if``
+  statement. We'll get to all of this later in the book.
+
+If you assign to a variable again, it changes the value.
+
+.. code-block:: pycon
+
+  >>> width = 10
+  >>> width
+  10
+  >>> width = 42
+  >>> width
+  42
+  >>> width = 'hi there!'
+  >>> width
+  'hi there!'
+
+Variable names don't have to be declared before assigning to them, and they
+don't have to only store data of a single type (unlike many other programming
+languages).  Here, we see the variable ``width`` which contains the integer ``10``,
+then ``42``, then the string ``'hi there!'``.  (We'll learn more about strings in
+the next chapter.)  Of course, ``'hi there!'`` doesn't make sense as a width, but
+Python doesn't care if your names make sense.  (In general, though, assigning a
+different type of data to a variable is usually a bad idea.)
+
+Once you've defined a variable, you can use it in expressions:
+
+.. code-block:: pycon
+
+  >>> pi = 3.1415926
+  >>> pi
+  3.1415926
+  >>> 4 * pi
+  12.5663704
+
+
+Variable name rules
+^^^^^^^^^^^^^^^^^^^
+
+Not all names can be used as variable names: ::
+
+  a = 10
+  b1 = 20
+  this_is_a_name = 30
+  &*%$2foo? = 40   # WRONG
+
+The first three names are valid variable names, but the last isn't.
+(The ``# WRONG`` part is a comment, which is ignored by the interpreter. We'll
+say more about comments below.)
+
+Here are the rules for variable names (also known as *identifiers*):
+
+- Variable names can only consist of the letters ``a``\-``z``, ``A``\-``Z``,
+  the digits ``0``\-``9``, and the underscore (``_``).
+
+- A variable name needs to have one or more characters.
+
+- Variable names can't start with a digit (this avoids confusion with numbers).
+
+- Variable names can't contain spaces.  (Beginning programmers often find this
+  an annoying restriction.  Tip: if you want a space in a variable name, use the
+  underscore (``_``) character instead.)
+
+- The case of letters is significant: ``Foo`` is a different identifier than
+  ``foo``.
+
+
+Assignments and expressions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The rule for evaluating an assignment statement is:
+
+* Evaluate the expression on the right hand side of the ``=`` sign.
+* Assign that result to the variable name on the left hand side of the ``=`` sign.
+
+Here, an "expression" can be a plain number, another variable, an arithmetic
+expression, or some combination of these.  An expression can also be a function
+call (see below) and there are other kinds of expressions we'll meet later.
+
+.. note::
+
+  Basically, some piece of Python code that has a value is an "expression".  If it
+  *does* something (like an assignment) it's usually not an expression but a
+  "statement".  Don't worry if this seems fuzzy to you now; it will get clearer as
+  we go along and you learn about different kinds of expressions and statements.
+  There are also some ambiguous cases: a ``print`` function call is technically an
+  expression, but it also does something (printing).
+
+So if you have an assignment statement with an arithmetic expression on the
+right-hand side, you evaluate the expression before doing the assignment:
+
+.. code-block:: pycon
+
+  >>> a = 2 + 3
+  # Evaluate 2 + 3 to get 5, then assign 5 to the variable "a".
+  >>> a
+  5
+
+You can use the results of previous assignments in subsequent ones:
+
+.. code-block:: pycon
+
+  >>> a = 10
+  >>> b = a * 5
+  >>> c = a + b
+  >>> c
+  60
+
+You can even use the result of a previous assignment when reassigning the same
+variable:
+
+.. code-block:: pycon
+
+  >>> a = 10
+  >>> a = a + 100
+  >>> a
+  110
+
+You might find statements like ``a = a + 100`` to be nonsensical, but remember
+that the ``=`` operator doesn't compare for equality, it assigns the result of
+evaluating the right-hand side to the variable on the left hand side.  So ``a = a
++ 100`` means "take the old value of ``a``, add ``100`` and make that the new value
+of ``a``".
+
+
+Variables store values, not expressions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Look at this code:
+
+.. code-block:: pycon
+
+  >>> a = 10
+  >>> b = a + 10
+  >>> a = 20
+
+What is the value of ``b`` after these lines execute?
+
+If you think that ``b`` stores the expression ``a + 10``, you might think that
+``b`` (which was obviously 20 after the line ``b = a + 10``) is now 30.  But it
+isn't; it's still 20.  That's because the second line evaluated the value of
+``a`` that existed at that moment (10), calculated ``a + 10`` (10 + 10), got
+20, and assigned that *value* to ``b``.  When the value of the variable ``a``
+changed, the value stored in the variable ``b`` did *not* change, because ``b``
+only stores a value (in this case, the number 20), not an expression.
+Beginning programmers often get confused by this, but it's actually a simple
+rule.
+
+An expression like ``a + 10`` *has* a value (which depends on whatever the value
+of ``a`` is at any given moment), but it *isn't* a value.  So you can't store an
+expression in a variable, only the result of evaluating that expression.
+
+
+Types
+-----
+
+Data in programming languages is subdivided into different "types":
+
+- integers: ``0``, ``-43``, ``1001``
+- floating-point numbers:  ``3.1415``, ``2.718``, ``1.234e-5``
+- boolean values: ``True`` ``False``
+- strings:  ``'foobar'`` ``'Hello, world!'``
+- and many others
+
+Roughly speaking, a "type" is a kind of data that is represented a particular
+way inside the computer.  All integers are represented in pretty much the same
+way as other integers, and all strings are represented in the same way as other
+strings, but integers and strings are represented differently.  (Don't worry if
+this seems vague to you now.)
+
+Types are important because many operations/functions can only work on specific
+types.  For instance, you can multiply two numbers together but you can't
+multiply two strings.
+
+Python has these abbreviated names for types:
+
+.. list-table:: Type names
+   :header-rows: 1
+
+   * - English name
+     - Python name
+
+   * - integers
+     - ``int``
+
+   * - floating-point numbers
+     -  ``float``
+
+   * - boolean values
+     -  ``bool``
+
+   * - strings
+     -  ``str``
+
+Python variables can hold data of any type.  Unlike many computer languages,
+you don't have to declare the type a variable can hold.  As we saw above, the
+same variable can even hold values of different types at different times
+(though this is usually bad practice).
+
+.. code-block:: pycon
+
+  >>> bird = 'parrot'
+  >>> weight = 10.3245
+  >>> income = 65000
+  >>> is_ready = True
+  >>> bird
+  'parrot'
+  >>> bird = 42
+  >>> bird
+  42
+
+There is much more to say about types, and we will meet many more types as we go
+along.
+
+
+Functions
+---------
+
+Computer programs are primarily made up of *functions*.  A function (like the
+math equivalent for which it's named) is something that takes in argument
+values and computes and returns a result.  Unlike in math, a function in a
+programming language can also do other things: print to the terminal, send an
+email, create and display an image, and so on.
+
+Functions have to be *defined* and then *called* with appropriate arguments.
+
+
+Calling functions
+^^^^^^^^^^^^^^^^^
+
+Some functions are built-in to Python.  For instance, ``abs`` is a function that
+computes absolute values of numbers, ``min`` computes the minimum of two numbers,
+``max`` the maximum, and so on.
+
+You call a function using this *syntax*:
+
+.. code-block:: pycon
+
+  >>> abs(-5)
+  5
+  >>> min(5, 3)
+  3
+  >>> max(5, 3)
+  5
+
+*Syntax* means the rules by which expressions and statements in the programming
+language are written.  Every programming language has its own unique syntax,
+though there are lots of similarities between languages.
+
+In Python, the syntax for calling functions is the same as the usual math
+notation: the name of the function, followed by the argument list in
+parentheses. Multiple arguments in the argument list are separated by commas.
+
+Arguments can be either literal values (like numbers or strings), variables, or
+other expressions.  For instance:
+
+.. code-block:: pycon
+
+  >>> max(5 + 3, 8 - 6)
+  8
+
+The way this works is that Python has the following *evaluation rule* for
+function calls:
+
+- First, evaluate all the arguments to the function.
+
+  - If the argument is a number, it's already evaluated.
+  - If the argument is a variable, look up the variable's value. [1]_
+  - If the argument is an expression, evaluate the expression to get its value.
+
+- Then call the function with the argument values as the function's arguments.
+
+Here, the function is the ``max`` (maximum) function.  The first argument is
+the expression ``5 + 3`` which obviously evaluates to ``8``.  The second
+argument is the expression ``8 - 6`` which obviously evaluates to ``2``.  So
+the result is ``max(8, 2)`` or just ``8``.
+
+You can use function calls in expressions:
+
+.. code-block:: pycon
+
+  >>> 2 * max(5 + 3, 8 - 6) - 4
+  12
+
+You can even have function calls inside other function calls:
+
+.. code-block:: pycon
+
+  >>> max(max(5, 3), min(8, 6))
+  6
+  >>> min(2 + max(5, 3), 10)
+  7
+
+In this case, remember that the inner function calls get evaluated before the
+outer one.  (This is the same evaluation rule, since a function call is also an
+expression.)
+
+.. note::
+
+  Don't think that you need to memorize these evaluation rules.  For the most
+  part, they should be pretty intuitive; Python pretty much does what you would
+  expect it to most of the time.  We're being very explicit about these rules
+  mainly for completeness.
+
+
+Defining new functions
+^^^^^^^^^^^^^^^^^^^^^^
+
+A function *call* is done when you want to compute a particular value using that
+function. If the function doesn't exist yet, you have to *define* it.  Unlike
+function calls, Python's syntax for function definitions is nothing like math
+notation.  Instead, it uses a special *keyword* (reserved word) called ``def``
+(short for "define"): ::
+
+  def double(x):
+    return x * 2
+
+This code defines a function called ``double`` which takes one *argument* (called
+``x`` inside the function), doubles it and "returns" it to where it was called.
+The argument ``x`` is called a "formal argument" or "formal parameter" of the
+function; it's a name that will acquire the value of whatever actual argument
+the ``double`` function is called with.  The formal parameter(s) are enclosed in
+parentheses and separated by commas, just like arguments in function calls.  At
+the end of the ``def`` line, you *have* to put a colon character (``:``) or it's a
+syntax error.  (This is just a peculiarity of Python's syntax.)
+
+Here's an example of calling this function:
+
+.. code-block:: pycon
+
+  >>> double(42)
+  84
+
+In this case, the actual argument of the call to the ``double`` function is the
+number ``42``.  The definition states that the formal parameter ``x`` will be given
+the value ``42`` and then the "body" of the function will use that value for ``x``.
+
+The body of the ``double`` function is just one line: ::
+
+  return x * 2
+
+``return`` is another Python keyword.  What this line means is that the expression
+``x * 2`` is computed and returned from the function.  So, for instance, if some
+other code calls the ``double`` function: ::
+
+  n = double(42)
+
+then the ``double`` function:
+
+- will receive the number ``42`` as its only argument
+- will set its formal parameter ``x`` to ``42``
+- will compute ``x * 2`` |ie| ``84``
+- will return ``84``
+
+and then ``n`` will be assigned to the return value of ``84``.  After this,
+using the variable ``n`` will be like using the number ``84`` (at least until
+``n`` is set to some other value).
+
+.. note::
+
+  A "keyword" is a reserved word in Python's grammar.  Even if it technically
+  obeys the rules for variables, you can't use it as a variable name.  Python has
+  a number of keywords; the full list is here_
+  (scroll down a bit to get to the keyword table).  You definitely should *not*
+  bother memorizing these at this time.
+
+  .. _here: https://docs.python.org/3/reference/lexical_analysis.html#identifiers
+
+Note that you can enter function definitions interactively in the Python
+interpreter:
+
+.. code-block:: pycon
+
+  >>> def double(x):
+  ...     return x * 2
+  ...
+  >>> double(42)
+  84
+
+When you do this, Python recognizes after the first line that you are inside a
+function definition and changes the prompt to its *secondary prompt* which is
+``...`` (three periods).  Once the function is done, Python returns to the
+primary prompt.
+
+In general, though, you should be writing functions in files, loading them into
+Python, and then using/testing them interactively.  (We'll describe how to do
+this in a later chapter and in the assignments.)  Writing functions in the
+interpreter is a bad idea because once the interpreter exits, the function
+definitions disappear (they aren't reloaded the next time you start Python).
+
+In Python, the body of a function can be one line or multiple lines long.
+Either way, you have to indent the body of the function relative to the ``def``
+line.  If there are multiple lines, you have to indent them all by the same
+amount: ::
+
+  def sum_of_squares(x, y):
+      z = x * x
+      z = z + y * y
+      return z
+
+It's conventional to indent the bodies of functions exactly four spaces.
+
+
+Local variables
+^^^^^^^^^^^^^^^
+
+We sneakily introduced an important new feature of Python in the last example:
+*local variables*.  Let's see that function again:
+
+.. code-block:: python
+   :linenos:
+
+   def sum_of_squares(x, y):
+       z = x * x
+       z = z + y * y
+       return z
+
+(We've added line numbers to make it easier to talk about the code.  They
+aren't part of the code.)  The body of the function consists of lines 2 to 4.
+They are evaluated in order.  Line 2 defines a local variable called ``z``
+which we set to be equal to ``x * x`` |ie| ``x`` squared.  Then line 3 adds ``y
+* y`` to ``z``, so that ``z`` contains the sum of squares of ``x`` and ``y``.
+Then ``z`` is returned from the function in line 4.  By default, Python
+executes code in this one-line-after-another manner.  However, there are ways
+of changing the flow of the program which we will describe in later chapters.
+
+A local variable is a variable which exists only while the function is
+executing.  It springs into existence when the function is called and disappears
+when the function returns.  The next time the ``double`` function is called, it
+won't "remember" its previous ``z`` value either; it starts from scratch.  If you
+define this function and try to access the variable ``z`` after it returns, Python
+will tell you that ``z`` isn't defined. [2]_
+Variables that aren't local are *global* variables. [3]_
+Most variables in a Python program will be local variables.
+
+Let's say we call this function from the interpreter:
+
+.. code-block:: pycon
+
+  >>> sum_of_squares(3, 4)
+  25
+
+So far, so good.  Now if we do:
+
+.. code-block:: pycon
+
+  >>> z
+
+we get this error:
+
+.. code-block:: pycon
+
+  Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+  NameError: name 'z' is not defined
+
+What the "traceback" stuff means will be explained in detail in a later chapter.
+For now, all you need to know is that it indicates that something went wrong,
+and there is usually an error message telling you what that was.  Here, you can
+see that there is no value associated with the local variable ``z`` when
+``sum_of_squares(3, 4)`` returns.  Interestingly, this is also true of the formal
+parameters ``x`` and ``y``; they behave like local variables as well.
+
+.. code-block:: pycon
+
+  >>> sum_of_squares(3, 4)
+  25
+  >>> x
+  Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+  NameError: name 'x' is not defined
+  >>> y
+  Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+  NameError: name 'y' is not defined
+
+
+Returning from functions
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+We've mentioned that functions can "return" a result, and there is even the
+keyword ``return`` that is used to do that.  But what does "returning" mean,
+anyway?  This turns out to be more complicated than you might think.
+
+Inside the Python interpreter, when you run a function and it returns a value,
+the interpreter prints that value to let you know what the return value was.
+For instance, let say you defined this function: ::
+
+  def double(x):
+      return x + x
+
+If you call it in the Python interpreter:
+
+.. code-block:: pycon
+
+  >>> double(42)
+  84
+
+the answer (``84``) is printed once you enter the expression ``double(42)``.
+However, this printing behavior is *only* a feature of the interactive
+interpreter; if the code was in a file, the line ``double(42)`` wouldn't print
+anything.  On the other hand, because the result is "returned" from the
+``double`` function, you can store it in a variable and print it yourself:
+
+.. code-block:: pycon
+
+  >>> x = double(42)
+  >>> print(x)
+  84
+
+This works because the "return value" of ``double(42)`` gets assigned to the
+variable ``x``.  After that, ``x`` has the value ``84``, and it can be printed.
+This would work with code in a file, too.
+
+In the interactive interpreter, we could even do this:
+
+.. code-block:: pycon
+
+  >>> x = double(42)
+  >>> x
+  84
+
+We could do this in a file too, but nothing would be printed.
+
+.. note::
+
+  To lay some serious jargon on you, we refer to the Python interpreter as a
+  *REPL*, which stands for *Read-Eval-Print-Loop*. (We pronounce this "rep-pull",
+  with the stress on the first syllable.) What this means is that the interpreter
+  works like this:
+
+  - It **R**\eads a Python expression or statement,
+  - **E**\valuates it,
+  - **P**\rints the result,
+  - and **L**\oops back to do the same thing over and over again.
+
+  When Python evaluates code in a file, it skips the "Print" step, so if you want
+  to print something you have to put in a ``print`` statement.
+
+It's easy to get confused by the difference between returning a value from a
+function and printing a value, but they are two completely different things.
+
+
+Global variables
+----------------
+
+Any variable defined at the top level of the program (not inside a function) is
+a *global* variable. ::
+
+  # Global variable representing the current year.
+  year = 2022
+
+A global variable can be used inside any function.  In general, though, try not
+to use global variables if you can help it; local variables are easier to think
+about and less likely to be accidentally changed.  Global variables are OK if
+you don't change them in the program; then they are effectively global
+constants.
+
+
+Comments
+--------
+
+One very important thing that all programming languages allow you to do is to
+write *comments* in the code.  These are "notes to yourself" which explain
+things about the code to anyone reading it.  They aren't executed; the computer
+simply ignores them.
+
+Python comment syntax is very simple: a comment starts with the ``#`` character
+and goes until the end of the line it's on. ::
+
+  # This is a comment.
+  a = 10  # This is a comment that doesn't span an entire line.
+
+Comments are one useful way to document your code.  There are other ways which
+we'll see as we go along.
+
+
+----
+
+.. rubric:: Footnotes
+
+.. [1] This only works if the variable has been assigned a value
+       previously.  Otherwise, Python will report an error.
+
+.. [2] Unless a different non-local variable named ``z`` was defined previously,
+       which we are assuming isn't the case here.
+
+.. [3] We're oversimplifying here.  There are other kinds of variables,
+       and we'll get to them in due time.
+

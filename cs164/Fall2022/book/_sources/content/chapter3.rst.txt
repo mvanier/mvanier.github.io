@@ -1,0 +1,396 @@
+Strings
+=======
+
+.. role::  raw-html(raw)
+    :format: html
+
+.. |eg|        replace:: *e.g.*
+.. |ie|        replace:: *i.e.*
+.. |etc|       replace:: *etc.*
+.. |pyversion| replace:: 3.10.2
+.. |smiley|    image:: images/smiley.jpg
+   :width: 25px
+
+Topics
+------
+
+In this chapter and the next we'll be discussing "strings", which is the
+way text is represented inside computer programs. Strings are a
+fundamental data type, and are also an example of a Python "object".
+Python is what's called an "object-oriented" programming language, so
+objects are going to be a major topic for the entire course.  [1]_
+Learning Python is a great way to learn object-oriented programming,
+because using and defining objects in Python is extremely simple.
+
+Strings are important for another reason. Many beginning programmers are
+under the impression that the main thing programs do is work with
+numbers. While numbers are undoubtedly important, they are not the only
+kind of data. Strings are at least as important, and in many
+applications (for instance, web programming) more important.
+
+Terminology
+-----------
+
+As we've discussed previously, many terms in programming mean different
+things than they do in normal conversation. A "string" in programming
+doesn't mean something you use to tie things up or something your cat
+likes to play with. A string in programming is the way the computer
+represents textual data. Python has extremely good support for strings;
+using strings in Python is both powerful and easy. Also, there are a lot
+of useful operators and functions that are predefined in Python for
+working with strings.
+
+We'll go over string syntax in detail below, but to cut to the chase,
+strings are usually represented as a sequence of characters in single
+quotes, like this: ::
+
+  'I am a string'
+
+Alternatively, you can use double quotes: ::
+
+  "I am a string too"
+
+We'll default to using single quotes in this book unless there is a good reason
+not to.
+
+Strings are data, and as such can be assigned to variables: ::
+
+  s = 'I am a string'
+
+And strings can be printed to the terminal using the built-in function
+``print``:
+
+.. code-block::pycon
+
+  >>> s = 'I am a string'
+  >>> print(s)
+  I am a string
+
+When this happens, the quotes are not printed. On the other hand, when
+you enter a string in the interactive interpreter:
+
+.. code-block::pycon
+
+  >>> 'I am a string'
+  'I am a string'
+
+the quotes *are* printed along with the string. It's important to
+realize that the quotes aren't part of the contents of the string;
+they're just the way that you enter the string into Python.
+
+Applications
+------------
+
+Strings are one of the most commonly-used data types in computer
+programs. To give you some examples of things that can be represented as
+strings:
+
+- DNA sequences |eg| ``'ACCTGGAACT'``
+- Web pages
+- Documents in text files
+- Computer source code (like your Python programs)
+
+and many, many other kinds of data.
+
+Sequences
+---------
+
+Strings are the first kind of data we've seen that is an example of a
+"sequence". There are other kinds of sequence data types in Python (for
+instance, lists and tuples), which we will discuss in later chapters.
+Sequences are nice because Python tends to use the same functions,
+operators and syntax for all sequences in similar ways. So once you've
+learned how to work with one kind of sequence (like strings), you can
+use that knowledge with other sequences (like lists and tuples), and
+things will usually do what you expect.
+
+For example, the built-in function ``len`` will give you the length of a
+string in characters:
+
+.. code-block::pycon
+
+  >>> len('I am a string')
+  13
+
+The ``len`` function also works on other data types that represent
+sequences, such as lists and tuples.
+
+String syntax(es)
+-----------------
+
+Let's face it: syntax is boring. But much like learning your
+multiplication tables in elementary school, you just have to learn it.
+If syntax is boring, *string* syntax is even more boring.  [2]_ We'll
+give you the essentials here along with links to other documents with
+more details if you ever need them.
+
+Characters
+^^^^^^^^^^
+
+Strings are sequences of letters. In programming-speak, letters are
+referred to as "characters". Characters include not only the alphabet
+letters (``a`` to ``z`` and ``A`` to ``Z``) but also digits (``0``
+through ``9``), punctuation characters, space characters |etc|
+Basically, anything you can type on your keyboard is a character. Some
+characters are invisible, like newline characters and tab characters.
+However, they do something when printed; just because you don't see them
+doesn't mean they aren't real!  [3]_
+
+Some programming languages (like Java) have a special data type for
+characters. Python doesn't; a character is represented by a string of
+length 1. For instance: ::
+
+  'a'  # the character a (letter)
+  '1'  # the character 1 (digit)
+  '_'  # the underscore character
+  '?'  # question mark (symbol)
+
+It's still considered to be a string, not a special "character" type.
+
+Quotation marks
+^^^^^^^^^^^^^^^
+
+Most of the time, we write strings with single quote marks, not least
+because it's easy to type on the computer without using the shift key.
+But Python allows you to use either the single or double-quote character
+to delimit strings, as long as you use the same character for the
+start-string and end-string character: ::
+
+  'I am a string'
+  "So am I"
+  # "This is not a valid string'
+  # 'Neither is this"
+
+The advantage of allowing both kinds of quote characters is that we can
+have one kind of quote within another: ::
+
+  "This is a string with 'embedded single quotes'."
+  'This is the "same thing" but with double quotes.'
+
+This is useful when you want to |eg| print out a string with quotes in
+it.
+
+.. code-block::pycon
+
+  >>> print("Behold a 'quoted string'!")
+  Behold a 'quoted string'!
+
+If you leave quotation marks off of a string entirely, Python doesn't
+consider it a string but will try to interpret it as regular Python
+code. For words, this means that Python will interpret the words as
+variable names:
+
+.. code-block:: pycon
+
+  >>> foo
+  Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+  NameError: name 'foo' is not defined
+  >>> 'foo'
+  'foo'
+
+If you try to embed a quote character inside a string that uses the same
+quote character as its delimiters, you get a *syntax error*:
+
+.. code-block:: pycon
+
+  >>> s = 'this isn't going to work'
+
+Python will respond:
+
+.. code-block:: pycon
+
+    File "<stdin>", line 1
+      s = 'this isn't going to work'
+                    ^
+  SyntaxError: invalid syntax
+
+A *syntax error* means that you broke the syntax rules of Python. Here,
+Python thinks that the string ends with the ``n`` |ie| ::
+
+  s = 'this isn'
+
+and then it can't make sense of ``t going to work'``, so it aborts with
+an error. If the outer quotes were double quotes, it would work:
+
+.. code-block::pycon
+
+  >>> s = "this isn't going to work"
+  >>> s
+  "this isn't going to work"
+
+Of course, now the string ``s`` is telling you a lie about itself, but
+that's not our problem. |smiley|
+
+Empty string
+^^^^^^^^^^^^
+
+If you need an empty string, you just write two quote characters one
+after another: ::
+
+  ''  # empty string
+  ""  # also empty string
+
+You might think an empty string is completely useless, but it's not.
+Often you start with an empty string and add characters to it to create
+a longer string. (We'll see examples of this later.)
+
+Note that a string which contains only a space character is *not* an
+empty string: ::
+
+  ' '  # a string containing a space character; not empty!
+
+Whitespace characters
+^^^^^^^^^^^^^^^^^^^^^
+
+There are characters that don't actually print characters but make something
+else happen. The space character is one of them; it doesn't really "print a
+space", it simply moves the location where printing can happen over by one
+character width. (Nevertheless, we will still say that it "prints a space"
+because it's easier to say that.) Characters like this are collectively called
+"whitespace" characters. There are three of these in common use: the space
+character, the newline character, and the tab character. The space character
+advances to the next character position. The newline character skips to the
+beginning of the next line when printed. The tab character is like some number
+of spaces (the specific number depends on the terminal or editor settings). In
+Python, these characters are represented as follows:
+
+.. list-table:: Whitespace characters
+   :header-rows: 1
+
+   * - character
+     - Python equivalent
+
+   * - space
+     - ``' '`` or ``" "``
+
+   * - tab
+     - ``'\t'`` or ``"\t"``
+
+   * - newline
+     - ``'\n'`` or ``"\n"``
+
+Usually, these characters are inside of a string or at one or both ends
+of a string: ::
+
+  '    this is a string with spaces inside and on each end   '
+  'this is a string with a newline at the end\n'
+  'this\tis\ta\tstring\twith\twords\tseparated\tby\ttabs'
+
+It's important to understand that when you put |eg| a ``\n`` inside a string,
+Python does not interpret this as the backslash character followed by the ``n``
+character. Instead, it treats both of them together as a single thing: a
+newline character.  [4]_
+
+Escape sequences
+^^^^^^^^^^^^^^^^
+
+The notation ``\n`` for a newline character or ``\t`` for a tab
+character is a bit odd, because you are using two characters to stand
+for a single character. Python refers to such characters as "escape
+sequences" because you are "escaping" from the normal rules of how
+strings are constructed in order to put special characters into the
+string.
+
+There are a number of escape characters that Python recognizes; a full list is
+here_ (scroll down a bit), but you don't need to know it. For our purposes, the
+only ones we'll need are these:
+
+.. _here: https://docs.python.org/3/reference/lexical_analysis.html#literals
+
+.. list-table:: Character escape sequences
+   :header-rows: 1
+
+   * - escape sequence
+     - meaning
+
+   * - ``\t``
+     - tab
+
+   * - ``\n``
+     - newline
+
+   * - ``\'``
+     - single quote character (even inside single-quoted string)
+
+   * - ``\"``
+     - double quote character (even inside double-quoted string)
+
+   * - ``\\``
+     - backslash character
+
+You might wonder why we need the last three. You can use the escaped
+quote characters if you want to put a quote character inside a string
+which uses the same quote character as its delimiter. ::
+
+  'single quotes \'inside\' single quoted string'
+  "double quotes \"inside\" double quoted string"
+
+Usually, it's better to rewrite this by using a different quote
+character to create the string: ::
+
+  "single quotes 'inside' a single quoted string"
+  'double quotes "inside" a double quoted string'
+
+Sometimes we can't do this, for instance if we are already using both kinds of
+quote characters: ::
+
+  'this is a "very messy \'example\' of" nested quotes'
+
+However, this is extremely rare.
+
+Since the backslash (``\``) character is already used to mean the start
+of an escape sequence, what do we do if we want to put a literal
+backslash character inside a string? We use an escaped backslash, of
+course! This amounts to a double-backslash:
+
+.. code-block::pycon
+
+  >>> print('a string with a backslash: \\ inside it')
+  a string with a backslash: \ inside it
+
+When you enter a literal strings with escapes into the Python
+interpreter without using ``print``, it shows you the escaped characters
+the way you would type them:
+
+.. code-block::pycon
+
+  >>> print('a string with a backslash: \\ inside it')
+  a string with a backslash: \ inside it
+  >>> 'a string with a backslash: \\ inside it'
+  'a string with a backslash: \\ inside it'
+
+
+Strings are immutable
+---------------------
+
+A string is a fixed, or *immutable* object. Once you create a string,
+you can't change any of the letters inside the string. Instead, you
+would have to create a new string: ::
+
+  here = "Caltexh"  # oops!
+  here = "Caltech"  # fixed!
+
+There are reasons for this that we will get to later, but for now, just
+be aware that you can't change the letters in a string after you create
+it.
+
+----
+
+.. rubric:: Footnotes
+
+.. [1]
+   Many programming languages are object-oriented: Java and C++ are two
+   common examples. Some languages, like C, are not.
+
+.. [2]
+   This reminds us of the quote from *The Hitchhiker's Guide To The
+   Galaxy*: "Time is an illusion. Lunchtime doubly so."
+
+.. [3]
+   You're science students, so you're used to this by now. |smiley|
+
+.. [4]
+   There is a way to make Python interpret it as a backslash followed by
+   an ``n``, which we will see in a later chapter.
+

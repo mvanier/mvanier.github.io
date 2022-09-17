@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7. Documenting your code &mdash; The CS 164 book 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8. Lists" href="chapter8.html" />
+    <link rel="prev" title="6. Modules" href="chapter6.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> The CS 164 book
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">1. Introduction to Python, part 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">2. Introduction to Python, part 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">3. Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">4. Strings, part 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">5. Objects and methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">6. Modules</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">7. Documenting your code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">7.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#topics">7.2. Topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#comments">7.3. Comments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#syntax-and-style">7.3.1. Syntax and style</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multiline-comments">7.3.2. Multiline comments?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#when-to-use-comments">7.3.3. When to use comments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#docstrings">7.4. Docstrings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#docstring-syntax">7.4.1. Docstring syntax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#function-docstrings">7.4.2. Function docstrings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-docstrings">7.4.3. Module docstrings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-to-put-in-docstrings">7.4.4. What to put in docstrings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-main-module">7.4.5. The <code class="docutils literal notranslate"><span class="pre">__main__</span></code> module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-name-special-variable">7.4.6. The <code class="docutils literal notranslate"><span class="pre">__name__</span></code> special variable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#improving-our-docstrings">7.4.7. Improving our docstrings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">8. Lists</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">9. Loops (part 1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">10. Conditionals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11.html">11. Loops (part 2)</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The CS 164 book</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">7. </span>Documenting your code</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/content/chapter7.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="documenting-your-code">
+<h1><span class="section-number">7. </span>Documenting your code<a class="headerlink" href="#documenting-your-code" title="Permalink to this heading"></a></h1>
+<div class="section" id="overview">
+<h2><span class="section-number">7.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p><em>Documenting</em> your code means writing comments and explanations to make
+your code easier for other programmers to understand. Documentation
+doesn’t affect the way your code runs, but it’s still extremely
+important. Many beginning programmers comment sparsely or not at all,
+but when you write programs as part of a team (which is what most
+professional programmers do), good documentation is essential and can’t
+be neglected. Remember: programs are not just written to make the
+computer understand what to do; they must also be able to communicate to
+other programmers what you intended. Those other programmers may be in
+charge of maintaining or extending your code, and you need to make sure
+that they understand the code they’re working on.</p>
+<p>There are two ways to document code. The first way is using plain old
+comments. The second way uses Python <em>docstrings</em>, which is the
+preferred way to add documentation to your Python functions and modules.</p>
+</div>
+<div class="section" id="topics">
+<h2><span class="section-number">7.2. </span>Topics<a class="headerlink" href="#topics" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Commenting and comment style</p></li>
+<li><p>Docstrings</p></li>
+</ul>
+</div>
+<div class="section" id="comments">
+<h2><span class="section-number">7.3. </span>Comments<a class="headerlink" href="#comments" title="Permalink to this heading"></a></h2>
+<div class="section" id="syntax-and-style">
+<h3><span class="section-number">7.3.1. </span>Syntax and style<a class="headerlink" href="#syntax-and-style" title="Permalink to this heading"></a></h3>
+<p>We’ve already seen that in Python, comments begin with a pound sign
+(<code class="docutils literal notranslate"><span class="pre">#</span></code>)  <a class="footnote-reference brackets" href="#id7" id="id1">1</a> and go to the end of the line.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is a comment.</span>
+<span class="c1"># So is this.</span>
+</pre></div>
+</div>
+<p>When you write a comment, please include at least one space after the
+<code class="docutils literal notranslate"><span class="pre">#</span></code> character. This is good:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># A nice comment.</span>
+</pre></div>
+</div>
+<p>and this is bad:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#A bad comment.</span>
+</pre></div>
+</div>
+<p>This last comment is perfectly legal in Python, but it’s hard to read.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are a lot of “style guidelines” like this that will help you
+write more readable code. The definitive set of style guidelines for
+Python is <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP8</a>. However, PEP8 is a bit overwhelming for new programmers,
+so we’ll try to point out the most important style guidelines as we
+come to them. <a class="footnote-reference brackets" href="#id8" id="id2">2</a> If you’re ever confused about how to format your code,
+you can consult PEP8.</p>
+</div>
+<p>You can put comments after a line of code on the same line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">42</span>  <span class="c1"># this is a comment</span>
+</pre></div>
+</div>
+<p>This is OK as long as the line doesn’t get too long. Lines shouldn’t be
+longer than about 80 characters, because otherwise they are hard to
+read.  <a class="footnote-reference brackets" href="#id9" id="id3">3</a> If a comment can’t easily fit on the end of a line, put it
+on the line <em>before</em> the line being commented on, not after. So this is
+good:  <a class="footnote-reference brackets" href="#id10" id="id4">4</a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the variable `a` to an interesting value.</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">42</span>
+</pre></div>
+</div>
+<p>and this is bad:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="c1"># Set the variable `a` to an interesting value.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="multiline-comments">
+<h3><span class="section-number">7.3.2. </span>Multiline comments?<a class="headerlink" href="#multiline-comments" title="Permalink to this heading"></a></h3>
+<p>Many computer languages (like Java and C++) also have special symbols for
+multiline comments (comments that span multiple lines), but Python does not.
+The closest Python comes to multiline comments are docstrings, which we’ll
+discuss in the next section, but technically docstrings are not comments.</p>
+<p>If you <em>do</em> want a multiline comment, what you need to do is to make a
+bunch of single-line comments one after the other, like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is what Python</span>
+<span class="c1"># considers to be a</span>
+<span class="c1"># &quot;multi-line&quot;</span>
+<span class="c1"># comment.</span>
+</pre></div>
+</div>
+<p>Most text editors with Python support have some way of selecting
+multiple lines and commenting them all out by putting the <code class="docutils literal notranslate"><span class="pre">#</span></code>
+character at the front of all of them.</p>
+</div>
+<div class="section" id="when-to-use-comments">
+<h3><span class="section-number">7.3.3. </span>When to use comments<a class="headerlink" href="#when-to-use-comments" title="Permalink to this heading"></a></h3>
+<p>Comments are mainly used inside of functions to explain what some code
+does if its meaning isn’t obvious. <strong>Don’t use a comment to restate
+something obvious about the code.</strong> However, if you are doing something
+clever or tricky, or even something you think that someone reading the
+code might not understand, adding a comment is a good idea.</p>
+<p>Here’s an example of bad and good comments stolen from PEP8. This is
+bad:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>   <span class="c1"># Increment x.</span>
+</pre></div>
+</div>
+<p>Here, you are restating something obvious about the code, so the comment
+is completely unnecessary.</p>
+<p>This is good:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>   <span class="c1"># Compensate for border.</span>
+</pre></div>
+</div>
+<p>Not knowing what the context of the program is, it’s not clear what “Compensate
+for border” might mean, but at least it isn’t something that’s obvious from the
+code.</p>
+<p>An example of tricky code that might deserve a comment is this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">+=</span> <span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>   <span class="c1"># Multiply `n` by 5 only if `n` is odd.</span>
+</pre></div>
+</div>
+<p>Hopefully you won’t be writing much code like this.</p>
+<p>Note that if you never comment your code, or if you comment poorly, we will
+take marks off of your assignments. We expect you to write your code in a
+professional style, and good commenting is a big part of this professionalism.</p>
+</div>
+</div>
+<div class="section" id="docstrings">
+<h2><span class="section-number">7.4. </span>Docstrings<a class="headerlink" href="#docstrings" title="Permalink to this heading"></a></h2>
+<p>Traditionally, one of the most common places to put a comment is right
+before a function, so you can tell the reader what the function does:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out a hearty greeting.</span>
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hi there, </span><span class="si">{}</span><span class="s1">!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The only problem with this kind of comment is that Python’s <code class="docutils literal notranslate"><span class="pre">help</span></code>
+function can’t use them. Once Python reads the comment, it discards it
+and it’s gone. It would be great if there were a way to write a
+“comment” that would somehow be usable by Python’s <code class="docutils literal notranslate"><span class="pre">help</span></code> function…</p>
+<p>…and there is such a way! It’s called a <em>docstring</em>, which is short
+for “documentation string”.</p>
+<div class="section" id="docstring-syntax">
+<h3><span class="section-number">7.4.1. </span>Docstring syntax<a class="headerlink" href="#docstring-syntax" title="Permalink to this heading"></a></h3>
+<p>A docstring is just a regular Python string which happens to be the
+first thing inside:</p>
+<ul class="simple">
+<li><p>a function body</p></li>
+<li><p>a module</p></li>
+<li><p>a class (covered later in the course)</p></li>
+</ul>
+<p>When you execute a docstring, the docstring itself doesn’t <em>do</em> anything.
+However, Python “knows” about docstrings, so when it sees a string in one of
+those places it stores it as part of the function (or module, or class). Then
+it can use it later, as we’ll see.</p>
+<p>Docstrings are normally written as triple-quoted strings, because very
+often the information you want to write spans more than one string.
+Python does not require docstrings to be triple-quoted, but the PEP8
+style guidelines do.</p>
+</div>
+<div class="section" id="function-docstrings">
+<h3><span class="section-number">7.4.2. </span>Function docstrings<a class="headerlink" href="#function-docstrings" title="Permalink to this heading"></a></h3>
+<p>Here’s our previous example with a docstring instead of a comment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Print out a hearty greeting.&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hi there, </span><span class="si">{}</span><span class="s1">!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Notice that even though this is a one-line docstring, we wrote it with
+triple quotes. That way, if we ever want to add more information and it
+needs to span more lines we don’t have to change the quotes. We strongly
+recommend that you use triple-quoted strings for all docstrings. We also
+recommend that you use three double-quote characters (<code class="docutils literal notranslate"><span class="pre">&quot;&quot;&quot;</span></code>) not three
+single-quote characters (<code class="docutils literal notranslate"><span class="pre">'''</span></code>), since this is the PEP8 convention.</p>
+<p>Let’s assume we wrote the <code class="docutils literal notranslate"><span class="pre">greet</span></code> function in a file called
+<code class="docutils literal notranslate"><span class="pre">greetings.py</span></code>. That makes it a Python module, so inside the Python
+interpreter, we can <code class="docutils literal notranslate"><span class="pre">import</span></code> it and run it:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">greetings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">greetings</span><span class="o">.</span><span class="n">greet</span><span class="p">(</span><span class="s1">&#39;Mike&#39;</span><span class="p">)</span>
+<span class="go">Hi there, Mike!</span>
+</pre></div>
+</div>
+<p>as expected. Here’s the good part: we can also get <code class="docutils literal notranslate"><span class="pre">help</span></code> on the
+function:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">greetings</span><span class="o">.</span><span class="n">greet</span><span class="p">)</span>
+<span class="go">Help on function greet in module greetings:</span>
+
+<span class="go">greet(name)</span>
+<span class="go">    Print out a hearty greeting.</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Python actually uses what’s called a “pager” to print out the help
+message. This allows you to read very long help messages a page at a
+time. Hit the space bar to advance to the next page if there is one,
+and hit the <code class="docutils literal notranslate"><span class="pre">'q'</span></code> key to dismiss the help message.</p>
+</div>
+<p>Notice that the help message for the <code class="docutils literal notranslate"><span class="pre">greet</span></code> function is exactly the
+docstring that you wrote. Whatever you write in the docstring
+immediately becomes available to the <code class="docutils literal notranslate"><span class="pre">help</span></code> function.</p>
+</div>
+<div class="section" id="module-docstrings">
+<h3><span class="section-number">7.4.3. </span>Module docstrings<a class="headerlink" href="#module-docstrings" title="Permalink to this heading"></a></h3>
+<p>Let’s look at the entire module (in the file <code class="docutils literal notranslate"><span class="pre">greetings.py</span></code>), with
+docstrings for each function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Module: greetings</span>
+<span class="c1"># Filename: greetings.py</span>
+
+
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Print out a hearty greeting.&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hi there, </span><span class="si">{}</span><span class="s1">!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">insult</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Print out a nasty insult.&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Get lost, </span><span class="si">{}</span><span class="s1">!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>It looks good, but the comments at the beginning of the module seem out
+of place. In addition, they are completely unnecessary, so we’ll start
+by fixing that:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This module contains functions to print out various kinds of</span>
+<span class="c1"># greeting messages.</span>
+
+
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Print out a hearty greeting.&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hi there, </span><span class="si">{}</span><span class="s1">!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">insult</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Print out a nasty insult.&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Get lost, </span><span class="si">{}</span><span class="s1">!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>That’s a better comment, but the <code class="docutils literal notranslate"><span class="pre">help</span></code> function can’t use it. So now
+we’ll turn the comment into a <em>module docstring</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains functions to print out various kinds of</span>
+<span class="sd">greeting messages.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Print out a hearty greeting.&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hi there, </span><span class="si">{}</span><span class="s1">!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">insult</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Print out a nasty insult.&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Get lost, </span><span class="si">{}</span><span class="s1">!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now it’s looking professional. Let’s fire up the interpreter:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">greetings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">greetings</span><span class="p">)</span>
+<span class="go">Help on module greetings:</span>
+
+<span class="go">NAME</span>
+<span class="go">    greetings</span>
+
+<span class="go">DESCRIPTION</span>
+<span class="go">    This module contains functions to print out various kinds of</span>
+<span class="go">    greeting messages.</span>
+
+<span class="go">FUNCTIONS</span>
+<span class="go">    greet(name)</span>
+<span class="go">        Print out a hearty greeting.</span>
+
+<span class="go">    insult(name)</span>
+<span class="go">        Print out a nasty insult.</span>
+
+<span class="go">FILE</span>
+<span class="go">    /home/cs1/greetings.py</span>
+</pre></div>
+</div>
+<p>This gives us all the information about the module we might want
+(assuming we’ve written good docstrings).</p>
+</div>
+<div class="section" id="what-to-put-in-docstrings">
+<h3><span class="section-number">7.4.4. </span>What to put in docstrings<a class="headerlink" href="#what-to-put-in-docstrings" title="Permalink to this heading"></a></h3>
+<p>OK, that’s the “how” of docstrings. More interesting is the “what” of
+docstrings <em>i.e.</em> “what should I write in a docstring?”</p>
+<p>The first rule is <strong>write docstrings for every function and every module
+you create</strong>. Don’t skip writing a docstring because you think the
+purpose of the function is obvious; that may be true, but docstrings can
+also be used to generate external documentation for a module (like a web
+page), and in that case, you want somebody reading the documentation to
+know about all the functions in the module.  <a class="footnote-reference brackets" href="#id11" id="id5">5</a></p>
+<p>Docstrings are good documentation</p>
+<ul class="simple">
+<li><p>for you</p></li>
+<li><p>for you in the future (when you’ve forgotten what your code does)</p></li>
+<li><p>for anyone else reading or using your code</p></li>
+</ul>
+<p>The most important thing that needs to be in docstrings is information
+that will let people understand how to correctly use the code.</p>
+<p>In a <em>function</em> docstring, you should describe:</p>
+<ul class="simple">
+<li><p>what the function does (not how it does it)</p></li>
+<li><p>what the function arguments mean (ideally one line per argument)</p></li>
+<li><p>what the function returns</p></li>
+<li><p>any other effect that the function has when run (<em>e.g.</em> printing to
+the terminal, writing to a file, <em>etc.</em>)</p></li>
+</ul>
+<p>What you <em>shouldn’t</em> put in the docstring is a description of <em>how</em> the
+function works. That should go inside the function body in comments, and
+may be omitted entirely if the code is simple or “obvious”. You should
+generally write comments in a function when the code is tricky or is
+doing something unintuitive. Of course, that’s a judgment call.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>One thing you should <strong>never</strong> do is copy the problem description
+verbatim from an assignment into a docstring. This is sometimes done
+by students who are told to write docstrings but are too lazy or
+rushed to write a real one. If you do this, expect to lose marks.</p>
+</div>
+<p>In a <em>module</em> docstring, you should describe:</p>
+<ul class="simple">
+<li><p>the purpose of the module</p></li>
+<li><p>a general description of the kinds of functions in the module</p></li>
+</ul>
+<p>What you <em>shouldn’t</em> put in the docstring is a detailed description of
+any of the functions. That should go into the function docstrings, and
+there is no need to repeat that information.</p>
+</div>
+<div class="section" id="the-main-module">
+<h3><span class="section-number">7.4.5. </span>The <code class="docutils literal notranslate"><span class="pre">__main__</span></code> module<a class="headerlink" href="#the-main-module" title="Permalink to this heading"></a></h3>
+<p>Let’s try a dumb experiment: writing a function with a docstring in the
+Python interpreter. (It’s dumb because functions written directly in the
+interpreter are throwaway functions because they disappear when you quit
+the interpreter.)</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="sd">&quot;&quot;&quot;This function returns twice the value of the argument `x`.&quot;&quot;&quot;</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>Now let’s get some <code class="docutils literal notranslate"><span class="pre">help</span></code> on it:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">double</span><span class="p">)</span>
+<span class="go">Help on function double in module __main__:</span>
+
+<span class="go">double(x)</span>
+<span class="go">    This function returns twice the value of the argument `x`.</span>
+</pre></div>
+</div>
+<p>What does this <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">__main__</span></code> thing referred to mean?</p>
+<p><code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">__main__</span></code> is the name that Python gives to a module which is
+either</p>
+<ul class="simple">
+<li><p>the interactive interpreter</p></li>
+<li><p>the module that was directly invoked by Python (if you’re running
+Python on a file)</p></li>
+</ul>
+<p>All other modules are referred to by their own names.</p>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">__main__</span></code> refers to the interactive interpreter. But if
+we ran Python on a file of code, it would refer to the file’s module.
+Consider a file <code class="docutils literal notranslate"><span class="pre">test.py</span></code> containing this code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Test module.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function returns twice the value of the argument `x`.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span>
+
+
+<span class="n">help</span><span class="p">(</span><span class="n">double</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When you run this from the terminal, you get this output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python test.py
+Help on function double in module __main__:
+
+double(x)
+    This function returns twice the value of the argument `x`.
+</pre></div>
+</div>
+<p>Notice that it says <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">__main__</span></code>, not <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">test</span></code>.</p>
+<p>On the other hand, if you import the module from the Python interactive
+interpreter, this happens:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python
+&gt;&gt;&gt; import test
+
+Help on function double in module test:
+
+double(x)
+    This function returns twice the value of the argument `x`.
+</pre></div>
+</div>
+<p>Now the module is referred to as module <code class="docutils literal notranslate"><span class="pre">test</span></code>.</p>
+</div>
+<div class="section" id="the-name-special-variable">
+<h3><span class="section-number">7.4.6. </span>The <code class="docutils literal notranslate"><span class="pre">__name__</span></code> special variable<a class="headerlink" href="#the-name-special-variable" title="Permalink to this heading"></a></h3>
+<p>Python stores the name of the currently-executing module in a special
+variable called <code class="docutils literal notranslate"><span class="pre">__name__</span></code>. Let’s change the file <code class="docutils literal notranslate"><span class="pre">test.py</span></code> just a
+bit:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Test module.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function returns twice the value of the argument `x`.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;My name is: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="vm">__name__</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Let’s run it as a standalone file from the terminal:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python test.py
+My name is: __main__
+</pre></div>
+</div>
+<p>Now let’s <code class="docutils literal notranslate"><span class="pre">import</span></code> it from the interactive interpreter:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">test</span>
+<span class="go">My name is: test</span>
+</pre></div>
+</div>
+<p>We’ll see a good use for the <code class="docutils literal notranslate"><span class="pre">__name__</span></code> variable in a future reading.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We haven’t mentioned this before, but Python can run arbitrary code
+when you import a module. Most of the time, the code in a module is
+just function definitions (or maybe class or variable definitions)
+which don’t produce any output when run. But if there is <em>e.g.</em> a
+<code class="docutils literal notranslate"><span class="pre">print</span></code> statement in the module at the top level, it gets run when
+the module is imported and you will see the result. (But if you try
+to import it a second time, Python doesn’t reload it and you don’t
+see the result. Importing is not the same as reloading.) <a class="footnote-reference brackets" href="#id12" id="id6">6</a></p>
+</div>
+</div>
+<div class="section" id="improving-our-docstrings">
+<h3><span class="section-number">7.4.7. </span>Improving our docstrings<a class="headerlink" href="#improving-our-docstrings" title="Permalink to this heading"></a></h3>
+<p>The docstrings we’ve written above are pretty uninspiring. We should
+take our own advice! So let’s improve the <code class="docutils literal notranslate"><span class="pre">test.py</span></code> file by writing
+better docstrings.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module is a test of Python&#39;s docstring functionality.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function returns twice the value of the argument `x`.</span>
+
+<span class="sd">    Argument: `x` (an integer)</span>
+<span class="sd">    Return value: an integer</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>Here, we’ve split up the function docstring into multiple lines and
+given a general statement about what the function does, followed by a
+description of the argument and the return value.</p>
+<p>We aren’t going to insist on this format for every single function you
+write, but it’s definitely appropriate for longer functions (say, anything
+longer than ten lines).</p>
+<hr class="docutils" />
+<p class="rubric">Footnotes</p>
+<dl class="footnote brackets">
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>This is also often called a “hash sign”.</p>
+</dd>
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>The “PEP” in “PEP8” means “Python Enhancement Proposal” and is mainly
+used for proposing and discussing possible improvements to the
+language.</p>
+</dd>
+<dt class="label" id="id9"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>PEP8 says they should be no more than 79 characters. Go figure.</p>
+</dd>
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id4">4</a></span></dt>
+<dd><p>When referring to a Python variable name in a comment, we surround it
+with backticks, so we write <code class="docutils literal notranslate"><span class="pre">`a`</span></code> and not just <code class="docutils literal notranslate"><span class="pre">a</span></code>. You
+don’t have to do this, but it helps to make it clear that this is a
+Python name and not a regular word. This convention comes from
+Markdown, which is a syntax used for writing documents that get
+converted into web pages.</p>
+</dd>
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id5">5</a></span></dt>
+<dd><p>The only exception <em>might</em> be for a function which is never intended
+to be used outside of the module. But for this course, write
+docstrings for <em>all</em> functions.</p>
+</dd>
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id6">6</a></span></dt>
+<dd><p>There <em>is</em> a way to force Python to reload a module,
+but you don’t need to know about it yet, or probably ever.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter6.html" class="btn btn-neutral float-left" title="6. Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter8.html" class="btn btn-neutral float-right" title="8. Lists" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Michael C. Vanier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>
