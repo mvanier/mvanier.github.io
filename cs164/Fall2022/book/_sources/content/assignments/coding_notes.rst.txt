@@ -1,0 +1,174 @@
+OCaml coding notes
+==================
+
+Here are some tips that should improve your OCaml programming experience.
+
+
+Warnings
+--------
+
+Warnings are always bad, unless you expect them (|eg| because code is only
+partially written).  Never ignore warnings.  Your finished code should *never*
+generate warnings.
+
+
+Functional style by default
+---------------------------
+
+Code should be written in a functional style (no ``ref``\s, arrays, or records
+with mutable fields) except where indicated.  Marks will be taken off if this
+rule is violated.  We will let you know when it's OK to use imperative idioms.
+Certain imperative idioms (like ``while`` and ``for`` loops) are almost never
+used, but we do use ``ref`` cells on occasion to make code simpler.
+
+Many of the tips below describe ways to effectively use functional style.
+
+
+Nested pattern matching
+-----------------------
+
+It's very common to want to write a pattern match inside another
+pattern match.  There are two cases to consider.
+
+#. Where the two pattern matches can be combined.  Consider this code:
+
+   .. code-block:: OCaml
+
+      let f (maybe_lst : int list option) : int option =
+        match maybe_lst with
+          | None -> None
+          | Some lst ->
+            begin
+              match lst with
+                | h :: _ -> Some h
+                | [] -> None
+            end
+
+   You can merge both pattern matches as follows:
+
+   .. code-block:: OCaml
+
+      let f (maybe_lst : int list option) : int option =
+        match maybe_lst with
+          | Some (h :: _) -> Some h
+          | _ -> None
+
+   Note how much shorter and clearer the code is.
+   Also note the use of the wildcard (``_``) pattern
+   for "don't care" situations.
+
+   Merging pattern matches is almost always possible if the
+   inner pattern match doesn't depend on a value computed using
+   information from the outer pattern match.
+   Unnecessary pattern matches are bad style and will be marked down.
+
+#. Where the two pattern matches *can't* be combined.
+   Consider this code:
+
+   .. code-block:: OCaml
+
+      let f (lst : int list) : (int * int) option =
+        match lst with
+          | h :: t ->
+            begin
+              match List.sort compare t with
+                | h' :: _ -> Some (h, h')
+                | _ -> None
+            end
+          | _ -> None
+
+   The inner match is matching on the result of the ``List.sort``
+   function applied to the tail of the list.
+   You can't combine these pattern matches because the inner one
+   depends on a value which must be computed (it's not structural).
+   For very simple cases, you can use a ``when`` clause instead of
+   the inner match, but often this isn't feasible.
+   So you have nested ``match`` expressions.
+
+   When you have nested ``match`` expressions, you must surround them
+   by either ``begin``/``end`` delimiters (as we did above) or parentheses,
+   which looks like this:
+
+   .. code-block:: OCaml
+
+      let f (lst : int list) : (int * int) option =
+        match lst with
+          | h :: t ->
+            (match List.sort compare t with
+               | h' :: _ -> Some (h, h')
+               | _ -> None)
+          | _ -> None
+
+   Using parentheses looks more concise, but it's easy to forget to close
+   the open parenthesis, so we prefer to use ``begin``/``end``.
+   (It reads better, too.)  What you definitely do *not* want to do is this:
+
+   .. code-block:: OCaml
+
+      let f (lst : int list) : (int * int) option =
+        match lst with
+          | h :: t ->
+            match List.sort compare t with
+              | h' :: _ -> Some (h, h')
+              | _ -> None
+          | _ -> None
+
+   If you do this, you will get strange error messages because
+   OCaml will consider the last line to be part of the inner pattern match.
+   Remember, **OCaml is not whitespace sensitive!**
+   So don't forget the ``begin``/``end``.
+
+
+Folds are your friend!
+----------------------
+
+Programmers new to OCaml are often frustrated by what they perceive as the
+difficulty of doing simple things.  A good example of this is accumulation.
+You have a list and want to compute some value from the list elements.
+For instance, say you want to get the maximum value of the list (and assume
+that you only have a two-element ``max`` function to compute maximums).
+A Python programmer could immediately write this code:
+
+   .. code-block:: Python
+
+      def max_list(lst):
+          """Compute the maximum of a list of positive integers."""
+          if len(lst) == 0:
+              return 0
+          mx = lst[0]
+          for item in lst:
+              mx = max(mx, item)
+          return mx
+
+In OCaml, we do this sort of thing using folds, specifically left folds.
+
+   .. code-block:: OCaml
+
+      let max_list lst =
+        List.fold_left
+          (fun mx item -> max mx item)
+          0
+          lst
+
+This can be simplified further:
+
+   .. code-block:: OCaml
+
+      let max_list lst = List.fold_left max 0 lst
+
+Whenever you need to write code which accumulates something over a list,
+you want to use a fold.
+
+Left *vs.* right folds
+^^^^^^^^^^^^^^^^^^^^^^
+
+95% of the time or more, if you want to use a fold in OCaml,
+you want to use a left fold (``List.fold_left``)
+instead of a right fold (``List.fold_right``).
+Left folds are tail-recursive (space efficient) and are more natural
+than right folds, which are also less space efficient.
+
+On the other hand, there are cases where right folds are the right thing to
+use.  When you want to accumulate things in a list from the right going back
+to the left, a right fold is usually going to be simpler than a left fold,
+and you shouldn't feel bad about using one.
