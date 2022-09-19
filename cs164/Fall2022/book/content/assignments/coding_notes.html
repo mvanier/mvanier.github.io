@@ -59,6 +59,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#debugging-tips">Debugging tips</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#printf-style-debugging"><code class="docutils literal notranslate"><span class="pre">printf</span></code>-style debugging</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#using-the-repl">Using the REPL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#insert-debugging-code-into-tricky-algorithms">Insert debugging code into tricky algorithms</a></li>
 </ul>
 </li>
 </ul>
@@ -158,25 +159,21 @@ doesn’t mean that you have to rely on it!
 When you specify the types manually,
 you will usually get better error messages.</p>
 <p>For example, instead of writing this code:</p>
-<blockquote>
-<div><div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">lst</span> <span class="o">=</span>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">lst</span> <span class="o">=</span>
   <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
     <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="n">x</span><span class="o">]</span>
     <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
       <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">h</span> <span class="k">then</span> <span class="n">x</span> <span class="o">::</span> <span class="n">lst</span> <span class="k">else</span> <span class="n">h</span> <span class="o">::</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">t</span>
 </pre></div>
 </div>
-</div></blockquote>
 <p>write it like this:</p>
-<blockquote>
-<div><div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">insert</span> <span class="o">(</span><span class="n">x</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">(</span><span class="n">lst</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span><span class="o">)</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span> <span class="o">=</span>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">insert</span> <span class="o">(</span><span class="n">x</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">(</span><span class="n">lst</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span><span class="o">)</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span> <span class="o">=</span>
   <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
     <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="n">x</span><span class="o">]</span>
     <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
       <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">h</span> <span class="k">then</span> <span class="n">x</span> <span class="o">::</span> <span class="n">lst</span> <span class="k">else</span> <span class="n">h</span> <span class="o">::</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">t</span>
 </pre></div>
 </div>
-</div></blockquote>
 <p>(Actually, you’d probably rewrite it to be tail recursive, but that’s
 another topic.)  In many cases, you could substitute a more specific
 type for <code class="docutils literal notranslate"><span class="pre">'a</span></code> (say, <code class="docutils literal notranslate"><span class="pre">int</span></code>), which would be beneficial
@@ -202,8 +199,7 @@ You have a list and want to compute some value from the list elements.
 For instance, say you want to get the maximum value of the list (and assume
 that you only have a two-element <code class="docutils literal notranslate"><span class="pre">max</span></code> function to compute maximums).
 A Python programmer could immediately write this code:</p>
-<blockquote>
-<div><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">max_list</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">max_list</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the maximum of a list of positive integers.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span>
@@ -213,29 +209,23 @@ A Python programmer could immediately write this code:</p>
     <span class="k">return</span> <span class="n">mx</span>
 </pre></div>
 </div>
-</div></blockquote>
 <p>In OCaml, we do this sort of thing using folds, specifically left folds.</p>
-<blockquote>
-<div><div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span>
   <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span>
     <span class="o">(</span><span class="k">fun</span> <span class="n">mx</span> <span class="n">item</span> <span class="o">-&gt;</span> <span class="n">max</span> <span class="n">mx</span> <span class="n">item</span><span class="o">)</span>
     <span class="mi">0</span>
     <span class="n">lst</span>
 </pre></div>
 </div>
-</div></blockquote>
 <p>This can be simplified further:</p>
-<blockquote>
-<div><div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="n">max</span> <span class="mi">0</span> <span class="n">lst</span>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="n">max</span> <span class="mi">0</span> <span class="n">lst</span>
 </pre></div>
 </div>
-</div></blockquote>
 <p>Whenever you need to write code which accumulates something over a list,
 you generally want to use a fold.</p>
 <p>A common beginner’s style error is to do this with an iterative helper
 function:</p>
-<blockquote>
-<div><div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span>
   <span class="k">let</span> <span class="k">rec</span> <span class="n">iter</span> <span class="n">rest</span> <span class="n">mx</span> <span class="o">=</span>
     <span class="k">match</span> <span class="n">rest</span> <span class="k">with</span>
       <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="n">mx</span>
@@ -245,7 +235,6 @@ function:</p>
     <span class="n">iter</span> <span class="n">lst</span> <span class="mi">0</span>
 </pre></div>
 </div>
-</div></blockquote>
 <p>This is not so bad, but the iterative helper function can be replaced by
 <code class="docutils literal notranslate"><span class="pre">List.fold_left</span></code> and the entire function becomes a one-liner!
 Be alert for this kind of situation –
@@ -367,7 +356,7 @@ This is an incomplete function. Just put in</p>
   <span class="n">failwith</span> <span class="s2">&quot;TODO&quot;</span>
 </pre></div>
 </div>
-<p>This might be a bit hard to complete, though.</p>
+<p>This particular function might be a bit hard to complete, though.</p>
 <p>Writing stubs is a great way to get past “coder’s block”.
 Once the stub is written,
 you can compile it and make sure it type checks.
@@ -389,11 +378,94 @@ which is an amazing book (and which is the basis of CS 4).</p>
 </div>
 <div class="section" id="debugging-tips">
 <h2>Debugging tips<a class="headerlink" href="#debugging-tips" title="Permalink to this heading"></a></h2>
+<p>Although strictly-typed functional languages like OCaml greatly reduce the
+number of bugs in your programs, you will still make mistakes and have to debug
+them.  Debugging functional languages can be challenging; here are some tips
+we’ve found to be useful.</p>
 <div class="section" id="printf-style-debugging">
 <h3><code class="docutils literal notranslate"><span class="pre">printf</span></code>-style debugging<a class="headerlink" href="#printf-style-debugging" title="Permalink to this heading"></a></h3>
+<p>“printf”-style debugging is highly effective if you do it right.  The wrong
+way is to add <code class="docutils literal notranslate"><span class="pre">printf</span></code> statements to otherwise functional code:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="o">...</span> <span class="k">in</span>
+<span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;x = %s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="n">x</span><span class="o">;</span>
+<span class="k">let</span> <span class="n">y</span> <span class="o">=</span> <span class="o">...</span> <span class="k">in</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>Even though this can work, you are embedding imperative code inside
+functional code, and you can get into tricky syntax issues as a result.
+A better way to do it is like this:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="o">...</span> <span class="k">in</span>
+<span class="k">let</span> <span class="o">_</span> <span class="o">=</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;x = %s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="n">x</span> <span class="k">in</span>
+<span class="k">let</span> <span class="n">y</span> <span class="o">=</span> <span class="o">...</span> <span class="k">in</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>This also embeds imperative code, but uses functional syntax, so there
+won’t be any syntax issues.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the surrounding code is imperative (like a <code class="docutils literal notranslate"><span class="pre">begin</span></code> expression
+or the body of a <code class="docutils literal notranslate"><span class="pre">for</span></code> or <code class="docutils literal notranslate"><span class="pre">while</span></code> loop), the exact opposite criterion
+applies: favor the naked <code class="docutils literal notranslate"><span class="pre">Printf.printf</span> <span class="pre">...</span></code> instead of the
+<code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">_</span> <span class="pre">=</span> <span class="pre">Printf.printf</span> <span class="pre">...</span></code> idiom.  However, in well-written OCaml
+code, <code class="docutils literal notranslate"><span class="pre">while</span></code> and <code class="docutils literal notranslate"><span class="pre">for</span></code> loops should be almost nonexistent.</p>
+</div>
+<p>Also, you should add <code class="docutils literal notranslate"><span class="pre">%!</span></code> at the end of the <code class="docutils literal notranslate"><span class="pre">printf</span></code> format string:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="o">...</span> <span class="k">in</span>
+<span class="k">let</span> <span class="o">_</span> <span class="o">=</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;x = %s</span><span class="se">\n</span><span class="s2">%!&quot;</span> <span class="n">x</span> <span class="k">in</span>
+<span class="k">let</span> <span class="n">y</span> <span class="o">=</span> <span class="o">...</span> <span class="k">in</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>This makes OCaml flush the string as soon as the <code class="docutils literal notranslate"><span class="pre">printf</span></code> executes.
+If you don’t do that, sometimes error messages before a crash can be lost.</p>
+<p>Finally, for debugging, consider writing your <code class="docutils literal notranslate"><span class="pre">printf</span></code>s this way:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span>    <span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="o">...</span> <span class="k">in</span>
+<span class="k">let</span> <span class="o">_</span> <span class="o">=</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;DEBUG: x = %s</span><span class="se">\n</span><span class="s2">%!&quot;</span> <span class="n">x</span> <span class="k">in</span>
+    <span class="k">let</span> <span class="n">y</span> <span class="o">=</span> <span class="o">...</span> <span class="k">in</span>
+      <span class="o">...</span>
+</pre></div>
+</div>
+<p>This way, it’s easy to spot these lines, which is good because you are
+going to want to delete them once debugging is done.</p>
 </div>
 <div class="section" id="using-the-repl">
 <h3>Using the REPL<a class="headerlink" href="#using-the-repl" title="Permalink to this heading"></a></h3>
+<p>“REPL” means “Read-Eval-Print-Loop” and refers to the interactive interpreter
+(what you get into if you type <code class="docutils literal notranslate"><span class="pre">ocaml</span></code> or <code class="docutils literal notranslate"><span class="pre">utop</span></code> at a terminal prompt).
+You might think that it’s hard to use a REPL in a large, multi-file project
+like the compiler assignments, but we’ve got you covered!</p>
+<p>Typing <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">repl</span></code> in any directory will bring up a REPL in which all the
+modules of the program are accessible.  This allows you to interactively test
+your code.  Some kinds of code are easier to test in this way than others, but
+don’t underestimate how useful this can be, especially when trying to track
+down a tricky bug.  All you need to do is to open the relevant module:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">open</span> <span class="nc">Some_Compiler_Pass_That_Isnt_Working</span><span class="o">;;</span>
+</pre></div>
+</div>
+<p>and you can play with all the functions in that module.</p>
+</div>
+<div class="section" id="insert-debugging-code-into-tricky-algorithms">
+<h3>Insert debugging code into tricky algorithms<a class="headerlink" href="#insert-debugging-code-into-tricky-algorithms" title="Permalink to this heading"></a></h3>
+<p>Some passes involve tricky algorithms.  In those cases, it’s a good idea to
+define a <code class="docutils literal notranslate"><span class="pre">debug</span></code> variable at the top of the file:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">debug</span> <span class="o">=</span> <span class="n">ref</span> <span class="bp">false</span>  <span class="c">(* change to `true` when you need debug output *)</span>
+</pre></div>
+</div>
+<p>and then put debug code into the tricky algorithm that prints out the inputs
+and outputs:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">tricky_algorithm</span> <span class="n">weird_inputs</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="o">!</span><span class="n">debug</span> <span class="k">then</span>
+    <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;INPUT: %s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">(</span><span class="n">string_of_weird_inputs</span> <span class="n">weird_inputs</span><span class="o">);</span>
+  <span class="o">...</span> <span class="c">(* rest of algorithm *)</span>
+</pre></div>
+</div>
+<p>To do this, you need to be able to convert the algorithm inputs/output
+to strings.  Most of the data structures you will be using can be easily
+converted to S-expressions, and there is a <code class="docutils literal notranslate"><span class="pre">print_sexp</span></code> function in the
+<code class="docutils literal notranslate"><span class="pre">Utils</span></code> module that will print an S-expression in a readable fashion.
+This is extremely useful for tracking down algorithm errors.</p>
 </div>
 </div>
 </div>
