@@ -1,7 +1,11 @@
-OCaml coding notes
-==================
+OCaml coding notes and tips
+===========================
 
-Here are some tips that should improve your OCaml programming experience.
+Here are some notes and tips
+that should improve your OCaml programming experience.
+We also describe our expectations
+of how we want you to write your OCaml code,
+so don't just skip this document!
 
 
 Warnings
@@ -22,6 +26,174 @@ Certain imperative idioms (like ``while`` and ``for`` loops) are almost never
 used, but we do use ``ref`` cells on occasion to make code simpler.
 
 Many of the tips below describe ways to effectively use functional style.
+They are not in any particular order, so feel free to browse until you find
+something interesting.
+
+
+Tail recursion by default
+-------------------------
+
+As you recall, a lot of CS 4 was spent teaching you to write functions using
+recursion instead of loops, and specifically tail recursion.  We use tail
+recursion because it has desirable space properties, so in general,
+when you write a recursive function, try hard to make it tail recursive.
+If you can't do this, be prepared to explain why during code reviews.
+
+
+Persistent data structures
+--------------------------
+
+Probably the hardest part of using functional programming effectively is
+getting used to persistent data structures (like lists) instead of mutable data
+structures (like arrays).
+
+In this course, almost all data structures are persistent, which means that
+when you change something in the data structure, it returns the updated version
+without altering the input version.  This is very different to how imperative
+languages work.
+
+.. Tip::
+
+   If you think you need to use ``List.iter``
+   (which would be appropriate for a mutable data structure)
+   you almost always want to actually use ``List.fold_left``
+   or an iterative helper function
+   (which is appropriate for a persistent data structure).
+
+Even though you may find functional programming awkward at first,
+it is *vastly* easier to write correct code
+in a functional style than in an imperative style.
+There is simply less that can go wrong.
+
+
+Type annotations
+----------------
+
+We *strongly* recommend that you add type annotations
+to all functions that are internal to a module.
+It will save you a lot of grief.
+Just because OCaml can do type inference
+doesn't mean that you have to rely on it!
+When you specify the types manually,
+you will usually get better error messages.
+
+For example, instead of writing this code:
+
+   .. code-block:: OCaml
+
+      let rec insert x lst =
+        match lst with
+          | [] -> [x]
+          | h :: t ->
+            if x < h then x :: lst else h :: insert x t
+
+write it like this:
+
+   .. code-block:: OCaml
+
+      let rec insert (x : 'a) (lst : 'a list) : 'a list =
+        match lst with
+          | [] -> [x]
+          | h :: t ->
+            if x < h then x :: lst else h :: insert x t
+
+(Actually, you'd probably rewrite it to be tail recursive, but that's
+another topic.)  In many cases, you could substitute a more specific
+type for ``'a`` (say, ``int``), which would be beneficial
+in the event that the type that was actually passed to ``insert``
+was something other than a list of ``int``\s.
+
+Also, don't remove the type annotations once the code is working
+"because it looks prettier"; leave them in.
+It's good documentation and it will be really important
+if you ever have to modify the code.
+
+.. note::
+
+   We didn't have this guideline in CS 4,
+   primarily because the code base was so much smaller.  
+   The more complicated the code gets,
+   the more helpful explicit type annotations are.
+
+
+Folds are your friend!
+----------------------
+
+Programmers new to OCaml are often frustrated by what they perceive as the
+difficulty of doing simple things.  A good example of this is accumulation.
+You have a list and want to compute some value from the list elements.
+For instance, say you want to get the maximum value of the list (and assume
+that you only have a two-element ``max`` function to compute maximums).
+A Python programmer could immediately write this code:
+
+   .. code-block:: Python
+
+      def max_list(lst):
+          """Compute the maximum of a list of positive integers."""
+          if len(lst) == 0:
+              return 0
+          mx = lst[0]
+          for item in lst:
+              mx = max(mx, item)
+          return mx
+
+In OCaml, we do this sort of thing using folds, specifically left folds.
+
+   .. code-block:: OCaml
+
+      let max_list lst =
+        List.fold_left
+          (fun mx item -> max mx item)
+          0
+          lst
+
+This can be simplified further:
+
+   .. code-block:: OCaml
+
+      let max_list lst = List.fold_left max 0 lst
+
+Whenever you need to write code which accumulates something over a list,
+you generally want to use a fold.
+
+A common beginner's style error is to do this with an iterative helper
+function:
+
+   .. code-block:: OCaml
+
+      let max_list lst =
+        let rec iter rest mx =
+          match rest with
+            | [] -> mx
+            | h :: t ->
+              if h > mx then iter t h else iter t mx
+        in
+          iter lst 0
+
+This is not so bad, but the iterative helper function can be replaced by
+``List.fold_left`` and the entire function becomes a one-liner!
+Be alert for this kind of situation --
+there's no benefit to using a functional language
+if you don't take advantage of what it offers.
+
+On the other hand, sometimes you are accumulating more than one thing in an
+iteration. You can still use ``List.fold_left`` in such cases by accumulating a
+tuple of all the things you're accumulating, but in my experience, it's often
+easier to just write an iterative helper function.
+
+Left *vs.* right folds
+^^^^^^^^^^^^^^^^^^^^^^
+
+95% of the time or more, if you want to use a fold in OCaml,
+you want to use a left fold (``List.fold_left``)
+instead of a right fold (``List.fold_right``).
+Left folds are tail recursive (space efficient) and are more natural
+than right folds, which are also less space efficient.
+
+On the other hand, there are cases where right folds are the right thing to
+use.  When you want to accumulate things in a list from the right going back
+to the left, a right fold is usually going to be simpler than a left fold,
+and you shouldn't feel bad about using one.
 
 
 Nested pattern matching
@@ -119,56 +291,60 @@ pattern match.  There are two cases to consider.
    So don't forget the ``begin``/``end``.
 
 
-Folds are your friend!
-----------------------
+Write stubs!
+------------
 
-Programmers new to OCaml are often frustrated by what they perceive as the
-difficulty of doing simple things.  A good example of this is accumulation.
-You have a list and want to compute some value from the list elements.
-For instance, say you want to get the maximum value of the list (and assume
-that you only have a two-element ``max`` function to compute maximums).
-A Python programmer could immediately write this code:
+When you are starting to write a function, write a "stub".
+This is an incomplete function. Just put in
 
-   .. code-block:: Python
+* the arguments
 
-      def max_list(lst):
-          """Compute the maximum of a list of positive integers."""
-          if len(lst) == 0:
-              return 0
-          mx = lst[0]
-          for item in lst:
-              mx = max(mx, item)
-          return mx
+* type annotations for arguments and the return type
+  (This is _very_ important!  Don't skip this step!)
 
-In OCaml, we do this sort of thing using folds, specifically left folds.
+* and ``failwith "TODO"`` for the body.
 
-   .. code-block:: OCaml
+Then fill it in later.
 
-      let max_list lst =
-        List.fold_left
-          (fun mx item -> max mx item)
-          0
-          lst
+Here's an example of a stub:
 
-This can be simplified further:
+.. code-block:: OCaml
 
-   .. code-block:: OCaml
+   let halts_on_all_inputs (f : int -> int) : bool =
+     failwith "TODO"
 
-      let max_list lst = List.fold_left max 0 lst
+This might be a bit hard to complete, though.
 
-Whenever you need to write code which accumulates something over a list,
-you want to use a fold.
+Writing stubs is a great way to get past "coder's block".
+Once the stub is written,
+you can compile it and make sure it type checks.
+If it's recursive, you can usually easily fill in the base cases.
+At that point, you're ready to work on the body of the function.
 
-Left *vs.* right folds
-^^^^^^^^^^^^^^^^^^^^^^
 
-95% of the time or more, if you want to use a fold in OCaml,
-you want to use a left fold (``List.fold_left``)
-instead of a right fold (``List.fold_right``).
-Left folds are tail-recursive (space efficient) and are more natural
-than right folds, which are also less space efficient.
+Use wishful thinking!
+---------------------
 
-On the other hand, there are cases where right folds are the right thing to
-use.  When you want to accumulate things in a list from the right going back
-to the left, a right fold is usually going to be simpler than a left fold,
-and you shouldn't feel bad about using one.
+If a function seems too difficult/complex to write directly,
+ask yourself "what function do I need
+which would make it really easy to write this function?"
+Then assume that *that* function exists
+(|ie| write a stub for it),
+and write your main function using the assumed function.
+When that's done, go back and write the body of the assumed function.
+
+This is one of *the* most useful programming tips.  It's explored at some
+length in the book SICP (Structure and Interpretation of Computer Programs),
+which is an amazing book (and which is the basis of CS 4).
+
+
+Debugging tips
+--------------
+
+``printf``\-style debugging
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Using the REPL
+^^^^^^^^^^^^^^
+
+

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OCaml coding notes &mdash; The CS 164 book 0.0.1 documentation</title>
+  <title>OCaml coding notes and tips &mdash; The CS 164 book 0.0.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -43,12 +43,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrative information</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Assignments</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">OCaml coding notes</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">OCaml coding notes and tips</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#warnings">Warnings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#functional-style-by-default">Functional style by default</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#nested-pattern-matching">Nested pattern matching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tail-recursion-by-default">Tail recursion by default</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#persistent-data-structures">Persistent data structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#type-annotations">Type annotations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#folds-are-your-friend">Folds are your friend!</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#left-vs-right-folds">Left <em>vs.</em> right folds</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#nested-pattern-matching">Nested pattern matching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#write-stubs">Write stubs!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-wishful-thinking">Use wishful thinking!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debugging-tips">Debugging tips</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#printf-style-debugging"><code class="docutils literal notranslate"><span class="pre">printf</span></code>-style debugging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-the-repl">Using the REPL</a></li>
 </ul>
 </li>
 </ul>
@@ -74,7 +84,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html">Assignments</a> &raquo;</li>
-      <li>OCaml coding notes</li>
+      <li>OCaml coding notes and tips</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/content/assignments/coding_notes.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -84,9 +94,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="ocaml-coding-notes">
-<h1>OCaml coding notes<a class="headerlink" href="#ocaml-coding-notes" title="Permalink to this heading"></a></h1>
-<p>Here are some tips that should improve your OCaml programming experience.</p>
+  <div class="section" id="ocaml-coding-notes-and-tips">
+<h1>OCaml coding notes and tips<a class="headerlink" href="#ocaml-coding-notes-and-tips" title="Permalink to this heading"></a></h1>
+<p>Here are some notes and tips
+that should improve your OCaml programming experience.
+We also describe our expectations
+of how we want you to write your OCaml code,
+so don’t just skip this document!</p>
 <div class="section" id="warnings">
 <h2>Warnings<a class="headerlink" href="#warnings" title="Permalink to this heading"></a></h2>
 <p>Warnings are always bad, unless you expect them (<em>e.g.</em> because code is only
@@ -100,7 +114,159 @@ with mutable fields) except where indicated.  Marks will be taken off if this
 rule is violated.  We will let you know when it’s OK to use imperative idioms.
 Certain imperative idioms (like <code class="docutils literal notranslate"><span class="pre">while</span></code> and <code class="docutils literal notranslate"><span class="pre">for</span></code> loops) are almost never
 used, but we do use <code class="docutils literal notranslate"><span class="pre">ref</span></code> cells on occasion to make code simpler.</p>
-<p>Many of the tips below describe ways to effectively use functional style.</p>
+<p>Many of the tips below describe ways to effectively use functional style.
+They are not in any particular order, so feel free to browse until you find
+something interesting.</p>
+</div>
+<div class="section" id="tail-recursion-by-default">
+<h2>Tail recursion by default<a class="headerlink" href="#tail-recursion-by-default" title="Permalink to this heading"></a></h2>
+<p>As you recall, a lot of CS 4 was spent teaching you to write functions using
+recursion instead of loops, and specifically tail recursion.  We use tail
+recursion because it has desirable space properties, so in general,
+when you write a recursive function, try hard to make it tail recursive.
+If you can’t do this, be prepared to explain why during code reviews.</p>
+</div>
+<div class="section" id="persistent-data-structures">
+<h2>Persistent data structures<a class="headerlink" href="#persistent-data-structures" title="Permalink to this heading"></a></h2>
+<p>Probably the hardest part of using functional programming effectively is
+getting used to persistent data structures (like lists) instead of mutable data
+structures (like arrays).</p>
+<p>In this course, almost all data structures are persistent, which means that
+when you change something in the data structure, it returns the updated version
+without altering the input version.  This is very different to how imperative
+languages work.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you think you need to use <code class="docutils literal notranslate"><span class="pre">List.iter</span></code>
+(which would be appropriate for a mutable data structure)
+you almost always want to actually use <code class="docutils literal notranslate"><span class="pre">List.fold_left</span></code>
+or an iterative helper function
+(which is appropriate for a persistent data structure).</p>
+</div>
+<p>Even though you may find functional programming awkward at first,
+it is <em>vastly</em> easier to write correct code
+in a functional style than in an imperative style.
+There is simply less that can go wrong.</p>
+</div>
+<div class="section" id="type-annotations">
+<h2>Type annotations<a class="headerlink" href="#type-annotations" title="Permalink to this heading"></a></h2>
+<p>We <em>strongly</em> recommend that you add type annotations
+to all functions that are internal to a module.
+It will save you a lot of grief.
+Just because OCaml can do type inference
+doesn’t mean that you have to rely on it!
+When you specify the types manually,
+you will usually get better error messages.</p>
+<p>For example, instead of writing this code:</p>
+<blockquote>
+<div><div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">lst</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="n">x</span><span class="o">]</span>
+    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
+      <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">h</span> <span class="k">then</span> <span class="n">x</span> <span class="o">::</span> <span class="n">lst</span> <span class="k">else</span> <span class="n">h</span> <span class="o">::</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">t</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>write it like this:</p>
+<blockquote>
+<div><div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">insert</span> <span class="o">(</span><span class="n">x</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">(</span><span class="n">lst</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span><span class="o">)</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="n">x</span><span class="o">]</span>
+    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
+      <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">h</span> <span class="k">then</span> <span class="n">x</span> <span class="o">::</span> <span class="n">lst</span> <span class="k">else</span> <span class="n">h</span> <span class="o">::</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">t</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>(Actually, you’d probably rewrite it to be tail recursive, but that’s
+another topic.)  In many cases, you could substitute a more specific
+type for <code class="docutils literal notranslate"><span class="pre">'a</span></code> (say, <code class="docutils literal notranslate"><span class="pre">int</span></code>), which would be beneficial
+in the event that the type that was actually passed to <code class="docutils literal notranslate"><span class="pre">insert</span></code>
+was something other than a list of <code class="docutils literal notranslate"><span class="pre">int</span></code>s.</p>
+<p>Also, don’t remove the type annotations once the code is working
+“because it looks prettier”; leave them in.
+It’s good documentation and it will be really important
+if you ever have to modify the code.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We didn’t have this guideline in CS 4,
+primarily because the code base was so much smaller.
+The more complicated the code gets,
+the more helpful explicit type annotations are.</p>
+</div>
+</div>
+<div class="section" id="folds-are-your-friend">
+<h2>Folds are your friend!<a class="headerlink" href="#folds-are-your-friend" title="Permalink to this heading"></a></h2>
+<p>Programmers new to OCaml are often frustrated by what they perceive as the
+difficulty of doing simple things.  A good example of this is accumulation.
+You have a list and want to compute some value from the list elements.
+For instance, say you want to get the maximum value of the list (and assume
+that you only have a two-element <code class="docutils literal notranslate"><span class="pre">max</span></code> function to compute maximums).
+A Python programmer could immediately write this code:</p>
+<blockquote>
+<div><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">max_list</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the maximum of a list of positive integers.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="n">mx</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+        <span class="n">mx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mx</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>In OCaml, we do this sort of thing using folds, specifically left folds.</p>
+<blockquote>
+<div><div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span>
+  <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span>
+    <span class="o">(</span><span class="k">fun</span> <span class="n">mx</span> <span class="n">item</span> <span class="o">-&gt;</span> <span class="n">max</span> <span class="n">mx</span> <span class="n">item</span><span class="o">)</span>
+    <span class="mi">0</span>
+    <span class="n">lst</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>This can be simplified further:</p>
+<blockquote>
+<div><div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="n">max</span> <span class="mi">0</span> <span class="n">lst</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Whenever you need to write code which accumulates something over a list,
+you generally want to use a fold.</p>
+<p>A common beginner’s style error is to do this with an iterative helper
+function:</p>
+<blockquote>
+<div><div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="k">rec</span> <span class="n">iter</span> <span class="n">rest</span> <span class="n">mx</span> <span class="o">=</span>
+    <span class="k">match</span> <span class="n">rest</span> <span class="k">with</span>
+      <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="n">mx</span>
+      <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
+        <span class="k">if</span> <span class="n">h</span> <span class="o">&gt;</span> <span class="n">mx</span> <span class="k">then</span> <span class="n">iter</span> <span class="n">t</span> <span class="n">h</span> <span class="k">else</span> <span class="n">iter</span> <span class="n">t</span> <span class="n">mx</span>
+  <span class="k">in</span>
+    <span class="n">iter</span> <span class="n">lst</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>This is not so bad, but the iterative helper function can be replaced by
+<code class="docutils literal notranslate"><span class="pre">List.fold_left</span></code> and the entire function becomes a one-liner!
+Be alert for this kind of situation –
+there’s no benefit to using a functional language
+if you don’t take advantage of what it offers.</p>
+<p>On the other hand, sometimes you are accumulating more than one thing in an
+iteration. You can still use <code class="docutils literal notranslate"><span class="pre">List.fold_left</span></code> in such cases by accumulating a
+tuple of all the things you’re accumulating, but in my experience, it’s often
+easier to just write an iterative helper function.</p>
+<div class="section" id="left-vs-right-folds">
+<h3>Left <em>vs.</em> right folds<a class="headerlink" href="#left-vs-right-folds" title="Permalink to this heading"></a></h3>
+<p>95% of the time or more, if you want to use a fold in OCaml,
+you want to use a left fold (<code class="docutils literal notranslate"><span class="pre">List.fold_left</span></code>)
+instead of a right fold (<code class="docutils literal notranslate"><span class="pre">List.fold_right</span></code>).
+Left folds are tail recursive (space efficient) and are more natural
+than right folds, which are also less space efficient.</p>
+<p>On the other hand, there are cases where right folds are the right thing to
+use.  When you want to accumulate things in a list from the right going back
+to the left, a right fold is usually going to be simpler than a left fold,
+and you shouldn’t feel bad about using one.</p>
+</div>
 </div>
 <div class="section" id="nested-pattern-matching">
 <h2>Nested pattern matching<a class="headerlink" href="#nested-pattern-matching" title="Permalink to this heading"></a></h2>
@@ -185,55 +351,49 @@ So don’t forget the <code class="docutils literal notranslate"><span class="pr
 </li>
 </ol>
 </div>
-<div class="section" id="folds-are-your-friend">
-<h2>Folds are your friend!<a class="headerlink" href="#folds-are-your-friend" title="Permalink to this heading"></a></h2>
-<p>Programmers new to OCaml are often frustrated by what they perceive as the
-difficulty of doing simple things.  A good example of this is accumulation.
-You have a list and want to compute some value from the list elements.
-For instance, say you want to get the maximum value of the list (and assume
-that you only have a two-element <code class="docutils literal notranslate"><span class="pre">max</span></code> function to compute maximums).
-A Python programmer could immediately write this code:</p>
-<blockquote>
-<div><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">max_list</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the maximum of a list of positive integers.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">0</span>
-    <span class="n">mx</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
-        <span class="n">mx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">mx</span>
+<div class="section" id="write-stubs">
+<h2>Write stubs!<a class="headerlink" href="#write-stubs" title="Permalink to this heading"></a></h2>
+<p>When you are starting to write a function, write a “stub”.
+This is an incomplete function. Just put in</p>
+<ul class="simple">
+<li><p>the arguments</p></li>
+<li><p>type annotations for arguments and the return type
+(This is _very_ important!  Don’t skip this step!)</p></li>
+<li><p>and <code class="docutils literal notranslate"><span class="pre">failwith</span> <span class="pre">&quot;TODO&quot;</span></code> for the body.</p></li>
+</ul>
+<p>Then fill it in later.</p>
+<p>Here’s an example of a stub:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">halts_on_all_inputs</span> <span class="o">(</span><span class="n">f</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span><span class="o">)</span> <span class="o">:</span> <span class="kt">bool</span> <span class="o">=</span>
+  <span class="n">failwith</span> <span class="s2">&quot;TODO&quot;</span>
 </pre></div>
 </div>
-</div></blockquote>
-<p>In OCaml, we do this sort of thing using folds, specifically left folds.</p>
-<blockquote>
-<div><div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span>
-  <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span>
-    <span class="o">(</span><span class="k">fun</span> <span class="n">mx</span> <span class="n">item</span> <span class="o">-&gt;</span> <span class="n">max</span> <span class="n">mx</span> <span class="n">item</span><span class="o">)</span>
-    <span class="mi">0</span>
-    <span class="n">lst</span>
-</pre></div>
+<p>This might be a bit hard to complete, though.</p>
+<p>Writing stubs is a great way to get past “coder’s block”.
+Once the stub is written,
+you can compile it and make sure it type checks.
+If it’s recursive, you can usually easily fill in the base cases.
+At that point, you’re ready to work on the body of the function.</p>
 </div>
-</div></blockquote>
-<p>This can be simplified further:</p>
-<blockquote>
-<div><div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="n">max</span> <span class="mi">0</span> <span class="n">lst</span>
-</pre></div>
+<div class="section" id="use-wishful-thinking">
+<h2>Use wishful thinking!<a class="headerlink" href="#use-wishful-thinking" title="Permalink to this heading"></a></h2>
+<p>If a function seems too difficult/complex to write directly,
+ask yourself “what function do I need
+which would make it really easy to write this function?”
+Then assume that <em>that</em> function exists
+(<em>i.e.</em> write a stub for it),
+and write your main function using the assumed function.
+When that’s done, go back and write the body of the assumed function.</p>
+<p>This is one of <em>the</em> most useful programming tips.  It’s explored at some
+length in the book SICP (Structure and Interpretation of Computer Programs),
+which is an amazing book (and which is the basis of CS 4).</p>
 </div>
-</div></blockquote>
-<p>Whenever you need to write code which accumulates something over a list,
-you want to use a fold.</p>
-<div class="section" id="left-vs-right-folds">
-<h3>Left <em>vs.</em> right folds<a class="headerlink" href="#left-vs-right-folds" title="Permalink to this heading"></a></h3>
-<p>95% of the time or more, if you want to use a fold in OCaml,
-you want to use a left fold (<code class="docutils literal notranslate"><span class="pre">List.fold_left</span></code>)
-instead of a right fold (<code class="docutils literal notranslate"><span class="pre">List.fold_right</span></code>).
-Left folds are tail-recursive (space efficient) and are more natural
-than right folds, which are also less space efficient.</p>
-<p>On the other hand, there are cases where right folds are the right thing to
-use.  When you want to accumulate things in a list from the right going back
-to the left, a right fold is usually going to be simpler than a left fold,
-and you shouldn’t feel bad about using one.</p>
+<div class="section" id="debugging-tips">
+<h2>Debugging tips<a class="headerlink" href="#debugging-tips" title="Permalink to this heading"></a></h2>
+<div class="section" id="printf-style-debugging">
+<h3><code class="docutils literal notranslate"><span class="pre">printf</span></code>-style debugging<a class="headerlink" href="#printf-style-debugging" title="Permalink to this heading"></a></h3>
+</div>
+<div class="section" id="using-the-repl">
+<h3>Using the REPL<a class="headerlink" href="#using-the-repl" title="Permalink to this heading"></a></h3>
 </div>
 </div>
 </div>
