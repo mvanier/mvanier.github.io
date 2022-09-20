@@ -539,3 +539,98 @@ If you only need one module, you can alternatively do this:
 Or you can ``open Support`` and then use a qualified function |eg|
 ``Utils.last``.
 
+
+On S-expressions
+----------------
+
+What S-expressions are
+^^^^^^^^^^^^^^^^^^^^^^
+
+S-expressions are described in this `Wikipedia article`_.
+Essentially, they are an extremely simple (perhaps the most simple) way to
+represent structured data.  The "S" in "S-expression" originally meant
+"symbolic"; these were originally the way to represent arbitrary data in the
+Lisp programming language.  (They were eventually used to represent Lisp code
+as well, but that's another story.)  Even now, S-expressions are often
+associated with Lisp-like programming languages such as Scheme and Racket, but
+they are far more generally useful, as we'll see.
+
+.. _Wikipedia article: https://en.wikipedia.org/wiki/S-expression
+
+An S-expression is essentially just a nested list of arbitrary symbols.
+S-expressions can be described recursively as either
+
+* a symbol (which can be an arbitrary string,
+  but normally without internal spaces or quotes)
+* or a list of S-expressions
+
+Usually, we use parentheses to delimit a list.  Here are some sample
+S-expressions:
+
+* ``foo``
+* ``(a b c)``
+* ``(this is (a (nested list) of) symbols)``
+* ``((foo 1) (bar 2) (baz 3))``
+
+Basically, any structured data can be represented as an S-expression.
+
+How we use them
+^^^^^^^^^^^^^^^
+
+We use S-expressions as both a serialization format and a visualization
+tool.  "Serialization" means that we can take arbitrary OCaml datatypes and
+convert them to and from S-expressions without losing any information.  For
+visualization, we take some OCaml datatype we want to look at, convert it to an
+S-expression, and then pretty-print the S-expression in a readable format.
+
+Visualization is incredibly useful for debugging.  We will be using a lot of
+fairly complex OCaml datatypes, and our compiler passes will have the job of
+converting one datatype into another.  We would like to be able to inspect
+these datatypes to make sure that we converted them correctly.  If we had to
+write special string conversion functions for all our datatypes, that would be
+an enormous amount of boring work.  Instead, there are OCaml libraries that will
+allow us to automatically convert any datatype to an S-expression if we add
+small annotations to our code.  (These libraries are the ``sexplib`` and
+``ppx_sexp_conv`` libraries.)
+
+In order to get OCaml to generate the S-expression conversion code, we 
+have to add an annotation after type declarations:
+
+.. code-block:: OCaml
+
+   type value =
+     | Bool of bool
+     | Int of int
+     | Function of (value -> value)
+   [@@deriving sexp]   (* this is the annotation *)
+
+The ``[@@deriving sexp]`` line is what is called a "PPX extension";
+it's a kind of code-generating macro which, when interpreted by OCaml,
+will proceed to generate two functions:
+``sexp_of_value`` (convert a ``value`` to an S-expression)
+and ``value_of_sexp`` (convert an S-expression to a value).
+We tend to use the first function(s) much more than the second,
+because we usually want to convert our types to S-expressions.
+
+We will use this facility for nearly all our data structures.
+Fortunately, you don't have to worry about it!
+Just don't remove those annotations; they are doing real work.
+
+All you really need to know is that for any datatype ``foo``
+which has the ``[@@deriving sexp]`` annotation, (which is almost all of them)
+there will be functions called ``sexp_of_foo`` and ``foo_of_sexp`` generated.
+There is also a function in the ``Support.Utils`` module called ``print_sexp``
+which will print out an S-expression in a readable format.
+So if you need to print out the data structure,
+just convert it to an S-expression with ``sexp_of_foo``
+and then print it using ``print_sexp``.
+
+.. note::
+
+   There is much, much more that could be said about OCaml's PPX
+   extension system, which is a relatively new feature of the language
+   (and which wasn't discussed at all in CS 4 or CS 131).
+   It's a very powerful code-generation system,
+   but it also has a fairly steep learning curve.
+
+

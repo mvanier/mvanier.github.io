@@ -63,6 +63,11 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#use-the-support-library">Use the <code class="docutils literal notranslate"><span class="pre">support</span></code> library!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#on-s-expressions">On S-expressions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#what-s-expressions-are">What S-expressions are</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-we-use-them">How we use them</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="0/Installing_OCaml.html">Installing OCaml</a></li>
@@ -541,6 +546,88 @@ whatever modules you need from it:</p>
 </div>
 <p>Or you can <code class="docutils literal notranslate"><span class="pre">open</span> <span class="pre">Support</span></code> and then use a qualified function <em>e.g.</em>
 <code class="docutils literal notranslate"><span class="pre">Utils.last</span></code>.</p>
+</div>
+<div class="section" id="on-s-expressions">
+<h2>On S-expressions<a class="headerlink" href="#on-s-expressions" title="Permalink to this heading"></a></h2>
+<div class="section" id="what-s-expressions-are">
+<h3>What S-expressions are<a class="headerlink" href="#what-s-expressions-are" title="Permalink to this heading"></a></h3>
+<p>S-expressions are described in this <a class="reference external" href="https://en.wikipedia.org/wiki/S-expression">Wikipedia article</a>.
+Essentially, they are an extremely simple (perhaps the most simple) way to
+represent structured data.  The “S” in “S-expression” originally meant
+“symbolic”; these were originally the way to represent arbitrary data in the
+Lisp programming language.  (They were eventually used to represent Lisp code
+as well, but that’s another story.)  Even now, S-expressions are often
+associated with Lisp-like programming languages such as Scheme and Racket, but
+they are far more generally useful, as we’ll see.</p>
+<p>An S-expression is essentially just a nested list of arbitrary symbols.
+S-expressions can be described recursively as either</p>
+<ul class="simple">
+<li><p>a symbol (which can be an arbitrary string,
+but normally without internal spaces or quotes)</p></li>
+<li><p>or a list of S-expressions</p></li>
+</ul>
+<p>Usually, we use parentheses to delimit a list.  Here are some sample
+S-expressions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">foo</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(a</span> <span class="pre">b</span> <span class="pre">c)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(this</span> <span class="pre">is</span> <span class="pre">(a</span> <span class="pre">(nested</span> <span class="pre">list)</span> <span class="pre">of)</span> <span class="pre">symbols)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">((foo</span> <span class="pre">1)</span> <span class="pre">(bar</span> <span class="pre">2)</span> <span class="pre">(baz</span> <span class="pre">3))</span></code></p></li>
+</ul>
+<p>Basically, any structured data can be represented as an S-expression.</p>
+</div>
+<div class="section" id="how-we-use-them">
+<h3>How we use them<a class="headerlink" href="#how-we-use-them" title="Permalink to this heading"></a></h3>
+<p>We use S-expressions as both a serialization format and a visualization
+tool.  “Serialization” means that we can take arbitrary OCaml datatypes and
+convert them to and from S-expressions without losing any information.  For
+visualization, we take some OCaml datatype we want to look at, convert it to an
+S-expression, and then pretty-print the S-expression in a readable format.</p>
+<p>Visualization is incredibly useful for debugging.  We will be using a lot of
+fairly complex OCaml datatypes, and our compiler passes will have the job of
+converting one datatype into another.  We would like to be able to inspect
+these datatypes to make sure that we converted them correctly.  If we had to
+write special string conversion functions for all our datatypes, that would be
+an enormous amount of boring work.  Instead, there are OCaml libraries that will
+allow us to automatically convert any datatype to an S-expression if we add
+small annotations to our code.  (These libraries are the <code class="docutils literal notranslate"><span class="pre">sexplib</span></code> and
+<code class="docutils literal notranslate"><span class="pre">ppx_sexp_conv</span></code> libraries.)</p>
+<p>In order to get OCaml to generate the S-expression conversion code, we
+have to add an annotation after type declarations:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="k">value</span> <span class="o">=</span>
+  <span class="o">|</span> <span class="nc">Bool</span> <span class="k">of</span> <span class="kt">bool</span>
+  <span class="o">|</span> <span class="nc">Int</span> <span class="k">of</span> <span class="kt">int</span>
+  <span class="o">|</span> <span class="nc">Function</span> <span class="k">of</span> <span class="o">(</span><span class="k">value</span> <span class="o">-&gt;</span> <span class="k">value</span><span class="o">)</span>
+<span class="o">[@@</span><span class="n">deriving</span> <span class="n">sexp</span><span class="o">]</span>   <span class="c">(* this is the annotation *)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">[&#64;&#64;deriving</span> <span class="pre">sexp]</span></code> line is what is called a “PPX extension”;
+it’s a kind of code-generating macro which, when interpreted by OCaml,
+will proceed to generate two functions:
+<code class="docutils literal notranslate"><span class="pre">sexp_of_value</span></code> (convert a <code class="docutils literal notranslate"><span class="pre">value</span></code> to an S-expression)
+and <code class="docutils literal notranslate"><span class="pre">value_of_sexp</span></code> (convert an S-expression to a value).
+We tend to use the first function(s) much more than the second,
+because we usually want to convert our types to S-expressions.</p>
+<p>We will use this facility for nearly all our data structures.
+Fortunately, you don’t have to worry about it!
+Just don’t remove those annotations; they are doing real work.</p>
+<p>All you really need to know is that for any datatype <code class="docutils literal notranslate"><span class="pre">foo</span></code>
+which has the <code class="docutils literal notranslate"><span class="pre">[&#64;&#64;deriving</span> <span class="pre">sexp]</span></code> annotation, (which is almost all of them)
+there will be functions called <code class="docutils literal notranslate"><span class="pre">sexp_of_foo</span></code> and <code class="docutils literal notranslate"><span class="pre">foo_of_sexp</span></code> generated.
+There is also a function in the <code class="docutils literal notranslate"><span class="pre">Support.Utils</span></code> module called <code class="docutils literal notranslate"><span class="pre">print_sexp</span></code>
+which will print out an S-expression in a readable format.
+So if you need to print out the data structure,
+just convert it to an S-expression with <code class="docutils literal notranslate"><span class="pre">sexp_of_foo</span></code>
+and then print it using <code class="docutils literal notranslate"><span class="pre">print_sexp</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is much, much more that could be said about OCaml’s PPX
+extension system, which is a relatively new feature of the language
+(and which wasn’t discussed at all in CS 4 or CS 131).
+It’s a very powerful code-generation system,
+but it also has a fairly steep learning curve.</p>
+</div>
+</div>
 </div>
 </div>
 
