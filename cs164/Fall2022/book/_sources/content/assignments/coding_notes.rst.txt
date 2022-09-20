@@ -453,4 +453,89 @@ converted to S-expressions, and there is a ``print_sexp`` function in the
 This is extremely useful for tracking down algorithm errors.
 
 
+Use the ``support`` library!
+----------------------------
+
+The ``support`` library (which is part of the CS 164 code base)
+contains a number of modules with useful functions and data structures.
+Often, this can save you a lot of time versus writing them yourself.
+Here, we will briefly discuss the modules,
+but we **strongly** encourage you to read the comments
+in the ``support/*.mli`` files to find out more.
+We will remind you in the assignments which functions and data structures
+are particularly useful for that assignment.
+
+The ``support`` library contains these modules:
+
+* ``Functors``
+
+  This module defines three module types: ``OrderedTypeS``,
+  ``SetS.S`` and ``MapS.S``.  They are extensions of the standard OCaml
+  module types ``OrderedType``, ``Set.S`` and ``Map.S``.
+  The extensions mostly have to do with functions that convert
+  instances of the internal datatypes to and from S-expressions, as well
+  as a few other utility functions.  There are also new functors called
+  ``SetS.Make`` and ``MapS.Make`` that create modules with the module types
+  ``SetS.S`` and ``MapS.S`` respectively, given a module of module type
+  ``OrderedTypeS``.
+
+  In general, you should never be using a module of module type
+  ``OrderedType``, ``Set.S``, or ``Map.S``.  Always use the extended versions
+  (``OrderedTypeS``, ``SetS.S``, or ``MapS.S``).  Usually, all you have to do
+  is type the extra ``S`` at the end of the name.
+
+* ``Dgraph``
+
+  This module contains a functor called ``Make``
+  which makes a module of type ``Dgraph.S``,
+  which implements a directed graph.
+  The functor takes an ordered type module (module type ``OrderedTypeS``)
+  as its argument.
+
+  Note that this (like the other graph implementations in this library)
+  is implemented in a purely functional way.
+  This is not as efficient as an imperative graph could be,
+  but it's more than sufficient for our needs
+  and tends to be very well-behaved
+  (as functional data structures usually are).
+  
+* ``Multigraph``
+
+  This is like ``Dgraph``, but implements a directed multigraph.
+
+* ``PriorityQueue``
+  
+  This module contains a very simple (some might call it "brain dead") version
+  of a priority queue module called ``PriorityQueue.Simple``.
+  One day we'll implement a more efficient one, but this will do for now.
+
+* ``Ugraph``
+
+  This is like ``Dgraph``, but implements an undirected graph.
+
+* ``Utils``
+
+  This contains lots of little utility functions that aren't found in the
+  OCaml standard libraries.  There are string and list functions,
+  functions to generate unique variable names, functions to work with
+  S-expressions, and so on.  This is a module you will want to get familiar
+  with.
+
+You use the ``support`` library by ``open``\ing it and then ``open``\ing
+whatever modules you need from it:
+
+.. code-block:: OCaml
+
+   open Support
+   open Functors
+   open Utils
+
+If you only need one module, you can alternatively do this:
+
+.. code-block:: OCaml
+
+   open Support.Utils
+
+Or you can ``open Support`` and then use a qualified function |eg|
+``Utils.last``.
 

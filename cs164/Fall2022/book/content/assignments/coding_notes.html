@@ -62,6 +62,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#insert-debugging-code-into-tricky-algorithms">Insert debugging code into tricky algorithms</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#use-the-support-library">Use the <code class="docutils literal notranslate"><span class="pre">support</span></code> library!</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="0/Installing_OCaml.html">Installing OCaml</a></li>
@@ -467,6 +468,79 @@ converted to S-expressions, and there is a <code class="docutils literal notrans
 <code class="docutils literal notranslate"><span class="pre">Utils</span></code> module that will print an S-expression in a readable fashion.
 This is extremely useful for tracking down algorithm errors.</p>
 </div>
+</div>
+<div class="section" id="use-the-support-library">
+<h2>Use the <code class="docutils literal notranslate"><span class="pre">support</span></code> library!<a class="headerlink" href="#use-the-support-library" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">support</span></code> library (which is part of the CS 164 code base)
+contains a number of modules with useful functions and data structures.
+Often, this can save you a lot of time versus writing them yourself.
+Here, we will briefly discuss the modules,
+but we <strong>strongly</strong> encourage you to read the comments
+in the <code class="docutils literal notranslate"><span class="pre">support/*.mli</span></code> files to find out more.
+We will remind you in the assignments which functions and data structures
+are particularly useful for that assignment.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">support</span></code> library contains these modules:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Functors</span></code></p>
+<p>This module defines three module types: <code class="docutils literal notranslate"><span class="pre">OrderedTypeS</span></code>,
+<code class="docutils literal notranslate"><span class="pre">SetS.S</span></code> and <code class="docutils literal notranslate"><span class="pre">MapS.S</span></code>.  They are extensions of the standard OCaml
+module types <code class="docutils literal notranslate"><span class="pre">OrderedType</span></code>, <code class="docutils literal notranslate"><span class="pre">Set.S</span></code> and <code class="docutils literal notranslate"><span class="pre">Map.S</span></code>.
+The extensions mostly have to do with functions that convert
+instances of the internal datatypes to and from S-expressions, as well
+as a few other utility functions.  There are also new functors called
+<code class="docutils literal notranslate"><span class="pre">SetS.Make</span></code> and <code class="docutils literal notranslate"><span class="pre">MapS.Make</span></code> that create modules with the module types
+<code class="docutils literal notranslate"><span class="pre">SetS.S</span></code> and <code class="docutils literal notranslate"><span class="pre">MapS.S</span></code> respectively, given a module of module type
+<code class="docutils literal notranslate"><span class="pre">OrderedTypeS</span></code>.</p>
+<p>In general, you should never be using a module of module type
+<code class="docutils literal notranslate"><span class="pre">OrderedType</span></code>, <code class="docutils literal notranslate"><span class="pre">Set.S</span></code>, or <code class="docutils literal notranslate"><span class="pre">Map.S</span></code>.  Always use the extended versions
+(<code class="docutils literal notranslate"><span class="pre">OrderedTypeS</span></code>, <code class="docutils literal notranslate"><span class="pre">SetS.S</span></code>, or <code class="docutils literal notranslate"><span class="pre">MapS.S</span></code>).  Usually, all you have to do
+is type the extra <code class="docutils literal notranslate"><span class="pre">S</span></code> at the end of the name.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Dgraph</span></code></p>
+<p>This module contains a functor called <code class="docutils literal notranslate"><span class="pre">Make</span></code>
+which makes a module of type <code class="docutils literal notranslate"><span class="pre">Dgraph.S</span></code>,
+which implements a directed graph.
+The functor takes an ordered type module (module type <code class="docutils literal notranslate"><span class="pre">OrderedTypeS</span></code>)
+as its argument.</p>
+<p>Note that this (like the other graph implementations in this library)
+is implemented in a purely functional way.
+This is not as efficient as an imperative graph could be,
+but it’s more than sufficient for our needs
+and tends to be very well-behaved
+(as functional data structures usually are).</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Multigraph</span></code></p>
+<p>This is like <code class="docutils literal notranslate"><span class="pre">Dgraph</span></code>, but implements a directed multigraph.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PriorityQueue</span></code></p>
+<p>This module contains a very simple (some might call it “brain dead”) version
+of a priority queue module called <code class="docutils literal notranslate"><span class="pre">PriorityQueue.Simple</span></code>.
+One day we’ll implement a more efficient one, but this will do for now.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Ugraph</span></code></p>
+<p>This is like <code class="docutils literal notranslate"><span class="pre">Dgraph</span></code>, but implements an undirected graph.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Utils</span></code></p>
+<p>This contains lots of little utility functions that aren’t found in the
+OCaml standard libraries.  There are string and list functions,
+functions to generate unique variable names, functions to work with
+S-expressions, and so on.  This is a module you will want to get familiar
+with.</p>
+</li>
+</ul>
+<p>You use the <code class="docutils literal notranslate"><span class="pre">support</span></code> library by <code class="docutils literal notranslate"><span class="pre">open</span></code>ing it and then <code class="docutils literal notranslate"><span class="pre">open</span></code>ing
+whatever modules you need from it:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">open</span> <span class="nc">Support</span>
+<span class="k">open</span> <span class="nc">Functors</span>
+<span class="k">open</span> <span class="nc">Utils</span>
+</pre></div>
+</div>
+<p>If you only need one module, you can alternatively do this:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">open</span> <span class="nn">Support</span><span class="p">.</span><span class="nc">Utils</span>
+</pre></div>
+</div>
+<p>Or you can <code class="docutils literal notranslate"><span class="pre">open</span> <span class="pre">Support</span></code> and then use a qualified function <em>e.g.</em>
+<code class="docutils literal notranslate"><span class="pre">Utils.last</span></code>.</p>
 </div>
 </div>
 
