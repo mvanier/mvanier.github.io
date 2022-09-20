@@ -54,6 +54,8 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#nested-pattern-matching">Nested pattern matching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-pipe-operator">The <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> (pipe) operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-apply-operator">The <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> (apply) operator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#write-stubs">Write stubs!</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#use-wishful-thinking">Use wishful thinking!</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#debugging-tips">Debugging tips</a><ul>
@@ -346,6 +348,55 @@ Remember, <strong>OCaml is not whitespace sensitive!</strong>
 So don’t forget the <code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code>.</p>
 </li>
 </ol>
+</div>
+<div class="section" id="the-pipe-operator">
+<h2>The <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> (pipe) operator<a class="headerlink" href="#the-pipe-operator" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> (pipe) operator is a reverse-apply operator
+(analogous to a Unix pipe).
+It’s very convenient when you want to transform some inputs repeatedly
+by applying one function after another.</p>
+<p>Instead of writing this:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="n">func3</span> <span class="o">(</span><span class="n">func2</span> <span class="o">(</span><span class="n">func1</span> <span class="n">data</span><span class="o">))</span>
+</pre></div>
+</div>
+<p>you can write this:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">|&gt;</span> <span class="n">func1</span> <span class="o">|&gt;</span> <span class="n">func2</span> <span class="o">|&gt;</span> <span class="n">func3</span>
+</pre></div>
+</div>
+<p>Aside from having fewer parentheses, it’s often easier to read:
+“Create <code class="docutils literal notranslate"><span class="pre">data</span></code>, then apply <code class="docutils literal notranslate"><span class="pre">func1</span></code>, <code class="docutils literal notranslate"><span class="pre">func2</span></code>, and <code class="docutils literal notranslate"><span class="pre">func3</span></code>
+to it in succession.”</p>
+<p>Also, because of OCaml’s auto-currying of function, it even works
+if one or more of the functions take additional argument, just as long
+as the data structure is the last argument to the function.
+So we might have <em>e.g.</em>:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">|&gt;</span> <span class="n">func1</span> <span class="n">arg1</span> <span class="o">|&gt;</span> <span class="n">func2</span> <span class="n">arg2a</span> <span class="n">arg2b</span> <span class="o">|&gt;</span> <span class="n">func3</span>
+</pre></div>
+</div>
+<p>instead of:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="n">func3</span> <span class="o">(</span><span class="n">func2</span> <span class="n">arg2a</span> <span class="n">arg2b</span> <span class="o">(</span><span class="n">func1</span> <span class="n">arg1</span> <span class="n">data</span><span class="o">))</span>
+</pre></div>
+</div>
+<p>Whether this is clearer is up to you.</p>
+<p>When there are a _lot_ of transformations, it’s nice to write them on
+multiple lines:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="n">data</span>
+  <span class="o">|&gt;</span> <span class="n">transform1</span>
+  <span class="o">|&gt;</span> <span class="n">transform2</span>
+  <span class="o">|&gt;</span> <span class="n">transform3</span> <span class="n">arg</span>
+  <span class="o">|&gt;</span> <span class="n">transform4</span> <span class="n">arg1</span> <span class="n">arg2</span>
+  <span class="c">(* etc. *)</span>
+</pre></div>
+</div>
+<p>This is much more readable than the usual notation:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="n">transform4</span> <span class="n">arg1</span> <span class="n">arg2</span> <span class="o">(</span><span class="n">transform3</span> <span class="n">arg</span> <span class="o">(</span><span class="n">transform2</span> <span class="o">(</span><span class="n">transform1</span> <span class="n">data</span><span class="o">)))</span>
+</pre></div>
+</div>
+<p>and it’s also easier to extend with more transformations.</p>
+</div>
+<div class="section" id="the-apply-operator">
+<h2>The <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> (apply) operator<a class="headerlink" href="#the-apply-operator" title="Permalink to this heading"></a></h2>
+<p>TODO</p>
 </div>
 <div class="section" id="write-stubs">
 <h2>Write stubs!<a class="headerlink" href="#write-stubs" title="Permalink to this heading"></a></h2>

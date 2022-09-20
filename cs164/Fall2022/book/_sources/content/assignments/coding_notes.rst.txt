@@ -291,6 +291,73 @@ pattern match.  There are two cases to consider.
    Remember, **OCaml is not whitespace sensitive!**
    So don't forget the ``begin``/``end``.
 
+The ``|>`` (pipe) operator
+--------------------------
+
+The ``|>`` (pipe) operator is a reverse-apply operator
+(analogous to a Unix pipe).
+It's very convenient when you want to transform some inputs repeatedly
+by applying one function after another.
+
+Instead of writing this:
+
+.. code-block:: OCaml
+
+   func3 (func2 (func1 data))
+
+you can write this:
+
+.. code-block:: OCaml
+
+   data |> func1 |> func2 |> func3
+
+Aside from having fewer parentheses, it's often easier to read:
+"Create ``data``, then apply ``func1``, ``func2``, and ``func3``
+to it in succession."
+
+Also, because of OCaml's auto-currying of function, it even works
+if one or more of the functions take additional argument, just as long
+as the data structure is the last argument to the function.
+So we might have |eg|:
+
+.. code-block:: OCaml
+
+   data |> func1 arg1 |> func2 arg2a arg2b |> func3
+
+instead of:
+
+.. code-block:: OCaml
+
+   func3 (func2 arg2a arg2b (func1 arg1 data))
+
+Whether this is clearer is up to you.
+
+When there are a _lot_ of transformations, it's nice to write them on 
+multiple lines:
+
+.. code-block:: OCaml
+
+   data
+     |> transform1
+     |> transform2
+     |> transform3 arg
+     |> transform4 arg1 arg2
+     (* etc. *)
+
+This is much more readable than the usual notation:
+
+.. code-block:: OCaml
+
+   transform4 arg1 arg2 (transform3 arg (transform2 (transform1 data)))
+
+and it's also easier to extend with more transformations.
+
+
+The ``@@`` (apply) operator
+---------------------------
+
+TODO
+
 
 Write stubs!
 ------------
