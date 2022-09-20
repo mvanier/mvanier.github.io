@@ -119,11 +119,11 @@ if you ever have to modify the code.
 Folds are your friend!
 ----------------------
 
-Programmers new to OCaml are often frustrated by what they perceive as the
-difficulty of doing simple things.  A good example of this is accumulation.
-You have a list and want to compute some value from the list elements.
-For instance, say you want to get the maximum value of the list (and assume
-that you only have a two-element ``max`` function to compute maximums).
+Programmers new to functional programming are often frustrated by what they
+perceive as the difficulty of doing simple things.  A good example of this is
+accumulation. You have a list and want to compute some value from the list
+elements. For instance, say you want to get the maximum value of the list (and
+assume that you only have a two-element ``max`` function to compute maximums).
 A Python programmer could immediately write this code:
 
 .. code-block:: Python
@@ -165,8 +165,7 @@ function:
      let rec iter rest mx =
        match rest with
          | [] -> mx
-         | h :: t ->
-           if h > mx then iter t h else iter t mx
+         | h :: t -> iter t (max h mx)
      in
        iter lst 0
 
@@ -188,12 +187,13 @@ Left *vs.* right folds
 you want to use a left fold (``List.fold_left``)
 instead of a right fold (``List.fold_right``).
 Left folds are tail recursive (space efficient) and are more natural
-than right folds, which are also less space efficient.
+than right folds, which are not tail recursive
+and thus not space efficient.
 
 On the other hand, there are cases where right folds are the right thing to
 use.  When you want to accumulate things in a list from the right going back
 to the left, a right fold is usually going to be simpler than a left fold,
-and you shouldn't feel bad about using one.
+and you shouldn't feel bad about using one in that case.
 
 
 Nested pattern matching
@@ -232,7 +232,8 @@ pattern match.  There are two cases to consider.
    Merging pattern matches is almost always possible if the
    inner pattern match doesn't depend on a value computed using
    information from the outer pattern match.
-   Unnecessary pattern matches are bad style and will be marked down.
+   Unnecessary pattern matches are bad style and will be marked down
+   (but we'll try to alert you of this issue during code reviews).
 
 #. Where the two pattern matches *can't* be combined.
    Consider this code:
@@ -257,7 +258,7 @@ pattern match.  There are two cases to consider.
    the inner match, but often this isn't feasible.
    So you have nested ``match`` expressions.
 
-   When you have nested ``match`` expressions, you must surround them
+   When you have nested ``match`` expressions, you **must** surround them
    by either ``begin``/``end`` delimiters (as we did above) or parentheses,
    which looks like this:
 
@@ -300,7 +301,7 @@ This is an incomplete function. Just put in
 * the arguments
 
 * type annotations for arguments and the return type
-  (This is _very_ important!  Don't skip this step!)
+  (This is *very* important!  Don't skip this step!)
 
 * and ``failwith "TODO"`` for the body.
 
@@ -349,7 +350,7 @@ we've found to be useful.
 ``printf``\-style debugging
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-"printf"-style debugging is highly effective if you do it right.  The wrong
+``printf``-style debugging is highly effective if you do it right.  The wrong
 way is to add ``printf`` statements to otherwise functional code:
 
 .. code-block:: OCaml
@@ -449,7 +450,8 @@ and outputs:
 To do this, you need to be able to convert the algorithm inputs/output
 to strings.  Most of the data structures you will be using can be easily
 converted to S-expressions, and there is a ``print_sexp`` function in the
-``Utils`` module that will print an S-expression in a readable fashion.
+``Utils`` module that will print an S-expression in a readable fashion
+(this is discussed below).
 This is extremely useful for tracking down algorithm errors.
 
 

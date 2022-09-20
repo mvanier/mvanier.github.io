@@ -199,11 +199,11 @@ the more helpful explicit type annotations are.</p>
 </div>
 <div class="section" id="folds-are-your-friend">
 <h2>Folds are your friend!<a class="headerlink" href="#folds-are-your-friend" title="Permalink to this heading"></a></h2>
-<p>Programmers new to OCaml are often frustrated by what they perceive as the
-difficulty of doing simple things.  A good example of this is accumulation.
-You have a list and want to compute some value from the list elements.
-For instance, say you want to get the maximum value of the list (and assume
-that you only have a two-element <code class="docutils literal notranslate"><span class="pre">max</span></code> function to compute maximums).
+<p>Programmers new to functional programming are often frustrated by what they
+perceive as the difficulty of doing simple things.  A good example of this is
+accumulation. You have a list and want to compute some value from the list
+elements. For instance, say you want to get the maximum value of the list (and
+assume that you only have a two-element <code class="docutils literal notranslate"><span class="pre">max</span></code> function to compute maximums).
 A Python programmer could immediately write this code:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">max_list</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the maximum of a list of positive integers.&quot;&quot;&quot;</span>
@@ -235,8 +235,7 @@ function:</p>
   <span class="k">let</span> <span class="k">rec</span> <span class="n">iter</span> <span class="n">rest</span> <span class="n">mx</span> <span class="o">=</span>
     <span class="k">match</span> <span class="n">rest</span> <span class="k">with</span>
       <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="n">mx</span>
-      <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
-        <span class="k">if</span> <span class="n">h</span> <span class="o">&gt;</span> <span class="n">mx</span> <span class="k">then</span> <span class="n">iter</span> <span class="n">t</span> <span class="n">h</span> <span class="k">else</span> <span class="n">iter</span> <span class="n">t</span> <span class="n">mx</span>
+      <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="n">iter</span> <span class="n">t</span> <span class="o">(</span><span class="n">max</span> <span class="n">h</span> <span class="n">mx</span><span class="o">)</span>
   <span class="k">in</span>
     <span class="n">iter</span> <span class="n">lst</span> <span class="mi">0</span>
 </pre></div>
@@ -256,11 +255,12 @@ easier to just write an iterative helper function.</p>
 you want to use a left fold (<code class="docutils literal notranslate"><span class="pre">List.fold_left</span></code>)
 instead of a right fold (<code class="docutils literal notranslate"><span class="pre">List.fold_right</span></code>).
 Left folds are tail recursive (space efficient) and are more natural
-than right folds, which are also less space efficient.</p>
+than right folds, which are not tail recursive
+and thus not space efficient.</p>
 <p>On the other hand, there are cases where right folds are the right thing to
 use.  When you want to accumulate things in a list from the right going back
 to the left, a right fold is usually going to be simpler than a left fold,
-and you shouldn’t feel bad about using one.</p>
+and you shouldn’t feel bad about using one in that case.</p>
 </div>
 </div>
 <div class="section" id="nested-pattern-matching">
@@ -293,7 +293,8 @@ for “don’t care” situations.</p>
 <p>Merging pattern matches is almost always possible if the
 inner pattern match doesn’t depend on a value computed using
 information from the outer pattern match.
-Unnecessary pattern matches are bad style and will be marked down.</p>
+Unnecessary pattern matches are bad style and will be marked down
+(but we’ll try to alert you of this issue during code reviews).</p>
 </li>
 <li><p>Where the two pattern matches <em>can’t</em> be combined.
 Consider this code:</p>
@@ -315,7 +316,7 @@ depends on a value which must be computed (it’s not structural).
 For very simple cases, you can use a <code class="docutils literal notranslate"><span class="pre">when</span></code> clause instead of
 the inner match, but often this isn’t feasible.
 So you have nested <code class="docutils literal notranslate"><span class="pre">match</span></code> expressions.</p>
-<p>When you have nested <code class="docutils literal notranslate"><span class="pre">match</span></code> expressions, you must surround them
+<p>When you have nested <code class="docutils literal notranslate"><span class="pre">match</span></code> expressions, you <strong>must</strong> surround them
 by either <code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code> delimiters (as we did above) or parentheses,
 which looks like this:</p>
 <div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="o">(</span><span class="n">lst</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span><span class="o">)</span> <span class="o">:</span> <span class="o">(</span><span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span><span class="o">)</span> <span class="n">option</span> <span class="o">=</span>
@@ -353,7 +354,7 @@ This is an incomplete function. Just put in</p>
 <ul class="simple">
 <li><p>the arguments</p></li>
 <li><p>type annotations for arguments and the return type
-(This is _very_ important!  Don’t skip this step!)</p></li>
+(This is <em>very</em> important!  Don’t skip this step!)</p></li>
 <li><p>and <code class="docutils literal notranslate"><span class="pre">failwith</span> <span class="pre">&quot;TODO&quot;</span></code> for the body.</p></li>
 </ul>
 <p>Then fill it in later.</p>
@@ -390,7 +391,7 @@ them.  Debugging functional languages can be challenging; here are some tips
 we’ve found to be useful.</p>
 <div class="section" id="printf-style-debugging">
 <h3><code class="docutils literal notranslate"><span class="pre">printf</span></code>-style debugging<a class="headerlink" href="#printf-style-debugging" title="Permalink to this heading"></a></h3>
-<p>“printf”-style debugging is highly effective if you do it right.  The wrong
+<p><code class="docutils literal notranslate"><span class="pre">printf</span></code>-style debugging is highly effective if you do it right.  The wrong
 way is to add <code class="docutils literal notranslate"><span class="pre">printf</span></code> statements to otherwise functional code:</p>
 <div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="o">...</span> <span class="k">in</span>
 <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;x = %s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="n">x</span><span class="o">;</span>
@@ -470,7 +471,8 @@ and outputs:</p>
 <p>To do this, you need to be able to convert the algorithm inputs/output
 to strings.  Most of the data structures you will be using can be easily
 converted to S-expressions, and there is a <code class="docutils literal notranslate"><span class="pre">print_sexp</span></code> function in the
-<code class="docutils literal notranslate"><span class="pre">Utils</span></code> module that will print an S-expression in a readable fashion.
+<code class="docutils literal notranslate"><span class="pre">Utils</span></code> module that will print an S-expression in a readable fashion
+(this is discussed below).
 This is extremely useful for tracking down algorithm errors.</p>
 </div>
 </div>
