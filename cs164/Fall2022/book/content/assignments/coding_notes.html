@@ -45,26 +45,33 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Assignments</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">OCaml coding notes and tips</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#warnings">Warnings</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#functional-style-by-default">Functional style by default</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tail-recursion-by-default">Tail recursion by default</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#persistent-data-structures">Persistent data structures</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#type-annotations">Type annotations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#folds-are-your-friend">Folds are your friend!</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#left-vs-right-folds">Left <em>vs.</em> right folds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-programming-tips">Functional programming tips</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#use-functional-style-by-default">Use functional style by default</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#use-tail-recursion-by-default">Use tail recursion by default</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#persistent-data-structures">Persistent data structures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#type-annotations">Type annotations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#folds-are-your-friend">Folds are your friend!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nested-pattern-matching">Nested pattern matching</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#nested-pattern-matching">Nested pattern matching</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#the-pipe-operator">The <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> (pipe) operator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#the-apply-operator">The <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> (apply) operator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#write-stubs">Write stubs!</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#use-wishful-thinking">Use wishful thinking!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#new-ocaml-features">New OCaml features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-pipe-operator">The <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> (pipe) operator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-apply-operator">The <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> (apply) operator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#labelled-arguments">Labelled arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#design-tips">Design tips</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#write-stubs">Write stubs!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#use-wishful-thinking">Use wishful thinking!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#use-the-support-library">Use the <code class="docutils literal notranslate"><span class="pre">support</span></code> library!</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#debugging-tips">Debugging tips</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#printf-style-debugging"><code class="docutils literal notranslate"><span class="pre">printf</span></code>-style debugging</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#using-the-repl">Using the REPL</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#insert-debugging-code-into-tricky-algorithms">Insert debugging code into tricky algorithms</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#use-the-support-library">Use the <code class="docutils literal notranslate"><span class="pre">support</span></code> library!</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#on-s-expressions">On S-expressions</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#what-s-expressions-are">What S-expressions are</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-we-use-them">How we use them</a></li>
@@ -116,8 +123,10 @@ so don’t just skip this document!</p>
 partially written).  Never ignore warnings.  Your finished code should <em>never</em>
 generate warnings.</p>
 </div>
-<div class="section" id="functional-style-by-default">
-<h2>Functional style by default<a class="headerlink" href="#functional-style-by-default" title="Permalink to this heading"></a></h2>
+<div class="section" id="functional-programming-tips">
+<h2>Functional programming tips<a class="headerlink" href="#functional-programming-tips" title="Permalink to this heading"></a></h2>
+<div class="section" id="use-functional-style-by-default">
+<h3>Use functional style by default<a class="headerlink" href="#use-functional-style-by-default" title="Permalink to this heading"></a></h3>
 <p>Code should be written in a functional style (no <code class="docutils literal notranslate"><span class="pre">ref</span></code>s, arrays, or records
 with mutable fields) except where indicated.  Marks will be taken off if this
 rule is violated.  We will let you know when it’s OK to use imperative idioms.
@@ -127,8 +136,8 @@ used, but we do use <code class="docutils literal notranslate"><span class="pre"
 They are not in any particular order, so feel free to browse until you find
 something interesting.</p>
 </div>
-<div class="section" id="tail-recursion-by-default">
-<h2>Tail recursion by default<a class="headerlink" href="#tail-recursion-by-default" title="Permalink to this heading"></a></h2>
+<div class="section" id="use-tail-recursion-by-default">
+<h3>Use tail recursion by default<a class="headerlink" href="#use-tail-recursion-by-default" title="Permalink to this heading"></a></h3>
 <p>As you recall, a lot of CS 4 was spent teaching you to write functions using
 recursion instead of loops, and specifically tail recursion.  We use tail
 recursion because it has desirable space properties, so in general,
@@ -136,7 +145,7 @@ when you write a recursive function, try hard to make it tail recursive.
 If you can’t do this, be prepared to explain why during code reviews.</p>
 </div>
 <div class="section" id="persistent-data-structures">
-<h2>Persistent data structures<a class="headerlink" href="#persistent-data-structures" title="Permalink to this heading"></a></h2>
+<h3>Persistent data structures<a class="headerlink" href="#persistent-data-structures" title="Permalink to this heading"></a></h3>
 <p>Probably the hardest part of using functional programming effectively is
 getting used to persistent data structures (like lists) instead of mutable data
 structures (like arrays).</p>
@@ -158,7 +167,7 @@ in a functional style than in an imperative style.
 There is simply less that can go wrong.</p>
 </div>
 <div class="section" id="type-annotations">
-<h2>Type annotations<a class="headerlink" href="#type-annotations" title="Permalink to this heading"></a></h2>
+<h3>Type annotations<a class="headerlink" href="#type-annotations" title="Permalink to this heading"></a></h3>
 <p>We <em>strongly</em> recommend that you add type annotations
 to all functions that are internal to a module.
 It will save you a lot of grief.
@@ -200,7 +209,7 @@ the more helpful explicit type annotations are.</p>
 </div>
 </div>
 <div class="section" id="folds-are-your-friend">
-<h2>Folds are your friend!<a class="headerlink" href="#folds-are-your-friend" title="Permalink to this heading"></a></h2>
+<h3>Folds are your friend!<a class="headerlink" href="#folds-are-your-friend" title="Permalink to this heading"></a></h3>
 <p>Programmers new to functional programming are often frustrated by what they
 perceive as the difficulty of doing simple things.  A good example of this is
 accumulation. You have a list and want to compute some value from the list
@@ -252,7 +261,7 @@ iteration. You can still use <code class="docutils literal notranslate"><span cl
 tuple of all the things you’re accumulating, but in my experience, it’s often
 easier to just write an iterative helper function.</p>
 <div class="section" id="left-vs-right-folds">
-<h3>Left <em>vs.</em> right folds<a class="headerlink" href="#left-vs-right-folds" title="Permalink to this heading"></a></h3>
+<h4>Left <em>vs.</em> right folds<a class="headerlink" href="#left-vs-right-folds" title="Permalink to this heading"></a></h4>
 <p>95% of the time or more, if you want to use a fold in OCaml,
 you want to use a left fold (<code class="docutils literal notranslate"><span class="pre">List.fold_left</span></code>)
 instead of a right fold (<code class="docutils literal notranslate"><span class="pre">List.fold_right</span></code>).
@@ -266,7 +275,7 @@ and you shouldn’t feel bad about using one in that case.</p>
 </div>
 </div>
 <div class="section" id="nested-pattern-matching">
-<h2>Nested pattern matching<a class="headerlink" href="#nested-pattern-matching" title="Permalink to this heading"></a></h2>
+<h3>Nested pattern matching<a class="headerlink" href="#nested-pattern-matching" title="Permalink to this heading"></a></h3>
 <p>It’s very common to want to write a pattern match inside another
 pattern match.  There are two cases to consider.</p>
 <ol class="arabic">
@@ -349,8 +358,11 @@ So don’t forget the <code class="docutils literal notranslate"><span class="pr
 </li>
 </ol>
 </div>
+</div>
+<div class="section" id="new-ocaml-features">
+<h2>New OCaml features<a class="headerlink" href="#new-ocaml-features" title="Permalink to this heading"></a></h2>
 <div class="section" id="the-pipe-operator">
-<h2>The <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> (pipe) operator<a class="headerlink" href="#the-pipe-operator" title="Permalink to this heading"></a></h2>
+<h3>The <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> (pipe) operator<a class="headerlink" href="#the-pipe-operator" title="Permalink to this heading"></a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> (pipe) operator is a reverse-apply operator
 (analogous to a Unix pipe).
 It’s very convenient when you want to transform some inputs repeatedly
@@ -395,11 +407,104 @@ multiple lines:</p>
 <p>and it’s also easier to extend with more transformations.</p>
 </div>
 <div class="section" id="the-apply-operator">
-<h2>The <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> (apply) operator<a class="headerlink" href="#the-apply-operator" title="Permalink to this heading"></a></h2>
-<p>TODO</p>
+<h3>The <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> (apply) operator<a class="headerlink" href="#the-apply-operator" title="Permalink to this heading"></a></h3>
+<p>The “cousin” of the <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> operator is the <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> (forward apply) operator.
+Like <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code>, it’s never required, but sometimes it can make code a bit nicer by
+removing the need for some parentheses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you know the Haskell language, you’ll recognize the <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> operator as
+the same thing as the <code class="docutils literal notranslate"><span class="pre">$</span></code> operator in Haskell.</p>
 </div>
+<p>The <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> operator is used to apply a function to its argument,
+so <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">&#64;&#64;</span> <span class="pre">x</span></code> is the same as <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">x</span></code>.  Seems pointless, right?
+But consider <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">(1</span> <span class="pre">+</span> <span class="pre">2)</span></code>.  With <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> this becomes <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">&#64;&#64;</span> <span class="pre">1</span> <span class="pre">+</span> <span class="pre">2</span></code>
+and you’ve eliminated the need for the parentheses.  Similarly:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="n">func3</span> <span class="o">(</span><span class="n">func2</span> <span class="o">(</span><span class="n">func1</span> <span class="n">data</span><span class="o">))</span>
+</pre></div>
+</div>
+<p>can be written as:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="n">func3</span> <span class="o">@@</span> <span class="n">func2</span> <span class="o">@@</span> <span class="n">func1</span> <span class="n">data</span>
+</pre></div>
+</div>
+<p>and the parenthesis-saving is even greater!
+(Note that this operator associates to the right.)</p>
+<p>A common use for this is when signalling errors.  In the course compilers,
+most errors use the <code class="docutils literal notranslate"><span class="pre">failwith</span></code> function:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="n">failwith</span> <span class="s2">&quot;my error message&quot;</span>
+</pre></div>
+</div>
+<p>This is fine, but very often, the error message needs to contain
+formatted data <em>e.g.</em></p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">max_i</span> <span class="k">then</span>
+  <span class="n">failwith</span> <span class="o">(</span><span class="nn">Printf</span><span class="p">.</span><span class="n">sprintf</span> <span class="s2">&quot;i value: (%d) is too large&quot;</span> <span class="n">i</span><span class="o">)</span>
+<span class="k">else</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>This can be rewritten using the <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> operator as:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">max_i</span> <span class="k">then</span>
+  <span class="n">failwith</span> <span class="o">@@</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">sprintf</span> <span class="s2">&quot;i value: (%d) is too large&quot;</span> <span class="n">i</span>
+<span class="k">else</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>and sometimes it’s nice to put the <code class="docutils literal notranslate"><span class="pre">Printf.sprintf</span></code> on its own line:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">max_i</span> <span class="k">then</span>
+  <span class="n">failwith</span> <span class="o">@@</span>
+    <span class="nn">Printf</span><span class="p">.</span><span class="n">sprintf</span> <span class="s2">&quot;i value: (%d) is too large&quot;</span> <span class="n">i</span>
+<span class="k">else</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>In fact, this case is so common that we’ve written a helper function called
+<code class="docutils literal notranslate"><span class="pre">failwithf</span></code> (“<code class="docutils literal notranslate"><span class="pre">failwith</span></code> with formatting”), so using that,
+we could rewrite the above code as:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">open</span> <span class="nn">Support</span><span class="p">.</span><span class="nn">Utils</span>
+
+<span class="p">...</span>
+
+<span class="n">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">max_i</span> <span class="k">then</span>
+  <span class="n">failwithf</span> <span class="s2">&quot;i value: (%d) is too large&quot;</span> <span class="n">i</span>
+<span class="k">else</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="labelled-arguments">
+<h3>Labelled arguments<a class="headerlink" href="#labelled-arguments" title="Permalink to this heading"></a></h3>
+<p>OCaml has a neat feature called <a class="reference external" href="https://v2.ocaml.org/manual/lablexamples.html">labelled arguments</a> which we didn’t cover in
+CS 4.  Just like you’d expect, this feature means that you can label a function
+argument with a name, and you have to use that name when calling the function.
+What’s nice is that you don’t have to put labelled arguments in any particular
+order; as long as the label is there, the function will know what to do about
+them.</p>
+<p>The syntax is described in detail in the link, but here’s an example:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="o">~</span><span class="n">x</span> <span class="o">~</span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span>     <span class="c">(* x and y are labelled arguments *)</span>
+
+<span class="k">let</span> <span class="o">_</span> <span class="o">=</span> <span class="n">f</span> <span class="o">~</span><span class="n">x</span><span class="o">:</span><span class="mi">10</span> <span class="o">~</span><span class="n">y</span><span class="o">:</span><span class="mi">20</span>   <span class="c">(* you need the labels when calling the function *)</span>
+<span class="k">let</span> <span class="o">_</span> <span class="o">=</span> <span class="n">f</span> <span class="o">~</span><span class="n">y</span><span class="o">:</span><span class="mi">20</span> <span class="o">~</span><span class="n">x</span><span class="o">:</span><span class="mi">10</span>   <span class="c">(* does the same thing *)</span>
+</pre></div>
+</div>
+<p>Why would you use this?</p>
+<p>In our experience, the toughest OCaml bugs to track down are in functions that
+have more than one argument of the same type.  It’s easy to switch the
+arguments by mistake, and then you have a very hard-to-find bug.</p>
+<p>The solution is to use labelled arguments.  This way, when you call the
+function, you have to specify which argument you mean, which makes errors of
+this kind far less likely.</p>
+<p>We’re not suggesting you do this for every function, but it’s certainly a
+trick to keep in mind, and one which we’ve used in much of the supporting
+code.</p>
+<p>Also, OCaml supports <em>optional arguments</em>, which are like labelled arguments
+except the function gets a default value you specify if the labelled argument
+is left off.  The link above describes those too.</p>
+</div>
+</div>
+<div class="section" id="design-tips">
+<h2>Design tips<a class="headerlink" href="#design-tips" title="Permalink to this heading"></a></h2>
 <div class="section" id="write-stubs">
-<h2>Write stubs!<a class="headerlink" href="#write-stubs" title="Permalink to this heading"></a></h2>
+<h3>Write stubs!<a class="headerlink" href="#write-stubs" title="Permalink to this heading"></a></h3>
 <p>When you are starting to write a function, write a “stub”.
 This is an incomplete function. Just put in</p>
 <ul class="simple">
@@ -422,7 +527,7 @@ If it’s recursive, you can usually easily fill in the base cases.
 At that point, you’re ready to work on the body of the function.</p>
 </div>
 <div class="section" id="use-wishful-thinking">
-<h2>Use wishful thinking!<a class="headerlink" href="#use-wishful-thinking" title="Permalink to this heading"></a></h2>
+<h3>Use wishful thinking!<a class="headerlink" href="#use-wishful-thinking" title="Permalink to this heading"></a></h3>
 <p>If a function seems too difficult/complex to write directly,
 ask yourself “what function do I need
 which would make it really easy to write this function?”
@@ -433,6 +538,80 @@ When that’s done, go back and write the body of the assumed function.</p>
 <p>This is one of <em>the</em> most useful programming tips.  It’s explored at some
 length in the book SICP (Structure and Interpretation of Computer Programs),
 which is an amazing book (and which is the basis of CS 4).</p>
+</div>
+<div class="section" id="use-the-support-library">
+<h3>Use the <code class="docutils literal notranslate"><span class="pre">support</span></code> library!<a class="headerlink" href="#use-the-support-library" title="Permalink to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">support</span></code> library (which is part of the CS 164 code base)
+contains a number of modules with useful functions and data structures.
+Often, this can save you a lot of time versus writing them yourself.
+Here, we will briefly discuss the modules,
+but we <strong>strongly</strong> encourage you to read the comments
+in the <code class="docutils literal notranslate"><span class="pre">support/*.mli</span></code> files to find out more.
+We will remind you in the assignments which functions and data structures
+are particularly useful for that assignment.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">support</span></code> library contains these modules:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Functors</span></code></p>
+<p>This module defines three module types: <code class="docutils literal notranslate"><span class="pre">OrderedTypeS</span></code>,
+<code class="docutils literal notranslate"><span class="pre">SetS.S</span></code> and <code class="docutils literal notranslate"><span class="pre">MapS.S</span></code>.  They are extensions of the standard OCaml
+module types <code class="docutils literal notranslate"><span class="pre">OrderedType</span></code>, <code class="docutils literal notranslate"><span class="pre">Set.S</span></code> and <code class="docutils literal notranslate"><span class="pre">Map.S</span></code>.
+The extensions mostly have to do with functions that convert
+instances of the internal datatypes to and from S-expressions, as well
+as a few other utility functions.  There are also new functors called
+<code class="docutils literal notranslate"><span class="pre">SetS.Make</span></code> and <code class="docutils literal notranslate"><span class="pre">MapS.Make</span></code> that create modules with the module types
+<code class="docutils literal notranslate"><span class="pre">SetS.S</span></code> and <code class="docutils literal notranslate"><span class="pre">MapS.S</span></code> respectively, given a module of module type
+<code class="docutils literal notranslate"><span class="pre">OrderedTypeS</span></code>.</p>
+<p>In general, you should never be using a module of module type
+<code class="docutils literal notranslate"><span class="pre">OrderedType</span></code>, <code class="docutils literal notranslate"><span class="pre">Set.S</span></code>, or <code class="docutils literal notranslate"><span class="pre">Map.S</span></code>.  Always use the extended versions
+(<code class="docutils literal notranslate"><span class="pre">OrderedTypeS</span></code>, <code class="docutils literal notranslate"><span class="pre">SetS.S</span></code>, or <code class="docutils literal notranslate"><span class="pre">MapS.S</span></code>).  Usually, all you have to do
+is type the extra <code class="docutils literal notranslate"><span class="pre">S</span></code> at the end of the name.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Dgraph</span></code></p>
+<p>This module contains a functor called <code class="docutils literal notranslate"><span class="pre">Make</span></code>
+which makes a module of type <code class="docutils literal notranslate"><span class="pre">Dgraph.S</span></code>,
+which implements a directed graph.
+The functor takes an ordered type module (module type <code class="docutils literal notranslate"><span class="pre">OrderedTypeS</span></code>)
+as its argument.</p>
+<p>Note that this (like the other graph implementations in this library)
+is implemented in a purely functional way.
+This is not as efficient as an imperative graph could be,
+but it’s more than sufficient for our needs
+and tends to be very well-behaved
+(as functional data structures usually are).</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Multigraph</span></code></p>
+<p>This is like <code class="docutils literal notranslate"><span class="pre">Dgraph</span></code>, but implements a directed multigraph.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PriorityQueue</span></code></p>
+<p>This module contains a very simple (some might call it “brain dead”) version
+of a priority queue module called <code class="docutils literal notranslate"><span class="pre">PriorityQueue.Simple</span></code>.
+One day we’ll implement a more efficient one, but this will do for now.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Ugraph</span></code></p>
+<p>This is like <code class="docutils literal notranslate"><span class="pre">Dgraph</span></code>, but implements an undirected graph.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Utils</span></code></p>
+<p>This contains lots of little utility functions that aren’t found in the
+OCaml standard libraries.  There are string and list functions,
+functions to generate unique variable names, functions to work with
+S-expressions, and so on.  This is a module you will want to get familiar
+with.</p>
+</li>
+</ul>
+<p>You use the <code class="docutils literal notranslate"><span class="pre">support</span></code> library by <code class="docutils literal notranslate"><span class="pre">open</span></code>ing it and then <code class="docutils literal notranslate"><span class="pre">open</span></code>ing
+whatever modules you need from it:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">open</span> <span class="nc">Support</span>
+<span class="k">open</span> <span class="nc">Functors</span>
+<span class="k">open</span> <span class="nc">Utils</span>
+</pre></div>
+</div>
+<p>If you only need one module, you can alternatively do this:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">open</span> <span class="nn">Support</span><span class="p">.</span><span class="nc">Utils</span>
+</pre></div>
+</div>
+<p>Or you can <code class="docutils literal notranslate"><span class="pre">open</span> <span class="pre">Support</span></code> and then use a qualified function <em>e.g.</em>
+<code class="docutils literal notranslate"><span class="pre">Utils.last</span></code>.</p>
+</div>
 </div>
 <div class="section" id="debugging-tips">
 <h2>Debugging tips<a class="headerlink" href="#debugging-tips" title="Permalink to this heading"></a></h2>
@@ -526,79 +705,6 @@ converted to S-expressions, and there is a <code class="docutils literal notrans
 (this is discussed below).
 This is extremely useful for tracking down algorithm errors.</p>
 </div>
-</div>
-<div class="section" id="use-the-support-library">
-<h2>Use the <code class="docutils literal notranslate"><span class="pre">support</span></code> library!<a class="headerlink" href="#use-the-support-library" title="Permalink to this heading"></a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">support</span></code> library (which is part of the CS 164 code base)
-contains a number of modules with useful functions and data structures.
-Often, this can save you a lot of time versus writing them yourself.
-Here, we will briefly discuss the modules,
-but we <strong>strongly</strong> encourage you to read the comments
-in the <code class="docutils literal notranslate"><span class="pre">support/*.mli</span></code> files to find out more.
-We will remind you in the assignments which functions and data structures
-are particularly useful for that assignment.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">support</span></code> library contains these modules:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">Functors</span></code></p>
-<p>This module defines three module types: <code class="docutils literal notranslate"><span class="pre">OrderedTypeS</span></code>,
-<code class="docutils literal notranslate"><span class="pre">SetS.S</span></code> and <code class="docutils literal notranslate"><span class="pre">MapS.S</span></code>.  They are extensions of the standard OCaml
-module types <code class="docutils literal notranslate"><span class="pre">OrderedType</span></code>, <code class="docutils literal notranslate"><span class="pre">Set.S</span></code> and <code class="docutils literal notranslate"><span class="pre">Map.S</span></code>.
-The extensions mostly have to do with functions that convert
-instances of the internal datatypes to and from S-expressions, as well
-as a few other utility functions.  There are also new functors called
-<code class="docutils literal notranslate"><span class="pre">SetS.Make</span></code> and <code class="docutils literal notranslate"><span class="pre">MapS.Make</span></code> that create modules with the module types
-<code class="docutils literal notranslate"><span class="pre">SetS.S</span></code> and <code class="docutils literal notranslate"><span class="pre">MapS.S</span></code> respectively, given a module of module type
-<code class="docutils literal notranslate"><span class="pre">OrderedTypeS</span></code>.</p>
-<p>In general, you should never be using a module of module type
-<code class="docutils literal notranslate"><span class="pre">OrderedType</span></code>, <code class="docutils literal notranslate"><span class="pre">Set.S</span></code>, or <code class="docutils literal notranslate"><span class="pre">Map.S</span></code>.  Always use the extended versions
-(<code class="docutils literal notranslate"><span class="pre">OrderedTypeS</span></code>, <code class="docutils literal notranslate"><span class="pre">SetS.S</span></code>, or <code class="docutils literal notranslate"><span class="pre">MapS.S</span></code>).  Usually, all you have to do
-is type the extra <code class="docutils literal notranslate"><span class="pre">S</span></code> at the end of the name.</p>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Dgraph</span></code></p>
-<p>This module contains a functor called <code class="docutils literal notranslate"><span class="pre">Make</span></code>
-which makes a module of type <code class="docutils literal notranslate"><span class="pre">Dgraph.S</span></code>,
-which implements a directed graph.
-The functor takes an ordered type module (module type <code class="docutils literal notranslate"><span class="pre">OrderedTypeS</span></code>)
-as its argument.</p>
-<p>Note that this (like the other graph implementations in this library)
-is implemented in a purely functional way.
-This is not as efficient as an imperative graph could be,
-but it’s more than sufficient for our needs
-and tends to be very well-behaved
-(as functional data structures usually are).</p>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Multigraph</span></code></p>
-<p>This is like <code class="docutils literal notranslate"><span class="pre">Dgraph</span></code>, but implements a directed multigraph.</p>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">PriorityQueue</span></code></p>
-<p>This module contains a very simple (some might call it “brain dead”) version
-of a priority queue module called <code class="docutils literal notranslate"><span class="pre">PriorityQueue.Simple</span></code>.
-One day we’ll implement a more efficient one, but this will do for now.</p>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Ugraph</span></code></p>
-<p>This is like <code class="docutils literal notranslate"><span class="pre">Dgraph</span></code>, but implements an undirected graph.</p>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Utils</span></code></p>
-<p>This contains lots of little utility functions that aren’t found in the
-OCaml standard libraries.  There are string and list functions,
-functions to generate unique variable names, functions to work with
-S-expressions, and so on.  This is a module you will want to get familiar
-with.</p>
-</li>
-</ul>
-<p>You use the <code class="docutils literal notranslate"><span class="pre">support</span></code> library by <code class="docutils literal notranslate"><span class="pre">open</span></code>ing it and then <code class="docutils literal notranslate"><span class="pre">open</span></code>ing
-whatever modules you need from it:</p>
-<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">open</span> <span class="nc">Support</span>
-<span class="k">open</span> <span class="nc">Functors</span>
-<span class="k">open</span> <span class="nc">Utils</span>
-</pre></div>
-</div>
-<p>If you only need one module, you can alternatively do this:</p>
-<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">open</span> <span class="nn">Support</span><span class="p">.</span><span class="nc">Utils</span>
-</pre></div>
-</div>
-<p>Or you can <code class="docutils literal notranslate"><span class="pre">open</span> <span class="pre">Support</span></code> and then use a qualified function <em>e.g.</em>
-<code class="docutils literal notranslate"><span class="pre">Utils.last</span></code>.</p>
 </div>
 <div class="section" id="on-s-expressions">
 <h2>On S-expressions<a class="headerlink" href="#on-s-expressions" title="Permalink to this heading"></a></h2>

@@ -16,8 +16,11 @@ partially written).  Never ignore warnings.  Your finished code should *never*
 generate warnings.
 
 
-Functional style by default
+Functional programming tips
 ---------------------------
+
+Use functional style by default
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Code should be written in a functional style (no ``ref``\s, arrays, or records
 with mutable fields) except where indicated.  Marks will be taken off if this
@@ -30,8 +33,8 @@ They are not in any particular order, so feel free to browse until you find
 something interesting.
 
 
-Tail recursion by default
--------------------------
+Use tail recursion by default
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As you recall, a lot of CS 4 was spent teaching you to write functions using
 recursion instead of loops, and specifically tail recursion.  We use tail
@@ -41,7 +44,7 @@ If you can't do this, be prepared to explain why during code reviews.
 
 
 Persistent data structures
---------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Probably the hardest part of using functional programming effectively is
 getting used to persistent data structures (like lists) instead of mutable data
@@ -67,7 +70,7 @@ There is simply less that can go wrong.
 
 
 Type annotations
-----------------
+^^^^^^^^^^^^^^^^
 
 We *strongly* recommend that you add type annotations
 to all functions that are internal to a module.
@@ -117,7 +120,7 @@ if you ever have to modify the code.
 
 
 Folds are your friend!
-----------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 Programmers new to functional programming are often frustrated by what they
 perceive as the difficulty of doing simple things.  A good example of this is
@@ -181,7 +184,7 @@ tuple of all the things you're accumulating, but in my experience, it's often
 easier to just write an iterative helper function.
 
 Left *vs.* right folds
-^^^^^^^^^^^^^^^^^^^^^^
+......................
 
 95% of the time or more, if you want to use a fold in OCaml,
 you want to use a left fold (``List.fold_left``)
@@ -197,7 +200,7 @@ and you shouldn't feel bad about using one in that case.
 
 
 Nested pattern matching
------------------------
+^^^^^^^^^^^^^^^^^^^^^^^
 
 It's very common to want to write a pattern match inside another
 pattern match.  There are two cases to consider.
@@ -291,8 +294,11 @@ pattern match.  There are two cases to consider.
    Remember, **OCaml is not whitespace sensitive!**
    So don't forget the ``begin``/``end``.
 
+New OCaml features
+------------------
+
 The ``|>`` (pipe) operator
---------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``|>`` (pipe) operator is a reverse-apply operator
 (analogous to a Unix pipe).
@@ -354,13 +360,131 @@ and it's also easier to extend with more transformations.
 
 
 The ``@@`` (apply) operator
----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TODO
+The "cousin" of the ``|>`` operator is the ``@@`` (forward apply) operator.
+Like ``|>``, it's never required, but sometimes it can make code a bit nicer by
+removing the need for some parentheses.
 
+.. note::
+
+   If you know the Haskell language, you'll recognize the ``@@`` operator as
+   the same thing as the ``$`` operator in Haskell.
+
+The ``@@`` operator is used to apply a function to its argument,
+so ``f @@ x`` is the same as ``f x``.  Seems pointless, right?
+But consider ``f (1 + 2)``.  With ``@@`` this becomes ``f @@ 1 + 2``
+and you've eliminated the need for the parentheses.  Similarly:
+
+.. code-block:: OCaml
+
+   func3 (func2 (func1 data))
+
+can be written as:
+
+.. code-block:: OCaml
+
+   func3 @@ func2 @@ func1 data
+
+and the parenthesis-saving is even greater!
+(Note that this operator associates to the right.)
+
+A common use for this is when signalling errors.  In the course compilers,
+most errors use the ``failwith`` function:
+
+.. code-block:: OCaml
+
+   failwith "my error message"
+
+This is fine, but very often, the error message needs to contain
+formatted data |eg|
+
+.. code-block:: OCaml
+
+   if i > max_i then
+     failwith (Printf.sprintf "i value: (%d) is too large" i)
+   else
+     ...
+
+This can be rewritten using the ``@@`` operator as:
+
+.. code-block:: OCaml
+
+   if i > max_i then
+     failwith @@ Printf.sprintf "i value: (%d) is too large" i
+   else
+     ...
+
+and sometimes it's nice to put the ``Printf.sprintf`` on its own line:
+
+.. code-block:: OCaml
+
+   if i > max_i then
+     failwith @@
+       Printf.sprintf "i value: (%d) is too large" i
+   else
+     ...
+
+In fact, this case is so common that we've written a helper function called
+``failwithf`` ("``failwith`` with formatting"), so using that,
+we could rewrite the above code as:
+
+.. code-block:: OCaml
+
+   open Support.Utils
+
+   ...
+
+   if i > max_i then
+     failwithf "i value: (%d) is too large" i
+   else
+     ...
+
+
+Labelled arguments
+^^^^^^^^^^^^^^^^^^
+
+OCaml has a neat feature called `labelled arguments`_ which we didn't cover in
+CS 4.  Just like you'd expect, this feature means that you can label a function
+argument with a name, and you have to use that name when calling the function.
+What's nice is that you don't have to put labelled arguments in any particular
+order; as long as the label is there, the function will know what to do about
+them.
+
+The syntax is described in detail in the link, but here's an example:
+
+.. code-block:: OCaml
+
+   let f ~x ~y = x - y     (* x and y are labelled arguments *)
+
+   let _ = f ~x:10 ~y:20   (* you need the labels when calling the function *)
+   let _ = f ~y:20 ~x:10   (* does the same thing *) 
+
+Why would you use this?
+
+In our experience, the toughest OCaml bugs to track down are in functions that
+have more than one argument of the same type.  It's easy to switch the
+arguments by mistake, and then you have a very hard-to-find bug.
+
+The solution is to use labelled arguments.  This way, when you call the
+function, you have to specify which argument you mean, which makes errors of
+this kind far less likely.
+
+We're not suggesting you do this for every function, but it's certainly a
+trick to keep in mind, and one which we've used in much of the supporting
+code.
+
+Also, OCaml supports *optional arguments*, which are like labelled arguments
+except the function gets a default value you specify if the labelled argument
+is left off.  The link above describes those too.
+
+.. _labelled arguments: https://v2.ocaml.org/manual/lablexamples.html
+
+Design tips
+-----------
 
 Write stubs!
-------------
+^^^^^^^^^^^^
 
 When you are starting to write a function, write a "stub".
 This is an incomplete function. Just put in
@@ -391,7 +515,7 @@ At that point, you're ready to work on the body of the function.
 
 
 Use wishful thinking!
----------------------
+^^^^^^^^^^^^^^^^^^^^^
 
 If a function seems too difficult/complex to write directly,
 ask yourself "what function do I need
@@ -404,6 +528,92 @@ When that's done, go back and write the body of the assumed function.
 This is one of *the* most useful programming tips.  It's explored at some
 length in the book SICP (Structure and Interpretation of Computer Programs),
 which is an amazing book (and which is the basis of CS 4).
+
+Use the ``support`` library!
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``support`` library (which is part of the CS 164 code base)
+contains a number of modules with useful functions and data structures.
+Often, this can save you a lot of time versus writing them yourself.
+Here, we will briefly discuss the modules,
+but we **strongly** encourage you to read the comments
+in the ``support/*.mli`` files to find out more.
+We will remind you in the assignments which functions and data structures
+are particularly useful for that assignment.
+
+The ``support`` library contains these modules:
+
+* ``Functors``
+
+  This module defines three module types: ``OrderedTypeS``,
+  ``SetS.S`` and ``MapS.S``.  They are extensions of the standard OCaml
+  module types ``OrderedType``, ``Set.S`` and ``Map.S``.
+  The extensions mostly have to do with functions that convert
+  instances of the internal datatypes to and from S-expressions, as well
+  as a few other utility functions.  There are also new functors called
+  ``SetS.Make`` and ``MapS.Make`` that create modules with the module types
+  ``SetS.S`` and ``MapS.S`` respectively, given a module of module type
+  ``OrderedTypeS``.
+
+  In general, you should never be using a module of module type
+  ``OrderedType``, ``Set.S``, or ``Map.S``.  Always use the extended versions
+  (``OrderedTypeS``, ``SetS.S``, or ``MapS.S``).  Usually, all you have to do
+  is type the extra ``S`` at the end of the name.
+
+* ``Dgraph``
+
+  This module contains a functor called ``Make``
+  which makes a module of type ``Dgraph.S``,
+  which implements a directed graph.
+  The functor takes an ordered type module (module type ``OrderedTypeS``)
+  as its argument.
+
+  Note that this (like the other graph implementations in this library)
+  is implemented in a purely functional way.
+  This is not as efficient as an imperative graph could be,
+  but it's more than sufficient for our needs
+  and tends to be very well-behaved
+  (as functional data structures usually are).
+  
+* ``Multigraph``
+
+  This is like ``Dgraph``, but implements a directed multigraph.
+
+* ``PriorityQueue``
+  
+  This module contains a very simple (some might call it "brain dead") version
+  of a priority queue module called ``PriorityQueue.Simple``.
+  One day we'll implement a more efficient one, but this will do for now.
+
+* ``Ugraph``
+
+  This is like ``Dgraph``, but implements an undirected graph.
+
+* ``Utils``
+
+  This contains lots of little utility functions that aren't found in the
+  OCaml standard libraries.  There are string and list functions,
+  functions to generate unique variable names, functions to work with
+  S-expressions, and so on.  This is a module you will want to get familiar
+  with.
+
+You use the ``support`` library by ``open``\ing it and then ``open``\ing
+whatever modules you need from it:
+
+.. code-block:: OCaml
+
+   open Support
+   open Functors
+   open Utils
+
+If you only need one module, you can alternatively do this:
+
+.. code-block:: OCaml
+
+   open Support.Utils
+
+Or you can ``open Support`` and then use a qualified function |eg|
+``Utils.last``.
 
 
 Debugging tips
@@ -520,93 +730,6 @@ converted to S-expressions, and there is a ``print_sexp`` function in the
 ``Utils`` module that will print an S-expression in a readable fashion
 (this is discussed below).
 This is extremely useful for tracking down algorithm errors.
-
-
-Use the ``support`` library!
-----------------------------
-
-The ``support`` library (which is part of the CS 164 code base)
-contains a number of modules with useful functions and data structures.
-Often, this can save you a lot of time versus writing them yourself.
-Here, we will briefly discuss the modules,
-but we **strongly** encourage you to read the comments
-in the ``support/*.mli`` files to find out more.
-We will remind you in the assignments which functions and data structures
-are particularly useful for that assignment.
-
-The ``support`` library contains these modules:
-
-* ``Functors``
-
-  This module defines three module types: ``OrderedTypeS``,
-  ``SetS.S`` and ``MapS.S``.  They are extensions of the standard OCaml
-  module types ``OrderedType``, ``Set.S`` and ``Map.S``.
-  The extensions mostly have to do with functions that convert
-  instances of the internal datatypes to and from S-expressions, as well
-  as a few other utility functions.  There are also new functors called
-  ``SetS.Make`` and ``MapS.Make`` that create modules with the module types
-  ``SetS.S`` and ``MapS.S`` respectively, given a module of module type
-  ``OrderedTypeS``.
-
-  In general, you should never be using a module of module type
-  ``OrderedType``, ``Set.S``, or ``Map.S``.  Always use the extended versions
-  (``OrderedTypeS``, ``SetS.S``, or ``MapS.S``).  Usually, all you have to do
-  is type the extra ``S`` at the end of the name.
-
-* ``Dgraph``
-
-  This module contains a functor called ``Make``
-  which makes a module of type ``Dgraph.S``,
-  which implements a directed graph.
-  The functor takes an ordered type module (module type ``OrderedTypeS``)
-  as its argument.
-
-  Note that this (like the other graph implementations in this library)
-  is implemented in a purely functional way.
-  This is not as efficient as an imperative graph could be,
-  but it's more than sufficient for our needs
-  and tends to be very well-behaved
-  (as functional data structures usually are).
-  
-* ``Multigraph``
-
-  This is like ``Dgraph``, but implements a directed multigraph.
-
-* ``PriorityQueue``
-  
-  This module contains a very simple (some might call it "brain dead") version
-  of a priority queue module called ``PriorityQueue.Simple``.
-  One day we'll implement a more efficient one, but this will do for now.
-
-* ``Ugraph``
-
-  This is like ``Dgraph``, but implements an undirected graph.
-
-* ``Utils``
-
-  This contains lots of little utility functions that aren't found in the
-  OCaml standard libraries.  There are string and list functions,
-  functions to generate unique variable names, functions to work with
-  S-expressions, and so on.  This is a module you will want to get familiar
-  with.
-
-You use the ``support`` library by ``open``\ing it and then ``open``\ing
-whatever modules you need from it:
-
-.. code-block:: OCaml
-
-   open Support
-   open Functors
-   open Utils
-
-If you only need one module, you can alternatively do this:
-
-.. code-block:: OCaml
-
-   open Support.Utils
-
-Or you can ``open Support`` and then use a qualified function |eg|
-``Utils.last``.
 
 
 On S-expressions
