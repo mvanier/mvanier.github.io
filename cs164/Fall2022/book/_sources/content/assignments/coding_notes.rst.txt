@@ -615,6 +615,52 @@ If you only need one module, you can alternatively do this:
 Or you can ``open Support`` and then use a qualified function |eg|
 ``Utils.last``.
 
+Avoid functions that raise unhelpful exceptions!
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Avoid using functions that raise unhelpful and hard-to-track-down
+exceptions like ``Not_found``.
+One example is the ``find`` function of the ``Map`` functor.
+You should prefer to use the ``find_opt`` variant,
+which returns an option type.
+Then handle the ``None`` case explicitly,
+usually by raising an exception with a specific error message.
+
+Also, most uses of ``find_opt`` use this pattern:
+
+.. code-block:: OCaml
+
+   match Map.find_opt key map with
+     | None -> failwith "some error messages"
+     | Some v -> (* do something with `v` *)
+
+We've provided a helper function called ``find_or_fail`` in the extended
+``MapS`` implementation in the ``support`` library.  The above code would
+become:
+
+.. code-block:: OCaml
+
+   let v = Map.find_or_fail key map ~err_msg: "some error message" in
+     (* do something with `v` *)
+    
+We recommend you use ``find_or_fail`` for this case, and only use ``find_opt``
+when this isn't sufficient.  You should never use plain ``find`` unless
+you are 100% certain that there is no way that the key won't be found.
+
+.. note::
+
+   Somehow, the OCaml gods delight in showing you that something that
+   "can't possibly happen" can indeed happen, so we recommend coding
+   somewhat defensively.
+
+We also provide a more general function called ``find_or``,
+which can do arbitrary actions in the case of a lookup failure.
+It takes a labelled argument called ``f``
+which is a function of type ``(unit -> 'a)``,
+where ``'a`` is the value type.
+You can use this to return a default value,
+or to raise an arbitrary exception on lookup failure.
+
 
 Debugging tips
 --------------
@@ -826,3 +872,10 @@ and then print it using ``print_sexp``.
    but it also has a fairly steep learning curve.
 
 
+Coding conventions
+------------------
+
+Error handling
+^^^^^^^^^^^^^^
+
+TODO: Talk about using `failwith` for most error situations.

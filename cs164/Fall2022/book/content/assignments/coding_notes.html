@@ -64,6 +64,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#write-stubs">Write stubs!</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#use-wishful-thinking">Use wishful thinking!</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#use-the-support-library">Use the <code class="docutils literal notranslate"><span class="pre">support</span></code> library!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#avoid-functions-that-raise-unhelpful-exceptions">Avoid functions that raise unhelpful exceptions!</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#debugging-tips">Debugging tips</a><ul>
@@ -75,6 +76,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#on-s-expressions">On S-expressions</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#what-s-expressions-are">What S-expressions are</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-we-use-them">How we use them</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#coding-conventions">Coding conventions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">Error handling</a></li>
 </ul>
 </li>
 </ul>
@@ -612,6 +617,45 @@ whatever modules you need from it:</p>
 <p>Or you can <code class="docutils literal notranslate"><span class="pre">open</span> <span class="pre">Support</span></code> and then use a qualified function <em>e.g.</em>
 <code class="docutils literal notranslate"><span class="pre">Utils.last</span></code>.</p>
 </div>
+<div class="section" id="avoid-functions-that-raise-unhelpful-exceptions">
+<h3>Avoid functions that raise unhelpful exceptions!<a class="headerlink" href="#avoid-functions-that-raise-unhelpful-exceptions" title="Permalink to this heading"></a></h3>
+<p>Avoid using functions that raise unhelpful and hard-to-track-down
+exceptions like <code class="docutils literal notranslate"><span class="pre">Not_found</span></code>.
+One example is the <code class="docutils literal notranslate"><span class="pre">find</span></code> function of the <code class="docutils literal notranslate"><span class="pre">Map</span></code> functor.
+You should prefer to use the <code class="docutils literal notranslate"><span class="pre">find_opt</span></code> variant,
+which returns an option type.
+Then handle the <code class="docutils literal notranslate"><span class="pre">None</span></code> case explicitly,
+usually by raising an exception with a specific error message.</p>
+<p>Also, most uses of <code class="docutils literal notranslate"><span class="pre">find_opt</span></code> use this pattern:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">match</span> <span class="nn">Map</span><span class="p">.</span><span class="n">find_opt</span> <span class="n">key</span> <span class="n">map</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="nc">None</span> <span class="o">-&gt;</span> <span class="n">failwith</span> <span class="s2">&quot;some error messages&quot;</span>
+  <span class="o">|</span> <span class="nc">Some</span> <span class="n">v</span> <span class="o">-&gt;</span> <span class="c">(* do something with `v` *)</span>
+</pre></div>
+</div>
+<p>We’ve provided a helper function called <code class="docutils literal notranslate"><span class="pre">find_or_fail</span></code> in the extended
+<code class="docutils literal notranslate"><span class="pre">MapS</span></code> implementation in the <code class="docutils literal notranslate"><span class="pre">support</span></code> library.  The above code would
+become:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">v</span> <span class="o">=</span> <span class="nn">Map</span><span class="p">.</span><span class="n">find_or_fail</span> <span class="n">key</span> <span class="n">map</span> <span class="o">~</span><span class="n">err_msg</span><span class="o">:</span> <span class="s2">&quot;some error message&quot;</span> <span class="k">in</span>
+  <span class="c">(* do something with `v` *)</span>
+</pre></div>
+</div>
+<p>We recommend you use <code class="docutils literal notranslate"><span class="pre">find_or_fail</span></code> for this case, and only use <code class="docutils literal notranslate"><span class="pre">find_opt</span></code>
+when this isn’t sufficient.  You should never use plain <code class="docutils literal notranslate"><span class="pre">find</span></code> unless
+you are 100% certain that there is no way that the key won’t be found.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Somehow, the OCaml gods delight in showing you that something that
+“can’t possibly happen” can indeed happen, so we recommend coding
+somewhat defensively.</p>
+</div>
+<p>We also provide a more general function called <code class="docutils literal notranslate"><span class="pre">find_or</span></code>,
+which can do arbitrary actions in the case of a lookup failure.
+It takes a labelled argument called <code class="docutils literal notranslate"><span class="pre">f</span></code>
+which is a function of type <code class="docutils literal notranslate"><span class="pre">(unit</span> <span class="pre">-&gt;</span> <span class="pre">'a)</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">'a</span></code> is the value type.
+You can use this to return a default value,
+or to raise an arbitrary exception on lookup failure.</p>
+</div>
 </div>
 <div class="section" id="debugging-tips">
 <h2>Debugging tips<a class="headerlink" href="#debugging-tips" title="Permalink to this heading"></a></h2>
@@ -786,6 +830,13 @@ extension system, which is a relatively new feature of the language
 It’s a very powerful code-generation system,
 but it also has a fairly steep learning curve.</p>
 </div>
+</div>
+</div>
+<div class="section" id="coding-conventions">
+<h2>Coding conventions<a class="headerlink" href="#coding-conventions" title="Permalink to this heading"></a></h2>
+<div class="section" id="error-handling">
+<h3>Error handling<a class="headerlink" href="#error-handling" title="Permalink to this heading"></a></h3>
+<p>TODO: Talk about using <cite>failwith</cite> for most error situations.</p>
 </div>
 </div>
 </div>
