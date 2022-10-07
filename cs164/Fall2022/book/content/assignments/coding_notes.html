@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OCaml coding notes and tips &mdash; The CS 164 book 0.0.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,6 +17,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -116,22 +118,22 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="ocaml-coding-notes-and-tips">
+  <section id="ocaml-coding-notes-and-tips">
 <h1>OCaml coding notes and tips<a class="headerlink" href="#ocaml-coding-notes-and-tips" title="Permalink to this heading"></a></h1>
 <p>Here are some notes and tips
 that should improve your OCaml programming experience.
 We also describe our expectations
 of how we want you to write your OCaml code,
 so don’t just skip this document!</p>
-<div class="section" id="warnings">
+<section id="warnings">
 <h2>Warnings<a class="headerlink" href="#warnings" title="Permalink to this heading"></a></h2>
 <p>Warnings are always bad, unless you expect them (<em>e.g.</em> because code is only
 partially written).  Never ignore warnings.  Your finished code should <em>never</em>
 generate warnings.</p>
-</div>
-<div class="section" id="functional-programming-tips">
+</section>
+<section id="functional-programming-tips">
 <h2>Functional programming tips<a class="headerlink" href="#functional-programming-tips" title="Permalink to this heading"></a></h2>
-<div class="section" id="use-functional-style-by-default">
+<section id="use-functional-style-by-default">
 <h3>Use functional style by default<a class="headerlink" href="#use-functional-style-by-default" title="Permalink to this heading"></a></h3>
 <p>Code should be written in a functional style (no <code class="docutils literal notranslate"><span class="pre">ref</span></code>s, arrays, or records
 with mutable fields) except where indicated.  Marks will be taken off if this
@@ -141,16 +143,16 @@ used, but we do use <code class="docutils literal notranslate"><span class="pre"
 <p>Many of the tips below describe ways to effectively use functional style.
 They are not in any particular order, so feel free to browse until you find
 something interesting.</p>
-</div>
-<div class="section" id="use-tail-recursion-by-default">
+</section>
+<section id="use-tail-recursion-by-default">
 <h3>Use tail recursion by default<a class="headerlink" href="#use-tail-recursion-by-default" title="Permalink to this heading"></a></h3>
 <p>As you recall, a lot of CS 4 was spent teaching you to write functions using
 recursion instead of loops, and specifically tail recursion.  We use tail
 recursion because it has desirable space properties, so in general,
 when you write a recursive function, try hard to make it tail recursive.
 If you can’t do this, be prepared to explain why during code reviews.</p>
-</div>
-<div class="section" id="persistent-data-structures">
+</section>
+<section id="persistent-data-structures">
 <h3>Persistent data structures<a class="headerlink" href="#persistent-data-structures" title="Permalink to this heading"></a></h3>
 <p>Probably the hardest part of using functional programming effectively is
 getting used to persistent data structures (like lists) instead of mutable data
@@ -171,8 +173,8 @@ or an iterative helper function
 it is <em>vastly</em> easier to write correct code
 in a functional style than in an imperative style.
 There is simply less that can go wrong.</p>
-</div>
-<div class="section" id="type-annotations">
+</section>
+<section id="type-annotations">
 <h3>Type annotations<a class="headerlink" href="#type-annotations" title="Permalink to this heading"></a></h3>
 <p>We <em>strongly</em> recommend that you add type annotations
 to all functions that are internal to a module.
@@ -213,8 +215,8 @@ primarily because the code base was so much smaller.
 The more complicated the code gets,
 the more helpful explicit type annotations are.</p>
 </div>
-</div>
-<div class="section" id="folds-are-your-friend">
+</section>
+<section id="folds-are-your-friend">
 <h3>Folds are your friend!<a class="headerlink" href="#folds-are-your-friend" title="Permalink to this heading"></a></h3>
 <p>Programmers new to functional programming are often frustrated by what they
 perceive as the difficulty of doing simple things.  A good example of this is
@@ -266,7 +268,7 @@ if you don’t take advantage of what it offers.</p>
 iteration. You can still use <code class="docutils literal notranslate"><span class="pre">List.fold_left</span></code> in such cases by accumulating a
 tuple of all the things you’re accumulating, but in my experience, it’s often
 easier to just write an iterative helper function.</p>
-<div class="section" id="left-vs-right-folds">
+<section id="left-vs-right-folds">
 <h4>Left <em>vs.</em> right folds<a class="headerlink" href="#left-vs-right-folds" title="Permalink to this heading"></a></h4>
 <p>95% of the time or more, if you want to use a fold in OCaml,
 you want to use a left fold (<code class="docutils literal notranslate"><span class="pre">List.fold_left</span></code>)
@@ -278,9 +280,9 @@ and thus not space efficient.</p>
 use.  When you want to accumulate things in a list from the right going back
 to the left, a right fold is usually going to be simpler than a left fold,
 and you shouldn’t feel bad about using one in that case.</p>
-</div>
-</div>
-<div class="section" id="nested-pattern-matching">
+</section>
+</section>
+<section id="nested-pattern-matching">
 <h3>Nested pattern matching<a class="headerlink" href="#nested-pattern-matching" title="Permalink to this heading"></a></h3>
 <p>It’s very common to want to write a pattern match inside another
 pattern match.  There are two cases to consider.</p>
@@ -363,11 +365,11 @@ Remember, <strong>OCaml is not whitespace sensitive!</strong>
 So don’t forget the <code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code>.</p>
 </li>
 </ol>
-</div>
-</div>
-<div class="section" id="new-ocaml-features">
+</section>
+</section>
+<section id="new-ocaml-features">
 <h2>New OCaml features<a class="headerlink" href="#new-ocaml-features" title="Permalink to this heading"></a></h2>
-<div class="section" id="the-pipe-operator">
+<section id="the-pipe-operator">
 <h3>The <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> (pipe) operator<a class="headerlink" href="#the-pipe-operator" title="Permalink to this heading"></a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> (pipe) operator is a reverse-apply operator
 (analogous to a Unix pipe).
@@ -411,8 +413,8 @@ multiple lines:</p>
 </pre></div>
 </div>
 <p>and it’s also easier to extend with more transformations.</p>
-</div>
-<div class="section" id="the-apply-operator">
+</section>
+<section id="the-apply-operator">
 <h3>The <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> (apply) operator<a class="headerlink" href="#the-apply-operator" title="Permalink to this heading"></a></h3>
 <p>The “cousin” of the <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> operator is the <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> (forward apply) operator.
 Like <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code>, it’s never required, but sometimes it can make code a bit nicer by
@@ -464,7 +466,7 @@ formatted data <em>e.g.</em></p>
 </pre></div>
 </div>
 <p>In fact, this case is so common that we’ve written a helper function called
-<code class="docutils literal notranslate"><span class="pre">failwithf</span></code> (“<code class="docutils literal notranslate"><span class="pre">failwith</span></code> with formatting”), so using that,
+<code class="docutils literal notranslate"><span class="pre">failwithf</span></code> (”<code class="docutils literal notranslate"><span class="pre">failwith</span></code> with formatting”), so using that,
 we could rewrite the above code as:</p>
 <div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">open</span> <span class="nn">Support</span><span class="p">.</span><span class="nn">Utils</span>
 
@@ -476,8 +478,8 @@ we could rewrite the above code as:</p>
   <span class="o">...</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="labelled-arguments">
+</section>
+<section id="labelled-arguments">
 <h3>Labelled arguments<a class="headerlink" href="#labelled-arguments" title="Permalink to this heading"></a></h3>
 <p>OCaml has a neat feature called <a class="reference external" href="https://v2.ocaml.org/manual/lablexamples.html">labelled arguments</a> which we didn’t cover in
 CS 4.  Just like you’d expect, this feature means that you can label a function
@@ -505,11 +507,11 @@ code.</p>
 <p>Also, OCaml supports <em>optional arguments</em>, which are like labelled arguments
 except the function gets a default value you specify if the labelled argument
 is left off.  The link above describes those too.</p>
-</div>
-</div>
-<div class="section" id="design-tips">
+</section>
+</section>
+<section id="design-tips">
 <h2>Design tips<a class="headerlink" href="#design-tips" title="Permalink to this heading"></a></h2>
-<div class="section" id="write-stubs">
+<section id="write-stubs">
 <h3>Write stubs!<a class="headerlink" href="#write-stubs" title="Permalink to this heading"></a></h3>
 <p>When you are starting to write a function, write a “stub”.
 This is an incomplete function. Just put in</p>
@@ -531,8 +533,8 @@ Once the stub is written,
 you can compile it and make sure it type checks.
 If it’s recursive, you can usually easily fill in the base cases.
 At that point, you’re ready to work on the body of the function.</p>
-</div>
-<div class="section" id="use-wishful-thinking">
+</section>
+<section id="use-wishful-thinking">
 <h3>Use wishful thinking!<a class="headerlink" href="#use-wishful-thinking" title="Permalink to this heading"></a></h3>
 <p>If a function seems too difficult/complex to write directly,
 ask yourself “what function do I need
@@ -544,8 +546,8 @@ When that’s done, go back and write the body of the assumed function.</p>
 <p>This is one of <em>the</em> most useful programming tips.  It’s explored at some
 length in the book SICP (Structure and Interpretation of Computer Programs),
 which is an amazing book (and which is the basis of CS 4).</p>
-</div>
-<div class="section" id="use-the-support-library">
+</section>
+<section id="use-the-support-library">
 <h3>Use the <code class="docutils literal notranslate"><span class="pre">support</span></code> library!<a class="headerlink" href="#use-the-support-library" title="Permalink to this heading"></a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">support</span></code> library (which is part of the CS 164 code base)
 contains a number of modules with useful functions and data structures.
@@ -617,8 +619,8 @@ whatever modules you need from it:</p>
 </div>
 <p>Or you can <code class="docutils literal notranslate"><span class="pre">open</span> <span class="pre">Support</span></code> and then use a qualified function <em>e.g.</em>
 <code class="docutils literal notranslate"><span class="pre">Utils.last</span></code>.</p>
-</div>
-<div class="section" id="avoid-functions-that-raise-unhelpful-exceptions">
+</section>
+<section id="avoid-functions-that-raise-unhelpful-exceptions">
 <h3>Avoid functions that raise unhelpful exceptions!<a class="headerlink" href="#avoid-functions-that-raise-unhelpful-exceptions" title="Permalink to this heading"></a></h3>
 <p>Avoid using functions that raise unhelpful and hard-to-track-down
 exceptions like <code class="docutils literal notranslate"><span class="pre">Not_found</span></code>.
@@ -656,15 +658,15 @@ which is a function of type <code class="docutils literal notranslate"><span cla
 where <code class="docutils literal notranslate"><span class="pre">'a</span></code> is the value type.
 You can use this to return a default value,
 or to raise an arbitrary exception on lookup failure.</p>
-</div>
-</div>
-<div class="section" id="debugging-tips">
+</section>
+</section>
+<section id="debugging-tips">
 <h2>Debugging tips<a class="headerlink" href="#debugging-tips" title="Permalink to this heading"></a></h2>
 <p>Although strictly-typed functional languages like OCaml greatly reduce the
 number of bugs in your programs, you will still make mistakes and have to debug
 them.  Debugging functional languages can be challenging; here are some tips
 we’ve found to be useful.</p>
-<div class="section" id="printf-style-debugging">
+<section id="printf-style-debugging">
 <h3><code class="docutils literal notranslate"><span class="pre">printf</span></code>-style debugging<a class="headerlink" href="#printf-style-debugging" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">printf</span></code>-style debugging is highly effective if you do it right.  The wrong
 way is to add <code class="docutils literal notranslate"><span class="pre">printf</span></code> statements to otherwise functional code:</p>
@@ -711,8 +713,8 @@ If you don’t do that, sometimes error messages before a crash can be lost.</p>
 </div>
 <p>This way, it’s easy to spot these lines, which is good because you are
 going to want to delete them once debugging is done.</p>
-</div>
-<div class="section" id="using-the-repl">
+</section>
+<section id="using-the-repl">
 <h3>Using the REPL<a class="headerlink" href="#using-the-repl" title="Permalink to this heading"></a></h3>
 <p>“REPL” means “Read-Eval-Print-Loop” and refers to the interactive interpreter
 (what you get into if you type <code class="docutils literal notranslate"><span class="pre">ocaml</span></code> or <code class="docutils literal notranslate"><span class="pre">utop</span></code> at a terminal prompt).
@@ -727,8 +729,8 @@ down a tricky bug.  All you need to do is to open the relevant module:</p>
 </pre></div>
 </div>
 <p>and you can play with all the functions in that module.</p>
-</div>
-<div class="section" id="insert-debugging-code-into-tricky-algorithms">
+</section>
+<section id="insert-debugging-code-into-tricky-algorithms">
 <h3>Insert debugging code into tricky algorithms<a class="headerlink" href="#insert-debugging-code-into-tricky-algorithms" title="Permalink to this heading"></a></h3>
 <p>Some passes involve tricky algorithms.  In those cases, it’s a good idea to
 define a <code class="docutils literal notranslate"><span class="pre">debug</span></code> variable at the top of the file:</p>
@@ -749,11 +751,11 @@ converted to S-expressions, and there is a <code class="docutils literal notrans
 <code class="docutils literal notranslate"><span class="pre">Utils</span></code> module that will print an S-expression in a readable fashion
 (this is discussed below).
 This is extremely useful for tracking down algorithm errors.</p>
-</div>
-</div>
-<div class="section" id="on-s-expressions">
+</section>
+</section>
+<section id="on-s-expressions">
 <h2>On S-expressions<a class="headerlink" href="#on-s-expressions" title="Permalink to this heading"></a></h2>
-<div class="section" id="what-s-expressions-are">
+<section id="what-s-expressions-are">
 <h3>What S-expressions are<a class="headerlink" href="#what-s-expressions-are" title="Permalink to this heading"></a></h3>
 <p>S-expressions are described in this <a class="reference external" href="https://en.wikipedia.org/wiki/S-expression">Wikipedia article</a>.
 Essentially, they are an extremely simple (perhaps the most simple) way to
@@ -779,8 +781,8 @@ S-expressions:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">((foo</span> <span class="pre">1)</span> <span class="pre">(bar</span> <span class="pre">2)</span> <span class="pre">(baz</span> <span class="pre">3))</span></code></p></li>
 </ul>
 <p>Basically, any structured data can be represented as an S-expression.</p>
-</div>
-<div class="section" id="how-we-use-them">
+</section>
+<section id="how-we-use-them">
 <h3>How we use them<a class="headerlink" href="#how-we-use-them" title="Permalink to this heading"></a></h3>
 <p>We use S-expressions as both a serialization format and a visualization
 tool.  “Serialization” means that we can take arbitrary OCaml datatypes and
@@ -831,16 +833,16 @@ extension system, which is a relatively new feature of the language
 It’s a very powerful code-generation system,
 but it also has a fairly steep learning curve.</p>
 </div>
-</div>
-</div>
-<div class="section" id="coding-conventions">
+</section>
+</section>
+<section id="coding-conventions">
 <h2>Coding conventions<a class="headerlink" href="#coding-conventions" title="Permalink to this heading"></a></h2>
-<div class="section" id="error-handling">
+<section id="error-handling">
 <h3>Error handling<a class="headerlink" href="#error-handling" title="Permalink to this heading"></a></h3>
 <p>TODO: Talk about using <cite>failwith</cite> for most error situations.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
