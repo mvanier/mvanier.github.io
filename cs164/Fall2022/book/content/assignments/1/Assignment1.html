@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assignment 1: The Var language &mdash; The CS 164 book 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="prev" title="Assignment 0: Getting set up" href="../0/Assignment0.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> The CS 164 book
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../coding_notes.html">OCaml coding notes and tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../0/Installing_OCaml.html">Installing OCaml</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../0/Assignment0.html">Assignment 0: Getting set up</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Assignment 1: The <em>Var</em> language</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#due-date">Due date</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#before-you-begin">Before you begin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#division-of-labor">Division of labor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#textbook">Textbook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#starting-code-base">Starting code base</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sanity-checking-the-code-base">Sanity checking the code base</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#code-to-write-the-compiler-passes">Code to write: the compiler passes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#uniquify-uniquify-ml">1. Uniquify (<code class="docutils literal notranslate"><span class="pre">uniquify.ml</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#remove-complex-operands-remove-complex-ml">2. Remove complex operands (<code class="docutils literal notranslate"><span class="pre">remove_complex.ml</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#explicate-control-explicate-control-ml">3. Explicate control (<code class="docutils literal notranslate"><span class="pre">explicate_control.ml</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#select-instructions-select-instructions-ml">4. Select instructions (<code class="docutils literal notranslate"><span class="pre">select_instructions.ml</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assign-homes-assign-homes-ml">5. Assign homes (<code class="docutils literal notranslate"><span class="pre">assign_homes.ml</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#patch-instructions-patch-instructions-ml">6. Patch instructions (<code class="docutils literal notranslate"><span class="pre">patch_instructions.ml</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prelude-and-conclusion-prelude-conclusion-ml">7. Prelude and conclusion (<code class="docutils literal notranslate"><span class="pre">prelude_conclusion.ml</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-compile-program">Running the <code class="docutils literal notranslate"><span class="pre">compile</span></code> program</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#compiling-and-running-assembly-language-code">Compiling and running assembly language code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-the-compiler">Testing the compiler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#automated-tests">Automated tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manual-tests">Manual tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submitting-your-assignment">“Submitting” your assignment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-reviews-office-hours-and-feedback">Code reviews, office hours, and feedback</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The CS 164 book</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Assignments</a> &raquo;</li>
+      <li>Assignment 1: The <em>Var</em> language</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/content/assignments/1/Assignment1.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="assignment-1-the-var-language">
+<h1>Assignment 1: The <em>Var</em> language<a class="headerlink" href="#assignment-1-the-var-language" title="Permalink to this heading"></a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p>This assignment involves writing a compiler for the <em>Var</em> language,
+which is a simple language of variables and arithmetic
+described in chapter 2 of the textbook and in the lectures.</p>
+<p>The end result will be a program called <code class="docutils literal notranslate"><span class="pre">compile</span></code> which will be able to
+compile a source program (with the extension <code class="docutils literal notranslate"><span class="pre">.src</span></code>) to assembly language.
+In addition, the compiler can stop after any pass, including after the parser,
+so you can inspect the generated code at each stage.  The compiler also has the
+ability to run a single pass given the appropriate inputs.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Let us know about anything that’s confusing so we can add clarifications
+to this document!  Also let us know about typos and mistakes.</p>
+</div>
+</div>
+<div class="section" id="due-date">
+<h2>Due date<a class="headerlink" href="#due-date" title="Permalink to this heading"></a></h2>
+<p>This assignment is due on Friday, October 14th at 2 AM
+(so, effectively very late Thursday night).</p>
+</div>
+<div class="section" id="before-you-begin">
+<h2>Before you begin<a class="headerlink" href="#before-you-begin" title="Permalink to this heading"></a></h2>
+<p>Make sure that all the action items from assignment 0 have been completed:</p>
+<ul class="simple">
+<li><p>choosing a partner</p></li>
+<li><p>installing OCaml and all the necessary OCaml libraries</p></li>
+<li><p>setting up a GitHub repository and adding the instructor (Mike)
+as a collaborator</p></li>
+</ul>
+</div>
+<div class="section" id="division-of-labor">
+<h2>Division of labor<a class="headerlink" href="#division-of-labor" title="Permalink to this heading"></a></h2>
+<p>These assignments are very much a team effort, and both students will be
+credited for all work done.  We don’t want one student to do all the work,
+though.  Learning how to divide the labor is an interesting challenge,
+and there is more than one right way to do it.  Some teams may want to work on
+the code together (“pair programming”), which can be highly effective.
+Alternatively, you can divide up the passes.  Note that each pass can be tested
+individually, though this testing is fairly manual and time-consuming (see
+below).  If one team member is more experienced than the other, they may want
+to tackle the harder passes (which will be identified below).  The hardest
+passes (of which there are none in this assignment!) are the best candidates
+for collective work.</p>
+</div>
+<div class="section" id="textbook">
+<h2>Textbook<a class="headerlink" href="#textbook" title="Permalink to this heading"></a></h2>
+<p>This assignment is based on chapter 2 of the course textbook
+(<em>Essentials of Compilation</em> by Jeremy Siek).
+Please read this chapter in its entirety before doing this assignment,
+and follow the instructions in the chapter exercises,
+except where noted below.</p>
+<p>One obvious and pervasive difference is that we are using OCaml to write the
+compiler, whereas the book uses Racket.  Another is that we aren’t asking you
+to write your own test cases, though you are encouraged to do that in addition
+to the ones we supply if you find it helpful.</p>
+<p>Also, you’ll notice little differences in the way languages are represented.
+The Racket code has a <code class="docutils literal notranslate"><span class="pre">Prim</span></code> constructor that we don’t use (yet),
+and an <code class="docutils literal notranslate"><span class="pre">info</span></code> field that we only use in certain languages.
+However, for the most part there is a 1-to-1 correspondence between
+the Racket datatypes and the datatypes we define in OCaml.
+When in doubt, trust the OCaml code.</p>
+<p>Finally, in the book, there is skeleton code for some of the passes.
+While the OCaml equivalent is broadly similar, you don’t need to have
+an error case for unhandled cases, because OCaml pattern matching
+is required to be exhaustive! <a class="footnote-reference brackets" href="#id2" id="id1">1</a></p>
+</div>
+<div class="section" id="starting-code-base">
+<h2>Starting code base<a class="headerlink" href="#starting-code-base" title="Permalink to this heading"></a></h2>
+<p>The starting code base is the zipfile <code class="docutils literal notranslate"><span class="pre">src.zip</span></code>, which is posted on the
+course Canvas site.  You should unzip this file in your Github repo.
+It will create a directory called <code class="docutils literal notranslate"><span class="pre">src</span></code> which will contain all of your
+compiler code for the entire course.  Inside this directory will be two
+subdirectories:</p>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">ch2</span></code> – this will be the code for this week’s assignment
+(the “Var” language compiler),
+as well as test code in the <code class="docutils literal notranslate"><span class="pre">tests/</span></code> subdirectory,
+and output from the instructor’s version of the compiler
+in the <code class="docutils literal notranslate"><span class="pre">reference/</span></code> subdirectory.
+There are also a few other files
+(<code class="docutils literal notranslate"><span class="pre">Makefile</span></code>, <code class="docutils literal notranslate"><span class="pre">dune</span></code>, <code class="docutils literal notranslate"><span class="pre">utop_init</span></code>, <em>etc.</em>)
+whose purposes will be described below.</p>
+<p>The name <code class="docutils literal notranslate"><span class="pre">ch2</span></code> refers to the fact that this code corresponds
+to the language in chapter 2 of the textbook</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">support</span></code> – this contains a variety of modules which contain
+useful functions and data structures.  We’ll give you suggestions
+on which functions you should consider using, but you can use
+any of them at any time.</p></li>
+</ol>
+<p>In future assignments, we will be giving you a zip file containing only
+the code which is specific to the new compiler, in a directory called
+<em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">ch3</span></code>, <code class="docutils literal notranslate"><span class="pre">ch4</span></code>, etc.  The <code class="docutils literal notranslate"><span class="pre">support</span></code> library should not change,
+unless there are bugs which need to be fixed.</p>
+<p>In addition, there are two other files included in the zipfile at the
+root of the <code class="docutils literal notranslate"><span class="pre">src/</span></code> directory:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dune-project</span></code>.  This file sets the base of the repository from the
+perspective of the <cite>dune</cite> compilation manager.  Just leave it where it is.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.gitignore</span></code>.  This file tells <code class="docutils literal notranslate"><span class="pre">git</span></code> which files to ignore.
+Again, just leave it alone.  Each directory may have additional
+<code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> files; in general, you shouldn’t have to edit them.</p></li>
+</ol>
+<p>You should check in the entire <code class="docutils literal notranslate"><span class="pre">src</span></code> directory and all its subdirectories.
+Don’t check in the zip file!  (You should probably remove it after you
+check it in.)</p>
+<div class="section" id="sanity-checking-the-code-base">
+<h3>Sanity checking the code base<a class="headerlink" href="#sanity-checking-the-code-base" title="Permalink to this heading"></a></h3>
+<p>If you’ve installed the code base correctly,
+you should be able to do the following:</p>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span></code> into the <code class="docutils literal notranslate"><span class="pre">src/ch2</span></code> subdirectory.</p></li>
+<li><p>Type <code class="docutils literal notranslate"><span class="pre">make</span></code>.  This will compile the compiler
+(an executable file called <code class="docutils literal notranslate"><span class="pre">compile</span></code>).
+You should see a number of warnings when you compile the compiler;
+that’s expected.
+(As you fill in the code for the compiler passes,
+these warnings will go away).</p></li>
+<li><p>You can use the compiler to convert source files in the <code class="docutils literal notranslate"><span class="pre">tests/</span></code>
+subdirectory to their “Lvar” AST equivalents.  For instance:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./compile tests/var_test_1.src -pass lvar
+(Program (Int 42))
+</pre></div>
+</div>
+<p>Note that the output of the compiler is printed to the terminal.
+Should you want to save the output to a file, you can redirect it:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./compile tests/var_test_1.src -pass lvar &gt; var_test_1.lvar
+$ cat var_test_1.lvar
+(Program (Int 42))
+</pre></div>
+</div>
+<p>You can also run the “Lvar” evaluator:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./compile tests/var_test_1.src -pass lvar -eval
+42
+</pre></div>
+</div>
+<p>However, if you try to compile to a pass beyond the AST,
+it will fail:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./compile tests/var_test_1.src -pass un
+TODO
+</pre></div>
+</div>
+</li>
+<li><p>You can also print out the compiler options:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./compile --help
+</pre></div>
+</div>
+<p>(or just <code class="docutils literal notranslate"><span class="pre">compile</span></code> with no arguments).
+This prints out a usage message.</p>
+</li>
+</ol>
+<p>If everything works as we’ve described, you are good to go.</p>
+<p>Note that each assignments’ compiler will be different,
+and there may be different or additional command-line options
+for each compiler.</p>
+</div>
+</div>
+<div class="section" id="code-to-write-the-compiler-passes">
+<h2>Code to write: the compiler passes<a class="headerlink" href="#code-to-write-the-compiler-passes" title="Permalink to this heading"></a></h2>
+<p>The compiler passes are described in chapter 2 of the textbook,
+but here they are again for completeness.  We will only include
+passes that you have to implement.
+For example, even though the parser can be thought of as a “pass”,
+you don’t have to implement it, so we don’t include it here.
+Similarly, the “print assembly” pass is provided for you,
+as are all the intermediate languages and interpreters.</p>
+<p>Note that the <em>only</em> files you should modify are the files corresponding to
+these compiler passes.  Also, only modify the <code class="docutils literal notranslate"><span class="pre">.ml</span></code> files; the <code class="docutils literal notranslate"><span class="pre">.mli</span></code>
+files constitute the interface to these modules and must not be changed.</p>
+<p>In addition, when we provide a function stub in an <code class="docutils literal notranslate"><span class="pre">.ml</span></code> file that you need
+to complete, that means that we expect that you will use that function (with
+those arguments and types (if supplied)) as written (filling in the <code class="docutils literal notranslate"><span class="pre">TODO</span></code>
+parts, of course).  In particular, you’re not allowed to change the number of
+arguments to the function, or their types (if supplied).  If a function is
+completely implemented (no <code class="docutils literal notranslate"><span class="pre">TODO</span></code>s), you should leave it as-is.
+On the other hand, you can write as many extra functions as you like.
+(If we don’t like your choices, we’ll let you know during code reviews!)</p>
+<div class="section" id="uniquify-uniquify-ml">
+<h3>1. Uniquify (<code class="docutils literal notranslate"><span class="pre">uniquify.ml</span></code>)<a class="headerlink" href="#uniquify-uniquify-ml" title="Permalink to this heading"></a></h3>
+<p>In this pass, all names bound in <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions have to be renamed
+to be unique.  This enables a number of further transformations in later
+passes.</p>
+<p>This is a relatively simple pass to implement.  There are four cases:</p>
+<ol class="arabic">
+<li><p>Forms with no subexpressions and no variables.  These pass through
+unchanged.</p></li>
+<li><p>Forms with subexpressions but no variables.  You have to recurse
+on the subexpressions and build up a new expression.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Var</span></code> expressions. You need to change the variable to its new name,
+if there is one.
+For this, you will have to have a data structure
+which maps the old names to the new names.
+We recommend that you use the <code class="docutils literal notranslate"><span class="pre">VarMap</span></code> module
+(defined in the <code class="docutils literal notranslate"><span class="pre">Types</span></code> module <em>i.e.</em> <code class="docutils literal notranslate"><span class="pre">types.ml</span></code> and <code class="docutils literal notranslate"><span class="pre">types.mli</span></code>),
+which is an instance of the <code class="docutils literal notranslate"><span class="pre">Map</span></code> functor specialized for the
+<code class="docutils literal notranslate"><span class="pre">var</span></code> type.  (Note that <code class="docutils literal notranslate"><span class="pre">var</span></code> is just an alias for <code class="docutils literal notranslate"><span class="pre">string</span></code>.)
+A value of type <code class="docutils literal notranslate"><span class="pre">VarMap.t</span></code> is a map from variable names to some other
+type; in this case we map variable names to (new) variable names!</p>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">uniquify_exp</span></code> function doesn’t have a <code class="docutils literal notranslate"><span class="pre">VarMap.t</span></code>
+argument, so you will need to write a helper function that does.
+When a <code class="docutils literal notranslate"><span class="pre">Var</span></code> expression is encountered,
+check to see if the map has a new name for the variable.
+If it does, substitute the new name for the old one.
+Otherwise, leave the name unchanged.
+(This can happen with some global names.)</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Let</span></code> expressions.  When these are encountered, you have to
+generate a new name from the binding name.
+(In the expression <code class="docutils literal notranslate"><span class="pre">(let</span> <span class="pre">(x</span> <span class="pre">10)</span> <span class="pre">(+</span> <span class="pre">x</span> <span class="pre">x))</span></code>, for instance,
+<code class="docutils literal notranslate"><span class="pre">x</span></code> is the binding name.)
+To generate the new name, call the <code class="docutils literal notranslate"><span class="pre">fresh</span></code> function
+(defined in the file)
+with the current name and a separator as the arguments.
+Use <code class="docutils literal notranslate"><span class="pre">.</span></code> as the separator, so <code class="docutils literal notranslate"><span class="pre">x</span></code> might become <code class="docutils literal notranslate"><span class="pre">x.1</span></code>.  Note that
+the <code class="docutils literal notranslate"><span class="pre">fresh</span></code> function has an internal counter, so the next time it’s
+called with the name <code class="docutils literal notranslate"><span class="pre">x</span></code> it will return <code class="docutils literal notranslate"><span class="pre">x.2</span></code>, <em>etc.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is imperative programming, and the fact that we don’t have to
+jump through any major hoops to do it (as we would, say, in
+Haskell) is one reason why OCaml is a convenient language for
+writing a compiler.</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">fresh</span></code> function is just an alias for the function <code class="docutils literal notranslate"><span class="pre">Utils.gensym</span></code>
+from the <code class="docutils literal notranslate"><span class="pre">Utils</span></code> module in the <code class="docutils literal notranslate"><span class="pre">support</span></code> library.  Feel free to
+look at the code for this function if you’re interested.  This function
+also uses OCaml’s labelled arguments feature, which we didn’t use in CS 4.
+A good reference for labelled arguments is <a class="reference external" href="https://v2.ocaml.org/manual/lablexamples.html">here</a>.</p>
+<p>When you generate a fresh name for a binding name, you also have to
+add it to the map for the body expression of the <code class="docutils literal notranslate"><span class="pre">let</span></code>, but
+<em>not</em> for the binding expression of the <code class="docutils literal notranslate"><span class="pre">let</span></code>
+(since the new name is not in effect for that expression).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We <strong>very strongly recommend against</strong> using hash tables
+for the map datatype.
+Hash tables are imperative, and it’s much too easy
+to add something to a hash table
+that will persist longer than you want it to.
+In this case, an immutable datatype like <code class="docutils literal notranslate"><span class="pre">VarMap.t</span></code> is the way to go:
+when you add something to it, you get a new map,
+and you can use the new or old maps as you see fit.</p>
+</div>
+</li>
+</ol>
+<p>You should be able to implement this pass in about 50 lines of code
+(or less).</p>
+</div>
+<div class="section" id="remove-complex-operands-remove-complex-ml">
+<h3>2. Remove complex operands (<code class="docutils literal notranslate"><span class="pre">remove_complex.ml</span></code>)<a class="headerlink" href="#remove-complex-operands-remove-complex-ml" title="Permalink to this heading"></a></h3>
+<p>The purpose of this pass is simply to make sure
+that the operands of arithmetic operations are “simple” <em>i.e.</em>
+are not subexpressions but “atomic” expressions like integers or variables.
+We define an “atom” datatype in <code class="docutils literal notranslate"><span class="pre">lvar_mon.mli</span></code> as follows:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">atm</span> <span class="o">=</span> <span class="nc">Int</span> <span class="k">of</span> <span class="kt">int</span> <span class="o">|</span> <span class="nc">Var</span> <span class="k">of</span> <span class="n">var</span>
+</pre></div>
+</div>
+<p>and then use it in the expression datatype:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">exp</span> <span class="o">=</span>
+  <span class="o">|</span> <span class="nc">Atm</span>    <span class="k">of</span> <span class="n">atm</span>
+  <span class="o">|</span> <span class="nc">Read</span>
+  <span class="o">|</span> <span class="nc">Negate</span> <span class="k">of</span> <span class="n">atm</span>
+  <span class="o">|</span> <span class="nc">Add</span>    <span class="k">of</span> <span class="n">atm</span> <span class="o">*</span> <span class="n">atm</span>
+  <span class="o">|</span> <span class="nc">Sub</span>    <span class="k">of</span> <span class="n">atm</span> <span class="o">*</span> <span class="n">atm</span>
+  <span class="o">|</span> <span class="nc">Let</span>    <span class="k">of</span> <span class="n">var</span> <span class="o">*</span> <span class="n">exp</span> <span class="o">*</span> <span class="n">exp</span>
+</pre></div>
+</div>
+<p>The basic thing that has to happen in this pass is that non-atomic
+subexpressions of arithmetic forms (<code class="docutils literal notranslate"><span class="pre">Add</span></code>, <code class="docutils literal notranslate"><span class="pre">Sub</span></code>, and <code class="docutils literal notranslate"><span class="pre">Negate</span></code>)
+have to be transformed into <code class="docutils literal notranslate"><span class="pre">let</span></code>s binding variable(s) to the
+complex subexpression(s).  So it’s something like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Negate &lt;complex exp&gt;
+--&gt; Let (&quot;$tmp&quot;, &lt;complex exp&gt;, Negate (Var &quot;$tmp&quot;)
+</pre></div>
+</div>
+<p>Clearly, you will need to introduce <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions wherever
+there are arithmetic expressions with complex subexpressions.</p>
+<p>On the other hand, expressions that are already atomic should stay
+the way they are:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Negate (Int 10) --&gt; Negate (Int 10)
+Negate (Var &quot;x&quot;) --&gt; Negate (Var &quot;x&quot;)
+</pre></div>
+</div>
+<p>Don’t do this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Negate (Int 10)
+--&gt; Let (&quot;$tmp&quot;, Int 10, Negate (Var &quot;$tmp&quot;))
+Negate (Var &quot;x&quot;)
+--&gt; Let (&quot;$tmp&quot;, Var &quot;x&quot;, Negate (Var &quot;$tmp&quot;))
+</pre></div>
+</div>
+<p>This is called “generating unnecessary temporaries”.
+Although this doesn’t yield incorrect code, it does yield inefficient code.
+(Why do you think that is?)</p>
+<p>The key function to write here is <code class="docutils literal notranslate"><span class="pre">rco_atom</span></code>.
+This takes an expression which needs to become atomic
+(like a subexpression of <code class="docutils literal notranslate"><span class="pre">Add</span></code>, say),
+and returns both the atomic expression
+and a list of (name, expression) bindings.
+In many cases you’ll need to generate temporary names;
+the <code class="docutils literal notranslate"><span class="pre">gen_temp_name</span></code> function is provided to you for this purpose.</p>
+<p><code class="docutils literal notranslate"><span class="pre">rco_atom</span></code> is called from the <code class="docutils literal notranslate"><span class="pre">rco_exp</span></code> function,
+and the <code class="docutils literal notranslate"><span class="pre">rco_exp</span></code> function has to take the (name, expression) pairs
+and convert them into <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions.
+(We wrote a helper function to do this.)</p>
+<p>One last thing about this pass:
+the subexpressions of a <code class="docutils literal notranslate"><span class="pre">let</span></code> expression (both of them)
+do <em>not</em> need to be atomic, so don’t try to make them atomic!
+That means that you can have arbitrarily nested <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions.
+If this bothers you, don’t worry: we’ll fix it in the next pass!</p>
+</div>
+<div class="section" id="explicate-control-explicate-control-ml">
+<h3>3. Explicate control (<code class="docutils literal notranslate"><span class="pre">explicate_control.ml</span></code>)<a class="headerlink" href="#explicate-control-explicate-control-ml" title="Permalink to this heading"></a></h3>
+<p>TODO</p>
+</div>
+<div class="section" id="select-instructions-select-instructions-ml">
+<h3>4. Select instructions (<code class="docutils literal notranslate"><span class="pre">select_instructions.ml</span></code>)<a class="headerlink" href="#select-instructions-select-instructions-ml" title="Permalink to this heading"></a></h3>
+<p>TODO</p>
+</div>
+<div class="section" id="assign-homes-assign-homes-ml">
+<h3>5. Assign homes (<code class="docutils literal notranslate"><span class="pre">assign_homes.ml</span></code>)<a class="headerlink" href="#assign-homes-assign-homes-ml" title="Permalink to this heading"></a></h3>
+<p>TODO</p>
+</div>
+<div class="section" id="patch-instructions-patch-instructions-ml">
+<h3>6. Patch instructions (<code class="docutils literal notranslate"><span class="pre">patch_instructions.ml</span></code>)<a class="headerlink" href="#patch-instructions-patch-instructions-ml" title="Permalink to this heading"></a></h3>
+<p>TODO</p>
+</div>
+<div class="section" id="prelude-and-conclusion-prelude-conclusion-ml">
+<h3>7. Prelude and conclusion (<code class="docutils literal notranslate"><span class="pre">prelude_conclusion.ml</span></code>)<a class="headerlink" href="#prelude-and-conclusion-prelude-conclusion-ml" title="Permalink to this heading"></a></h3>
+<p>TODO</p>
+</div>
+</div>
+<div class="section" id="running-the-compile-program">
+<h2>Running the <code class="docutils literal notranslate"><span class="pre">compile</span></code> program<a class="headerlink" href="#running-the-compile-program" title="Permalink to this heading"></a></h2>
+<p>There are three basic ways to run the compiler
+(the <code class="docutils literal notranslate"><span class="pre">./compile</span></code> program):</p>
+<ol class="arabic">
+<li><p>You can compile a source file up to a particular pass.
+For instance:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./compile tests/var_test_1.src -pass un
+</pre></div>
+</div>
+<p>will compile the code in <code class="docutils literal notranslate"><span class="pre">tests/var_test_1.src</span></code> up to the “un”
+(uniquify) pass, and print the output to the terminal.
+The passes for this assignment are:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lvar</span></code> – AST (not really a pass)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">un</span></code> – uniquify</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rc</span></code> – remove complex operands</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ec</span></code> – explicate control</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">si</span></code> – select instructions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ah</span></code> – assign homes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pi</span></code> – patch instructions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pc</span></code> – prelude and conclusion</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pa</span></code> – print assembly language</p></li>
+</ol>
+<p>If you don’t specify a pass, it will assume the pass <code class="docutils literal notranslate"><span class="pre">pa</span></code>,
+which means compile all the way to assembly language.</p>
+</li>
+<li><p>You can compile a file up to a particular pass and then run
+an evaluator on the resulting code (for some passes).
+For instance:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./compile tests/var_test_1.src -pass un -eval
+</pre></div>
+</div>
+<p>will compile up to the <code class="docutils literal notranslate"><span class="pre">un</span></code> (uniquify) pass and then evaluate the
+resulting code.  Not all passes have evaluators; only the following
+passes do: <code class="docutils literal notranslate"><span class="pre">lvar</span></code>, <code class="docutils literal notranslate"><span class="pre">un</span></code>, <code class="docutils literal notranslate"><span class="pre">rc</span></code>, <code class="docutils literal notranslate"><span class="pre">ec</span></code>.</p>
+</li>
+<li><p>You can compile a single pass.  This requires that the input file
+be in the correct format for that pass.  We normally will use
+the file extensions <code class="docutils literal notranslate"><span class="pre">.un</span></code>, <code class="docutils literal notranslate"><span class="pre">.rc</span></code> <em>etc.</em> to indicate that a file
+has been compiled up to that pass.  For instance:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./compile tests/var_test_1.src -pass un &gt; var_test_10.un
+$ cat var_test_10.un
+(Program
+  (Let
+    x.1
+    Read
+    (Let
+      y.1
+      Read
+      (Add (Var x.1) (Negate (Var y.1))))))
+$ ./compile var_test_10.un -pass rc -only
+(Program
+  (Let
+    x.1
+    Read
+    (Let
+      y.1
+      Read
+      (Let
+        $tmp.1
+        (Negate (Var y.1))
+        (Add (Var x.1) (Var $tmp.1))))))
+</pre></div>
+</div>
+<p>This is a good way to test the code for a single pass, and you can do this
+even if the previous passes haven’t been written.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">reference/</span></code> subdirectory you will find the outputs of all the
+test scripts for all passes.  These can be used for one-pass tests.</p>
+</li>
+</ol>
+<div class="section" id="compiling-and-running-assembly-language-code">
+<h3>Compiling and running assembly language code<a class="headerlink" href="#compiling-and-running-assembly-language-code" title="Permalink to this heading"></a></h3>
+<p>If you have a computer running a 64-bit Intel or AMD processor
+(which use the x86-64 instruction set), you can compile the
+assembly language code that the compiler generates.</p>
+<p>Let’s use the <code class="docutils literal notranslate"><span class="pre">var_test_5.src</span></code> file as an example.
+You will also need the C code files <code class="docutils literal notranslate"><span class="pre">runtime.c</span></code> and <code class="docutils literal notranslate"><span class="pre">runtime.h</span></code>,
+which should be in your <code class="docutils literal notranslate"><span class="pre">ch2</span></code> directory.</p>
+<p>Here is the sequence of commands.  Note that assembly language files
+normally end in <code class="docutils literal notranslate"><span class="pre">.s</span></code>, so we redirect the compiler output to the
+filename <code class="docutils literal notranslate"><span class="pre">var_test_5.s</span></code> and compile it with the <code class="docutils literal notranslate"><span class="pre">gcc</span></code> C compiler
+(which needs to be installed if it isn’t already).</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./compile tests/var_test_5.src &gt; var_test_5.s
+$ gcc -c var_test_5.s
+$ gcc -c runtime.c
+$ gcc var_test_5.o runtime.o -o var_test_5
+$ ./var_test_5
+$ echo $?
+42
+</pre></div>
+</div>
+<p>This compiles the assembly language file <code class="docutils literal notranslate"><span class="pre">var_test_5.s</span></code>
+to the binary executable program <code class="docutils literal notranslate"><span class="pre">var_test_5</span></code>.
+When this program is run, it doesn’t appear to do anything.
+However, the program returns an integer return code to the operating system,
+which in this case is the number 42.  The line <code class="docutils literal notranslate"><span class="pre">echo</span> <span class="pre">$?</span></code> prints this number.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These return codes can only be in the range 0 to 255, so if you
+return an integer outside this range, it will be coerced into that range,
+leading sometimes to peculiar results.</p>
+</div>
+<p>If the program you are compiling has calls to the <code class="docutils literal notranslate"><span class="pre">read</span></code> function,
+you will have to input the integers to be read when the program runs.</p>
+</div>
+</div>
+<div class="section" id="testing-the-compiler">
+<h2>Testing the compiler<a class="headerlink" href="#testing-the-compiler" title="Permalink to this heading"></a></h2>
+<p>There are currently two ways to test your compiler, one automated, and one
+manual.  Both are valuable.</p>
+<div class="section" id="automated-tests">
+<h3>Automated tests<a class="headerlink" href="#automated-tests" title="Permalink to this heading"></a></h3>
+<p>We are supplying you with a test script (written in Python) called
+<code class="docutils literal notranslate"><span class="pre">run_eval_tests.py</span></code>.  This script can be used to test that a
+particular <code class="docutils literal notranslate"><span class="pre">.src</span></code> file generate the correct output when given
+particular inputs.  It uses metadata stored in comments in the <code class="docutils literal notranslate"><span class="pre">.src</span></code> files
+in the <code class="docutils literal notranslate"><span class="pre">/tests</span></code> subdirectory.  For instance, consider the file
+<code class="docutils literal notranslate"><span class="pre">var_test_10.src</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>;; INPUT: 45 3 ; 21 20
+;; OUTPUT: 42 ; 1
+(let (x (read))
+  (let (y (read))
+    (+ x (- y))))
+</pre></div>
+</div>
+<p>The metadata is in the first two lines,
+with the <code class="docutils literal notranslate"><span class="pre">INPUT:</span></code> and <code class="docutils literal notranslate"><span class="pre">OUTPUT:</span></code> tags.
+These indicate that the program should be run twice:
+the first time with (terminal) inputs <code class="docutils literal notranslate"><span class="pre">45</span></code> and <code class="docutils literal notranslate"><span class="pre">3</span></code>,
+producing the output <code class="docutils literal notranslate"><span class="pre">42</span></code>,
+and the second time with (terminal) inputs <code class="docutils literal notranslate"><span class="pre">21</span></code> and <code class="docutils literal notranslate"><span class="pre">20</span></code>,
+producing the output <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+<p>You invoke the test script this way:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python run_eval_tests.py tests/var_test_10.src
+</pre></div>
+</div>
+<p>It will output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>----
+input file: var_test_10.src
+
+* input/output data #1:
+
+Running test file (tests/var_test_10.src) up to pass (lvar).
+Running test file (tests/var_test_10.src) up to pass (un).
+Running test file (tests/var_test_10.src) up to pass (rc).
+Running test file (tests/var_test_10.src) up to pass (ec).
+Compiling to assembly language and compiling/running the program.
+
+* input/output data #2:
+
+Running test file (tests/var_test_10.src) up to pass (lvar).
+Running test file (tests/var_test_10.src) up to pass (un).
+Running test file (tests/var_test_10.src) up to pass (rc).
+Running test file (tests/var_test_10.src) up to pass (ec).
+Compiling to assembly language and compiling/running the program.
+</pre></div>
+</div>
+<p>This can be done for many files, or even for all tests files at once:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python run_eval_tests.py tests/var_test_*.src
+</pre></div>
+</div>
+<p>(This will produce a lot of output!)</p>
+<p>If one of the evaluators produces incorrect output, an error message
+will be printed and the test script will halt.</p>
+<p>By default, the test script will not just test the program outputs using
+the evaluators of the intermediate languages (<code class="docutils literal notranslate"><span class="pre">lvar</span></code>, <code class="docutils literal notranslate"><span class="pre">lvar_mon</span></code>, <em>etc.</em>),
+but will also compile the code all the way to assembly language, run it,
+and test the output against the expected output.
+If you are runnign this script on a non-x86 machine
+(like a Mac with an M1 processor), these tests can’t run.  In that case,
+you can add the <code class="docutils literal notranslate"><span class="pre">-no-asm</span></code> command-line argument
+to skip the assembly language tests:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python run_eval_tests.py -no-asm tests/var_test_10.src
+----
+input file: var_test_10.src
+
+* input/output data #1:
+
+Running test file (tests/var_test_10.src) up to pass (lvar).
+Running test file (tests/var_test_10.src) up to pass (un).
+Running test file (tests/var_test_10.src) up to pass (rc).
+Running test file (tests/var_test_10.src) up to pass (ec).
+
+* input/output data #2:
+
+Running test file (tests/var_test_10.src) up to pass (lvar).
+Running test file (tests/var_test_10.src) up to pass (un).
+Running test file (tests/var_test_10.src) up to pass (rc).
+Running test file (tests/var_test_10.src) up to pass (ec).
+</pre></div>
+</div>
+<p>Note, though, that if there is a bug in the assembly language
+code generation, these tests will not reveal it.
+When we test your code, we will run all the tests.</p>
+</div>
+<div class="section" id="manual-tests">
+<h3>Manual tests<a class="headerlink" href="#manual-tests" title="Permalink to this heading"></a></h3>
+<p>The automated tests are very useful for detecting problems,
+but to really debug your compiler you will need to look at the output
+of the compiler for known correct inputs.  These tests are very
+difficult to automate, since sometimes you can have more than one
+correct output for a particular input.</p>
+<p>As a simple example, the “uniquify” pass will change the names of all the
+variables to unique names, but what those names are isn’t important. (The
+course compiler might rename <code class="docutils literal notranslate"><span class="pre">x</span></code> to <code class="docutils literal notranslate"><span class="pre">x.1</span></code> while your compiler might rename
+<code class="docutils literal notranslate"><span class="pre">x</span></code> to <code class="docutils literal notranslate"><span class="pre">x.101</span></code>; as long as the variable is used correctly, this is still
+fine.)</p>
+<p>Therefore, when working on a pass, we recommend that you use the
+files in the <code class="docutils literal notranslate"><span class="pre">reference/</span></code> subdirectory along with the <code class="docutils literal notranslate"><span class="pre">-only</span></code>
+option of the compiler to compare what your pass does to the input code to
+what the instructor’s compiler did.
+This is what we refer to as “manual tests”.</p>
+<p>Let’s say you are working on the “remove complex operands” pass
+and you think you have a working implementation.  You can run your compiler
+on the output of the previous pass (“uniquify”) and compare to the
+corresponding file in the <code class="docutils literal notranslate"><span class="pre">reference</span></code> subdirectory.
+The output of the <code class="docutils literal notranslate"><span class="pre">uniquify</span></code> pass will be a file ending in <code class="docutils literal notranslate"><span class="pre">.un</span></code>.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ cat reference/var_test_10.un
+(Program
+  (Let
+    x.1
+    Read
+    (Let
+      y.1
+      Read
+      (Add (Var x.1) (Negate (Var y.1))))))
+$ ./compile reference/var_test_10.un -pass rc -only
+(Program
+  (Let
+    x.1
+    Read
+    (Let
+      y.1
+      Read
+      (Let
+        $tmp.1
+        (Negate (Var y.1))
+        (Add (Var x.1) (Var $tmp.1))))))
+$ cat reference/var_test_10.rc
+(Program
+  (Let
+    x.1
+    Read
+    (Let
+      y.1
+      Read
+      (Let
+        $tmp.1
+        (Negate (Var y.1))
+        (Add (Var x.1) (Var $tmp.1))))))
+</pre></div>
+</div>
+<p>You can see that the file that your compiler generated is the same as the file
+the instructor’s compiler generated, so everything seems to be working. Of
+course, some small differences may be found (you might name your temporary
+variable <code class="docutils literal notranslate"><span class="pre">$temp.1</span></code> instead of <code class="docutils literal notranslate"><span class="pre">$tmp.1</span></code>, for instance); this doesn’t
+indicate a mistake.  But if there is a structural difference, something
+probably went wrong.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Structural differences do not always indicate incorrect code;
+in some cases you can transform code
+in a different way than what we wanted you to do
+and the resulting code will still evaluate correctly.
+However, in that case you are not implementing the pass correctly,
+so in most cases we will still consider this to be an error.</p>
+<p>A trivial example of this would be a register allocation pass
+where you just put all variables on the stack instead of in
+registers. (This is intentional in this assignment,
+but in most assignments it’s not what you are supposed to do.)
+Though this is “wrong”, the code will probably still run correctly.</p>
+</div>
+<p>Of course, you should test your compiler on more than just one source file.
+Try to test on as many files as you can for a particular pass.
+If you know how to write shell scripts,
+this can be a useful way of making this kind of test semi-automatic
+(just requiring that you look at the files to check for big differences).</p>
+</div>
+</div>
+<div class="section" id="submitting-your-assignment">
+<h2>“Submitting” your assignment<a class="headerlink" href="#submitting-your-assignment" title="Permalink to this heading"></a></h2>
+<p>Unlike most courses, there is nothing to “hand in” in this course.
+Instead, you need to inform the instructor (and TAs) when an assignment is
+ready to be graded (hopefully, before or on the due date).
+The instructor will check out your code, run the tests, and leave comments
+in a file called GRADING in your <code class="docutils literal notranslate"><span class="pre">ch2</span></code> directory.  The instructor/TAs
+may also leave comments in your code itself, with this syntax:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(*** GRADER COMMENT: ... ***)</span>
+</pre></div>
+</div>
+<p>These should be removed when you fix whatever the comment complained about.</p>
+<p>After the grading comments have been checked in to your repository,
+you have one week to make changes (this is the first redo period).
+Work redone during this period will be re-evaluated without penalty.
+Any subsequent redos after the first redo will result in reduced credit
+(typically, any additional marks after the first week
+will get at most 50% credit).</p>
+</div>
+<div class="section" id="code-reviews-office-hours-and-feedback">
+<h2>Code reviews, office hours, and feedback<a class="headerlink" href="#code-reviews-office-hours-and-feedback" title="Permalink to this heading"></a></h2>
+<p>We will be setting up code review times for each team.  Make sure you choose a
+time where both members of the team can meet as well as the instructor
+(and/or a TA).</p>
+<p>Code reviews do not require that all of the code be written, or that all of the
+code is working correctly, but there is no point in doing a code review unless
+most of the code has been written.  If you are having trouble at an earlier
+stage, we will have office hour times you can come to.</p>
+<hr class="docutils" />
+<p class="rubric">Footnotes</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>That is, in <em>this</em> language.  In some of the later languages,
+the situation will change.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../0/Assignment0.html" class="btn btn-neutral float-left" title="Assignment 0: Getting set up" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>
