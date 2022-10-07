@@ -171,10 +171,10 @@ and an <code class="docutils literal notranslate"><span class="pre">info</span><
 However, for the most part there is a 1-to-1 correspondence between
 the Racket datatypes and the datatypes we define in OCaml.
 When in doubt, trust the OCaml code.</p>
-<p>Finally, in the book, there is skeleton code for some of the passes.
-While the OCaml equivalent is broadly similar, you don’t need to have
-an error case for unhandled cases, because OCaml pattern matching
-is required to be exhaustive! <a class="footnote-reference brackets" href="#id2" id="id1">1</a></p>
+<p>Finally, in the book, there is partial “skeleton” code for some of the passes.
+While the OCaml equivalent is broadly similar, you don’t need to have an error
+case for unhandled cases, because OCaml pattern matching is required to be
+exhaustive! <a class="footnote-reference brackets" href="#id3" id="id1">1</a></p>
 </div>
 <div class="section" id="starting-code-base">
 <h2>Starting code base<a class="headerlink" href="#starting-code-base" title="Permalink to this heading"></a></h2>
@@ -291,7 +291,8 @@ On the other hand, you can write as many extra functions as you like.
 <h3>1. Uniquify (<code class="docutils literal notranslate"><span class="pre">uniquify.ml</span></code>)<a class="headerlink" href="#uniquify-uniquify-ml" title="Permalink to this heading"></a></h3>
 <p>In this pass, all names bound in <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions have to be renamed
 to be unique.  This enables a number of further transformations in later
-passes.</p>
+passes.  Both the input and output languages for this pass are “Lvar”,
+defined in the files <code class="docutils literal notranslate"><span class="pre">lvar.ml[i]</span></code>.</p>
 <p>This is a relatively simple pass to implement.  There are four cases:</p>
 <ol class="arabic">
 <li><p>Forms with no subexpressions and no variables.  These pass through
@@ -363,7 +364,9 @@ and you can use the new or old maps as you see fit.</p>
 <p>The purpose of this pass is simply to make sure
 that the operands of arithmetic operations are “simple” <em>i.e.</em>
 are not subexpressions but “atomic” expressions like integers or variables.
-We define an “atom” datatype in <code class="docutils literal notranslate"><span class="pre">lvar_mon.mli</span></code> as follows:</p>
+The input language to this pass is “Lvar” and the output language is
+“Lvar_mon”, which is defined in the files <code class="docutils literal notranslate"><span class="pre">lvar_mon.ml[i]</span></code>.</p>
+<p>We define an “atom” datatype in <code class="docutils literal notranslate"><span class="pre">lvar_mon.mli</span></code> as follows:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">atm</span> <span class="o">=</span> <span class="nc">Int</span> <span class="k">of</span> <span class="kt">int</span> <span class="o">|</span> <span class="nc">Var</span> <span class="k">of</span> <span class="n">var</span>
 </pre></div>
 </div>
@@ -422,11 +425,58 @@ If this bothers you, don’t worry: we’ll fix it in the next pass!</p>
 </div>
 <div class="section" id="explicate-control-explicate-control-ml">
 <h3>3. Explicate control (<code class="docutils literal notranslate"><span class="pre">explicate_control.ml</span></code>)<a class="headerlink" href="#explicate-control-explicate-control-ml" title="Permalink to this heading"></a></h3>
-<p>TODO</p>
+<p>The purpose of this pass is to “flatten” the code representation
+into a sequence of assignment statements followed by a “return” statement.
+The <code class="docutils literal notranslate"><span class="pre">let</span></code> statements are gone, replaced by assignments.
+There is no more nesting of expressions,
+unless you consider the sequence of assignments “nesting”.</p>
+<p>The input language to the pass is “Lvar_mon”
+and the output language is “Cvar”,
+defined in the files <code class="docutils literal notranslate"><span class="pre">cvar.ml[i]</span></code>.
+The name “Cvar” was chosen because the straight-line nature of the code
+is very similar to the way code is represented in a C language program.</p>
+<p>The source code consists of five functions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">convert_atom</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">convert_exp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">explicate_assign</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">explicate_tail</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">explicate_control</span></code></p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">explicate_control</span></code> is supplied for you.
+<code class="docutils literal notranslate"><span class="pre">convert_atom</span></code> and <code class="docutils literal notranslate"><span class="pre">convert_exp</span></code> are straightforward.
+<code class="docutils literal notranslate"><span class="pre">explicate_tail</span></code> converts an expression in tail position,
+while <code class="docutils literal notranslate"><span class="pre">explicate_assign</span></code> converts an assignment statement
+followed by an already-converted tail expression.</p>
+<p>In both <code class="docutils literal notranslate"><span class="pre">explicate_tail</span></code> and <code class="docutils literal notranslate"><span class="pre">explicate_assign</span></code>,
+the only (slightly) tricky case is the <code class="docutils literal notranslate"><span class="pre">let</span></code> case.
+Hint: <code class="docutils literal notranslate"><span class="pre">explicate_tail</span></code> has to call <code class="docutils literal notranslate"><span class="pre">explicate_assign</span></code>.
+The total code is considerably less than 100 lines.</p>
 </div>
 <div class="section" id="select-instructions-select-instructions-ml">
 <h3>4. Select instructions (<code class="docutils literal notranslate"><span class="pre">select_instructions.ml</span></code>)<a class="headerlink" href="#select-instructions-select-instructions-ml" title="Permalink to this heading"></a></h3>
-<p>TODO</p>
+<p>This is the first of several passes collectively called the “back end”.
+Their job is to convert the code into x86-64 assembly language.
+There are three intermediate languages specific to these passes:</p>
+<ol class="arabic">
+<li><p>“x86var” (<code class="docutils literal notranslate"><span class="pre">x86var.ml[i]</span></code>)</p>
+<p>This language mixes assembly language instructions with variables.</p>
+</li>
+<li><p>“x86int” (<code class="docutils literal notranslate"><span class="pre">x86int.ml[i]</span></code>)</p>
+<p>This language gets rid of variables.  Variables are represented by
+stack locations (in this assignment) and by a combination of
+stack locations and registers (in later assignments).</p>
+</li>
+<li><p>“x86asm” (<code class="docutils literal notranslate"><span class="pre">x86asm.ml[i]</span></code>)</p>
+<p>This language adds extra code (the “prelude” and “conclusion”)
+necessary to make the entire program into a single unit that
+can be compiled into a full executable program. <a class="footnote-reference brackets" href="#id4" id="id2">2</a></p>
+</li>
+</ol>
+<p>After “x86asm”, actual assembly code is trivially generated by the
+“print assembly” pass (<code class="docutils literal notranslate"><span class="pre">print_asm.ml[i]</span></code>).</p>
+<p>In the “select instructions” pass,
+code is converted from the “Cvar” language to the “x86var” language.</p>
 </div>
 <div class="section" id="assign-homes-assign-homes-ml">
 <h3>5. Assign homes (<code class="docutils literal notranslate"><span class="pre">assign_homes.ml</span></code>)<a class="headerlink" href="#assign-homes-assign-homes-ml" title="Permalink to this heading"></a></h3>
@@ -752,9 +802,16 @@ stage, we will have office hour times you can come to.</p>
 <hr class="docutils" />
 <p class="rubric">Footnotes</p>
 <dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>That is, in <em>this</em> language.  In some of the later languages,
 the situation will change.</p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Note that this language is not described in the book;
+the book simply outputs assembly language as a string in this case.
+We use a more abstract representation because we plan to
+eventually have an x86-64 emulator which will use this
+language as its input (bypassing the need to parse actual assembly code).</p>
 </dd>
 </dl>
 </div>
