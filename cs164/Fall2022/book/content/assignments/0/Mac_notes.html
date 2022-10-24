@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes on MacOS X &mdash; The CS 164 book 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Assignment 1: The Var language" href="../1/Assignment1.html" />
+    <link rel="prev" title="Assignment 0: Getting set up" href="Assignment0.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> The CS 164 book
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../coding_notes.html">OCaml coding notes and tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Installing_OCaml.html">Installing OCaml</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Assignment0.html">Assignment 0: Getting set up</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Notes on MacOS X</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Assignment1.html">Assignment 1: The <em>Var</em> language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Assignment2.html">Assignment 2: Register allocation</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The CS 164 book</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Assignments</a> &raquo;</li>
+      <li>Notes on MacOS X</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/content/assignments/0/Mac_notes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="notes-on-macos-x">
+<h1>Notes on MacOS X<a class="headerlink" href="#notes-on-macos-x" title="Permalink to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Thanks to Simon Lequar for doing the research on this topic!</p>
+</div>
+<p>If you are using a Mac OS X computer as your development machine for this
+course, these notes are for you.  If not, you can skip them.
+Similarly, if you have an older Mac which is running an x86-64 (Intel)
+processor, you can skip these notes.</p>
+<p>These notes are for students who are running Macs with the M1 or M2 processors
+(or later versions of these).
+(We will refer to these Macs as <em>Mx Macs</em> in what follows.)
+These processors do not use the x86-64 instruction set;
+they use the ARM64 instruction set, which is very different.
+Eventually, we may allow (or even require) students to compile their code
+down to ARM64 instead of (or in addition to) x86-64,
+but this isn’t yet the case.
+Fortunately, there is a workaround which you can use now.</p>
+<p>The only issue with using an Mx Mac is compiling and running the
+assembly language code generated by the compiler.
+This code is specific to the x86-64 processor and can’t be compiled
+natively on an Mx Mac.</p>
+<p><a class="reference external" href="https://www.courier.com/blog/tips-and-tricks-to-setup-your-apple-m1-for-development/">This</a> article has information on how to compile and run x86-64 assembly
+language on an Mx Mac.</p>
+<p>Following the article (only the first step), you can create a duplicate
+terminal that uses <a class="reference external" href="https://support.apple.com/en-us/HT211861">Rosetta2</a>, which is a translation layer that allows x86-64
+applications to run on Mx hardware. From there, using the default terminal (the
+not-rosetta2 one), run the <code class="docutils literal notranslate"><span class="pre">make</span></code> command to compile the compiler, then
+switch to the new terminal and run the python test script
+(<code class="docutils literal notranslate"><span class="pre">run_eval_tests.py</span></code>) there with the <code class="docutils literal notranslate"><span class="pre">-only-asm</span></code> argument.</p>
+<p>Note that you should <em>only</em> run these particular tests in the Rosetta2
+terminal; the rest of the tests should be run in the regular (non-Rosetta)
+terminal, because they don’t involve compiling assembly code.</p>
+<p>In principle, the most manual way to use Rosetta2 is to use the non-Rosetta
+terminal to compile code to assembly language, save the output to a file,
+and then (in the Rosetta2 terminal), compile the file to an executable and run
+and test it there.  This sequence could look like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[non-Rosetta terminal]
+$ ./compile tests/var_test_1.src &gt; var_test_1.s
+[Rosetta terminal, same directory]
+$ gcc -c var_test_1.s
+$ gcc -c runtime.c
+$ gcc runtime.o var_test_1.o -o var_test_1
+$ ./var_test_1
+$ echo $?
+</pre></div>
+</div>
+<p>If everything went well, this should print out the return value of the program
+(in this case, <code class="docutils literal notranslate"><span class="pre">42</span></code>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These instructions have not been fully vetted.  If you are having problems
+with them, please let us know!</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Assignment0.html" class="btn btn-neutral float-left" title="Assignment 0: Getting set up" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../1/Assignment1.html" class="btn btn-neutral float-right" title="Assignment 1: The Var language" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>
