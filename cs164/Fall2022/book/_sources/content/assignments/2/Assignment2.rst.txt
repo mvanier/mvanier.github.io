@@ -603,10 +603,21 @@ You can implement ``uncover_live_in_block`` as you like
 but we recommend that you define a helper function
 to compute the liveness set for a single instruction
 given the instruction and its live-after set.
-Also, be aware that ``callq`` instructions require special handling:
-each ``callq`` instruction can write to all of the caller-saved registers.
+
+Also, be aware that ``callq`` instructions require special handling.
+First, each ``callq`` instruction can write to all of the caller-saved registers.
 There is a list of caller-saved registers in the ``Types`` module as
-``Types.caller_saved_regs``; don't hard-code the caller-saved registers!
+``caller_saved_regs``; don't hard-code the caller-saved registers!
+Second, ``callq`` instructions with arity (number of arguments)
+greater than 0 have to read from registers for the first 6 arguments.
+These registers are given in the ``Types`` module as ``arg_passing_regs``;
+these arguments are (in order)
+``%rdi``, ``%rsi``, ``%rdx``, ``%rcx``, ``%r8``, and ``%r9``
+(all of which are caller-save registers, which should make sense).
+We recommend that you write a helper function
+to determine the change in the liveness set just for ``callq`` instructions,
+incorporating all of this information.
+
 The algorithm for computing liveness sets is described in detail
 in section 3.2 of the textbook and in the lectures.
 

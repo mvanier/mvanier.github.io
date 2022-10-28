@@ -619,12 +619,21 @@ with live locations (registers) <code class="docutils literal notranslate"><span
 (as long as it’s functional – don’t use mutation!)
 but we recommend that you define a helper function
 to compute the liveness set for a single instruction
-given the instruction and its live-after set.
-Also, be aware that <code class="docutils literal notranslate"><span class="pre">callq</span></code> instructions require special handling:
-each <code class="docutils literal notranslate"><span class="pre">callq</span></code> instruction can write to all of the caller-saved registers.
+given the instruction and its live-after set.</p>
+<p>Also, be aware that <code class="docutils literal notranslate"><span class="pre">callq</span></code> instructions require special handling.
+First, each <code class="docutils literal notranslate"><span class="pre">callq</span></code> instruction can write to all of the caller-saved registers.
 There is a list of caller-saved registers in the <code class="docutils literal notranslate"><span class="pre">Types</span></code> module as
-<code class="docutils literal notranslate"><span class="pre">Types.caller_saved_regs</span></code>; don’t hard-code the caller-saved registers!
-The algorithm for computing liveness sets is described in detail
+<code class="docutils literal notranslate"><span class="pre">caller_saved_regs</span></code>; don’t hard-code the caller-saved registers!
+Second, <code class="docutils literal notranslate"><span class="pre">callq</span></code> instructions with arity (number of arguments)
+greater than 0 have to read from registers for the first 6 arguments.
+These registers are given in the <code class="docutils literal notranslate"><span class="pre">Types</span></code> module as <code class="docutils literal notranslate"><span class="pre">arg_passing_regs</span></code>;
+these arguments are (in order)
+<code class="docutils literal notranslate"><span class="pre">%rdi</span></code>, <code class="docutils literal notranslate"><span class="pre">%rsi</span></code>, <code class="docutils literal notranslate"><span class="pre">%rdx</span></code>, <code class="docutils literal notranslate"><span class="pre">%rcx</span></code>, <code class="docutils literal notranslate"><span class="pre">%r8</span></code>, and <code class="docutils literal notranslate"><span class="pre">%r9</span></code>
+(all of which are caller-save registers, which should make sense).
+We recommend that you write a helper function
+to determine the change in the liveness set just for <code class="docutils literal notranslate"><span class="pre">callq</span></code> instructions,
+incorporating all of this information.</p>
+<p>The algorithm for computing liveness sets is described in detail
 in section 3.2 of the textbook and in the lectures.</p>
 </div>
 <div class="section" id="build-interference-graph-build-interference-ml">
