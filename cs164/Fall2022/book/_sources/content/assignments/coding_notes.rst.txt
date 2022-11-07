@@ -16,6 +16,39 @@ partially written).  Never ignore warnings.  Your finished code should *never*
 generate warnings.
 
 
+General coding tips
+-------------------
+
+Use ``let`` instead of ``match`` when there is only one variant
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It's not uncommon to have types that only have one variant.
+We see this in the ``program`` types of our compilers, for instance:
+
+.. code-block:: text
+
+   type program = Program of exp
+
+If you have a ``program`` value and you want to extract the ``exp``
+component, you can use a pattern match as usual:
+
+.. code-block:: text
+
+   match prog with
+     | Program e -> e  (* the only case *)
+
+However, this is overkill for such a simple case.
+The idiomatic way to do this is with a ``let``:
+
+.. code-block:: text
+
+   let (Program e) = prog in ...
+
+You can think of a ``let`` used in this way as a one-variant
+pattern match.  Never use a ``match`` when a ``let`` suffices;
+a ``match`` in this case is excessive and harder to read.
+
+
 Functional programming tips
 ---------------------------
 
@@ -660,6 +693,70 @@ which is a function of type ``(unit -> 'a)``,
 where ``'a`` is the value type.
 You can use this to return a default value,
 or to raise an arbitrary exception on lookup failure.
+
+
+Be careful with catch-all ``match`` cases!
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note::
+
+   This advice is very specific to this course,
+   and not to OCaml programming in general.
+
+Many functions in your compilers will be large ``match`` expressions
+handling a lot of different constructors.
+In addition, new constructors for many types will be added with each
+new version of the compiler.
+Some functions will require that you handle (say) one case specially,
+and then all other cases can be handled in a generic manner.
+It's totally natural to write such functions with a ``match``
+expression that looks like this:
+
+.. code-block:: text
+
+   match <thing to match> with
+     | <special case> -> <special case code>
+     | _ -> <generic code for all other cases>
+
+In normal OCaml programming, this would be fine.
+For us, it's not optimal,
+because it's very easy to forget to handle new constructors
+when you add them in later compilers.
+If that happens, the new constructors will be handled by the
+generic code (the catch-all handler), which will probably be wrong
+and which may be hard to debug.
+
+Instead of this, we recommend this style:
+
+.. code-block:: text
+
+   match <thing to match> with
+     | <special case> -> <special case code>
+     | <case 1>
+     | <case 2>
+     | <case 3>
+     | ... ->
+       <generic code for all other cases>
+
+Each ``<case N>`` form is a constructor
+with a wildcard for the constructor arguments
+|eg| for a constructor ``Foo`` it would be ``Foo _``
+(assuming that ``Foo`` has arguments).
+This way, if you add another constructor in the next compiler,
+and you forget to handle that case,
+you will get a warning about a non-exhaustive pattern match,
+and you will be able to fix the problem right away!
+
+You can also write this more concisely as:
+
+.. code-block:: text
+
+   match <thing to match> with
+     | <special case> -> <special case code>
+     | <case 1> | <case 2> | <case 3> | ... ->
+       <generic code for all other cases>
+
+This is a bit easier on the eyes.
 
 
 Debugging tips

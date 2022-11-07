@@ -20,6 +20,12 @@ ability to run a single pass given the appropriate inputs.
    to this document!  Also let us know about typos and mistakes.
 
 
+Textbook coverage
+-----------------
+
+This assignment is based on chapter 2 of *Essentials of Compilation*.
+
+
 Due date
 --------
 
@@ -100,7 +106,7 @@ subdirectories:
    whose purposes will be described below.
 
    The name ``ch2`` refers to the fact that this code corresponds
-   to the language in chapter 2 of the textbook
+   to the language in chapter 2 of the textbook.
 
 #. ``support`` -- this contains a variety of modules which contain
    useful functions and data structures.  We'll give you suggestions
@@ -479,6 +485,14 @@ Note that ``subq x y`` means "subtract ``x`` from ``y``".
 .. note ::
 
    These optimizations are *not* optional!
+   Be careful here.  It's easy to just optimize one of two cases,
+   |eg| optimizing ``v = a + v`` for addition.
+   But ``v = v + a`` can be similarly optimized.
+   Subtraction is more complicated.
+   One form ("subtract ``a`` from ``v``" or ``v = v - a``) can be
+   optimized into one instruction.
+   The other form (``v = a - v``) can be sort-of optimized by
+   negating the ``v`` and adding, or you can just not optimize it.
 
 The ``Return`` instruction requires special treatment.
 You don't actually generate a ``Retq`` instruction

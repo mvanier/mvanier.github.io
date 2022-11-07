@@ -48,7 +48,9 @@
 <li class="toctree-l2"><a class="reference internal" href="coding_notes.html">OCaml coding notes and tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="0/Installing_OCaml.html">Installing OCaml</a></li>
 <li class="toctree-l2"><a class="reference internal" href="0/Assignment0.html">Assignment 0: Getting set up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="0/Mac_notes.html">Notes on MacOS X</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1/Assignment1.html">Assignment 1: The <em>Var</em> language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2/Assignment2.html">Assignment 2: Register allocation</a></li>
 </ul>
 </li>
 </ul>
@@ -83,6 +85,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="coding_notes.html">OCaml coding notes and tips</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="coding_notes.html#warnings">Warnings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coding_notes.html#general-coding-tips">General coding tips</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="coding_notes.html#use-let-instead-of-match-when-there-is-only-one-variant">Use <code class="docutils literal notranslate"><span class="pre">let</span></code> instead of <code class="docutils literal notranslate"><span class="pre">match</span></code> when there is only one variant</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="coding_notes.html#functional-programming-tips">Functional programming tips</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="coding_notes.html#use-functional-style-by-default">Use functional style by default</a></li>
 <li class="toctree-l3"><a class="reference internal" href="coding_notes.html#use-tail-recursion-by-default">Use tail recursion by default</a></li>
@@ -106,6 +112,7 @@
 <li class="toctree-l3"><a class="reference internal" href="coding_notes.html#use-wishful-thinking">Use wishful thinking!</a></li>
 <li class="toctree-l3"><a class="reference internal" href="coding_notes.html#use-the-support-library">Use the <code class="docutils literal notranslate"><span class="pre">support</span></code> library!</a></li>
 <li class="toctree-l3"><a class="reference internal" href="coding_notes.html#avoid-functions-that-raise-unhelpful-exceptions">Avoid functions that raise unhelpful exceptions!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coding_notes.html#be-careful-with-catch-all-match-cases">Be careful with catch-all <code class="docutils literal notranslate"><span class="pre">match</span></code> cases!</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="coding_notes.html#debugging-tips">Debugging tips</a><ul>
@@ -149,8 +156,10 @@
 <li class="toctree-l2"><a class="reference internal" href="0/Assignment0.html#creating-a-github-repository">Creating a Github repository</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="0/Mac_notes.html">Notes on MacOS X</a></li>
 <li class="toctree-l1"><a class="reference internal" href="1/Assignment1.html">Assignment 1: The <em>Var</em> language</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="1/Assignment1.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1/Assignment1.html#textbook-coverage">Textbook coverage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1/Assignment1.html#due-date">Due date</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1/Assignment1.html#before-you-begin">Before you begin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1/Assignment1.html#division-of-labor">Division of labor</a></li>
@@ -180,6 +189,36 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="1/Assignment1.html#submitting-your-assignment">“Submitting” your assignment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1/Assignment1.html#code-reviews-office-hours-and-feedback">Code reviews, office hours, and feedback</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="2/Assignment2.html">Assignment 2: Register allocation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="2/Assignment2.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2/Assignment2.html#textbook-coverage">Textbook coverage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2/Assignment2.html#due-date">Due date</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2/Assignment2.html#starting-code-base">Starting code base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2/Assignment2.html#compiling-and-running-the-compiler">Compiling and running the compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2/Assignment2.html#testing-your-compiler-the-test-scripts">Testing your compiler: the test scripts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2/Assignment2.html#run-eval-tests-py"><code class="docutils literal notranslate"><span class="pre">run_eval_tests.py</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="2/Assignment2.html#compare-py"><code class="docutils literal notranslate"><span class="pre">compare.py</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="2/Assignment2.html#show-asm-py"><code class="docutils literal notranslate"><span class="pre">show_asm.py</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2/Assignment2.html#code-to-write-the-compiler-passes">Code to write: the compiler passes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2/Assignment2.html#passes-that-are-unchanged-from-assignment-1">Passes that are unchanged from assignment 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2/Assignment2.html#select-instructions-select-instructions-ml">1. Select instructions (<code class="docutils literal notranslate"><span class="pre">select_instructions.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2/Assignment2.html#uncover-live-uncover-live-ml">2. Uncover live (<code class="docutils literal notranslate"><span class="pre">uncover_live.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2/Assignment2.html#build-interference-graph-build-interference-ml">3. Build interference graph (<code class="docutils literal notranslate"><span class="pre">build_interference.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2/Assignment2.html#graph-coloring-graph-coloring-ml">4. Graph coloring (<code class="docutils literal notranslate"><span class="pre">graph_coloring.ml</span></code>)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="2/Assignment2.html#testing-the-graph-coloring-algorithm">Testing the graph coloring algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="2/Assignment2.html#allocate-registers-allocate-registers-ml">5. Allocate registers (<code class="docutils literal notranslate"><span class="pre">allocate_registers.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2/Assignment2.html#patch-instructions-patch-instructions-ml">6. Patch instructions (<code class="docutils literal notranslate"><span class="pre">patch_instructions.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2/Assignment2.html#prelude-and-conclusion-prelude-conclusion-ml">7. Prelude and conclusion (<code class="docutils literal notranslate"><span class="pre">prelude_conclusion.ml</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2/Assignment2.html#submitting-your-assignment">“Submitting” your assignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2/Assignment2.html#code-reviews-office-hours-and-feedback">Code reviews, office hours, and feedback</a></li>
 </ul>
 </li>
 </ul>

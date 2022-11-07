@@ -21,7 +21,8 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="prev" title="Assignment 0: Getting set up" href="../0/Assignment0.html" /> 
+    <link rel="next" title="Assignment 2: Register allocation" href="../2/Assignment2.html" />
+    <link rel="prev" title="Notes on MacOS X" href="../0/Mac_notes.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -47,8 +48,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../coding_notes.html">OCaml coding notes and tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../0/Installing_OCaml.html">Installing OCaml</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../0/Assignment0.html">Assignment 0: Getting set up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../0/Mac_notes.html">Notes on MacOS X</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Assignment 1: The <em>Var</em> language</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#textbook-coverage">Textbook coverage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#due-date">Due date</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#before-you-begin">Before you begin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#division-of-labor">Division of labor</a></li>
@@ -80,6 +83,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#code-reviews-office-hours-and-feedback">Code reviews, office hours, and feedback</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Assignment2.html">Assignment 2: Register allocation</a></li>
 </ul>
 </li>
 </ul>
@@ -126,6 +130,10 @@ ability to run a single pass given the appropriate inputs.</p>
 <p>Let us know about anything that’s confusing so we can add clarifications
 to this document!  Also let us know about typos and mistakes.</p>
 </div>
+</section>
+<section id="textbook-coverage">
+<h2>Textbook coverage<a class="headerlink" href="#textbook-coverage" title="Permalink to this heading"></a></h2>
+<p>This assignment is based on chapter 2 of <em>Essentials of Compilation</em>.</p>
 </section>
 <section id="due-date">
 <h2>Due date<a class="headerlink" href="#due-date" title="Permalink to this heading"></a></h2>
@@ -195,7 +203,7 @@ There are also a few other files
 (<code class="docutils literal notranslate"><span class="pre">Makefile</span></code>, <code class="docutils literal notranslate"><span class="pre">dune</span></code>, <code class="docutils literal notranslate"><span class="pre">utop_init</span></code>, <em>etc.</em>)
 whose purposes will be described below.</p>
 <p>The name <code class="docutils literal notranslate"><span class="pre">ch2</span></code> refers to the fact that this code corresponds
-to the language in chapter 2 of the textbook</p>
+to the language in chapter 2 of the textbook.</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">support</span></code> – this contains a variety of modules which contain
 useful functions and data structures.  We’ll give you suggestions
@@ -512,7 +520,15 @@ but be careful with <code class="docutils literal notranslate"><span class="pre"
 Note that <code class="docutils literal notranslate"><span class="pre">subq</span> <span class="pre">x</span> <span class="pre">y</span></code> means “subtract <code class="docutils literal notranslate"><span class="pre">x</span></code> from <code class="docutils literal notranslate"><span class="pre">y</span></code>”.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>These optimizations are <em>not</em> optional!</p>
+<p>These optimizations are <em>not</em> optional!
+Be careful here.  It’s easy to just optimize one of two cases,
+<em>e.g.</em> optimizing <code class="docutils literal notranslate"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">+</span> <span class="pre">v</span></code> for addition.
+But <code class="docutils literal notranslate"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">v</span> <span class="pre">+</span> <span class="pre">a</span></code> can be similarly optimized.
+Subtraction is more complicated.
+One form (“subtract <code class="docutils literal notranslate"><span class="pre">a</span></code> from <code class="docutils literal notranslate"><span class="pre">v</span></code>” or <code class="docutils literal notranslate"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">v</span> <span class="pre">-</span> <span class="pre">a</span></code>) can be
+optimized into one instruction.
+The other form (<code class="docutils literal notranslate"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">-</span> <span class="pre">v</span></code>) can be sort-of optimized by
+negating the <code class="docutils literal notranslate"><span class="pre">v</span></code> and adding, or you can just not optimize it.</p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">Return</span></code> instruction requires special treatment.
 You don’t actually generate a <code class="docutils literal notranslate"><span class="pre">Retq</span></code> instruction
@@ -1063,7 +1079,8 @@ x86-64 processors have 16 registers.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../0/Assignment0.html" class="btn btn-neutral float-left" title="Assignment 0: Getting set up" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../0/Mac_notes.html" class="btn btn-neutral float-left" title="Notes on MacOS X" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../2/Assignment2.html" class="btn btn-neutral float-right" title="Assignment 2: Register allocation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

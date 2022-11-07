@@ -1,0 +1,1014 @@
+Assignment 2: Register allocation
+=================================
+
+Overview
+--------
+
+In this assignment, you will be extending your "Var" language compiler from the
+last assignment to do register allocation in the back end instead of putting
+all variables on the stack.
+
+In addition, the testing framework from assignment 1 has been enhanced,
+so we'll describe the new features below.
+
+
+Textbook coverage
+-----------------
+
+This assignment is based on chapter 3 of *Essentials of Compilation*.
+
+
+Due date
+--------
+
+This assignment is due on Friday, October 28th at 2 AM
+(so, effectively very late Thursday night).
+
+Starting code base
+------------------
+
+The starting code base is the zipfile ``ch3.zip``, which is posted on the
+course Canvas site.  You should unzip this file in your Github repo,
+inside the ``src/`` directory.  It contains partial implementations of all code
+for the assignment.
+
+.. note::
+
+   We've made small changes in the ``support`` library code,
+   so you should also download the file ``support.zip``
+   and use it to replace your existing ``support`` directory as follows
+   (from your ``src`` directory):
+
+   .. code-block:: text
+
+      $ git rm -rf support
+      $ unzip support.zip
+      $ rm support.zip
+      $ git add support
+      $ git commit support
+
+   **Be very careful** when typing ``git rm -rf support``.
+   Make sure you type that exact command; if you do
+   ``git rm -rf *`` you could destroy most of your repository.
+
+Inside the ``ch3`` directory will be these subdirectories:
+
+* The ``tests/`` subdirectory contains the same test programs
+  as in the previous assignment.
+
+* The ``reference/`` subdirectory contains the output
+  from the instructor's version of the compiler.
+  Note that there are many more files in this directory than in the
+  previous assignment, for reasons which will be explained below.
+
+* The ``scripts/`` subdirectory contains scripts for testing
+  your code.  These will be explained below.
+
+
+Compiling and running the compiler
+----------------------------------
+
+To compile the compiler, ``cd`` into the ``src/ch3`` directory
+and type ``make``.
+This will compile the compiler (which is an executable file called ``compile``).
+You should see a number of warnings when you compile the compiler;
+that's expected.
+(As you fill in the code for the compiler passes,
+these warnings will go away).
+
+To run the compiler, type ``./compile`` in the ``ch3`` directory, along
+with the path of a file to compile and (optionally) some command-line options.
+Typing ``./compile --help`` (or just ``./compile`` with no arguments)
+will display this usage message (wrapped for readability):
+
+.. code-block:: text
+
+   usage: compile <filename> [-pass <pass>] [-only] [-eval] [-sexp-width n]
+                             [-sexp-indent n] [-regs reg1,reg2,...] [-help]
+     -pass Last compiler pass (one of: lvar un rc ec si ul bi ar pi pc pa)
+     -only Only do one compiler pass
+     -eval Evaluate after compiling
+     -sexp-width S-expression maximum line width
+     -sexp-indent S-expression indent
+     -regs Registers to use
+     -help  Display this list of options
+     --help  Display this list of options
+
+Note that the filename argument is required.
+(Don't type the ``<`` ``>`` characters; that's just to indicate that
+the name ``filename`` is a placeholder for the actual filename.)
+We will describe the command line options below.
+If there are no command-line options, the file is compiled all the way
+to assembly language, and the output is printed to the terminal.
+If you want to save this output to a file, you can redirect it with
+the Unix shell ``>`` operator as follows:
+
+.. code-block:: text
+
+   $ ./compile tests/var_test_1.src > var_test_1.s
+
+This will save the printed output to a file named ``var_test_1.s``.
+(This is an appropriate name, since assembly language files
+conventionally end in ``.s``.)
+From there, it can be compiled to an executable and run
+as described in the last assignment.
+
+Here are the command-line arguments for the ``compile`` program:
+
+* ``-help`` (or ``--help``, or no arguments).
+
+  This prints out a usage message.
+
+
+* ``-pass <pass>``
+
+  This tells the compiler to stop and print the output after the pass
+  ``<pass>``.  The allowed passes for this compiler are:
+
+  * ``lvar`` -- the "Lvar" language AST (not technically a pass)
+  * ``un``   -- the "uniquify" pass
+  * ``rc``   -- the "remove complex operands" pass
+  * ``ec``   -- the "explicate control" pass
+  * ``si``   -- the "select instructions" pass
+  * ``ul``   -- the "uncover live" pass
+  * ``bi``   -- the "build interference" pass
+  * ``ar``   -- the "allocate registers" pass
+  * ``pi``   -- the "patch instructions" pass
+  * ``pc``   -- the "prelude and conclusion" pass
+  * ``pa``   -- the "print assembly" pass
+
+  The ``lvar`` "pass" just runs the parser.  This converts the source code
+  to the ``Lvar`` AST form.
+
+* ``-only``
+
+  Adding this option causes the compiler to run only the pass specified
+  by the ``-pass`` option.  For this to work, the input file must be
+  in the correct format, representing an S-expression version
+  of the datatype that is the input to the pass.
+
+  This option is normally used with the reference outputs; these provide
+  outputs of the compiler for all passes and for all test programs.
+  Each file in the ``reference/`` directory contains a file extension
+  which gives information about the last pass which was used to compile it.
+  Therefore, you can use this file as input to the next pass.
+  For instance:
+
+  .. code-block:: text
+
+     $ ./compile reference/var_test_11.rc -pass ec -only
+
+  will compile the file ``reference/var_test_11.rc``
+  (which has already been compiled up to the "remove complex operands" pass)
+  using only the "explicate control" pass (which is the next pass).
+
+  If you attempt to compile a file this way using the wrong input,
+  you will get an error message which may be hard to understand.
+
+* ``-eval``
+
+  Adding this option causes the compiler to run an evaluator after compiling.
+  Note that not all passes have evaluators; only the ones up to ``ec`` do.
+  Also, note that ``-eval`` and ``-only`` are mutually exclusive.
+
+* ``-sexp-width n``
+
+  If the S-expressions printed are too narrow or wide for your taste,
+  you can adjust it with this option, which sets the width of the
+  S-expression display in columns.  By default, `n` is 40.
+
+  Note that if `n` is too small, the S-expressions may be spread out over
+  more lines than you care to view.  Conversely, if it's too large,
+  too many S-expression forms may be crammed into a single line.
+
+* ``-sexp-indent n``
+
+  This allows you to set the degree of indentation for S-expressions.
+  By default, it's 2.  It's unlikely that you'll want/need to change this.
+
+* ``-regs reg1,reg2,...``
+
+  This is a new feature of the compiler, starting with this assignment
+  and continuing through all the subsequent ones.
+  It allows you to select which registers can be used for register allocation.
+  If this option is not used, all registers (other than the reserved ones)
+  can be used.
+  This is extremely useful for checking for whether variables get spilled
+  to the stack correctly once there are no more registers available,
+  and for whether callee-saved registers are handled correctly
+  in the preludes and conclusions of functions.
+
+  The test scripts use this option in these ways:
+
+  * ``-regs rcx`` -- only use the ``%rcx`` register (caller-saved)
+  * ``-regs rbx`` -- only use the ``%rbx`` register (callee-saved)
+  * ``-regs rcx,rbx`` -- only use the ``%rcx`` and ``%rbx`` registers
+
+
+Testing your compiler: the test scripts
+---------------------------------------
+
+There are three scripts in the ``scripts`` subdirectory of ``ch3``.
+Two of them are for testing, and the third is for visualizing the output
+(though it's completely optional). All of these are Python scripts. [1]_
+
+
+``run_eval_tests.py``
+^^^^^^^^^^^^^^^^^^^^^
+
+This was described in the last assignment.
+Note that we have moved this script
+to the ``scripts/`` subdirectory of ``ch3``,
+so you should invoke it like this:
+
+.. code-block:: text
+
+   $ python scripts/run_eval_tests.py tests/var_test_*.src
+
+to test all the source files.
+Of course, you can run it on fewer files, or even one file if you like.
+
+We've added a new command-line argument: ``-only-asm``.
+This will only test the input files by compiling them all the way
+to assembly language and then producing an executable program
+and running it.  It's the converse of the ``-no-asm`` argument,
+which only runs the intermediate language evaluators.
+
+
+``compare.py``
+^^^^^^^^^^^^^^
+
+This is a new test script.
+The idea of this test script is to simplify the process of
+comparing the output of compiling a file using only a single pass
+with the corresponding output file
+in the ``reference/`` subdirectory.
+Of course, you can do this yourself manually;
+for instance, you can do this:
+
+.. code-block:: text
+
+   $ ./compile reference/var_test_11.rc -pass ec -only > var_test_11.ec
+
+and compare the file ``var_test_11.ec`` that was generated by your compiler
+to the file ``reference/var_test_11.ec``
+in the ``reference/`` subdirectory.
+If they are the same, all is well.
+However, repeating this for a lot of files and a lot of passes
+is very tedious!
+Also, you might miss something if you just compare them visually
+("eyeballing it").  Instead, you can use the ``diff`` program to test
+if the files are different:
+
+.. code-block:: text
+
+   $ diff var_test_11.ec reference/var_test_11.ec
+
+If there is no output, the files are identical.
+If there is any difference, the lines that are different
+will be printed in a format which shows what's different.
+But again, doing this for a lot of files is going to be tedious.
+
+.. note::
+
+   As we mentioned in the last assignment,
+   it's important to realize that your output files can have *some*
+   differences from the reference output files and still be acceptable.
+   For instance, the "uniquify" pass is not required to give the exact
+   same names to variables whose names are changed, as long as the
+   names are changed consistently.  Nevertheless, if you can make the
+   outputs identical, it will simplify testing.
+
+The purpose of the ``compare.py`` script is to simplify this process.
+If you run it with no arguments, you get a usage message:
+
+.. code-block:: text
+
+   $ python scripts/compare.py
+   usage: python compare.py [-pause] [-diff] [-random n] filename [filename ...]
+
+The required arguments are one or more filenames.
+These files should be in the ``reference/`` subdirectory.
+The files in that directory have file extensions corresponding to
+the last compiler pass that was used to generate them, so (for instance)
+``var_test_11.ec`` is what the compiler output when compiling the file
+``var_test_11.src`` up to the ``ec`` (explicate control) pass.
+If you want to test your ``var_test_11.ec`` against the reference version,
+you should start with the output of the previous pass,
+which in this case is ``var_test_11.rc``
+(the ``rc`` or "remove complex operands" pass).
+Since this file is also in the ``reference/`` subdirectory,
+you can use it as the compiler input.  So if you type:
+
+.. code-block:: text
+
+   $ python scripts/compare.py reference/var_test_11.rc
+
+the script will:
+
+* run ``./compile reference/var_test_11.rc -pass ec -only``
+  and redirect the output to a file called ``var_test_11.ec``
+  in the ``ch3`` directory;
+
+* display the files ``var_test_11.ec`` (your compiler's output)
+  and ``reference/var_test_11.ec`` (the reference output)
+  side-by-side so you can compare them visually.
+
+It will look like this:
+
+.. code-block:: text
+
+   $ python scripts/compare.py reference/var_test_11.rc
+   --------------
+   input: reference/var_test_11.rc
+   output: reference/var_test_11.ec
+
+   # Student version.                                        # Reference version.
+   (CProgram                                                 (CProgram
+     (Info                                                     (Info
+       (locals_types                                             (locals_types
+         ((x.1 Integer)                                            ((x.1 Integer)
+          (x.2 Integer)                                             (x.2 Integer)
+          (y.1 Integer))))                                          (y.1 Integer))))
+     (((Label start)                                           (((Label start)
+       (Seq                                                      (Seq
+         (Assign x.1 (Atm (Int 20)))                               (Assign x.1 (Atm (Int 20)))
+         (Seq                                                      (Seq
+           (Assign x.2 (Atm (Int 22)))                               (Assign x.2 (Atm (Int 22)))
+           (Seq                                                      (Seq
+             (Assign y.1 (Add (Var x.1) (Var x.2)))                    (Assign y.1 (Add (Var x.1) (Var x.2)))
+             (Return (Atm (Var y.1)))))))))                            (Return (Atm (Var y.1)))))))))
+
+
+(You can scroll this output horizontally to see it all,
+but the two files are identical.)
+If you just want to check if the files are identical,
+use the ``-diff`` option:
+
+.. code-block:: text
+
+   $ python scripts/compare.py reference/var_test_11.rc -diff
+   reference/var_test_11.rc : OK
+
+If there is no difference, you'll get an ``OK`` as you see here.
+
+In either case, any generated files are removed
+before the ``compare.py`` script exits.
+
+This can be repeated for any number of files:
+
+.. code-block:: text
+
+   $ python scripts/compare.py reference/var_test_?.rc -diff
+   reference/var_test_1.rc : OK
+   reference/var_test_2.rc : OK
+   reference/var_test_3.rc : OK
+   reference/var_test_4.rc : OK
+   reference/var_test_5.rc : OK
+   reference/var_test_6.rc : OK
+   reference/var_test_7.rc : OK
+   reference/var_test_8.rc : OK
+   reference/var_test_9.rc : OK
+
+If you do this without the ``-diff`` option, though,
+the output can get very large, and you'll have to scroll back
+to check each file.  To make this easier,
+we've added a ``-pause`` option,
+which will display one file at a time
+(both versions: yours and the reference one)
+and wait for you to hit the return key before the next one is displayed.
+
+The last feature is the ``-random`` option.
+It's used with an argument, which should be a positive integer.
+With ``-random N``, up to ``N`` randomly-selected files will be chosen
+from the list of files on the command line and compared.
+This is useful to quickly check if a pass is working well;
+you do something like this:
+
+.. code-block:: text
+
+   $ python scripts/compare.py reference/var_test_*.rc -diff -random 10
+
+and get comparisons of (in this case) 10 random files
+selected from the files specified on the command line:
+
+.. code-block:: text
+
+   reference/var_test_4.rc : OK
+   reference/var_test_6.rc : OK
+   reference/var_test_15.rc : OK
+   reference/var_test_27.rc : OK
+   reference/var_test_38.rc : OK
+   reference/var_test_40.rc : OK
+   reference/var_test_57.rc : OK
+   reference/var_test_58.rc : OK
+   reference/var_test_62.rc : OK
+   reference/var_test_67.rc : OK
+
+
+``show_asm.py``
+^^^^^^^^^^^^^^^
+
+This is a simple utility script whose purpose is to make assembly language
+instructions in S-expression form easier to read.  Let's say you generate
+code for the "patch instructions" pass (say) and get this:
+
+.. code-block:: text
+
+   (X86Program
+     (Info
+       (locals_types
+         ((x.1 Integer)
+          (x.2 Integer)
+          (y.1 Integer)))
+       (num_spilled 0)
+       (used_callee ()))
+     (((Label start)
+       (Block
+         Binfo
+         ((Movq (Imm 20) (Reg Rcx))
+          (Movq (Imm 22) (Reg Rdx))
+          (Addq (Reg Rdx) (Reg Rcx))
+          (Movq (Reg Rcx) (Reg Rax))
+          (Jmp (Label conclusion)))))))
+
+(This is from the file ``reference/var_test_11.pi``.)
+
+Even though this isn't *that* hard to read,
+the assembly instructions don't look like real assembly instructions.
+This can be improved by using the ``show_asm.py`` script, which can be invoked
+like this:
+
+.. code-block:: text
+
+   $ cat reference/var_test_11.pi | python scripts/show_asm.py
+
+which will output this: [2]_
+
+.. code-block:: text
+
+   (X86Program
+     (Info
+       (locals_types
+         ((x.1 Integer)
+          (x.2 Integer)
+          (y.1 Integer)))
+       (num_spilled 0)
+       (used_callee ()))
+     (((Label start)
+       (Block
+         Binfo
+         ((movq $20 %rcx)
+          (movq $22 %rdx)
+          (addq %rdx %rcx)
+          (movq %rcx %rax)
+          (jmp (Label conclusion)))))))
+
+Notice that the assembly language instructions look a lot more
+like real assembly language instructions.
+Specifically, the immediate integer values are written with the ``$N``
+notation, registers are written with the ``%rxy`` notation
+that you see in real assembly language, and instructions are uncapitalized.
+And that's basically all that this script does.
+
+You may find that this helps you to "read" the output of compiler passes
+that emit code with assembly instructions.
+If so, great.  If not, just don't use it.
+
+
+Code to write: the compiler passes
+----------------------------------
+
+The compiler passes are described in chapter 3 of the textbook,
+but here they are again for completeness.  We will only include
+passes that you have to implement.
+As before, the only files you should modify are the ``.ml`` files
+corresponding to these compiler passes.
+
+In addition, when we provide a function stub in an ``.ml`` file that you need
+to complete, that means that we expect that you will use that function (with
+those arguments and types (if supplied)) as written (filling in the ``TODO``
+parts, of course).  In particular, you're not allowed to change the number of
+arguments to the function, or their types (if supplied).  If a function is
+completely implemented (no ``TODO``\s), you should leave it as-is.
+On the other hand, you can write as many extra functions as you like.
+(If we don't like your choices, we'll let you know during code reviews!)
+
+.. note::
+
+   The one exception to this rule is in the ``graph_coloring.ml`` file.
+   We provide function stubs with ``TODO``\s as usual,
+   as well as an implementation of the ``color`` function that uses
+   those functions, but if you don't like this,
+   you are allowed to completely rewrite the entire module,
+   as long as you end up with a ``color`` function
+   with the correct type signature which works correctly.
+
+Passes that are unchanged from assignment 1
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Since the focus of this assignment is on register allocation,
+those passes that come before register allocation
+do not have to be modified from assignment 1
+(in your ``ch2/`` directory).  This includes:
+
+* ``uniquify.ml``
+* ``remove_complex.ml``
+* ``explicate_control.ml``
+
+Note that you are free to edit your old code,
+in case you think you have a better way of doing things
+than what you wrote previously.
+
+
+1. Select instructions (``select_instructions.ml``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The "select instructions" pass has no fundamental changes, but there are some
+trivial changes because the ``X86Program`` type in ``x86_var.ml[i]`` has
+changed. The new version has different info types for the program and also has
+block info types.  For this pass, the block info is a placeholder type
+(containing no information) called ``binfo1``.  Some of the type annotations
+will need to be changed slightly, and the blocks will all contain a ``Binfo1``
+constructor. The type checker should point out exactly where your old code
+needs to be changed.
+
+
+2. Uncover live (``uncover_live.ml``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The "uncover live" pass has to implement the function
+``uncover_live`` with this signature:
+
+.. code-block:: text
+
+   val uncover_live :
+     (X86_var.info1, X86_var.binfo1) X86_var.program ->
+     (X86_var.info1, X86_var.binfo2) X86_var.program
+
+The ``X86_var.program`` type is parameterized
+on two kinds of "info" types:
+one for the program as a whole
+(with variants ``info1``, ``info2``, and ``info3``),
+and one for blocks
+(with variants ``binfo1`` and ``binfo2``).
+The ``info1`` and ``binfo1`` types are placeholder types,
+containing no data.
+All that this pass does is compute the ``binfo2`` value,
+which contains the liveness information described in
+the textbook (section 3.2) and in the lectures.
+The instructions are not changed.
+The ``binfo2`` type has this definition:
+
+.. code-block:: text
+
+   type live =
+     {
+       initial : LocSet.t;       (* initial live variables/registers *)
+       afters  : LocSet.t list;  (* live vars/regs after each instruction *)
+     }
+
+   type binfo2 = Binfo2 of live
+
+The liveness data is represented as a list of sets of locations,
+where a location is a variable, a register, or a stack location.
+Sets of locations are represented by the type ``LocSet.t``.
+Since liveness sets apply between instructions,
+we use the ``initial`` field to represent the initial set of live locations,
+and the ``afters`` field represents, for each instruction,
+the set of live locations after that instruction.
+
+.. note::
+
+   In principle, we could have added the liveness data directly
+   to the instructions, but we prefer to keep it separate,
+   partly because it's only used in this pass.
+   It's important to be aware that there is a one-to-one correspondence
+   between the instructions in the program
+   and the ``after`` sets of the ``live`` record:
+   the Nth item in the ``after`` sets is the after set
+   for the Nth instruction in the program.
+
+We provide an implementation for the ``uncover_live`` function,
+which calls the function ``uncover_live_in_block``
+to compute the liveness sets.  You have to implement that function.
+The inputs to that function are the list of instructions in the block,
+and ``live_before_labels``, which is a map between block names
+and the live locations before that block executes.
+Here, there is only one such block: ``conclusion``,
+with live locations (registers) ``%rax`` and ``%rsp``.
+
+You can implement ``uncover_live_in_block`` as you like
+(as long as it's functional -- don't use mutation!)
+but we recommend that you define a helper function
+to compute the liveness set for a single instruction
+given the instruction and its live-after set.
+
+Also, be aware that ``callq`` instructions require special handling.
+First, each ``callq`` instruction can write to all of the caller-saved registers.
+There is a list of caller-saved registers in the ``Types`` module as
+``caller_saved_regs``; don't hard-code the caller-saved registers!
+Second, ``callq`` instructions with arity (number of arguments)
+greater than 0 have to read from registers for the first 6 arguments.
+These registers are given in the ``Types`` module as ``arg_passing_regs``;
+these arguments are (in order)
+``%rdi``, ``%rsi``, ``%rdx``, ``%rcx``, ``%r8``, and ``%r9``
+(all of which are caller-save registers, which should make sense).
+We recommend that you write a helper function
+to determine the change in the liveness set just for ``callq`` instructions,
+incorporating all of this information.
+
+The algorithm for computing liveness sets is described in detail
+in section 3.2 of the textbook and in the lectures.
+
+
+3. Build interference graph (``build_interference.ml``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The "build interference" pass has to implement the function
+``build_interference`` with this signature:
+
+.. code-block:: text
+
+   val build_interference :
+     (X86_var.info1, X86_var.binfo2) X86_var.program ->
+     (X86_var.info2, X86_var.binfo1) X86_var.program
+
+From this, we can see that the block info ``binfo2`` value
+(containing the liveness data)
+goes back to the placeholder ``binfo1`` type,
+but the program info ``info1`` value
+(containing nothing but the types of variables)
+gets extended into the ``info2`` type,
+which has this definition:
+
+.. code-block:: text
+
+   type info2 = Info2 of
+     {
+       locals_types : (var * ty) list;
+       conflicts    : LocUgraph.t
+     }
+
+What this does is add the interference graph information
+(as the ``conflicts`` field) to the program.
+
+.. note::
+
+   You might wonder why the liveness data is stored
+   in a block info type while the interference graph
+   is stored in a program info type.
+   The liveness data is stored in a block-by-block manner,
+   while there is only one interference graph per function.
+   (Here, our programs are a single ``main`` function.)
+   Note that most functions will have multiple blocks.
+   Ours also do (the ``start`` block plus the prelude and conclusion)
+   but we don't have to compute the liveness data for the
+   prelude and conclusion because they are so simple.
+   In later compilers, our programs will have many more blocks
+   to handle conditionals, loops and user-defined functions.
+
+We supplied an implementation of the ``build_interference`` function
+which calls the ``make_graph`` function to compute the interference graph.
+You need to implement ``make_graph``, following the algorithm given in
+section 3.3 of the textbook and in the lectures.
+You'll almost certainly want to split this function up into
+multiple helper functions.
+Pay particular attention to ``movq`` and ``callq`` instructions;
+remember that for ``callq`` you need to create an edge
+between all the locations in the live-after set and all
+caller-save registers.
+
+.. note::
+
+   This is unrelated to the handling of caller-save registers
+   in liveness analysis, which normally does nothing but is included
+   for completeness.  Here, creating the edges between call-live
+   variables and caller-save registers is extremely important,
+   because it prevents call-live variables from being placed into
+   caller-save registers, where they would have to be saved and restored
+   before and after the call.  Thus, they will normally be put into
+   callee-save registers, unless there are none available, in which case
+   they will be placed onto the stack.  The register allocation
+   algorithms handle all of this automatically!
+
+
+4. Graph coloring (``graph_coloring.ml``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This module is not technically a compiler pass, but it's an integral part of
+the "allocate registers" pass.  However, the algorithm is more general, and the
+implementation is not specialized to locations (registers, variables and stack
+locations) until the ``GraphColor`` functor (defined in this module) is
+specialized to locations in ``allocate_registers.ml``.  The algorithm is
+described in some detail in section 3.4 of the textbook as well as in the
+lectures.
+
+The ``GraphColor`` functor is parameterized on several modules:
+
+* the graph element type (which will be locations in ``allocate_registers.ml``)
+
+* the element map type (made from the ``MapS`` functor,
+  which is just an extension of the normal OCaml ``Map`` functor;
+  note that ``MapS`` is defined in ``support/functors.ml[i]``)
+
+* a priority queue module
+  (we use the priority queue defined in ``support/priority_queue.ml[i]``)
+
+* an undirected graph module (the interference graph)
+
+The functor is instantiated in ``allocate_registers.ml``, so you don't have to
+worry about how to do that.  Inside the functor, a type ``node`` is defined
+that contains information about the elements (locations) that isn't stored
+in the interference graph, and that changes as the algorithm progresses.
+The two components of a ``node`` are the color of the element
+(an ``int option``, since the element is initially uncolored),
+and the saturation set
+(a set of integers, representing the colors that the element is not
+allowed to have).  As the algorithm progresses, the colors (which mostly
+start as ``None``) get filled in, and the saturation sets increase in size,
+which constrains the color choices.
+
+We define a ``nodemap`` type which is a map between elements and ``node``\s.
+We also provide a debugging function called ``_print_nodemap``
+which can print out the nodemap at any point in the algorithm
+to help debugging.
+
+.. note::
+
+   The name is ``_print_nodemap`` instead of ``print_nodemap``
+   because it isn't exported from the functor, and OCaml would issue
+   a warning about unused functions if the name didn't start with
+   an underscore.
+
+The only function that needs to be implemented is the ``color``
+function, which takes an interference graph and a map of
+precolored elements (element to ``int`` map) as its arguments.
+Recall that the only precolored elements we are using are the
+reserved registers, which are ``%rax`` (color ``-1``),
+and ``%rsp`` (color ``-2``).  The return value of the function
+is the full element-to-``int`` map, containing color assignments
+for all variables.
+
+Because this is a somewhat tricky algorithm,
+we've provided you with a starting point.
+We've given our version of the ``color`` function,
+which calls a number of helper functions.
+You may choose to simply implement all the helper functions in
+``graph_coloring.ml``.
+Or, if you would prefer to implement the ``color`` function from scratch,
+you are free to delete any or all of our helper functions and
+rewrite the ``color`` function accordingly.
+
+.. note::
+
+   The only restriction we'll insist on is that your code for this module
+   should be purely functional.  Don't use ``ref`` cells or any other
+   imperative features.  In a real-world setting, you might choose to
+   use imperative code for efficiency or convenience,
+   but it's definitely not necessary.
+
+The total amount of code you need to write is less than 100 extra lines.
+
+
+Testing the graph coloring algorithm
+++++++++++++++++++++++++++++++++++++
+
+There is a very trivial test script for the graph coloring algorithm only
+in the file ``test_graph_coloring.ml``.
+You can run in in the interactive interpreter as follows:
+
+.. code-block:: text
+
+   $ make repl
+   # #use "test_graph_coloring.ml";;
+
+This will run the test and print ``TEST PASSED!`` if it passes
+or ``TEST FAILED!`` if not.
+More importantly, since this is done interactively,
+you can inspect the results of graph coloring to see how they
+differed from the expected results.
+The example given is the same one given in the book and in the lectures.
+
+Note that in future, we plan to have much more comprehensive tests of this
+algorithm.
+
+
+5. Allocate registers (``allocate_registers.ml``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Once you've implemented the graph coloring algorithm, the "allocate registers"
+pass is simple.  You need to do these things:
+
+#. Run the graph coloring algorithm and assign registers
+   (or, if there are no available registers, stack locations)
+   to all variables.
+   This is done in the functions ``get_variable_location_map``,
+   which is supplied to you, and ``varmap_of_colormap``,
+   which you need to fill in.
+   Your implementation of ``varmap_of_colormap``
+   should use the helper function ``location_of_color``,
+   which you also need to fill in.
+
+#. Use the mapping between variable bindings and locations
+   (registers or stack locations)
+   to determine the number of stack slots needed.
+   This is done in the function ``get_num_spilled``,
+   which you need to fill in.
+   Be careful that you don't count a stack location more than once!
+
+#. Use the same mapping between variable bindings and locations
+   to collect a set of all the callee-save registers
+   used in the program.
+   This is done in the function ``get_used_callee``,
+   which you need to fill in.
+
+#. Convert all the instructions that use variables
+   to use the corresponding registers or stack locations.
+   This is done in the function ``convert_block``,
+   which you need to fill in.
+   You'll probably want to define some helper functions
+   in your implementation of this function.
+
+All the other code for this pass has been supplied.
+In particular, code for selecting which registers are available
+(based ultimately on the command-line arguments
+to the ``compile`` program) is supplied and should not be altered.
+
+
+6. Patch instructions (``patch_instructions.ml``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Aside from trivial type changes, the only significant change in this pass
+is that instructions of the form ``Movq (x, x)``
+(moving a value from a location to the same location) are removed.
+
+
+7. Prelude and conclusion (``prelude_conclusion.ml``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This pass has a few changes from the corresponding pass in the last assignment.
+
+The ``info`` record type attached to the ``program`` type in ``x86_int.mli``
+has these fields:
+
+.. code-block:: text
+
+   locals_types : (var * ty) list;
+   num_spilled  : int;
+   used_callee  : RegSet.t
+
+We won't be concerned with ``locals_types``, but the other two are relevant
+to generating a correct prelude and conclusion.
+``num_spilled`` is the number of stack slots needed for variables
+that were not placed in registers.
+``used_callee`` are the names of the callee-save registers that are used
+in the program.
+
+Recall that the program is one big function (the ``main`` function),
+and so the values of any callee-saved variables that are used inside
+this function must be saved in the prelude and restored in the conclusion.
+They will be saved to the stack and restored from the stack.
+Therefore, the total number of stack slots needed can be more than
+``num_spilled``; it's actually ``num_spilled`` plus the number of
+callee-save registers used.
+And to make it even more confusing, the size of the stack frame
+(the total amount of stack space reserved for the function)
+must be a multiple of 16 bytes, so it can be even bigger!
+
+Fortunately, we have defined a function called ``align_16`` in the
+``Utils`` module of the ``support`` directory.  This will take a
+non-negative integer and round it up to the nearest multiple of 16.
+So the total stack space required is actually (in pseudocode):
+
+.. code-block:: text
+
+   stack_space = align_16(8 * (num_spilled * size(used_callees)))
+
+However, it's still a bit more complicated than this.
+We will be saving the callee-save registers by pushing them to the stack
+with the ``pushq`` instruction,
+and restoring them with the ``popq`` instruction.
+The ``pushq`` instruction subtracts 8 bytes from the stack pointer,
+and the ``popq`` adds it back.
+The effect of this is that, after all the callee-save registers
+have been pushed to the stack using ``pushq`` instructions,
+we've already allocated a big chunk of the total stack space required.
+The additional stack space we need to allocate can be computed from these
+equations (in pseudocode):
+
+.. code-block:: text
+
+  n_callees = size(used_callees)
+  extra_stack_space = align_16 (8 * (num_spilled + n_callees)) - 8 * n_callees
+
+This is already computed for you in the ``prelude_conclusion`` function.
+
+From here, you have to do two things:
+
+#. Compute the prelude and conclusion
+   (collectively called the "epilog" in the code because we place it
+   after the code in the ``start`` block).
+   This is done in the ``epilog`` function which takes the
+   set of callee-save registers and the amount of extra stack space needed
+   as arguments.
+
+#. Adjust all instructions in the ``start`` block that access stack locations,
+   because the callee-save registers on the stack use up space
+   at the beginning of the stack frame,
+   which means that any stack location access
+   which is relative to the base pointer in ``%rbp``
+   has to be changed to account for this extra space.
+   This is done in the ``asm_of_lb`` function,
+   which takes a labelled block (the ``start`` block, in this case)
+   and the amount of space that stack locations need to be shifted by
+   (called ``deref_adjust``)
+   as its arguments.  You'll probably want to define helper functions
+   to write this function, as (we hope) you did in the last assignment.
+
+The ``prelude_conclusion`` function appends the epilog to the ``start`` block
+code to generate the final program.
+
+Here are a couple of notes about the functions you need to write.
+
+#. For ``asm_of_lb``, all you need to do is go through all instructions,
+   changing any stack location accesses
+   by subtracting the ``deref_adjust`` value.
+
+#. For ``epilog``, after you've established the base pointer in the prelude,
+   you need to push the callee-save register values onto the stack, and then
+   adjust the stack pointer by subtracting the extra space needed for
+   the stack-resident variables before jumping to the ``start`` block.
+   (Recall that the stack grows downwards,
+   so subtracting from the stack pointer reserves stack space.)
+   In the conclusion, you have to add the extra space for the stack-resident
+   variables back to the stack (reclaiming the stack space),
+   and then pop the callee-save register values back to their registers
+   before resetting the base pointer and returning.
+   **Make sure that you pop the callee-save registers in reverse order
+   to the order in which you pushed them!**
+   (Remember, the stack is a last-in, first out (LIFO) data structure.)
+   Also, only push and pop the callee-save registers you actually used;
+   if your program didn't use any,
+   you don't have to do any pushing and popping.
+
+This sounds much more complicated than it is!
+This pass is really just a little bit of (somewhat annoying) bookkeeping.
+
+
+"Submitting" your assignment
+----------------------------
+
+Unlike most courses, there is nothing to "hand in" in this course.
+Instead, you need to inform the instructor (and TAs) when an assignment is
+ready to be graded (hopefully, before or on the due date).
+The instructor will check out your code, run the tests, and leave comments
+in a file called GRADING in your ``ch2`` directory.  The instructor/TAs
+may also leave comments in your code itself, with this syntax:
+
+.. code-block:: ocaml
+
+   (*** GRADER COMMENT: ... ***)
+
+These should be removed when you fix whatever the comment complained about.
+
+After the grading comments have been checked in to your repository,
+you have one week to make changes (this is the first redo period).
+Work redone during this period will be re-evaluated without penalty.
+Any subsequent redos after the first redo will result in reduced credit
+(typically, any additional marks after the first week
+will get at most 50% credit).
+
+
+Code reviews, office hours, and feedback
+----------------------------------------
+
+We will be setting up code review times for each team.  Make sure you choose a
+time where both members of the team can meet as well as the instructor
+(and/or a TA).
+
+Code reviews do not require that all of the code be written, or that all of the
+code is working correctly, but there is no point in doing a code review unless
+most of the code has been written.  If you are having trouble at an earlier
+stage, we will have office hour times you can come to.
+
+
+----
+
+.. rubric:: Footnotes
+
+.. [1] Since the compiler is written in OCaml, you might wonder why the testing
+   scripts are written in Python.  We don't think it's a good idea to get too
+   obsessed with any one programming language.  OCaml is a fine language for
+   writing a compiler, but Python is more convenient when working with
+   large numbers of files and calling programs to act on those files.
+   Traditionally, this kind of thing is done with shell scripts,
+   but Python is vastly more powerful and flexible, as well as cross-platform,
+   and all of you already know it.
+
+.. [2] In case you haven't seen this kind of use of the ``|`` character
+   before, this is an example of a Unix "pipe".  What this does is it
+   takes the output of the first program (the ``cat`` program, which
+   normally just prints the file to the terminal),
+   and passes it to the second program as its input.
+

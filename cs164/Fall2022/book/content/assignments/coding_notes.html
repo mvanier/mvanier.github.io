@@ -47,6 +47,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Assignments</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">OCaml coding notes and tips</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#warnings">Warnings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#general-coding-tips">General coding tips</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#use-let-instead-of-match-when-there-is-only-one-variant">Use <code class="docutils literal notranslate"><span class="pre">let</span></code> instead of <code class="docutils literal notranslate"><span class="pre">match</span></code> when there is only one variant</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#functional-programming-tips">Functional programming tips</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#use-functional-style-by-default">Use functional style by default</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#use-tail-recursion-by-default">Use tail recursion by default</a></li>
@@ -67,6 +71,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#use-wishful-thinking">Use wishful thinking!</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#use-the-support-library">Use the <code class="docutils literal notranslate"><span class="pre">support</span></code> library!</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#avoid-functions-that-raise-unhelpful-exceptions">Avoid functions that raise unhelpful exceptions!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#be-careful-with-catch-all-match-cases">Be careful with catch-all <code class="docutils literal notranslate"><span class="pre">match</span></code> cases!</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#debugging-tips">Debugging tips</a><ul>
@@ -88,7 +93,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="0/Installing_OCaml.html">Installing OCaml</a></li>
 <li class="toctree-l2"><a class="reference internal" href="0/Assignment0.html">Assignment 0: Getting set up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="0/Mac_notes.html">Notes on MacOS X</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1/Assignment1.html">Assignment 1: The <em>Var</em> language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2/Assignment2.html">Assignment 2: Register allocation</a></li>
 </ul>
 </li>
 </ul>
@@ -130,6 +137,31 @@ so don’t just skip this document!</p>
 <p>Warnings are always bad, unless you expect them (<em>e.g.</em> because code is only
 partially written).  Never ignore warnings.  Your finished code should <em>never</em>
 generate warnings.</p>
+</section>
+<section id="general-coding-tips">
+<h2>General coding tips<a class="headerlink" href="#general-coding-tips" title="Permalink to this heading"></a></h2>
+<section id="use-let-instead-of-match-when-there-is-only-one-variant">
+<h3>Use <code class="docutils literal notranslate"><span class="pre">let</span></code> instead of <code class="docutils literal notranslate"><span class="pre">match</span></code> when there is only one variant<a class="headerlink" href="#use-let-instead-of-match-when-there-is-only-one-variant" title="Permalink to this heading"></a></h3>
+<p>It’s not uncommon to have types that only have one variant.
+We see this in the <code class="docutils literal notranslate"><span class="pre">program</span></code> types of our compilers, for instance:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>type program = Program of exp
+</pre></div>
+</div>
+<p>If you have a <code class="docutils literal notranslate"><span class="pre">program</span></code> value and you want to extract the <code class="docutils literal notranslate"><span class="pre">exp</span></code>
+component, you can use a pattern match as usual:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>match prog with
+  | Program e -&gt; e  (* the only case *)
+</pre></div>
+</div>
+<p>However, this is overkill for such a simple case.
+The idiomatic way to do this is with a <code class="docutils literal notranslate"><span class="pre">let</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let (Program e) = prog in ...
+</pre></div>
+</div>
+<p>You can think of a <code class="docutils literal notranslate"><span class="pre">let</span></code> used in this way as a one-variant
+pattern match.  Never use a <code class="docutils literal notranslate"><span class="pre">match</span></code> when a <code class="docutils literal notranslate"><span class="pre">let</span></code> suffices;
+a <code class="docutils literal notranslate"><span class="pre">match</span></code> in this case is excessive and harder to read.</p>
+</section>
 </section>
 <section id="functional-programming-tips">
 <h2>Functional programming tips<a class="headerlink" href="#functional-programming-tips" title="Permalink to this heading"></a></h2>
@@ -658,6 +690,60 @@ which is a function of type <code class="docutils literal notranslate"><span cla
 where <code class="docutils literal notranslate"><span class="pre">'a</span></code> is the value type.
 You can use this to return a default value,
 or to raise an arbitrary exception on lookup failure.</p>
+</section>
+<section id="be-careful-with-catch-all-match-cases">
+<h3>Be careful with catch-all <code class="docutils literal notranslate"><span class="pre">match</span></code> cases!<a class="headerlink" href="#be-careful-with-catch-all-match-cases" title="Permalink to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This advice is very specific to this course,
+and not to OCaml programming in general.</p>
+</div>
+<p>Many functions in your compilers will be large <code class="docutils literal notranslate"><span class="pre">match</span></code> expressions
+handling a lot of different constructors.
+In addition, new constructors for many types will be added with each
+new version of the compiler.
+Some functions will require that you handle (say) one case specially,
+and then all other cases can be handled in a generic manner.
+It’s totally natural to write such functions with a <code class="docutils literal notranslate"><span class="pre">match</span></code>
+expression that looks like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>match &lt;thing to match&gt; with
+  | &lt;special case&gt; -&gt; &lt;special case code&gt;
+  | _ -&gt; &lt;generic code for all other cases&gt;
+</pre></div>
+</div>
+<p>In normal OCaml programming, this would be fine.
+For us, it’s not optimal,
+because it’s very easy to forget to handle new constructors
+when you add them in later compilers.
+If that happens, the new constructors will be handled by the
+generic code (the catch-all handler), which will probably be wrong
+and which may be hard to debug.</p>
+<p>Instead of this, we recommend this style:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>match &lt;thing to match&gt; with
+  | &lt;special case&gt; -&gt; &lt;special case code&gt;
+  | &lt;case 1&gt;
+  | &lt;case 2&gt;
+  | &lt;case 3&gt;
+  | ... -&gt;
+    &lt;generic code for all other cases&gt;
+</pre></div>
+</div>
+<p>Each <code class="docutils literal notranslate"><span class="pre">&lt;case</span> <span class="pre">N&gt;</span></code> form is a constructor
+with a wildcard for the constructor arguments
+<em>e.g.</em> for a constructor <code class="docutils literal notranslate"><span class="pre">Foo</span></code> it would be <code class="docutils literal notranslate"><span class="pre">Foo</span> <span class="pre">_</span></code>
+(assuming that <code class="docutils literal notranslate"><span class="pre">Foo</span></code> has arguments).
+This way, if you add another constructor in the next compiler,
+and you forget to handle that case,
+you will get a warning about a non-exhaustive pattern match,
+and you will be able to fix the problem right away!</p>
+<p>You can also write this more concisely as:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>match &lt;thing to match&gt; with
+  | &lt;special case&gt; -&gt; &lt;special case code&gt;
+  | &lt;case 1&gt; | &lt;case 2&gt; | &lt;case 3&gt; | ... -&gt;
+    &lt;generic code for all other cases&gt;
+</pre></div>
+</div>
+<p>This is a bit easier on the eyes.</p>
 </section>
 </section>
 <section id="debugging-tips">

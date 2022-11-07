@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assignment 2: Register allocation &mdash; The CS 164 book 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="prev" title="Assignment 1: The Var language" href="../1/Assignment1.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> The CS 164 book
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../coding_notes.html">OCaml coding notes and tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../0/Installing_OCaml.html">Installing OCaml</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../0/Assignment0.html">Assignment 0: Getting set up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../0/Mac_notes.html">Notes on MacOS X</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Assignment1.html">Assignment 1: The <em>Var</em> language</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Assignment 2: Register allocation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#textbook-coverage">Textbook coverage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#due-date">Due date</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#starting-code-base">Starting code base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-and-running-the-compiler">Compiling and running the compiler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-your-compiler-the-test-scripts">Testing your compiler: the test scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#run-eval-tests-py"><code class="docutils literal notranslate"><span class="pre">run_eval_tests.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compare-py"><code class="docutils literal notranslate"><span class="pre">compare.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#show-asm-py"><code class="docutils literal notranslate"><span class="pre">show_asm.py</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#code-to-write-the-compiler-passes">Code to write: the compiler passes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#passes-that-are-unchanged-from-assignment-1">Passes that are unchanged from assignment 1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#select-instructions-select-instructions-ml">1. Select instructions (<code class="docutils literal notranslate"><span class="pre">select_instructions.ml</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#uncover-live-uncover-live-ml">2. Uncover live (<code class="docutils literal notranslate"><span class="pre">uncover_live.ml</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-interference-graph-build-interference-ml">3. Build interference graph (<code class="docutils literal notranslate"><span class="pre">build_interference.ml</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#graph-coloring-graph-coloring-ml">4. Graph coloring (<code class="docutils literal notranslate"><span class="pre">graph_coloring.ml</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#allocate-registers-allocate-registers-ml">5. Allocate registers (<code class="docutils literal notranslate"><span class="pre">allocate_registers.ml</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#patch-instructions-patch-instructions-ml">6. Patch instructions (<code class="docutils literal notranslate"><span class="pre">patch_instructions.ml</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prelude-and-conclusion-prelude-conclusion-ml">7. Prelude and conclusion (<code class="docutils literal notranslate"><span class="pre">prelude_conclusion.ml</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submitting-your-assignment">“Submitting” your assignment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-reviews-office-hours-and-feedback">Code reviews, office hours, and feedback</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The CS 164 book</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Assignments</a> &raquo;</li>
+      <li>Assignment 2: Register allocation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/content/assignments/2/Assignment2.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="assignment-2-register-allocation">
+<h1>Assignment 2: Register allocation<a class="headerlink" href="#assignment-2-register-allocation" title="Permalink to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p>In this assignment, you will be extending your “Var” language compiler from the
+last assignment to do register allocation in the back end instead of putting
+all variables on the stack.</p>
+<p>In addition, the testing framework from assignment 1 has been enhanced,
+so we’ll describe the new features below.</p>
+</section>
+<section id="textbook-coverage">
+<h2>Textbook coverage<a class="headerlink" href="#textbook-coverage" title="Permalink to this heading"></a></h2>
+<p>This assignment is based on chapter 3 of <em>Essentials of Compilation</em>.</p>
+</section>
+<section id="due-date">
+<h2>Due date<a class="headerlink" href="#due-date" title="Permalink to this heading"></a></h2>
+<p>This assignment is due on Friday, October 28th at 2 AM
+(so, effectively very late Thursday night).</p>
+</section>
+<section id="starting-code-base">
+<h2>Starting code base<a class="headerlink" href="#starting-code-base" title="Permalink to this heading"></a></h2>
+<p>The starting code base is the zipfile <code class="docutils literal notranslate"><span class="pre">ch3.zip</span></code>, which is posted on the
+course Canvas site.  You should unzip this file in your Github repo,
+inside the <code class="docutils literal notranslate"><span class="pre">src/</span></code> directory.  It contains partial implementations of all code
+for the assignment.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We’ve made small changes in the <code class="docutils literal notranslate"><span class="pre">support</span></code> library code,
+so you should also download the file <code class="docutils literal notranslate"><span class="pre">support.zip</span></code>
+and use it to replace your existing <code class="docutils literal notranslate"><span class="pre">support</span></code> directory as follows
+(from your <code class="docutils literal notranslate"><span class="pre">src</span></code> directory):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ git rm -rf support
+$ unzip support.zip
+$ rm support.zip
+$ git add support
+$ git commit support
+</pre></div>
+</div>
+<p><strong>Be very careful</strong> when typing <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">rm</span> <span class="pre">-rf</span> <span class="pre">support</span></code>.
+Make sure you type that exact command; if you do
+<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">rm</span> <span class="pre">-rf</span> <span class="pre">*</span></code> you could destroy most of your repository.</p>
+</div>
+<p>Inside the <code class="docutils literal notranslate"><span class="pre">ch3</span></code> directory will be these subdirectories:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">tests/</span></code> subdirectory contains the same test programs
+as in the previous assignment.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">reference/</span></code> subdirectory contains the output
+from the instructor’s version of the compiler.
+Note that there are many more files in this directory than in the
+previous assignment, for reasons which will be explained below.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">scripts/</span></code> subdirectory contains scripts for testing
+your code.  These will be explained below.</p></li>
+</ul>
+</section>
+<section id="compiling-and-running-the-compiler">
+<h2>Compiling and running the compiler<a class="headerlink" href="#compiling-and-running-the-compiler" title="Permalink to this heading"></a></h2>
+<p>To compile the compiler, <code class="docutils literal notranslate"><span class="pre">cd</span></code> into the <code class="docutils literal notranslate"><span class="pre">src/ch3</span></code> directory
+and type <code class="docutils literal notranslate"><span class="pre">make</span></code>.
+This will compile the compiler (which is an executable file called <code class="docutils literal notranslate"><span class="pre">compile</span></code>).
+You should see a number of warnings when you compile the compiler;
+that’s expected.
+(As you fill in the code for the compiler passes,
+these warnings will go away).</p>
+<p>To run the compiler, type <code class="docutils literal notranslate"><span class="pre">./compile</span></code> in the <code class="docutils literal notranslate"><span class="pre">ch3</span></code> directory, along
+with the path of a file to compile and (optionally) some command-line options.
+Typing <code class="docutils literal notranslate"><span class="pre">./compile</span> <span class="pre">--help</span></code> (or just <code class="docutils literal notranslate"><span class="pre">./compile</span></code> with no arguments)
+will display this usage message (wrapped for readability):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: compile &lt;filename&gt; [-pass &lt;pass&gt;] [-only] [-eval] [-sexp-width n]
+                          [-sexp-indent n] [-regs reg1,reg2,...] [-help]
+  -pass Last compiler pass (one of: lvar un rc ec si ul bi ar pi pc pa)
+  -only Only do one compiler pass
+  -eval Evaluate after compiling
+  -sexp-width S-expression maximum line width
+  -sexp-indent S-expression indent
+  -regs Registers to use
+  -help  Display this list of options
+  --help  Display this list of options
+</pre></div>
+</div>
+<p>Note that the filename argument is required.
+(Don’t type the <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> characters; that’s just to indicate that
+the name <code class="docutils literal notranslate"><span class="pre">filename</span></code> is a placeholder for the actual filename.)
+We will describe the command line options below.
+If there are no command-line options, the file is compiled all the way
+to assembly language, and the output is printed to the terminal.
+If you want to save this output to a file, you can redirect it with
+the Unix shell <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> operator as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./compile tests/var_test_1.src &gt; var_test_1.s
+</pre></div>
+</div>
+<p>This will save the printed output to a file named <code class="docutils literal notranslate"><span class="pre">var_test_1.s</span></code>.
+(This is an appropriate name, since assembly language files
+conventionally end in <code class="docutils literal notranslate"><span class="pre">.s</span></code>.)
+From there, it can be compiled to an executable and run
+as described in the last assignment.</p>
+<p>Here are the command-line arguments for the <code class="docutils literal notranslate"><span class="pre">compile</span></code> program:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">-help</span></code> (or <code class="docutils literal notranslate"><span class="pre">--help</span></code>, or no arguments).</p>
+<p>This prints out a usage message.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-pass</span> <span class="pre">&lt;pass&gt;</span></code></p>
+<p>This tells the compiler to stop and print the output after the pass
+<code class="docutils literal notranslate"><span class="pre">&lt;pass&gt;</span></code>.  The allowed passes for this compiler are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lvar</span></code> – the “Lvar” language AST (not technically a pass)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">un</span></code>   – the “uniquify” pass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rc</span></code>   – the “remove complex operands” pass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ec</span></code>   – the “explicate control” pass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">si</span></code>   – the “select instructions” pass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ul</span></code>   – the “uncover live” pass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bi</span></code>   – the “build interference” pass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ar</span></code>   – the “allocate registers” pass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pi</span></code>   – the “patch instructions” pass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pc</span></code>   – the “prelude and conclusion” pass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pa</span></code>   – the “print assembly” pass</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">lvar</span></code> “pass” just runs the parser.  This converts the source code
+to the <code class="docutils literal notranslate"><span class="pre">Lvar</span></code> AST form.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-only</span></code></p>
+<p>Adding this option causes the compiler to run only the pass specified
+by the <code class="docutils literal notranslate"><span class="pre">-pass</span></code> option.  For this to work, the input file must be
+in the correct format, representing an S-expression version
+of the datatype that is the input to the pass.</p>
+<p>This option is normally used with the reference outputs; these provide
+outputs of the compiler for all passes and for all test programs.
+Each file in the <code class="docutils literal notranslate"><span class="pre">reference/</span></code> directory contains a file extension
+which gives information about the last pass which was used to compile it.
+Therefore, you can use this file as input to the next pass.
+For instance:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./compile reference/var_test_11.rc -pass ec -only
+</pre></div>
+</div>
+<p>will compile the file <code class="docutils literal notranslate"><span class="pre">reference/var_test_11.rc</span></code>
+(which has already been compiled up to the “remove complex operands” pass)
+using only the “explicate control” pass (which is the next pass).</p>
+<p>If you attempt to compile a file this way using the wrong input,
+you will get an error message which may be hard to understand.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-eval</span></code></p>
+<p>Adding this option causes the compiler to run an evaluator after compiling.
+Note that not all passes have evaluators; only the ones up to <code class="docutils literal notranslate"><span class="pre">ec</span></code> do.
+Also, note that <code class="docutils literal notranslate"><span class="pre">-eval</span></code> and <code class="docutils literal notranslate"><span class="pre">-only</span></code> are mutually exclusive.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-sexp-width</span> <span class="pre">n</span></code></p>
+<p>If the S-expressions printed are too narrow or wide for your taste,
+you can adjust it with this option, which sets the width of the
+S-expression display in columns.  By default, <cite>n</cite> is 40.</p>
+<p>Note that if <cite>n</cite> is too small, the S-expressions may be spread out over
+more lines than you care to view.  Conversely, if it’s too large,
+too many S-expression forms may be crammed into a single line.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-sexp-indent</span> <span class="pre">n</span></code></p>
+<p>This allows you to set the degree of indentation for S-expressions.
+By default, it’s 2.  It’s unlikely that you’ll want/need to change this.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-regs</span> <span class="pre">reg1,reg2,...</span></code></p>
+<p>This is a new feature of the compiler, starting with this assignment
+and continuing through all the subsequent ones.
+It allows you to select which registers can be used for register allocation.
+If this option is not used, all registers (other than the reserved ones)
+can be used.
+This is extremely useful for checking for whether variables get spilled
+to the stack correctly once there are no more registers available,
+and for whether callee-saved registers are handled correctly
+in the preludes and conclusions of functions.</p>
+<p>The test scripts use this option in these ways:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-regs</span> <span class="pre">rcx</span></code> – only use the <code class="docutils literal notranslate"><span class="pre">%rcx</span></code> register (caller-saved)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-regs</span> <span class="pre">rbx</span></code> – only use the <code class="docutils literal notranslate"><span class="pre">%rbx</span></code> register (callee-saved)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-regs</span> <span class="pre">rcx,rbx</span></code> – only use the <code class="docutils literal notranslate"><span class="pre">%rcx</span></code> and <code class="docutils literal notranslate"><span class="pre">%rbx</span></code> registers</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="testing-your-compiler-the-test-scripts">
+<h2>Testing your compiler: the test scripts<a class="headerlink" href="#testing-your-compiler-the-test-scripts" title="Permalink to this heading"></a></h2>
+<p>There are three scripts in the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> subdirectory of <code class="docutils literal notranslate"><span class="pre">ch3</span></code>.
+Two of them are for testing, and the third is for visualizing the output
+(though it’s completely optional). All of these are Python scripts. <a class="footnote-reference brackets" href="#id3" id="id1">1</a></p>
+<section id="run-eval-tests-py">
+<h3><code class="docutils literal notranslate"><span class="pre">run_eval_tests.py</span></code><a class="headerlink" href="#run-eval-tests-py" title="Permalink to this heading"></a></h3>
+<p>This was described in the last assignment.
+Note that we have moved this script
+to the <code class="docutils literal notranslate"><span class="pre">scripts/</span></code> subdirectory of <code class="docutils literal notranslate"><span class="pre">ch3</span></code>,
+so you should invoke it like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python scripts/run_eval_tests.py tests/var_test_*.src
+</pre></div>
+</div>
+<p>to test all the source files.
+Of course, you can run it on fewer files, or even one file if you like.</p>
+<p>We’ve added a new command-line argument: <code class="docutils literal notranslate"><span class="pre">-only-asm</span></code>.
+This will only test the input files by compiling them all the way
+to assembly language and then producing an executable program
+and running it.  It’s the converse of the <code class="docutils literal notranslate"><span class="pre">-no-asm</span></code> argument,
+which only runs the intermediate language evaluators.</p>
+</section>
+<section id="compare-py">
+<h3><code class="docutils literal notranslate"><span class="pre">compare.py</span></code><a class="headerlink" href="#compare-py" title="Permalink to this heading"></a></h3>
+<p>This is a new test script.
+The idea of this test script is to simplify the process of
+comparing the output of compiling a file using only a single pass
+with the corresponding output file
+in the <code class="docutils literal notranslate"><span class="pre">reference/</span></code> subdirectory.
+Of course, you can do this yourself manually;
+for instance, you can do this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./compile reference/var_test_11.rc -pass ec -only &gt; var_test_11.ec
+</pre></div>
+</div>
+<p>and compare the file <code class="docutils literal notranslate"><span class="pre">var_test_11.ec</span></code> that was generated by your compiler
+to the file <code class="docutils literal notranslate"><span class="pre">reference/var_test_11.ec</span></code>
+in the <code class="docutils literal notranslate"><span class="pre">reference/</span></code> subdirectory.
+If they are the same, all is well.
+However, repeating this for a lot of files and a lot of passes
+is very tedious!
+Also, you might miss something if you just compare them visually
+(“eyeballing it”).  Instead, you can use the <code class="docutils literal notranslate"><span class="pre">diff</span></code> program to test
+if the files are different:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ diff var_test_11.ec reference/var_test_11.ec
+</pre></div>
+</div>
+<p>If there is no output, the files are identical.
+If there is any difference, the lines that are different
+will be printed in a format which shows what’s different.
+But again, doing this for a lot of files is going to be tedious.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As we mentioned in the last assignment,
+it’s important to realize that your output files can have <em>some</em>
+differences from the reference output files and still be acceptable.
+For instance, the “uniquify” pass is not required to give the exact
+same names to variables whose names are changed, as long as the
+names are changed consistently.  Nevertheless, if you can make the
+outputs identical, it will simplify testing.</p>
+</div>
+<p>The purpose of the <code class="docutils literal notranslate"><span class="pre">compare.py</span></code> script is to simplify this process.
+If you run it with no arguments, you get a usage message:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python scripts/compare.py
+usage: python compare.py [-pause] [-diff] [-random n] filename [filename ...]
+</pre></div>
+</div>
+<p>The required arguments are one or more filenames.
+These files should be in the <code class="docutils literal notranslate"><span class="pre">reference/</span></code> subdirectory.
+The files in that directory have file extensions corresponding to
+the last compiler pass that was used to generate them, so (for instance)
+<code class="docutils literal notranslate"><span class="pre">var_test_11.ec</span></code> is what the compiler output when compiling the file
+<code class="docutils literal notranslate"><span class="pre">var_test_11.src</span></code> up to the <code class="docutils literal notranslate"><span class="pre">ec</span></code> (explicate control) pass.
+If you want to test your <code class="docutils literal notranslate"><span class="pre">var_test_11.ec</span></code> against the reference version,
+you should start with the output of the previous pass,
+which in this case is <code class="docutils literal notranslate"><span class="pre">var_test_11.rc</span></code>
+(the <code class="docutils literal notranslate"><span class="pre">rc</span></code> or “remove complex operands” pass).
+Since this file is also in the <code class="docutils literal notranslate"><span class="pre">reference/</span></code> subdirectory,
+you can use it as the compiler input.  So if you type:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python scripts/compare.py reference/var_test_11.rc
+</pre></div>
+</div>
+<p>the script will:</p>
+<ul class="simple">
+<li><p>run <code class="docutils literal notranslate"><span class="pre">./compile</span> <span class="pre">reference/var_test_11.rc</span> <span class="pre">-pass</span> <span class="pre">ec</span> <span class="pre">-only</span></code>
+and redirect the output to a file called <code class="docutils literal notranslate"><span class="pre">var_test_11.ec</span></code>
+in the <code class="docutils literal notranslate"><span class="pre">ch3</span></code> directory;</p></li>
+<li><p>display the files <code class="docutils literal notranslate"><span class="pre">var_test_11.ec</span></code> (your compiler’s output)
+and <code class="docutils literal notranslate"><span class="pre">reference/var_test_11.ec</span></code> (the reference output)
+side-by-side so you can compare them visually.</p></li>
+</ul>
+<p>It will look like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python scripts/compare.py reference/var_test_11.rc
+--------------
+input: reference/var_test_11.rc
+output: reference/var_test_11.ec
+
+# Student version.                                        # Reference version.
+(CProgram                                                 (CProgram
+  (Info                                                     (Info
+    (locals_types                                             (locals_types
+      ((x.1 Integer)                                            ((x.1 Integer)
+       (x.2 Integer)                                             (x.2 Integer)
+       (y.1 Integer))))                                          (y.1 Integer))))
+  (((Label start)                                           (((Label start)
+    (Seq                                                      (Seq
+      (Assign x.1 (Atm (Int 20)))                               (Assign x.1 (Atm (Int 20)))
+      (Seq                                                      (Seq
+        (Assign x.2 (Atm (Int 22)))                               (Assign x.2 (Atm (Int 22)))
+        (Seq                                                      (Seq
+          (Assign y.1 (Add (Var x.1) (Var x.2)))                    (Assign y.1 (Add (Var x.1) (Var x.2)))
+          (Return (Atm (Var y.1)))))))))                            (Return (Atm (Var y.1)))))))))
+</pre></div>
+</div>
+<p>(You can scroll this output horizontally to see it all,
+but the two files are identical.)
+If you just want to check if the files are identical,
+use the <code class="docutils literal notranslate"><span class="pre">-diff</span></code> option:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python scripts/compare.py reference/var_test_11.rc -diff
+reference/var_test_11.rc : OK
+</pre></div>
+</div>
+<p>If there is no difference, you’ll get an <code class="docutils literal notranslate"><span class="pre">OK</span></code> as you see here.</p>
+<p>In either case, any generated files are removed
+before the <code class="docutils literal notranslate"><span class="pre">compare.py</span></code> script exits.</p>
+<p>This can be repeated for any number of files:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python scripts/compare.py reference/var_test_?.rc -diff
+reference/var_test_1.rc : OK
+reference/var_test_2.rc : OK
+reference/var_test_3.rc : OK
+reference/var_test_4.rc : OK
+reference/var_test_5.rc : OK
+reference/var_test_6.rc : OK
+reference/var_test_7.rc : OK
+reference/var_test_8.rc : OK
+reference/var_test_9.rc : OK
+</pre></div>
+</div>
+<p>If you do this without the <code class="docutils literal notranslate"><span class="pre">-diff</span></code> option, though,
+the output can get very large, and you’ll have to scroll back
+to check each file.  To make this easier,
+we’ve added a <code class="docutils literal notranslate"><span class="pre">-pause</span></code> option,
+which will display one file at a time
+(both versions: yours and the reference one)
+and wait for you to hit the return key before the next one is displayed.</p>
+<p>The last feature is the <code class="docutils literal notranslate"><span class="pre">-random</span></code> option.
+It’s used with an argument, which should be a positive integer.
+With <code class="docutils literal notranslate"><span class="pre">-random</span> <span class="pre">N</span></code>, up to <code class="docutils literal notranslate"><span class="pre">N</span></code> randomly-selected files will be chosen
+from the list of files on the command line and compared.
+This is useful to quickly check if a pass is working well;
+you do something like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python scripts/compare.py reference/var_test_*.rc -diff -random 10
+</pre></div>
+</div>
+<p>and get comparisons of (in this case) 10 random files
+selected from the files specified on the command line:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>reference/var_test_4.rc : OK
+reference/var_test_6.rc : OK
+reference/var_test_15.rc : OK
+reference/var_test_27.rc : OK
+reference/var_test_38.rc : OK
+reference/var_test_40.rc : OK
+reference/var_test_57.rc : OK
+reference/var_test_58.rc : OK
+reference/var_test_62.rc : OK
+reference/var_test_67.rc : OK
+</pre></div>
+</div>
+</section>
+<section id="show-asm-py">
+<h3><code class="docutils literal notranslate"><span class="pre">show_asm.py</span></code><a class="headerlink" href="#show-asm-py" title="Permalink to this heading"></a></h3>
+<p>This is a simple utility script whose purpose is to make assembly language
+instructions in S-expression form easier to read.  Let’s say you generate
+code for the “patch instructions” pass (say) and get this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(X86Program
+  (Info
+    (locals_types
+      ((x.1 Integer)
+       (x.2 Integer)
+       (y.1 Integer)))
+    (num_spilled 0)
+    (used_callee ()))
+  (((Label start)
+    (Block
+      Binfo
+      ((Movq (Imm 20) (Reg Rcx))
+       (Movq (Imm 22) (Reg Rdx))
+       (Addq (Reg Rdx) (Reg Rcx))
+       (Movq (Reg Rcx) (Reg Rax))
+       (Jmp (Label conclusion)))))))
+</pre></div>
+</div>
+<p>(This is from the file <code class="docutils literal notranslate"><span class="pre">reference/var_test_11.pi</span></code>.)</p>
+<p>Even though this isn’t <em>that</em> hard to read,
+the assembly instructions don’t look like real assembly instructions.
+This can be improved by using the <code class="docutils literal notranslate"><span class="pre">show_asm.py</span></code> script, which can be invoked
+like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ cat reference/var_test_11.pi | python scripts/show_asm.py
+</pre></div>
+</div>
+<p>which will output this: <a class="footnote-reference brackets" href="#id4" id="id2">2</a></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(X86Program
+  (Info
+    (locals_types
+      ((x.1 Integer)
+       (x.2 Integer)
+       (y.1 Integer)))
+    (num_spilled 0)
+    (used_callee ()))
+  (((Label start)
+    (Block
+      Binfo
+      ((movq $20 %rcx)
+       (movq $22 %rdx)
+       (addq %rdx %rcx)
+       (movq %rcx %rax)
+       (jmp (Label conclusion)))))))
+</pre></div>
+</div>
+<p>Notice that the assembly language instructions look a lot more
+like real assembly language instructions.
+Specifically, the immediate integer values are written with the <code class="docutils literal notranslate"><span class="pre">$N</span></code>
+notation, registers are written with the <code class="docutils literal notranslate"><span class="pre">%rxy</span></code> notation
+that you see in real assembly language, and instructions are uncapitalized.
+And that’s basically all that this script does.</p>
+<p>You may find that this helps you to “read” the output of compiler passes
+that emit code with assembly instructions.
+If so, great.  If not, just don’t use it.</p>
+</section>
+</section>
+<section id="code-to-write-the-compiler-passes">
+<h2>Code to write: the compiler passes<a class="headerlink" href="#code-to-write-the-compiler-passes" title="Permalink to this heading"></a></h2>
+<p>The compiler passes are described in chapter 3 of the textbook,
+but here they are again for completeness.  We will only include
+passes that you have to implement.
+As before, the only files you should modify are the <code class="docutils literal notranslate"><span class="pre">.ml</span></code> files
+corresponding to these compiler passes.</p>
+<p>In addition, when we provide a function stub in an <code class="docutils literal notranslate"><span class="pre">.ml</span></code> file that you need
+to complete, that means that we expect that you will use that function (with
+those arguments and types (if supplied)) as written (filling in the <code class="docutils literal notranslate"><span class="pre">TODO</span></code>
+parts, of course).  In particular, you’re not allowed to change the number of
+arguments to the function, or their types (if supplied).  If a function is
+completely implemented (no <code class="docutils literal notranslate"><span class="pre">TODO</span></code>s), you should leave it as-is.
+On the other hand, you can write as many extra functions as you like.
+(If we don’t like your choices, we’ll let you know during code reviews!)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The one exception to this rule is in the <code class="docutils literal notranslate"><span class="pre">graph_coloring.ml</span></code> file.
+We provide function stubs with <code class="docutils literal notranslate"><span class="pre">TODO</span></code>s as usual,
+as well as an implementation of the <code class="docutils literal notranslate"><span class="pre">color</span></code> function that uses
+those functions, but if you don’t like this,
+you are allowed to completely rewrite the entire module,
+as long as you end up with a <code class="docutils literal notranslate"><span class="pre">color</span></code> function
+with the correct type signature which works correctly.</p>
+</div>
+<section id="passes-that-are-unchanged-from-assignment-1">
+<h3>Passes that are unchanged from assignment 1<a class="headerlink" href="#passes-that-are-unchanged-from-assignment-1" title="Permalink to this heading"></a></h3>
+<p>Since the focus of this assignment is on register allocation,
+those passes that come before register allocation
+do not have to be modified from assignment 1
+(in your <code class="docutils literal notranslate"><span class="pre">ch2/</span></code> directory).  This includes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">uniquify.ml</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">remove_complex.ml</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">explicate_control.ml</span></code></p></li>
+</ul>
+<p>Note that you are free to edit your old code,
+in case you think you have a better way of doing things
+than what you wrote previously.</p>
+</section>
+<section id="select-instructions-select-instructions-ml">
+<h3>1. Select instructions (<code class="docutils literal notranslate"><span class="pre">select_instructions.ml</span></code>)<a class="headerlink" href="#select-instructions-select-instructions-ml" title="Permalink to this heading"></a></h3>
+<p>The “select instructions” pass has no fundamental changes, but there are some
+trivial changes because the <code class="docutils literal notranslate"><span class="pre">X86Program</span></code> type in <code class="docutils literal notranslate"><span class="pre">x86_var.ml[i]</span></code> has
+changed. The new version has different info types for the program and also has
+block info types.  For this pass, the block info is a placeholder type
+(containing no information) called <code class="docutils literal notranslate"><span class="pre">binfo1</span></code>.  Some of the type annotations
+will need to be changed slightly, and the blocks will all contain a <code class="docutils literal notranslate"><span class="pre">Binfo1</span></code>
+constructor. The type checker should point out exactly where your old code
+needs to be changed.</p>
+</section>
+<section id="uncover-live-uncover-live-ml">
+<h3>2. Uncover live (<code class="docutils literal notranslate"><span class="pre">uncover_live.ml</span></code>)<a class="headerlink" href="#uncover-live-uncover-live-ml" title="Permalink to this heading"></a></h3>
+<p>The “uncover live” pass has to implement the function
+<code class="docutils literal notranslate"><span class="pre">uncover_live</span></code> with this signature:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>val uncover_live :
+  (X86_var.info1, X86_var.binfo1) X86_var.program -&gt;
+  (X86_var.info1, X86_var.binfo2) X86_var.program
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">X86_var.program</span></code> type is parameterized
+on two kinds of “info” types:
+one for the program as a whole
+(with variants <code class="docutils literal notranslate"><span class="pre">info1</span></code>, <code class="docutils literal notranslate"><span class="pre">info2</span></code>, and <code class="docutils literal notranslate"><span class="pre">info3</span></code>),
+and one for blocks
+(with variants <code class="docutils literal notranslate"><span class="pre">binfo1</span></code> and <code class="docutils literal notranslate"><span class="pre">binfo2</span></code>).
+The <code class="docutils literal notranslate"><span class="pre">info1</span></code> and <code class="docutils literal notranslate"><span class="pre">binfo1</span></code> types are placeholder types,
+containing no data.
+All that this pass does is compute the <code class="docutils literal notranslate"><span class="pre">binfo2</span></code> value,
+which contains the liveness information described in
+the textbook (section 3.2) and in the lectures.
+The instructions are not changed.
+The <code class="docutils literal notranslate"><span class="pre">binfo2</span></code> type has this definition:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>type live =
+  {
+    initial : LocSet.t;       (* initial live variables/registers *)
+    afters  : LocSet.t list;  (* live vars/regs after each instruction *)
+  }
+
+type binfo2 = Binfo2 of live
+</pre></div>
+</div>
+<p>The liveness data is represented as a list of sets of locations,
+where a location is a variable, a register, or a stack location.
+Sets of locations are represented by the type <code class="docutils literal notranslate"><span class="pre">LocSet.t</span></code>.
+Since liveness sets apply between instructions,
+we use the <code class="docutils literal notranslate"><span class="pre">initial</span></code> field to represent the initial set of live locations,
+and the <code class="docutils literal notranslate"><span class="pre">afters</span></code> field represents, for each instruction,
+the set of live locations after that instruction.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In principle, we could have added the liveness data directly
+to the instructions, but we prefer to keep it separate,
+partly because it’s only used in this pass.
+It’s important to be aware that there is a one-to-one correspondence
+between the instructions in the program
+and the <code class="docutils literal notranslate"><span class="pre">after</span></code> sets of the <code class="docutils literal notranslate"><span class="pre">live</span></code> record:
+the Nth item in the <code class="docutils literal notranslate"><span class="pre">after</span></code> sets is the after set
+for the Nth instruction in the program.</p>
+</div>
+<p>We provide an implementation for the <code class="docutils literal notranslate"><span class="pre">uncover_live</span></code> function,
+which calls the function <code class="docutils literal notranslate"><span class="pre">uncover_live_in_block</span></code>
+to compute the liveness sets.  You have to implement that function.
+The inputs to that function are the list of instructions in the block,
+and <code class="docutils literal notranslate"><span class="pre">live_before_labels</span></code>, which is a map between block names
+and the live locations before that block executes.
+Here, there is only one such block: <code class="docutils literal notranslate"><span class="pre">conclusion</span></code>,
+with live locations (registers) <code class="docutils literal notranslate"><span class="pre">%rax</span></code> and <code class="docutils literal notranslate"><span class="pre">%rsp</span></code>.</p>
+<p>You can implement <code class="docutils literal notranslate"><span class="pre">uncover_live_in_block</span></code> as you like
+(as long as it’s functional – don’t use mutation!)
+but we recommend that you define a helper function
+to compute the liveness set for a single instruction
+given the instruction and its live-after set.</p>
+<p>Also, be aware that <code class="docutils literal notranslate"><span class="pre">callq</span></code> instructions require special handling.
+First, each <code class="docutils literal notranslate"><span class="pre">callq</span></code> instruction can write to all of the caller-saved registers.
+There is a list of caller-saved registers in the <code class="docutils literal notranslate"><span class="pre">Types</span></code> module as
+<code class="docutils literal notranslate"><span class="pre">caller_saved_regs</span></code>; don’t hard-code the caller-saved registers!
+Second, <code class="docutils literal notranslate"><span class="pre">callq</span></code> instructions with arity (number of arguments)
+greater than 0 have to read from registers for the first 6 arguments.
+These registers are given in the <code class="docutils literal notranslate"><span class="pre">Types</span></code> module as <code class="docutils literal notranslate"><span class="pre">arg_passing_regs</span></code>;
+these arguments are (in order)
+<code class="docutils literal notranslate"><span class="pre">%rdi</span></code>, <code class="docutils literal notranslate"><span class="pre">%rsi</span></code>, <code class="docutils literal notranslate"><span class="pre">%rdx</span></code>, <code class="docutils literal notranslate"><span class="pre">%rcx</span></code>, <code class="docutils literal notranslate"><span class="pre">%r8</span></code>, and <code class="docutils literal notranslate"><span class="pre">%r9</span></code>
+(all of which are caller-save registers, which should make sense).
+We recommend that you write a helper function
+to determine the change in the liveness set just for <code class="docutils literal notranslate"><span class="pre">callq</span></code> instructions,
+incorporating all of this information.</p>
+<p>The algorithm for computing liveness sets is described in detail
+in section 3.2 of the textbook and in the lectures.</p>
+</section>
+<section id="build-interference-graph-build-interference-ml">
+<h3>3. Build interference graph (<code class="docutils literal notranslate"><span class="pre">build_interference.ml</span></code>)<a class="headerlink" href="#build-interference-graph-build-interference-ml" title="Permalink to this heading"></a></h3>
+<p>The “build interference” pass has to implement the function
+<code class="docutils literal notranslate"><span class="pre">build_interference</span></code> with this signature:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>val build_interference :
+  (X86_var.info1, X86_var.binfo2) X86_var.program -&gt;
+  (X86_var.info2, X86_var.binfo1) X86_var.program
+</pre></div>
+</div>
+<p>From this, we can see that the block info <code class="docutils literal notranslate"><span class="pre">binfo2</span></code> value
+(containing the liveness data)
+goes back to the placeholder <code class="docutils literal notranslate"><span class="pre">binfo1</span></code> type,
+but the program info <code class="docutils literal notranslate"><span class="pre">info1</span></code> value
+(containing nothing but the types of variables)
+gets extended into the <code class="docutils literal notranslate"><span class="pre">info2</span></code> type,
+which has this definition:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>type info2 = Info2 of
+  {
+    locals_types : (var * ty) list;
+    conflicts    : LocUgraph.t
+  }
+</pre></div>
+</div>
+<p>What this does is add the interference graph information
+(as the <code class="docutils literal notranslate"><span class="pre">conflicts</span></code> field) to the program.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You might wonder why the liveness data is stored
+in a block info type while the interference graph
+is stored in a program info type.
+The liveness data is stored in a block-by-block manner,
+while there is only one interference graph per function.
+(Here, our programs are a single <code class="docutils literal notranslate"><span class="pre">main</span></code> function.)
+Note that most functions will have multiple blocks.
+Ours also do (the <code class="docutils literal notranslate"><span class="pre">start</span></code> block plus the prelude and conclusion)
+but we don’t have to compute the liveness data for the
+prelude and conclusion because they are so simple.
+In later compilers, our programs will have many more blocks
+to handle conditionals, loops and user-defined functions.</p>
+</div>
+<p>We supplied an implementation of the <code class="docutils literal notranslate"><span class="pre">build_interference</span></code> function
+which calls the <code class="docutils literal notranslate"><span class="pre">make_graph</span></code> function to compute the interference graph.
+You need to implement <code class="docutils literal notranslate"><span class="pre">make_graph</span></code>, following the algorithm given in
+section 3.3 of the textbook and in the lectures.
+You’ll almost certainly want to split this function up into
+multiple helper functions.
+Pay particular attention to <code class="docutils literal notranslate"><span class="pre">movq</span></code> and <code class="docutils literal notranslate"><span class="pre">callq</span></code> instructions;
+remember that for <code class="docutils literal notranslate"><span class="pre">callq</span></code> you need to create an edge
+between all the locations in the live-after set and all
+caller-save registers.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is unrelated to the handling of caller-save registers
+in liveness analysis, which normally does nothing but is included
+for completeness.  Here, creating the edges between call-live
+variables and caller-save registers is extremely important,
+because it prevents call-live variables from being placed into
+caller-save registers, where they would have to be saved and restored
+before and after the call.  Thus, they will normally be put into
+callee-save registers, unless there are none available, in which case
+they will be placed onto the stack.  The register allocation
+algorithms handle all of this automatically!</p>
+</div>
+</section>
+<section id="graph-coloring-graph-coloring-ml">
+<h3>4. Graph coloring (<code class="docutils literal notranslate"><span class="pre">graph_coloring.ml</span></code>)<a class="headerlink" href="#graph-coloring-graph-coloring-ml" title="Permalink to this heading"></a></h3>
+<p>This module is not technically a compiler pass, but it’s an integral part of
+the “allocate registers” pass.  However, the algorithm is more general, and the
+implementation is not specialized to locations (registers, variables and stack
+locations) until the <code class="docutils literal notranslate"><span class="pre">GraphColor</span></code> functor (defined in this module) is
+specialized to locations in <code class="docutils literal notranslate"><span class="pre">allocate_registers.ml</span></code>.  The algorithm is
+described in some detail in section 3.4 of the textbook as well as in the
+lectures.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">GraphColor</span></code> functor is parameterized on several modules:</p>
+<ul class="simple">
+<li><p>the graph element type (which will be locations in <code class="docutils literal notranslate"><span class="pre">allocate_registers.ml</span></code>)</p></li>
+<li><p>the element map type (made from the <code class="docutils literal notranslate"><span class="pre">MapS</span></code> functor,
+which is just an extension of the normal OCaml <code class="docutils literal notranslate"><span class="pre">Map</span></code> functor;
+note that <code class="docutils literal notranslate"><span class="pre">MapS</span></code> is defined in <code class="docutils literal notranslate"><span class="pre">support/functors.ml[i]</span></code>)</p></li>
+<li><p>a priority queue module
+(we use the priority queue defined in <code class="docutils literal notranslate"><span class="pre">support/priority_queue.ml[i]</span></code>)</p></li>
+<li><p>an undirected graph module (the interference graph)</p></li>
+</ul>
+<p>The functor is instantiated in <code class="docutils literal notranslate"><span class="pre">allocate_registers.ml</span></code>, so you don’t have to
+worry about how to do that.  Inside the functor, a type <code class="docutils literal notranslate"><span class="pre">node</span></code> is defined
+that contains information about the elements (locations) that isn’t stored
+in the interference graph, and that changes as the algorithm progresses.
+The two components of a <code class="docutils literal notranslate"><span class="pre">node</span></code> are the color of the element
+(an <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">option</span></code>, since the element is initially uncolored),
+and the saturation set
+(a set of integers, representing the colors that the element is not
+allowed to have).  As the algorithm progresses, the colors (which mostly
+start as <code class="docutils literal notranslate"><span class="pre">None</span></code>) get filled in, and the saturation sets increase in size,
+which constrains the color choices.</p>
+<p>We define a <code class="docutils literal notranslate"><span class="pre">nodemap</span></code> type which is a map between elements and <code class="docutils literal notranslate"><span class="pre">node</span></code>s.
+We also provide a debugging function called <code class="docutils literal notranslate"><span class="pre">_print_nodemap</span></code>
+which can print out the nodemap at any point in the algorithm
+to help debugging.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The name is <code class="docutils literal notranslate"><span class="pre">_print_nodemap</span></code> instead of <code class="docutils literal notranslate"><span class="pre">print_nodemap</span></code>
+because it isn’t exported from the functor, and OCaml would issue
+a warning about unused functions if the name didn’t start with
+an underscore.</p>
+</div>
+<p>The only function that needs to be implemented is the <code class="docutils literal notranslate"><span class="pre">color</span></code>
+function, which takes an interference graph and a map of
+precolored elements (element to <code class="docutils literal notranslate"><span class="pre">int</span></code> map) as its arguments.
+Recall that the only precolored elements we are using are the
+reserved registers, which are <code class="docutils literal notranslate"><span class="pre">%rax</span></code> (color <code class="docutils literal notranslate"><span class="pre">-1</span></code>),
+and <code class="docutils literal notranslate"><span class="pre">%rsp</span></code> (color <code class="docutils literal notranslate"><span class="pre">-2</span></code>).  The return value of the function
+is the full element-to-<code class="docutils literal notranslate"><span class="pre">int</span></code> map, containing color assignments
+for all variables.</p>
+<p>Because this is a somewhat tricky algorithm,
+we’ve provided you with a starting point.
+We’ve given our version of the <code class="docutils literal notranslate"><span class="pre">color</span></code> function,
+which calls a number of helper functions.
+You may choose to simply implement all the helper functions in
+<code class="docutils literal notranslate"><span class="pre">graph_coloring.ml</span></code>.
+Or, if you would prefer to implement the <code class="docutils literal notranslate"><span class="pre">color</span></code> function from scratch,
+you are free to delete any or all of our helper functions and
+rewrite the <code class="docutils literal notranslate"><span class="pre">color</span></code> function accordingly.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The only restriction we’ll insist on is that your code for this module
+should be purely functional.  Don’t use <code class="docutils literal notranslate"><span class="pre">ref</span></code> cells or any other
+imperative features.  In a real-world setting, you might choose to
+use imperative code for efficiency or convenience,
+but it’s definitely not necessary.</p>
+</div>
+<p>The total amount of code you need to write is less than 100 extra lines.</p>
+<section id="testing-the-graph-coloring-algorithm">
+<h4>Testing the graph coloring algorithm<a class="headerlink" href="#testing-the-graph-coloring-algorithm" title="Permalink to this heading"></a></h4>
+<p>There is a very trivial test script for the graph coloring algorithm only
+in the file <code class="docutils literal notranslate"><span class="pre">test_graph_coloring.ml</span></code>.
+You can run in in the interactive interpreter as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make repl
+# #use &quot;test_graph_coloring.ml&quot;;;
+</pre></div>
+</div>
+<p>This will run the test and print <code class="docutils literal notranslate"><span class="pre">TEST</span> <span class="pre">PASSED!</span></code> if it passes
+or <code class="docutils literal notranslate"><span class="pre">TEST</span> <span class="pre">FAILED!</span></code> if not.
+More importantly, since this is done interactively,
+you can inspect the results of graph coloring to see how they
+differed from the expected results.
+The example given is the same one given in the book and in the lectures.</p>
+<p>Note that in future, we plan to have much more comprehensive tests of this
+algorithm.</p>
+</section>
+</section>
+<section id="allocate-registers-allocate-registers-ml">
+<h3>5. Allocate registers (<code class="docutils literal notranslate"><span class="pre">allocate_registers.ml</span></code>)<a class="headerlink" href="#allocate-registers-allocate-registers-ml" title="Permalink to this heading"></a></h3>
+<p>Once you’ve implemented the graph coloring algorithm, the “allocate registers”
+pass is simple.  You need to do these things:</p>
+<ol class="arabic simple">
+<li><p>Run the graph coloring algorithm and assign registers
+(or, if there are no available registers, stack locations)
+to all variables.
+This is done in the functions <code class="docutils literal notranslate"><span class="pre">get_variable_location_map</span></code>,
+which is supplied to you, and <code class="docutils literal notranslate"><span class="pre">varmap_of_colormap</span></code>,
+which you need to fill in.
+Your implementation of <code class="docutils literal notranslate"><span class="pre">varmap_of_colormap</span></code>
+should use the helper function <code class="docutils literal notranslate"><span class="pre">location_of_color</span></code>,
+which you also need to fill in.</p></li>
+<li><p>Use the mapping between variable bindings and locations
+(registers or stack locations)
+to determine the number of stack slots needed.
+This is done in the function <code class="docutils literal notranslate"><span class="pre">get_num_spilled</span></code>,
+which you need to fill in.
+Be careful that you don’t count a stack location more than once!</p></li>
+<li><p>Use the same mapping between variable bindings and locations
+to collect a set of all the callee-save registers
+used in the program.
+This is done in the function <code class="docutils literal notranslate"><span class="pre">get_used_callee</span></code>,
+which you need to fill in.</p></li>
+<li><p>Convert all the instructions that use variables
+to use the corresponding registers or stack locations.
+This is done in the function <code class="docutils literal notranslate"><span class="pre">convert_block</span></code>,
+which you need to fill in.
+You’ll probably want to define some helper functions
+in your implementation of this function.</p></li>
+</ol>
+<p>All the other code for this pass has been supplied.
+In particular, code for selecting which registers are available
+(based ultimately on the command-line arguments
+to the <code class="docutils literal notranslate"><span class="pre">compile</span></code> program) is supplied and should not be altered.</p>
+</section>
+<section id="patch-instructions-patch-instructions-ml">
+<h3>6. Patch instructions (<code class="docutils literal notranslate"><span class="pre">patch_instructions.ml</span></code>)<a class="headerlink" href="#patch-instructions-patch-instructions-ml" title="Permalink to this heading"></a></h3>
+<p>Aside from trivial type changes, the only significant change in this pass
+is that instructions of the form <code class="docutils literal notranslate"><span class="pre">Movq</span> <span class="pre">(x,</span> <span class="pre">x)</span></code>
+(moving a value from a location to the same location) are removed.</p>
+</section>
+<section id="prelude-and-conclusion-prelude-conclusion-ml">
+<h3>7. Prelude and conclusion (<code class="docutils literal notranslate"><span class="pre">prelude_conclusion.ml</span></code>)<a class="headerlink" href="#prelude-and-conclusion-prelude-conclusion-ml" title="Permalink to this heading"></a></h3>
+<p>This pass has a few changes from the corresponding pass in the last assignment.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">info</span></code> record type attached to the <code class="docutils literal notranslate"><span class="pre">program</span></code> type in <code class="docutils literal notranslate"><span class="pre">x86_int.mli</span></code>
+has these fields:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>locals_types : (var * ty) list;
+num_spilled  : int;
+used_callee  : RegSet.t
+</pre></div>
+</div>
+<p>We won’t be concerned with <code class="docutils literal notranslate"><span class="pre">locals_types</span></code>, but the other two are relevant
+to generating a correct prelude and conclusion.
+<code class="docutils literal notranslate"><span class="pre">num_spilled</span></code> is the number of stack slots needed for variables
+that were not placed in registers.
+<code class="docutils literal notranslate"><span class="pre">used_callee</span></code> are the names of the callee-save registers that are used
+in the program.</p>
+<p>Recall that the program is one big function (the <code class="docutils literal notranslate"><span class="pre">main</span></code> function),
+and so the values of any callee-saved variables that are used inside
+this function must be saved in the prelude and restored in the conclusion.
+They will be saved to the stack and restored from the stack.
+Therefore, the total number of stack slots needed can be more than
+<code class="docutils literal notranslate"><span class="pre">num_spilled</span></code>; it’s actually <code class="docutils literal notranslate"><span class="pre">num_spilled</span></code> plus the number of
+callee-save registers used.
+And to make it even more confusing, the size of the stack frame
+(the total amount of stack space reserved for the function)
+must be a multiple of 16 bytes, so it can be even bigger!</p>
+<p>Fortunately, we have defined a function called <code class="docutils literal notranslate"><span class="pre">align_16</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">Utils</span></code> module of the <code class="docutils literal notranslate"><span class="pre">support</span></code> directory.  This will take a
+non-negative integer and round it up to the nearest multiple of 16.
+So the total stack space required is actually (in pseudocode):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>stack_space = align_16(8 * (num_spilled * size(used_callees)))
+</pre></div>
+</div>
+<p>However, it’s still a bit more complicated than this.
+We will be saving the callee-save registers by pushing them to the stack
+with the <code class="docutils literal notranslate"><span class="pre">pushq</span></code> instruction,
+and restoring them with the <code class="docutils literal notranslate"><span class="pre">popq</span></code> instruction.
+The <code class="docutils literal notranslate"><span class="pre">pushq</span></code> instruction subtracts 8 bytes from the stack pointer,
+and the <code class="docutils literal notranslate"><span class="pre">popq</span></code> adds it back.
+The effect of this is that, after all the callee-save registers
+have been pushed to the stack using <code class="docutils literal notranslate"><span class="pre">pushq</span></code> instructions,
+we’ve already allocated a big chunk of the total stack space required.
+The additional stack space we need to allocate can be computed from these
+equations (in pseudocode):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>n_callees = size(used_callees)
+extra_stack_space = align_16 (8 * (num_spilled + n_callees)) - 8 * n_callees
+</pre></div>
+</div>
+<p>This is already computed for you in the <code class="docutils literal notranslate"><span class="pre">prelude_conclusion</span></code> function.</p>
+<p>From here, you have to do two things:</p>
+<ol class="arabic simple">
+<li><p>Compute the prelude and conclusion
+(collectively called the “epilog” in the code because we place it
+after the code in the <code class="docutils literal notranslate"><span class="pre">start</span></code> block).
+This is done in the <code class="docutils literal notranslate"><span class="pre">epilog</span></code> function which takes the
+set of callee-save registers and the amount of extra stack space needed
+as arguments.</p></li>
+<li><p>Adjust all instructions in the <code class="docutils literal notranslate"><span class="pre">start</span></code> block that access stack locations,
+because the callee-save registers on the stack use up space
+at the beginning of the stack frame,
+which means that any stack location access
+which is relative to the base pointer in <code class="docutils literal notranslate"><span class="pre">%rbp</span></code>
+has to be changed to account for this extra space.
+This is done in the <code class="docutils literal notranslate"><span class="pre">asm_of_lb</span></code> function,
+which takes a labelled block (the <code class="docutils literal notranslate"><span class="pre">start</span></code> block, in this case)
+and the amount of space that stack locations need to be shifted by
+(called <code class="docutils literal notranslate"><span class="pre">deref_adjust</span></code>)
+as its arguments.  You’ll probably want to define helper functions
+to write this function, as (we hope) you did in the last assignment.</p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">prelude_conclusion</span></code> function appends the epilog to the <code class="docutils literal notranslate"><span class="pre">start</span></code> block
+code to generate the final program.</p>
+<p>Here are a couple of notes about the functions you need to write.</p>
+<ol class="arabic simple">
+<li><p>For <code class="docutils literal notranslate"><span class="pre">asm_of_lb</span></code>, all you need to do is go through all instructions,
+changing any stack location accesses
+by subtracting the <code class="docutils literal notranslate"><span class="pre">deref_adjust</span></code> value.</p></li>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">epilog</span></code>, after you’ve established the base pointer in the prelude,
+you need to push the callee-save register values onto the stack, and then
+adjust the stack pointer by subtracting the extra space needed for
+the stack-resident variables before jumping to the <code class="docutils literal notranslate"><span class="pre">start</span></code> block.
+(Recall that the stack grows downwards,
+so subtracting from the stack pointer reserves stack space.)
+In the conclusion, you have to add the extra space for the stack-resident
+variables back to the stack (reclaiming the stack space),
+and then pop the callee-save register values back to their registers
+before resetting the base pointer and returning.
+<strong>Make sure that you pop the callee-save registers in reverse order
+to the order in which you pushed them!</strong>
+(Remember, the stack is a last-in, first out (LIFO) data structure.)
+Also, only push and pop the callee-save registers you actually used;
+if your program didn’t use any,
+you don’t have to do any pushing and popping.</p></li>
+</ol>
+<p>This sounds much more complicated than it is!
+This pass is really just a little bit of (somewhat annoying) bookkeeping.</p>
+</section>
+</section>
+<section id="submitting-your-assignment">
+<h2>“Submitting” your assignment<a class="headerlink" href="#submitting-your-assignment" title="Permalink to this heading"></a></h2>
+<p>Unlike most courses, there is nothing to “hand in” in this course.
+Instead, you need to inform the instructor (and TAs) when an assignment is
+ready to be graded (hopefully, before or on the due date).
+The instructor will check out your code, run the tests, and leave comments
+in a file called GRADING in your <code class="docutils literal notranslate"><span class="pre">ch2</span></code> directory.  The instructor/TAs
+may also leave comments in your code itself, with this syntax:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(*** GRADER COMMENT: ... ***)</span>
+</pre></div>
+</div>
+<p>These should be removed when you fix whatever the comment complained about.</p>
+<p>After the grading comments have been checked in to your repository,
+you have one week to make changes (this is the first redo period).
+Work redone during this period will be re-evaluated without penalty.
+Any subsequent redos after the first redo will result in reduced credit
+(typically, any additional marks after the first week
+will get at most 50% credit).</p>
+</section>
+<section id="code-reviews-office-hours-and-feedback">
+<h2>Code reviews, office hours, and feedback<a class="headerlink" href="#code-reviews-office-hours-and-feedback" title="Permalink to this heading"></a></h2>
+<p>We will be setting up code review times for each team.  Make sure you choose a
+time where both members of the team can meet as well as the instructor
+(and/or a TA).</p>
+<p>Code reviews do not require that all of the code be written, or that all of the
+code is working correctly, but there is no point in doing a code review unless
+most of the code has been written.  If you are having trouble at an earlier
+stage, we will have office hour times you can come to.</p>
+<hr class="docutils" />
+<p class="rubric">Footnotes</p>
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Since the compiler is written in OCaml, you might wonder why the testing
+scripts are written in Python.  We don’t think it’s a good idea to get too
+obsessed with any one programming language.  OCaml is a fine language for
+writing a compiler, but Python is more convenient when working with
+large numbers of files and calling programs to act on those files.
+Traditionally, this kind of thing is done with shell scripts,
+but Python is vastly more powerful and flexible, as well as cross-platform,
+and all of you already know it.</p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>In case you haven’t seen this kind of use of the <code class="docutils literal notranslate"><span class="pre">|</span></code> character
+before, this is an example of a Unix “pipe”.  What this does is it
+takes the output of the first program (the <code class="docutils literal notranslate"><span class="pre">cat</span></code> program, which
+normally just prints the file to the terminal),
+and passes it to the second program as its input.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../1/Assignment1.html" class="btn btn-neutral float-left" title="Assignment 1: The Var language" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>
