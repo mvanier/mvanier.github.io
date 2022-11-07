@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Assignment 1: The Var language &mdash; The CS 164 book 0.0.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -16,6 +17,7 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -111,9 +113,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="assignment-1-the-var-language">
+  <section id="assignment-1-the-var-language">
 <h1>Assignment 1: The <em>Var</em> language<a class="headerlink" href="#assignment-1-the-var-language" title="Permalink to this heading"></a></h1>
-<div class="section" id="overview">
+<section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
 <p>This assignment involves writing a compiler for the <em>Var</em> language,
 which is a simple language of variables and arithmetic
@@ -128,26 +130,17 @@ ability to run a single pass given the appropriate inputs.</p>
 <p>Let us know about anything that’s confusing so we can add clarifications
 to this document!  Also let us know about typos and mistakes.</p>
 </div>
-<<<<<<< HEAD
 </section>
 <section id="textbook-coverage">
 <h2>Textbook coverage<a class="headerlink" href="#textbook-coverage" title="Permalink to this heading"></a></h2>
 <p>This assignment is based on chapter 2 of <em>Essentials of Compilation</em>.</p>
 </section>
 <section id="due-date">
-=======
-</div>
-<div class="section" id="textbook-coverage">
-<h2>Textbook coverage<a class="headerlink" href="#textbook-coverage" title="Permalink to this heading"></a></h2>
-<p>This assignment is based on chapter 2 of <em>Essentials of Compilation</em>.</p>
-</div>
-<div class="section" id="due-date">
->>>>>>> 451fd6512adcb65de0f19bd20f4522c87ce62bd5
 <h2>Due date<a class="headerlink" href="#due-date" title="Permalink to this heading"></a></h2>
 <p>This assignment is due on Friday, October 14th at 2 AM
 (so, effectively very late Thursday night).</p>
-</div>
-<div class="section" id="before-you-begin">
+</section>
+<section id="before-you-begin">
 <h2>Before you begin<a class="headerlink" href="#before-you-begin" title="Permalink to this heading"></a></h2>
 <p>Make sure that all the action items from assignment 0 have been completed:</p>
 <ul class="simple">
@@ -156,8 +149,8 @@ to this document!  Also let us know about typos and mistakes.</p>
 <li><p>setting up a GitHub repository and adding the instructor (Mike)
 as a collaborator</p></li>
 </ul>
-</div>
-<div class="section" id="division-of-labor">
+</section>
+<section id="division-of-labor">
 <h2>Division of labor<a class="headerlink" href="#division-of-labor" title="Permalink to this heading"></a></h2>
 <p>These assignments are very much a team effort, and both students will be
 credited for all work done.  We don’t want one student to do all the work,
@@ -170,8 +163,8 @@ below).  If one team member is more experienced than the other, they may want
 to tackle the harder passes (which will be identified below).  The hardest
 passes (of which there are none in this assignment!) are the best candidates
 for collective work.</p>
-</div>
-<div class="section" id="textbook">
+</section>
+<section id="textbook">
 <h2>Textbook<a class="headerlink" href="#textbook" title="Permalink to this heading"></a></h2>
 <p>This assignment is based on chapter 2 of the course textbook
 (<em>Essentials of Compilation</em> by Jeremy Siek).
@@ -192,8 +185,8 @@ When in doubt, trust the OCaml code.</p>
 While the OCaml equivalent is broadly similar, you don’t need to have an error
 case for unhandled cases, because OCaml pattern matching is required to be
 exhaustive! <a class="footnote-reference brackets" href="#id5" id="id1">1</a></p>
-</div>
-<div class="section" id="starting-code-base">
+</section>
+<section id="starting-code-base">
 <h2>Starting code base<a class="headerlink" href="#starting-code-base" title="Permalink to this heading"></a></h2>
 <p>The starting code base is the zipfile <code class="docutils literal notranslate"><span class="pre">src.zip</span></code>, which is posted on the
 course Canvas site.  You should unzip this file in your Github repo.
@@ -233,7 +226,7 @@ Again, just leave it alone.  Each directory may have additional
 <p>You should check in the entire <code class="docutils literal notranslate"><span class="pre">src</span></code> directory and all its subdirectories.
 Don’t check in the zip file!  (You should probably remove it after you
 check it in.)</p>
-<div class="section" id="sanity-checking-the-code-base">
+<section id="sanity-checking-the-code-base">
 <h3>Sanity checking the code base<a class="headerlink" href="#sanity-checking-the-code-base" title="Permalink to this heading"></a></h3>
 <p>If you’ve installed the code base correctly,
 you should be able to do the following:</p>
@@ -282,9 +275,9 @@ This prints out a usage message.</p>
 <p>Note that each assignments’ compiler will be different,
 and there may be different or additional command-line options
 for each compiler.</p>
-</div>
-</div>
-<div class="section" id="code-to-write-the-compiler-passes">
+</section>
+</section>
+<section id="code-to-write-the-compiler-passes">
 <h2>Code to write: the compiler passes<a class="headerlink" href="#code-to-write-the-compiler-passes" title="Permalink to this heading"></a></h2>
 <p>The compiler passes are described in chapter 2 of the textbook,
 but here they are again for completeness.  We will only include
@@ -304,7 +297,7 @@ arguments to the function, or their types (if supplied).  If a function is
 completely implemented (no <code class="docutils literal notranslate"><span class="pre">TODO</span></code>s), you should leave it as-is.
 On the other hand, you can write as many extra functions as you like.
 (If we don’t like your choices, we’ll let you know during code reviews!)</p>
-<div class="section" id="uniquify-uniquify-ml">
+<section id="uniquify-uniquify-ml">
 <h3>1. Uniquify (<code class="docutils literal notranslate"><span class="pre">uniquify.ml</span></code>)<a class="headerlink" href="#uniquify-uniquify-ml" title="Permalink to this heading"></a></h3>
 <p>In this pass, all names bound in <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions have to be renamed
 to be unique.  This enables a number of further transformations in later
@@ -375,8 +368,8 @@ and you can use the new or old maps as you see fit.</p>
 </ol>
 <p>You should be able to implement this pass in about 50 lines of code
 (or less).</p>
-</div>
-<div class="section" id="remove-complex-operands-remove-complex-ml">
+</section>
+<section id="remove-complex-operands-remove-complex-ml">
 <h3>2. Remove complex operands (<code class="docutils literal notranslate"><span class="pre">remove_complex.ml</span></code>)<a class="headerlink" href="#remove-complex-operands-remove-complex-ml" title="Permalink to this heading"></a></h3>
 <p>The purpose of this pass is simply to make sure
 that the operands of arithmetic operations are “simple” <em>i.e.</em>
@@ -439,8 +432,8 @@ the subexpressions of a <code class="docutils literal notranslate"><span class="
 do <em>not</em> need to be atomic, so don’t try to make them atomic!
 That means that you can have arbitrarily nested <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions.
 If this bothers you, don’t worry: we’ll fix it in the next pass!</p>
-</div>
-<div class="section" id="explicate-control-explicate-control-ml">
+</section>
+<section id="explicate-control-explicate-control-ml">
 <h3>3. Explicate control (<code class="docutils literal notranslate"><span class="pre">explicate_control.ml</span></code>)<a class="headerlink" href="#explicate-control-explicate-control-ml" title="Permalink to this heading"></a></h3>
 <p>The purpose of this pass is to “flatten” the code representation
 into a sequence of assignment statements followed by a “return” statement.
@@ -469,8 +462,8 @@ followed by an already-converted tail expression.</p>
 the only (slightly) tricky case is the <code class="docutils literal notranslate"><span class="pre">let</span></code> case.
 Hint: <code class="docutils literal notranslate"><span class="pre">explicate_tail</span></code> has to call <code class="docutils literal notranslate"><span class="pre">explicate_assign</span></code>.
 The total code is considerably less than 100 lines.</p>
-</div>
-<div class="section" id="select-instructions-select-instructions-ml">
+</section>
+<section id="select-instructions-select-instructions-ml">
 <h3>4. Select instructions (<code class="docutils literal notranslate"><span class="pre">select_instructions.ml</span></code>)<a class="headerlink" href="#select-instructions-select-instructions-ml" title="Permalink to this heading"></a></h3>
 <p>This is the first of several passes collectively called the “back end”.
 Their job is to convert the code into x86-64 assembly language.
@@ -564,8 +557,8 @@ added the <code class="docutils literal notranslate"><span class="pre">fix_label
 if so, prepends the underscore to the label.  So instead of converting <code class="docutils literal notranslate"><span class="pre">Read</span></code>
 to <code class="docutils literal notranslate"><span class="pre">Callq</span> <span class="pre">(Label</span> <span class="pre">&quot;read_int&quot;,</span> <span class="pre">0)</span></code>, convert it to <code class="docutils literal notranslate"><span class="pre">Callq</span> <span class="pre">(Label</span> <span class="pre">(fix_label</span>
 <span class="pre">&quot;read_int&quot;),</span> <span class="pre">0)</span></code>. <a class="footnote-reference brackets" href="#id7" id="id3">3</a></p>
-</div>
-<div class="section" id="assign-homes-assign-homes-ml">
+</section>
+<section id="assign-homes-assign-homes-ml">
 <h3>5. Assign homes (<code class="docutils literal notranslate"><span class="pre">assign_homes.ml</span></code>)<a class="headerlink" href="#assign-homes-assign-homes-ml" title="Permalink to this heading"></a></h3>
 <p>The purpose of this pass is to convert variable names into stack locations.
 Note that in this compiler, we are not storing variables in registers.
@@ -619,8 +612,8 @@ signal an error (this shouldn’t happen, but it’s good to check).</p></li>
 <li><p>Compute an <code class="docutils literal notranslate"><span class="pre">info2</span></code> field using the computed stack space,
 and reconstitute the program.</p></li>
 </ol>
-</div>
-<div class="section" id="patch-instructions-patch-instructions-ml">
+</section>
+<section id="patch-instructions-patch-instructions-ml">
 <h3>6. Patch instructions (<code class="docutils literal notranslate"><span class="pre">patch_instructions.ml</span></code>)<a class="headerlink" href="#patch-instructions-patch-instructions-ml" title="Permalink to this heading"></a></h3>
 <p>In a perfect world, we would not need to do this pass.
 However, the x86-64 instruction set is far from elegant,
@@ -676,8 +669,8 @@ like converting an <cite>Imm</cite> constructor in one language
 to the exact same constructor in the other language.
 This is trivial but a bit tedious.
 (It’s the price we pay for having precise types.)</p>
-</div>
-<div class="section" id="prelude-and-conclusion-prelude-conclusion-ml">
+</section>
+<section id="prelude-and-conclusion-prelude-conclusion-ml">
 <h3>7. Prelude and conclusion (<code class="docutils literal notranslate"><span class="pre">prelude_conclusion.ml</span></code>)<a class="headerlink" href="#prelude-and-conclusion-prelude-conclusion-ml" title="Permalink to this heading"></a></h3>
 <p>This is the last pass you need to write.  (Phew!)
 The textbook also includes a partial evaluator pass as an optional
@@ -740,9 +733,9 @@ what the prelude and conclusion look like.
 The code is easy to write,
 although there are a number of trivial “boilerplate” conversions
 because we are changing the datatype.</p>
-</div>
-</div>
-<div class="section" id="running-the-compile-program">
+</section>
+</section>
+<section id="running-the-compile-program">
 <h2>Running the <code class="docutils literal notranslate"><span class="pre">compile</span></code> program<a class="headerlink" href="#running-the-compile-program" title="Permalink to this heading"></a></h2>
 <p>There are three basic ways to run the compiler
 (the <code class="docutils literal notranslate"><span class="pre">./compile</span></code> program):</p>
@@ -813,7 +806,7 @@ even if the previous passes haven’t been written.</p>
 test scripts for all passes.  These can be used for one-pass tests.</p>
 </li>
 </ol>
-<div class="section" id="compiling-and-running-assembly-language-code">
+<section id="compiling-and-running-assembly-language-code">
 <h3>Compiling and running assembly language code<a class="headerlink" href="#compiling-and-running-assembly-language-code" title="Permalink to this heading"></a></h3>
 <p>If you have a computer running a 64-bit Intel or AMD processor
 (which use the x86-64 instruction set), you can compile the
@@ -847,13 +840,13 @@ leading sometimes to peculiar results.</p>
 </div>
 <p>If the program you are compiling has calls to the <code class="docutils literal notranslate"><span class="pre">read</span></code> function,
 you will have to input the integers to be read when the program runs.</p>
-</div>
-</div>
-<div class="section" id="testing-the-compiler">
+</section>
+</section>
+<section id="testing-the-compiler">
 <h2>Testing the compiler<a class="headerlink" href="#testing-the-compiler" title="Permalink to this heading"></a></h2>
 <p>There are currently two ways to test your compiler, one automated, and one
 manual.  Both are valuable.</p>
-<div class="section" id="automated-tests">
+<section id="automated-tests">
 <h3>Automated tests<a class="headerlink" href="#automated-tests" title="Permalink to this heading"></a></h3>
 <p>We are supplying you with a test script (written in Python) called
 <code class="docutils literal notranslate"><span class="pre">run_eval_tests.py</span></code>.  This script can be used to test that a
@@ -937,8 +930,8 @@ Running test file (tests/var_test_10.src) up to pass (ec).
 <p>Note, though, that if there is a bug in the assembly language
 code generation, these tests will not reveal it.
 When we test your code, we will run all the tests.</p>
-</div>
-<div class="section" id="manual-tests">
+</section>
+<section id="manual-tests">
 <h3>Manual tests<a class="headerlink" href="#manual-tests" title="Permalink to this heading"></a></h3>
 <p>The automated tests are very useful for detecting problems,
 but to really debug your compiler you will need to look at the output
@@ -1020,9 +1013,9 @@ Try to test on as many files as you can for a particular pass.
 If you know how to write shell scripts,
 this can be a useful way of making this kind of test semi-automatic
 (just requiring that you look at the files to check for big differences).</p>
-</div>
-</div>
-<div class="section" id="submitting-your-assignment">
+</section>
+</section>
+<section id="submitting-your-assignment">
 <h2>“Submitting” your assignment<a class="headerlink" href="#submitting-your-assignment" title="Permalink to this heading"></a></h2>
 <p>Unlike most courses, there is nothing to “hand in” in this course.
 Instead, you need to inform the instructor (and TAs) when an assignment is
@@ -1040,8 +1033,8 @@ Work redone during this period will be re-evaluated without penalty.
 Any subsequent redos after the first redo will result in reduced credit
 (typically, any additional marks after the first week
 will get at most 50% credit).</p>
-</div>
-<div class="section" id="code-reviews-office-hours-and-feedback">
+</section>
+<section id="code-reviews-office-hours-and-feedback">
 <h2>Code reviews, office hours, and feedback<a class="headerlink" href="#code-reviews-office-hours-and-feedback" title="Permalink to this heading"></a></h2>
 <p>We will be setting up code review times for each team.  Make sure you choose a
 time where both members of the team can meet as well as the instructor
@@ -1079,8 +1072,8 @@ This is a big deal for processors with very few registers
 x86-64 processors have 16 registers.</p>
 </dd>
 </dl>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
