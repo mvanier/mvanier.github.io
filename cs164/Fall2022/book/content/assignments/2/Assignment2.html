@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Assignment 2: Register allocation &mdash; The CS 164 book 0.0.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -17,10 +16,10 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Assignment 3: Conditionals: the Cond language" href="../3/Assignment3.html" />
     <link rel="prev" title="Assignment 1: The Var language" href="../1/Assignment1.html" /> 
 </head>
 
@@ -76,6 +75,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#code-reviews-office-hours-and-feedback">Code reviews, office hours, and feedback</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../3/Assignment3.html">Assignment 3: Conditionals: the <em>Cond</em> language</a></li>
 </ul>
 </li>
 </ul>
@@ -105,26 +105,26 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="assignment-2-register-allocation">
+  <div class="section" id="assignment-2-register-allocation">
 <h1>Assignment 2: Register allocation<a class="headerlink" href="#assignment-2-register-allocation" title="Permalink to this heading"></a></h1>
-<section id="overview">
+<div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
 <p>In this assignment, you will be extending your “Var” language compiler from the
 last assignment to do register allocation in the back end instead of putting
 all variables on the stack.</p>
 <p>In addition, the testing framework from assignment 1 has been enhanced,
 so we’ll describe the new features below.</p>
-</section>
-<section id="textbook-coverage">
+</div>
+<div class="section" id="textbook-coverage">
 <h2>Textbook coverage<a class="headerlink" href="#textbook-coverage" title="Permalink to this heading"></a></h2>
 <p>This assignment is based on chapter 3 of <em>Essentials of Compilation</em>.</p>
-</section>
-<section id="due-date">
+</div>
+<div class="section" id="due-date">
 <h2>Due date<a class="headerlink" href="#due-date" title="Permalink to this heading"></a></h2>
 <p>This assignment is due on Friday, October 28th at 2 AM
 (so, effectively very late Thursday night).</p>
-</section>
-<section id="starting-code-base">
+</div>
+<div class="section" id="starting-code-base">
 <h2>Starting code base<a class="headerlink" href="#starting-code-base" title="Permalink to this heading"></a></h2>
 <p>The starting code base is the zipfile <code class="docutils literal notranslate"><span class="pre">ch3.zip</span></code>, which is posted on the
 course Canvas site.  You should unzip this file in your Github repo,
@@ -158,8 +158,8 @@ previous assignment, for reasons which will be explained below.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">scripts/</span></code> subdirectory contains scripts for testing
 your code.  These will be explained below.</p></li>
 </ul>
-</section>
-<section id="compiling-and-running-the-compiler">
+</div>
+<div class="section" id="compiling-and-running-the-compiler">
 <h2>Compiling and running the compiler<a class="headerlink" href="#compiling-and-running-the-compiler" title="Permalink to this heading"></a></h2>
 <p>To compile the compiler, <code class="docutils literal notranslate"><span class="pre">cd</span></code> into the <code class="docutils literal notranslate"><span class="pre">src/ch3</span></code> directory
 and type <code class="docutils literal notranslate"><span class="pre">make</span></code>.
@@ -279,13 +279,13 @@ in the preludes and conclusions of functions.</p>
 </ul>
 </li>
 </ul>
-</section>
-<section id="testing-your-compiler-the-test-scripts">
+</div>
+<div class="section" id="testing-your-compiler-the-test-scripts">
 <h2>Testing your compiler: the test scripts<a class="headerlink" href="#testing-your-compiler-the-test-scripts" title="Permalink to this heading"></a></h2>
 <p>There are three scripts in the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> subdirectory of <code class="docutils literal notranslate"><span class="pre">ch3</span></code>.
 Two of them are for testing, and the third is for visualizing the output
 (though it’s completely optional). All of these are Python scripts. <a class="footnote-reference brackets" href="#id3" id="id1">1</a></p>
-<section id="run-eval-tests-py">
+<div class="section" id="run-eval-tests-py">
 <h3><code class="docutils literal notranslate"><span class="pre">run_eval_tests.py</span></code><a class="headerlink" href="#run-eval-tests-py" title="Permalink to this heading"></a></h3>
 <p>This was described in the last assignment.
 Note that we have moved this script
@@ -301,8 +301,8 @@ This will only test the input files by compiling them all the way
 to assembly language and then producing an executable program
 and running it.  It’s the converse of the <code class="docutils literal notranslate"><span class="pre">-no-asm</span></code> argument,
 which only runs the intermediate language evaluators.</p>
-</section>
-<section id="compare-py">
+</div>
+<div class="section" id="compare-py">
 <h3><code class="docutils literal notranslate"><span class="pre">compare.py</span></code><a class="headerlink" href="#compare-py" title="Permalink to this heading"></a></h3>
 <p>This is a new test script.
 The idea of this test script is to simplify the process of
@@ -447,8 +447,8 @@ reference/var_test_62.rc : OK
 reference/var_test_67.rc : OK
 </pre></div>
 </div>
-</section>
-<section id="show-asm-py">
+</div>
+<div class="section" id="show-asm-py">
 <h3><code class="docutils literal notranslate"><span class="pre">show_asm.py</span></code><a class="headerlink" href="#show-asm-py" title="Permalink to this heading"></a></h3>
 <p>This is a simple utility script whose purpose is to make assembly language
 instructions in S-expression form easier to read.  Let’s say you generate
@@ -507,9 +507,9 @@ And that’s basically all that this script does.</p>
 <p>You may find that this helps you to “read” the output of compiler passes
 that emit code with assembly instructions.
 If so, great.  If not, just don’t use it.</p>
-</section>
-</section>
-<section id="code-to-write-the-compiler-passes">
+</div>
+</div>
+<div class="section" id="code-to-write-the-compiler-passes">
 <h2>Code to write: the compiler passes<a class="headerlink" href="#code-to-write-the-compiler-passes" title="Permalink to this heading"></a></h2>
 <p>The compiler passes are described in chapter 3 of the textbook,
 but here they are again for completeness.  We will only include
@@ -534,7 +534,7 @@ you are allowed to completely rewrite the entire module,
 as long as you end up with a <code class="docutils literal notranslate"><span class="pre">color</span></code> function
 with the correct type signature which works correctly.</p>
 </div>
-<section id="passes-that-are-unchanged-from-assignment-1">
+<div class="section" id="passes-that-are-unchanged-from-assignment-1">
 <h3>Passes that are unchanged from assignment 1<a class="headerlink" href="#passes-that-are-unchanged-from-assignment-1" title="Permalink to this heading"></a></h3>
 <p>Since the focus of this assignment is on register allocation,
 those passes that come before register allocation
@@ -548,8 +548,8 @@ do not have to be modified from assignment 1
 <p>Note that you are free to edit your old code,
 in case you think you have a better way of doing things
 than what you wrote previously.</p>
-</section>
-<section id="select-instructions-select-instructions-ml">
+</div>
+<div class="section" id="select-instructions-select-instructions-ml">
 <h3>1. Select instructions (<code class="docutils literal notranslate"><span class="pre">select_instructions.ml</span></code>)<a class="headerlink" href="#select-instructions-select-instructions-ml" title="Permalink to this heading"></a></h3>
 <p>The “select instructions” pass has no fundamental changes, but there are some
 trivial changes because the <code class="docutils literal notranslate"><span class="pre">X86Program</span></code> type in <code class="docutils literal notranslate"><span class="pre">x86_var.ml[i]</span></code> has
@@ -559,8 +559,8 @@ block info types.  For this pass, the block info is a placeholder type
 will need to be changed slightly, and the blocks will all contain a <code class="docutils literal notranslate"><span class="pre">Binfo1</span></code>
 constructor. The type checker should point out exactly where your old code
 needs to be changed.</p>
-</section>
-<section id="uncover-live-uncover-live-ml">
+</div>
+<div class="section" id="uncover-live-uncover-live-ml">
 <h3>2. Uncover live (<code class="docutils literal notranslate"><span class="pre">uncover_live.ml</span></code>)<a class="headerlink" href="#uncover-live-uncover-live-ml" title="Permalink to this heading"></a></h3>
 <p>The “uncover live” pass has to implement the function
 <code class="docutils literal notranslate"><span class="pre">uncover_live</span></code> with this signature:</p>
@@ -637,8 +637,8 @@ to determine the change in the liveness set just for <code class="docutils liter
 incorporating all of this information.</p>
 <p>The algorithm for computing liveness sets is described in detail
 in section 3.2 of the textbook and in the lectures.</p>
-</section>
-<section id="build-interference-graph-build-interference-ml">
+</div>
+<div class="section" id="build-interference-graph-build-interference-ml">
 <h3>3. Build interference graph (<code class="docutils literal notranslate"><span class="pre">build_interference.ml</span></code>)<a class="headerlink" href="#build-interference-graph-build-interference-ml" title="Permalink to this heading"></a></h3>
 <p>The “build interference” pass has to implement the function
 <code class="docutils literal notranslate"><span class="pre">build_interference</span></code> with this signature:</p>
@@ -701,8 +701,8 @@ callee-save registers, unless there are none available, in which case
 they will be placed onto the stack.  The register allocation
 algorithms handle all of this automatically!</p>
 </div>
-</section>
-<section id="graph-coloring-graph-coloring-ml">
+</div>
+<div class="section" id="graph-coloring-graph-coloring-ml">
 <h3>4. Graph coloring (<code class="docutils literal notranslate"><span class="pre">graph_coloring.ml</span></code>)<a class="headerlink" href="#graph-coloring-graph-coloring-ml" title="Permalink to this heading"></a></h3>
 <p>This module is not technically a compiler pass, but it’s an integral part of
 the “allocate registers” pass.  However, the algorithm is more general, and the
@@ -769,7 +769,7 @@ use imperative code for efficiency or convenience,
 but it’s definitely not necessary.</p>
 </div>
 <p>The total amount of code you need to write is less than 100 extra lines.</p>
-<section id="testing-the-graph-coloring-algorithm">
+<div class="section" id="testing-the-graph-coloring-algorithm">
 <h4>Testing the graph coloring algorithm<a class="headerlink" href="#testing-the-graph-coloring-algorithm" title="Permalink to this heading"></a></h4>
 <p>There is a very trivial test script for the graph coloring algorithm only
 in the file <code class="docutils literal notranslate"><span class="pre">test_graph_coloring.ml</span></code>.
@@ -786,9 +786,9 @@ differed from the expected results.
 The example given is the same one given in the book and in the lectures.</p>
 <p>Note that in future, we plan to have much more comprehensive tests of this
 algorithm.</p>
-</section>
-</section>
-<section id="allocate-registers-allocate-registers-ml">
+</div>
+</div>
+<div class="section" id="allocate-registers-allocate-registers-ml">
 <h3>5. Allocate registers (<code class="docutils literal notranslate"><span class="pre">allocate_registers.ml</span></code>)<a class="headerlink" href="#allocate-registers-allocate-registers-ml" title="Permalink to this heading"></a></h3>
 <p>Once you’ve implemented the graph coloring algorithm, the “allocate registers”
 pass is simple.  You need to do these things:</p>
@@ -824,14 +824,14 @@ in your implementation of this function.</p></li>
 In particular, code for selecting which registers are available
 (based ultimately on the command-line arguments
 to the <code class="docutils literal notranslate"><span class="pre">compile</span></code> program) is supplied and should not be altered.</p>
-</section>
-<section id="patch-instructions-patch-instructions-ml">
+</div>
+<div class="section" id="patch-instructions-patch-instructions-ml">
 <h3>6. Patch instructions (<code class="docutils literal notranslate"><span class="pre">patch_instructions.ml</span></code>)<a class="headerlink" href="#patch-instructions-patch-instructions-ml" title="Permalink to this heading"></a></h3>
 <p>Aside from trivial type changes, the only significant change in this pass
 is that instructions of the form <code class="docutils literal notranslate"><span class="pre">Movq</span> <span class="pre">(x,</span> <span class="pre">x)</span></code>
 (moving a value from a location to the same location) are removed.</p>
-</section>
-<section id="prelude-and-conclusion-prelude-conclusion-ml">
+</div>
+<div class="section" id="prelude-and-conclusion-prelude-conclusion-ml">
 <h3>7. Prelude and conclusion (<code class="docutils literal notranslate"><span class="pre">prelude_conclusion.ml</span></code>)<a class="headerlink" href="#prelude-and-conclusion-prelude-conclusion-ml" title="Permalink to this heading"></a></h3>
 <p>This pass has a few changes from the corresponding pass in the last assignment.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">info</span></code> record type attached to the <code class="docutils literal notranslate"><span class="pre">program</span></code> type in <code class="docutils literal notranslate"><span class="pre">x86_int.mli</span></code>
@@ -927,28 +927,23 @@ you don’t have to do any pushing and popping.</p></li>
 </ol>
 <p>This sounds much more complicated than it is!
 This pass is really just a little bit of (somewhat annoying) bookkeeping.</p>
-</section>
-</section>
-<section id="submitting-your-assignment">
+</div>
+</div>
+<div class="section" id="submitting-your-assignment">
 <h2>“Submitting” your assignment<a class="headerlink" href="#submitting-your-assignment" title="Permalink to this heading"></a></h2>
 <p>Unlike most courses, there is nothing to “hand in” in this course.
 Instead, you need to inform the instructor (and TAs) when an assignment is
 ready to be graded (hopefully, before or on the due date).
 The instructor will check out your code, run the tests, and leave comments
-in a file called GRADING in your <code class="docutils literal notranslate"><span class="pre">ch2</span></code> directory.  The instructor/TAs
-may also leave comments in your code itself, with this syntax:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(*** GRADER COMMENT: ... ***)</span>
-</pre></div>
-</div>
-<p>These should be removed when you fix whatever the comment complained about.</p>
+in a file called GRADE in your <code class="docutils literal notranslate"><span class="pre">ch3</span></code> directory.</p>
 <p>After the grading comments have been checked in to your repository,
 you have one week to make changes (this is the first redo period).
 Work redone during this period will be re-evaluated without penalty.
 Any subsequent redos after the first redo will result in reduced credit
 (typically, any additional marks after the first week
 will get at most 50% credit).</p>
-</section>
-<section id="code-reviews-office-hours-and-feedback">
+</div>
+<div class="section" id="code-reviews-office-hours-and-feedback">
 <h2>Code reviews, office hours, and feedback<a class="headerlink" href="#code-reviews-office-hours-and-feedback" title="Permalink to this heading"></a></h2>
 <p>We will be setting up code review times for each team.  Make sure you choose a
 time where both members of the team can meet as well as the instructor
@@ -978,14 +973,15 @@ normally just prints the file to the terminal),
 and passes it to the second program as its input.</p>
 </dd>
 </dl>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../1/Assignment1.html" class="btn btn-neutral float-left" title="Assignment 1: The Var language" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../3/Assignment3.html" class="btn btn-neutral float-right" title="Assignment 3: Conditionals: the Cond language" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

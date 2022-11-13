@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Assignments &mdash; The CS 164 book 0.0.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -17,7 +16,6 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -51,6 +49,7 @@
 <li class="toctree-l2"><a class="reference internal" href="0/Mac_notes.html">Notes on MacOS X</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1/Assignment1.html">Assignment 1: The <em>Var</em> language</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2/Assignment2.html">Assignment 2: Register allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3/Assignment3.html">Assignment 3: Conditionals: the <em>Cond</em> language</a></li>
 </ul>
 </li>
 </ul>
@@ -79,7 +78,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="assignments">
+  <div class="section" id="assignments">
 <h1>Assignments<a class="headerlink" href="#assignments" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
@@ -221,9 +220,43 @@
 <li class="toctree-l2"><a class="reference internal" href="2/Assignment2.html#code-reviews-office-hours-and-feedback">Code reviews, office hours, and feedback</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="3/Assignment3.html">Assignment 3: Conditionals: the <em>Cond</em> language</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="3/Assignment3.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3/Assignment3.html#textbook-coverage">Textbook coverage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3/Assignment3.html#due-date">Due date</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3/Assignment3.html#starting-code-base">Starting code base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3/Assignment3.html#compiling-and-running-the-compiler">Compiling and running the compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3/Assignment3.html#testing-your-compiler-the-test-scripts">Testing your compiler: the test scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3/Assignment3.html#new-language-features">New language features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3/Assignment3.html#type-checking">Type checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3/Assignment3.html#code-to-write-the-compiler-passes">Code to write: the compiler passes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="3/Assignment3.html#shrink-shrink-ml">1. Shrink (<code class="docutils literal notranslate"><span class="pre">shrink.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3/Assignment3.html#uniquify-uniquify-ml">2. Uniquify (<code class="docutils literal notranslate"><span class="pre">uniquify.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3/Assignment3.html#remove-complex-operands-remove-complex-ml">3. Remove complex operands (<code class="docutils literal notranslate"><span class="pre">remove_complex.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3/Assignment3.html#explicate-control-explicate-control-ml">4. Explicate control (<code class="docutils literal notranslate"><span class="pre">explicate_control.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3/Assignment3.html#remove-unused-blocks-remove-unused-ml">5. Remove unused blocks (<code class="docutils literal notranslate"><span class="pre">remove_unused.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3/Assignment3.html#select-instructions-select-instructions-ml">6. Select instructions (<code class="docutils literal notranslate"><span class="pre">select_instructions.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3/Assignment3.html#uncover-live-uncover-live-ml">7. Uncover live (<code class="docutils literal notranslate"><span class="pre">uncover_live.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3/Assignment3.html#build-interference-graph-build-interference-ml">8. Build interference graph (<code class="docutils literal notranslate"><span class="pre">build_interference.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3/Assignment3.html#graph-coloring-graph-coloring-ml">9. Graph coloring (<code class="docutils literal notranslate"><span class="pre">graph_coloring.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3/Assignment3.html#allocate-registers-allocate-registers-ml">10. Allocate registers (<code class="docutils literal notranslate"><span class="pre">allocate_registers.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3/Assignment3.html#remove-jumps-remove-jumps-ml">11. Remove jumps (<code class="docutils literal notranslate"><span class="pre">remove_jumps.ml</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3/Assignment3.html#patch-instructions-patch-instructions-ml">12. Patch instructions (<code class="docutils literal notranslate"><span class="pre">patch_instructions.ml</span></code>)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="3/Assignment3.html#setcc"><code class="docutils literal notranslate"><span class="pre">setCC</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="3/Assignment3.html#xorq"><code class="docutils literal notranslate"><span class="pre">xorq</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="3/Assignment3.html#movzbq"><code class="docutils literal notranslate"><span class="pre">movzbq</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="3/Assignment3.html#cmpq"><code class="docutils literal notranslate"><span class="pre">cmpq</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="3/Assignment3.html#prelude-and-conclusion-prelude-conclusion-ml">13. Prelude and conclusion (<code class="docutils literal notranslate"><span class="pre">prelude_conclusion.ml</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="3/Assignment3.html#submitting-your-assignment">“Submitting” your assignment</a></li>
+</ul>
+</li>
 </ul>
 </div>
-</section>
+</div>
 
 
            </div>
