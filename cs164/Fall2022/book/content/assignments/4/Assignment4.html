@@ -257,7 +257,8 @@ function described below, and that function is called from
 <code class="docutils literal notranslate"><span class="pre">explicate_assign</span></code>.  The return value of <code class="docutils literal notranslate"><span class="pre">begin</span></code> is the return value
 of the last expression; all others are evaluated for side effects.
 The return values of <code class="docutils literal notranslate"><span class="pre">while</span></code> and <code class="docutils literal notranslate"><span class="pre">set!</span></code> are <code class="docutils literal notranslate"><span class="pre">Void</span></code>.
-Make sure to evaluate the subexpressions of <code class="docutils literal notranslate"><span class="pre">begin</span></code> in the correct order.</p></li>
+Make sure to accumulate the subexpressions of <code class="docutils literal notranslate"><span class="pre">begin</span></code> in the correct order.
+(Hint: the <code class="docutils literal notranslate"><span class="pre">List.fold_right</span></code> function will be useful.)</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">explicate_pred</span></code> function has to be extended to deal with
 the <code class="docutils literal notranslate"><span class="pre">while</span></code>, <code class="docutils literal notranslate"><span class="pre">begin</span></code>, and <code class="docutils literal notranslate"><span class="pre">set!</span></code> forms.
 Since <code class="docutils literal notranslate"><span class="pre">while</span></code> and <code class="docutils literal notranslate"><span class="pre">set!</span></code> can only return <code class="docutils literal notranslate"><span class="pre">Void</span></code>, not booleans,

@@ -187,7 +187,8 @@ The following changes need to be made to the "expicate control" pass.
   ``explicate_assign``.  The return value of ``begin`` is the return value
   of the last expression; all others are evaluated for side effects.
   The return values of ``while`` and ``set!`` are ``Void``.
-  Make sure to evaluate the subexpressions of ``begin`` in the correct order.
+  Make sure to accumulate the subexpressions of ``begin`` in the correct order.
+  (Hint: the ``List.fold_right`` function will be useful.)
 
 * The ``explicate_pred`` function has to be extended to deal with
   the ``while``, ``begin``, and ``set!`` forms.
