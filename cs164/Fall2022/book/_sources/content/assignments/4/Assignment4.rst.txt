@@ -80,6 +80,7 @@ in brief, they are:
   * ``while`` (looping construct)
   * ``begin`` (sequencing expression)
   * ``set!``  (mutating (re-assigning) variables to new values)
+* a ``print`` function has been added
 
 
 Code to write: the compiler passes
@@ -92,6 +93,7 @@ but here they are again for completeness.
 We will only include passes that you have to implement.
 As before, the only files you should modify are the ``.ml`` files
 corresponding to these compiler passes.
+
 
 A. Passes that are unchanged from the previous assignment
 .........................................................
@@ -133,7 +135,8 @@ The idea is to annotate any variable expression that corresponds
 to a variable which is reassigned by ``set!``.
 Such variables are converted to ``get!`` expressions,
 so ``Var x`` becomes ``GetBang x``.
-This is used in the "remove complex operands" pass.
+This is used in the "remove complex operands" pass,
+as described in lecture 14.
 
 Implementing this pass is quite simple.  You go through the code twice.
 The first time, you collect a set of all the variables that are assigned to
@@ -145,27 +148,59 @@ to a ``get!`` (``GetBang``) form.
 D. Passes with significant modifications from the previous assignment
 .....................................................................
 
-
 1. Remove complex operands (``remove_complex.ml``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To be written
+In this pass, the ``set!``, ``begin``, and ``while`` forms
+are all considered to be complex operands.
+In addition the subexpressions of ``set!``, ``begin``, and ``while``
+are allowed to be complex.
+Also, ``Void`` has to be added as an additional case.
+
+The ``get!`` (``GetBang``) form added in the "uncover get" pass
+is converted back to a regular variable (``Var``) in this pass.
+In ``rco_atom``, the variable is bound to a new fresh variable name
+which becomes the atom returned from the function.
+In ``rco_exp``, the variable is simply the returned expression.
+
+It's legal to pass ``set!`` and ``while`` expressions to the
+``rco_atom`` function, since they return ``Void`` values.
+These would normally not be function arguments,
+but we handle this case for completeness.
+In such cases, ``rco_atom`` returns the ``Void`` atom,
+and binds the expression to the dummy variable ``$_``,
+which will never be accessed.
+
 
 2. Explicate control (``explicate_control.ml``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To be written
 
+
 3. Select instructions (``select_instructions.ml``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To be written
+The following changes need to be made to the "select instructions" pass.
+
+* A ``Void`` expression becomes the integer ``0``.
+
+* A ``Read`` can be a stand-alone statement, as well as an expression.
+  (This is almost completely useless, but it is permitted.)
+
+* The ``Print`` function we added can also be a stand-alone statement.
+  (This makes sense.)  (Note that ``Print`` is our addition;
+  it's not in the textbook.)
+  Its return value (``Void``) can also be assigned to a variable,
+  and it can be a tail expression.
+  Note that ``Print`` takes one argument, which must be placed into
+  the ``%rdi`` register before calling the function.
+
 
 4. Uncover live (``uncover_live.ml``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To be written
-
 
 
 "Submitting" your assignment
@@ -176,5 +211,6 @@ in the ``ch5`` directory.
 
 ----
 
-.. rubric:: Footnotes
+..
+   ..rubric:: Footnotes
 

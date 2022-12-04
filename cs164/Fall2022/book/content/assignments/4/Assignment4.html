@@ -164,6 +164,7 @@ in brief, they are:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">set!</span></code>  (mutating (re-assigning) variables to new values)</p></li>
 </ul>
 </li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">print</span></code> function has been added</p></li>
 </ul>
 </div>
 <div class="section" id="code-to-write-the-compiler-passes">
@@ -212,7 +213,8 @@ The idea is to annotate any variable expression that corresponds
 to a variable which is reassigned by <code class="docutils literal notranslate"><span class="pre">set!</span></code>.
 Such variables are converted to <code class="docutils literal notranslate"><span class="pre">get!</span></code> expressions,
 so <code class="docutils literal notranslate"><span class="pre">Var</span> <span class="pre">x</span></code> becomes <code class="docutils literal notranslate"><span class="pre">GetBang</span> <span class="pre">x</span></code>.
-This is used in the “remove complex operands” pass.</p>
+This is used in the “remove complex operands” pass,
+as described in lecture 14.</p>
 <p>Implementing this pass is quite simple.  You go through the code twice.
 The first time, you collect a set of all the variables that are assigned to
 in a <code class="docutils literal notranslate"><span class="pre">set!</span></code> expression.  The second time,
@@ -224,7 +226,23 @@ to a <code class="docutils literal notranslate"><span class="pre">get!</span></c
 <h3>D. Passes with significant modifications from the previous assignment<a class="headerlink" href="#d-passes-with-significant-modifications-from-the-previous-assignment" title="Permalink to this heading"></a></h3>
 <div class="section" id="remove-complex-operands-remove-complex-ml">
 <h4>1. Remove complex operands (<code class="docutils literal notranslate"><span class="pre">remove_complex.ml</span></code>)<a class="headerlink" href="#remove-complex-operands-remove-complex-ml" title="Permalink to this heading"></a></h4>
-<p>To be written</p>
+<p>In this pass, the <code class="docutils literal notranslate"><span class="pre">set!</span></code>, <code class="docutils literal notranslate"><span class="pre">begin</span></code>, and <code class="docutils literal notranslate"><span class="pre">while</span></code> forms
+are all considered to be complex operands.
+In addition the subexpressions of <code class="docutils literal notranslate"><span class="pre">set!</span></code>, <code class="docutils literal notranslate"><span class="pre">begin</span></code>, and <code class="docutils literal notranslate"><span class="pre">while</span></code>
+are allowed to be complex.
+Also, <code class="docutils literal notranslate"><span class="pre">Void</span></code> has to be added as an additional case.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">get!</span></code> (<code class="docutils literal notranslate"><span class="pre">GetBang</span></code>) form added in the “uncover get” pass
+is converted back to a regular variable (<code class="docutils literal notranslate"><span class="pre">Var</span></code>) in this pass.
+In <code class="docutils literal notranslate"><span class="pre">rco_atom</span></code>, the variable is bound to a new fresh variable name
+which becomes the atom returned from the function.
+In <code class="docutils literal notranslate"><span class="pre">rco_exp</span></code>, the variable is simply the returned expression.</p>
+<p>It’s legal to pass <code class="docutils literal notranslate"><span class="pre">set!</span></code> and <code class="docutils literal notranslate"><span class="pre">while</span></code> expressions to the
+<code class="docutils literal notranslate"><span class="pre">rco_atom</span></code> function, since they return <code class="docutils literal notranslate"><span class="pre">Void</span></code> values.
+These would normally not be function arguments,
+but we handle this case for completeness.
+In such cases, <code class="docutils literal notranslate"><span class="pre">rco_atom</span></code> returns the <code class="docutils literal notranslate"><span class="pre">Void</span></code> atom,
+and binds the expression to the dummy variable <code class="docutils literal notranslate"><span class="pre">$_</span></code>,
+which will never be accessed.</p>
 </div>
 <div class="section" id="explicate-control-explicate-control-ml">
 <h4>2. Explicate control (<code class="docutils literal notranslate"><span class="pre">explicate_control.ml</span></code>)<a class="headerlink" href="#explicate-control-explicate-control-ml" title="Permalink to this heading"></a></h4>
@@ -232,7 +250,19 @@ to a <code class="docutils literal notranslate"><span class="pre">get!</span></c
 </div>
 <div class="section" id="select-instructions-select-instructions-ml">
 <h4>3. Select instructions (<code class="docutils literal notranslate"><span class="pre">select_instructions.ml</span></code>)<a class="headerlink" href="#select-instructions-select-instructions-ml" title="Permalink to this heading"></a></h4>
-<p>To be written</p>
+<p>The following changes need to be made to the “select instructions” pass.</p>
+<ul class="simple">
+<li><p>A <code class="docutils literal notranslate"><span class="pre">Void</span></code> expression becomes the integer <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p>A <code class="docutils literal notranslate"><span class="pre">Read</span></code> can be a stand-alone statement, as well as an expression.
+(This is almost completely useless, but it is permitted.)</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Print</span></code> function we added can also be a stand-alone statement.
+(This makes sense.)  (Note that <code class="docutils literal notranslate"><span class="pre">Print</span></code> is our addition;
+it’s not in the textbook.)
+Its return value (<code class="docutils literal notranslate"><span class="pre">Void</span></code>) can also be assigned to a variable,
+and it can be a tail expression.
+Note that <code class="docutils literal notranslate"><span class="pre">Print</span></code> takes one argument, which must be placed into
+the <code class="docutils literal notranslate"><span class="pre">%rdi</span></code> register before calling the function.</p></li>
+</ul>
 </div>
 <div class="section" id="uncover-live-uncover-live-ml">
 <h4>4. Uncover live (<code class="docutils literal notranslate"><span class="pre">uncover_live.ml</span></code>)<a class="headerlink" href="#uncover-live-uncover-live-ml" title="Permalink to this heading"></a></h4>
@@ -245,7 +275,6 @@ to a <code class="docutils literal notranslate"><span class="pre">get!</span></c
 <p>The assignment will be graded in your Github repository as usual,
 in the <code class="docutils literal notranslate"><span class="pre">ch5</span></code> directory.</p>
 <hr class="docutils" />
-<p class="rubric">Footnotes</p>
 </div>
 </div>
 
