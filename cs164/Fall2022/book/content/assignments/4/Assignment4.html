@@ -285,18 +285,17 @@ should be converted to the equivalent of this code:</p>
     body
     goto loop
   else
-    goto tail
+    tail
 </pre></div>
 </div>
 <p>You will need to generate the loop label (marked as <code class="docutils literal notranslate"><span class="pre">loop</span></code> here).
 Use the <code class="docutils literal notranslate"><span class="pre">fresh</span></code> function as you did in the <code class="docutils literal notranslate"><span class="pre">uniquify</span></code> pass
 with the base <code class="docutils literal notranslate"><span class="pre">loop</span></code> and the separator <code class="docutils literal notranslate"><span class="pre">_</span></code>
 so you get <code class="docutils literal notranslate"><span class="pre">loop_N</span></code> for some number <code class="docutils literal notranslate"><span class="pre">N</span></code>.
-You’ll need to generate a new block from the tail to get a label to jump to;
-use the <code class="docutils literal notranslate"><span class="pre">create_block</span></code> function.
 The loop label will correspond to a tail returned from
 the <code class="docutils literal notranslate"><span class="pre">explicate_pred</span></code> function; together these form a basic block,
-and this has to be added to the <code class="docutils literal notranslate"><span class="pre">basic_blocks</span></code> variable.</p>
+and this has to be added to the <code class="docutils literal notranslate"><span class="pre">basic_blocks</span></code> variable,
+and a <code class="docutils literal notranslate"><span class="pre">Goto</span></code> to this block’s label is returned.</p>
 <p>See section 5.6 in the book for further discussion of this.</p>
 </li>
 </ul>

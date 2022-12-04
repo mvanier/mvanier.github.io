@@ -222,17 +222,16 @@ The following changes need to be made to the "expicate control" pass.
         body
         goto loop
       else
-        goto tail
+        tail
 
   You will need to generate the loop label (marked as ``loop`` here).
   Use the ``fresh`` function as you did in the ``uniquify`` pass
   with the base ``loop`` and the separator ``_``
   so you get ``loop_N`` for some number ``N``.
-  You'll need to generate a new block from the tail to get a label to jump to;
-  use the ``create_block`` function.
   The loop label will correspond to a tail returned from
   the ``explicate_pred`` function; together these form a basic block,
-  and this has to be added to the ``basic_blocks`` variable.
+  and this has to be added to the ``basic_blocks`` variable,
+  and a ``Goto`` to this block's label is returned.
 
   See section 5.6 in the book for further discussion of this.
 
