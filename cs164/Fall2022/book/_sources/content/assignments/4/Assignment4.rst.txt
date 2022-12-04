@@ -175,7 +175,65 @@ which will never be accessed.
 2. Explicate control (``explicate_control.ml``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To be written
+The following changes need to be made to the "expicate control" pass.
+
+* New forms need to be handled in ``convert_atom`` and ``convert_exp``.
+  This should be straightforward.
+
+* The new ``while``, ``begin``, and ``set!`` forms need to be handled
+  in ``explicate_assign``.  Both the ``while`` and ``begin`` forms
+  have side effects; these are handled in the new ``explicate_effect``
+  function described below, and that function is called from
+  ``explicate_assign``.  The return value of ``begin`` is the return value
+  of the last expression; all others are evaluated for side effects.
+  The return values of ``while`` and ``set!`` are ``Void``.
+  Make sure to evaluate the subexpressions of ``begin`` in the correct order.
+
+* The ``explicate_pred`` function has to be extended to deal with
+  the ``while``, ``begin``, and ``set!`` forms.
+  Since ``while`` and ``set!`` can only return ``Void``, not booleans,
+  handling them is easy: it's an error.
+  A ``begin`` can return a boolean, but the subexpressions need to 
+  be handled first, and in the correct order.
+
+* The ``explicate_tail`` function has to be extended to deal with
+  the ``while``, ``begin``, and ``set!`` forms.
+  This will involve calls to ``explicate_assign`` and/or ``explicate_effect``
+  as needed.
+
+* The new function ``explicate_effect`` has been added to deal with forms
+  that have side effects.  Note that any form can be in a side-effecting
+  position (`e.g.` inside a ``begin`` expression), even ones that
+  have no side effects.  These pure expressions are discarded
+  because they have no effect.
+  Effectful primitives (``read`` and ``print``) can be converted using
+  the ``PrimS`` constructor.
+  Converting the rest of the forms should be straightforward,
+  with the exception of the ``while`` form.
+
+  The form ``(while <test> <body>)`` followed by a tail ``tail``
+  should be converted to the equivalent of this code:
+
+  .. code-block:: text
+
+    loop:
+      if test then
+        body
+        goto loop
+      else
+        goto tail
+
+  You will need to generate the loop label (marked as ``loop`` here).
+  Use the ``fresh`` function as you did in the ``uniquify`` pass
+  with the base ``loop`` and the separator ``_``
+  so you get ``loop_N`` for some number ``N``.
+  You'll need to generate a new block from the tail to get a label to jump to;
+  use the ``create_block`` function.
+  The loop label will correspond to a tail returned from
+  the ``explicate_pred`` function; together these form a basic block,
+  and this has to be added to the ``basic_blocks`` variable.
+
+  See section 5.6 in the book for further discussion of this.
 
 
 3. Select instructions (``select_instructions.ml``)

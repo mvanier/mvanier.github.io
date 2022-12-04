@@ -246,7 +246,59 @@ which will never be accessed.</p>
 </div>
 <div class="section" id="explicate-control-explicate-control-ml">
 <h4>2. Explicate control (<code class="docutils literal notranslate"><span class="pre">explicate_control.ml</span></code>)<a class="headerlink" href="#explicate-control-explicate-control-ml" title="Permalink to this heading"></a></h4>
-<p>To be written</p>
+<p>The following changes need to be made to the “expicate control” pass.</p>
+<ul>
+<li><p>New forms need to be handled in <code class="docutils literal notranslate"><span class="pre">convert_atom</span></code> and <code class="docutils literal notranslate"><span class="pre">convert_exp</span></code>.
+This should be straightforward.</p></li>
+<li><p>The new <code class="docutils literal notranslate"><span class="pre">while</span></code>, <code class="docutils literal notranslate"><span class="pre">begin</span></code>, and <code class="docutils literal notranslate"><span class="pre">set!</span></code> forms need to be handled
+in <code class="docutils literal notranslate"><span class="pre">explicate_assign</span></code>.  Both the <code class="docutils literal notranslate"><span class="pre">while</span></code> and <code class="docutils literal notranslate"><span class="pre">begin</span></code> forms
+have side effects; these are handled in the new <code class="docutils literal notranslate"><span class="pre">explicate_effect</span></code>
+function described below, and that function is called from
+<code class="docutils literal notranslate"><span class="pre">explicate_assign</span></code>.  The return value of <code class="docutils literal notranslate"><span class="pre">begin</span></code> is the return value
+of the last expression; all others are evaluated for side effects.
+The return values of <code class="docutils literal notranslate"><span class="pre">while</span></code> and <code class="docutils literal notranslate"><span class="pre">set!</span></code> are <code class="docutils literal notranslate"><span class="pre">Void</span></code>.
+Make sure to evaluate the subexpressions of <code class="docutils literal notranslate"><span class="pre">begin</span></code> in the correct order.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">explicate_pred</span></code> function has to be extended to deal with
+the <code class="docutils literal notranslate"><span class="pre">while</span></code>, <code class="docutils literal notranslate"><span class="pre">begin</span></code>, and <code class="docutils literal notranslate"><span class="pre">set!</span></code> forms.
+Since <code class="docutils literal notranslate"><span class="pre">while</span></code> and <code class="docutils literal notranslate"><span class="pre">set!</span></code> can only return <code class="docutils literal notranslate"><span class="pre">Void</span></code>, not booleans,
+handling them is easy: it’s an error.
+A <code class="docutils literal notranslate"><span class="pre">begin</span></code> can return a boolean, but the subexpressions need to
+be handled first, and in the correct order.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">explicate_tail</span></code> function has to be extended to deal with
+the <code class="docutils literal notranslate"><span class="pre">while</span></code>, <code class="docutils literal notranslate"><span class="pre">begin</span></code>, and <code class="docutils literal notranslate"><span class="pre">set!</span></code> forms.
+This will involve calls to <code class="docutils literal notranslate"><span class="pre">explicate_assign</span></code> and/or <code class="docutils literal notranslate"><span class="pre">explicate_effect</span></code>
+as needed.</p></li>
+<li><p>The new function <code class="docutils literal notranslate"><span class="pre">explicate_effect</span></code> has been added to deal with forms
+that have side effects.  Note that any form can be in a side-effecting
+position (<cite>e.g.</cite> inside a <code class="docutils literal notranslate"><span class="pre">begin</span></code> expression), even ones that
+have no side effects.  These pure expressions are discarded
+because they have no effect.
+Effectful primitives (<code class="docutils literal notranslate"><span class="pre">read</span></code> and <code class="docutils literal notranslate"><span class="pre">print</span></code>) can be converted using
+the <code class="docutils literal notranslate"><span class="pre">PrimS</span></code> constructor.
+Converting the rest of the forms should be straightforward,
+with the exception of the <code class="docutils literal notranslate"><span class="pre">while</span></code> form.</p>
+<p>The form <code class="docutils literal notranslate"><span class="pre">(while</span> <span class="pre">&lt;test&gt;</span> <span class="pre">&lt;body&gt;)</span></code> followed by a tail <code class="docutils literal notranslate"><span class="pre">tail</span></code>
+should be converted to the equivalent of this code:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>loop:
+  if test then
+    body
+    goto loop
+  else
+    goto tail
+</pre></div>
+</div>
+<p>You will need to generate the loop label (marked as <code class="docutils literal notranslate"><span class="pre">loop</span></code> here).
+Use the <code class="docutils literal notranslate"><span class="pre">fresh</span></code> function as you did in the <code class="docutils literal notranslate"><span class="pre">uniquify</span></code> pass
+with the base <code class="docutils literal notranslate"><span class="pre">loop</span></code> and the separator <code class="docutils literal notranslate"><span class="pre">_</span></code>
+so you get <code class="docutils literal notranslate"><span class="pre">loop_N</span></code> for some number <code class="docutils literal notranslate"><span class="pre">N</span></code>.
+You’ll need to generate a new block from the tail to get a label to jump to;
+use the <code class="docutils literal notranslate"><span class="pre">create_block</span></code> function.
+The loop label will correspond to a tail returned from
+the <code class="docutils literal notranslate"><span class="pre">explicate_pred</span></code> function; together these form a basic block,
+and this has to be added to the <code class="docutils literal notranslate"><span class="pre">basic_blocks</span></code> variable.</p>
+<p>See section 5.6 in the book for further discussion of this.</p>
+</li>
+</ul>
 </div>
 <div class="section" id="select-instructions-select-instructions-ml">
 <h4>3. Select instructions (<code class="docutils literal notranslate"><span class="pre">select_instructions.ml</span></code>)<a class="headerlink" href="#select-instructions-select-instructions-ml" title="Permalink to this heading"></a></h4>
