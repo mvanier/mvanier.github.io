@@ -295,7 +295,9 @@ so you get <code class="docutils literal notranslate"><span class="pre">loop_N</
 The loop label will correspond to a tail returned from
 the <code class="docutils literal notranslate"><span class="pre">explicate_pred</span></code> function; together these form a basic block,
 and this has to be added to the <code class="docutils literal notranslate"><span class="pre">basic_blocks</span></code> variable,
-and a <code class="docutils literal notranslate"><span class="pre">Goto</span></code> to this block’s label is returned.</p>
+and a <code class="docutils literal notranslate"><span class="pre">Goto</span></code> to this block’s label is returned.
+(Don’t call <code class="docutils literal notranslate"><span class="pre">create_block</span></code> here, since that function will
+assign its own label.)</p>
 <p>See section 5.6 in the book for further discussion of this.</p>
 </li>
 </ul>
