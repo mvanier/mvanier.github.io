@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assignment 4: Loops: the Loop language &mdash; The CS 164 book 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="prev" title="Assignment 3: Conditionals: the Cond language" href="../3/Assignment3.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> The CS 164 book
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../coding_notes.html">OCaml coding notes and tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../0/Installing_OCaml.html">Installing OCaml</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../0/Assignment0.html">Assignment 0: Getting set up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../0/Mac_notes.html">Notes on MacOS X</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Assignment1.html">Assignment 1: The <em>Var</em> language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Assignment2.html">Assignment 2: Register allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/Assignment3.html">Assignment 3: Conditionals: the <em>Cond</em> language</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Assignment 4: Loops: the <em>Loop</em> language</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#textbook-coverage">Textbook coverage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#due-date">Due date</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#starting-code-base">Starting code base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-and-running-the-compiler">Compiling and running the compiler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-your-compiler-the-test-scripts">Testing your compiler: the test scripts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#new-language-features">New language features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-to-write-the-compiler-passes">Code to write: the compiler passes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#a-passes-that-are-unchanged-from-the-previous-assignment">A. Passes that are unchanged from the previous assignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#b-passes-that-have-minimal-modifications-from-the-previous-assignment">B. Passes that have minimal modifications from the previous assignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c-passes-that-are-new">C. Passes that are new</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#d-passes-with-significant-modifications-from-the-previous-assignment">D. Passes with significant modifications from the previous assignment</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submitting-your-assignment">“Submitting” your assignment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The CS 164 book</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Assignments</a> &raquo;</li>
+      <li>Assignment 4: Loops: the <em>Loop</em> language</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/content/assignments/4/Assignment4.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="assignment-4-loops-the-loop-language">
+<h1>Assignment 4: Loops: the <em>Loop</em> language<a class="headerlink" href="#assignment-4-loops-the-loop-language" title="Permalink to this heading"></a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p>In this assignment, you will be extending the “Cond” language compiler from the
+last assignment to create the “Loop” language.
+This language will add the following features:</p>
+<ul class="simple">
+<li><p>loops (<code class="docutils literal notranslate"><span class="pre">while</span></code> statements)</p></li>
+<li><p>mutable variables (<code class="docutils literal notranslate"><span class="pre">set!</span></code> statements)</p></li>
+<li><p>sequence expressions (<code class="docutils literal notranslate"><span class="pre">begin</span></code> statements)</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">Void</span></code> type and the <code class="docutils literal notranslate"><span class="pre">(void)</span></code> expression</p></li>
+</ul>
+</div>
+<div class="section" id="textbook-coverage">
+<h2>Textbook coverage<a class="headerlink" href="#textbook-coverage" title="Permalink to this heading"></a></h2>
+<p>This assignment is based on chapter 5 of <em>Essentials of Compilation</em>.</p>
+</div>
+<div class="section" id="due-date">
+<h2>Due date<a class="headerlink" href="#due-date" title="Permalink to this heading"></a></h2>
+<p>This assignment is due on Friday, December 9th at 6 PM.</p>
+</div>
+<div class="section" id="starting-code-base">
+<h2>Starting code base<a class="headerlink" href="#starting-code-base" title="Permalink to this heading"></a></h2>
+<p>The starting code base is the zipfile <code class="docutils literal notranslate"><span class="pre">ch5.zip</span></code>, which is posted on the
+course Canvas site.
+You should unzip this file in your Github repo, inside the <code class="docutils literal notranslate"><span class="pre">src/</span></code> directory.
+It contains partial implementations of all the code for the assignment.</p>
+<p>Inside the <code class="docutils literal notranslate"><span class="pre">ch5</span></code> directory will be the usual subdirectories:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">tests/</span></code> subdirectory contains the test programs for the compiler.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">reference/</span></code> subdirectory contains the output
+from the instructor’s version of the compiler.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">scripts/</span></code> subdirectory contains scripts for testing your code.</p></li>
+</ul>
+</div>
+<div class="section" id="compiling-and-running-the-compiler">
+<h2>Compiling and running the compiler<a class="headerlink" href="#compiling-and-running-the-compiler" title="Permalink to this heading"></a></h2>
+<p>To compile the compiler, <code class="docutils literal notranslate"><span class="pre">cd</span></code> into the <code class="docutils literal notranslate"><span class="pre">src/ch5</span></code> directory
+and type <code class="docutils literal notranslate"><span class="pre">make</span></code>.
+This will compile the compiler (which is an executable file called <code class="docutils literal notranslate"><span class="pre">compile</span></code>).
+You should see a number of warnings when you compile the compiler;
+that’s expected.
+(As you fill in the code for the compiler passes,
+these warnings will go away).</p>
+<p>The command-line interface to the <code class="docutils literal notranslate"><span class="pre">compile</span></code> program is identical to that
+of the previous assignment, except that there is one new pass: “uncover get”
+(abbreviated “ug”).</p>
+</div>
+<div class="section" id="testing-your-compiler-the-test-scripts">
+<h2>Testing your compiler: the test scripts<a class="headerlink" href="#testing-your-compiler-the-test-scripts" title="Permalink to this heading"></a></h2>
+<p>The test scripts are essentially unchanged from the last assignment,
+except for those changes that had to be made
+to accommodate the new compiler pass.</p>
+</div>
+<div class="section" id="new-language-features">
+<h2>New language features<a class="headerlink" href="#new-language-features" title="Permalink to this heading"></a></h2>
+<p>The new language features are described in the textbook and the lectures, but
+in brief, they are:</p>
+<ul class="simple">
+<li><p>a <code class="docutils literal notranslate"><span class="pre">Void</span></code> type</p></li>
+<li><p>new expressions:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">while</span></code> (looping construct)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">begin</span></code> (sequencing expression)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set!</span></code>  (mutating (re-assigning) variables to new values)</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="code-to-write-the-compiler-passes">
+<h2>Code to write: the compiler passes<a class="headerlink" href="#code-to-write-the-compiler-passes" title="Permalink to this heading"></a></h2>
+<p>The compiler passes are described in chapter 5 of the textbook
+and in the lectures,
+but here they are again for completeness.
+(You should still read the book and lectures for a more in-depth explanation!)
+We will only include passes that you have to implement.
+As before, the only files you should modify are the <code class="docutils literal notranslate"><span class="pre">.ml</span></code> files
+corresponding to these compiler passes.</p>
+<div class="section" id="a-passes-that-are-unchanged-from-the-previous-assignment">
+<h3>A. Passes that are unchanged from the previous assignment<a class="headerlink" href="#a-passes-that-are-unchanged-from-the-previous-assignment" title="Permalink to this heading"></a></h3>
+<p>These passes are identical except possibly for the names of imported
+modules (<cite>e.g.</cite> <code class="docutils literal notranslate"><span class="pre">Cif</span></code> changing to <code class="docutils literal notranslate"><span class="pre">Cloop</span></code>).</p>
+<ul class="simple">
+<li><p>remove unused blocks</p></li>
+<li><p>build interference graph</p></li>
+<li><p>graph coloring</p></li>
+<li><p>allocate registers</p></li>
+<li><p>remove jumps</p></li>
+<li><p>patch instructions</p></li>
+<li><p>add prelude and conclusion</p></li>
+</ul>
+</div>
+<div class="section" id="b-passes-that-have-minimal-modifications-from-the-previous-assignment">
+<h3>B. Passes that have minimal modifications from the previous assignment<a class="headerlink" href="#b-passes-that-have-minimal-modifications-from-the-previous-assignment" title="Permalink to this heading"></a></h3>
+<p>These passes have to be extended to handle the new forms,
+but the extensions should be straightforward.</p>
+<ul class="simple">
+<li><p>shrink</p></li>
+<li><p>uniquify</p>
+<ul>
+<li><p>Note that <code class="docutils literal notranslate"><span class="pre">set!</span></code> requires the variable being set
+to have already been renamed. Otherwise, signal an error.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="c-passes-that-are-new">
+<h3>C. Passes that are new<a class="headerlink" href="#c-passes-that-are-new" title="Permalink to this heading"></a></h3>
+<div class="section" id="uncover-get-uncover-get-ml">
+<h4>Uncover get (<code class="docutils literal notranslate"><span class="pre">uncover_get.ml</span></code>)<a class="headerlink" href="#uncover-get-uncover-get-ml" title="Permalink to this heading"></a></h4>
+<p>This pass is discussed in lecture 14 and in the textbook.
+The idea is to annotate any variable expression that corresponds
+to a variable which is reassigned by <code class="docutils literal notranslate"><span class="pre">set!</span></code>.
+Such variables are converted to <code class="docutils literal notranslate"><span class="pre">get!</span></code> expressions,
+so <code class="docutils literal notranslate"><span class="pre">Var</span> <span class="pre">x</span></code> becomes <code class="docutils literal notranslate"><span class="pre">GetBang</span> <span class="pre">x</span></code>.
+This is used in the “remove complex operands” pass.</p>
+<p>Implementing this pass is quite simple.  You go through the code twice.
+The first time, you collect a set of all the variables that are assigned to
+in a <code class="docutils literal notranslate"><span class="pre">set!</span></code> expression.  The second time,
+you convert any variable reference to one of these variables
+to a <code class="docutils literal notranslate"><span class="pre">get!</span></code> (<code class="docutils literal notranslate"><span class="pre">GetBang</span></code>) form.</p>
+</div>
+</div>
+<div class="section" id="d-passes-with-significant-modifications-from-the-previous-assignment">
+<h3>D. Passes with significant modifications from the previous assignment<a class="headerlink" href="#d-passes-with-significant-modifications-from-the-previous-assignment" title="Permalink to this heading"></a></h3>
+<div class="section" id="remove-complex-operands-remove-complex-ml">
+<h4>1. Remove complex operands (<code class="docutils literal notranslate"><span class="pre">remove_complex.ml</span></code>)<a class="headerlink" href="#remove-complex-operands-remove-complex-ml" title="Permalink to this heading"></a></h4>
+<p>To be written</p>
+</div>
+<div class="section" id="explicate-control-explicate-control-ml">
+<h4>2. Explicate control (<code class="docutils literal notranslate"><span class="pre">explicate_control.ml</span></code>)<a class="headerlink" href="#explicate-control-explicate-control-ml" title="Permalink to this heading"></a></h4>
+<p>To be written</p>
+</div>
+<div class="section" id="select-instructions-select-instructions-ml">
+<h4>3. Select instructions (<code class="docutils literal notranslate"><span class="pre">select_instructions.ml</span></code>)<a class="headerlink" href="#select-instructions-select-instructions-ml" title="Permalink to this heading"></a></h4>
+<p>To be written</p>
+</div>
+<div class="section" id="uncover-live-uncover-live-ml">
+<h4>4. Uncover live (<code class="docutils literal notranslate"><span class="pre">uncover_live.ml</span></code>)<a class="headerlink" href="#uncover-live-uncover-live-ml" title="Permalink to this heading"></a></h4>
+<p>To be written</p>
+</div>
+</div>
+</div>
+<div class="section" id="submitting-your-assignment">
+<h2>“Submitting” your assignment<a class="headerlink" href="#submitting-your-assignment" title="Permalink to this heading"></a></h2>
+<p>The assignment will be graded in your Github repository as usual,
+in the <code class="docutils literal notranslate"><span class="pre">ch5</span></code> directory.</p>
+<hr class="docutils" />
+<p class="rubric">Footnotes</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../3/Assignment3.html" class="btn btn-neutral float-left" title="Assignment 3: Conditionals: the Cond language" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

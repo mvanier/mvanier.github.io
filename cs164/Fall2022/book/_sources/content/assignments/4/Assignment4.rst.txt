@@ -1,0 +1,180 @@
+Assignment 4: Loops: the *Loop* language
+========================================
+
+Overview
+--------
+
+In this assignment, you will be extending the "Cond" language compiler from the
+last assignment to create the "Loop" language.
+This language will add the following features:
+
+* loops (``while`` statements)
+* mutable variables (``set!`` statements)
+* sequence expressions (``begin`` statements)
+* the ``Void`` type and the ``(void)`` expression
+
+
+Textbook coverage
+-----------------
+
+This assignment is based on chapter 5 of *Essentials of Compilation*.
+
+
+Due date
+--------
+
+This assignment is due on Friday, December 9th at 6 PM.
+
+
+Starting code base
+------------------
+
+The starting code base is the zipfile ``ch5.zip``, which is posted on the
+course Canvas site.
+You should unzip this file in your Github repo, inside the ``src/`` directory.
+It contains partial implementations of all the code for the assignment.
+
+Inside the ``ch5`` directory will be the usual subdirectories:
+
+* The ``tests/`` subdirectory contains the test programs for the compiler.
+
+* The ``reference/`` subdirectory contains the output
+  from the instructor's version of the compiler.
+
+* The ``scripts/`` subdirectory contains scripts for testing your code.
+
+
+Compiling and running the compiler
+----------------------------------
+
+To compile the compiler, ``cd`` into the ``src/ch5`` directory
+and type ``make``.
+This will compile the compiler (which is an executable file called ``compile``).
+You should see a number of warnings when you compile the compiler;
+that's expected.
+(As you fill in the code for the compiler passes,
+these warnings will go away).
+
+The command-line interface to the ``compile`` program is identical to that
+of the previous assignment, except that there is one new pass: "uncover get"
+(abbreviated "ug").
+
+
+Testing your compiler: the test scripts
+---------------------------------------
+
+The test scripts are essentially unchanged from the last assignment,
+except for those changes that had to be made
+to accommodate the new compiler pass.
+
+
+New language features
+---------------------
+
+The new language features are described in the textbook and the lectures, but
+in brief, they are:
+
+* a ``Void`` type
+* new expressions:
+
+  * ``while`` (looping construct)
+  * ``begin`` (sequencing expression)
+  * ``set!``  (mutating (re-assigning) variables to new values)
+
+
+Code to write: the compiler passes
+----------------------------------
+
+The compiler passes are described in chapter 5 of the textbook
+and in the lectures,
+but here they are again for completeness.
+(You should still read the book and lectures for a more in-depth explanation!)
+We will only include passes that you have to implement.
+As before, the only files you should modify are the ``.ml`` files
+corresponding to these compiler passes.
+
+A. Passes that are unchanged from the previous assignment
+.........................................................
+
+These passes are identical except possibly for the names of imported
+modules (`e.g.` ``Cif`` changing to ``Cloop``).
+
+* remove unused blocks
+* build interference graph
+* graph coloring
+* allocate registers
+* remove jumps
+* patch instructions
+* add prelude and conclusion
+
+
+B. Passes that have minimal modifications from the previous assignment
+......................................................................
+
+These passes have to be extended to handle the new forms,
+but the extensions should be straightforward.
+
+* shrink
+
+* uniquify
+
+  * Note that ``set!`` requires the variable being set
+    to have already been renamed. Otherwise, signal an error.
+
+
+C. Passes that are new
+......................
+
+Uncover get (``uncover_get.ml``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This pass is discussed in lecture 14 and in the textbook.
+The idea is to annotate any variable expression that corresponds
+to a variable which is reassigned by ``set!``.
+Such variables are converted to ``get!`` expressions,
+so ``Var x`` becomes ``GetBang x``.
+This is used in the "remove complex operands" pass.
+
+Implementing this pass is quite simple.  You go through the code twice.
+The first time, you collect a set of all the variables that are assigned to
+in a ``set!`` expression.  The second time,
+you convert any variable reference to one of these variables
+to a ``get!`` (``GetBang``) form.
+
+
+D. Passes with significant modifications from the previous assignment
+.....................................................................
+
+
+1. Remove complex operands (``remove_complex.ml``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To be written
+
+2. Explicate control (``explicate_control.ml``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To be written
+
+3. Select instructions (``select_instructions.ml``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To be written
+
+4. Uncover live (``uncover_live.ml``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To be written
+
+
+
+"Submitting" your assignment
+----------------------------
+
+The assignment will be graded in your Github repository as usual,
+in the ``ch5`` directory.
+
+----
+
+.. rubric:: Footnotes
+
