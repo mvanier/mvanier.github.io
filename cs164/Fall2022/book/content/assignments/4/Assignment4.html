@@ -322,7 +322,21 @@ the <code class="docutils literal notranslate"><span class="pre">%rdi</span></co
 </div>
 <div class="section" id="uncover-live-uncover-live-ml">
 <h4>4. Uncover live (<code class="docutils literal notranslate"><span class="pre">uncover_live.ml</span></code>)<a class="headerlink" href="#uncover-live-uncover-live-ml" title="Permalink to this heading"></a></h4>
-<p>To be written</p>
+<p>The only parts of the “uncover live” pass that have changed are:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">order_labels</span></code> function has been replaced
+with the <code class="docutils literal notranslate"><span class="pre">compute_liveness</span></code> function,
+which uses the dataflow analysis described
+in sections 5.2 and 5.8 of the textbook,
+and also in lecture 15.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">uncover_live</span></code> function has been modified to use the
+<code class="docutils literal notranslate"><span class="pre">compute_liveness</span></code> function.  Note that this function
+is supplied to you in its entirety (which is wasn’t in the
+previous assignment’s compiler), because the steps are
+straightforward.</p></li>
+</ul>
+<p>Therefore, your job for this pass is to implement the
+<code class="docutils literal notranslate"><span class="pre">compute_liveness</span></code> function.</p>
 </div>
 </div>
 </div>

@@ -262,7 +262,22 @@ The following changes need to be made to the "select instructions" pass.
 4. Uncover live (``uncover_live.ml``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To be written
+The only parts of the "uncover live" pass that have changed are:
+
+* The ``order_labels`` function has been replaced
+  with the ``compute_liveness`` function,
+  which uses the dataflow analysis described
+  in sections 5.2 and 5.8 of the textbook,
+  and also in lecture 15.
+
+* The ``uncover_live`` function has been modified to use the
+  ``compute_liveness`` function.  Note that this function
+  is supplied to you in its entirety (which is wasn't in the
+  previous assignment's compiler), because the steps are
+  straightforward.
+
+Therefore, your job for this pass is to implement the
+``compute_liveness`` function.
 
 
 "Submitting" your assignment
