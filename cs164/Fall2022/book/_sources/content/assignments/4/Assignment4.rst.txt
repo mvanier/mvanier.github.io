@@ -269,6 +269,11 @@ The only parts of the "uncover live" pass that have changed are:
   which uses the dataflow analysis described
   in sections 5.2 and 5.8 of the textbook,
   and also in lecture 15.
+  This function iteratively computes the live-before sets of all blocks,
+  which is necessary because the control flow graph
+  is no longer a directed acyclic graph
+  in the presence of looping constructs,
+  so we can't use a topological sort as we did in the previous compiler.
 
 * The ``uncover_live`` function has been modified to use the
   ``compute_liveness`` function.  Note that this function
@@ -276,8 +281,17 @@ The only parts of the "uncover live" pass that have changed are:
   previous assignment's compiler), because the steps are
   straightforward.
 
-Therefore, your job for this pass is to implement the
-``compute_liveness`` function.
+Therefore, your job for this pass
+is to implement the ``compute_liveness`` function.
+The algorithm is described in some detail
+in the comment preceding the function.
+This algorithm is not extremely difficult,
+but we recommend that you use the ``_debug`` variable
+and print out various important data structures
+if debugging is enabled.
+For one thing, you should check that the algorithm
+really does converge to a final state.
+
 
 
 "Submitting" your assignment

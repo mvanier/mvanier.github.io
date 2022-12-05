@@ -328,15 +328,28 @@ the <code class="docutils literal notranslate"><span class="pre">%rdi</span></co
 with the <code class="docutils literal notranslate"><span class="pre">compute_liveness</span></code> function,
 which uses the dataflow analysis described
 in sections 5.2 and 5.8 of the textbook,
-and also in lecture 15.</p></li>
+and also in lecture 15.
+This function iteratively computes the live-before sets of all blocks,
+which is necessary because the control flow graph
+is no longer a directed acyclic graph
+in the presence of looping constructs,
+so we can’t use a topological sort as we did in the previous compiler.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">uncover_live</span></code> function has been modified to use the
 <code class="docutils literal notranslate"><span class="pre">compute_liveness</span></code> function.  Note that this function
 is supplied to you in its entirety (which is wasn’t in the
 previous assignment’s compiler), because the steps are
 straightforward.</p></li>
 </ul>
-<p>Therefore, your job for this pass is to implement the
-<code class="docutils literal notranslate"><span class="pre">compute_liveness</span></code> function.</p>
+<p>Therefore, your job for this pass
+is to implement the <code class="docutils literal notranslate"><span class="pre">compute_liveness</span></code> function.
+The algorithm is described in some detail
+in the comment preceding the function.
+This algorithm is not extremely difficult,
+but we recommend that you use the <code class="docutils literal notranslate"><span class="pre">_debug</span></code> variable
+and print out various important data structures
+if debugging is enabled.
+For one thing, you should check that the algorithm
+really does converge to a final state.</p>
 </div>
 </div>
 </div>
