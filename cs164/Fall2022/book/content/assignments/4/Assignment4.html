@@ -189,6 +189,12 @@ modules (<cite>e.g.</cite> <code class="docutils literal notranslate"><span clas
 <li><p>patch instructions</p></li>
 <li><p>add prelude and conclusion</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you used a topological sort to order the blocks in the
+“remove unused blocks” pass, you’ll need to change that here,
+since the blocks don’t have a topological ordering due to loops.</p>
+</div>
 </div>
 <div class="section" id="b-passes-that-have-minimal-modifications-from-the-previous-assignment">
 <h3>B. Passes that have minimal modifications from the previous assignment<a class="headerlink" href="#b-passes-that-have-minimal-modifications-from-the-previous-assignment" title="Permalink to this heading"></a></h3>
@@ -277,7 +283,14 @@ because they have no effect.
 Effectful primitives (<code class="docutils literal notranslate"><span class="pre">read</span></code> and <code class="docutils literal notranslate"><span class="pre">print</span></code>) can be converted using
 the <code class="docutils literal notranslate"><span class="pre">PrimS</span></code> constructor.
 Converting the rest of the forms should be straightforward,
-with the exception of the <code class="docutils literal notranslate"><span class="pre">while</span></code> form.</p>
+with the exception of the <code class="docutils literal notranslate"><span class="pre">if</span></code> and <code class="docutils literal notranslate"><span class="pre">while</span></code> forms.</p>
+<p>The form <code class="docutils literal notranslate"><span class="pre">(if</span> <span class="pre">&lt;test&gt;</span> <span class="pre">&lt;then&gt;</span> <span class="pre">&lt;else&gt;)</span></code>, when evaluated for its effects,
+is going to either evaluate the <code class="docutils literal notranslate"><span class="pre">&lt;then&gt;</span></code> clause or the <code class="docutils literal notranslate"><span class="pre">&lt;else&gt;</span></code>
+clause for its effects.  That means that those clauses will have to
+be processed by <code class="docutils literal notranslate"><span class="pre">explicate_effect</span></code> as well.  When doing this,
+be careful not to duplicate the original tail passed to the
+<code class="docutils literal notranslate"><span class="pre">explicate_effect</span></code> function; to avoid that, make it into a block
+and use a <code class="docutils literal notranslate"><span class="pre">Goto</span></code> to that block.</p>
 <p>The form <code class="docutils literal notranslate"><span class="pre">(while</span> <span class="pre">&lt;test&gt;</span> <span class="pre">&lt;body&gt;)</span></code> followed by a tail <code class="docutils literal notranslate"><span class="pre">tail</span></code>
 should be converted to the equivalent of this code:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>loop:
@@ -319,6 +332,9 @@ and it can be a tail expression.
 Note that <code class="docutils literal notranslate"><span class="pre">Print</span></code> takes one argument, which must be placed into
 the <code class="docutils literal notranslate"><span class="pre">%rdi</span></code> register before calling the function.</p></li>
 </ul>
+<p>Note that just as <code class="docutils literal notranslate"><span class="pre">read</span></code> in the source language becomes <code class="docutils literal notranslate"><span class="pre">read_int</span></code>
+in assembly language, <code class="docutils literal notranslate"><span class="pre">print</span></code> in the source language
+becomes <code class="docutils literal notranslate"><span class="pre">print_int</span></code> in assembly language.</p>
 </div>
 <div class="section" id="uncover-live-uncover-live-ml">
 <h4>4. Uncover live (<code class="docutils literal notranslate"><span class="pre">uncover_live.ml</span></code>)<a class="headerlink" href="#uncover-live-uncover-live-ml" title="Permalink to this heading"></a></h4>
@@ -350,6 +366,17 @@ and print out various important data structures
 if debugging is enabled.
 For one thing, you should check that the algorithm
 really does converge to a final state.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">_debug</span></code> variable (which is a <code class="docutils literal notranslate"><span class="pre">ref</span></code>, but doesn’t really need to be)
+is for your benefit.  If you want to put in debugging code that can be
+switched off, you can write something like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>if !_debug then
+   (* print a debug message *)
+</pre></div>
+</div>
+<p>If the <code class="docutils literal notranslate"><span class="pre">_debug</span></code> variable is set to <code class="docutils literal notranslate"><span class="pre">true</span></code>,
+the debug messages will be printed.
+If it’s set to <code class="docutils literal notranslate"><span class="pre">false</span></code>, they won’t be.
+If you change it, you have to recompile your code for it to take effect.</p>
 </div>
 </div>
 </div>

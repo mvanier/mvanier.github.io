@@ -109,6 +109,12 @@ modules (`e.g.` ``Cif`` changing to ``Cloop``).
 * patch instructions
 * add prelude and conclusion
 
+.. note::
+
+   If you used a topological sort to order the blocks in the
+   "remove unused blocks" pass, you'll need to change that here,
+   since the blocks don't have a topological ordering due to loops.
+
 
 B. Passes that have minimal modifications from the previous assignment
 ......................................................................
@@ -210,7 +216,15 @@ The following changes need to be made to the "expicate control" pass.
   Effectful primitives (``read`` and ``print``) can be converted using
   the ``PrimS`` constructor.
   Converting the rest of the forms should be straightforward,
-  with the exception of the ``while`` form.
+  with the exception of the ``if`` and ``while`` forms.
+
+  The form ``(if <test> <then> <else>)``, when evaluated for its effects,
+  is going to either evaluate the ``<then>`` clause or the ``<else>``
+  clause for its effects.  That means that those clauses will have to
+  be processed by ``explicate_effect`` as well.  When doing this,
+  be careful not to duplicate the original tail passed to the
+  ``explicate_effect`` function; to avoid that, make it into a block
+  and use a ``Goto`` to that block.
 
   The form ``(while <test> <body>)`` followed by a tail ``tail``
   should be converted to the equivalent of this code:
@@ -258,6 +272,10 @@ The following changes need to be made to the "select instructions" pass.
   Note that ``Print`` takes one argument, which must be placed into
   the ``%rdi`` register before calling the function.
 
+Note that just as ``read`` in the source language becomes ``read_int``
+in assembly language, ``print`` in the source language
+becomes ``print_int`` in assembly language.
+
 
 4. Uncover live (``uncover_live.ml``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -291,6 +309,20 @@ and print out various important data structures
 if debugging is enabled.
 For one thing, you should check that the algorithm
 really does converge to a final state.
+
+The ``_debug`` variable (which is a ``ref``, but doesn't really need to be)
+is for your benefit.  If you want to put in debugging code that can be
+switched off, you can write something like this:
+
+.. code-block:: text
+
+   if !_debug then
+      (* print a debug message *)
+
+If the ``_debug`` variable is set to ``true``,
+the debug messages will be printed.
+If it's set to ``false``, they won't be.
+If you change it, you have to recompile your code for it to take effect.
 
 
 "Submitting" your assignment
