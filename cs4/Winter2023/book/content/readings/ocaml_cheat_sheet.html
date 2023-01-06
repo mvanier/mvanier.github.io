@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OCaml syntax cheat sheet &mdash; The CS 4 book 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Readings" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> The CS 4 book
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Motivation.html">Motivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../History.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/index.html">Assignments</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Readings</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">OCaml syntax cheat sheet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#operators">Operators</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#operator-underloading">Operator underloading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operator-overloading">Operator overloading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operators-as-functions">Operators as functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#equality-inequality-operators">Equality/inequality operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#word-operators">Word operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unusual-operators">Unusual operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#defining-new-operators">Defining new operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#printf-and-format-strings"><code class="docutils literal notranslate"><span class="pre">printf</span></code> and format strings</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lists">Lists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#arrays">Arrays</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tuples">Tuples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#type-notation">Type notation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implicit-parentheses">Implicit parentheses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#commas-vs-semicolons">Commas <em>vs.</em> semicolons</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#strings">Strings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conditionals">Conditionals</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#if-expressions"><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#if-without-else"><code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#else-if"><code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#syntax-and-currying">Syntax and currying</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#anonymous-functions">Anonymous functions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#match-expressions"><code class="docutils literal notranslate"><span class="pre">match</span></code> expressions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#optional-before-first-match">Optional <code class="docutils literal notranslate"><span class="pre">|</span></code> before first match</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nested-match-expressions">Nested match expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-expressions"><code class="docutils literal notranslate"><span class="pre">function</span></code> expressions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#let-expressions"><code class="docutils literal notranslate"><span class="pre">let</span></code> expressions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#explicit-recursion">Explicit recursion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#imperative-programming">Imperative programming</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sequence-expressions">Sequence expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#weakly-polymorphic-types">Weakly polymorphic types</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">The CS 4 book</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Readings</a> &raquo;</li>
+      <li>OCaml syntax cheat sheet</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="ocaml-syntax-cheat-sheet">
+<h1>OCaml syntax cheat sheet<a class="headerlink" href="#ocaml-syntax-cheat-sheet" title="Permalink to this heading"></a></h1>
+<p>OCaml is a great language, but its syntax is not its best feature.
+More importantly, the syntax is quite different from any other language
+you’ve probably learned already,
+so getting comfortable with it will take some time.</p>
+<p>In this document we describe aspects of OCaml syntax that are most likely to be
+confusing and/or counterintuitive, as well as some other features which may
+trip you up. This document is <strong>not</strong> a complete description of OCaml syntax.
+For that, consult the lectures and/or the online documentation. We also refer
+you to the official OCaml cheat sheet which is <a class="reference external" href="http://alhassy.com/OCamlCheatSheet/CheatSheet.pdf">here</a>.</p>
+<div class="section" id="operators">
+<h2>Operators<a class="headerlink" href="#operators" title="Permalink to this heading"></a></h2>
+<div class="section" id="operator-underloading">
+<h3>Operator underloading<a class="headerlink" href="#operator-underloading" title="Permalink to this heading"></a></h3>
+<p>OCaml doesn’t overload most of its operators. Notably, arithmetic
+operators like <code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code> and <code class="docutils literal notranslate"><span class="pre">/</span></code> are not overloaded.
+Instead, they are considered to be exclusively integer operators. The
+corresponding operators on floating-point numbers have an extra dot
+(<code class="docutils literal notranslate"><span class="pre">.</span></code>) at the end <em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">+.</span></code>, <code class="docutils literal notranslate"><span class="pre">-.</span></code>, <code class="docutils literal notranslate"><span class="pre">*.</span></code> and <code class="docutils literal notranslate"><span class="pre">/.</span></code>.
+Confusingly, the floating-point power operator (<code class="docutils literal notranslate"><span class="pre">**</span></code>) doesn’t have a
+dot at the end.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let sumsq x y = x *. x +. y *. y;;
+val sumsq : float -&gt; float -&gt; float = &lt;fun&gt;
+</pre></div>
+</div>
+<p>This is by far the most annoying aspect of OCaml’s syntax. The reason
+for it is so that every operator has a very specific type, which makes
+type inference much simpler.</p>
+</div>
+<div class="section" id="operator-overloading">
+<h3>Operator overloading<a class="headerlink" href="#operator-overloading" title="Permalink to this heading"></a></h3>
+<p>On the other hand, OCaml <em>does</em> overload some operators. The
+comparison/equality operators (<code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>) are
+all <em>polymorphic</em>, which means they work on arbitrary OCaml datatypes.
+(This is also true of the <code class="docutils literal notranslate"><span class="pre">max</span></code> and <code class="docutils literal notranslate"><span class="pre">min</span></code> functions.) One exception:
+you are not allowed to compare functional values, though you can check
+identity:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># abs;;
+- : int -&gt; int = &lt;fun&gt;
+# abs == abs;;
+- : bool = true
+# abs = abs;;
+Exception: Invalid_argument &quot;compare: functional value&quot;.
+# max abs abs;;
+Exception: Invalid_argument &quot;compare: functional value&quot;.
+</pre></div>
+</div>
+<p>We’ll discuss equality comparisons and identity comparisons below.</p>
+</div>
+<div class="section" id="operators-as-functions">
+<h3>Operators as functions<a class="headerlink" href="#operators-as-functions" title="Permalink to this heading"></a></h3>
+<p>This is a good feature, but it can be confusing as well. Operators can
+be converted into two-argument functions by wrapping parentheses around
+them. For instance, the operator <code class="docutils literal notranslate"><span class="pre">+</span></code> can be made into the two-argument
+function <code class="docutils literal notranslate"><span class="pre">(+)</span></code>.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (+);;
+- : int -&gt; int -&gt; int = &lt;fun&gt;
+# 2 + 3;;
+- : int = 5
+# (+) 2 3;;
+- : int = 5
+</pre></div>
+</div>
+<p>The only time this causes problems is with the multiplication operators
+(<code class="docutils literal notranslate"><span class="pre">*</span></code>) and (<code class="docutils literal notranslate"><span class="pre">*.</span></code>), because if the left parenthesis is next to the
+asterisk OCaml thinks it’s the start of a comment:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (*);;
+Line 1, characters 0-3:
+1 | (*);;
+    ^^^
+Warning 1: this `(*&#39; is the start of a comment.
+Hint: Did you forget spaces when writing the infix operator `( * )&#39;?
+* *);;
+# ( * ) ;;
+- : int -&gt; int -&gt; int = &lt;fun&gt;
+# ( *);;
+Line 1, characters 2-4:
+1 | ( *);;
+      ^^
+Warning 2: this is not the end of a comment.
+- : int -&gt; int -&gt; int = &lt;fun&gt;
+</pre></div>
+</div>
+<p>(Notice that after the first error the prompt changed to <code class="docutils literal notranslate"><span class="pre">*</span></code> (which
+means that OCaml thinks we’re still inside a comment) and we had to
+manually insert a <code class="docutils literal notranslate"><span class="pre">*)</span></code> to close the comment.)</p>
+<p>Fortunately, here OCaml is smart enough to catch this problem and issue
+a warning. However, this doesn’t always happen (see below).</p>
+</div>
+<div class="section" id="equality-inequality-operators">
+<h3>Equality/inequality operators<a class="headerlink" href="#equality-inequality-operators" title="Permalink to this heading"></a></h3>
+<p>OCaml has two different equality operators and two different inequality
+operators:</p>
+<ul class="simple">
+<li><p>equality: <code class="docutils literal notranslate"><span class="pre">=</span></code> and <code class="docutils literal notranslate"><span class="pre">==</span></code></p></li>
+<li><p>inequality: <code class="docutils literal notranslate"><span class="pre">&lt;&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">!=</span></code></p></li>
+</ul>
+<p>Almost always, you want to use the <code class="docutils literal notranslate"><span class="pre">=</span></code> operator for equality testing
+and the <code class="docutils literal notranslate"><span class="pre">&lt;&gt;</span></code> operator for inequality testing. They test for structural
+equality <em>i.e.</em> whether one operand is equivalent to the other (or “has
+the same contents”). The <code class="docutils literal notranslate"><span class="pre">==</span></code> and <code class="docutils literal notranslate"><span class="pre">!=</span></code> operators check for identity
+<em>i.e.</em> whether two things are the exact same thing in memory. Even
+though this may sometimes work, it can lead to very difficult-to-find
+bugs. (It’s unfortunate that the operators you shouldn’t use in OCaml
+are the ones you should use in most other languages.)</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># &quot;foo&quot; = &quot;bar&quot;;;
+- : bool = false
+# &quot;foo&quot; = &quot;foo&quot;;;
+- : bool = true
+# &quot;foo&quot; == &quot;foo&quot;;;
+- : bool = false
+# &quot;foo&quot; &lt;&gt; &quot;bar&quot;;;
+- : bool = true
+# &quot;foo&quot; != &quot;bar&quot;;;
+- : bool = true
+# &quot;foo&quot; &lt;&gt; &quot;foo&quot;;;
+- : bool = false
+# &quot;foo&quot; != &quot;foo&quot;;;
+- : bool = true
+</pre></div>
+</div>
+<p>Here, the two <code class="docutils literal notranslate"><span class="pre">&quot;foo&quot;</span></code>s are different objects in memory.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let x = &quot;foo&quot;;;
+val x : string = &quot;foo&quot;
+# x = x;;
+- : bool = true
+# x == x;;
+- : bool = true
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">x</span></code> is equal to itself and is also the same object in memory as
+itself.</p>
+</div>
+<div class="section" id="word-operators">
+<span id="id1"></span><h3>Word operators<a class="headerlink" href="#word-operators" title="Permalink to this heading"></a></h3>
+<p>OCaml has a number of infix operators which are words. Here they are:</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 71%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Operator</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mod</span></code></p></td>
+<td><p>integer remainder (modulus)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">asr</span></code></p></td>
+<td><p>arithmetic shift right</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lsr</span></code></p></td>
+<td><p>logical shift right</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lsl</span></code></p></td>
+<td><p>logical shift left</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">land</span></code></p></td>
+<td><p>logical (bitwise) AND</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lor</span></code></p></td>
+<td><p>logical (bitwise) OR</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lxor</span></code></p></td>
+<td><p>logical (bitwise) XOR</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lnot</span></code></p></td>
+<td><p>logical (bitwise) NOT</p></td>
+</tr>
+</tbody>
+</table>
+<p>You probably won’t need any of these except the <code class="docutils literal notranslate"><span class="pre">mod</span></code> operator, which
+is handy:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># 5 mod 2;;
+- : int = 1
+</pre></div>
+</div>
+</div>
+<div class="section" id="unusual-operators">
+<h3>Unusual operators<a class="headerlink" href="#unusual-operators" title="Permalink to this heading"></a></h3>
+<p>The built-in OCaml operators are described in the documentation
+for the <code class="docutils literal notranslate"><span class="pre">Stdlib</span></code> library, which is
+<a class="reference external" href="https://v2.ocaml.org/api/Stdlib.html">here</a>.</p>
+<p>Note especially the following:</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 71%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Operator</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">^</span></code></p></td>
+<td><p>string concatenation</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">^^</span></code></p></td>
+<td><p>format string concatenation</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&#64;</span></code></p></td>
+<td><p>list concatenation</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">~-</span></code></p></td>
+<td><p>unary negation</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">~-.</span></code></p></td>
+<td><p>unary float negation</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code></p></td>
+<td><p>function application (<code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">&#64;&#64;</span> <span class="pre">x</span></code> is the same as <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">x</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">|&gt;</span></code></p></td>
+<td><p>reverse function application (<code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">|&gt;</span> <span class="pre">f</span></code> is the same as <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">x</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">!</span></code></p></td>
+<td><p>dereference a <code class="docutils literal notranslate"><span class="pre">ref</span></code> cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">:=</span></code></p></td>
+<td><p>assignment into a <code class="docutils literal notranslate"><span class="pre">ref</span></code> cell</p></td>
+</tr>
+</tbody>
+</table>
+<p>Note that unary negation can also be indicated by a <code class="docutils literal notranslate"><span class="pre">-</span></code> or <code class="docutils literal notranslate"><span class="pre">-.</span></code>
+operator without a left-hand operand, if there is no ambiguity. The
+<code class="docutils literal notranslate"><span class="pre">~-</span></code> and <code class="docutils literal notranslate"><span class="pre">~-.</span></code> operators are strictly unary operators and can work
+in contexts where conventional unary negation doesn’t:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># -1;;
+- : int = -1
+# abs (-1);;
+- : int = 1
+# abs -1;;
+Line 1, characters 0-3:
+1 | abs -1;;
+    ^^^
+Error: This expression has type int -&gt; int
+       but an expression was expected of type int
+</pre></div>
+</div>
+<p>OCaml is telling you you can’t subtract 1 from the <code class="docutils literal notranslate"><span class="pre">abs</span></code> function.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># ~-1;;
+- : int = -1
+# abs ~-1;;
+- : int = 1
+</pre></div>
+</div>
+<p>This works. Here’s another example where these operators are handy:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># List.map (~-) [1;2;3;4;5];;
+- : int list = [-1; -2; -3; -4; -5]
+</pre></div>
+</div>
+<p>Nevertheless, most people don’t bother with the unary negation operators
+and just add extra parentheses if needed.</p>
+<p>The function application operators are interesting. The reverse function
+application operator <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> is nearly always used to chain together a
+series of computations, each taking the result of the previous one:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># open List;;
+# map (fun x -&gt; x * 2) [1;2;3;4;5];;
+- : int list = [2; 4; 6; 8; 10]
+# filter (fun x -&gt; x &gt; 5) (map (fun x -&gt; x * 2) [1;2;3;4;5]);;
+- : int list = [6; 8; 10]
+# List.fold_left max 0 (filter (fun x -&gt; x &gt; 5) (map (fun x -&gt; x * 2) [1;2;3;4;5]));;
+- : int = 10
+# [1;2;3;4;5]
+  |&gt; map (fun x -&gt; x * 2)
+  |&gt; filter (fun x -&gt; x &gt; 5)
+  |&gt; List.fold_left max 0;;
+- : int = 10
+</pre></div>
+</div>
+<p>I’d argue that the last expression is more readable than the second-last one.
+You read it as “take the list from 1 to 5,
+double all the numbers,
+keep only the numbers that are greater than 5,
+and find the maximum”.
+(You don’t have to line up the <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> operators, but it looks good that way.)</p>
+<p>The function call after a <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> gets one less argument than usual,
+which is supplied by the result of evaluating the expression before the
+<code class="docutils literal notranslate"><span class="pre">|&gt;</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> operator might seem useless since <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">&#64;&#64;</span> <span class="pre">x</span></code> is the same as
+<code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">x</span></code>. However, its precedence is extremely low, so the expression to
+the right of the <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> will be evaluated before calling the function.
+This can allow us to drop some parentheses:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># abs (-2 + 1);;
+- : int = 1
+# abs @@ (-2 + 1);;
+- : int = 1
+# abs @@ -2 + 1;;
+- : int = 1
+</pre></div>
+</div>
+<p>Note that the expression <code class="docutils literal notranslate"><span class="pre">-2</span> <span class="pre">+</span> <span class="pre">1</span></code> is evaluated in the last case before
+calling the <code class="docutils literal notranslate"><span class="pre">abs</span></code> function. This can be useful if you have a lot of
+functions acting on the result of other functions. (Note that this is
+just like the <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> operator except that the function calls are
+arranged right-to-left instead of left-to-right.) Another example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># List.rev (List.sort compare [4;2;5;2;7;5;4;1;3;9;0]);;
+- : int list = [9; 7; 5; 5; 4; 4; 3; 2; 2; 1; 0]
+# List.rev @@ List.sort compare [4;2;5;2;7;5;4;1;3;9;0];;
+- : int list = [9; 7; 5; 5; 4; 4; 3; 2; 2; 1; 0]
+</pre></div>
+</div>
+<p>One of the least-used operators is the <code class="docutils literal notranslate"><span class="pre">^^</span></code> operator, which
+concatenates strings used as format strings. We will talk about this
+below.</p>
+<p>Note that some libraries define their own operators (see below). For
+instance, the <code class="docutils literal notranslate"><span class="pre">Num</span></code> library defines operators on rational numbers:
+<code class="docutils literal notranslate"><span class="pre">+/</span></code>, <code class="docutils literal notranslate"><span class="pre">-/</span></code>, <code class="docutils literal notranslate"><span class="pre">*/</span></code>, and <code class="docutils literal notranslate"><span class="pre">//</span></code>. (These also work with
+arbitrary-precision integers, since the <code class="docutils literal notranslate"><span class="pre">Num</span></code> data type contains both
+these and arbitrary-precision rationals.)</p>
+</div>
+<div class="section" id="defining-new-operators">
+<h3>Defining new operators<a class="headerlink" href="#defining-new-operators" title="Permalink to this heading"></a></h3>
+<p>Unusually for programming languages, OCaml allows you to define your own
+operators. All user-defined operators must be made from “operator
+characters” and get their operator precedence and associativity from the
+first character of the operator (if it is itself an operator).</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let (++) x y = x * y;;
+val ( ++ ) : int -&gt; int -&gt; int = &lt;fun&gt;
+# 2 ++ 3;;
+- : int = 6
+# 1 + 2 ++ 3;;
+- : int = 9
+</pre></div>
+</div>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">++</span></code> operator has the same precedence as the <code class="docutils literal notranslate"><span class="pre">+</span></code>
+operator, so the expression <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">+</span> <span class="pre">2</span> <span class="pre">++</span> <span class="pre">3</span></code> is evaluated from left to
+right. Let’s try this with a new operator that starts with the <code class="docutils literal notranslate"><span class="pre">*</span></code>
+character instead:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let (*+) x y = x * y;;
+* *);;
+Line 2, characters 2-4:
+2 | *);;
+      ^^
+Error: Syntax error
+</pre></div>
+</div>
+<p>Oops! We forgot that the <code class="docutils literal notranslate"><span class="pre">(*</span></code> characters will be interpreted as the
+start of a comment. Notice that we didn’t even get an error message; the
+prompt just turned to a <code class="docutils literal notranslate"><span class="pre">*</span></code> (indicating that OCaml thought we were
+still in a comment). When we added the <code class="docutils literal notranslate"><span class="pre">*)</span></code> to terminate the comment,
+we got an unhelpful error message.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let ( *+ ) x y = x * y;;
+val ( *+ ) : int -&gt; int -&gt; int = &lt;fun&gt;
+# 2 *+ 3;;
+- : int = 6
+# 1 + 2 *+ 3;;
+- : int = 7
+</pre></div>
+</div>
+<p>Now we see that the <code class="docutils literal notranslate"><span class="pre">*+</span></code> operator has the same precedence as the <code class="docutils literal notranslate"><span class="pre">*</span></code>
+operator.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>When defining new operators, it’s always a good idea to put a blank
+space after the <code class="docutils literal notranslate"><span class="pre">(</span></code> and before the <code class="docutils literal notranslate"><span class="pre">)</span></code> characters that surround
+the operator.</p>
+</div>
+<p>You can even define unary prefix operators, as long as they start with
+the <code class="docutils literal notranslate"><span class="pre">!</span></code> character:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let ( !++ ) x = x := !x + 1;;
+val ( !++ ) : int ref -&gt; unit = &lt;fun&gt;
+# let r = ref 0;;
+val r : int ref = {contents = 0}
+# !++ r;;
+- : unit = ()
+# !r;;
+- : int = 1
+</pre></div>
+</div>
+<p>We will have more to say about <code class="docutils literal notranslate"><span class="pre">ref</span></code> types below.</p>
+</div>
+<div class="section" id="printf-and-format-strings">
+<h3><code class="docutils literal notranslate"><span class="pre">printf</span></code> and format strings<a class="headerlink" href="#printf-and-format-strings" title="Permalink to this heading"></a></h3>
+<p>OCaml has a <code class="docutils literal notranslate"><span class="pre">printf</span></code> function (technically, <code class="docutils literal notranslate"><span class="pre">Printf.printf</span></code>) which
+has a number of pecularities. Check this out:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Printf.printf;;
+- : (&#39;a, out_channel, unit) format -&gt; &#39;a = &lt;fun&gt;
+# Printf.printf &quot;%d\n&quot;;;
+- : int -&gt; unit = &lt;fun&gt;
+# &quot;%d\n&quot;;;
+- : string = &quot;%d\n&quot;
+</pre></div>
+</div>
+<p>So even though <code class="docutils literal notranslate"><span class="pre">&quot;%d\n&quot;</span></code> appears to be just a string, somehow it can
+also be the first argument of <code class="docutils literal notranslate"><span class="pre">Printf.printf</span></code>, where it is somehow
+compatible with the type <code class="docutils literal notranslate"><span class="pre">('a,</span> <span class="pre">out_channel,</span> <span class="pre">unit)</span> <span class="pre">format</span></code>. What is
+actually happening is that OCaml is turning a <em>literal</em> string into a
+something that does <em>not</em> have the <code class="docutils literal notranslate"><span class="pre">string</span></code> type, but is instead
+something called a <em>format string</em>. You can actually convert strings to
+format strings manually, but do not expect to understand the process:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># format_of_string;;
+- : (&#39;a, &#39;b, &#39;c, &#39;d, &#39;e, &#39;f) format6 -&gt; (&#39;a, &#39;b, &#39;c, &#39;d, &#39;e, &#39;f) format6 =
+&lt;fun&gt;
+# let fs = format_of_string &quot;%d\n&quot;;;
+val fs :
+  (int -&gt; &#39;_weak5, &#39;_weak6, &#39;_weak7, &#39;_weak8, &#39;_weak8, &#39;_weak5) format6 =
+  CamlinternalFormatBasics.Format
+   (CamlinternalFormatBasics.Int (CamlinternalFormatBasics.Int_d,
+     CamlinternalFormatBasics.No_padding,
+     CamlinternalFormatBasics.No_precision,
+     CamlinternalFormatBasics.Char_literal (&#39;\n&#39;,
+      CamlinternalFormatBasics.End_of_format)),
+   &quot;%d\n&quot;)
+# Printf.printf fs;;
+- : int -&gt; unit = &lt;fun&gt;
+# Printf.printf fs 10;;
+10
+- : unit = ()
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Another peculiarity is that <code class="docutils literal notranslate"><span class="pre">format_of_string</span></code> only works when the
+string argument is a literal string; its first argument is not
+actually a string. Don’t worry about any of this!</p>
+</div>
+<p>Regardless of the weird types that format strings have, when you give a
+(literal) format string as the first argument of <code class="docutils literal notranslate"><span class="pre">Printf.printf</span></code>, the
+result will have the correct type (here, <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">-&gt;</span> <span class="pre">unit</span></code> because it
+takes an <code class="docutils literal notranslate"><span class="pre">int</span></code> and returns a value of type <code class="docutils literal notranslate"><span class="pre">unit</span></code>).</p>
+<p>Since format strings aren’t strings, this doesn’t work:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let fs = &quot;%d\n&quot;;;
+val fs : string = &quot;%d\n&quot;
+# Printf.printf fs 10;;
+Line 1, characters 14-16:
+1 | Printf.printf fs 10;;
+                  ^^
+Error: This expression has type string but an expression was expected of type
+         (&#39;a -&gt; &#39;b, out_channel, unit) format =
+           (&#39;a -&gt; &#39;b, out_channel, unit, unit, unit, unit)
+           CamlinternalFormatBasics.format6
+</pre></div>
+</div>
+<p>One issue with format strings is that sometimes you would like to be
+able to divide them over multiple lines. However, you can’t just
+concatenate them as if they were strings:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Printf.printf (&quot;int: %d\t&quot; ^ &quot;string: %s\n&quot;) 10 &quot;foo&quot;;;
+Line 1, characters 14-44:
+1 | Printf.printf (&quot;int: %d\t&quot; ^ &quot;string: %s\n&quot;) 10 &quot;foo&quot;;;
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Error: This expression has type string but an expression was expected of type
+         (&#39;a -&gt; &#39;b -&gt; &#39;c, out_channel, unit) format =
+           (&#39;a -&gt; &#39;b -&gt; &#39;c, out_channel, unit, unit, unit, unit)
+           CamlinternalFormatBasics.format6
+</pre></div>
+</div>
+<p>Instead, you have to use the special <em>format string concatenation
+operator</em> <code class="docutils literal notranslate"><span class="pre">(^^)</span></code> to do the job:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Printf.printf (&quot;int: %d\t&quot; ^^ &quot;string: %s\n&quot;) 10 &quot;foo&quot;;;
+int: 10 string: foo
+- : unit = ()
+# (^^) ;;
+- : (&#39;a, &#39;b, &#39;c, &#39;d, &#39;e, &#39;f) format6 -&gt;
+    (&#39;f, &#39;b, &#39;c, &#39;e, &#39;g, &#39;h) format6 -&gt; (&#39;a, &#39;b, &#39;c, &#39;d, &#39;g, &#39;h) format6
+= &lt;fun&gt;
+# &quot;int: %d\t&quot; ^^ &quot;string: %s\n&quot;;;
+- : (int -&gt; string -&gt; &#39;_weak9, &#39;_weak10, &#39;_weak11, &#39;_weak12, &#39;_weak12,
+     &#39;_weak9)
+    format6
+=
+CamlinternalFormatBasics.Format
+ (CamlinternalFormatBasics.String_literal (&quot;int: &quot;,
+   CamlinternalFormatBasics.Int (CamlinternalFormatBasics.Int_d,
+    CamlinternalFormatBasics.No_padding,
+    CamlinternalFormatBasics.No_precision,
+    CamlinternalFormatBasics.Char_literal (&#39;\t&#39;,
+     CamlinternalFormatBasics.String_literal (&quot;string: &quot;,
+      CamlinternalFormatBasics.String (CamlinternalFormatBasics.No_padding,
+       CamlinternalFormatBasics.Char_literal (&#39;\n&#39;,
+        CamlinternalFormatBasics.End_of_format)))))),
+ &quot;int: %d\t%,string: %s\n&quot;)
+</pre></div>
+</div>
+<p>You probably won’t need this operator much, if at all.</p>
+</div>
+</div>
+<div class="section" id="lists">
+<h2>Lists<a class="headerlink" href="#lists" title="Permalink to this heading"></a></h2>
+<p>There are three important things you need to remember about lists in
+OCaml:</p>
+<ol class="arabic simple">
+<li><p>All the elements of a list must be of the same type.</p></li>
+<li><p>You can’t change the elements of a list.</p></li>
+<li><p>Elements are separated with semicolons (<code class="docutils literal notranslate"><span class="pre">;</span></code>), not commas.</p></li>
+</ol>
+<p>A very common pitfall is to use commas instead of semicolons, which not
+only doesn’t do what you expect but sometimes seems to work only to fail
+later while giving hilariously obscure type errors. We will see why in
+the section on tuples below. Remember: OCaml’s syntax is different from
+Python’s!</p>
+<p>There is a <a class="reference external" href="https://v2.ocaml.org/api/List.html">List</a>
+module with many useful functions on lists.</p>
+</div>
+<div class="section" id="arrays">
+<h2>Arrays<a class="headerlink" href="#arrays" title="Permalink to this heading"></a></h2>
+<p>Syntactically, arrays are exactly like lists except that they use
+different delimiters. Instead of <code class="docutils literal notranslate"><span class="pre">[</span></code> and <code class="docutils literal notranslate"><span class="pre">]</span></code> arrays use <code class="docutils literal notranslate"><span class="pre">[|</span></code> and
+<code class="docutils literal notranslate"><span class="pre">|]</span></code>. Here is a literal array:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let my_array = [| 1; 2; 3; 4; 5 |];;
+val my_array : int array = [|1; 2; 3; 4; 5|]
+</pre></div>
+</div>
+<p>Notice that the array has type <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">array</span></code>; the type of the elements
+is part of the type of the array.</p>
+<p>Accessing elements from arrays uses the unusual <code class="docutils literal notranslate"><span class="pre">&lt;array&gt;.(&lt;index&gt;)</span></code>
+syntax:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># my_array.(0);;
+- : int = 1
+# my_array.(4);;
+- : int = 5
+# my_array.(5);;
+Exception: Invalid_argument &quot;index out of bounds&quot;.
+</pre></div>
+</div>
+<p>Mutating (changing) elements in an array also uses an unusual syntax:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># my_array;;
+- : int array = [|1; 2; 3; 4; 5|]
+# my_array.(0) &lt;- 42;;
+- : unit = ()
+# my_array;;
+- : int array = [|42; 2; 3; 4; 5|]
+</pre></div>
+</div>
+<p>There is an <a class="reference external" href="https://v2.ocaml.org/api/Array.html">Array</a>
+module with many useful functions on arrays.</p>
+</div>
+<div class="section" id="tuples">
+<span id="id2"></span><h2>Tuples<a class="headerlink" href="#tuples" title="Permalink to this heading"></a></h2>
+<p>A fundamental data type in OCaml is the <em>tuple</em> (pronounced “too-ple” or
+“tup-ple” depending on your preference; I prefer “too-ple”). It is
+nothing more than a sequence of arbitrary OCaml values wrapped in
+parentheses, separated by commas. Tuples can (and usually do) contain
+data of different types.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Tuples exist in Python too, but in that language they are almost
+superfluous, being basically a restricted form of lists. In OCaml,
+tuples are necessary because lists can only contain one type of data.</p>
+</div>
+<div class="section" id="type-notation">
+<span id="id3"></span><h3>Type notation<a class="headerlink" href="#type-notation" title="Permalink to this heading"></a></h3>
+<p>The notation for tuple types is a bit weird; they are written as the
+<em>product</em> of the individual types:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (1, &quot;foo&quot;, 3.14);;
+- : int * string * float = (1, &quot;foo&quot;, 3.14)
+</pre></div>
+</div>
+<p>This tuple has the type <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*</span> <span class="pre">string</span> <span class="pre">*</span> <span class="pre">float</span></code>, which is a
+type-theoretic “product” of the individual types. This notion of
+“product” is basically the same as the set-theoretic notion, but don’t
+worry about that. Just make sure you realize that this use of the <code class="docutils literal notranslate"><span class="pre">*</span></code>
+operator doesn’t represent multiplication.</p>
+</div>
+<div class="section" id="implicit-parentheses">
+<h3>Implicit parentheses<a class="headerlink" href="#implicit-parentheses" title="Permalink to this heading"></a></h3>
+<p>Unfortunately, OCaml (like Python) allows you to omit the parentheses in
+many situations:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (1, &quot;foo&quot;, 3.14);;
+- : int * string * float = (1, &quot;foo&quot;, 3.14)
+# 1, &quot;foo&quot;, 3.14;;
+- : int * string * float = (1, &quot;foo&quot;, 3.14)
+# let tup = (1, &quot;foo&quot;, 3.14);;
+val tup : int * string * float = (1, &quot;foo&quot;, 3.14)
+# let tup = 1, &quot;foo&quot;, 3.14;;
+val tup : int * string * float = (1, &quot;foo&quot;, 3.14)
+</pre></div>
+</div>
+<p>“So what?”, you say. “What’s the big deal?” Well, look at this code:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># [1; 2; 3];;
+- : int list = [1; 2; 3]
+</pre></div>
+</div>
+<p>This is the correct way to write a list, using semicolons as separators.
+A common error is to write lists with commas, which gives this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># [1, 2, 3];;
+- : (int * int * int) list = [(1, 2, 3)]
+</pre></div>
+</div>
+<p>Note that this is <em>not</em> a syntax error! Instead, OCaml has interepreted
+the commas as meaning a tuple, so it thinks you want a list with a
+single element which is a 3-tuple. Then, when you try to use this list,
+it will not do what you expect, and the error messages will probably not
+be very helpful.</p>
+<p>We recommend that you <em>never</em> write a tuple without explicit
+parentheses. However, this will not fix the problem above, because OCaml
+will still interpret the wrongly-written “list” as a list of N-tuples.
+Ultimately, you just have to be able to recognize this problem for what
+it is, and learn to write lists the right way.</p>
+</div>
+<div class="section" id="commas-vs-semicolons">
+<h3>Commas <em>vs.</em> semicolons<a class="headerlink" href="#commas-vs-semicolons" title="Permalink to this heading"></a></h3>
+<p>What about the opposite problem: writing a tuple with semicolons as
+separators instead of using commas?</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (1, &quot;foo&quot;, 3.14);;
+- : int * string * float = (1, &quot;foo&quot;, 3.14)
+# (1; &quot;foo&quot;; 3.14);;
+Line 1, characters 1-2:
+1 | (1; &quot;foo&quot;; 3.14);;
+     ^
+Warning 10: this expression should have type unit.
+Line 1, characters 4-9:
+1 | (1; &quot;foo&quot;; 3.14);;
+        ^^^^^
+Warning 10: this expression should have type unit.
+- : float = 3.14
+</pre></div>
+</div>
+<p>A parenthesized expression with semicolon separators is a <em>sequence
+expression</em>, which is mainly used in imperative code. (You can also
+write them with <code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code> delimiters instead of parentheses,
+which we prefer.) In a sequence expression, all but the last
+subexpression should have type <code class="docutils literal notranslate"><span class="pre">unit</span></code>, or you get warnings (as you see
+above). You probably won’t run into this pitfall, but you should be
+aware of it. We will talk about sequence expressions more below when we
+discuss imperative programming.</p>
+</div>
+</div>
+<div class="section" id="strings">
+<h2>Strings<a class="headerlink" href="#strings" title="Permalink to this heading"></a></h2>
+<p>Strings are pretty standard in OCaml, except that the notation for
+accessing characters in a string is weird:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let s = &quot;this is a string&quot;;;
+val s : string = &quot;this is a string&quot;
+# s.[0];;
+- : char = &#39;t&#39;
+# s.[9];;
+- : char = &#39; &#39;
+</pre></div>
+</div>
+<p>OCaml treats strings like a kind of specialized array. Up until
+recently, strings were mutable (you could change the characters in a
+string). Thankfully, that is no longer the case. (There is a mutable
+string type called <code class="docutils literal notranslate"><span class="pre">bytes</span></code> if you really need it.)</p>
+</div>
+<div class="section" id="conditionals">
+<h2>Conditionals<a class="headerlink" href="#conditionals" title="Permalink to this heading"></a></h2>
+<div class="section" id="if-expressions">
+<h3><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions<a class="headerlink" href="#if-expressions" title="Permalink to this heading"></a></h3>
+<p>In most programming languages, <code class="docutils literal notranslate"><span class="pre">if</span></code> is a statement, but in functional
+languages like OCaml, <code class="docutils literal notranslate"><span class="pre">if</span></code> is an expression. This means that an <code class="docutils literal notranslate"><span class="pre">if</span></code>
+expression returns a value. This is nice in that you can use <code class="docutils literal notranslate"><span class="pre">if</span></code>
+expressions anywhere an expression is desired. For instance, this
+function computes the ratio of the maximum and minimum of two floats:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let scale x y = (if x &gt; y then x else y) /. (if x &gt; y then y else x)
+</pre></div>
+</div>
+<p>(Note the <code class="docutils literal notranslate"><span class="pre">/.</span></code> operator for float division.) This is not the most
+elegant way to write this function, but it illustrates that <code class="docutils literal notranslate"><span class="pre">if</span></code>
+expressions can be embedded in larger expressions.</p>
+<p>Since <code class="docutils literal notranslate"><span class="pre">if</span></code> is an expression, <code class="docutils literal notranslate"><span class="pre">if</span></code> expressions must have a specific
+type regardless of whether the test clause of the <code class="docutils literal notranslate"><span class="pre">if</span></code> returns
+<code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>. Therefore, both branches of the <code class="docutils literal notranslate"><span class="pre">if</span></code> (the
+<code class="docutils literal notranslate"><span class="pre">then</span></code> branch and the <code class="docutils literal notranslate"><span class="pre">else</span></code> branch) must be expressions which have
+the exact same type. Something like this is not legal:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let a = 10;;
+val a : int = 10
+# let b = 20;;
+val b : int = 20
+# if a &gt; b then &quot;success&quot; else 0;;
+Line 1, characters 29-30:
+1 | if a &gt; b then &quot;success&quot; else 0;;
+                                 ^
+Error: This expression has type int but an expression was expected of type
+         string
+</pre></div>
+</div>
+<p>This is easy to understand, but things are not always so clear, as we
+will see.</p>
+</div>
+<div class="section" id="if-without-else">
+<h3><code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code><a class="headerlink" href="#if-without-else" title="Permalink to this heading"></a></h3>
+<p>OCaml allows you to have an <code class="docutils literal notranslate"><span class="pre">if</span></code> expression without an <code class="docutils literal notranslate"><span class="pre">else</span></code>
+clause, but if you do that, the <code class="docutils literal notranslate"><span class="pre">then</span></code> clause <em>must</em> have type
+<code class="docutils literal notranslate"><span class="pre">unit</span></code>.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let a = 10;;
+val a : int = 10
+# if a &gt; 5 then Printf.printf &quot;big!\n&quot;;;
+big!
+- : unit = ()
+</pre></div>
+</div>
+<p>This works because <code class="docutils literal notranslate"><span class="pre">printf</span></code> has a return type of <code class="docutils literal notranslate"><span class="pre">unit</span></code>. But this
+won’t work:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let b = if a &gt; 5 then 10;;
+Line 1, characters 22-24:
+1 | let b = if a &gt; 5 then 10;;
+                          ^^
+Error: This expression has type int but an expression was expected of type
+         unit
+       because it is in the result of a conditional with no else branch
+</pre></div>
+</div>
+<p>Both branches of a conditional must have the same type, and if you leave
+out the <code class="docutils literal notranslate"><span class="pre">else</span></code> branch, its type is assumed to be <code class="docutils literal notranslate"><span class="pre">unit</span></code>. In other
+words, <code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code> is desugared as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>if &lt;bool expr&gt; then &lt;then expr&gt;
+  ==&gt;
+if &lt;bool expr&gt; then &lt;then expr&gt; else ()
+</pre></div>
+</div>
+<p>When you think about it, this makes perfect sense. Normally you would
+only want to do an <code class="docutils literal notranslate"><span class="pre">if</span></code>-without-<code class="docutils literal notranslate"><span class="pre">else</span></code> if you are writing imperative
+code in the <code class="docutils literal notranslate"><span class="pre">then</span></code> clause (see below).</p>
+</div>
+<div class="section" id="else-if">
+<h3><code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code><a class="headerlink" href="#else-if" title="Permalink to this heading"></a></h3>
+<p>Technically, OCaml doesn’t have an <code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code> construct. However, if
+you’re careful you can use it anyway:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let abs x =
+  if x &lt; 0 then
+    -x
+  else if x &gt; 0 then
+    x
+  else 0;;
+val abs : int -&gt; int = &lt;fun&gt;
+</pre></div>
+</div>
+<p>What’s actually happening is that there are two nested <code class="docutils literal notranslate"><span class="pre">if</span></code>
+expressions:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let abs x =
+  if x &lt; 0 then
+    -x
+  else
+    (if x &gt; 0 then
+       x
+     else 0);;
+</pre></div>
+</div>
+<p>As long as you can write your code as a sequence of nested <code class="docutils literal notranslate"><span class="pre">if</span></code>
+expressions like this, it will work as you expect. But if you put
+something more complicated in one of the <code class="docutils literal notranslate"><span class="pre">then</span></code> or <code class="docutils literal notranslate"><span class="pre">else</span></code> clauses
+(like another <code class="docutils literal notranslate"><span class="pre">if</span></code> expression) you may have to wrap parentheses or a
+<code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code> pair around the inner expression:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let test n =
+    if n mod 5 = 0 then
+      if n mod 3 = 0 then
+        Printf.printf &quot;inner if\n&quot;
+    (* no else! *)
+    else if n mod 3 = 0 then
+      Printf.printf &quot;outer if 1\n&quot;
+    else
+      Printf.printf &quot;outer if 2\n&quot;
+  ;;
+val test : int -&gt; unit = &lt;fun&gt;
+# test 15;;
+inner if
+- : unit = ()
+# test 9;;
+- : unit = ()
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">test</span> <span class="pre">9</span></code> doesn’t print anything, though we might expect it
+to print <code class="docutils literal notranslate"><span class="pre">&quot;outer</span> <span class="pre">if</span> <span class="pre">1&quot;</span></code>. The code above is parsed as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let test n =
+    if n mod 5 = 0 then
+      (if n mod 3 = 0 then
+        Printf.printf &quot;inner if\n&quot;
+       else if n mod 3 = 0 then
+         Printf.printf &quot;outer if 1\n&quot;
+       else
+         Printf.printf &quot;outer if 2\n&quot;)
+  ;;
+</pre></div>
+</div>
+<p>which is probably not what was intended. To fix it, insert either
+parentheses or a <code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code> pair to disambiguate it:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let test n =
+    if n mod 5 = 0 then
+      (if n mod 3 = 0 then
+        Printf.printf &quot;inner if\n&quot;)
+    else if n mod 3 = 0 then
+      Printf.printf &quot;outer if 1\n&quot;
+    else
+      Printf.printf &quot;outer if 2\n&quot;
+  ;;
+val test : int -&gt; unit = &lt;fun&gt;
+# test 15;;
+inner if
+- : unit = ()
+# test 9;;
+outer if 1
+- : unit = ()
+# test 8;;
+outer if 2
+- : unit = ()
+</pre></div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code> it looks like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let test n =
+    if n mod 5 = 0 then
+      begin
+        if n mod 3 = 0 then
+          Printf.printf &quot;inner if\n&quot;
+      end
+    else if n mod 3 = 0 then
+      Printf.printf &quot;outer if 1\n&quot;
+    else
+      Printf.printf &quot;outer if 2\n&quot;
+  ;;
+</pre></div>
+</div>
+<p>Either are acceptable.</p>
+<p>If OCaml’s <code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code> situation makes you uneasy, there is a perfectly
+reasonable alternative…​ that will probably also make you uneasy! It’s a
+way of using OCaml’s <code class="docutils literal notranslate"><span class="pre">match</span></code> form that is like a sequence of
+<code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code> forms. Example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let abs n =
+  match () with
+    | _ when n &gt; 0 -&gt; n
+    | _ when n &lt; 0 -&gt; -n
+    | _ -&gt; 0
+</pre></div>
+</div>
+<p>We match against <code class="docutils literal notranslate"><span class="pre">()</span></code> because we don’t care about the value matched;
+that’s also why we use the <code class="docutils literal notranslate"><span class="pre">_</span></code> in each clause of the match. Instead,
+we’re using the <code class="docutils literal notranslate"><span class="pre">match</span></code> form solely because of the ability to use
+<code class="docutils literal notranslate"><span class="pre">when</span></code> pattern guards; these contain the actual logic. This can often
+be a bit more concise and clean than an actual <code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code>, but be
+careful: if you need to do another <code class="docutils literal notranslate"><span class="pre">match</span></code> in the expression following
+the right arrow (<code class="docutils literal notranslate"><span class="pre">-&gt;</span></code>) you may have to wrap it in parentheses or a
+<code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code> form (see below for why).</p>
+</div>
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h2>
+<p>OCaml is a functional language, so functions are fundamental. There are
+a number of unusual features of OCaml functions.</p>
+<div class="section" id="syntax-and-currying">
+<h3>Syntax and currying<a class="headerlink" href="#syntax-and-currying" title="Permalink to this heading"></a></h3>
+<p>Unlike most conventional languages, OCaml doesn’t require you to put
+parentheses around the arguments to a function. In fact, if you do, you
+change the meaning! Consider this innocent-looking function:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add x y = x + y;;
+val add : int -&gt; int -&gt; int = &lt;fun&gt;
+# add 2 3;;
+- : int = 5
+# add (2 + 3) (3 + 4);;
+- : int = 12
+</pre></div>
+</div>
+<p>OK, so we can get by without parentheses around the arguments. (The
+parentheses in the last line are to create the arguments, not to
+surround them for the function call.) What if we use them anyway?</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># add (2, 3);;
+Line 1, characters 4-10:
+1 | add (2, 3);;
+        ^^^^^^
+Error: This expression has type &#39;a * &#39;b
+       but an expression was expected of type int
+</pre></div>
+</div>
+<p>Nope, that isn’t correct. The error message may confuse you. Let’s see a
+variation:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add&#39; (x, y) = x + y;;
+val add&#39; : int * int -&gt; int = &lt;fun&gt;
+# add&#39; (2, 3);;
+- : int = 5
+</pre></div>
+</div>
+<p>(Note that in OCaml, you can use the <code class="docutils literal notranslate"><span class="pre">'</span></code> character (pronounced
+“prime”) in identifiers.)</p>
+<p>If we define the function with parentheses, we have to call it with
+parentheses. If not:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># add&#39; 2 3;;
+Line 1, characters 0-4:
+1 | add&#39; 2 3;;
+    ^^^^
+Error: This function has type int * int -&gt; int
+       It is applied to too many arguments; maybe you forgot a `;&#39;.
+</pre></div>
+</div>
+<p>Huh. What is really going on here?</p>
+<p>Look at the second version again:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add&#39; (x, y) = x + y;;
+val add&#39; : int * int -&gt; int = &lt;fun&gt;
+</pre></div>
+</div>
+<p>Look at the type signature. The <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*</span> <span class="pre">int</span></code> part says that the input
+to the function is a <em>single</em> argument which must be a two-tuple (a
+tuple with two elements), where both elements are <code class="docutils literal notranslate"><span class="pre">int</span></code>s. If you
+leave the arguments “naked”, they don’t form a two-tuple, and there are
+two arguments, not one. This explains the error message. Now look at the
+first version:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add x y = x + y;;
+val add : int -&gt; int -&gt; int = &lt;fun&gt;
+</pre></div>
+</div>
+<p>The type signature is a bit odd. Since the <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code> type operator
+associates to the right, this is equivalent to:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add x y = x + y;;
+val add : int -&gt; (int -&gt; int) = &lt;fun&gt;
+</pre></div>
+</div>
+<p>This is an example of what’s called <em>currying</em>. What the type signature
+means is that the <code class="docutils literal notranslate"><span class="pre">add</span></code> function actually only takes a <em>single</em>
+argument (an <code class="docutils literal notranslate"><span class="pre">int</span></code>) and returns a <em>function</em> of type <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">-&gt;</span> <span class="pre">int</span></code>.
+If you call the function with both arguments, the function returned by
+applying <code class="docutils literal notranslate"><span class="pre">add</span></code> to the first argument (which has type <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">-&gt;</span> <span class="pre">int</span></code>)
+is immediately applied to the second argument (of type <code class="docutils literal notranslate"><span class="pre">int</span></code>) to give
+the result, which is an <code class="docutils literal notranslate"><span class="pre">int</span></code>. So this function call:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># add 2 3;;
+- : int = 5
+</pre></div>
+</div>
+<p>is actually this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (add 2) 3;;
+- : int = 5
+</pre></div>
+</div>
+<p>And if we leave out the second argument, we get this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># add 2;;
+- : int -&gt; int = &lt;fun&gt;
+</pre></div>
+</div>
+<p>which shows currying in action. We can use this function:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add2 = add 2;;
+val add2 : int -&gt; int = &lt;fun&gt;
+# add2 3;;
+- : int = 5
+</pre></div>
+</div>
+</div>
+<div class="section" id="anonymous-functions">
+<h3>Anonymous functions<a class="headerlink" href="#anonymous-functions" title="Permalink to this heading"></a></h3>
+<p>Functions are a kind of data in functional languages like OCaml, and you
+can define function values directly using the <code class="docutils literal notranslate"><span class="pre">fun</span></code> expression. So
+instead of writing:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add x y = x + y;;
+val add : int -&gt; int -&gt; int = &lt;fun&gt;
+</pre></div>
+</div>
+<p>we could write the definition like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add = fun x y -&gt; x + y;;
+val add : int -&gt; int -&gt; int = &lt;fun&gt;
+</pre></div>
+</div>
+<p>The meaning is exactly the same. We say that the first form is
+<em>syntactic sugar</em> for the latter form. We can even use a <code class="docutils literal notranslate"><span class="pre">fun</span></code>
+expression without giving it a name at all:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (fun x y -&gt; x + y) 2 3;;
+- : int = 5
+</pre></div>
+</div>
+<p>Therefore, we say that the <code class="docutils literal notranslate"><span class="pre">fun</span></code> form defines an <em>anonymous function</em>.
+Anonymous functions are often used with higher-order functions
+(functions that take functions as input and/or return functions as
+output).</p>
+</div>
+</div>
+<div class="section" id="match-expressions">
+<h2><code class="docutils literal notranslate"><span class="pre">match</span></code> expressions<a class="headerlink" href="#match-expressions" title="Permalink to this heading"></a></h2>
+<p>OCaml <code class="docutils literal notranslate"><span class="pre">match</span></code> expressions are pretty straightforward. They have a
+couple of subtleties you should know about.</p>
+<div class="section" id="optional-before-first-match">
+<h3>Optional <code class="docutils literal notranslate"><span class="pre">|</span></code> before first match<a class="headerlink" href="#optional-before-first-match" title="Permalink to this heading"></a></h3>
+<p>In a <code class="docutils literal notranslate"><span class="pre">match</span></code> expression, the alternatives are separated by a vertical
+bar character (<code class="docutils literal notranslate"><span class="pre">|</span></code>). You can also (optionally) put a vertical bar
+character before the first pattern to be matched. This often makes the
+code look cleaner. Compare:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec sum_list lst =
+  match lst with
+      [] -&gt; []
+    | h :: t -&gt; h + sum_list t
+</pre></div>
+</div>
+<p>with</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec sum_list lst =
+  match lst with
+    | [] -&gt; []
+    | h :: t -&gt; h + sum_list t
+</pre></div>
+</div>
+<p>These two functions are identical in terms of their functionality, but
+the code for the second looks cleaner because of the extra <code class="docutils literal notranslate"><span class="pre">|</span></code> before
+the first match.</p>
+</div>
+<div class="section" id="nested-match-expressions">
+<h3>Nested match expressions<a class="headerlink" href="#nested-match-expressions" title="Permalink to this heading"></a></h3>
+<p>It’s not uncommon to want to put a <code class="docutils literal notranslate"><span class="pre">match</span></code> expression inside another
+<code class="docutils literal notranslate"><span class="pre">match</span></code> expression. If you do, you have to be careful with the inner
+<code class="docutils literal notranslate"><span class="pre">match</span></code> expression so that its clauses aren’t confused with the outer
+<code class="docutils literal notranslate"><span class="pre">match</span></code>’s clauses. Here’s an <a class="reference external" href="https://stackoverflow.com/questions/257605/ocaml-match-expression-inside-another-one">example from the
+internet</a>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec filter exp =
+  match exp with
+    | Var v -&gt; Var v
+    | Sum(e1, e2) -&gt; Sum(e1, e2)
+    | Prod(e1, e2) -&gt; Prod(e1, e2)
+    | Diff(e1, e2) -&gt;
+      match e2 with  (* nested match *)
+        | Sum(e3, e4) -&gt; filter (diffRule e2)
+        | Diff(e3, e4) -&gt; filter (diffRule e2)
+        | _ -&gt; filter e2
+    (* Oops! These following clauses should belong to the outer match, but
+       they actually belong to the inner match. *)
+    | Quot(e1, e2) -&gt;
+        match e2 with
+        | Quot(e3, e4) -&gt; filter (quotRule e2)
+        | Prod(e3, e4) -&gt; filter (quotRule e2)
+        | _ -&gt; filter e2
+</pre></div>
+</div>
+<p>The solution is to wrap the inner <code class="docutils literal notranslate"><span class="pre">match</span></code> using parentheses or
+<code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code>. For instance:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec filter exp =
+  match exp with
+    | Var v -&gt; Var v
+    | Sum(e1, e2) -&gt; Sum(e1, e2)
+    | Prod(e1, e2) -&gt; Prod(e1, e2)
+    | Diff(e1, e2) -&gt;
+      begin
+        match e2 with  (* nested match *)
+          | Sum(e3, e4) -&gt; filter (diffRule e2)
+          | Diff(e3, e4) -&gt; filter (diffRule e2)
+          | _ -&gt; filter e2
+      end
+    | Quot(e1, e2) -&gt;
+        match e2 with
+        | Quot(e3, e4) -&gt; filter (quotRule e2)
+        | Prod(e3, e4) -&gt; filter (quotRule e2)
+        | _ -&gt; filter e2
+</pre></div>
+</div>
+<p>Now it will do what it’s supposed to.</p>
+</div>
+<div class="section" id="function-expressions">
+<h3><code class="docutils literal notranslate"><span class="pre">function</span></code> expressions<a class="headerlink" href="#function-expressions" title="Permalink to this heading"></a></h3>
+<p>This kind of pattern is extremely common:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec &lt;function name&gt; &lt;arg&gt; =
+  match &lt;arg&gt; with
+    | &lt;pattern 1&gt; -&gt; ...
+    | &lt;pattern 2&gt; -&gt; ...
+    ...
+</pre></div>
+</div>
+<p>For instance, the <code class="docutils literal notranslate"><span class="pre">sum_list</span></code> function above is an example of this
+pattern. The essence of this pattern is that you pattern match on the
+last argument. Sometimes you have more arguments:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec &lt;function name&gt; &lt;arg1&gt; &lt;arg2&gt; ... &lt;argN&gt; =
+  match &lt;argN&gt; with
+    | &lt;pattern 1&gt; -&gt; ...
+    | &lt;pattern 2&gt; -&gt; ...
+    ...
+</pre></div>
+</div>
+<p>Whenever you have a function that pattern matches on its last argument,
+you can rewrite it using the <code class="docutils literal notranslate"><span class="pre">function</span></code> keyword. This is like an
+automatic <code class="docutils literal notranslate"><span class="pre">match</span></code> on the last argument. The patterns above would be
+written like this using <code class="docutils literal notranslate"><span class="pre">function</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec &lt;function name&gt; = function (* leave off &lt;arg&gt; *)
+  | &lt;pattern 1&gt; -&gt; ...
+  | &lt;pattern 2&gt; -&gt; ...
+  ...
+
+let rec &lt;function name&gt; &lt;arg1&gt; &lt;arg2&gt; ... = function (* leave off &lt;argN&gt; *)
+  | &lt;pattern 1&gt; -&gt; ...
+  | &lt;pattern 2&gt; -&gt; ...
+  ...
+</pre></div>
+</div>
+<p>Rewriting <code class="docutils literal notranslate"><span class="pre">sum_list</span></code> using <code class="docutils literal notranslate"><span class="pre">function</span></code> gives this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec sum_list = function (* leave off &lt;arg1&gt; *)
+  | [] -&gt; []
+  | h :: t -&gt; h + sum_list t
+</pre></div>
+</div>
+<p>This way of writing functions has advantages and disadvantages. The
+advantage is that it’s more concise. The disadvantage is that you have
+to remember that the <code class="docutils literal notranslate"><span class="pre">function</span></code> keyword means that the function you
+are defining has an extra argument that doesn’t have a name. Also, if
+you do need the name of the argument inside the body of the function,
+you can’t use <code class="docutils literal notranslate"><span class="pre">function</span></code>. <code class="docutils literal notranslate"><span class="pre">function</span></code> is mostly used for simple
+functions of a simple argument where the only thing you do with the
+argument is pattern match on it. It’s never necessary, though, so feel
+free to write all your code without it.</p>
+</div>
+</div>
+<div class="section" id="let-expressions">
+<h2><code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#let-expressions" title="Permalink to this heading"></a></h2>
+<div class="section" id="explicit-recursion">
+<h3>Explicit recursion<a class="headerlink" href="#explicit-recursion" title="Permalink to this heading"></a></h3>
+<p>OCaml requires you to say <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">rec</span></code> when defining a recursive
+function.</p>
+<p>You can easily define mutually recursive functions by using the</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec f x =
+  ...  (* expression using g *)
+and g y =
+  ...  (* expression using f *)
+</pre></div>
+</div>
+<p>syntax for top-level mutually-recursive functions, or the</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec f x =
+  ...  (* expression using g *)
+and g y =
+  ...  (* expression using f *)
+in
+  ...
+</pre></div>
+</div>
+<p>syntax for mutually-recursive functions inside an expression. Leaving
+out the <code class="docutils literal notranslate"><span class="pre">rec</span></code> is one of the commonest mistakes beginning OCaml
+programmers make. Conversely, don’t use the <code class="docutils literal notranslate"><span class="pre">rec</span></code> unless the function
+is actually recursive! (This will rarely cause problems but it’s poor
+style.)</p>
+</div>
+</div>
+<div class="section" id="imperative-programming">
+<h2>Imperative programming<a class="headerlink" href="#imperative-programming" title="Permalink to this heading"></a></h2>
+<div class="section" id="references">
+<h3>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h3>
+<p>OCaml doesn’t have “variables” in the sense that most programming
+languages do. Instead, it has <em>references</em>, which are basically records
+with a single mutable field. These are effectively the same as variables
+except that you have to explicitly dereference them to get the value
+they contain. I’m not going to lie to you, this is a pain in highly
+imperative code! However, it is extremely explicit and it allows you to
+define useful functions on references.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let r = ref 0;;  (* r is a reference *)
+val r : int ref = {contents = 0}
+# r;;
+- : int ref = {contents = 0}
+# (!);;      (* ! is the dereference operator *)
+- : &#39;a ref -&gt; &#39;a = &lt;fun&gt;
+# !r;;
+- : int = 0
+# (:=);;     (* := is the assignment operator *)
+- : &#39;a ref -&gt; &#39;a -&gt; unit = &lt;fun&gt;
+# r := 42;;
+- : unit = ()
+# r;;
+- : int ref = {contents = 42}
+# !r;;
+- : int = 42
+# incr;;     (* incr is a function on references *)
+- : int ref -&gt; unit = &lt;fun&gt;
+# incr r;;
+- : unit = ()
+# !r;;
+- : int = 43
+</pre></div>
+</div>
+<p>Fun fact: we could have defined the <code class="docutils literal notranslate"><span class="pre">!</span></code> and <code class="docutils literal notranslate"><span class="pre">:=</span></code> operators
+ourselves, and we could have defined the <code class="docutils literal notranslate"><span class="pre">incr</span></code> function as well:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let ( ! ) r = r.contents;;
+val ( ! ) : &#39;a ref -&gt; &#39;a = &lt;fun&gt;
+# let ( := ) r v = r.contents &lt;- v;;
+val ( := ) : &#39;a ref -&gt; &#39;a -&gt; unit = &lt;fun&gt;
+# let incr r = r.contents &lt;- !r + 1;;
+val incr : int ref -&gt; unit = &lt;fun&gt;
+</pre></div>
+</div>
+<p>This works because references (<code class="docutils literal notranslate"><span class="pre">ref</span></code> cells) are records with a single
+field called <code class="docutils literal notranslate"><span class="pre">contents</span></code>, so the record accessing and mutating syntax
+can be used on them.</p>
+</div>
+<div class="section" id="sequence-expressions">
+<h3>Sequence expressions<a class="headerlink" href="#sequence-expressions" title="Permalink to this heading"></a></h3>
+<p>When you are doing imperative programming, it’s often necessary to have
+a notion of sequencing, as in do-this-then-do-that <em>etc.</em> In OCaml, this
+requires a <em>sequence expression</em>, which has two forms:</p>
+<ul class="simple">
+<li><p>a series of statements separated by semicolons and wrapped with
+<code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code></p></li>
+<li><p>the same, but using parentheses instead of <code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code></p></li>
+</ul>
+<p>The choice between using <code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code> or parentheses is a style
+decision. I prefer parentheses for very short (one-liner) sequence
+expressions and <code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code> for sequence expressions that span
+multiple lines.</p>
+<p>Here’s an example of an (inefficient) imperative function to compute
+greatest common denominators (GCDs):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let gcd m n =
+  let p = ref m in
+  let q = ref n in
+    begin
+      while !p &lt;&gt; !q do
+          if !p &gt; !q then
+            p := !p - !q
+          else
+            q := !q - !p
+      done;
+      !p
+    end
+</pre></div>
+</div>
+<p>This also shows the use of an imperative <code class="docutils literal notranslate"><span class="pre">while</span></code> loop. It also shows
+how annoying imperative programming is in OCaml <code class="docutils literal notranslate"><span class="pre">!</span></code>because <code class="docutils literal notranslate"><span class="pre">!</span></code>of
+<code class="docutils literal notranslate"><span class="pre">!</span></code>all <code class="docutils literal notranslate"><span class="pre">!</span></code>the <code class="docutils literal notranslate"><span class="pre">!</span></code>exclamation <code class="docutils literal notranslate"><span class="pre">!</span></code>points!</p>
+</div>
+<div class="section" id="weakly-polymorphic-types">
+<h3>Weakly polymorphic types<a class="headerlink" href="#weakly-polymorphic-types" title="Permalink to this heading"></a></h3>
+<p>OCaml’s type system has some peculiarities. One that you are likely to
+run into when you do imperative programming is that there are types that
+are “weakly polymorphic”. A truly polymorphic type can be parameterized
+on one or more type variables, which are written with a leading quote
+<em>i.e.</em> <code class="docutils literal notranslate"><span class="pre">'a</span></code>, <code class="docutils literal notranslate"><span class="pre">'b</span></code> <em>etc.</em> But some types are not actually
+polymorphic, they are “write-once” types. Look at this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let r = ref [];;
+val r : &#39;_weak1 list ref = {contents = []}
+# !r;;
+- : &#39;_weak1 list = []
+# r := [1; 2; 3];;
+- : unit = ()
+# r;;
+- : int list ref = {contents = [1; 2; 3]}
+# !r;;
+- : int list = [1; 2; 3]
+</pre></div>
+</div>
+<p>The initial type of <code class="docutils literal notranslate"><span class="pre">r</span></code> is <code class="docutils literal notranslate"><span class="pre">'_weak1</span> <span class="pre">list</span> <span class="pre">ref</span></code>, which is pretty odd.
+You might expect it to be <code class="docutils literal notranslate"><span class="pre">'a</span> <span class="pre">list</span> <span class="pre">ref</span></code> <em>i.e.</em> that <code class="docutils literal notranslate"><span class="pre">r</span></code> is a
+reference which can contain any kind of list. But this would not be
+type-safe; if <code class="docutils literal notranslate"><span class="pre">r</span></code> holds a list of <code class="docutils literal notranslate"><span class="pre">int</span></code>s at one time and a list of
+<code class="docutils literal notranslate"><span class="pre">bool</span></code>s at another, then all the types are not known at
+compile-time, and you might as well be writing Python code.</p>
+<p>Instead, what this odd type means is that <code class="docutils literal notranslate"><span class="pre">r</span></code> is a reference
+containing a list <em>of currently unspecified type</em>. That’s what the
+<code class="docutils literal notranslate"><span class="pre">'_weak1</span> <span class="pre">list</span> <span class="pre">ref</span></code> means. Since <code class="docutils literal notranslate"><span class="pre">r</span></code> was initialized with an empty
+list, which could have any element type, you can’t say any more. Once
+you reassign a list of known type to <code class="docutils literal notranslate"><span class="pre">r</span></code>, it then has a concrete type
+(<code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">list</span></code> in this case), and the type is fixed thereafter.</p>
+<p>OK, so what if you aren’t using references or imperative features?
+Unfortunately, you can still get weakly polymorphic types if you
+partially apply a function. Here’s a trivial example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let const x y = y ;;
+val const : &#39;a -&gt; &#39;b -&gt; &#39;b = &lt;fun&gt;
+# let f = const () ;;  (* partial application of the const function *)
+val f : &#39;_weak1 -&gt; &#39;_weak1 = &lt;fun&gt;
+</pre></div>
+</div>
+<p>This is purely functional code, but you still get a weak type! The
+reasons for this are quite involved (see the references below), but one
+trick that will work in most cases is to change the partial application
+to a full application by adding arguments:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let const x y = y ;;
+val const : &#39;a -&gt; &#39;b -&gt; &#39;b = &lt;fun&gt;
+# let f x = const () x ;;  (* no longer a partial application of the const function *)
+val f : &#39;a -&gt; &#39;a = &lt;fun&gt;
+</pre></div>
+</div>
+<p>Now <code class="docutils literal notranslate"><span class="pre">f</span></code> has the expected type. This trick (called “eta expansion”) is
+definitely worth remembering.</p>
+<p>For more on this issue (really far more than you need to know at this
+point), here are some good references:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://caml.inria.fr/pub/docs/manual-ocaml/polymorphism.html">https://caml.inria.fr/pub/docs/manual-ocaml/polymorphism.html</a></p></li>
+<li><p><a class="reference external" href="https://ocamlverse.github.io/content/weak_type_variables.html">https://ocamlverse.github.io/content/weak_type_variables.html</a></p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Readings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

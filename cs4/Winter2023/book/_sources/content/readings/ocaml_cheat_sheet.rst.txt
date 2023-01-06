@@ -1,0 +1,1466 @@
+OCaml syntax cheat sheet
+========================
+
+OCaml is a great language, but its syntax is not its best feature.
+More importantly, the syntax is quite different from any other language
+you've probably learned already,
+so getting comfortable with it will take some time.
+
+In this document we describe aspects of OCaml syntax that are most likely to be
+confusing and/or counterintuitive, as well as some other features which may
+trip you up. This document is **not** a complete description of OCaml syntax.
+For that, consult the lectures and/or the online documentation. We also refer
+you to the official OCaml cheat sheet which is `here
+<http://alhassy.com/OCamlCheatSheet/CheatSheet.pdf>`__.
+
+Operators
+---------
+
+Operator underloading
+^^^^^^^^^^^^^^^^^^^^^
+
+OCaml doesn’t overload most of its operators. Notably, arithmetic
+operators like ``+``, ``-``, ``*`` and ``/`` are not overloaded.
+Instead, they are considered to be exclusively integer operators. The
+corresponding operators on floating-point numbers have an extra dot
+(``.``) at the end *e.g.* ``+.``, ``-.``, ``*.`` and ``/.``.
+Confusingly, the floating-point power operator (``**``) doesn’t have a
+dot at the end.
+
+.. code-block:: text
+
+   # let sumsq x y = x *. x +. y *. y;;
+   val sumsq : float -> float -> float = <fun>
+
+This is by far the most annoying aspect of OCaml’s syntax. The reason
+for it is so that every operator has a very specific type, which makes
+type inference much simpler.
+
+Operator overloading
+^^^^^^^^^^^^^^^^^^^^
+
+On the other hand, OCaml *does* overload some operators. The
+comparison/equality operators (``=``, ``<``, ``>``, ``<=``, ``>=``) are
+all *polymorphic*, which means they work on arbitrary OCaml datatypes.
+(This is also true of the ``max`` and ``min`` functions.) One exception:
+you are not allowed to compare functional values, though you can check
+identity:
+
+.. code-block:: text
+
+   # abs;;
+   - : int -> int = <fun>
+   # abs == abs;;
+   - : bool = true
+   # abs = abs;;
+   Exception: Invalid_argument "compare: functional value".
+   # max abs abs;;
+   Exception: Invalid_argument "compare: functional value".
+
+We’ll discuss equality comparisons and identity comparisons below.
+
+Operators as functions
+^^^^^^^^^^^^^^^^^^^^^^
+
+This is a good feature, but it can be confusing as well. Operators can
+be converted into two-argument functions by wrapping parentheses around
+them. For instance, the operator ``+`` can be made into the two-argument
+function ``(+)``.
+
+.. code-block:: text
+
+   # (+);;
+   - : int -> int -> int = <fun>
+   # 2 + 3;;
+   - : int = 5
+   # (+) 2 3;;
+   - : int = 5
+
+The only time this causes problems is with the multiplication operators
+(``*``) and (``*.``), because if the left parenthesis is next to the
+asterisk OCaml thinks it’s the start of a comment:
+
+.. code-block:: text
+
+   # (*);;
+   Line 1, characters 0-3:
+   1 | (*);;
+       ^^^
+   Warning 1: this `(*' is the start of a comment.
+   Hint: Did you forget spaces when writing the infix operator `( * )'?
+   * *);;
+   # ( * ) ;;
+   - : int -> int -> int = <fun>
+   # ( *);;
+   Line 1, characters 2-4:
+   1 | ( *);;
+         ^^
+   Warning 2: this is not the end of a comment.
+   - : int -> int -> int = <fun>
+
+(Notice that after the first error the prompt changed to ``*`` (which
+means that OCaml thinks we’re still inside a comment) and we had to
+manually insert a ``*)`` to close the comment.)
+
+Fortunately, here OCaml is smart enough to catch this problem and issue
+a warning. However, this doesn’t always happen (see below).
+
+Equality/inequality operators
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+OCaml has two different equality operators and two different inequality
+operators:
+
+-  equality: ``=`` and ``==``
+
+-  inequality: ``<>`` and ``!=``
+
+Almost always, you want to use the ``=`` operator for equality testing
+and the ``<>`` operator for inequality testing. They test for structural
+equality *i.e.* whether one operand is equivalent to the other (or "has
+the same contents"). The ``==`` and ``!=`` operators check for identity
+*i.e.* whether two things are the exact same thing in memory. Even
+though this may sometimes work, it can lead to very difficult-to-find
+bugs. (It’s unfortunate that the operators you shouldn’t use in OCaml
+are the ones you should use in most other languages.)
+
+.. code-block:: text
+
+   # "foo" = "bar";;
+   - : bool = false
+   # "foo" = "foo";;
+   - : bool = true
+   # "foo" == "foo";;
+   - : bool = false
+   # "foo" <> "bar";;
+   - : bool = true
+   # "foo" != "bar";;
+   - : bool = true
+   # "foo" <> "foo";;
+   - : bool = false
+   # "foo" != "foo";;
+   - : bool = true
+
+Here, the two ``"foo"``\ s are different objects in memory.
+
+.. code-block:: text
+
+   # let x = "foo";;
+   val x : string = "foo"
+   # x = x;;
+   - : bool = true
+   # x == x;;
+   - : bool = true
+
+Here, ``x`` is equal to itself and is also the same object in memory as
+itself.
+
+.. _`_word_operators`:
+
+Word operators
+^^^^^^^^^^^^^^
+
+OCaml has a number of infix operators which are words. Here they are:
+
+.. list-table::
+   :widths: 10 25
+   :header-rows: 1
+
+   * - Operator
+     - Description
+
+   * - ``mod``
+     - integer remainder (modulus)
+
+   * - ``asr``
+     - arithmetic shift right
+
+   * - ``lsr``
+     - logical shift right
+
+   * - ``lsl``
+     - logical shift left
+
+   * - ``land``
+     - logical (bitwise) AND
+
+   * - ``lor``
+     - logical (bitwise) OR
+
+   * - ``lxor``
+     - logical (bitwise) XOR
+
+   * - ``lnot``
+     - logical (bitwise) NOT
+
+You probably won’t need any of these except the ``mod`` operator, which
+is handy:
+
+.. code-block:: text
+
+   # 5 mod 2;;
+   - : int = 1
+
+Unusual operators
+^^^^^^^^^^^^^^^^^
+
+The built-in OCaml operators are described in the documentation
+for the ``Stdlib`` library, which is
+`here <https://v2.ocaml.org/api/Stdlib.html>`__.
+
+Note especially the following:
+
+.. list-table::
+   :widths: 10 25
+   :header-rows: 1
+
+   * - Operator
+     - Description
+
+   * - ``^``
+     - string concatenation
+
+   * - ``^^``
+     - format string concatenation
+
+   * - ``@``
+     - list concatenation
+
+   * - ``~-``
+     - unary negation
+
+   * - ``~-.``
+     - unary float negation
+
+   * - ``@@``
+     - function application (``f @@ x`` is the same as ``f x``)
+
+   * - ``|>``
+     - reverse function application (``x |> f`` is the same as ``f x``)
+
+   * - ``!``
+     - dereference a ``ref`` cell
+
+   * - ``:=``
+     - assignment into a ``ref`` cell
+
+Note that unary negation can also be indicated by a ``-`` or ``-.``
+operator without a left-hand operand, if there is no ambiguity. The
+``~-`` and ``~-.`` operators are strictly unary operators and can work
+in contexts where conventional unary negation doesn’t:
+
+.. code-block:: text
+
+   # -1;;
+   - : int = -1
+   # abs (-1);;
+   - : int = 1
+   # abs -1;;
+   Line 1, characters 0-3:
+   1 | abs -1;;
+       ^^^
+   Error: This expression has type int -> int
+          but an expression was expected of type int
+
+OCaml is telling you you can’t subtract 1 from the ``abs`` function.
+
+.. code-block:: text
+
+   # ~-1;;
+   - : int = -1
+   # abs ~-1;;
+   - : int = 1
+
+This works. Here’s another example where these operators are handy:
+
+.. code-block:: text
+
+   # List.map (~-) [1;2;3;4;5];;
+   - : int list = [-1; -2; -3; -4; -5]
+
+Nevertheless, most people don’t bother with the unary negation operators
+and just add extra parentheses if needed.
+
+The function application operators are interesting. The reverse function
+application operator ``|>`` is nearly always used to chain together a
+series of computations, each taking the result of the previous one:
+
+.. code-block:: text
+
+   # open List;;
+   # map (fun x -> x * 2) [1;2;3;4;5];;
+   - : int list = [2; 4; 6; 8; 10]
+   # filter (fun x -> x > 5) (map (fun x -> x * 2) [1;2;3;4;5]);;
+   - : int list = [6; 8; 10]
+   # List.fold_left max 0 (filter (fun x -> x > 5) (map (fun x -> x * 2) [1;2;3;4;5]));;
+   - : int = 10
+   # [1;2;3;4;5]
+     |> map (fun x -> x * 2)
+     |> filter (fun x -> x > 5)
+     |> List.fold_left max 0;;
+   - : int = 10
+
+I'd argue that the last expression is more readable than the second-last one.
+You read it as "take the list from 1 to 5,
+double all the numbers,
+keep only the numbers that are greater than 5,
+and find the maximum".
+(You don't have to line up the ``|>`` operators, but it looks good that way.)
+
+The function call after a ``|>`` gets one less argument than usual,
+which is supplied by the result of evaluating the expression before the
+``|>``.
+
+The ``@@`` operator might seem useless since ``f @@ x`` is the same as
+``f x``. However, its precedence is extremely low, so the expression to
+the right of the ``@@`` will be evaluated before calling the function.
+This can allow us to drop some parentheses:
+
+.. code-block:: text
+
+   # abs (-2 + 1);;
+   - : int = 1
+   # abs @@ (-2 + 1);;
+   - : int = 1
+   # abs @@ -2 + 1;;
+   - : int = 1
+
+Note that the expression ``-2 + 1`` is evaluated in the last case before
+calling the ``abs`` function. This can be useful if you have a lot of
+functions acting on the result of other functions. (Note that this is
+just like the ``|>`` operator except that the function calls are
+arranged right-to-left instead of left-to-right.) Another example:
+
+.. code-block:: text
+
+   # List.rev (List.sort compare [4;2;5;2;7;5;4;1;3;9;0]);;
+   - : int list = [9; 7; 5; 5; 4; 4; 3; 2; 2; 1; 0]
+   # List.rev @@ List.sort compare [4;2;5;2;7;5;4;1;3;9;0];;
+   - : int list = [9; 7; 5; 5; 4; 4; 3; 2; 2; 1; 0]
+
+One of the least-used operators is the ``^^`` operator, which
+concatenates strings used as format strings. We will talk about this
+below.
+
+Note that some libraries define their own operators (see below). For
+instance, the ``Num`` library defines operators on rational numbers:
+``+/``, ``-/``, ``*/``, and ``//``. (These also work with
+arbitrary-precision integers, since the ``Num`` data type contains both
+these and arbitrary-precision rationals.)
+
+Defining new operators
+^^^^^^^^^^^^^^^^^^^^^^
+
+Unusually for programming languages, OCaml allows you to define your own
+operators. All user-defined operators must be made from "operator
+characters" and get their operator precedence and associativity from the
+first character of the operator (if it is itself an operator).
+
+.. code-block:: text
+
+   # let (++) x y = x * y;;
+   val ( ++ ) : int -> int -> int = <fun>
+   # 2 ++ 3;;
+   - : int = 6
+   # 1 + 2 ++ 3;;
+   - : int = 9
+
+Note that the ``++`` operator has the same precedence as the ``+``
+operator, so the expression ``1 + 2 ++ 3`` is evaluated from left to
+right. Let’s try this with a new operator that starts with the ``*``
+character instead:
+
+.. code-block:: text
+
+   # let (*+) x y = x * y;;
+   * *);;
+   Line 2, characters 2-4:
+   2 | *);;
+         ^^
+   Error: Syntax error
+
+Oops! We forgot that the ``(*`` characters will be interpreted as the
+start of a comment. Notice that we didn’t even get an error message; the
+prompt just turned to a ``*`` (indicating that OCaml thought we were
+still in a comment). When we added the ``*)`` to terminate the comment,
+we got an unhelpful error message.
+
+.. code-block:: text
+
+   # let ( *+ ) x y = x * y;;
+   val ( *+ ) : int -> int -> int = <fun>
+   # 2 *+ 3;;
+   - : int = 6
+   # 1 + 2 *+ 3;;
+   - : int = 7
+
+Now we see that the ``*+`` operator has the same precedence as the ``*``
+operator.
+
+.. tip::
+
+   When defining new operators, it’s always a good idea to put a blank
+   space after the ``(`` and before the ``)`` characters that surround
+   the operator.
+
+You can even define unary prefix operators, as long as they start with
+the ``!`` character:
+
+.. code-block:: text
+
+   # let ( !++ ) x = x := !x + 1;;
+   val ( !++ ) : int ref -> unit = <fun>
+   # let r = ref 0;;
+   val r : int ref = {contents = 0}
+   # !++ r;;
+   - : unit = ()
+   # !r;;
+   - : int = 1
+
+We will have more to say about ``ref`` types below.
+
+
+``printf`` and format strings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+OCaml has a ``printf`` function (technically, ``Printf.printf``) which
+has a number of pecularities. Check this out:
+
+.. code-block:: text
+
+   # Printf.printf;;
+   - : ('a, out_channel, unit) format -> 'a = <fun>
+   # Printf.printf "%d\n";;
+   - : int -> unit = <fun>
+   # "%d\n";;
+   - : string = "%d\n"
+
+So even though ``"%d\n"`` appears to be just a string, somehow it can
+also be the first argument of ``Printf.printf``, where it is somehow
+compatible with the type ``('a, out_channel, unit) format``. What is
+actually happening is that OCaml is turning a *literal* string into a
+something that does *not* have the ``string`` type, but is instead
+something called a *format string*. You can actually convert strings to
+format strings manually, but do not expect to understand the process:
+
+.. code-block:: text
+
+   # format_of_string;;
+   - : ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6 =
+   <fun>
+   # let fs = format_of_string "%d\n";;
+   val fs :
+     (int -> '_weak5, '_weak6, '_weak7, '_weak8, '_weak8, '_weak5) format6 =
+     CamlinternalFormatBasics.Format
+      (CamlinternalFormatBasics.Int (CamlinternalFormatBasics.Int_d,
+        CamlinternalFormatBasics.No_padding,
+        CamlinternalFormatBasics.No_precision,
+        CamlinternalFormatBasics.Char_literal ('\n',
+         CamlinternalFormatBasics.End_of_format)),
+      "%d\n")
+   # Printf.printf fs;;
+   - : int -> unit = <fun>
+   # Printf.printf fs 10;;
+   10
+   - : unit = ()
+
+.. note::
+
+   Another peculiarity is that ``format_of_string`` only works when the
+   string argument is a literal string; its first argument is not
+   actually a string. Don’t worry about any of this!
+
+Regardless of the weird types that format strings have, when you give a
+(literal) format string as the first argument of ``Printf.printf``, the
+result will have the correct type (here, ``int -> unit`` because it
+takes an ``int`` and returns a value of type ``unit``).
+
+Since format strings aren’t strings, this doesn’t work:
+
+.. code-block:: text
+
+   # let fs = "%d\n";;
+   val fs : string = "%d\n"
+   # Printf.printf fs 10;;
+   Line 1, characters 14-16:
+   1 | Printf.printf fs 10;;
+                     ^^
+   Error: This expression has type string but an expression was expected of type
+            ('a -> 'b, out_channel, unit) format =
+              ('a -> 'b, out_channel, unit, unit, unit, unit)
+              CamlinternalFormatBasics.format6
+
+One issue with format strings is that sometimes you would like to be
+able to divide them over multiple lines. However, you can’t just
+concatenate them as if they were strings:
+
+.. code-block:: text
+
+   # Printf.printf ("int: %d\t" ^ "string: %s\n") 10 "foo";;
+   Line 1, characters 14-44:
+   1 | Printf.printf ("int: %d\t" ^ "string: %s\n") 10 "foo";;
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   Error: This expression has type string but an expression was expected of type
+            ('a -> 'b -> 'c, out_channel, unit) format =
+              ('a -> 'b -> 'c, out_channel, unit, unit, unit, unit)
+              CamlinternalFormatBasics.format6
+
+Instead, you have to use the special *format string concatenation
+operator* ``(^^)`` to do the job:
+
+.. code-block:: text
+
+   # Printf.printf ("int: %d\t" ^^ "string: %s\n") 10 "foo";;
+   int: 10 string: foo
+   - : unit = ()
+   # (^^) ;;
+   - : ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
+       ('f, 'b, 'c, 'e, 'g, 'h) format6 -> ('a, 'b, 'c, 'd, 'g, 'h) format6
+   = <fun>
+   # "int: %d\t" ^^ "string: %s\n";;
+   - : (int -> string -> '_weak9, '_weak10, '_weak11, '_weak12, '_weak12,
+        '_weak9)
+       format6
+   =
+   CamlinternalFormatBasics.Format
+    (CamlinternalFormatBasics.String_literal ("int: ",
+      CamlinternalFormatBasics.Int (CamlinternalFormatBasics.Int_d,
+       CamlinternalFormatBasics.No_padding,
+       CamlinternalFormatBasics.No_precision,
+       CamlinternalFormatBasics.Char_literal ('\t',
+        CamlinternalFormatBasics.String_literal ("string: ",
+         CamlinternalFormatBasics.String (CamlinternalFormatBasics.No_padding,
+          CamlinternalFormatBasics.Char_literal ('\n',
+           CamlinternalFormatBasics.End_of_format)))))),
+    "int: %d\t%,string: %s\n")
+
+You probably won’t need this operator much, if at all.
+
+
+Lists
+-----
+
+There are three important things you need to remember about lists in
+OCaml:
+
+1. All the elements of a list must be of the same type.
+
+2. You can’t change the elements of a list.
+
+3. Elements are separated with semicolons (``;``), not commas.
+
+A very common pitfall is to use commas instead of semicolons, which not
+only doesn’t do what you expect but sometimes seems to work only to fail
+later while giving hilariously obscure type errors. We will see why in
+the section on tuples below. Remember: OCaml’s syntax is different from
+Python’s!
+
+There is a `List <https://v2.ocaml.org/api/List.html>`__
+module with many useful functions on lists.
+
+
+Arrays
+------
+
+Syntactically, arrays are exactly like lists except that they use
+different delimiters. Instead of ``[`` and ``]`` arrays use ``[|`` and
+``|]``. Here is a literal array:
+
+.. code-block:: text
+
+   # let my_array = [| 1; 2; 3; 4; 5 |];;
+   val my_array : int array = [|1; 2; 3; 4; 5|]
+
+Notice that the array has type ``int array``; the type of the elements
+is part of the type of the array.
+
+Accessing elements from arrays uses the unusual ``<array>.(<index>)``
+syntax:
+
+.. code-block:: text
+
+   # my_array.(0);;
+   - : int = 1
+   # my_array.(4);;
+   - : int = 5
+   # my_array.(5);;
+   Exception: Invalid_argument "index out of bounds".
+
+Mutating (changing) elements in an array also uses an unusual syntax:
+
+.. code-block:: text
+
+   # my_array;;
+   - : int array = [|1; 2; 3; 4; 5|]
+   # my_array.(0) <- 42;;
+   - : unit = ()
+   # my_array;;
+   - : int array = [|42; 2; 3; 4; 5|]
+
+There is an `Array <https://v2.ocaml.org/api/Array.html>`__
+module with many useful functions on arrays.
+
+.. _`_tuples`:
+
+Tuples
+------
+
+A fundamental data type in OCaml is the *tuple* (pronounced "too-ple" or
+"tup-ple" depending on your preference; I prefer "too-ple"). It is
+nothing more than a sequence of arbitrary OCaml values wrapped in
+parentheses, separated by commas. Tuples can (and usually do) contain
+data of different types.
+
+.. note::
+
+   Tuples exist in Python too, but in that language they are almost
+   superfluous, being basically a restricted form of lists. In OCaml,
+   tuples are necessary because lists can only contain one type of data.
+
+.. _`_type_notation`:
+
+Type notation
+^^^^^^^^^^^^^
+
+The notation for tuple types is a bit weird; they are written as the
+*product* of the individual types:
+
+.. code-block:: text
+
+   # (1, "foo", 3.14);;
+   - : int * string * float = (1, "foo", 3.14)
+
+This tuple has the type ``int * string * float``, which is a
+type-theoretic "product" of the individual types. This notion of
+"product" is basically the same as the set-theoretic notion, but don’t
+worry about that. Just make sure you realize that this use of the ``*``
+operator doesn’t represent multiplication.
+
+Implicit parentheses
+^^^^^^^^^^^^^^^^^^^^
+
+Unfortunately, OCaml (like Python) allows you to omit the parentheses in
+many situations:
+
+.. code-block:: text
+
+   # (1, "foo", 3.14);;
+   - : int * string * float = (1, "foo", 3.14)
+   # 1, "foo", 3.14;;
+   - : int * string * float = (1, "foo", 3.14)
+   # let tup = (1, "foo", 3.14);;
+   val tup : int * string * float = (1, "foo", 3.14)
+   # let tup = 1, "foo", 3.14;;
+   val tup : int * string * float = (1, "foo", 3.14)
+
+"So what?", you say. "What’s the big deal?" Well, look at this code:
+
+.. code-block:: text
+
+   # [1; 2; 3];;
+   - : int list = [1; 2; 3]
+
+This is the correct way to write a list, using semicolons as separators.
+A common error is to write lists with commas, which gives this:
+
+.. code-block:: text
+
+   # [1, 2, 3];;
+   - : (int * int * int) list = [(1, 2, 3)]
+
+Note that this is *not* a syntax error! Instead, OCaml has interepreted
+the commas as meaning a tuple, so it thinks you want a list with a
+single element which is a 3-tuple. Then, when you try to use this list,
+it will not do what you expect, and the error messages will probably not
+be very helpful.
+
+We recommend that you *never* write a tuple without explicit
+parentheses. However, this will not fix the problem above, because OCaml
+will still interpret the wrongly-written "list" as a list of N-tuples.
+Ultimately, you just have to be able to recognize this problem for what
+it is, and learn to write lists the right way.
+
+Commas *vs.* semicolons
+^^^^^^^^^^^^^^^^^^^^^^^
+
+What about the opposite problem: writing a tuple with semicolons as
+separators instead of using commas?
+
+.. code-block:: text
+
+   # (1, "foo", 3.14);;
+   - : int * string * float = (1, "foo", 3.14)
+   # (1; "foo"; 3.14);;
+   Line 1, characters 1-2:
+   1 | (1; "foo"; 3.14);;
+        ^
+   Warning 10: this expression should have type unit.
+   Line 1, characters 4-9:
+   1 | (1; "foo"; 3.14);;
+           ^^^^^
+   Warning 10: this expression should have type unit.
+   - : float = 3.14
+
+A parenthesized expression with semicolon separators is a *sequence
+expression*, which is mainly used in imperative code. (You can also
+write them with ``begin``/``end`` delimiters instead of parentheses,
+which we prefer.) In a sequence expression, all but the last
+subexpression should have type ``unit``, or you get warnings (as you see
+above). You probably won’t run into this pitfall, but you should be
+aware of it. We will talk about sequence expressions more below when we
+discuss imperative programming.
+
+
+Strings
+-------
+
+Strings are pretty standard in OCaml, except that the notation for
+accessing characters in a string is weird:
+
+.. code-block:: text
+
+   # let s = "this is a string";;
+   val s : string = "this is a string"
+   # s.[0];;
+   - : char = 't'
+   # s.[9];;
+   - : char = ' '
+
+OCaml treats strings like a kind of specialized array. Up until
+recently, strings were mutable (you could change the characters in a
+string). Thankfully, that is no longer the case. (There is a mutable
+string type called ``bytes`` if you really need it.)
+
+
+Conditionals
+------------
+
+``if`` expressions
+^^^^^^^^^^^^^^^^^^
+
+In most programming languages, ``if`` is a statement, but in functional
+languages like OCaml, ``if`` is an expression. This means that an ``if``
+expression returns a value. This is nice in that you can use ``if``
+expressions anywhere an expression is desired. For instance, this
+function computes the ratio of the maximum and minimum of two floats:
+
+.. code-block:: text
+
+   let scale x y = (if x > y then x else y) /. (if x > y then y else x)
+
+(Note the ``/.`` operator for float division.) This is not the most
+elegant way to write this function, but it illustrates that ``if``
+expressions can be embedded in larger expressions.
+
+Since ``if`` is an expression, ``if`` expressions must have a specific
+type regardless of whether the test clause of the ``if`` returns
+``true`` or ``false``. Therefore, both branches of the ``if`` (the
+``then`` branch and the ``else`` branch) must be expressions which have
+the exact same type. Something like this is not legal:
+
+.. code-block:: text
+
+   # let a = 10;;
+   val a : int = 10
+   # let b = 20;;
+   val b : int = 20
+   # if a > b then "success" else 0;;
+   Line 1, characters 29-30:
+   1 | if a > b then "success" else 0;;
+                                    ^
+   Error: This expression has type int but an expression was expected of type
+            string
+
+This is easy to understand, but things are not always so clear, as we
+will see.
+
+
+``if`` without ``else``
+^^^^^^^^^^^^^^^^^^^^^^^
+
+OCaml allows you to have an ``if`` expression without an ``else``
+clause, but if you do that, the ``then`` clause *must* have type
+``unit``.
+
+.. code-block:: text
+
+   # let a = 10;;
+   val a : int = 10
+   # if a > 5 then Printf.printf "big!\n";;
+   big!
+   - : unit = ()
+
+This works because ``printf`` has a return type of ``unit``. But this
+won’t work:
+
+.. code-block:: text
+
+   # let b = if a > 5 then 10;;
+   Line 1, characters 22-24:
+   1 | let b = if a > 5 then 10;;
+                             ^^
+   Error: This expression has type int but an expression was expected of type
+            unit
+          because it is in the result of a conditional with no else branch
+
+Both branches of a conditional must have the same type, and if you leave
+out the ``else`` branch, its type is assumed to be ``unit``. In other
+words, ``if`` without ``else`` is desugared as follows:
+
+.. code-block:: text
+
+   if <bool expr> then <then expr>
+     ==>
+   if <bool expr> then <then expr> else ()
+
+When you think about it, this makes perfect sense. Normally you would
+only want to do an ``if``-without-``else`` if you are writing imperative
+code in the ``then`` clause (see below).
+
+``else if``
+^^^^^^^^^^^
+
+Technically, OCaml doesn’t have an ``else if`` construct. However, if
+you’re careful you can use it anyway:
+
+.. code-block:: text
+
+   # let abs x =
+     if x < 0 then
+       -x
+     else if x > 0 then
+       x
+     else 0;;
+   val abs : int -> int = <fun>
+
+What’s actually happening is that there are two nested ``if``
+expressions:
+
+.. code-block:: text
+
+   # let abs x =
+     if x < 0 then
+       -x
+     else
+       (if x > 0 then
+          x
+        else 0);;
+
+As long as you can write your code as a sequence of nested ``if``
+expressions like this, it will work as you expect. But if you put
+something more complicated in one of the ``then`` or ``else`` clauses
+(like another ``if`` expression) you may have to wrap parentheses or a
+``begin``/``end`` pair around the inner expression:
+
+.. code-block:: text
+
+   # let test n =
+       if n mod 5 = 0 then
+         if n mod 3 = 0 then
+           Printf.printf "inner if\n"
+       (* no else! *)
+       else if n mod 3 = 0 then
+         Printf.printf "outer if 1\n"
+       else
+         Printf.printf "outer if 2\n"
+     ;;
+   val test : int -> unit = <fun>
+   # test 15;;
+   inner if
+   - : unit = ()
+   # test 9;;
+   - : unit = ()
+
+Note that ``test 9`` doesn’t print anything, though we might expect it
+to print ``"outer if 1"``. The code above is parsed as follows:
+
+.. code-block:: text
+
+   # let test n =
+       if n mod 5 = 0 then
+         (if n mod 3 = 0 then
+           Printf.printf "inner if\n"
+          else if n mod 3 = 0 then
+            Printf.printf "outer if 1\n"
+          else
+            Printf.printf "outer if 2\n")
+     ;;
+
+which is probably not what was intended. To fix it, insert either
+parentheses or a ``begin``/``end`` pair to disambiguate it:
+
+.. code-block:: text
+
+   # let test n =
+       if n mod 5 = 0 then
+         (if n mod 3 = 0 then
+           Printf.printf "inner if\n")
+       else if n mod 3 = 0 then
+         Printf.printf "outer if 1\n"
+       else
+         Printf.printf "outer if 2\n"
+     ;;
+   val test : int -> unit = <fun>
+   # test 15;;
+   inner if
+   - : unit = ()
+   # test 9;;
+   outer if 1
+   - : unit = ()
+   # test 8;;
+   outer if 2
+   - : unit = ()
+
+With ``begin``/``end`` it looks like this:
+
+.. code-block:: text
+
+   # let test n =
+       if n mod 5 = 0 then
+         begin
+           if n mod 3 = 0 then
+             Printf.printf "inner if\n"
+         end
+       else if n mod 3 = 0 then
+         Printf.printf "outer if 1\n"
+       else
+         Printf.printf "outer if 2\n"
+     ;;
+
+Either are acceptable.
+
+If OCaml’s ``else if`` situation makes you uneasy, there is a perfectly
+reasonable alternative…​ that will probably also make you uneasy! It’s a
+way of using OCaml’s ``match`` form that is like a sequence of
+``if``/``else if``/``else`` forms. Example:
+
+.. code-block:: text
+
+   let abs n =
+     match () with
+       | _ when n > 0 -> n
+       | _ when n < 0 -> -n
+       | _ -> 0
+
+We match against ``()`` because we don’t care about the value matched;
+that’s also why we use the ``_`` in each clause of the match. Instead,
+we’re using the ``match`` form solely because of the ability to use
+``when`` pattern guards; these contain the actual logic. This can often
+be a bit more concise and clean than an actual ``else if``, but be
+careful: if you need to do another ``match`` in the expression following
+the right arrow (``->``) you may have to wrap it in parentheses or a
+``begin``/``end`` form (see below for why).
+
+
+Functions
+---------
+
+OCaml is a functional language, so functions are fundamental. There are
+a number of unusual features of OCaml functions.
+
+Syntax and currying
+^^^^^^^^^^^^^^^^^^^
+
+Unlike most conventional languages, OCaml doesn’t require you to put
+parentheses around the arguments to a function. In fact, if you do, you
+change the meaning! Consider this innocent-looking function:
+
+.. code-block:: text
+
+   # let add x y = x + y;;
+   val add : int -> int -> int = <fun>
+   # add 2 3;;
+   - : int = 5
+   # add (2 + 3) (3 + 4);;
+   - : int = 12
+
+OK, so we can get by without parentheses around the arguments. (The
+parentheses in the last line are to create the arguments, not to
+surround them for the function call.) What if we use them anyway?
+
+.. code-block:: text
+
+   # add (2, 3);;
+   Line 1, characters 4-10:
+   1 | add (2, 3);;
+           ^^^^^^
+   Error: This expression has type 'a * 'b
+          but an expression was expected of type int
+
+Nope, that isn’t correct. The error message may confuse you. Let’s see a
+variation:
+
+.. code-block:: text
+
+   # let add' (x, y) = x + y;;
+   val add' : int * int -> int = <fun>
+   # add' (2, 3);;
+   - : int = 5
+
+(Note that in OCaml, you can use the ``'`` character (pronounced
+"prime") in identifiers.)
+
+If we define the function with parentheses, we have to call it with
+parentheses. If not:
+
+.. code-block:: text
+
+   # add' 2 3;;
+   Line 1, characters 0-4:
+   1 | add' 2 3;;
+       ^^^^
+   Error: This function has type int * int -> int
+          It is applied to too many arguments; maybe you forgot a `;'.
+
+Huh. What is really going on here?
+
+Look at the second version again:
+
+.. code-block:: text
+
+   # let add' (x, y) = x + y;;
+   val add' : int * int -> int = <fun>
+
+Look at the type signature. The ``int * int`` part says that the input
+to the function is a *single* argument which must be a two-tuple (a
+tuple with two elements), where both elements are ``int``\ s. If you
+leave the arguments "naked", they don’t form a two-tuple, and there are
+two arguments, not one. This explains the error message. Now look at the
+first version:
+
+.. code-block:: text
+
+   # let add x y = x + y;;
+   val add : int -> int -> int = <fun>
+
+The type signature is a bit odd. Since the ``->`` type operator
+associates to the right, this is equivalent to:
+
+.. code-block:: text
+
+   # let add x y = x + y;;
+   val add : int -> (int -> int) = <fun>
+
+This is an example of what’s called *currying*. What the type signature
+means is that the ``add`` function actually only takes a *single*
+argument (an ``int``) and returns a *function* of type ``int -> int``.
+If you call the function with both arguments, the function returned by
+applying ``add`` to the first argument (which has type ``int -> int``)
+is immediately applied to the second argument (of type ``int``) to give
+the result, which is an ``int``. So this function call:
+
+.. code-block:: text
+
+   # add 2 3;;
+   - : int = 5
+
+is actually this:
+
+.. code-block:: text
+
+   # (add 2) 3;;
+   - : int = 5
+
+And if we leave out the second argument, we get this:
+
+.. code-block:: text
+
+   # add 2;;
+   - : int -> int = <fun>
+
+which shows currying in action. We can use this function:
+
+.. code-block:: text
+
+   # let add2 = add 2;;
+   val add2 : int -> int = <fun>
+   # add2 3;;
+   - : int = 5
+
+
+Anonymous functions
+^^^^^^^^^^^^^^^^^^^
+
+Functions are a kind of data in functional languages like OCaml, and you
+can define function values directly using the ``fun`` expression. So
+instead of writing:
+
+.. code-block:: text
+
+   # let add x y = x + y;;
+   val add : int -> int -> int = <fun>
+
+we could write the definition like this:
+
+.. code-block:: text
+
+   # let add = fun x y -> x + y;;
+   val add : int -> int -> int = <fun>
+
+The meaning is exactly the same. We say that the first form is
+*syntactic sugar* for the latter form. We can even use a ``fun``
+expression without giving it a name at all:
+
+.. code-block:: text
+
+   # (fun x y -> x + y) 2 3;;
+   - : int = 5
+
+Therefore, we say that the ``fun`` form defines an *anonymous function*.
+Anonymous functions are often used with higher-order functions
+(functions that take functions as input and/or return functions as
+output).
+
+
+``match`` expressions
+---------------------
+
+OCaml ``match`` expressions are pretty straightforward. They have a
+couple of subtleties you should know about.
+
+
+Optional ``|`` before first match
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In a ``match`` expression, the alternatives are separated by a vertical
+bar character (``|``). You can also (optionally) put a vertical bar
+character before the first pattern to be matched. This often makes the
+code look cleaner. Compare:
+
+.. code-block:: text
+
+   let rec sum_list lst =
+     match lst with
+         [] -> []
+       | h :: t -> h + sum_list t
+
+with
+
+.. code-block:: text
+
+   let rec sum_list lst =
+     match lst with
+       | [] -> []
+       | h :: t -> h + sum_list t
+
+These two functions are identical in terms of their functionality, but
+the code for the second looks cleaner because of the extra ``|`` before
+the first match.
+
+Nested match expressions
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+It’s not uncommon to want to put a ``match`` expression inside another
+``match`` expression. If you do, you have to be careful with the inner
+``match`` expression so that its clauses aren’t confused with the outer
+``match``'s clauses. Here’s an `example from the
+internet <https://stackoverflow.com/questions/257605/ocaml-match-expression-inside-another-one>`__:
+
+.. code-block:: text
+
+   let rec filter exp =
+     match exp with
+       | Var v -> Var v
+       | Sum(e1, e2) -> Sum(e1, e2)
+       | Prod(e1, e2) -> Prod(e1, e2)
+       | Diff(e1, e2) ->
+         match e2 with  (* nested match *)
+           | Sum(e3, e4) -> filter (diffRule e2)
+           | Diff(e3, e4) -> filter (diffRule e2)
+           | _ -> filter e2
+       (* Oops! These following clauses should belong to the outer match, but
+          they actually belong to the inner match. *)
+       | Quot(e1, e2) ->
+           match e2 with
+           | Quot(e3, e4) -> filter (quotRule e2)
+           | Prod(e3, e4) -> filter (quotRule e2)
+           | _ -> filter e2
+
+The solution is to wrap the inner ``match`` using parentheses or
+``begin``/``end``. For instance:
+
+.. code-block:: text
+
+   let rec filter exp =
+     match exp with
+       | Var v -> Var v
+       | Sum(e1, e2) -> Sum(e1, e2)
+       | Prod(e1, e2) -> Prod(e1, e2)
+       | Diff(e1, e2) ->
+         begin
+           match e2 with  (* nested match *)
+             | Sum(e3, e4) -> filter (diffRule e2)
+             | Diff(e3, e4) -> filter (diffRule e2)
+             | _ -> filter e2
+         end
+       | Quot(e1, e2) ->
+           match e2 with
+           | Quot(e3, e4) -> filter (quotRule e2)
+           | Prod(e3, e4) -> filter (quotRule e2)
+           | _ -> filter e2
+
+Now it will do what it’s supposed to.
+
+``function`` expressions
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+This kind of pattern is extremely common:
+
+.. code-block:: text
+
+   let rec <function name> <arg> =
+     match <arg> with
+       | <pattern 1> -> ...
+       | <pattern 2> -> ...
+       ...
+
+For instance, the ``sum_list`` function above is an example of this
+pattern. The essence of this pattern is that you pattern match on the
+last argument. Sometimes you have more arguments:
+
+.. code-block:: text
+
+   let rec <function name> <arg1> <arg2> ... <argN> =
+     match <argN> with
+       | <pattern 1> -> ...
+       | <pattern 2> -> ...
+       ...
+
+Whenever you have a function that pattern matches on its last argument,
+you can rewrite it using the ``function`` keyword. This is like an
+automatic ``match`` on the last argument. The patterns above would be
+written like this using ``function``:
+
+.. code-block:: text
+
+   let rec <function name> = function (* leave off <arg> *)
+     | <pattern 1> -> ...
+     | <pattern 2> -> ...
+     ...
+
+   let rec <function name> <arg1> <arg2> ... = function (* leave off <argN> *)
+     | <pattern 1> -> ...
+     | <pattern 2> -> ...
+     ...
+
+Rewriting ``sum_list`` using ``function`` gives this:
+
+.. code-block:: text
+
+   let rec sum_list = function (* leave off <arg1> *)
+     | [] -> []
+     | h :: t -> h + sum_list t
+
+This way of writing functions has advantages and disadvantages. The
+advantage is that it’s more concise. The disadvantage is that you have
+to remember that the ``function`` keyword means that the function you
+are defining has an extra argument that doesn’t have a name. Also, if
+you do need the name of the argument inside the body of the function,
+you can’t use ``function``. ``function`` is mostly used for simple
+functions of a simple argument where the only thing you do with the
+argument is pattern match on it. It’s never necessary, though, so feel
+free to write all your code without it.
+
+
+``let`` expressions
+-------------------
+
+Explicit recursion
+^^^^^^^^^^^^^^^^^^
+
+OCaml requires you to say ``let rec`` when defining a recursive
+function.
+
+You can easily define mutually recursive functions by using the
+
+.. code-block:: text
+
+   let rec f x =
+     ...  (* expression using g *)
+   and g y =
+     ...  (* expression using f *)
+
+syntax for top-level mutually-recursive functions, or the
+
+.. code-block:: text
+
+   let rec f x =
+     ...  (* expression using g *)
+   and g y =
+     ...  (* expression using f *)
+   in
+     ...
+
+syntax for mutually-recursive functions inside an expression. Leaving
+out the ``rec`` is one of the commonest mistakes beginning OCaml
+programmers make. Conversely, don’t use the ``rec`` unless the function
+is actually recursive! (This will rarely cause problems but it’s poor
+style.)
+
+
+Imperative programming
+----------------------
+
+References
+^^^^^^^^^^
+
+OCaml doesn’t have "variables" in the sense that most programming
+languages do. Instead, it has *references*, which are basically records
+with a single mutable field. These are effectively the same as variables
+except that you have to explicitly dereference them to get the value
+they contain. I’m not going to lie to you, this is a pain in highly
+imperative code! However, it is extremely explicit and it allows you to
+define useful functions on references.
+
+.. code-block:: text
+
+   # let r = ref 0;;  (* r is a reference *)
+   val r : int ref = {contents = 0}
+   # r;;
+   - : int ref = {contents = 0}
+   # (!);;      (* ! is the dereference operator *)
+   - : 'a ref -> 'a = <fun>
+   # !r;;
+   - : int = 0
+   # (:=);;     (* := is the assignment operator *)
+   - : 'a ref -> 'a -> unit = <fun>
+   # r := 42;;
+   - : unit = ()
+   # r;;
+   - : int ref = {contents = 42}
+   # !r;;
+   - : int = 42
+   # incr;;     (* incr is a function on references *)
+   - : int ref -> unit = <fun>
+   # incr r;;
+   - : unit = ()
+   # !r;;
+   - : int = 43
+
+Fun fact: we could have defined the ``!`` and ``:=`` operators
+ourselves, and we could have defined the ``incr`` function as well:
+
+.. code-block:: text
+
+   # let ( ! ) r = r.contents;;
+   val ( ! ) : 'a ref -> 'a = <fun>
+   # let ( := ) r v = r.contents <- v;;
+   val ( := ) : 'a ref -> 'a -> unit = <fun>
+   # let incr r = r.contents <- !r + 1;;
+   val incr : int ref -> unit = <fun>
+
+This works because references (``ref`` cells) are records with a single
+field called ``contents``, so the record accessing and mutating syntax
+can be used on them.
+
+
+Sequence expressions
+^^^^^^^^^^^^^^^^^^^^
+
+When you are doing imperative programming, it’s often necessary to have
+a notion of sequencing, as in do-this-then-do-that *etc.* In OCaml, this
+requires a *sequence expression*, which has two forms:
+
+-  a series of statements separated by semicolons and wrapped with
+   ``begin``/``end``
+
+-  the same, but using parentheses instead of ``begin``/``end``
+
+The choice between using ``begin``/``end`` or parentheses is a style
+decision. I prefer parentheses for very short (one-liner) sequence
+expressions and ``begin``/``end`` for sequence expressions that span
+multiple lines.
+
+Here’s an example of an (inefficient) imperative function to compute
+greatest common denominators (GCDs):
+
+.. code-block:: text
+
+   let gcd m n =
+     let p = ref m in
+     let q = ref n in
+       begin
+         while !p <> !q do
+             if !p > !q then
+               p := !p - !q
+             else
+               q := !q - !p
+         done;
+         !p
+       end
+
+This also shows the use of an imperative ``while`` loop. It also shows
+how annoying imperative programming is in OCaml ``!``\ because ``!``\ of
+``!``\ all ``!``\ the ``!``\ exclamation ``!``\ points!
+
+
+Weakly polymorphic types
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+OCaml’s type system has some peculiarities. One that you are likely to
+run into when you do imperative programming is that there are types that
+are "weakly polymorphic". A truly polymorphic type can be parameterized
+on one or more type variables, which are written with a leading quote
+*i.e.* ``'a``, ``'b`` *etc.* But some types are not actually
+polymorphic, they are "write-once" types. Look at this:
+
+.. code-block:: text
+
+   # let r = ref [];;
+   val r : '_weak1 list ref = {contents = []}
+   # !r;;
+   - : '_weak1 list = []
+   # r := [1; 2; 3];;
+   - : unit = ()
+   # r;;
+   - : int list ref = {contents = [1; 2; 3]}
+   # !r;;
+   - : int list = [1; 2; 3]
+
+The initial type of ``r`` is ``'_weak1 list ref``, which is pretty odd.
+You might expect it to be ``'a list ref`` *i.e.* that ``r`` is a
+reference which can contain any kind of list. But this would not be
+type-safe; if ``r`` holds a list of ``int``\ s at one time and a list of
+``bool``\ s at another, then all the types are not known at
+compile-time, and you might as well be writing Python code.
+
+Instead, what this odd type means is that ``r`` is a reference
+containing a list *of currently unspecified type*. That’s what the
+``'_weak1 list ref`` means. Since ``r`` was initialized with an empty
+list, which could have any element type, you can’t say any more. Once
+you reassign a list of known type to ``r``, it then has a concrete type
+(``int list`` in this case), and the type is fixed thereafter.
+
+OK, so what if you aren’t using references or imperative features?
+Unfortunately, you can still get weakly polymorphic types if you
+partially apply a function. Here’s a trivial example:
+
+.. code-block:: text
+
+   # let const x y = y ;;
+   val const : 'a -> 'b -> 'b = <fun>
+   # let f = const () ;;  (* partial application of the const function *)
+   val f : '_weak1 -> '_weak1 = <fun>
+
+This is purely functional code, but you still get a weak type! The
+reasons for this are quite involved (see the references below), but one
+trick that will work in most cases is to change the partial application
+to a full application by adding arguments:
+
+.. code-block:: text
+
+   # let const x y = y ;;
+   val const : 'a -> 'b -> 'b = <fun>
+   # let f x = const () x ;;  (* no longer a partial application of the const function *)
+   val f : 'a -> 'a = <fun>
+
+Now ``f`` has the expected type. This trick (called "eta expansion") is
+definitely worth remembering.
+
+For more on this issue (really far more than you need to know at this
+point), here are some good references:
+
+* https://caml.inria.fr/pub/docs/manual-ocaml/polymorphism.html
+
+* https://ocamlverse.github.io/content/weak_type_variables.html
+
