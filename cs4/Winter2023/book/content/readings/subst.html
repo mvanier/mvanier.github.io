@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The substitution model &mdash; The CS 4 book 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="OCaml syntax cheat sheet" href="ocaml_cheat_sheet.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> The CS 4 book
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Motivation.html">Motivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../History.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/index.html">Assignments</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Readings</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ocaml_cheat_sheet.html">OCaml syntax cheat sheet</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">The substitution model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#desugaring-and-precedence">Desugaring and precedence</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#desugaring">Desugaring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#precedence">Precedence</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#the-basic-rule">The basic rule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#specific-cases-of-the-basic-rule">Specific cases of the basic rule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#let-bound-names"><code class="docutils literal notranslate"><span class="pre">let</span></code>-bound names</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#top-level-let-expressions">Top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#local-let-expressions">Local <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#fun-expressions"><code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#function-application">Function application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#applying-built-in-functions">Applying built-in functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#applying-user-defined-functions-substitution">Applying user-defined functions: substitution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">The CS 4 book</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Readings</a></li>
+      <li class="breadcrumb-item active">The substitution model</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-substitution-model">
+<h1>The substitution model<a class="headerlink" href="#the-substitution-model" title="Permalink to this heading"></a></h1>
+<p>This document is a summary of the rules of the substitution model,
+discussed in lecture 2.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p>The substitution model is a way of manually evaluating OCaml expressions.
+It’s similar to, but not identical to,
+what the computer does when it evaluates OCaml code.
+The point of learning the model is so that you have a good mental framework
+for how OCaml code evaluates.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>At some point, this model will not be sufficient to explain all the features
+of OCaml that we will use (notably imperative programming),
+so we will define a new model: the <em>environment model</em>.
+That model will share many features with the substitution model,
+but its handling of name lookup will be much more precise.</p>
+<p>The substitution model is adequate to understand the
+purely functional subset of OCaml we will use for the first half
+of the course.</p>
+</div>
+</section>
+<section id="desugaring-and-precedence">
+<h2>Desugaring and precedence<a class="headerlink" href="#desugaring-and-precedence" title="Permalink to this heading"></a></h2>
+<p>Before evaluating any OCaml code using the substitution model,
+the code should first be <em>desugared</em>,
+and then operator <em>precedence</em> should be made explicit using parentheses.</p>
+<section id="desugaring">
+<h3>Desugaring<a class="headerlink" href="#desugaring" title="Permalink to this heading"></a></h3>
+<p>The main kind of desugaring we need is to replace expressions of this form:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>with this:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="o">=</span> <span class="k">fun</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>After desugaring, all <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions are “simple”
+<em>i.e.</em> they bind a single name to a value
+(the result of evaluating the expression on the right-hand side
+of the <code class="docutils literal notranslate"><span class="pre">=</span></code>).</p>
+</section>
+<section id="precedence">
+<h3>Precedence<a class="headerlink" href="#precedence" title="Permalink to this heading"></a></h3>
+<p>Operator precedence should be made explicit by wrapping parentheses around
+nested operator expressions.  For instance, this code:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">7</span>
+</pre></div>
+</div>
+<p>would become:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="o">+</span> <span class="o">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">7</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>The full precedence table of OCaml operators is <a class="reference external" href="https://v2.ocaml.org/manual/expr.html#ss%3Aprecedence-and-associativity">here</a>.</p>
+<p>This step is done so that there is never any question about
+what the operands of an operator are.</p>
+</section>
+</section>
+<section id="the-basic-rule">
+<h2>The basic rule<a class="headerlink" href="#the-basic-rule" title="Permalink to this heading"></a></h2>
+<p>To evaluate an OCaml expression:</p>
+<ol class="arabic simple">
+<li><p>evaluate the <em>operands</em> of the expression</p></li>
+<li><p>evaluate the <em>operator</em> or <em>function</em> of the expression</p></li>
+<li><p><em>apply</em> the operator/function to the evaluated operands</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>OCaml actually evaluates operands from right-to-left,
+in contrast to most languages, which evaluate operands from left-to-right.
+Evaluation order is <em>not</em> part of the substitution model,
+and shouldn’t make any difference.</p>
+<p>Similarly, you can evaluate the operator/function before or after
+evaluating the operands, and it won’t make any difference in this model.</p>
+</div>
+<p>The basic rule when evaluating a function call or an operator expression.
+Other expressions (such as <code class="docutils literal notranslate"><span class="pre">let</span></code>, <code class="docutils literal notranslate"><span class="pre">fun</span></code> and <code class="docutils literal notranslate"><span class="pre">if</span></code> expressions)
+do not use the basic rule; they have their own evaluation rules.
+Such expressions are called <em>special forms</em>.</p>
+</section>
+<section id="specific-cases-of-the-basic-rule">
+<h2>Specific cases of the basic rule<a class="headerlink" href="#specific-cases-of-the-basic-rule" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Numbers evaluate to themselves: <code class="docutils literal notranslate"><span class="pre">10</span></code> <span class="raw-html">&rarr;</span> <code class="docutils literal notranslate"><span class="pre">10</span></code>
+(In fact, any literal data value evaluates to itself;
+that’s why it’s called “literal”.
+For now, we are mostly working with numbers.)</p></li>
+<li><p>Primitive (built-in) functions evaluate to the corresponding
+internal procedure.  We can write this as either:
+<code class="docutils literal notranslate"><span class="pre">+</span></code> <span class="raw-html">&rarr;</span> <code class="docutils literal notranslate"><span class="pre">[primitive</span> <span class="pre">function</span> <span class="pre">+]</span></code>
+or just <code class="docutils literal notranslate"><span class="pre">+</span></code> <span class="raw-html">&rarr;</span> <code class="docutils literal notranslate"><span class="pre">+</span></code></p></li>
+<li><p>Variables that have been previously defined
+are “looked up” (in some unspecified way)
+and evaluate to the value that they were previously bound to.
+(If they weren’t bound to a value previously, it’s an error.)</p></li>
+</ul>
+</section>
+<section id="let-bound-names">
+<h2><code class="docutils literal notranslate"><span class="pre">let</span></code>-bound names<a class="headerlink" href="#let-bound-names" title="Permalink to this heading"></a></h2>
+<p>A <code class="docutils literal notranslate"><span class="pre">let</span></code> expression is considered to be a “special form”.
+All that that means is that it has its own evaluation rule.
+We’ll see other special forms shortly.</p>
+<p>There are two kinds of <code class="docutils literal notranslate"><span class="pre">let</span></code>-bound names: top-level and in-expression.
+They evaluate differently.</p>
+<section id="top-level-let-expressions">
+<h3>Top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#top-level-let-expressions" title="Permalink to this heading"></a></h3>
+<p>A top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> expression <a class="footnote-reference brackets" href="#id2" id="id1">1</a> looks like this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="o">&lt;</span><span class="n">var</span><span class="o">&gt;</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">expr</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>for some variable name <code class="docutils literal notranslate"><span class="pre">&lt;var&gt;</span></code> and some expression <code class="docutils literal notranslate"><span class="pre">&lt;expr&gt;</span></code>.
+For instance:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<p>To evaluate this, you</p>
+<ul class="simple">
+<li><p>evaluate the expression to the right of the <code class="docutils literal notranslate"><span class="pre">=</span></code> sign
+(here, <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">+</span> <span class="pre">3</span></code>, which evaluates to <code class="docutils literal notranslate"><span class="pre">5</span></code>);</p></li>
+<li><p>“make an association” or “bind” the name (<code class="docutils literal notranslate"><span class="pre">x</span></code> here) to
+the value of the evaluated expression (<code class="docutils literal notranslate"><span class="pre">5</span></code>).
+The details of how to make this association aren’t important
+for now, though we’ll revisit this later.</p></li>
+</ul>
+<p>In this case, we make an association between the name <code class="docutils literal notranslate"><span class="pre">x</span></code> and the value
+<code class="docutils literal notranslate"><span class="pre">5</span></code>.  We can also say that we bind <code class="docutils literal notranslate"><span class="pre">x</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p>
+<p>After this expression is evaluated, the name <code class="docutils literal notranslate"><span class="pre">x</span></code> will be bound to the value
+<code class="docutils literal notranslate"><span class="pre">5</span></code> for the rest of the evaluated code, unless <code class="docutils literal notranslate"><span class="pre">x</span></code> is given a new binding
+with a new top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> expression.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A new binding for <code class="docutils literal notranslate"><span class="pre">x</span></code> would be something like:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span>
+</pre></div>
+</div>
+<p>From then on, any reference to <code class="docutils literal notranslate"><span class="pre">x</span></code> would get the new value.
+This is <em>not</em> the same as assignment in an imperative language, though.
+Instead, this code creates a new binding to <code class="docutils literal notranslate"><span class="pre">x</span></code> which
+“shadows” the old binding, but the old binding still exists.</p>
+</div>
+</section>
+<section id="local-let-expressions">
+<h3>Local <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#local-let-expressions" title="Permalink to this heading"></a></h3>
+<p>Another very common use of <code class="docutils literal notranslate"><span class="pre">let</span></code> is in what can be called “local”
+<code class="docutils literal notranslate"><span class="pre">let</span></code> expressions.  These are expressions where a name is bound
+to a value and then immediately used in another expression, such as this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span> <span class="k">in</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>In this case, the name <code class="docutils literal notranslate"><span class="pre">x</span></code> has a meaning inside the body of the expression
+(the <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">*</span> <span class="pre">x</span></code> part) but not outside.  To evaluate this, you:</p>
+<ul class="simple">
+<li><p>evaluate the <em>binding expression</em>
+(here, <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">+</span> <span class="pre">3</span></code>, which evaluates to <code class="docutils literal notranslate"><span class="pre">5</span></code>),</p></li>
+<li><p>bind the name to the value (here, bind <code class="docutils literal notranslate"><span class="pre">x</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code>),</p></li>
+<li><p>and evaluate the <em>body expression</em> (here, <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">*</span> <span class="pre">x</span></code>).</p></li>
+</ul>
+<p>In the body expression, of course, you can use the name <code class="docutils literal notranslate"><span class="pre">x</span></code>, which
+has a value (<code class="docutils literal notranslate"><span class="pre">5</span></code>).  Outside of this expression, the name <code class="docutils literal notranslate"><span class="pre">x</span></code>
+either has no value (if it wasn’t bound before) or has the value it
+previously had (if it was).
+Remember: you aren’t changing a previous binding (to <code class="docutils literal notranslate"><span class="pre">x</span></code>),
+you’re creating a new one that is used only in a single expression.</p>
+</section>
+</section>
+<section id="fun-expressions">
+<h2><code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions<a class="headerlink" href="#fun-expressions" title="Permalink to this heading"></a></h2>
+<p>TODO</p>
+</section>
+<section id="function-application">
+<h2>Function application<a class="headerlink" href="#function-application" title="Permalink to this heading"></a></h2>
+<p>TODO</p>
+<section id="applying-built-in-functions">
+<h3>Applying built-in functions<a class="headerlink" href="#applying-built-in-functions" title="Permalink to this heading"></a></h3>
+<p>TODO</p>
+</section>
+<section id="applying-user-defined-functions-substitution">
+<h3>Applying user-defined functions: substitution<a class="headerlink" href="#applying-user-defined-functions-substitution" title="Permalink to this heading"></a></h3>
+<p>TODO</p>
+<hr class="docutils" />
+<p class="rubric">Footnotes</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Technically speaking, this isn’t a true expression,
+since it doesn’t return a value.
+It would be more accurate to call this a top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> <em>binding</em>.</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ocaml_cheat_sheet.html" class="btn btn-neutral float-left" title="OCaml syntax cheat sheet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

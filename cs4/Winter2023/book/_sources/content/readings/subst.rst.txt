@@ -1,0 +1,241 @@
+The substitution model
+======================
+
+This document is a summary of the rules of the substitution model,
+discussed in lecture 2.
+
+
+Overview
+--------
+
+The substitution model is a way of manually evaluating OCaml expressions.
+It's similar to, but not identical to,
+what the computer does when it evaluates OCaml code.
+The point of learning the model is so that you have a good mental framework
+for how OCaml code evaluates.
+
+.. note::
+
+   At some point, this model will not be sufficient to explain all the features
+   of OCaml that we will use (notably imperative programming),
+   so we will define a new model: the *environment model*.
+   That model will share many features with the substitution model,
+   but its handling of name lookup will be much more precise.
+
+   The substitution model is adequate to understand the 
+   purely functional subset of OCaml we will use for the first half
+   of the course.
+
+
+Desugaring and precedence
+-------------------------
+
+Before evaluating any OCaml code using the substitution model,
+the code should first be *desugared*,
+and then operator *precedence* should be made explicit using parentheses.
+
+Desugaring
+^^^^^^^^^^
+
+The main kind of desugaring we need is to replace expressions of this form:
+
+.. code-block:: OCaml
+
+   let f x y = ...
+
+with this:
+
+.. code-block:: OCaml
+
+   let f = fun x y -> ...
+
+After desugaring, all ``let`` expressions are "simple"
+|ie| they bind a single name to a value
+(the result of evaluating the expression on the right-hand side
+of the ``=``).
+
+Precedence
+^^^^^^^^^^
+
+Operator precedence should be made explicit by wrapping parentheses around
+nested operator expressions.  For instance, this code:
+
+.. code-block:: OCaml
+
+   1 + 2 * 7
+
+would become:
+
+.. code-block:: OCaml
+
+   1 + (2 * 7)
+
+The full precedence table of OCaml operators is `here
+<https://v2.ocaml.org/manual/expr.html#ss%3Aprecedence-and-associativity>`_.
+
+This step is done so that there is never any question about
+what the operands of an operator are.
+
+
+The basic rule
+--------------
+
+To evaluate an OCaml expression:
+
+#. evaluate the *operands* of the expression
+
+#. evaluate the *operator* or *function* of the expression
+
+#. *apply* the operator/function to the evaluated operands
+
+.. note::
+
+   OCaml actually evaluates operands from right-to-left,
+   in contrast to most languages, which evaluate operands from left-to-right.
+   Evaluation order is *not* part of the substitution model,
+   and shouldn't make any difference.
+
+   Similarly, you can evaluate the operator/function before or after
+   evaluating the operands, and it won't make any difference in this model.
+
+The basic rule when evaluating a function call or an operator expression.
+Other expressions (such as ``let``, ``fun`` and ``if`` expressions)
+do not use the basic rule; they have their own evaluation rules.
+Such expressions are called *special forms*.
+
+
+Specific cases of the basic rule
+--------------------------------
+
+* Numbers evaluate to themselves: ``10`` |rarr| ``10``
+  (In fact, any literal data value evaluates to itself;
+  that's why it's called "literal".
+  For now, we are mostly working with numbers.)
+
+* Primitive (built-in) functions evaluate to the corresponding
+  internal procedure.  We can write this as either:
+  ``+`` |rarr| ``[primitive function +]``
+  or just ``+`` |rarr| ``+``
+
+* Variables that have been previously defined
+  are "looked up" (in some unspecified way)
+  and evaluate to the value that they were previously bound to.
+  (If they weren't bound to a value previously, it's an error.)
+
+
+``let``-bound names
+-------------------
+
+A ``let`` expression is considered to be a "special form".
+All that that means is that it has its own evaluation rule.
+We'll see other special forms shortly.
+
+There are two kinds of ``let``-bound names: top-level and in-expression.
+They evaluate differently.
+
+Top-level ``let`` expressions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A top-level ``let`` expression [1]_ looks like this:
+
+.. code-block:: ocaml
+
+   let <var> = <expr>
+
+for some variable name ``<var>`` and some expression ``<expr>``.
+For instance:
+
+.. code-block:: ocaml
+
+   let x = 2 + 3
+
+To evaluate this, you
+
+* evaluate the expression to the right of the ``=`` sign
+  (here, ``2 + 3``, which evaluates to ``5``);
+
+* "make an association" or "bind" the name (``x`` here) to
+  the value of the evaluated expression (``5``).
+  The details of how to make this association aren't important
+  for now, though we'll revisit this later.
+
+In this case, we make an association between the name ``x`` and the value
+``5``.  We can also say that we bind ``x`` to ``5``.
+
+After this expression is evaluated, the name ``x`` will be bound to the value
+``5`` for the rest of the evaluated code, unless ``x`` is given a new binding
+with a new top-level ``let`` expression.
+
+.. note::
+
+   A new binding for ``x`` would be something like:
+
+   .. code-block:: ocaml
+
+      let x = 42
+
+   From then on, any reference to ``x`` would get the new value.
+   This is *not* the same as assignment in an imperative language, though.
+   Instead, this code creates a new binding to ``x`` which
+   "shadows" the old binding, but the old binding still exists.
+
+
+Local ``let`` expressions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Another very common use of ``let`` is in what can be called "local"
+``let`` expressions.  These are expressions where a name is bound
+to a value and then immediately used in another expression, such as this:
+
+.. code-block:: ocaml
+
+   let x = 2 + 3 in x * x
+
+In this case, the name ``x`` has a meaning inside the body of the expression
+(the ``x * x`` part) but not outside.  To evaluate this, you:
+
+* evaluate the *binding expression*
+  (here, ``2 + 3``, which evaluates to ``5``),
+
+* bind the name to the value (here, bind ``x`` to ``5``),
+
+* and evaluate the *body expression* (here, ``x * x``).
+
+In the body expression, of course, you can use the name ``x``, which
+has a value (``5``).  Outside of this expression, the name ``x``
+either has no value (if it wasn't bound before) or has the value it
+previously had (if it was).
+Remember: you aren't changing a previous binding (to ``x``),
+you're creating a new one that is used only in a single expression.
+
+
+``fun`` expressions
+-------------------
+
+TODO
+
+Function application
+--------------------
+
+TODO
+
+Applying built-in functions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+TODO
+
+Applying user-defined functions: substitution
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+TODO
+
+
+
+----
+
+.. rubric:: Footnotes
+
+.. [1] Technically speaking, this isn't a true expression,
+   since it doesn't return a value.
+   It would be more accurate to call this a top-level ``let`` *binding*.
+
