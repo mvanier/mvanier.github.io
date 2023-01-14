@@ -1,3 +1,5 @@
+.. _subst:
+
 The substitution model
 ======================
 
@@ -225,26 +227,6 @@ you're creating a new one that is used only in a single expression.
 ``if`` expressions
 ------------------
 
-``if`` expressions can be a bit of a shock to new OCaml programmers,
-since most people are used to ``if`` being a *statement* and not an
-*expression*.  In a statement, you are saying
-"if this is true, then do these things, otherwise do these
-other things".
-In an ``if`` expression, in contrast, you are saying
-"if this is true, then evaluate this, otherwise evaluate that".
-This also means that an ``if`` expression can be a subexpression of
-another expression, like this:
-
-.. code-block:: text
-
-   3 + (if x > y then x + y else x - y)
-
-And in fact, you don't even need the parentheses here.
-
-
-The ``if`` evaluation rule
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 ``if`` expressions consist of three subexpressions:
 
 * the *test* subexpression (between the ``if`` and the ``then`` keywords)
@@ -274,39 +256,8 @@ and an ``else`` subexpression.
 With respect to the substitution model, we will always have
 ``else`` subexpressions in ``if`` expressions.
 
-But it is legal in OCaml to leave out the ``else`` subexpression.
-If you do that, OCaml will assume you wanted the ``else`` subexpression
-to be a "unit" value (written as ``()`` and with type ``unit``).
-So something like this:
-
-.. code-block:: text
-
-   if x > y then 10
-
-would be converted by OCaml into:
-
-.. code-block:: text
-
-   if x > y then 10 else ()
-
-which is a type error.
-This can often be confusing to new OCaml programmers.
-
-Leaving out the ``else`` is only useful if the ``then`` expression
-returns the ``()`` value
-(since both the ``then`` and ``else`` expressions
-have to have the same type).
-This happens a lot in imperative code.
-For instance, if you want to print something,
-the ``Printf.printf`` function returns the ``()`` value.
-So you can write:
-
-.. code-block:: text
-
-   if x > y then Printf.printf "x is bigger than y!\n"
-
-and it will type check and do what you want.
-
+To learn more about how ``if`` expressions without ``else`` subexpressions
+work, see the :doc:`OCaml cheat sheet </content/readings/ocaml_cheat_sheet>`.
 
 
 ``fun`` expressions

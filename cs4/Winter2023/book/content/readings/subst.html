@@ -64,7 +64,6 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#if-expressions"><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#the-if-evaluation-rule">The <code class="docutils literal notranslate"><span class="pre">if</span></code> evaluation rule</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#if-without-else"><code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code></a></li>
 </ul>
 </li>
@@ -107,7 +106,7 @@
            <div itemprop="articleBody">
              
   <section id="the-substitution-model">
-<h1>The substitution model<a class="headerlink" href="#the-substitution-model" title="Permalink to this heading"></a></h1>
+<span id="subst"></span><h1>The substitution model<a class="headerlink" href="#the-substitution-model" title="Permalink to this heading"></a></h1>
 <p>This document is a summary of the rules of the substitution model,
 discussed in lecture 2.</p>
 <section id="overview">
@@ -284,21 +283,6 @@ you’re creating a new one that is used only in a single expression.</p>
 </section>
 <section id="if-expressions">
 <h2><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions<a class="headerlink" href="#if-expressions" title="Permalink to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions can be a bit of a shock to new OCaml programmers,
-since most people are used to <code class="docutils literal notranslate"><span class="pre">if</span></code> being a <em>statement</em> and not an
-<em>expression</em>.  In a statement, you are saying
-“if this is true, then do these things, otherwise do these
-other things”.
-In an <code class="docutils literal notranslate"><span class="pre">if</span></code> expression, in contrast, you are saying
-“if this is true, then evaluate this, otherwise evaluate that”.
-This also means that an <code class="docutils literal notranslate"><span class="pre">if</span></code> expression can be a subexpression of
-another expression, like this:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>3 + (if x &gt; y then x + y else x - y)
-</pre></div>
-</div>
-<p>And in fact, you don’t even need the parentheses here.</p>
-<section id="the-if-evaluation-rule">
-<h3>The <code class="docutils literal notranslate"><span class="pre">if</span></code> evaluation rule<a class="headerlink" href="#the-if-evaluation-rule" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions consist of three subexpressions:</p>
 <ul class="simple">
 <li><p>the <em>test</em> subexpression (between the <code class="docutils literal notranslate"><span class="pre">if</span></code> and the <code class="docutils literal notranslate"><span class="pre">then</span></code> keywords)</p></li>
@@ -316,7 +300,6 @@ evaluate the <code class="docutils literal notranslate"><span class="pre">else</
 <p>One consequence of this is that you never evaluate both the
 <code class="docutils literal notranslate"><span class="pre">then</span></code> and <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpressions.
 This is why <code class="docutils literal notranslate"><span class="pre">if</span></code> can’t be a function (it’s not just the syntax!) <a class="footnote-reference brackets" href="#id5" id="id2">2</a></p>
-</section>
 <section id="if-without-else">
 <h3><code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code><a class="headerlink" href="#if-without-else" title="Permalink to this heading"></a></h3>
 <p>When writing purely functional code in OCaml,
@@ -325,31 +308,8 @@ and an <code class="docutils literal notranslate"><span class="pre">else</span><
 (These are sometimes called the “then clause” and the “else clause”.)
 With respect to the substitution model, we will always have
 <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpressions in <code class="docutils literal notranslate"><span class="pre">if</span></code> expressions.</p>
-<p>But it is legal in OCaml to leave out the <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpression.
-If you do that, OCaml will assume you wanted the <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpression
-to be a “unit” value (written as <code class="docutils literal notranslate"><span class="pre">()</span></code> and with type <code class="docutils literal notranslate"><span class="pre">unit</span></code>).
-So something like this:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>if x &gt; y then 10
-</pre></div>
-</div>
-<p>would be converted by OCaml into:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>if x &gt; y then 10 else ()
-</pre></div>
-</div>
-<p>which is a type error.
-This can often be confusing to new OCaml programmers.</p>
-<p>Leaving out the <code class="docutils literal notranslate"><span class="pre">else</span></code> is only useful if the <code class="docutils literal notranslate"><span class="pre">then</span></code> expression
-returns the <code class="docutils literal notranslate"><span class="pre">()</span></code> value
-(since both the <code class="docutils literal notranslate"><span class="pre">then</span></code> and <code class="docutils literal notranslate"><span class="pre">else</span></code> expressions
-have to have the same type).
-This happens a lot in imperative code.
-For instance, if you want to print something,
-the <code class="docutils literal notranslate"><span class="pre">Printf.printf</span></code> function returns the <code class="docutils literal notranslate"><span class="pre">()</span></code> value.
-So you can write:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>if x &gt; y then Printf.printf &quot;x is bigger than y!\n&quot;
-</pre></div>
-</div>
-<p>and it will type check and do what you want.</p>
+<p>To learn more about how <code class="docutils literal notranslate"><span class="pre">if</span></code> expressions without <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpressions
+work, see the <a class="reference internal" href="ocaml_cheat_sheet.html"><span class="doc">OCaml cheat sheet</span></a>.</p>
 </section>
 </section>
 <section id="fun-expressions">
