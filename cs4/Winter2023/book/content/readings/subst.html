@@ -63,10 +63,17 @@
 <li class="toctree-l4"><a class="reference internal" href="#local-let-expressions">Local <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#if-expressions"><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-if-evaluation-rule">The <code class="docutils literal notranslate"><span class="pre">if</span></code> evaluation rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#if-without-else"><code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#fun-expressions"><code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#function-application">Function application</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#applying-built-in-functions">Applying built-in functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#applying-built-in-functions-or-operators">Applying built-in functions or operators</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#applying-user-defined-functions-substitution">Applying user-defined functions: substitution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recursion">Recursion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nested-fun-expressions-and-shielding">Nested <code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions and shielding</a></li>
 </ul>
 </li>
 </ul>
@@ -130,27 +137,38 @@ and then operator <em>precedence</em> should be made explicit using parentheses.
 <section id="desugaring">
 <h3>Desugaring<a class="headerlink" href="#desugaring" title="Permalink to this heading"></a></h3>
 <p>The main kind of desugaring we need is to replace expressions of this form:</p>
-<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="o">...</span>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="o">...</span>
 </pre></div>
 </div>
 <p>with this:</p>
-<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="o">=</span> <span class="k">fun</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="o">...</span>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="o">=</span> <span class="k">fun</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="o">...</span>
 </pre></div>
 </div>
 <p>After desugaring, all <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions are “simple”
 <em>i.e.</em> they bind a single name to a value
 (the result of evaluating the expression on the right-hand side
 of the <code class="docutils literal notranslate"><span class="pre">=</span></code>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If we are really being picky, we could desugar this further to:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="o">=</span> <span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="k">fun</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>but we don’t require that.  This is because of function <em>currying</em>,
+which is the way that OCaml interprets functions with multiple arguments.</p>
+<p>We recommend that you don’t do this in your written evaluations,
+unless you have to for some reason.</p>
+</div>
 </section>
 <section id="precedence">
 <h3>Precedence<a class="headerlink" href="#precedence" title="Permalink to this heading"></a></h3>
 <p>Operator precedence should be made explicit by wrapping parentheses around
 nested operator expressions.  For instance, this code:</p>
-<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">7</span>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">7</span>
 </pre></div>
 </div>
 <p>would become:</p>
-<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="o">+</span> <span class="o">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">7</span><span class="o">)</span>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="o">+</span> <span class="o">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">7</span><span class="o">)</span>
 </pre></div>
 </div>
 <p>The full precedence table of OCaml operators is <a class="reference external" href="https://v2.ocaml.org/manual/expr.html#ss%3Aprecedence-and-associativity">here</a>.</p>
@@ -190,6 +208,7 @@ For now, we are mostly working with numbers.)</p></li>
 <li><p>Primitive (built-in) functions evaluate to the corresponding
 internal procedure.  We can write this as either:
 <code class="docutils literal notranslate"><span class="pre">+</span></code> <span class="raw-html">&rarr;</span> <code class="docutils literal notranslate"><span class="pre">[primitive</span> <span class="pre">function</span> <span class="pre">+]</span></code>
+(<code class="docutils literal notranslate"><span class="pre">[primitive</span> <span class="pre">procedure</span> <span class="pre">+]</span></code> is also OK)
 or just <code class="docutils literal notranslate"><span class="pre">+</span></code> <span class="raw-html">&rarr;</span> <code class="docutils literal notranslate"><span class="pre">+</span></code></p></li>
 <li><p>Variables that have been previously defined
 are “looked up” (in some unspecified way)
@@ -199,14 +218,11 @@ and evaluate to the value that they were previously bound to.
 </section>
 <section id="let-bound-names">
 <h2><code class="docutils literal notranslate"><span class="pre">let</span></code>-bound names<a class="headerlink" href="#let-bound-names" title="Permalink to this heading"></a></h2>
-<p>A <code class="docutils literal notranslate"><span class="pre">let</span></code> expression is considered to be a “special form”.
-All that that means is that it has its own evaluation rule.
-We’ll see other special forms shortly.</p>
 <p>There are two kinds of <code class="docutils literal notranslate"><span class="pre">let</span></code>-bound names: top-level and in-expression.
 They evaluate differently.</p>
 <section id="top-level-let-expressions">
 <h3>Top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#top-level-let-expressions" title="Permalink to this heading"></a></h3>
-<p>A top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> expression <a class="footnote-reference brackets" href="#id2" id="id1">1</a> looks like this:</p>
+<p>A top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> expression <a class="footnote-reference brackets" href="#id4" id="id1">1</a> looks like this:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="o">&lt;</span><span class="n">var</span><span class="o">&gt;</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">expr</span><span class="o">&gt;</span>
 </pre></div>
 </div>
@@ -236,15 +252,16 @@ with a new top-level <code class="docutils literal notranslate"><span class="pre
 </pre></div>
 </div>
 <p>From then on, any reference to <code class="docutils literal notranslate"><span class="pre">x</span></code> would get the new value.
-This is <em>not</em> the same as assignment in an imperative language, though.
-Instead, this code creates a new binding to <code class="docutils literal notranslate"><span class="pre">x</span></code> which
-“shadows” the old binding, but the old binding still exists.</p>
+This is <em>not</em> the same as assignment in an imperative language,
+because it doesn’t overwrite the old binding.
+Instead, this code creates a <em>new</em> binding to <code class="docutils literal notranslate"><span class="pre">x</span></code> which
+“shadows” the old binding, but the old binding still exists,
+and in some cases can still have effects.</p>
 </div>
 </section>
 <section id="local-let-expressions">
 <h3>Local <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#local-let-expressions" title="Permalink to this heading"></a></h3>
-<p>Another very common use of <code class="docutils literal notranslate"><span class="pre">let</span></code> is in what can be called “local”
-<code class="docutils literal notranslate"><span class="pre">let</span></code> expressions.  These are expressions where a name is bound
+<p>A “local” <code class="docutils literal notranslate"><span class="pre">let</span></code> expression is a <code class="docutils literal notranslate"><span class="pre">let</span></code> expression where a name is bound
 to a value and then immediately used in another expression, such as this:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span> <span class="k">in</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
 </pre></div>
@@ -265,27 +282,264 @@ Remember: you aren’t changing a previous binding (to <code class="docutils lit
 you’re creating a new one that is used only in a single expression.</p>
 </section>
 </section>
+<section id="if-expressions">
+<h2><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions<a class="headerlink" href="#if-expressions" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions can be a bit of a shock to new OCaml programmers,
+since most people are used to <code class="docutils literal notranslate"><span class="pre">if</span></code> being a <em>statement</em> and not an
+<em>expression</em>.  In a statement, you are saying
+“if this is true, then do these things, otherwise do these
+other things”.
+In an <code class="docutils literal notranslate"><span class="pre">if</span></code> expression, in contrast, you are saying
+“if this is true, then evaluate this, otherwise evaluate that”.
+This also means that an <code class="docutils literal notranslate"><span class="pre">if</span></code> expression can be a subexpression of
+another expression, like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>3 + (if x &gt; y then x + y else x - y)
+</pre></div>
+</div>
+<p>And in fact, you don’t even need the parentheses here.</p>
+<section id="the-if-evaluation-rule">
+<h3>The <code class="docutils literal notranslate"><span class="pre">if</span></code> evaluation rule<a class="headerlink" href="#the-if-evaluation-rule" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions consist of three subexpressions:</p>
+<ul class="simple">
+<li><p>the <em>test</em> subexpression (between the <code class="docutils literal notranslate"><span class="pre">if</span></code> and the <code class="docutils literal notranslate"><span class="pre">then</span></code> keywords)</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">then</span></code> subexpression (between the <code class="docutils literal notranslate"><span class="pre">then</span></code> and the <code class="docutils literal notranslate"><span class="pre">else</span></code> keywords)</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpression (everything following the <code class="docutils literal notranslate"><span class="pre">else</span></code> keyword)</p></li>
+</ul>
+<p>They have the following evaluation rule.</p>
+<ol class="arabic simple">
+<li><p>Evaluate the test subexpression.</p></li>
+<li><p>If the test subexpression evaluates to <code class="docutils literal notranslate"><span class="pre">true</span></code>,
+evaluate the <code class="docutils literal notranslate"><span class="pre">then</span></code> subexpression.</p></li>
+<li><p>If the test subexpression evaluates to <code class="docutils literal notranslate"><span class="pre">false</span></code>,
+evaluate the <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpression.</p></li>
+</ol>
+<p>One consequence of this is that you never evaluate both the
+<code class="docutils literal notranslate"><span class="pre">then</span></code> and <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpressions.
+This is why <code class="docutils literal notranslate"><span class="pre">if</span></code> can’t be a function (it’s not just the syntax!) <a class="footnote-reference brackets" href="#id5" id="id2">2</a></p>
+</section>
+<section id="if-without-else">
+<h3><code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code><a class="headerlink" href="#if-without-else" title="Permalink to this heading"></a></h3>
+<p>When writing purely functional code in OCaml,
+<code class="docutils literal notranslate"><span class="pre">if</span></code> expressions always have both a <code class="docutils literal notranslate"><span class="pre">then</span></code> subexpression
+and an <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpression.
+(These are sometimes called the “then clause” and the “else clause”.)
+With respect to the substitution model, we will always have
+<code class="docutils literal notranslate"><span class="pre">else</span></code> subexpressions in <code class="docutils literal notranslate"><span class="pre">if</span></code> expressions.</p>
+<p>But it is legal in OCaml to leave out the <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpression.
+If you do that, OCaml will assume you wanted the <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpression
+to be a “unit” value (written as <code class="docutils literal notranslate"><span class="pre">()</span></code> and with type <code class="docutils literal notranslate"><span class="pre">unit</span></code>).
+So something like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>if x &gt; y then 10
+</pre></div>
+</div>
+<p>would be converted by OCaml into:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>if x &gt; y then 10 else ()
+</pre></div>
+</div>
+<p>which is a type error.
+This can often be confusing to new OCaml programmers.</p>
+<p>Leaving out the <code class="docutils literal notranslate"><span class="pre">else</span></code> is only useful if the <code class="docutils literal notranslate"><span class="pre">then</span></code> expression
+returns the <code class="docutils literal notranslate"><span class="pre">()</span></code> value
+(since both the <code class="docutils literal notranslate"><span class="pre">then</span></code> and <code class="docutils literal notranslate"><span class="pre">else</span></code> expressions
+have to have the same type).
+This happens a lot in imperative code.
+For instance, if you want to print something,
+the <code class="docutils literal notranslate"><span class="pre">Printf.printf</span></code> function returns the <code class="docutils literal notranslate"><span class="pre">()</span></code> value.
+So you can write:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>if x &gt; y then Printf.printf &quot;x is bigger than y!\n&quot;
+</pre></div>
+</div>
+<p>and it will type check and do what you want.</p>
+</section>
+</section>
 <section id="fun-expressions">
 <h2><code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions<a class="headerlink" href="#fun-expressions" title="Permalink to this heading"></a></h2>
-<p>TODO</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">fun</span></code> expression (like <code class="docutils literal notranslate"><span class="pre">fun</span> <span class="pre">x</span> <span class="pre">y</span> <span class="pre">-&gt;</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">y</span></code>) represents an anonymous
+function.
+In the substitution model, a <code class="docutils literal notranslate"><span class="pre">fun</span></code> expression is usually the result of
+desugaring a regular function definition, like</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</pre></div>
+</div>
+<p>which desugars to:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="o">=</span> <span class="k">fun</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions consist of two parts:</p>
+<ul class="simple">
+<li><p>the <em>formal parameters</em> of the function (here, <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>),</p></li>
+<li><p>the <em>body</em> of the function (here, <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">y</span></code>).</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions are trivial to evaluate:
+you basically just leave them alone.
+For this reason, in written evaluations you can write:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>fun x y -&gt; x + y  --&gt;  fun x y -&gt; x + y
+</pre></div>
+</div>
+<p>or just:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>fun x y -&gt; x + y  --&gt;  itself
+</pre></div>
+</div>
 </section>
 <section id="function-application">
 <h2>Function application<a class="headerlink" href="#function-application" title="Permalink to this heading"></a></h2>
-<p>TODO</p>
-<section id="applying-built-in-functions">
-<h3>Applying built-in functions<a class="headerlink" href="#applying-built-in-functions" title="Permalink to this heading"></a></h3>
-<p>TODO</p>
+<p>Function application is at the heart of the substitution model.
+There are two cases.</p>
+<section id="applying-built-in-functions-or-operators">
+<h3>Applying built-in functions or operators<a class="headerlink" href="#applying-built-in-functions-or-operators" title="Permalink to this heading"></a></h3>
+<p>Applying a built-in function or operator is simple: you just do it.
+For instance:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Evaluate: 2 + 3
+  2 --&gt; 2
+  3 --&gt; 3
+  + --&gt; [primitive function +]
+  apply + to 2, 3 --&gt; 5
+
+Evaluate: abs (-10)
+  -10 --&gt; -10
+  abs --&gt; [primitive function abs]
+  apply abs to -10 --&gt; 10
+</pre></div>
+</div>
+<p>In some cases we’ll allow you to shorten lines like</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>abs --&gt; [primitive function abs]
+</pre></div>
+</div>
+<p>to just:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>abs --&gt; abs
+</pre></div>
+</div>
+<p>Don’t do this unless we explicitly say it’s OK.</p>
 </section>
 <section id="applying-user-defined-functions-substitution">
 <h3>Applying user-defined functions: substitution<a class="headerlink" href="#applying-user-defined-functions-substitution" title="Permalink to this heading"></a></h3>
+<p>Now we come to the “substitution” part of the substitution model.
+It happens when you are applying a user-defined function
+(which means a <code class="docutils literal notranslate"><span class="pre">fun</span></code> expression, or a function which gets desugared
+to a <code class="docutils literal notranslate"><span class="pre">fun</span></code> expression) to its arguments
+(which have already been evaluated to values, so they aren’t expressions
+anymore).</p>
+<p>The rules for applying user-define functions are:</p>
+<ol class="arabic simple">
+<li><p><em>Substitute</em> the function argument variables (formal parameters)
+with the values given in the call
+everywhere they occur in the function body.</p></li>
+<li><p>Evaluate the resulting expression.</p></li>
+</ol>
+<p>For the most part, the substitution process is straightforward.
+For each function parameter, you substitute the argument value
+for the function parameter name in the function body
+to get the substituted expression, which you then evaluate.
+For instance, this expression:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(fun x y -&gt; x + y) 2 3
+</pre></div>
+</div>
+<p>evaluates as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Evaluate: (fun x y -&gt; x + y) 2 3
+  2 --&gt; 2
+  3 --&gt; 3
+  (fun x y -&gt; x + y) --&gt; itself
+  apply (fun x y -&gt; x + y) to 2, 3
+<span class="hll">    substitute 2 for x, 3 for y in x + y --&gt; 2 + 3
+</span>    evaluate: 2 + 3
+      2 --&gt; 2
+      3 --&gt; 3
+      + --&gt; [primitive function +]
+      apply + to 2, 3 --&gt; 5
+</pre></div>
+</div>
+<p>You can even evaluate inside a complex expression
+(for instance, an <code class="docutils literal notranslate"><span class="pre">if</span></code> expression):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Evaluate (fun x y -&gt; if x &gt; y then x + y else x - y) 2 3
+  2 --&gt; 2
+  3 --&gt; 3
+  (fun x y -&gt; ...) --&gt; itself
+  apply (fun x y -&gt; ...) to 2, 3
+<span class="hll">    substitute 2 for x, 3 for y in if x &gt; y then x + y else x - y
+</span><span class="hll">    --&gt; if 2 &gt; 3 then 2 + 3 else 2 - 3
+</span>    evaluate: if 2 &gt; 3 then 2 + 3 else 2 - 3
+      if is a special form; evaluate 2 &gt; 3
+        2 --&gt; 2
+        3 --&gt; 3
+        &gt; --&gt; [primitive function &gt;]
+        apply &gt; to 2, 3 --&gt; false
+      For false case, evaluate else clause: 2 - 3
+        2 --&gt; 2
+        3 --&gt; 3
+        - --&gt; [primitive function -]
+        apply - to 2, 3 --&gt; -1
+</pre></div>
+</div>
+<p>Notice that the substitution goes right inside the <code class="docutils literal notranslate"><span class="pre">if</span></code> expression,
+regardless of which branch of the <code class="docutils literal notranslate"><span class="pre">if</span></code>
+will eventually end up being evaluated.
+(Here we also see that for long <code class="docutils literal notranslate"><span class="pre">fun</span></code> expression bodies,
+we can abbreviate them with <code class="docutils literal notranslate"><span class="pre">...</span></code>.)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On the other hand, we can’t substitute inside a nested <code class="docutils literal notranslate"><span class="pre">fun</span></code>
+expression in all cases.  See below for more details.</p>
+</div>
+</section>
+<section id="recursion">
+<h3>Recursion<a class="headerlink" href="#recursion" title="Permalink to this heading"></a></h3>
+<p>Recursion doesn’t require any special treatment in the substitution model,
+except that you have to replace a function name with the correct
+definition of that function when looking up the name.
+This is usually obvious and probably won’t cause you any problems.
+It could get weird in pathological cases where you redefine a name.
+Here’s a silly example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let factorial n = 0   (* obviously wrong *)
+
+(* Redefine factorial. *)
+let factorial n =     (* oops, forgot the &quot;rec&quot; *)
+  if n = 0 then
+    1
+  else
+    n * factorial (n - 1)
+</pre></div>
+</div>
+<p>When evaluating this function, the “recursive” call to <code class="docutils literal notranslate"><span class="pre">factorial</span></code>
+will actually pick up the previous definition,
+and <code class="docutils literal notranslate"><span class="pre">factorial</span></code> will return <code class="docutils literal notranslate"><span class="pre">0</span></code> for any input but <code class="docutils literal notranslate"><span class="pre">0</span></code>.
+The solution is to include the <code class="docutils literal notranslate"><span class="pre">rec</span></code> in the second definition:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let factorial n = 0   (* obviously wrong *)
+
+(* Redefine factorial. *)
+let rec factorial n =
+  if n = 0 then
+    1
+  else
+    n * factorial (n - 1)
+</pre></div>
+</div>
+<p>Then everything will work correctly because the <code class="docutils literal notranslate"><span class="pre">rec</span></code> tells OCaml
+that any references to <code class="docutils literal notranslate"><span class="pre">factorial</span></code> inside the body of <code class="docutils literal notranslate"><span class="pre">factorial</span></code>
+represent the function being defined. <a class="footnote-reference brackets" href="#id6" id="id3">3</a></p>
+<p>Of course, this normally doesn’t come up
+because you normally don’t redefine functions in a file,
+but something like this could happen when defining functions interactively
+inside the OCaml interpreter.
+This can lead to very peculiar bugs.</p>
+</section>
+<section id="nested-fun-expressions-and-shielding">
+<h3>Nested <code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions and shielding<a class="headerlink" href="#nested-fun-expressions-and-shielding" title="Permalink to this heading"></a></h3>
 <p>TODO</p>
 <hr class="docutils" />
 <p class="rubric">Footnotes</p>
 <dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>Technically speaking, this isn’t a true expression,
 since it doesn’t return a value.
 It would be more accurate to call this a top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> <em>binding</em>.</p>
+</dd>
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>In a lazy functional language like Haskell, <code class="docutils literal notranslate"><span class="pre">if</span></code> <em>could</em> be
+a function, except for the syntax.</p>
+</dd>
+<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>This would make an awesome assignment problem,
+but I’m not quite that mean.</p>
 </dd>
 </dl>
 </section>

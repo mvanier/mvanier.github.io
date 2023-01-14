@@ -39,13 +39,13 @@ Desugaring
 
 The main kind of desugaring we need is to replace expressions of this form:
 
-.. code-block:: OCaml
+.. code-block:: ocaml
 
    let f x y = ...
 
 with this:
 
-.. code-block:: OCaml
+.. code-block:: ocaml
 
    let f = fun x y -> ...
 
@@ -54,19 +54,34 @@ After desugaring, all ``let`` expressions are "simple"
 (the result of evaluating the expression on the right-hand side
 of the ``=``).
 
+.. note::
+
+   If we are really being picky, we could desugar this further to:
+
+   .. code-block:: ocaml
+   
+      let f = fun x -> fun y -> ...
+
+   but we don't require that.  This is because of function *currying*,
+   which is the way that OCaml interprets functions with multiple arguments.
+   
+   We recommend that you don't do this in your written evaluations,
+   unless you have to for some reason.
+
+
 Precedence
 ^^^^^^^^^^
 
 Operator precedence should be made explicit by wrapping parentheses around
 nested operator expressions.  For instance, this code:
 
-.. code-block:: OCaml
+.. code-block:: ocaml
 
    1 + 2 * 7
 
 would become:
 
-.. code-block:: OCaml
+.. code-block:: ocaml
 
    1 + (2 * 7)
 
@@ -115,6 +130,7 @@ Specific cases of the basic rule
 * Primitive (built-in) functions evaluate to the corresponding
   internal procedure.  We can write this as either:
   ``+`` |rarr| ``[primitive function +]``
+  (``[primitive procedure +]`` is also OK)
   or just ``+`` |rarr| ``+``
 
 * Variables that have been previously defined
@@ -125,10 +141,6 @@ Specific cases of the basic rule
 
 ``let``-bound names
 -------------------
-
-A ``let`` expression is considered to be a "special form".
-All that that means is that it has its own evaluation rule.
-We'll see other special forms shortly.
 
 There are two kinds of ``let``-bound names: top-level and in-expression.
 They evaluate differently.
@@ -175,16 +187,17 @@ with a new top-level ``let`` expression.
       let x = 42
 
    From then on, any reference to ``x`` would get the new value.
-   This is *not* the same as assignment in an imperative language, though.
-   Instead, this code creates a new binding to ``x`` which
-   "shadows" the old binding, but the old binding still exists.
+   This is *not* the same as assignment in an imperative language,
+   because it doesn't overwrite the old binding.
+   Instead, this code creates a *new* binding to ``x`` which
+   "shadows" the old binding, but the old binding still exists,
+   and in some cases can still have effects.
 
 
 Local ``let`` expressions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Another very common use of ``let`` is in what can be called "local"
-``let`` expressions.  These are expressions where a name is bound
+A "local" ``let`` expression is a ``let`` expression where a name is bound
 to a value and then immediately used in another expression, such as this:
 
 .. code-block:: ocaml
@@ -209,23 +222,304 @@ Remember: you aren't changing a previous binding (to ``x``),
 you're creating a new one that is used only in a single expression.
 
 
+``if`` expressions
+------------------
+
+``if`` expressions can be a bit of a shock to new OCaml programmers,
+since most people are used to ``if`` being a *statement* and not an
+*expression*.  In a statement, you are saying
+"if this is true, then do these things, otherwise do these
+other things".
+In an ``if`` expression, in contrast, you are saying
+"if this is true, then evaluate this, otherwise evaluate that".
+This also means that an ``if`` expression can be a subexpression of
+another expression, like this:
+
+.. code-block:: text
+
+   3 + (if x > y then x + y else x - y)
+
+And in fact, you don't even need the parentheses here.
+
+
+The ``if`` evaluation rule
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``if`` expressions consist of three subexpressions:
+
+* the *test* subexpression (between the ``if`` and the ``then`` keywords)
+* the ``then`` subexpression (between the ``then`` and the ``else`` keywords)
+* the ``else`` subexpression (everything following the ``else`` keyword)
+
+They have the following evaluation rule.
+
+#. Evaluate the test subexpression.
+#. If the test subexpression evaluates to ``true``,
+   evaluate the ``then`` subexpression.
+#. If the test subexpression evaluates to ``false``,
+   evaluate the ``else`` subexpression.
+
+One consequence of this is that you never evaluate both the
+``then`` and ``else`` subexpressions.
+This is why ``if`` can't be a function (it's not just the syntax!) [2]_
+
+
+``if`` without ``else``
+^^^^^^^^^^^^^^^^^^^^^^^
+
+When writing purely functional code in OCaml,
+``if`` expressions always have both a ``then`` subexpression
+and an ``else`` subexpression.
+(These are sometimes called the "then clause" and the "else clause".)
+With respect to the substitution model, we will always have
+``else`` subexpressions in ``if`` expressions.
+
+But it is legal in OCaml to leave out the ``else`` subexpression.
+If you do that, OCaml will assume you wanted the ``else`` subexpression
+to be a "unit" value (written as ``()`` and with type ``unit``).
+So something like this:
+
+.. code-block:: text
+
+   if x > y then 10
+
+would be converted by OCaml into:
+
+.. code-block:: text
+
+   if x > y then 10 else ()
+
+which is a type error.
+This can often be confusing to new OCaml programmers.
+
+Leaving out the ``else`` is only useful if the ``then`` expression
+returns the ``()`` value
+(since both the ``then`` and ``else`` expressions
+have to have the same type).
+This happens a lot in imperative code.
+For instance, if you want to print something,
+the ``Printf.printf`` function returns the ``()`` value.
+So you can write:
+
+.. code-block:: text
+
+   if x > y then Printf.printf "x is bigger than y!\n"
+
+and it will type check and do what you want.
+
+
+
 ``fun`` expressions
 -------------------
 
-TODO
+A ``fun`` expression (like ``fun x y -> x + y``) represents an anonymous
+function.
+In the substitution model, a ``fun`` expression is usually the result of
+desugaring a regular function definition, like
+
+.. code-block:: ocaml
+
+   let f x y = x + y
+
+which desugars to:
+
+.. code-block:: ocaml
+
+   let f = fun x y -> x + y
+
+``fun`` expressions consist of two parts:
+
+* the *formal parameters* of the function (here, ``x`` and ``y``),
+* the *body* of the function (here, ``x + y``).
+
+``fun`` expressions are trivial to evaluate:
+you basically just leave them alone.
+For this reason, in written evaluations you can write:
+
+.. code-block:: text
+
+   fun x y -> x + y  -->  fun x y -> x + y
+
+or just:
+
+.. code-block:: text
+
+   fun x y -> x + y  -->  itself
+
 
 Function application
 --------------------
 
-TODO
+Function application is at the heart of the substitution model.
+There are two cases.
 
-Applying built-in functions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TODO
+Applying built-in functions or operators
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Applying a built-in function or operator is simple: you just do it.
+For instance:
+
+.. code-block:: text
+
+   Evaluate: 2 + 3
+     2 --> 2
+     3 --> 3
+     + --> [primitive function +]
+     apply + to 2, 3 --> 5
+
+   Evaluate: abs (-10)
+     -10 --> -10
+     abs --> [primitive function abs]
+     apply abs to -10 --> 10
+
+In some cases we'll allow you to shorten lines like
+
+.. code-block:: text
+
+     abs --> [primitive function abs]
+
+to just:
+
+.. code-block:: text
+
+     abs --> abs
+
+Don't do this unless we explicitly say it's OK.
+
 
 Applying user-defined functions: substitution
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Now we come to the "substitution" part of the substitution model.
+It happens when you are applying a user-defined function
+(which means a ``fun`` expression, or a function which gets desugared
+to a ``fun`` expression) to its arguments
+(which have already been evaluated to values, so they aren't expressions
+anymore).
+
+The rules for applying user-define functions are:
+
+#. *Substitute* the function argument variables (formal parameters)
+   with the values given in the call
+   everywhere they occur in the function body.
+
+#. Evaluate the resulting expression.
+
+For the most part, the substitution process is straightforward.
+For each function parameter, you substitute the argument value
+for the function parameter name in the function body
+to get the substituted expression, which you then evaluate.
+For instance, this expression:
+
+.. code-block:: text
+
+   (fun x y -> x + y) 2 3
+
+evaluates as follows:
+
+.. code-block:: text
+   :emphasize-lines: 6 
+
+   Evaluate: (fun x y -> x + y) 2 3
+     2 --> 2
+     3 --> 3
+     (fun x y -> x + y) --> itself
+     apply (fun x y -> x + y) to 2, 3
+       substitute 2 for x, 3 for y in x + y --> 2 + 3
+       evaluate: 2 + 3
+         2 --> 2
+         3 --> 3
+         + --> [primitive function +]
+         apply + to 2, 3 --> 5
+
+You can even evaluate inside a complex expression
+(for instance, an ``if`` expression):
+
+.. code-block:: text
+   :emphasize-lines: 6, 7
+
+   Evaluate (fun x y -> if x > y then x + y else x - y) 2 3
+     2 --> 2
+     3 --> 3
+     (fun x y -> ...) --> itself
+     apply (fun x y -> ...) to 2, 3
+       substitute 2 for x, 3 for y in if x > y then x + y else x - y
+       --> if 2 > 3 then 2 + 3 else 2 - 3
+       evaluate: if 2 > 3 then 2 + 3 else 2 - 3
+         if is a special form; evaluate 2 > 3
+           2 --> 2
+           3 --> 3
+           > --> [primitive function >]
+           apply > to 2, 3 --> false
+         For false case, evaluate else clause: 2 - 3
+           2 --> 2
+           3 --> 3
+           - --> [primitive function -]
+           apply - to 2, 3 --> -1
+
+Notice that the substitution goes right inside the ``if`` expression,
+regardless of which branch of the ``if``
+will eventually end up being evaluated.
+(Here we also see that for long ``fun`` expression bodies,
+we can abbreviate them with ``...``.)
+
+.. note::
+
+   On the other hand, we can't substitute inside a nested ``fun``
+   expression in all cases.  See below for more details.
+
+
+Recursion
+^^^^^^^^^
+
+Recursion doesn't require any special treatment in the substitution model,
+except that you have to replace a function name with the correct
+definition of that function when looking up the name.
+This is usually obvious and probably won't cause you any problems.
+It could get weird in pathological cases where you redefine a name.
+Here's a silly example:
+
+.. code-block:: text
+
+   let factorial n = 0   (* obviously wrong *)
+
+   (* Redefine factorial. *)
+   let factorial n =     (* oops, forgot the "rec" *)
+     if n = 0 then
+       1
+     else
+       n * factorial (n - 1)
+
+When evaluating this function, the "recursive" call to ``factorial``
+will actually pick up the previous definition,
+and ``factorial`` will return ``0`` for any input but ``0``.
+The solution is to include the ``rec`` in the second definition:
+
+.. code-block:: text
+
+   let factorial n = 0   (* obviously wrong *)
+
+   (* Redefine factorial. *)
+   let rec factorial n =
+     if n = 0 then
+       1
+     else
+       n * factorial (n - 1)
+
+Then everything will work correctly because the ``rec`` tells OCaml
+that any references to ``factorial`` inside the body of ``factorial``
+represent the function being defined. [3]_
+
+Of course, this normally doesn't come up
+because you normally don't redefine functions in a file,
+but something like this could happen when defining functions interactively
+inside the OCaml interpreter.
+This can lead to very peculiar bugs.
+
+
+Nested ``fun`` expressions and shielding
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 TODO
 
@@ -239,3 +533,8 @@ TODO
    since it doesn't return a value.
    It would be more accurate to call this a top-level ``let`` *binding*.
 
+.. [2] In a lazy functional language like Haskell, ``if`` *could* be
+   a function, except for the syntax.
+
+.. [3] This would make an awesome assignment problem,
+   but I'm not quite that mean.
