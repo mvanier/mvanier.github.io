@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Part A: Basic exercises &mdash; The CS 4 book 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Part B: Evaluation" href="partB_evaluation.html" />
+    <link rel="prev" title="OCaml notes" href="ocaml_notes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> The CS 4 book
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Motivation.html">Motivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../History.html">History</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../0/Assignment0.html">Assignment 0: Getting set up</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 1: Evaluation and recursion</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ocaml_notes.html">OCaml notes</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Part A: Basic exercises</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#expressions">1. Expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sicp-problem-1-3">2. SICP, problem 1.3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sicp-problem-1-4">3. SICP, problem 1.4</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="partB_evaluation.html">Part B: Evaluation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partC_recursion.html">Part C: Recursion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readings/index.html">Readings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The CS 4 book</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 1: Evaluation and recursion</a></li>
+      <li class="breadcrumb-item active">Part A: Basic exercises</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="part-a-basic-exercises">
+<h1>Part A: Basic exercises<a class="headerlink" href="#part-a-basic-exercises" title="Permalink to this heading"></a></h1>
+<p>Some of the following problems are taken from the textbook
+(Structure and Interpretation of Computer Programs, or SICP for short).
+SICP problems are linked to the online textbook description,
+although you shouldn’t need to consult it.</p>
+<section id="expressions">
+<h2>1. Expressions<a class="headerlink" href="#expressions" title="Permalink to this heading"></a></h2>
+<p>[<strong>4</strong>] <span class="raw-html">&nbsp;</span> (15 minutes)</p>
+<p>Below is a sequence of expressions. What is the result (the type and
+value or the error message) printed by the OCaml interpreter in response
+to each expression? Assume that the sequence is to be evaluated in the
+order in which it is presented. If the interpreter indicates an error,
+explain briefly (one sentence) why the error occurred. There are also
+some other questions below which you should answer to the best of your
+ability. Note that entering each code fragment interactively requires
+that you add the <code class="docutils literal notranslate"><span class="pre">;;</span></code> terminator to terminate input. Write your
+answers as OCaml comments.</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">10.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">5</span> <span class="pre">+</span> <span class="pre">3</span> <span class="pre">+</span> <span class="pre">4</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3.2</span> <span class="pre">+</span> <span class="pre">4.2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">+.</span> <span class="pre">4</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">+</span> <span class="pre">4.2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">+.</span> <span class="pre">4.2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3.0</span> <span class="pre">+.</span> <span class="pre">4.2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">9</span> <span class="pre">-</span> <span class="pre">3</span> <span class="pre">-</span> <span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">9</span> <span class="pre">-</span> <span class="pre">(3</span> <span class="pre">-</span> <span class="pre">1)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">a</span> <span class="pre">=</span> <span class="pre">3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">b</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">+</span> <span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">b</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[1;</span> <span class="pre">2;</span> <span class="pre">3]</span> <span class="pre">=</span> <span class="pre">[1;</span> <span class="pre">2;</span> <span class="pre">3]</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[1;</span> <span class="pre">2;</span> <span class="pre">3]</span> <span class="pre">==</span> <span class="pre">[1;</span> <span class="pre">2;</span> <span class="pre">3]</span></code>   Is this the same as or different from
+the previous expression? Why?</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[(1,</span> <span class="pre">2,</span> <span class="pre">3)]</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code>   Explain why this gives the result it does. This is a
+nasty pitfall which highlights one of the less desirable features of
+OCaml’s syntax. (See the OCaml cheat sheet.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">b</span> <span class="pre">&gt;</span> <span class="pre">a</span> <span class="pre">&amp;&amp;</span> <span class="pre">b</span> <span class="pre">&lt;</span> <span class="pre">a</span> <span class="pre">*</span> <span class="pre">b</span> <span class="pre">then</span> <span class="pre">b</span> <span class="pre">else</span> <span class="pre">a</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">b</span> <span class="pre">&gt;</span> <span class="pre">a</span> <span class="pre">and</span> <span class="pre">b</span> <span class="pre">&lt;</span> <span class="pre">a</span> <span class="pre">*</span> <span class="pre">b</span> <span class="pre">then</span> <span class="pre">b</span> <span class="pre">else</span> <span class="pre">a</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">+</span> <span class="pre">if</span> <span class="pre">b</span> <span class="pre">&gt;</span> <span class="pre">a</span> <span class="pre">then</span> <span class="pre">b</span> <span class="pre">else</span> <span class="pre">a</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">b</span> <span class="pre">&gt;</span> <span class="pre">a</span> <span class="pre">then</span> <span class="pre">b</span> <span class="pre">else</span> <span class="pre">a</span> <span class="pre">+</span> <span class="pre">2</span></code> Why is this different from the
+previous case?</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(if</span> <span class="pre">b</span> <span class="pre">&gt;</span> <span class="pre">a</span> <span class="pre">then</span> <span class="pre">b</span> <span class="pre">else</span> <span class="pre">a)</span> <span class="pre">+</span> <span class="pre">2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">b</span> <span class="pre">&gt;</span> <span class="pre">a</span> <span class="pre">then</span> <span class="pre">b</span></code>   This is not a syntax error. Why does this give
+a type error? <em>Hint</em>: What does OCaml assume if the <code class="docutils literal notranslate"><span class="pre">else</span></code> in an
+<code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">then</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code> form is left off?</p></li>
+</ol>
+</section>
+<section id="sicp-problem-1-3">
+<h2>2. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-10.html#%_thm_1.3">SICP, problem 1.3</a><a class="headerlink" href="#sicp-problem-1-3" title="Permalink to this heading"></a></h2>
+<p>[<strong>3</strong>] <span class="raw-html">&nbsp;</span> (15 minutes)</p>
+<p>Define a function that takes three integer numbers as arguments and
+returns the sum of the squares of the two larger numbers. Call the
+function you define <code class="docutils literal notranslate"><span class="pre">sum_of_squares_of_two_largest</span></code>. You will probably
+find the <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code> special operator to be handy.</p>
+</section>
+<section id="sicp-problem-1-4">
+<h2>3. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-10.html#%_thm_1.4">SICP, problem 1.4</a><a class="headerlink" href="#sicp-problem-1-4" title="Permalink to this heading"></a></h2>
+<p>[<strong>3</strong>] <span class="raw-html">&nbsp;</span> (15 minutes)</p>
+<p>Our evaluation model allows you to use a function
+which is a compound expression (something that evaluates to a function).
+Use this observation to describe the behavior of the following function:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let a_plus_abs_b a b =
+  (if b &gt; 0 then (+) else (-)) a b
+</pre></div>
+</div>
+<p>Write your answer in a comment. Note that surrounding an operator with
+parentheses makes it into a two-argument function, so</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(+) 2 3
+</pre></div>
+</div>
+<p>is the same as:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>2 + 3
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ocaml_notes.html" class="btn btn-neutral float-left" title="OCaml notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="partB_evaluation.html" class="btn btn-neutral float-right" title="Part B: Evaluation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

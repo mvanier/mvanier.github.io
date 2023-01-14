@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Part C: Recursion &mdash; The CS 4 book 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Readings" href="../../../readings/index.html" />
+    <link rel="prev" title="Part B: Evaluation" href="partB_evaluation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> The CS 4 book
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Motivation.html">Motivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../History.html">History</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../0/Assignment0.html">Assignment 0: Getting set up</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 1: Evaluation and recursion</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ocaml_notes.html">OCaml notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partA_exercises.html">Part A: Basic exercises</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partB_evaluation.html">Part B: Evaluation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Part C: Recursion</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#computing-e">1. Computing <em>e</em></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mutual-recursion">2. Mutual recursion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sicp-problem-1-11">3. SICP, problem 1.11</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sicp-problem-1-12">4. SICP, problem 1.12</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readings/index.html">Readings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The CS 4 book</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 1: Evaluation and recursion</a></li>
+      <li class="breadcrumb-item active">Part C: Recursion</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="part-c-recursion">
+<h1>Part C: Recursion<a class="headerlink" href="#part-c-recursion" title="Permalink to this heading"></a></h1>
+<section id="computing-e">
+<h2>1. Computing <em>e</em><a class="headerlink" href="#computing-e" title="Permalink to this heading"></a></h2>
+<p>[<strong>4</strong>] <span class="raw-html">&nbsp;</span> (30 minutes)</p>
+<p>In this problem we’re going to write a function that enables us to
+compute the number <em>e</em>, the base of natural logarithms, which is equal
+to 2.7182818… We will do this by summing a part of an infinite series
+expansion which computes <em>e</em>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>e = 1/0! + 1/1! + 1/2! + ...
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">n!</span></code> is the factorial of <code class="docutils literal notranslate"><span class="pre">n</span></code>, which in defined as</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>n! = n * (n-1) * (n-2) * ... * 1
+</pre></div>
+</div>
+<p>We’ll start out with the factorial function itself:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(* This function computes the factorial of the input number,
+   which for a number n is equal to n * (n-1) * ... * 1. *)
+let rec factorial n =
+  if n = 0 then 1 else n * factorial (n - 1)
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The definition of <code class="docutils literal notranslate"><span class="pre">factorial</span></code> has to be included in your lab
+submission or the rest of the code won’t work.</p>
+<p>Also, if you’re unhappy because this is a space-inefficient way
+to compute factorials, you’re right!
+But it won’t matter for this problem.</p>
+</div>
+<section id="a">
+<h3>a.<a class="headerlink" href="#a" title="Permalink to this heading"></a></h3>
+<p>Write a simple function called <code class="docutils literal notranslate"><span class="pre">e_term</span></code> which takes a (non-negative)
+integer argument and computes that term of the infinite series expansion
+of <code class="docutils literal notranslate"><span class="pre">e</span></code>. This function is not recursive. Note that the result must be a
+floating-point number; use the <code class="docutils literal notranslate"><span class="pre">float_of_int</span></code> function to convert from
+an OCaml <code class="docutils literal notranslate"><span class="pre">int</span></code> to a <code class="docutils literal notranslate"><span class="pre">float</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>OCaml never implicitly promotes one numeric type to another,
+so you must do it explicitly if that’s what you want.</p>
+</div>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># e_term 0;;
+- : float = 1.
+# e_term 1;;
+- : float = 1.
+# e_term 2;;
+- : float = 0.5
+# e_term 5;;
+- : float = 0.00833333333333333322
+</pre></div>
+</div>
+</div>
+</section>
+<section id="b">
+<h3>b.<a class="headerlink" href="#b" title="Permalink to this heading"></a></h3>
+<p>Write a recursive function called <code class="docutils literal notranslate"><span class="pre">e_approximation</span></code> that takes one
+positive integer argument and computes an approximation to <em>e</em> (an
+“e-proximation”, as it were) by summing up that many terms of the
+infinite series expansion of <em>e</em> (actually, it’ll sum up the first n+1
+terms, since it starts at term 0 and ends at term n). <strong>Write the
+function as a linear recursive process.</strong> Use your <code class="docutils literal notranslate"><span class="pre">e_term</span></code> function
+to help you write this one.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># e_approximation 0;;
+- : float = 1.
+# e_approximation 1;;
+- : float = 2.
+# e_approximation 2;;
+- : float = 2.5
+# e_approximation 5;;
+- : float = 2.71666666666666634
+# e_approximation 10;;
+- : float = 2.71828180114638451
+</pre></div>
+</div>
+</div>
+</section>
+<section id="c">
+<h3>c.<a class="headerlink" href="#c" title="Permalink to this heading"></a></h3>
+<p>Compute an approximation to <em>e</em> by summing up to the 20th term of the
+infinite series expansion. Write down the answer that OCaml gives you in
+a comment in your lab submission. Then write down the value of
+<code class="docutils literal notranslate"><span class="pre">exp</span> <span class="pre">1.0</span></code> which is <code class="docutils literal notranslate"><span class="pre">e</span></code> to the power of <code class="docutils literal notranslate"><span class="pre">1</span></code>, and compare with the
+result given by <code class="docutils literal notranslate"><span class="pre">e_approximation</span> <span class="pre">20</span></code> (they should be nearly
+identical).</p>
+</section>
+<section id="d">
+<h3>d.<a class="headerlink" href="#d" title="Permalink to this heading"></a></h3>
+<p>What happens if you try to compute a better approximation to <code class="docutils literal notranslate"><span class="pre">e</span></code> by
+summing up to the 100th term of the infinite series expansion? Why does
+this happen? Write your answer in a comment.</p>
+</section>
+</section>
+<section id="mutual-recursion">
+<h2>2. Mutual recursion<a class="headerlink" href="#mutual-recursion" title="Permalink to this heading"></a></h2>
+<p>[<strong>1</strong>] <span class="raw-html">&nbsp;</span> (20 minutes)</p>
+<p>It’s possible to have a kind of recursion which involves more than one
+function; this is called <em>mutual recursion</em>. A simple example is a pair
+of functions <code class="docutils literal notranslate"><span class="pre">is_even</span></code> and <code class="docutils literal notranslate"><span class="pre">is_odd</span></code>. <code class="docutils literal notranslate"><span class="pre">is_even</span></code> is a predicate
+which returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if its argument is an even (non-negative) integer
+and <code class="docutils literal notranslate"><span class="pre">false</span></code> if its argument is an odd (non-negative) integer (zero is
+considered even). <code class="docutils literal notranslate"><span class="pre">is_odd</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if its numeric argument is
+odd and <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise. Write these functions, using only
+recursion, testing for equality with zero, and subtracting 1. (The
+solution is very short.)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Of course, this is an extremely inefficient way of computing
+evenness and oddness!  It’s just for illustration purposes.</p>
+</div>
+<p>When defining mutually recursive functions in OCaml,
+you need to use the <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">rec</span> <span class="pre">...</span> <span class="pre">and</span> <span class="pre">...</span></code> syntax:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec f1 a b c = ...  (* ... may include f2 *)
+and f2 x y z = ...      (* ... may include f1 *)
+</pre></div>
+</div>
+<p>This works for any number of mutually-recursive functions.
+The whole form starts with a <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">rec</span></code>
+and then each function after the first in the group starts with <code class="docutils literal notranslate"><span class="pre">and</span></code>.</p>
+</section>
+<section id="sicp-problem-1-11">
+<h2>3. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-11.html#%_thm_1.11">SICP, problem 1.11</a><a class="headerlink" href="#sicp-problem-1-11" title="Permalink to this heading"></a></h2>
+<p>[<strong>2</strong>] <span class="raw-html">&nbsp;</span> (30 minutes)</p>
+<p>A function <code class="docutils literal notranslate"><span class="pre">f</span></code> is defined by the rules:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">f(n)</span> <span class="pre">=</span> <span class="pre">n</span></code> if <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;</span> <span class="pre">3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">f(n)</span> <span class="pre">=</span> <span class="pre">f(n</span> <span class="pre">-</span> <span class="pre">1)</span> <span class="pre">+</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">f(n</span> <span class="pre">-</span> <span class="pre">2)</span> <span class="pre">+</span> <span class="pre">3</span> <span class="pre">*</span> <span class="pre">f(n</span> <span class="pre">-</span> <span class="pre">3)</span></code> if <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&gt;=</span> <span class="pre">3</span></code>.</p></li>
+</ul>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">f_rec</span></code>
+that computes <code class="docutils literal notranslate"><span class="pre">f</span></code> by means of a recursive process.
+Write another function called <code class="docutils literal notranslate"><span class="pre">f_iter</span></code>
+that computes <code class="docutils literal notranslate"><span class="pre">f</span></code> by means of an iterative process.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>The recursive definition is straightforward. Use it to check the
+correctness of the iterative definition. The iterative definition will
+need a helper function that keeps track of the last three numbers in the
+series, among other things.</p>
+</div>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># f_rec 0;;
+- : int = 0
+# f_rec 1;;
+- : int = 1
+# f_rec 3;;
+- : int = 4
+# f_rec 10;;
+- : int = 1892
+# f_rec 20;;
+- : int = 10771211
+(* f_iter gives the same results *)
+</pre></div>
+</div>
+</div>
+</section>
+<section id="sicp-problem-1-12">
+<h2>4. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-11.html#%_thm_1.12">SICP, problem 1.12</a><a class="headerlink" href="#sicp-problem-1-12" title="Permalink to this heading"></a></h2>
+<p>[<strong>3</strong>] <span class="raw-html">&nbsp;</span> (30 minutes)</p>
+<p>The following pattern of numbers is called “Pascal’s triangle”:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    1
+   1 1
+  1 2 1
+ 1 3 3 1
+1 4 6 4 1
+   ...
+</pre></div>
+</div>
+<p>The numbers at the edges of the triangle are all 1,
+and each number inside the triangle is the sum of the two numbers above it
+to the left and right.
+Write a function called <code class="docutils literal notranslate"><span class="pre">pascal_coefficient</span></code>
+which takes two <code class="docutils literal notranslate"><span class="pre">int</span></code> arguments
+(corresponding to the row number (starting from 1)
+and the index inside the row (also starting from 1))
+and computes elements of Pascal’s triangle by means of a recursive process.</p>
+<p>Use pattern matching to make the code cleaner.
+<strong>This is not optional!</strong>
+Use of <code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">then</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code> in your solution will result in lost marks.</p>
+<p>For arguments that don’t correspond to locations in Pascal’s triangle
+(like numbers &lt; 1 or index numbers that are greater than the row number)
+you should signal an error using the code:
+<code class="docutils literal notranslate"><span class="pre">failwith</span> <span class="pre">&quot;invalid</span> <span class="pre">arguments&quot;</span></code>.
+This raises a <code class="docutils literal notranslate"><span class="pre">Failure</span></code> exception.
+We’ll talk more about exceptions later in the course.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># pascal_coefficient 1 1 ;; (* row 1, index 1 in row *)
+- : int = 1
+# pascal_coefficient 2 1 ;;
+- : int = 1
+# pascal_coefficient 2 2 ;;
+- : int = 1
+# pascal_coefficient 3 1 ;;
+- : int = 1
+# pascal_coefficient 3 2 ;;
+- : int = 2
+# pascal_coefficient 3 3 ;;
+- : int = 1
+# pascal_coefficient 10 5 ;;
+- : int = 126
+# pascal_coefficient 1 0 ;;
+Exception: Failure &quot;invalid arguments&quot;.
+</pre></div>
+</div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<ul>
+<li><p>It’s much easier to write this as a recursive process (<em>i.e.</em> with
+pending operations) than as an iterative process, though both
+approaches will involve recursive functions.
+Since you don’t have to do it both ways,
+we recommend you write it as a recursive process.</p></li>
+<li><p>Pattern match on a tuple of both input arguments. Use the <code class="docutils literal notranslate"><span class="pre">when</span></code>
+form in a pattern when you need to specify non-structural conditions
+for a match (like two things being equal). Only use <code class="docutils literal notranslate"><span class="pre">when</span></code> when you
+can’t use structural pattern matching, though. For instance, don’t do
+this kind of thing:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>match x with
+  | x&#39; when x&#39; = 1 -&gt; ...
+  ...
+</pre></div>
+</div>
+<p>when you can do this instead:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>match x with
+  | 1 -&gt; ...
+  ...
+</pre></div>
+</div>
+<p>Also don’t forget about the <code class="docutils literal notranslate"><span class="pre">_</span></code> (wildcard) syntax for don’t-care
+patterns. Remember that a number in a pattern matches that literal
+number only.</p>
+</li>
+<li><p>It’s convenient (though not required) to use the first pattern match
+for error checking only.</p></li>
+</ul>
+</div>
+<p>Despite all this explanation,
+this function only needs to be a few lines long.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="partB_evaluation.html" class="btn btn-neutral float-left" title="Part B: Evaluation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../../readings/index.html" class="btn btn-neutral float-right" title="Readings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

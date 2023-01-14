@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Part B: Evaluation &mdash; The CS 4 book 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Part C: Recursion" href="partC_recursion.html" />
+    <link rel="prev" title="Part A: Basic exercises" href="partA_exercises.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> The CS 4 book
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Motivation.html">Motivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../History.html">History</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../0/Assignment0.html">Assignment 0: Getting set up</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 1: Evaluation and recursion</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ocaml_notes.html">OCaml notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partA_exercises.html">Part A: Basic exercises</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Part B: Evaluation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sicp-problem-1-5">1. SICP, problem 1.5</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sicp-problem-1-6">2. SICP, problem 1.6</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sicp-problem-1-9">3. SICP, problem 1.9</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="partC_recursion.html">Part C: Recursion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readings/index.html">Readings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The CS 4 book</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 1: Evaluation and recursion</a></li>
+      <li class="breadcrumb-item active">Part B: Evaluation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="part-b-evaluation">
+<h1>Part B: Evaluation<a class="headerlink" href="#part-b-evaluation" title="Permalink to this heading"></a></h1>
+<p>In this section, write all essay-question-type answers inside OCaml
+comments.</p>
+<section id="sicp-problem-1-5">
+<h2>1. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-10.html#%_thm_1.5">SICP, problem 1.5</a><a class="headerlink" href="#sicp-problem-1-5" title="Permalink to this heading"></a></h2>
+<p>[<strong>2</strong>] <span class="raw-html">&nbsp;</span> (25 minutes)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Before tackling this problem, read the subsection in SICP (section
+1.1.5) called <em>Applicative order versus normal order</em> (not covered in
+class!). Applicative order evaluation is just the evaluation rule we
+described in class; it’s usually just called “strict evaluation”.
+Normal order evaluation is an alternative to the evaluation rule we
+learned in class. In normal order evaluation, nothing is evaluated
+unless it needs to be to get the final result (it’s sometimes called
+“call-by-need” where applicative order evaluation is called
+“call-by-value”). Normal order evaluation is used in some functional
+languages like Haskell (more accurately, Haskell uses <em>lazy
+evaluation</em>, which is a more efficient version of normal order
+evaluation).</p>
+</div>
+<p>Ben Bitfiddle has invented a test to determine whether the interpreter
+he is faced with is using applicative order evaluation or normal order
+evaluation. He defines the following two functions:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec p () = p ()
+let test x y = if x = 0 then 0 else y
+</pre></div>
+</div>
+<p>Then he evaluates the expression:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>test 0 (p ())
+</pre></div>
+</div>
+<p>What behavior will Ben observe with an interpreter that uses applicative
+order evaluation? What behavior will he observe with an interpreter that
+uses normal order evaluation? Explain your answer. (Assume that the
+evaluation rule for the special form <code class="docutils literal notranslate"><span class="pre">if</span></code> is the same whether the
+interpreter is using normal or applicative order: the predicate (test)
+expression is evaluated first, and the result determines whether to
+evaluate the consequent (<code class="docutils literal notranslate"><span class="pre">then</span></code>) or the alternative (<code class="docutils literal notranslate"><span class="pre">else</span></code>)
+expression.)</p>
+<p><strong>NOTE</strong>: This problem doesn’t require a lengthy explanation; two or
+three sentences should be enough.</p>
+</section>
+<section id="sicp-problem-1-6">
+<h2>2. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-10.html#%_thm_1.6">SICP, problem 1.6</a><a class="headerlink" href="#sicp-problem-1-6" title="Permalink to this heading"></a></h2>
+<p>[<strong>2</strong>] <span class="raw-html">&nbsp;</span> (25 minutes)</p>
+<p>This problem is one of my (Mike’s) favorites.</p>
+<p>Alyssa P. Hacker doesn’t see why <code class="docutils literal notranslate"><span class="pre">if</span></code> needs to be provided as a
+special syntactic form. “Why can’t I just define <code class="docutils literal notranslate"><span class="pre">if</span></code> as an ordinary
+function?” she asks. Alyssa’s friend Eva Lu Ator claims this can indeed
+be done, and she defines a new version of <code class="docutils literal notranslate"><span class="pre">if</span></code> using pattern matching:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let new_if predicate then_clause else_clause =
+  match predicate with
+    | true  -&gt; then_clause
+    | false -&gt; else_clause
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Of course, since this is a function it will have to be called using
+function syntax (the <code class="docutils literal notranslate"><span class="pre">if</span></code> syntax is built-in to OCaml).</p>
+</div>
+<p>Eva demonstrates its use to Alyssa:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># new_if (2 = 3) 0 5;;
+- : int = 5
+# new_if (1 = 1) 0 5;;
+- : int = 0
+</pre></div>
+</div>
+<p>Delighted, Alyssa uses <code class="docutils literal notranslate"><span class="pre">new_if</span></code> to write the following program to
+compute square roots:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let square x = x *. x
+let average x y = (x +. y) /. 2.0
+
+let improve guess x = average guess (x /. guess)
+let is_good_enough guess x =
+  abs_float (square guess -. x) &lt; 0.00001
+
+let rec sqrt_iter guess x =
+  new_if (is_good_enough guess x)
+         guess
+         (sqrt_iter (improve guess x) x)
+</pre></div>
+</div>
+<p>What happens when Alyssa attempts to use this to compute square roots?
+Explain.</p>
+</section>
+<section id="sicp-problem-1-9">
+<h2>3. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-11.html#%_thm_1.9">SICP, problem 1.9</a><a class="headerlink" href="#sicp-problem-1-9" title="Permalink to this heading"></a></h2>
+<p>[<strong>6</strong>] <span class="raw-html">&nbsp;</span> (60 minutes)</p>
+<p>Each of the following two functions defines a method for adding two
+positive integers in terms of the functions <code class="docutils literal notranslate"><span class="pre">inc</span></code>, which increments
+its argument by 1, and <code class="docutils literal notranslate"><span class="pre">dec</span></code>, which decrements its argument by 1.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec add_a a b =
+  if a = 0
+    then b
+    else inc (add_a (dec a) b)
+
+let rec add_b a b =
+  if a = 0
+    then b
+    else add_b (dec a) (inc b)
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">inc</span></code> or <code class="docutils literal notranslate"><span class="pre">dec</span></code> could trivially be defined as:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let inc a = a + 1
+let dec a = a - 1
+</pre></div>
+</div>
+<p>but for this problem, assume that they are primitive functions.</p>
+<p>Using the substitution model, illustrate the process generated by each
+function in evaluating <code class="docutils literal notranslate"><span class="pre">add_a</span> <span class="pre">2</span> <span class="pre">5</span></code> and <code class="docutils literal notranslate"><span class="pre">add_b</span> <span class="pre">2</span> <span class="pre">5</span></code>.</p>
+<ol class="arabic">
+<li><p>Both <code class="docutils literal notranslate"><span class="pre">add_a</span></code> and <code class="docutils literal notranslate"><span class="pre">add_b</span></code> are recursive functions. State whether
+they generate recursive or iterative <em>processes</em> in the sense
+described in the lectures and in the book.</p></li>
+<li><p>For the <code class="docutils literal notranslate"><span class="pre">add_a</span></code> function only, we want you to write out the
+substitution model evaluation in great detail. That means you have to
+actually write out the fact that numbers evaluate to themselves,
+built-in functions evaluate to their internal representations,
+functions with arguments desugar to their corresponding <code class="docutils literal notranslate"><span class="pre">fun</span></code>
+forms, <em>etc.</em> Don’t skip steps or you’ll lose marks on this problem.
+Also note when names are bound to their values.</p>
+<p>One shortcut that you can take is to replace the body of a function
+with ellipses (<code class="docutils literal notranslate"><span class="pre">...</span></code>), or to replace parts of it that aren’t
+relevant with ellipses. Please indent your work to make it obvious
+when you are evaluating a subexpression, a sub-sub-expression, <em>etc.</em>
+Be explicit about writing out evaluate, apply, and substitution
+steps, and when you are desugaring a function definition into the
+equivalent <code class="docutils literal notranslate"><span class="pre">fun</span></code> form. Also note where you are invoking a special
+form rule distinct from the usual evaluation rule (<em>e.g.</em> with an
+<code class="docutils literal notranslate"><span class="pre">if</span></code> expression).</p>
+<p>Assume that function arguments evaluate from left to right. This
+isn’t necessary to get the right result, but it will make it easier
+for your graders to grade if everyone does this the same way.</p>
+<p>Write the substitution model evaluation in an OCaml comment. Our
+solution for this part is around 60-70 lines long. If your solution
+is much shorter than that then you are skipping too many steps.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We realize that some of you (OK, <em>all</em> of you) may dislike this
+problem. Think of it the same way you might think of taking cod
+liver oil or eating broccoli; unpleasant but ultimately good for
+you. Understanding how a computer evaluates expressions is
+fundamental knowledge, and we will revisit this idea several times
+in this course (but it will never again be as tedious as this
+problem!).</p>
+</div>
+</li>
+<li><p>For the <code class="docutils literal notranslate"><span class="pre">add_b</span></code> function, we want you to correct the following
+version that Ben Bitfiddle dashed off in a hurry. Copy this into a
+comment and add the lines that Ben forgot to include. Each such line
+should start with the characters:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt;
+</pre></div>
+</div>
+<p>so your grader can easily identify them.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(*
+let rec add_b a b =
+  if a = 0
+     then b
+     else add_b (dec a) (inc b)
+
+Desugar this to:
+
+let rec add_b =
+  fun a b -&gt;
+    if a = 0
+       then b
+       else add_b (dec a) (inc b)
+
+Bind the name &quot;add_b&quot; to the value:
+
+  fun a b -&gt;
+    if a = 0
+       then b
+       else add_b (dec a) (inc b)
+
+Evaluate (add_b 2 5)
+  apply (fun a b -&gt; if ...) to 2, 5
+  substitute 2 for a, 5 for b in (if ...)
+    -&gt; if 2 = 0 then 5 else add_b (dec 2) (inc 5)
+  evaluate (if 2 = 0 then 5 else add_b (dec 2) (inc 5))
+    if is a special form, so evaluate the first operand:
+      evaluate (2 = 0)
+        apply = to 2, 0 -&gt; false
+    first argument of if is false, so evaluate the third operand:
+      evaluate (add_b (dec 2) (inc 5))
+        evaluate (dec 2)
+          apply dec to 2 -&gt; 1
+        evaluate (inc 5)
+          apply inc to 5 -&gt; 6
+        apply (fun a b -&gt; if ...) to 1, 6
+        substitute 1 for a, 6 for b in (if ...)
+          -&gt; if 1 = 0 then 6 else add_b (dec 1) (inc 6)
+        evaluate (if 1 = 0 then 6 else add_b (dec 1) (inc 6))
+          if is a special form, so evaluate the first operand:
+            evaluate (1 = 0)
+              apply = to 1, 0 -&gt; false
+          first argument of if is false, so evaluate the third operand:
+            evaluate (add_b (dec 1) (inc 6))
+              evaluate (dec 1)
+                apply dec to 1 -&gt; 0
+              evaluate (inc 6)
+                apply inc to 6 -&gt; 7
+              apply (fun a b -&gt; if ...) to 0, 7
+              substitute 0 for a, 7 for b in (if ...)
+                -&gt; if 0 = 0 then 7 else add_b (dec 0) (inc 7)
+              evaluate (if 0 = 0 then 7 else add_b (dec 0) (inc 7))
+                if is a special form, so evaluate the first operand:
+                  evaluate (0 = 0)
+                    apply = to 0, 0 -&gt; true
+                first argument of if is true, so evaluate the second operand:
+                  result: 7
+*)
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="partA_exercises.html" class="btn btn-neutral float-left" title="Part A: Basic exercises" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="partC_recursion.html" class="btn btn-neutral float-right" title="Part C: Recursion" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>
