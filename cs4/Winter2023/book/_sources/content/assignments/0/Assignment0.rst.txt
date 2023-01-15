@@ -216,7 +216,7 @@ To see what it can do, start up ``utop``:
 and type the following commands (one per line, hitting the return key at the
 end of each line):
 
-.. code-block:: text
+.. code-block:: ocaml
 
     # Printf.printf "hello\n" ;;
     # Printf.printf "goodbye\n" ;;
@@ -229,14 +229,14 @@ Once you've done this,
 you should be able to recall either line by using the up arrow key.
 For instance, you can hit the up arrow key once to get the line:
 
-.. code-block:: text
+.. code-block:: ocaml
 
     Printf.printf "goodbye\n" ;;
 
 and edit it so that it says:
 
 
-.. code-block:: text
+.. code-block:: ocaml
 
     Printf.printf "hasta la vista\n" ;;
 
@@ -251,7 +251,7 @@ at the top of the terminal window.
 By the way, in addition to printing out the messages you wanted,
 you'll also see the line:
 
-.. code-block:: text
+.. code-block:: ocaml
 
     - : unit = ()
 
@@ -263,7 +263,7 @@ We will talk about this in class.
 Exit the interpreter by typing control-d (this is just like Python).
 You can also type ``#quit;;`` at the prompt:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # #quit;;
 
@@ -276,7 +276,7 @@ Configuring ``utop``
 One annoying thing about ``utop`` is that it tends to go overboard on
 command completion.  You can disable this by typing this inside ``utop``:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # #utop_prompt_dummy;;
    # UTop.set_show_box false;;
@@ -325,7 +325,7 @@ which loads up some OCaml source code from a file, compiles it, and runs it.
 For instance, open up your text editor
 and type the following into a file called ``test.ml``:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let f x = 3 * x * x + 4 * x + 5
 
@@ -339,14 +339,14 @@ the directory containing that file.  Then start up ``utop``:
 
 Inside the interpreter, type the following command:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # #use "test.ml";;
 
 The first ``#`` is just the OCaml prompt and shouldn't be typed.  If you've
 done this right, OCaml should respond with:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    val f : int -> int = <fun>
 
@@ -355,13 +355,13 @@ and is printing out the type signature of all functions it has found there (in
 this case, there is only one, ``f``).  Test that it works by typing the
 following:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # f 10 ;;
 
 OCaml should reply with:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    - : int = 345
 

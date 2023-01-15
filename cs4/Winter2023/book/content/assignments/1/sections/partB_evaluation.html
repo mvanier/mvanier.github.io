@@ -423,12 +423,12 @@ evaluation).</p>
 <p>Ben Bitfiddle has invented a test to determine whether the interpreter
 he is faced with is using applicative order evaluation or normal order
 evaluation. He defines the following two functions:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec p () = p ()
-let test x y = if x = 0 then 0 else y
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">p</span> <span class="bp">()</span> <span class="o">=</span> <span class="n">p</span> <span class="bp">()</span>
+<span class="k">let</span> <span class="n">test</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="k">if</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">y</span>
 </pre></div>
 </div>
 <p>Then he evaluates the expression:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>test 0 (p ())
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">test</span> <span class="mi">0</span> <span class="o">(</span><span class="n">p</span> <span class="bp">()</span><span class="o">)</span>
 </pre></div>
 </div>
 <p>What behavior will Ben observe with an interpreter that uses applicative
@@ -450,10 +450,10 @@ three sentences should be enough.</p>
 special syntactic form. “Why can’t I just define <code class="docutils literal notranslate"><span class="pre">if</span></code> as an ordinary
 function?” she asks. Alyssa’s friend Eva Lu Ator claims this can indeed
 be done, and she defines a new version of <code class="docutils literal notranslate"><span class="pre">if</span></code> using pattern matching:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let new_if predicate then_clause else_clause =
-  match predicate with
-    | true  -&gt; then_clause
-    | false -&gt; else_clause
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">new_if</span> <span class="n">predicate</span> <span class="n">then_clause</span> <span class="n">else_clause</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">predicate</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="bp">true</span>  <span class="o">-&gt;</span> <span class="n">then_clause</span>
+    <span class="o">|</span> <span class="bp">false</span> <span class="o">-&gt;</span> <span class="n">else_clause</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -462,25 +462,25 @@ be done, and she defines a new version of <code class="docutils literal notransl
 function syntax (the <code class="docutils literal notranslate"><span class="pre">if</span></code> syntax is built-in to OCaml).</p>
 </div>
 <p>Eva demonstrates its use to Alyssa:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># new_if (2 = 3) 0 5;;
-- : int = 5
-# new_if (1 = 1) 0 5;;
-- : int = 0
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">new_if</span> <span class="o">(</span><span class="mi">2</span> <span class="o">=</span> <span class="mi">3</span><span class="o">)</span> <span class="mi">0</span> <span class="mi">5</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="o">#</span> <span class="n">new_if</span> <span class="o">(</span><span class="mi">1</span> <span class="o">=</span> <span class="mi">1</span><span class="o">)</span> <span class="mi">0</span> <span class="mi">5</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">0</span>
 </pre></div>
 </div>
 <p>Delighted, Alyssa uses <code class="docutils literal notranslate"><span class="pre">new_if</span></code> to write the following program to
 compute square roots:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let square x = x *. x
-let average x y = (x +. y) /. 2.0
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">square</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*.</span> <span class="n">x</span>
+<span class="k">let</span> <span class="n">average</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="o">(</span><span class="n">x</span> <span class="o">+.</span> <span class="n">y</span><span class="o">)</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span>
 
-let improve guess x = average guess (x /. guess)
-let is_good_enough guess x =
-  abs_float (square guess -. x) &lt; 0.00001
+<span class="k">let</span> <span class="n">improve</span> <span class="n">guess</span> <span class="n">x</span> <span class="o">=</span> <span class="n">average</span> <span class="n">guess</span> <span class="o">(</span><span class="n">x</span> <span class="o">/.</span> <span class="n">guess</span><span class="o">)</span>
+<span class="k">let</span> <span class="n">is_good_enough</span> <span class="n">guess</span> <span class="n">x</span> <span class="o">=</span>
+  <span class="n">abs_float</span> <span class="o">(</span><span class="n">square</span> <span class="n">guess</span> <span class="o">-.</span> <span class="n">x</span><span class="o">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">00001</span>
 
-let rec sqrt_iter guess x =
-  new_if (is_good_enough guess x)
-         guess
-         (sqrt_iter (improve guess x) x)
+<span class="k">let</span> <span class="k">rec</span> <span class="n">sqrt_iter</span> <span class="n">guess</span> <span class="n">x</span> <span class="o">=</span>
+  <span class="n">new_if</span> <span class="o">(</span><span class="n">is_good_enough</span> <span class="n">guess</span> <span class="n">x</span><span class="o">)</span>
+         <span class="n">guess</span>
+         <span class="o">(</span><span class="n">sqrt_iter</span> <span class="o">(</span><span class="n">improve</span> <span class="n">guess</span> <span class="n">x</span><span class="o">)</span> <span class="n">x</span><span class="o">)</span>
 </pre></div>
 </div>
 <p>What happens when Alyssa attempts to use this to compute square roots?
@@ -492,20 +492,20 @@ Explain.</p>
 <p>Each of the following two functions defines a method for adding two
 positive integers in terms of the functions <code class="docutils literal notranslate"><span class="pre">inc</span></code>, which increments
 its argument by 1, and <code class="docutils literal notranslate"><span class="pre">dec</span></code>, which decrements its argument by 1.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec add_a a b =
-  if a = 0
-    then b
-    else inc (add_a (dec a) b)
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">add_a</span> <span class="n">a</span> <span class="n">b</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">then</span> <span class="n">b</span>
+    <span class="k">else</span> <span class="n">inc</span> <span class="o">(</span><span class="n">add_a</span> <span class="o">(</span><span class="n">dec</span> <span class="n">a</span><span class="o">)</span> <span class="n">b</span><span class="o">)</span>
 
-let rec add_b a b =
-  if a = 0
-    then b
-    else add_b (dec a) (inc b)
+<span class="k">let</span> <span class="k">rec</span> <span class="n">add_b</span> <span class="n">a</span> <span class="n">b</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">then</span> <span class="n">b</span>
+    <span class="k">else</span> <span class="n">add_b</span> <span class="o">(</span><span class="n">dec</span> <span class="n">a</span><span class="o">)</span> <span class="o">(</span><span class="n">inc</span> <span class="n">b</span><span class="o">)</span>
 </pre></div>
 </div>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">inc</span></code> or <code class="docutils literal notranslate"><span class="pre">dec</span></code> could trivially be defined as:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let inc a = a + 1
-let dec a = a - 1
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">inc</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="k">let</span> <span class="n">dec</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="mi">1</span>
 </pre></div>
 </div>
 <p>but for this problem, assume that they are primitive functions.</p>
@@ -559,64 +559,64 @@ should start with the characters:</p>
 </pre></div>
 </div>
 <p>so your grader can easily identify them.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(*
-let rec add_b a b =
-  if a = 0
-     then b
-     else add_b (dec a) (inc b)
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(*</span>
+<span class="c">let rec add_b a b =</span>
+<span class="c">  if a = 0</span>
+<span class="c">     then b</span>
+<span class="c">     else add_b (dec a) (inc b)</span>
 
-Desugar this to:
+<span class="c">Desugar this to:</span>
 
-let rec add_b =
-  fun a b -&gt;
-    if a = 0
-       then b
-       else add_b (dec a) (inc b)
+<span class="c">let rec add_b =</span>
+<span class="c">  fun a b -&gt;</span>
+<span class="c">    if a = 0</span>
+<span class="c">       then b</span>
+<span class="c">       else add_b (dec a) (inc b)</span>
 
-Bind the name &quot;add_b&quot; to the value:
+<span class="c">Bind the name &quot;add_b&quot; to the value:</span>
 
-  fun a b -&gt;
-    if a = 0
-       then b
-       else add_b (dec a) (inc b)
+<span class="c">  fun a b -&gt;</span>
+<span class="c">    if a = 0</span>
+<span class="c">       then b</span>
+<span class="c">       else add_b (dec a) (inc b)</span>
 
-Evaluate (add_b 2 5)
-  apply (fun a b -&gt; if ...) to 2, 5
-  substitute 2 for a, 5 for b in (if ...)
-    -&gt; if 2 = 0 then 5 else add_b (dec 2) (inc 5)
-  evaluate (if 2 = 0 then 5 else add_b (dec 2) (inc 5))
-    if is a special form, so evaluate the first operand:
-      evaluate (2 = 0)
-        apply = to 2, 0 -&gt; false
-    first argument of if is false, so evaluate the third operand:
-      evaluate (add_b (dec 2) (inc 5))
-        evaluate (dec 2)
-          apply dec to 2 -&gt; 1
-        evaluate (inc 5)
-          apply inc to 5 -&gt; 6
-        apply (fun a b -&gt; if ...) to 1, 6
-        substitute 1 for a, 6 for b in (if ...)
-          -&gt; if 1 = 0 then 6 else add_b (dec 1) (inc 6)
-        evaluate (if 1 = 0 then 6 else add_b (dec 1) (inc 6))
-          if is a special form, so evaluate the first operand:
-            evaluate (1 = 0)
-              apply = to 1, 0 -&gt; false
-          first argument of if is false, so evaluate the third operand:
-            evaluate (add_b (dec 1) (inc 6))
-              evaluate (dec 1)
-                apply dec to 1 -&gt; 0
-              evaluate (inc 6)
-                apply inc to 6 -&gt; 7
-              apply (fun a b -&gt; if ...) to 0, 7
-              substitute 0 for a, 7 for b in (if ...)
-                -&gt; if 0 = 0 then 7 else add_b (dec 0) (inc 7)
-              evaluate (if 0 = 0 then 7 else add_b (dec 0) (inc 7))
-                if is a special form, so evaluate the first operand:
-                  evaluate (0 = 0)
-                    apply = to 0, 0 -&gt; true
-                first argument of if is true, so evaluate the second operand:
-                  result: 7
-*)
+<span class="c">Evaluate (add_b 2 5)</span>
+<span class="c">  apply (fun a b -&gt; if ...) to 2, 5</span>
+<span class="c">  substitute 2 for a, 5 for b in (if ...)</span>
+<span class="c">    -&gt; if 2 = 0 then 5 else add_b (dec 2) (inc 5)</span>
+<span class="c">  evaluate (if 2 = 0 then 5 else add_b (dec 2) (inc 5))</span>
+<span class="c">    if is a special form, so evaluate the first operand:</span>
+<span class="c">      evaluate (2 = 0)</span>
+<span class="c">        apply = to 2, 0 -&gt; false</span>
+<span class="c">    first argument of if is false, so evaluate the third operand:</span>
+<span class="c">      evaluate (add_b (dec 2) (inc 5))</span>
+<span class="c">        evaluate (dec 2)</span>
+<span class="c">          apply dec to 2 -&gt; 1</span>
+<span class="c">        evaluate (inc 5)</span>
+<span class="c">          apply inc to 5 -&gt; 6</span>
+<span class="c">        apply (fun a b -&gt; if ...) to 1, 6</span>
+<span class="c">        substitute 1 for a, 6 for b in (if ...)</span>
+<span class="c">          -&gt; if 1 = 0 then 6 else add_b (dec 1) (inc 6)</span>
+<span class="c">        evaluate (if 1 = 0 then 6 else add_b (dec 1) (inc 6))</span>
+<span class="c">          if is a special form, so evaluate the first operand:</span>
+<span class="c">            evaluate (1 = 0)</span>
+<span class="c">              apply = to 1, 0 -&gt; false</span>
+<span class="c">          first argument of if is false, so evaluate the third operand:</span>
+<span class="c">            evaluate (add_b (dec 1) (inc 6))</span>
+<span class="c">              evaluate (dec 1)</span>
+<span class="c">                apply dec to 1 -&gt; 0</span>
+<span class="c">              evaluate (inc 6)</span>
+<span class="c">                apply inc to 6 -&gt; 7</span>
+<span class="c">              apply (fun a b -&gt; if ...) to 0, 7</span>
+<span class="c">              substitute 0 for a, 7 for b in (if ...)</span>
+<span class="c">                -&gt; if 0 = 0 then 7 else add_b (dec 0) (inc 7)</span>
+<span class="c">              evaluate (if 0 = 0 then 7 else add_b (dec 0) (inc 7))</span>
+<span class="c">                if is a special form, so evaluate the first operand:</span>
+<span class="c">                  evaluate (0 = 0)</span>
+<span class="c">                    apply = to 0, 0 -&gt; true</span>
+<span class="c">                first argument of if is true, so evaluate the second operand:</span>
+<span class="c">                  result: 7</span>
+<span class="c">*)</span>
 </pre></div>
 </div>
 </li>

@@ -710,8 +710,8 @@ To see what it can do, start up <code class="docutils literal notranslate"><span
 </div>
 <p>and type the following commands (one per line, hitting the return key at the
 end of each line):</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Printf.printf &quot;hello\n&quot; ;;
-# Printf.printf &quot;goodbye\n&quot; ;;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;hello</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">;;</span>
+<span class="o">#</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;goodbye</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">;;</span>
 </pre></div>
 </div>
 <p>Note that the OCaml interpreter prompt is the hash sign (<code class="docutils literal notranslate"><span class="pre">#</span></code>);
@@ -721,11 +721,11 @@ print the words <code class="docutils literal notranslate"><span class="pre">&qu
 Once you’ve done this,
 you should be able to recall either line by using the up arrow key.
 For instance, you can hit the up arrow key once to get the line:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Printf.printf &quot;goodbye\n&quot; ;;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;goodbye</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">;;</span>
 </pre></div>
 </div>
 <p>and edit it so that it says:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Printf.printf &quot;hasta la vista\n&quot; ;;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;hasta la vista</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">;;</span>
 </pre></div>
 </div>
 <p>When you hit return, it should print out <code class="docutils literal notranslate"><span class="pre">&quot;hasta</span> <span class="pre">la</span> <span class="pre">vista&quot;</span></code> on a separate
@@ -737,7 +737,7 @@ control-l (lower-case L) clears the terminal and puts the cursor
 at the top of the terminal window.</p>
 <p>By the way, in addition to printing out the messages you wanted,
 you’ll also see the line:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>- : unit = ()
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
 </pre></div>
 </div>
 <p>printed out after hitting return.
@@ -746,7 +746,7 @@ In this case it’s the <code class="docutils literal notranslate"><span class="
 We will talk about this in class.</p>
 <p>Exit the interpreter by typing control-d (this is just like Python).
 You can also type <code class="docutils literal notranslate"><span class="pre">#quit;;</span></code> at the prompt:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># #quit;;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">#</span><span class="n">quit</span><span class="o">;;</span>
 </pre></div>
 </div>
 <p>and that will also work.</p>
@@ -755,8 +755,8 @@ You can also type <code class="docutils literal notranslate"><span class="pre">#
 <h3>Configuring <code class="docutils literal notranslate"><span class="pre">utop</span></code><a class="headerlink" href="#configuring-utop" title="Permalink to this headline"></a></h3>
 <p>One annoying thing about <code class="docutils literal notranslate"><span class="pre">utop</span></code> is that it tends to go overboard on
 command completion.  You can disable this by typing this inside <code class="docutils literal notranslate"><span class="pre">utop</span></code>:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># #utop_prompt_dummy;;
-# UTop.set_show_box false;;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">#</span><span class="n">utop_prompt_dummy</span><span class="o">;;</span>
+<span class="o">#</span> <span class="nn">UTop</span><span class="p">.</span><span class="n">set_show_box</span> <span class="bp">false</span><span class="o">;;</span>
 </pre></div>
 </div>
 <p>It’s annoying to type this every time you start <code class="docutils literal notranslate"><span class="pre">utop</span></code>,
@@ -800,7 +800,7 @@ The simplest one is the <code class="docutils literal notranslate"><span class="
 which loads up some OCaml source code from a file, compiles it, and runs it.
 For instance, open up your text editor
 and type the following into a file called <code class="docutils literal notranslate"><span class="pre">test.ml</span></code>:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let f x = 3 * x * x + 4 * x + 5
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">5</span>
 </pre></div>
 </div>
 <p>(Note, by the way, that we didn’t use the double semicolons, since this is
@@ -810,23 +810,23 @@ the directory containing that file.  Then start up <code class="docutils literal
 </pre></div>
 </div>
 <p>Inside the interpreter, type the following command:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># #use &quot;test.ml&quot;;;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">#</span><span class="n">use</span> <span class="s2">&quot;test.ml&quot;</span><span class="o">;;</span>
 </pre></div>
 </div>
 <p>The first <code class="docutils literal notranslate"><span class="pre">#</span></code> is just the OCaml prompt and shouldn’t be typed.  If you’ve
 done this right, OCaml should respond with:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>val f : int -&gt; int = &lt;fun&gt;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">f</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>What this means is that OCaml has compiled the code in the file <code class="docutils literal notranslate"><span class="pre">test.ml</span></code>
 and is printing out the type signature of all functions it has found there (in
 this case, there is only one, <code class="docutils literal notranslate"><span class="pre">f</span></code>).  Test that it works by typing the
 following:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># f 10 ;;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">f</span> <span class="mi">10</span> <span class="o">;;</span>
 </pre></div>
 </div>
 <p>OCaml should reply with:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>- : int = 345
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">345</span>
 </pre></div>
 </div>
 <p>By the way, the <code class="docutils literal notranslate"><span class="pre">-</span></code> to the left of the colon just indicates that the value

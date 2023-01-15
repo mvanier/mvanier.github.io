@@ -29,7 +29,7 @@ corresponding operators on floating-point numbers have an extra dot
 Confusingly, the floating-point power operator (``**``) doesn’t have a
 dot at the end.
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let sumsq x y = x *. x +. y *. y;;
    val sumsq : float -> float -> float = <fun>
@@ -48,7 +48,7 @@ all *polymorphic*, which means they work on arbitrary OCaml datatypes.
 you are not allowed to compare functional values, though you can check
 identity:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # abs;;
    - : int -> int = <fun>
@@ -69,7 +69,7 @@ be converted into two-argument functions by wrapping parentheses around
 them. For instance, the operator ``+`` can be made into the two-argument
 function ``(+)``.
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # (+);;
    - : int -> int -> int = <fun>
@@ -126,7 +126,7 @@ though this may sometimes work, it can lead to very difficult-to-find
 bugs. (It’s unfortunate that the operators you shouldn’t use in OCaml
 are the ones you should use in most other languages.)
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # "foo" = "bar";;
    - : bool = false
@@ -145,7 +145,7 @@ are the ones you should use in most other languages.)
 
 Here, the two ``"foo"``\ s are different objects in memory.
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let x = "foo";;
    val x : string = "foo"
@@ -198,7 +198,7 @@ OCaml has a number of infix operators which are words. Here they are:
 You probably won’t need any of these except the ``mod`` operator, which
 is handy:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # 5 mod 2;;
    - : int = 1
@@ -266,7 +266,7 @@ in contexts where conventional unary negation doesn’t:
 
 OCaml is telling you you can’t subtract 1 from the ``abs`` function.
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # ~-1;;
    - : int = -1
@@ -275,7 +275,7 @@ OCaml is telling you you can’t subtract 1 from the ``abs`` function.
 
 This works. Here’s another example where these operators are handy:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # List.map (~-) [1;2;3;4;5];;
    - : int list = [-1; -2; -3; -4; -5]
@@ -287,14 +287,15 @@ The function application operators are interesting. The reverse function
 application operator ``|>`` is nearly always used to chain together a
 series of computations, each taking the result of the previous one:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # open List;;
    # map (fun x -> x * 2) [1;2;3;4;5];;
    - : int list = [2; 4; 6; 8; 10]
    # filter (fun x -> x > 5) (map (fun x -> x * 2) [1;2;3;4;5]);;
    - : int list = [6; 8; 10]
-   # List.fold_left max 0 (filter (fun x -> x > 5) (map (fun x -> x * 2) [1;2;3;4;5]));;
+   # List.fold_left max 0
+       (filter (fun x -> x > 5) (map (fun x -> x * 2) [1;2;3;4;5]));;
    - : int = 10
    # [1;2;3;4;5]
      |> map (fun x -> x * 2)
@@ -318,7 +319,7 @@ The ``@@`` operator might seem useless since ``f @@ x`` is the same as
 the right of the ``@@`` will be evaluated before calling the function.
 This can allow us to drop some parentheses:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # abs (-2 + 1);;
    - : int = 1
@@ -333,7 +334,7 @@ functions acting on the result of other functions. (Note that this is
 just like the ``|>`` operator except that the function calls are
 arranged right-to-left instead of left-to-right.) Another example:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # List.rev (List.sort compare [4;2;5;2;7;5;4;1;3;9;0]);;
    - : int list = [9; 7; 5; 5; 4; 4; 3; 2; 2; 1; 0]
@@ -358,7 +359,7 @@ operators. All user-defined operators must be made from "operator
 characters" and get their operator precedence and associativity from the
 first character of the operator (if it is itself an operator).
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let (++) x y = x * y;;
    val ( ++ ) : int -> int -> int = <fun>
@@ -387,7 +388,7 @@ prompt just turned to a ``*`` (indicating that OCaml thought we were
 still in a comment). When we added the ``*)`` to terminate the comment,
 we got an unhelpful error message.
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let ( *+ ) x y = x * y;;
    val ( *+ ) : int -> int -> int = <fun>
@@ -408,7 +409,7 @@ operator.
 You can even define unary prefix operators, as long as they start with
 the ``!`` character:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let ( !++ ) x = x := !x + 1;;
    val ( !++ ) : int ref -> unit = <fun>
@@ -428,7 +429,7 @@ We will have more to say about ``ref`` types below.
 OCaml has a ``printf`` function (technically, ``Printf.printf``) which
 has a number of pecularities. Check this out:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # Printf.printf;;
    - : ('a, out_channel, unit) format -> 'a = <fun>
@@ -445,7 +446,7 @@ something that does *not* have the ``string`` type, but is instead
 something called a *format string*. You can actually convert strings to
 format strings manually, but do not expect to understand the process:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # format_of_string;;
    - : ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6 =
@@ -510,7 +511,7 @@ concatenate them as if they were strings:
 Instead, you have to use the special *format string concatenation
 operator* ``(^^)`` to do the job:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # Printf.printf ("int: %d\t" ^^ "string: %s\n") 10 "foo";;
    int: 10 string: foo
@@ -568,7 +569,7 @@ Syntactically, arrays are exactly like lists except that they use
 different delimiters. Instead of ``[`` and ``]`` arrays use ``[|`` and
 ``|]``. Here is a literal array:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let my_array = [| 1; 2; 3; 4; 5 |];;
    val my_array : int array = [|1; 2; 3; 4; 5|]
@@ -579,7 +580,7 @@ is part of the type of the array.
 Accessing elements from arrays uses the unusual ``<array>.(<index>)``
 syntax:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # my_array.(0);;
    - : int = 1
@@ -590,7 +591,7 @@ syntax:
 
 Mutating (changing) elements in an array also uses an unusual syntax:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # my_array;;
    - : int array = [|1; 2; 3; 4; 5|]
@@ -627,7 +628,7 @@ Type notation
 The notation for tuple types is a bit weird; they are written as the
 *product* of the individual types:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # (1, "foo", 3.14);;
    - : int * string * float = (1, "foo", 3.14)
@@ -644,7 +645,7 @@ Implicit parentheses
 Unfortunately, OCaml (like Python) allows you to omit the parentheses in
 many situations:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # (1, "foo", 3.14);;
    - : int * string * float = (1, "foo", 3.14)
@@ -657,7 +658,7 @@ many situations:
 
 "So what?", you say. "What’s the big deal?" Well, look at this code:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # [1; 2; 3];;
    - : int list = [1; 2; 3]
@@ -665,7 +666,7 @@ many situations:
 This is the correct way to write a list, using semicolons as separators.
 A common error is to write lists with commas, which gives this:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # [1, 2, 3];;
    - : (int * int * int) list = [(1, 2, 3)]
@@ -719,7 +720,7 @@ Strings
 Strings are pretty standard in OCaml, except that the notation for
 accessing characters in a string is weird:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let s = "this is a string";;
    val s : string = "this is a string"
@@ -746,7 +747,7 @@ expression returns a value. This is nice in that you can use ``if``
 expressions anywhere an expression is desired. For instance, this
 function computes the ratio of the maximum and minimum of two floats:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let scale x y = (if x > y then x else y) /. (if x > y then y else x)
 
@@ -784,7 +785,7 @@ OCaml allows you to have an ``if`` expression without an ``else``
 clause, but if you do that, the ``then`` clause *must* have type
 ``unit``.
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let a = 10;;
    val a : int = 10
@@ -807,12 +808,16 @@ won’t work:
 
 Both branches of a conditional must have the same type, and if you leave
 out the ``else`` branch, its type is assumed to be ``unit``. In other
-words, ``if`` without ``else`` is desugared as follows:
+words, ``if`` without ``else`` is desugared as follows.  This:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    if <bool expr> then <then expr>
-     ==>
+
+is equivalent to this:
+
+.. code-block:: ocaml
+
    if <bool expr> then <then expr> else ()
 
 When you think about it, this makes perfect sense. Normally you would
@@ -825,7 +830,7 @@ code in the ``then`` clause (see below).
 Technically, OCaml doesn’t have an ``else if`` construct. However, if
 you’re careful you can use it anyway:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let abs x =
      if x < 0 then
@@ -838,7 +843,7 @@ you’re careful you can use it anyway:
 What’s actually happening is that there are two nested ``if``
 expressions:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let abs x =
      if x < 0 then
@@ -854,7 +859,7 @@ something more complicated in one of the ``then`` or ``else`` clauses
 (like another ``if`` expression) you may have to wrap parentheses or a
 ``begin``/``end`` pair around the inner expression:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let test n =
        if n mod 5 = 0 then
@@ -876,7 +881,7 @@ something more complicated in one of the ``then`` or ``else`` clauses
 Note that ``test 9`` doesn’t print anything, though we might expect it
 to print ``"outer if 1"``. The code above is parsed as follows:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let test n =
        if n mod 5 = 0 then
@@ -891,7 +896,7 @@ to print ``"outer if 1"``. The code above is parsed as follows:
 which is probably not what was intended. To fix it, insert either
 parentheses or a ``begin``/``end`` pair to disambiguate it:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let test n =
        if n mod 5 = 0 then
@@ -915,7 +920,7 @@ parentheses or a ``begin``/``end`` pair to disambiguate it:
 
 With ``begin``/``end`` it looks like this:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let test n =
        if n mod 5 = 0 then
@@ -936,7 +941,7 @@ reasonable alternative…​ that will probably also make you uneasy! It’s a
 way of using OCaml’s ``match`` form that is like a sequence of
 ``if``/``else if``/``else`` forms. Example:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let abs n =
      match () with
@@ -967,7 +972,7 @@ Unlike most conventional languages, OCaml doesn’t require you to put
 parentheses around the arguments to a function. In fact, if you do, you
 change the meaning! Consider this innocent-looking function:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let add x y = x + y;;
    val add : int -> int -> int = <fun>
@@ -992,7 +997,7 @@ surround them for the function call.) What if we use them anyway?
 Nope, that isn’t correct. The error message may confuse you. Let’s see a
 variation:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let add' (x, y) = x + y;;
    val add' : int * int -> int = <fun>
@@ -1018,7 +1023,7 @@ Huh. What is really going on here?
 
 Look at the second version again:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let add' (x, y) = x + y;;
    val add' : int * int -> int = <fun>
@@ -1030,7 +1035,7 @@ leave the arguments "naked", they don’t form a two-tuple, and there are
 two arguments, not one. This explains the error message. Now look at the
 first version:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let add x y = x + y;;
    val add : int -> int -> int = <fun>
@@ -1038,7 +1043,7 @@ first version:
 The type signature is a bit odd. Since the ``->`` type operator
 associates to the right, this is equivalent to:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let add x y = x + y;;
    val add : int -> (int -> int) = <fun>
@@ -1051,28 +1056,28 @@ applying ``add`` to the first argument (which has type ``int -> int``)
 is immediately applied to the second argument (of type ``int``) to give
 the result, which is an ``int``. So this function call:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # add 2 3;;
    - : int = 5
 
 is actually this:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # (add 2) 3;;
    - : int = 5
 
 And if we leave out the second argument, we get this:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # add 2;;
    - : int -> int = <fun>
 
 which shows currying in action. We can use this function:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let add2 = add 2;;
    val add2 : int -> int = <fun>
@@ -1087,14 +1092,14 @@ Functions are a kind of data in functional languages like OCaml, and you
 can define function values directly using the ``fun`` expression. So
 instead of writing:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let add x y = x + y;;
    val add : int -> int -> int = <fun>
 
 we could write the definition like this:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let add = fun x y -> x + y;;
    val add : int -> int -> int = <fun>
@@ -1103,7 +1108,7 @@ The meaning is exactly the same. We say that the first form is
 *syntactic sugar* for the latter form. We can even use a ``fun``
 expression without giving it a name at all:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # (fun x y -> x + y) 2 3;;
    - : int = 5
@@ -1129,7 +1134,7 @@ bar character (``|``). You can also (optionally) put a vertical bar
 character before the first pattern to be matched. This often makes the
 code look cleaner. Compare:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let rec sum_list lst =
      match lst with
@@ -1138,7 +1143,7 @@ code look cleaner. Compare:
 
 with
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let rec sum_list lst =
      match lst with
@@ -1158,7 +1163,7 @@ It’s not uncommon to want to put a ``match`` expression inside another
 ``match``'s clauses. Here’s an `example from the
 internet <https://stackoverflow.com/questions/257605/ocaml-match-expression-inside-another-one>`__:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let rec filter exp =
      match exp with
@@ -1181,7 +1186,7 @@ internet <https://stackoverflow.com/questions/257605/ocaml-match-expression-insi
 The solution is to wrap the inner ``match`` using parentheses or
 ``begin``/``end``. For instance:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let rec filter exp =
      match exp with
@@ -1208,7 +1213,7 @@ Now it will do what it’s supposed to.
 
 This kind of pattern is extremely common:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let rec <function name> <arg> =
      match <arg> with
@@ -1220,7 +1225,7 @@ For instance, the ``sum_list`` function above is an example of this
 pattern. The essence of this pattern is that you pattern match on the
 last argument. Sometimes you have more arguments:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let rec <function name> <arg1> <arg2> ... <argN> =
      match <argN> with
@@ -1233,7 +1238,7 @@ you can rewrite it using the ``function`` keyword. This is like an
 automatic ``match`` on the last argument. The patterns above would be
 written like this using ``function``:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let rec <function name> = function (* leave off <arg> *)
      | <pattern 1> -> ...
@@ -1247,7 +1252,7 @@ written like this using ``function``:
 
 Rewriting ``sum_list`` using ``function`` gives this:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let rec sum_list = function (* leave off <arg1> *)
      | [] -> []
@@ -1275,7 +1280,7 @@ function.
 
 You can easily define mutually recursive functions by using the
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let rec f x =
      ...  (* expression using g *)
@@ -1284,7 +1289,7 @@ You can easily define mutually recursive functions by using the
 
 syntax for top-level mutually-recursive functions, or the
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let rec f x =
      ...  (* expression using g *)
@@ -1314,7 +1319,7 @@ they contain. I’m not going to lie to you, this is a pain in highly
 imperative code! However, it is extremely explicit and it allows you to
 define useful functions on references.
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let r = ref 0;;  (* r is a reference *)
    val r : int ref = {contents = 0}
@@ -1342,7 +1347,7 @@ define useful functions on references.
 Fun fact: we could have defined the ``!`` and ``:=`` operators
 ourselves, and we could have defined the ``incr`` function as well:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let ( ! ) r = r.contents;;
    val ( ! ) : 'a ref -> 'a = <fun>
@@ -1376,7 +1381,7 @@ multiple lines.
 Here’s an example of an (inefficient) imperative function to compute
 greatest common denominators (GCDs):
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let gcd m n =
      let p = ref m in
@@ -1406,7 +1411,7 @@ on one or more type variables, which are written with a leading quote
 *i.e.* ``'a``, ``'b`` *etc.* But some types are not actually
 polymorphic, they are "write-once" types. Look at this:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let r = ref [];;
    val r : '_weak1 list ref = {contents = []}
@@ -1437,7 +1442,7 @@ OK, so what if you aren’t using references or imperative features?
 Unfortunately, you can still get weakly polymorphic types if you
 partially apply a function. Here’s a trivial example:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let const x y = y ;;
    val const : 'a -> 'b -> 'b = <fun>
@@ -1449,7 +1454,7 @@ reasons for this are quite involved (see the references below), but one
 trick that will work in most cases is to change the partial application
 to a full application by adding arguments:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # let const x y = y ;;
    val const : 'a -> 'b -> 'b = <fun>

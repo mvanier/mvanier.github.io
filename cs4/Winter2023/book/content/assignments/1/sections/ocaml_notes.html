@@ -402,35 +402,35 @@ that you are using to write and test your <code class="docutils literal notransl
 <p>The interface file consists mostly of type signatures of functions,
 though occasionally it will have other things as well. The <code class="docutils literal notranslate"><span class="pre">lab1.mli</span></code>
 interface file looks like this:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(* Interface file for lab1.ml *)
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(* Interface file for lab1.ml *)</span>
 
-val sum_of_squares_of_two_largest : int -&gt; int -&gt; int -&gt; int
-val factorial : int -&gt; int
-val e_term : int -&gt; float
-val e_approximation : int -&gt; float
-val is_even : int -&gt; bool
-val is_odd : int -&gt; bool
-val f_rec : int -&gt; int
-val f_iter : int -&gt; int
-val pascal_coefficient : int -&gt; int -&gt; int
+<span class="k">val</span> <span class="n">sum_of_squares_of_two_largest</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span>
+<span class="k">val</span> <span class="n">factorial</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span>
+<span class="k">val</span> <span class="n">e_term</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">float</span>
+<span class="k">val</span> <span class="n">e_approximation</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">float</span>
+<span class="k">val</span> <span class="n">is_even</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">bool</span>
+<span class="k">val</span> <span class="n">is_odd</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">bool</span>
+<span class="k">val</span> <span class="n">f_rec</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span>
+<span class="k">val</span> <span class="n">f_iter</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span>
+<span class="k">val</span> <span class="n">pascal_coefficient</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">val</span></code> declarations indicate that the type signature of a
 particular value is being described. Here, all such values are functions
 (functions are values in OCaml). For instance, the <code class="docutils literal notranslate"><span class="pre">factorial</span></code>
 function has the type signature:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>val factorial : int -&gt; int
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">factorial</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span>
 </pre></div>
 </div>
 <p>which indicates that it takes one argument (an <code class="docutils literal notranslate"><span class="pre">int</span></code>) and returns an
 <code class="docutils literal notranslate"><span class="pre">int</span></code>, as you would expect. Functions which take more arguments (like
 <code class="docutils literal notranslate"><span class="pre">pascal_coefficient</span></code>, which takes two integer arguments) have somewhat
 less intuitive type signatures:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>val pascal_coefficient : int -&gt; int -&gt; int
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">pascal_coefficient</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span>
 </pre></div>
 </div>
 <p>You might have expected something like this instead:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>val pascal_coefficient : int int -&gt; int  (* WRONG *)
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">pascal_coefficient</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span>  <span class="c">(* WRONG *)</span>
 </pre></div>
 </div>
 <p>The reason why this is wrong is that arguments to OCaml functions are
@@ -464,12 +464,12 @@ don’t have to have <code class="docutils literal notranslate"><span class="pre
 bit annoying, but we live with it.</p>
 <p>You can now load the <code class="docutils literal notranslate"><span class="pre">.cmo</span></code> file into an interactive OCaml session as
 follows:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># #load &quot;lab1.cmo&quot;;;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">#</span><span class="n">load</span> <span class="s2">&quot;lab1.cmo&quot;</span><span class="o">;;</span>
 </pre></div>
 </div>
 <p>In this case, nothing will be printed if there are no errors. A
 different way to load your code is to use the <code class="docutils literal notranslate"><span class="pre">#use</span></code> command:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># #use &quot;lab1.ml&quot;;;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">#</span><span class="n">use</span> <span class="s2">&quot;lab1.ml&quot;</span><span class="o">;;</span>
 </pre></div>
 </div>
 <p>If you do this, then OCaml will compile your code and print out the
@@ -478,14 +478,14 @@ need to compile your code beforehand. When using <code class="docutils literal n
 result, we tend to use <code class="docutils literal notranslate"><span class="pre">#use</span></code> more than <code class="docutils literal notranslate"><span class="pre">#load</span></code> when interactively
 developing code. You should know both forms.</p>
 <p>Let’s go back to what would happen if you typed:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># #load &quot;lab1.cmo&quot;;;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">#</span><span class="n">load</span> <span class="s2">&quot;lab1.cmo&quot;</span><span class="o">;;</span>
 </pre></div>
 </div>
 <p>You might expect that you could then use all the functions in
 <code class="docutils literal notranslate"><span class="pre">lab1.ml</span></code> (as you could if you’d used <code class="docutils literal notranslate"><span class="pre">#use</span></code>). Actually, that isn’t
 the case (yet). If you try, this will happen:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># pascal_coefficient;;
-Error: Unbound value pascal_coefficient
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">pascal_coefficient</span><span class="o">;;</span>
+<span class="nc">Error</span><span class="o">:</span> <span class="nc">Unbound</span> <span class="k">value</span> <span class="n">pascal_coefficient</span>
 </pre></div>
 </div>
 <p>Huh? We just loaded <code class="docutils literal notranslate"><span class="pre">lab1.ml</span></code>, and <code class="docutils literal notranslate"><span class="pre">lab1.ml</span></code> defines
@@ -494,17 +494,17 @@ Error: Unbound value pascal_coefficient
 name of the file, without the extension, and with the first letter
 capitalized). This is like saying <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">lab1</span></code> in Python. We can get
 the function by using the module name as a prefix:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Lab1.pascal_coefficient;;
-- : int -&gt; int -&gt; int = &lt;fun&gt;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="nn">Lab1</span><span class="p">.</span><span class="n">pascal_coefficient</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>Notice that we have to capitalize the first letter of <code class="docutils literal notranslate"><span class="pre">Lab1</span></code>. Module
 names are always capitalized in OCaml.</p>
 <p>If this is too tedious, you can dump all the names in the module into
 the local namespace by using an <code class="docutils literal notranslate"><span class="pre">open</span></code> declaration:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># open Lab1;;
-# pascal_coefficient;;
-- : int -&gt; int -&gt; int = &lt;fun&gt;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">open</span> <span class="nc">Lab1</span><span class="o">;;</span>
+<span class="o">#</span> <span class="n">pascal_coefficient</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>This is like saying <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">lab1</span> <span class="pre">import</span> <span class="pre">*</span></code> in Python. Alternatively, if

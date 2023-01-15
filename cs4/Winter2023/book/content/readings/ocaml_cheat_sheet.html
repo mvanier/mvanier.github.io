@@ -852,8 +852,8 @@ corresponding operators on floating-point numbers have an extra dot
 (<code class="docutils literal notranslate"><span class="pre">.</span></code>) at the end <em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">+.</span></code>, <code class="docutils literal notranslate"><span class="pre">-.</span></code>, <code class="docutils literal notranslate"><span class="pre">*.</span></code> and <code class="docutils literal notranslate"><span class="pre">/.</span></code>.
 Confusingly, the floating-point power operator (<code class="docutils literal notranslate"><span class="pre">**</span></code>) doesn’t have a
 dot at the end.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let sumsq x y = x *. x +. y *. y;;
-val sumsq : float -&gt; float -&gt; float = &lt;fun&gt;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">sumsq</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*.</span> <span class="n">x</span> <span class="o">+.</span> <span class="n">y</span> <span class="o">*.</span> <span class="n">y</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">sumsq</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">-&gt;</span> <span class="kt">float</span> <span class="o">-&gt;</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>This is by far the most annoying aspect of OCaml’s syntax. The reason
@@ -868,14 +868,14 @@ all <em>polymorphic</em>, which means they work on arbitrary OCaml datatypes.
 (This is also true of the <code class="docutils literal notranslate"><span class="pre">max</span></code> and <code class="docutils literal notranslate"><span class="pre">min</span></code> functions.) One exception:
 you are not allowed to compare functional values, though you can check
 identity:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># abs;;
-- : int -&gt; int = &lt;fun&gt;
-# abs == abs;;
-- : bool = true
-# abs = abs;;
-Exception: Invalid_argument &quot;compare: functional value&quot;.
-# max abs abs;;
-Exception: Invalid_argument &quot;compare: functional value&quot;.
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">abs</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">abs</span> <span class="o">==</span> <span class="n">abs</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">bool</span> <span class="o">=</span> <span class="bp">true</span>
+<span class="o">#</span> <span class="n">abs</span> <span class="o">=</span> <span class="n">abs</span><span class="o">;;</span>
+<span class="nc">Exception</span><span class="o">:</span> <span class="nc">Invalid_argument</span> <span class="s2">&quot;compare: functional value&quot;</span><span class="o">.</span>
+<span class="o">#</span> <span class="n">max</span> <span class="n">abs</span> <span class="n">abs</span><span class="o">;;</span>
+<span class="nc">Exception</span><span class="o">:</span> <span class="nc">Invalid_argument</span> <span class="s2">&quot;compare: functional value&quot;</span><span class="o">.</span>
 </pre></div>
 </div>
 <p>We’ll discuss equality comparisons and identity comparisons below.</p>
@@ -886,12 +886,12 @@ Exception: Invalid_argument &quot;compare: functional value&quot;.
 be converted into two-argument functions by wrapping parentheses around
 them. For instance, the operator <code class="docutils literal notranslate"><span class="pre">+</span></code> can be made into the two-argument
 function <code class="docutils literal notranslate"><span class="pre">(+)</span></code>.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (+);;
-- : int -&gt; int -&gt; int = &lt;fun&gt;
-# 2 + 3;;
-- : int = 5
-# (+) 2 3;;
-- : int = 5
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">(+);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="o">#</span> <span class="o">(+)</span> <span class="mi">2</span> <span class="mi">3</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">5</span>
 </pre></div>
 </div>
 <p>The only time this causes problems is with the multiplication operators
@@ -936,29 +936,29 @@ the same contents”). The <code class="docutils literal notranslate"><span clas
 though this may sometimes work, it can lead to very difficult-to-find
 bugs. (It’s unfortunate that the operators you shouldn’t use in OCaml
 are the ones you should use in most other languages.)</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># &quot;foo&quot; = &quot;bar&quot;;;
-- : bool = false
-# &quot;foo&quot; = &quot;foo&quot;;;
-- : bool = true
-# &quot;foo&quot; == &quot;foo&quot;;;
-- : bool = false
-# &quot;foo&quot; &lt;&gt; &quot;bar&quot;;;
-- : bool = true
-# &quot;foo&quot; != &quot;bar&quot;;;
-- : bool = true
-# &quot;foo&quot; &lt;&gt; &quot;foo&quot;;;
-- : bool = false
-# &quot;foo&quot; != &quot;foo&quot;;;
-- : bool = true
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="s2">&quot;foo&quot;</span> <span class="o">=</span> <span class="s2">&quot;bar&quot;</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">bool</span> <span class="o">=</span> <span class="bp">false</span>
+<span class="o">#</span> <span class="s2">&quot;foo&quot;</span> <span class="o">=</span> <span class="s2">&quot;foo&quot;</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">bool</span> <span class="o">=</span> <span class="bp">true</span>
+<span class="o">#</span> <span class="s2">&quot;foo&quot;</span> <span class="o">==</span> <span class="s2">&quot;foo&quot;</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">bool</span> <span class="o">=</span> <span class="bp">false</span>
+<span class="o">#</span> <span class="s2">&quot;foo&quot;</span> <span class="o">&lt;&gt;</span> <span class="s2">&quot;bar&quot;</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">bool</span> <span class="o">=</span> <span class="bp">true</span>
+<span class="o">#</span> <span class="s2">&quot;foo&quot;</span> <span class="o">!=</span> <span class="s2">&quot;bar&quot;</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">bool</span> <span class="o">=</span> <span class="bp">true</span>
+<span class="o">#</span> <span class="s2">&quot;foo&quot;</span> <span class="o">&lt;&gt;</span> <span class="s2">&quot;foo&quot;</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">bool</span> <span class="o">=</span> <span class="bp">false</span>
+<span class="o">#</span> <span class="s2">&quot;foo&quot;</span> <span class="o">!=</span> <span class="s2">&quot;foo&quot;</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">bool</span> <span class="o">=</span> <span class="bp">true</span>
 </pre></div>
 </div>
 <p>Here, the two <code class="docutils literal notranslate"><span class="pre">&quot;foo&quot;</span></code>s are different objects in memory.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let x = &quot;foo&quot;;;
-val x : string = &quot;foo&quot;
-# x = x;;
-- : bool = true
-# x == x;;
-- : bool = true
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;foo&quot;</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">x</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;foo&quot;</span>
+<span class="o">#</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">bool</span> <span class="o">=</span> <span class="bp">true</span>
+<span class="o">#</span> <span class="n">x</span> <span class="o">==</span> <span class="n">x</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">bool</span> <span class="o">=</span> <span class="bp">true</span>
 </pre></div>
 </div>
 <p>Here, <code class="docutils literal notranslate"><span class="pre">x</span></code> is equal to itself and is also the same object in memory as
@@ -1006,8 +1006,8 @@ itself.</p>
 </table>
 <p>You probably won’t need any of these except the <code class="docutils literal notranslate"><span class="pre">mod</span></code> operator, which
 is handy:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># 5 mod 2;;
-- : int = 1
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="mi">5</span> <span class="ow">mod</span> <span class="mi">2</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </section>
@@ -1074,15 +1074,15 @@ Error: This expression has type int -&gt; int
 </pre></div>
 </div>
 <p>OCaml is telling you you can’t subtract 1 from the <code class="docutils literal notranslate"><span class="pre">abs</span></code> function.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># ~-1;;
-- : int = -1
-# abs ~-1;;
-- : int = 1
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">~-</span><span class="mi">1</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="o">#</span> <span class="n">abs</span> <span class="o">~-</span><span class="mi">1</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 <p>This works. Here’s another example where these operators are handy:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># List.map (~-) [1;2;3;4;5];;
-- : int list = [-1; -2; -3; -4; -5]
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="o">(~-)</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span><span class="mi">2</span><span class="o">;</span><span class="mi">3</span><span class="o">;</span><span class="mi">4</span><span class="o">;</span><span class="mi">5</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[-</span><span class="mi">1</span><span class="o">;</span> <span class="o">-</span><span class="mi">2</span><span class="o">;</span> <span class="o">-</span><span class="mi">3</span><span class="o">;</span> <span class="o">-</span><span class="mi">4</span><span class="o">;</span> <span class="o">-</span><span class="mi">5</span><span class="o">]</span>
 </pre></div>
 </div>
 <p>Nevertheless, most people don’t bother with the unary negation operators
@@ -1090,18 +1090,19 @@ and just add extra parentheses if needed.</p>
 <p>The function application operators are interesting. The reverse function
 application operator <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> is nearly always used to chain together a
 series of computations, each taking the result of the previous one:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># open List;;
-# map (fun x -&gt; x * 2) [1;2;3;4;5];;
-- : int list = [2; 4; 6; 8; 10]
-# filter (fun x -&gt; x &gt; 5) (map (fun x -&gt; x * 2) [1;2;3;4;5]);;
-- : int list = [6; 8; 10]
-# List.fold_left max 0 (filter (fun x -&gt; x &gt; 5) (map (fun x -&gt; x * 2) [1;2;3;4;5]));;
-- : int = 10
-# [1;2;3;4;5]
-  |&gt; map (fun x -&gt; x * 2)
-  |&gt; filter (fun x -&gt; x &gt; 5)
-  |&gt; List.fold_left max 0;;
-- : int = 10
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">open</span> <span class="nc">List</span><span class="o">;;</span>
+<span class="o">#</span> <span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="o">)</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span><span class="mi">2</span><span class="o">;</span><span class="mi">3</span><span class="o">;</span><span class="mi">4</span><span class="o">;</span><span class="mi">5</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">2</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">6</span><span class="o">;</span> <span class="mi">8</span><span class="o">;</span> <span class="mi">10</span><span class="o">]</span>
+<span class="o">#</span> <span class="n">filter</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="o">)</span> <span class="o">(</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="o">)</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span><span class="mi">2</span><span class="o">;</span><span class="mi">3</span><span class="o">;</span><span class="mi">4</span><span class="o">;</span><span class="mi">5</span><span class="o">]);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">6</span><span class="o">;</span> <span class="mi">8</span><span class="o">;</span> <span class="mi">10</span><span class="o">]</span>
+<span class="o">#</span> <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="n">max</span> <span class="mi">0</span>
+    <span class="o">(</span><span class="n">filter</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="o">)</span> <span class="o">(</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="o">)</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span><span class="mi">2</span><span class="o">;</span><span class="mi">3</span><span class="o">;</span><span class="mi">4</span><span class="o">;</span><span class="mi">5</span><span class="o">]));;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="o">#</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span><span class="mi">2</span><span class="o">;</span><span class="mi">3</span><span class="o">;</span><span class="mi">4</span><span class="o">;</span><span class="mi">5</span><span class="o">]</span>
+  <span class="o">|&gt;</span> <span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="o">)</span>
+  <span class="o">|&gt;</span> <span class="n">filter</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="o">)</span>
+  <span class="o">|&gt;</span> <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="n">max</span> <span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">10</span>
 </pre></div>
 </div>
 <p>I’d argue that the last expression is more readable than the second-last one.
@@ -1117,12 +1118,12 @@ which is supplied by the result of evaluating the expression before the
 <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">x</span></code>. However, its precedence is extremely low, so the expression to
 the right of the <code class="docutils literal notranslate"><span class="pre">&#64;&#64;</span></code> will be evaluated before calling the function.
 This can allow us to drop some parentheses:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># abs (-2 + 1);;
-- : int = 1
-# abs @@ (-2 + 1);;
-- : int = 1
-# abs @@ -2 + 1;;
-- : int = 1
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">abs</span> <span class="o">(-</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">#</span> <span class="n">abs</span> <span class="o">@@</span> <span class="o">(-</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">#</span> <span class="n">abs</span> <span class="o">@@</span> <span class="o">-</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 <p>Note that the expression <code class="docutils literal notranslate"><span class="pre">-2</span> <span class="pre">+</span> <span class="pre">1</span></code> is evaluated in the last case before
@@ -1130,10 +1131,10 @@ calling the <code class="docutils literal notranslate"><span class="pre">abs</sp
 functions acting on the result of other functions. (Note that this is
 just like the <code class="docutils literal notranslate"><span class="pre">|&gt;</span></code> operator except that the function calls are
 arranged right-to-left instead of left-to-right.) Another example:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># List.rev (List.sort compare [4;2;5;2;7;5;4;1;3;9;0]);;
-- : int list = [9; 7; 5; 5; 4; 4; 3; 2; 2; 1; 0]
-# List.rev @@ List.sort compare [4;2;5;2;7;5;4;1;3;9;0];;
-- : int list = [9; 7; 5; 5; 4; 4; 3; 2; 2; 1; 0]
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="nn">List</span><span class="p">.</span><span class="n">rev</span> <span class="o">(</span><span class="nn">List</span><span class="p">.</span><span class="n">sort</span> <span class="n">compare</span> <span class="o">[</span><span class="mi">4</span><span class="o">;</span><span class="mi">2</span><span class="o">;</span><span class="mi">5</span><span class="o">;</span><span class="mi">2</span><span class="o">;</span><span class="mi">7</span><span class="o">;</span><span class="mi">5</span><span class="o">;</span><span class="mi">4</span><span class="o">;</span><span class="mi">1</span><span class="o">;</span><span class="mi">3</span><span class="o">;</span><span class="mi">9</span><span class="o">;</span><span class="mi">0</span><span class="o">]);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">9</span><span class="o">;</span> <span class="mi">7</span><span class="o">;</span> <span class="mi">5</span><span class="o">;</span> <span class="mi">5</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">3</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">1</span><span class="o">;</span> <span class="mi">0</span><span class="o">]</span>
+<span class="o">#</span> <span class="nn">List</span><span class="p">.</span><span class="n">rev</span> <span class="o">@@</span> <span class="nn">List</span><span class="p">.</span><span class="n">sort</span> <span class="n">compare</span> <span class="o">[</span><span class="mi">4</span><span class="o">;</span><span class="mi">2</span><span class="o">;</span><span class="mi">5</span><span class="o">;</span><span class="mi">2</span><span class="o">;</span><span class="mi">7</span><span class="o">;</span><span class="mi">5</span><span class="o">;</span><span class="mi">4</span><span class="o">;</span><span class="mi">1</span><span class="o">;</span><span class="mi">3</span><span class="o">;</span><span class="mi">9</span><span class="o">;</span><span class="mi">0</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">9</span><span class="o">;</span> <span class="mi">7</span><span class="o">;</span> <span class="mi">5</span><span class="o">;</span> <span class="mi">5</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">3</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">1</span><span class="o">;</span> <span class="mi">0</span><span class="o">]</span>
 </pre></div>
 </div>
 <p>One of the least-used operators is the <code class="docutils literal notranslate"><span class="pre">^^</span></code> operator, which
@@ -1151,12 +1152,12 @@ these and arbitrary-precision rationals.)</p>
 operators. All user-defined operators must be made from “operator
 characters” and get their operator precedence and associativity from the
 first character of the operator (if it is itself an operator).</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let (++) x y = x * y;;
-val ( ++ ) : int -&gt; int -&gt; int = &lt;fun&gt;
-# 2 ++ 3;;
-- : int = 6
-# 1 + 2 ++ 3;;
-- : int = 9
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="o">(++)</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="o">;;</span>
+<span class="k">val</span> <span class="o">(</span> <span class="o">++</span> <span class="o">)</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="mi">2</span> <span class="o">++</span> <span class="mi">3</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="o">#</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">++</span> <span class="mi">3</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">9</span>
 </pre></div>
 </div>
 <p>Note that the <code class="docutils literal notranslate"><span class="pre">++</span></code> operator has the same precedence as the <code class="docutils literal notranslate"><span class="pre">+</span></code>
@@ -1176,12 +1177,12 @@ start of a comment. Notice that we didn’t even get an error message; the
 prompt just turned to a <code class="docutils literal notranslate"><span class="pre">*</span></code> (indicating that OCaml thought we were
 still in a comment). When we added the <code class="docutils literal notranslate"><span class="pre">*)</span></code> to terminate the comment,
 we got an unhelpful error message.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let ( *+ ) x y = x * y;;
-val ( *+ ) : int -&gt; int -&gt; int = &lt;fun&gt;
-# 2 *+ 3;;
-- : int = 6
-# 1 + 2 *+ 3;;
-- : int = 7
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="o">(</span> <span class="o">*+</span> <span class="o">)</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="o">;;</span>
+<span class="k">val</span> <span class="o">(</span> <span class="o">*+</span> <span class="o">)</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="mi">2</span> <span class="o">*+</span> <span class="mi">3</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="o">#</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*+</span> <span class="mi">3</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">7</span>
 </pre></div>
 </div>
 <p>Now we see that the <code class="docutils literal notranslate"><span class="pre">*+</span></code> operator has the same precedence as the <code class="docutils literal notranslate"><span class="pre">*</span></code>
@@ -1194,14 +1195,14 @@ the operator.</p>
 </div>
 <p>You can even define unary prefix operators, as long as they start with
 the <code class="docutils literal notranslate"><span class="pre">!</span></code> character:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let ( !++ ) x = x := !x + 1;;
-val ( !++ ) : int ref -&gt; unit = &lt;fun&gt;
-# let r = ref 0;;
-val r : int ref = {contents = 0}
-# !++ r;;
-- : unit = ()
-# !r;;
-- : int = 1
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="o">(</span> <span class="o">!++</span> <span class="o">)</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">:=</span> <span class="o">!</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;;</span>
+<span class="k">val</span> <span class="o">(</span> <span class="o">!++</span> <span class="o">)</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">ref</span> <span class="o">-&gt;</span> <span class="kt">unit</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">r</span> <span class="o">=</span> <span class="n">ref</span> <span class="mi">0</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">r</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">ref</span> <span class="o">=</span> <span class="o">{</span><span class="n">contents</span> <span class="o">=</span> <span class="mi">0</span><span class="o">}</span>
+<span class="o">#</span> <span class="o">!++</span> <span class="n">r</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
+<span class="o">#</span> <span class="o">!</span><span class="n">r</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 <p>We will have more to say about <code class="docutils literal notranslate"><span class="pre">ref</span></code> types below.</p>
@@ -1210,12 +1211,12 @@ val r : int ref = {contents = 0}
 <h3><code class="docutils literal notranslate"><span class="pre">printf</span></code> and format strings<a class="headerlink" href="#printf-and-format-strings" title="Permalink to this headline"></a></h3>
 <p>OCaml has a <code class="docutils literal notranslate"><span class="pre">printf</span></code> function (technically, <code class="docutils literal notranslate"><span class="pre">Printf.printf</span></code>) which
 has a number of pecularities. Check this out:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Printf.printf;;
-- : (&#39;a, out_channel, unit) format -&gt; &#39;a = &lt;fun&gt;
-# Printf.printf &quot;%d\n&quot;;;
-- : int -&gt; unit = &lt;fun&gt;
-# &quot;%d\n&quot;;;
-- : string = &quot;%d\n&quot;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="n">out_channel</span><span class="o">,</span> <span class="kt">unit</span><span class="o">)</span> <span class="n">format</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">unit</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="s2">&quot;%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;%d</span><span class="se">\n</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
 <p>So even though <code class="docutils literal notranslate"><span class="pre">&quot;%d\n&quot;</span></code> appears to be just a string, somehow it can
@@ -1225,24 +1226,24 @@ actually happening is that OCaml is turning a <em>literal</em> string into a
 something that does <em>not</em> have the <code class="docutils literal notranslate"><span class="pre">string</span></code> type, but is instead
 something called a <em>format string</em>. You can actually convert strings to
 format strings manually, but do not expect to understand the process:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># format_of_string;;
-- : (&#39;a, &#39;b, &#39;c, &#39;d, &#39;e, &#39;f) format6 -&gt; (&#39;a, &#39;b, &#39;c, &#39;d, &#39;e, &#39;f) format6 =
-&lt;fun&gt;
-# let fs = format_of_string &quot;%d\n&quot;;;
-val fs :
-  (int -&gt; &#39;_weak5, &#39;_weak6, &#39;_weak7, &#39;_weak8, &#39;_weak8, &#39;_weak5) format6 =
-  CamlinternalFormatBasics.Format
-   (CamlinternalFormatBasics.Int (CamlinternalFormatBasics.Int_d,
-     CamlinternalFormatBasics.No_padding,
-     CamlinternalFormatBasics.No_precision,
-     CamlinternalFormatBasics.Char_literal (&#39;\n&#39;,
-      CamlinternalFormatBasics.End_of_format)),
-   &quot;%d\n&quot;)
-# Printf.printf fs;;
-- : int -&gt; unit = &lt;fun&gt;
-# Printf.printf fs 10;;
-10
-- : unit = ()
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">format_of_string</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">c</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">d</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">e</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">f</span><span class="o">)</span> <span class="n">format6</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">c</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">d</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">e</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">f</span><span class="o">)</span> <span class="n">format6</span> <span class="o">=</span>
+<span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">format_of_string</span> <span class="s2">&quot;%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">fs</span> <span class="o">:</span>
+  <span class="o">(</span><span class="kt">int</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak5</span><span class="o">,</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak6</span><span class="o">,</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak7</span><span class="o">,</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak8</span><span class="o">,</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak8</span><span class="o">,</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak5</span><span class="o">)</span> <span class="n">format6</span> <span class="o">=</span>
+  <span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">Format</span>
+   <span class="o">(</span><span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">Int</span> <span class="o">(</span><span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">Int_d</span><span class="o">,</span>
+     <span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">No_padding</span><span class="o">,</span>
+     <span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">No_precision</span><span class="o">,</span>
+     <span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">Char_literal</span> <span class="o">(</span><span class="sc">&#39;\n&#39;</span><span class="o">,</span>
+      <span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">End_of_format</span><span class="o">)),</span>
+   <span class="s2">&quot;%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">)</span>
+<span class="o">#</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="n">fs</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">unit</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="n">fs</span> <span class="mi">10</span><span class="o">;;</span>
+<span class="mi">10</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -1283,29 +1284,29 @@ Error: This expression has type string but an expression was expected of type
 </div>
 <p>Instead, you have to use the special <em>format string concatenation
 operator</em> <code class="docutils literal notranslate"><span class="pre">(^^)</span></code> to do the job:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Printf.printf (&quot;int: %d\t&quot; ^^ &quot;string: %s\n&quot;) 10 &quot;foo&quot;;;
-int: 10 string: foo
-- : unit = ()
-# (^^) ;;
-- : (&#39;a, &#39;b, &#39;c, &#39;d, &#39;e, &#39;f) format6 -&gt;
-    (&#39;f, &#39;b, &#39;c, &#39;e, &#39;g, &#39;h) format6 -&gt; (&#39;a, &#39;b, &#39;c, &#39;d, &#39;g, &#39;h) format6
-= &lt;fun&gt;
-# &quot;int: %d\t&quot; ^^ &quot;string: %s\n&quot;;;
-- : (int -&gt; string -&gt; &#39;_weak9, &#39;_weak10, &#39;_weak11, &#39;_weak12, &#39;_weak12,
-     &#39;_weak9)
-    format6
-=
-CamlinternalFormatBasics.Format
- (CamlinternalFormatBasics.String_literal (&quot;int: &quot;,
-   CamlinternalFormatBasics.Int (CamlinternalFormatBasics.Int_d,
-    CamlinternalFormatBasics.No_padding,
-    CamlinternalFormatBasics.No_precision,
-    CamlinternalFormatBasics.Char_literal (&#39;\t&#39;,
-     CamlinternalFormatBasics.String_literal (&quot;string: &quot;,
-      CamlinternalFormatBasics.String (CamlinternalFormatBasics.No_padding,
-       CamlinternalFormatBasics.Char_literal (&#39;\n&#39;,
-        CamlinternalFormatBasics.End_of_format)))))),
- &quot;int: %d\t%,string: %s\n&quot;)
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="o">(</span><span class="s2">&quot;int: %d</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">^^</span> <span class="s2">&quot;string: %s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">)</span> <span class="mi">10</span> <span class="s2">&quot;foo&quot;</span><span class="o">;;</span>
+<span class="kt">int</span><span class="o">:</span> <span class="mi">10</span> <span class="kt">string</span><span class="o">:</span> <span class="n">foo</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
+<span class="o">#</span> <span class="o">(^^)</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">c</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">d</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">e</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">f</span><span class="o">)</span> <span class="n">format6</span> <span class="o">-&gt;</span>
+    <span class="o">(</span><span class="k">&#39;</span><span class="n">f</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">c</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">e</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">g</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">h</span><span class="o">)</span> <span class="n">format6</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">c</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">d</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">g</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">h</span><span class="o">)</span> <span class="n">format6</span>
+<span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="s2">&quot;int: %d</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">^^</span> <span class="s2">&quot;string: %s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="o">(</span><span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak9</span><span class="o">,</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak10</span><span class="o">,</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak11</span><span class="o">,</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak12</span><span class="o">,</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak12</span><span class="o">,</span>
+     <span class="k">&#39;</span><span class="o">_</span><span class="n">weak9</span><span class="o">)</span>
+    <span class="n">format6</span>
+<span class="o">=</span>
+<span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">Format</span>
+ <span class="o">(</span><span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">String_literal</span> <span class="o">(</span><span class="s2">&quot;int: &quot;</span><span class="o">,</span>
+   <span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">Int</span> <span class="o">(</span><span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">Int_d</span><span class="o">,</span>
+    <span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">No_padding</span><span class="o">,</span>
+    <span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">No_precision</span><span class="o">,</span>
+    <span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">Char_literal</span> <span class="o">(</span><span class="sc">&#39;\t&#39;</span><span class="o">,</span>
+     <span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">String_literal</span> <span class="o">(</span><span class="s2">&quot;string: &quot;</span><span class="o">,</span>
+      <span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">String</span> <span class="o">(</span><span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">No_padding</span><span class="o">,</span>
+       <span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">Char_literal</span> <span class="o">(</span><span class="sc">&#39;\n&#39;</span><span class="o">,</span>
+        <span class="nn">CamlinternalFormatBasics</span><span class="p">.</span><span class="nc">End_of_format</span><span class="o">)))))),</span>
+ <span class="s2">&quot;int: %d</span><span class="se">\t</span><span class="s2">%,string: %s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">)</span>
 </pre></div>
 </div>
 <p>You probably won’t need this operator much, if at all.</p>
@@ -1333,29 +1334,29 @@ module with many useful functions on lists.</p>
 <p>Syntactically, arrays are exactly like lists except that they use
 different delimiters. Instead of <code class="docutils literal notranslate"><span class="pre">[</span></code> and <code class="docutils literal notranslate"><span class="pre">]</span></code> arrays use <code class="docutils literal notranslate"><span class="pre">[|</span></code> and
 <code class="docutils literal notranslate"><span class="pre">|]</span></code>. Here is a literal array:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let my_array = [| 1; 2; 3; 4; 5 |];;
-val my_array : int array = [|1; 2; 3; 4; 5|]
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">my_array</span> <span class="o">=</span> <span class="o">[|</span> <span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">5</span> <span class="o">|];;</span>
+<span class="k">val</span> <span class="n">my_array</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">array</span> <span class="o">=</span> <span class="o">[|</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">5</span><span class="o">|]</span>
 </pre></div>
 </div>
 <p>Notice that the array has type <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">array</span></code>; the type of the elements
 is part of the type of the array.</p>
 <p>Accessing elements from arrays uses the unusual <code class="docutils literal notranslate"><span class="pre">&lt;array&gt;.(&lt;index&gt;)</span></code>
 syntax:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># my_array.(0);;
-- : int = 1
-# my_array.(4);;
-- : int = 5
-# my_array.(5);;
-Exception: Invalid_argument &quot;index out of bounds&quot;.
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">my_array</span><span class="o">.(</span><span class="mi">0</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">#</span> <span class="n">my_array</span><span class="o">.(</span><span class="mi">4</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="o">#</span> <span class="n">my_array</span><span class="o">.(</span><span class="mi">5</span><span class="o">);;</span>
+<span class="nc">Exception</span><span class="o">:</span> <span class="nc">Invalid_argument</span> <span class="s2">&quot;index out of bounds&quot;</span><span class="o">.</span>
 </pre></div>
 </div>
 <p>Mutating (changing) elements in an array also uses an unusual syntax:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># my_array;;
-- : int array = [|1; 2; 3; 4; 5|]
-# my_array.(0) &lt;- 42;;
-- : unit = ()
-# my_array;;
-- : int array = [|42; 2; 3; 4; 5|]
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">my_array</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">array</span> <span class="o">=</span> <span class="o">[|</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">5</span><span class="o">|]</span>
+<span class="o">#</span> <span class="n">my_array</span><span class="o">.(</span><span class="mi">0</span><span class="o">)</span> <span class="o">&lt;-</span> <span class="mi">42</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
+<span class="o">#</span> <span class="n">my_array</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">array</span> <span class="o">=</span> <span class="o">[|</span><span class="mi">42</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">5</span><span class="o">|]</span>
 </pre></div>
 </div>
 <p>There is an <a class="reference external" href="https://v2.ocaml.org/api/Array.html">Array</a>
@@ -1378,8 +1379,8 @@ tuples are necessary because lists can only contain one type of data.</p>
 <span id="id3"></span><h3>Type notation<a class="headerlink" href="#type-notation" title="Permalink to this headline"></a></h3>
 <p>The notation for tuple types is a bit weird; they are written as the
 <em>product</em> of the individual types:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (1, &quot;foo&quot;, 3.14);;
-- : int * string * float = (1, &quot;foo&quot;, 3.14)
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="mi">3</span><span class="o">.</span><span class="mi">14</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">*</span> <span class="kt">string</span> <span class="o">*</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="mi">3</span><span class="o">.</span><span class="mi">14</span><span class="o">)</span>
 </pre></div>
 </div>
 <p>This tuple has the type <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*</span> <span class="pre">string</span> <span class="pre">*</span> <span class="pre">float</span></code>, which is a
@@ -1392,25 +1393,25 @@ operator doesn’t represent multiplication.</p>
 <h3>Implicit parentheses<a class="headerlink" href="#implicit-parentheses" title="Permalink to this headline"></a></h3>
 <p>Unfortunately, OCaml (like Python) allows you to omit the parentheses in
 many situations:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (1, &quot;foo&quot;, 3.14);;
-- : int * string * float = (1, &quot;foo&quot;, 3.14)
-# 1, &quot;foo&quot;, 3.14;;
-- : int * string * float = (1, &quot;foo&quot;, 3.14)
-# let tup = (1, &quot;foo&quot;, 3.14);;
-val tup : int * string * float = (1, &quot;foo&quot;, 3.14)
-# let tup = 1, &quot;foo&quot;, 3.14;;
-val tup : int * string * float = (1, &quot;foo&quot;, 3.14)
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="mi">3</span><span class="o">.</span><span class="mi">14</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">*</span> <span class="kt">string</span> <span class="o">*</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="mi">3</span><span class="o">.</span><span class="mi">14</span><span class="o">)</span>
+<span class="o">#</span> <span class="mi">1</span><span class="o">,</span> <span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="mi">3</span><span class="o">.</span><span class="mi">14</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">*</span> <span class="kt">string</span> <span class="o">*</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="mi">3</span><span class="o">.</span><span class="mi">14</span><span class="o">)</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">tup</span> <span class="o">=</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="mi">3</span><span class="o">.</span><span class="mi">14</span><span class="o">);;</span>
+<span class="k">val</span> <span class="n">tup</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">*</span> <span class="kt">string</span> <span class="o">*</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="mi">3</span><span class="o">.</span><span class="mi">14</span><span class="o">)</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">tup</span> <span class="o">=</span> <span class="mi">1</span><span class="o">,</span> <span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="mi">3</span><span class="o">.</span><span class="mi">14</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">tup</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">*</span> <span class="kt">string</span> <span class="o">*</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="mi">3</span><span class="o">.</span><span class="mi">14</span><span class="o">)</span>
 </pre></div>
 </div>
 <p>“So what?”, you say. “What’s the big deal?” Well, look at this code:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># [1; 2; 3];;
-- : int list = [1; 2; 3]
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">]</span>
 </pre></div>
 </div>
 <p>This is the correct way to write a list, using semicolons as separators.
 A common error is to write lists with commas, which gives this:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># [1, 2, 3];;
-- : (int * int * int) list = [(1, 2, 3)]
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="o">(</span><span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span><span class="o">)</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">)]</span>
 </pre></div>
 </div>
 <p>Note that this is <em>not</em> a syntax error! Instead, OCaml has interepreted
@@ -1456,12 +1457,12 @@ discuss imperative programming.</p>
 <h2>Strings<a class="headerlink" href="#strings" title="Permalink to this headline"></a></h2>
 <p>Strings are pretty standard in OCaml, except that the notation for
 accessing characters in a string is weird:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let s = &quot;this is a string&quot;;;
-val s : string = &quot;this is a string&quot;
-# s.[0];;
-- : char = &#39;t&#39;
-# s.[9];;
-- : char = &#39; &#39;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;this is a string&quot;</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">s</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;this is a string&quot;</span>
+<span class="o">#</span> <span class="n">s</span><span class="o">.[</span><span class="mi">0</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">char</span> <span class="o">=</span> <span class="sc">&#39;t&#39;</span>
+<span class="o">#</span> <span class="n">s</span><span class="o">.[</span><span class="mi">9</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">char</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span>
 </pre></div>
 </div>
 <p>OCaml treats strings like a kind of specialized array. Up until
@@ -1478,7 +1479,7 @@ languages like OCaml, <code class="docutils literal notranslate"><span class="pr
 expression returns a value. This is nice in that you can use <code class="docutils literal notranslate"><span class="pre">if</span></code>
 expressions anywhere an expression is desired. For instance, this
 function computes the ratio of the maximum and minimum of two floats:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let scale x y = (if x &gt; y then x else y) /. (if x &gt; y then y else x)
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">scale</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="o">(</span><span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="k">then</span> <span class="n">x</span> <span class="k">else</span> <span class="n">y</span><span class="o">)</span> <span class="o">/.</span> <span class="o">(</span><span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="k">then</span> <span class="n">y</span> <span class="k">else</span> <span class="n">x</span><span class="o">)</span>
 </pre></div>
 </div>
 <p>(Note the <code class="docutils literal notranslate"><span class="pre">/.</span></code> operator for float division.) This is not the most
@@ -1509,11 +1510,11 @@ will see.</p>
 <p>OCaml allows you to have an <code class="docutils literal notranslate"><span class="pre">if</span></code> expression without an <code class="docutils literal notranslate"><span class="pre">else</span></code>
 clause, but if you do that, the <code class="docutils literal notranslate"><span class="pre">then</span></code> clause <em>must</em> have type
 <code class="docutils literal notranslate"><span class="pre">unit</span></code>.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let a = 10;;
-val a : int = 10
-# if a &gt; 5 then Printf.printf &quot;big!\n&quot;;;
-big!
-- : unit = ()
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">a</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="o">#</span> <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="k">then</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;big!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">;;</span>
+<span class="n">big</span><span class="o">!</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
 </pre></div>
 </div>
 <p>This works because <code class="docutils literal notranslate"><span class="pre">printf</span></code> has a return type of <code class="docutils literal notranslate"><span class="pre">unit</span></code>. But this
@@ -1529,10 +1530,12 @@ Error: This expression has type int but an expression was expected of type
 </div>
 <p>Both branches of a conditional must have the same type, and if you leave
 out the <code class="docutils literal notranslate"><span class="pre">else</span></code> branch, its type is assumed to be <code class="docutils literal notranslate"><span class="pre">unit</span></code>. In other
-words, <code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code> is desugared as follows:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>if &lt;bool expr&gt; then &lt;then expr&gt;
-  ==&gt;
-if &lt;bool expr&gt; then &lt;then expr&gt; else ()
+words, <code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code> is desugared as follows.  This:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">&lt;</span><span class="kt">bool</span> <span class="n">expr</span><span class="o">&gt;</span> <span class="k">then</span> <span class="o">&lt;</span><span class="k">then</span> <span class="n">expr</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>is equivalent to this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">&lt;</span><span class="kt">bool</span> <span class="n">expr</span><span class="o">&gt;</span> <span class="k">then</span> <span class="o">&lt;</span><span class="k">then</span> <span class="n">expr</span><span class="o">&gt;</span> <span class="k">else</span> <span class="bp">()</span>
 </pre></div>
 </div>
 <p>When you think about it, this makes perfect sense. Normally you would
@@ -1543,24 +1546,24 @@ code in the <code class="docutils literal notranslate"><span class="pre">then</s
 <h3><code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code><a class="headerlink" href="#else-if" title="Permalink to this headline"></a></h3>
 <p>Technically, OCaml doesn’t have an <code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code> construct. However, if
 you’re careful you can use it anyway:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let abs x =
-  if x &lt; 0 then
-    -x
-  else if x &gt; 0 then
-    x
-  else 0;;
-val abs : int -&gt; int = &lt;fun&gt;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">abs</span> <span class="n">x</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">then</span>
+    <span class="o">-</span><span class="n">x</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">then</span>
+    <span class="n">x</span>
+  <span class="k">else</span> <span class="mi">0</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">abs</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>What’s actually happening is that there are two nested <code class="docutils literal notranslate"><span class="pre">if</span></code>
 expressions:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let abs x =
-  if x &lt; 0 then
-    -x
-  else
-    (if x &gt; 0 then
-       x
-     else 0);;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">abs</span> <span class="n">x</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">then</span>
+    <span class="o">-</span><span class="n">x</span>
+  <span class="k">else</span>
+    <span class="o">(</span><span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">then</span>
+       <span class="n">x</span>
+     <span class="k">else</span> <span class="mi">0</span><span class="o">);;</span>
 </pre></div>
 </div>
 <p>As long as you can write your code as a sequence of nested <code class="docutils literal notranslate"><span class="pre">if</span></code>
@@ -1568,72 +1571,72 @@ expressions like this, it will work as you expect. But if you put
 something more complicated in one of the <code class="docutils literal notranslate"><span class="pre">then</span></code> or <code class="docutils literal notranslate"><span class="pre">else</span></code> clauses
 (like another <code class="docutils literal notranslate"><span class="pre">if</span></code> expression) you may have to wrap parentheses or a
 <code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code> pair around the inner expression:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let test n =
-    if n mod 5 = 0 then
-      if n mod 3 = 0 then
-        Printf.printf &quot;inner if\n&quot;
-    (* no else! *)
-    else if n mod 3 = 0 then
-      Printf.printf &quot;outer if 1\n&quot;
-    else
-      Printf.printf &quot;outer if 2\n&quot;
-  ;;
-val test : int -&gt; unit = &lt;fun&gt;
-# test 15;;
-inner if
-- : unit = ()
-# test 9;;
-- : unit = ()
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">test</span> <span class="n">n</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="ow">mod</span> <span class="mi">5</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span>
+      <span class="k">if</span> <span class="n">n</span> <span class="ow">mod</span> <span class="mi">3</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span>
+        <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;inner if</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="c">(* no else! *)</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">mod</span> <span class="mi">3</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span>
+      <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;outer if 1</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">else</span>
+      <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;outer if 2</span><span class="se">\n</span><span class="s2">&quot;</span>
+  <span class="o">;;</span>
+<span class="k">val</span> <span class="n">test</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">unit</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">test</span> <span class="mi">15</span><span class="o">;;</span>
+<span class="n">inner</span> <span class="k">if</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
+<span class="o">#</span> <span class="n">test</span> <span class="mi">9</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
 </pre></div>
 </div>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">test</span> <span class="pre">9</span></code> doesn’t print anything, though we might expect it
 to print <code class="docutils literal notranslate"><span class="pre">&quot;outer</span> <span class="pre">if</span> <span class="pre">1&quot;</span></code>. The code above is parsed as follows:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let test n =
-    if n mod 5 = 0 then
-      (if n mod 3 = 0 then
-        Printf.printf &quot;inner if\n&quot;
-       else if n mod 3 = 0 then
-         Printf.printf &quot;outer if 1\n&quot;
-       else
-         Printf.printf &quot;outer if 2\n&quot;)
-  ;;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">test</span> <span class="n">n</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="ow">mod</span> <span class="mi">5</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span>
+      <span class="o">(</span><span class="k">if</span> <span class="n">n</span> <span class="ow">mod</span> <span class="mi">3</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span>
+        <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;inner if</span><span class="se">\n</span><span class="s2">&quot;</span>
+       <span class="k">else</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">mod</span> <span class="mi">3</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span>
+         <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;outer if 1</span><span class="se">\n</span><span class="s2">&quot;</span>
+       <span class="k">else</span>
+         <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;outer if 2</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">)</span>
+  <span class="o">;;</span>
 </pre></div>
 </div>
 <p>which is probably not what was intended. To fix it, insert either
 parentheses or a <code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code> pair to disambiguate it:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let test n =
-    if n mod 5 = 0 then
-      (if n mod 3 = 0 then
-        Printf.printf &quot;inner if\n&quot;)
-    else if n mod 3 = 0 then
-      Printf.printf &quot;outer if 1\n&quot;
-    else
-      Printf.printf &quot;outer if 2\n&quot;
-  ;;
-val test : int -&gt; unit = &lt;fun&gt;
-# test 15;;
-inner if
-- : unit = ()
-# test 9;;
-outer if 1
-- : unit = ()
-# test 8;;
-outer if 2
-- : unit = ()
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">test</span> <span class="n">n</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="ow">mod</span> <span class="mi">5</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span>
+      <span class="o">(</span><span class="k">if</span> <span class="n">n</span> <span class="ow">mod</span> <span class="mi">3</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span>
+        <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;inner if</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">)</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">mod</span> <span class="mi">3</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span>
+      <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;outer if 1</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">else</span>
+      <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;outer if 2</span><span class="se">\n</span><span class="s2">&quot;</span>
+  <span class="o">;;</span>
+<span class="k">val</span> <span class="n">test</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">unit</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">test</span> <span class="mi">15</span><span class="o">;;</span>
+<span class="n">inner</span> <span class="k">if</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
+<span class="o">#</span> <span class="n">test</span> <span class="mi">9</span><span class="o">;;</span>
+<span class="n">outer</span> <span class="k">if</span> <span class="mi">1</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
+<span class="o">#</span> <span class="n">test</span> <span class="mi">8</span><span class="o">;;</span>
+<span class="n">outer</span> <span class="k">if</span> <span class="mi">2</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
 </pre></div>
 </div>
 <p>With <code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code> it looks like this:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let test n =
-    if n mod 5 = 0 then
-      begin
-        if n mod 3 = 0 then
-          Printf.printf &quot;inner if\n&quot;
-      end
-    else if n mod 3 = 0 then
-      Printf.printf &quot;outer if 1\n&quot;
-    else
-      Printf.printf &quot;outer if 2\n&quot;
-  ;;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">test</span> <span class="n">n</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="ow">mod</span> <span class="mi">5</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span>
+      <span class="k">begin</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="ow">mod</span> <span class="mi">3</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span>
+          <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;inner if</span><span class="se">\n</span><span class="s2">&quot;</span>
+      <span class="k">end</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">mod</span> <span class="mi">3</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span>
+      <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;outer if 1</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">else</span>
+      <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;outer if 2</span><span class="se">\n</span><span class="s2">&quot;</span>
+  <span class="o">;;</span>
 </pre></div>
 </div>
 <p>Either are acceptable.</p>
@@ -1641,11 +1644,11 @@ outer if 2
 reasonable alternative…​ that will probably also make you uneasy! It’s a
 way of using OCaml’s <code class="docutils literal notranslate"><span class="pre">match</span></code> form that is like a sequence of
 <code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code> forms. Example:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let abs n =
-  match () with
-    | _ when n &gt; 0 -&gt; n
-    | _ when n &lt; 0 -&gt; -n
-    | _ -&gt; 0
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">abs</span> <span class="n">n</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="bp">()</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="o">_</span> <span class="k">when</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">-&gt;</span> <span class="n">n</span>
+    <span class="o">|</span> <span class="o">_</span> <span class="k">when</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">-&gt;</span> <span class="o">-</span><span class="n">n</span>
+    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="mi">0</span>
 </pre></div>
 </div>
 <p>We match against <code class="docutils literal notranslate"><span class="pre">()</span></code> because we don’t care about the value matched;
@@ -1667,12 +1670,12 @@ a number of unusual features of OCaml functions.</p>
 <p>Unlike most conventional languages, OCaml doesn’t require you to put
 parentheses around the arguments to a function. In fact, if you do, you
 change the meaning! Consider this innocent-looking function:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add x y = x + y;;
-val add : int -&gt; int -&gt; int = &lt;fun&gt;
-# add 2 3;;
-- : int = 5
-# add (2 + 3) (3 + 4);;
-- : int = 12
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">add</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">add</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">add</span> <span class="mi">2</span> <span class="mi">3</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="o">#</span> <span class="n">add</span> <span class="o">(</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span><span class="o">)</span> <span class="o">(</span><span class="mi">3</span> <span class="o">+</span> <span class="mi">4</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">12</span>
 </pre></div>
 </div>
 <p>OK, so we can get by without parentheses around the arguments. (The
@@ -1688,10 +1691,10 @@ Error: This expression has type &#39;a * &#39;b
 </div>
 <p>Nope, that isn’t correct. The error message may confuse you. Let’s see a
 variation:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add&#39; (x, y) = x + y;;
-val add&#39; : int * int -&gt; int = &lt;fun&gt;
-# add&#39; (2, 3);;
-- : int = 5
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">add&#39;</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">add&#39;</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">add&#39;</span> <span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">5</span>
 </pre></div>
 </div>
 <p>(Note that in OCaml, you can use the <code class="docutils literal notranslate"><span class="pre">'</span></code> character (pronounced
@@ -1708,8 +1711,8 @@ Error: This function has type int * int -&gt; int
 </div>
 <p>Huh. What is really going on here?</p>
 <p>Look at the second version again:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add&#39; (x, y) = x + y;;
-val add&#39; : int * int -&gt; int = &lt;fun&gt;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">add&#39;</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">add&#39;</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>Look at the type signature. The <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*</span> <span class="pre">int</span></code> part says that the input
@@ -1718,14 +1721,14 @@ tuple with two elements), where both elements are <code class="docutils literal 
 leave the arguments “naked”, they don’t form a two-tuple, and there are
 two arguments, not one. This explains the error message. Now look at the
 first version:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add x y = x + y;;
-val add : int -&gt; int -&gt; int = &lt;fun&gt;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">add</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">add</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>The type signature is a bit odd. Since the <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code> type operator
 associates to the right, this is equivalent to:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add x y = x + y;;
-val add : int -&gt; (int -&gt; int) = &lt;fun&gt;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">add</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">add</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span><span class="o">)</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>This is an example of what’s called <em>currying</em>. What the type signature
@@ -1735,25 +1738,25 @@ If you call the function with both arguments, the function returned by
 applying <code class="docutils literal notranslate"><span class="pre">add</span></code> to the first argument (which has type <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">-&gt;</span> <span class="pre">int</span></code>)
 is immediately applied to the second argument (of type <code class="docutils literal notranslate"><span class="pre">int</span></code>) to give
 the result, which is an <code class="docutils literal notranslate"><span class="pre">int</span></code>. So this function call:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># add 2 3;;
-- : int = 5
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">add</span> <span class="mi">2</span> <span class="mi">3</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">5</span>
 </pre></div>
 </div>
 <p>is actually this:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (add 2) 3;;
-- : int = 5
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">(</span><span class="n">add</span> <span class="mi">2</span><span class="o">)</span> <span class="mi">3</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">5</span>
 </pre></div>
 </div>
 <p>And if we leave out the second argument, we get this:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># add 2;;
-- : int -&gt; int = &lt;fun&gt;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">add</span> <span class="mi">2</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>which shows currying in action. We can use this function:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add2 = add 2;;
-val add2 : int -&gt; int = &lt;fun&gt;
-# add2 3;;
-- : int = 5
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">add2</span> <span class="o">=</span> <span class="n">add</span> <span class="mi">2</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">add2</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">add2</span> <span class="mi">3</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">5</span>
 </pre></div>
 </div>
 </section>
@@ -1762,20 +1765,20 @@ val add2 : int -&gt; int = &lt;fun&gt;
 <p>Functions are a kind of data in functional languages like OCaml, and you
 can define function values directly using the <code class="docutils literal notranslate"><span class="pre">fun</span></code> expression. So
 instead of writing:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add x y = x + y;;
-val add : int -&gt; int -&gt; int = &lt;fun&gt;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">add</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">add</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>we could write the definition like this:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let add = fun x y -&gt; x + y;;
-val add : int -&gt; int -&gt; int = &lt;fun&gt;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">add</span> <span class="o">=</span> <span class="k">fun</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">add</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>The meaning is exactly the same. We say that the first form is
 <em>syntactic sugar</em> for the latter form. We can even use a <code class="docutils literal notranslate"><span class="pre">fun</span></code>
 expression without giving it a name at all:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (fun x y -&gt; x + y) 2 3;;
-- : int = 5
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">)</span> <span class="mi">2</span> <span class="mi">3</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">5</span>
 </pre></div>
 </div>
 <p>Therefore, we say that the <code class="docutils literal notranslate"><span class="pre">fun</span></code> form defines an <em>anonymous function</em>.
@@ -1794,17 +1797,17 @@ couple of subtleties you should know about.</p>
 bar character (<code class="docutils literal notranslate"><span class="pre">|</span></code>). You can also (optionally) put a vertical bar
 character before the first pattern to be matched. This often makes the
 code look cleaner. Compare:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec sum_list lst =
-  match lst with
-      [] -&gt; []
-    | h :: t -&gt; h + sum_list t
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">sum_list</span> <span class="n">lst</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
+      <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="bp">[]</span>
+    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="n">h</span> <span class="o">+</span> <span class="n">sum_list</span> <span class="n">t</span>
 </pre></div>
 </div>
 <p>with</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec sum_list lst =
-  match lst with
-    | [] -&gt; []
-    | h :: t -&gt; h + sum_list t
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">sum_list</span> <span class="n">lst</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="bp">[]</span>
+    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="n">h</span> <span class="o">+</span> <span class="n">sum_list</span> <span class="n">t</span>
 </pre></div>
 </div>
 <p>These two functions are identical in terms of their functionality, but
@@ -1818,44 +1821,44 @@ the first match.</p>
 <code class="docutils literal notranslate"><span class="pre">match</span></code> expression so that its clauses aren’t confused with the outer
 <code class="docutils literal notranslate"><span class="pre">match</span></code>’s clauses. Here’s an <a class="reference external" href="https://stackoverflow.com/questions/257605/ocaml-match-expression-inside-another-one">example from the
 internet</a>:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec filter exp =
-  match exp with
-    | Var v -&gt; Var v
-    | Sum(e1, e2) -&gt; Sum(e1, e2)
-    | Prod(e1, e2) -&gt; Prod(e1, e2)
-    | Diff(e1, e2) -&gt;
-      match e2 with  (* nested match *)
-        | Sum(e3, e4) -&gt; filter (diffRule e2)
-        | Diff(e3, e4) -&gt; filter (diffRule e2)
-        | _ -&gt; filter e2
-    (* Oops! These following clauses should belong to the outer match, but
-       they actually belong to the inner match. *)
-    | Quot(e1, e2) -&gt;
-        match e2 with
-        | Quot(e3, e4) -&gt; filter (quotRule e2)
-        | Prod(e3, e4) -&gt; filter (quotRule e2)
-        | _ -&gt; filter e2
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">filter</span> <span class="n">exp</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">exp</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="nc">Var</span> <span class="n">v</span> <span class="o">-&gt;</span> <span class="nc">Var</span> <span class="n">v</span>
+    <span class="o">|</span> <span class="nc">Sum</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="nc">Sum</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span>
+    <span class="o">|</span> <span class="nc">Prod</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="nc">Prod</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span>
+    <span class="o">|</span> <span class="nc">Diff</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span> <span class="o">-&gt;</span>
+      <span class="k">match</span> <span class="n">e2</span> <span class="k">with</span>  <span class="c">(* nested match *)</span>
+        <span class="o">|</span> <span class="nc">Sum</span><span class="o">(</span><span class="n">e3</span><span class="o">,</span> <span class="n">e4</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">filter</span> <span class="o">(</span><span class="n">diffRule</span> <span class="n">e2</span><span class="o">)</span>
+        <span class="o">|</span> <span class="nc">Diff</span><span class="o">(</span><span class="n">e3</span><span class="o">,</span> <span class="n">e4</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">filter</span> <span class="o">(</span><span class="n">diffRule</span> <span class="n">e2</span><span class="o">)</span>
+        <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">filter</span> <span class="n">e2</span>
+    <span class="c">(* Oops! These following clauses should belong to the outer match, but</span>
+<span class="c">       they actually belong to the inner match. *)</span>
+    <span class="o">|</span> <span class="nc">Quot</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span> <span class="o">-&gt;</span>
+        <span class="k">match</span> <span class="n">e2</span> <span class="k">with</span>
+        <span class="o">|</span> <span class="nc">Quot</span><span class="o">(</span><span class="n">e3</span><span class="o">,</span> <span class="n">e4</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">filter</span> <span class="o">(</span><span class="n">quotRule</span> <span class="n">e2</span><span class="o">)</span>
+        <span class="o">|</span> <span class="nc">Prod</span><span class="o">(</span><span class="n">e3</span><span class="o">,</span> <span class="n">e4</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">filter</span> <span class="o">(</span><span class="n">quotRule</span> <span class="n">e2</span><span class="o">)</span>
+        <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">filter</span> <span class="n">e2</span>
 </pre></div>
 </div>
 <p>The solution is to wrap the inner <code class="docutils literal notranslate"><span class="pre">match</span></code> using parentheses or
 <code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code>. For instance:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec filter exp =
-  match exp with
-    | Var v -&gt; Var v
-    | Sum(e1, e2) -&gt; Sum(e1, e2)
-    | Prod(e1, e2) -&gt; Prod(e1, e2)
-    | Diff(e1, e2) -&gt;
-      begin
-        match e2 with  (* nested match *)
-          | Sum(e3, e4) -&gt; filter (diffRule e2)
-          | Diff(e3, e4) -&gt; filter (diffRule e2)
-          | _ -&gt; filter e2
-      end
-    | Quot(e1, e2) -&gt;
-        match e2 with
-        | Quot(e3, e4) -&gt; filter (quotRule e2)
-        | Prod(e3, e4) -&gt; filter (quotRule e2)
-        | _ -&gt; filter e2
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">filter</span> <span class="n">exp</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">exp</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="nc">Var</span> <span class="n">v</span> <span class="o">-&gt;</span> <span class="nc">Var</span> <span class="n">v</span>
+    <span class="o">|</span> <span class="nc">Sum</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="nc">Sum</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span>
+    <span class="o">|</span> <span class="nc">Prod</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="nc">Prod</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span>
+    <span class="o">|</span> <span class="nc">Diff</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span> <span class="o">-&gt;</span>
+      <span class="k">begin</span>
+        <span class="k">match</span> <span class="n">e2</span> <span class="k">with</span>  <span class="c">(* nested match *)</span>
+          <span class="o">|</span> <span class="nc">Sum</span><span class="o">(</span><span class="n">e3</span><span class="o">,</span> <span class="n">e4</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">filter</span> <span class="o">(</span><span class="n">diffRule</span> <span class="n">e2</span><span class="o">)</span>
+          <span class="o">|</span> <span class="nc">Diff</span><span class="o">(</span><span class="n">e3</span><span class="o">,</span> <span class="n">e4</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">filter</span> <span class="o">(</span><span class="n">diffRule</span> <span class="n">e2</span><span class="o">)</span>
+          <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">filter</span> <span class="n">e2</span>
+      <span class="k">end</span>
+    <span class="o">|</span> <span class="nc">Quot</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span> <span class="o">-&gt;</span>
+        <span class="k">match</span> <span class="n">e2</span> <span class="k">with</span>
+        <span class="o">|</span> <span class="nc">Quot</span><span class="o">(</span><span class="n">e3</span><span class="o">,</span> <span class="n">e4</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">filter</span> <span class="o">(</span><span class="n">quotRule</span> <span class="n">e2</span><span class="o">)</span>
+        <span class="o">|</span> <span class="nc">Prod</span><span class="o">(</span><span class="n">e3</span><span class="o">,</span> <span class="n">e4</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">filter</span> <span class="o">(</span><span class="n">quotRule</span> <span class="n">e2</span><span class="o">)</span>
+        <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">filter</span> <span class="n">e2</span>
 </pre></div>
 </div>
 <p>Now it will do what it’s supposed to.</p>
@@ -1863,42 +1866,42 @@ internet</a>:</p>
 <section id="function-expressions">
 <h3><code class="docutils literal notranslate"><span class="pre">function</span></code> expressions<a class="headerlink" href="#function-expressions" title="Permalink to this headline"></a></h3>
 <p>This kind of pattern is extremely common:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec &lt;function name&gt; &lt;arg&gt; =
-  match &lt;arg&gt; with
-    | &lt;pattern 1&gt; -&gt; ...
-    | &lt;pattern 2&gt; -&gt; ...
-    ...
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="o">&lt;</span><span class="k">function</span> <span class="n">name</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">arg</span><span class="o">&gt;</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="o">&lt;</span><span class="n">arg</span><span class="o">&gt;</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="o">&lt;</span><span class="n">pattern</span> <span class="mi">1</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">...</span>
+    <span class="o">|</span> <span class="o">&lt;</span><span class="n">pattern</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">...</span>
+    <span class="o">...</span>
 </pre></div>
 </div>
 <p>For instance, the <code class="docutils literal notranslate"><span class="pre">sum_list</span></code> function above is an example of this
 pattern. The essence of this pattern is that you pattern match on the
 last argument. Sometimes you have more arguments:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec &lt;function name&gt; &lt;arg1&gt; &lt;arg2&gt; ... &lt;argN&gt; =
-  match &lt;argN&gt; with
-    | &lt;pattern 1&gt; -&gt; ...
-    | &lt;pattern 2&gt; -&gt; ...
-    ...
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="o">&lt;</span><span class="k">function</span> <span class="n">name</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">arg1</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">arg2</span><span class="o">&gt;</span> <span class="o">...</span> <span class="o">&lt;</span><span class="n">argN</span><span class="o">&gt;</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="o">&lt;</span><span class="n">argN</span><span class="o">&gt;</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="o">&lt;</span><span class="n">pattern</span> <span class="mi">1</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">...</span>
+    <span class="o">|</span> <span class="o">&lt;</span><span class="n">pattern</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">...</span>
+    <span class="o">...</span>
 </pre></div>
 </div>
 <p>Whenever you have a function that pattern matches on its last argument,
 you can rewrite it using the <code class="docutils literal notranslate"><span class="pre">function</span></code> keyword. This is like an
 automatic <code class="docutils literal notranslate"><span class="pre">match</span></code> on the last argument. The patterns above would be
 written like this using <code class="docutils literal notranslate"><span class="pre">function</span></code>:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec &lt;function name&gt; = function (* leave off &lt;arg&gt; *)
-  | &lt;pattern 1&gt; -&gt; ...
-  | &lt;pattern 2&gt; -&gt; ...
-  ...
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="o">&lt;</span><span class="k">function</span> <span class="n">name</span><span class="o">&gt;</span> <span class="o">=</span> <span class="k">function</span> <span class="c">(* leave off &lt;arg&gt; *)</span>
+  <span class="o">|</span> <span class="o">&lt;</span><span class="n">pattern</span> <span class="mi">1</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">...</span>
+  <span class="o">|</span> <span class="o">&lt;</span><span class="n">pattern</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">...</span>
+  <span class="o">...</span>
 
-let rec &lt;function name&gt; &lt;arg1&gt; &lt;arg2&gt; ... = function (* leave off &lt;argN&gt; *)
-  | &lt;pattern 1&gt; -&gt; ...
-  | &lt;pattern 2&gt; -&gt; ...
-  ...
+<span class="k">let</span> <span class="k">rec</span> <span class="o">&lt;</span><span class="k">function</span> <span class="n">name</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">arg1</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">arg2</span><span class="o">&gt;</span> <span class="o">...</span> <span class="o">=</span> <span class="k">function</span> <span class="c">(* leave off &lt;argN&gt; *)</span>
+  <span class="o">|</span> <span class="o">&lt;</span><span class="n">pattern</span> <span class="mi">1</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">...</span>
+  <span class="o">|</span> <span class="o">&lt;</span><span class="n">pattern</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">...</span>
+  <span class="o">...</span>
 </pre></div>
 </div>
 <p>Rewriting <code class="docutils literal notranslate"><span class="pre">sum_list</span></code> using <code class="docutils literal notranslate"><span class="pre">function</span></code> gives this:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec sum_list = function (* leave off &lt;arg1&gt; *)
-  | [] -&gt; []
-  | h :: t -&gt; h + sum_list t
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">sum_list</span> <span class="o">=</span> <span class="k">function</span> <span class="c">(* leave off &lt;arg1&gt; *)</span>
+  <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="bp">[]</span>
+  <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="n">h</span> <span class="o">+</span> <span class="n">sum_list</span> <span class="n">t</span>
 </pre></div>
 </div>
 <p>This way of writing functions has advantages and disadvantages. The
@@ -1919,19 +1922,19 @@ free to write all your code without it.</p>
 <p>OCaml requires you to say <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">rec</span></code> when defining a recursive
 function.</p>
 <p>You can easily define mutually recursive functions by using the</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec f x =
-  ...  (* expression using g *)
-and g y =
-  ...  (* expression using f *)
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span>
+  <span class="o">...</span>  <span class="c">(* expression using g *)</span>
+<span class="ow">and</span> <span class="n">g</span> <span class="n">y</span> <span class="o">=</span>
+  <span class="o">...</span>  <span class="c">(* expression using f *)</span>
 </pre></div>
 </div>
 <p>syntax for top-level mutually-recursive functions, or the</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec f x =
-  ...  (* expression using g *)
-and g y =
-  ...  (* expression using f *)
-in
-  ...
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span>
+  <span class="o">...</span>  <span class="c">(* expression using g *)</span>
+<span class="ow">and</span> <span class="n">g</span> <span class="n">y</span> <span class="o">=</span>
+  <span class="o">...</span>  <span class="c">(* expression using f *)</span>
+<span class="k">in</span>
+  <span class="o">...</span>
 </pre></div>
 </div>
 <p>syntax for mutually-recursive functions inside an expression. Leaving
@@ -1952,38 +1955,38 @@ except that you have to explicitly dereference them to get the value
 they contain. I’m not going to lie to you, this is a pain in highly
 imperative code! However, it is extremely explicit and it allows you to
 define useful functions on references.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let r = ref 0;;  (* r is a reference *)
-val r : int ref = {contents = 0}
-# r;;
-- : int ref = {contents = 0}
-# (!);;      (* ! is the dereference operator *)
-- : &#39;a ref -&gt; &#39;a = &lt;fun&gt;
-# !r;;
-- : int = 0
-# (:=);;     (* := is the assignment operator *)
-- : &#39;a ref -&gt; &#39;a -&gt; unit = &lt;fun&gt;
-# r := 42;;
-- : unit = ()
-# r;;
-- : int ref = {contents = 42}
-# !r;;
-- : int = 42
-# incr;;     (* incr is a function on references *)
-- : int ref -&gt; unit = &lt;fun&gt;
-# incr r;;
-- : unit = ()
-# !r;;
-- : int = 43
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">r</span> <span class="o">=</span> <span class="n">ref</span> <span class="mi">0</span><span class="o">;;</span>  <span class="c">(* r is a reference *)</span>
+<span class="k">val</span> <span class="n">r</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">ref</span> <span class="o">=</span> <span class="o">{</span><span class="n">contents</span> <span class="o">=</span> <span class="mi">0</span><span class="o">}</span>
+<span class="o">#</span> <span class="n">r</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">ref</span> <span class="o">=</span> <span class="o">{</span><span class="n">contents</span> <span class="o">=</span> <span class="mi">0</span><span class="o">}</span>
+<span class="o">#</span> <span class="o">(!);;</span>      <span class="c">(* ! is the dereference operator *)</span>
+<span class="o">-</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">ref</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="o">!</span><span class="n">r</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">#</span> <span class="o">(:=);;</span>     <span class="c">(* := is the assignment operator *)</span>
+<span class="o">-</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">ref</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">unit</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">r</span> <span class="o">:=</span> <span class="mi">42</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
+<span class="o">#</span> <span class="n">r</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">ref</span> <span class="o">=</span> <span class="o">{</span><span class="n">contents</span> <span class="o">=</span> <span class="mi">42</span><span class="o">}</span>
+<span class="o">#</span> <span class="o">!</span><span class="n">r</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="o">#</span> <span class="n">incr</span><span class="o">;;</span>     <span class="c">(* incr is a function on references *)</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">ref</span> <span class="o">-&gt;</span> <span class="kt">unit</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">incr</span> <span class="n">r</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
+<span class="o">#</span> <span class="o">!</span><span class="n">r</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">43</span>
 </pre></div>
 </div>
 <p>Fun fact: we could have defined the <code class="docutils literal notranslate"><span class="pre">!</span></code> and <code class="docutils literal notranslate"><span class="pre">:=</span></code> operators
 ourselves, and we could have defined the <code class="docutils literal notranslate"><span class="pre">incr</span></code> function as well:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let ( ! ) r = r.contents;;
-val ( ! ) : &#39;a ref -&gt; &#39;a = &lt;fun&gt;
-# let ( := ) r v = r.contents &lt;- v;;
-val ( := ) : &#39;a ref -&gt; &#39;a -&gt; unit = &lt;fun&gt;
-# let incr r = r.contents &lt;- !r + 1;;
-val incr : int ref -&gt; unit = &lt;fun&gt;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="o">(</span> <span class="o">!</span> <span class="o">)</span> <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">contents</span><span class="o">;;</span>
+<span class="k">val</span> <span class="o">(</span> <span class="o">!</span> <span class="o">)</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">ref</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="k">let</span> <span class="o">(</span> <span class="o">:=</span> <span class="o">)</span> <span class="n">r</span> <span class="n">v</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">contents</span> <span class="o">&lt;-</span> <span class="n">v</span><span class="o">;;</span>
+<span class="k">val</span> <span class="o">(</span> <span class="o">:=</span> <span class="o">)</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">ref</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">unit</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">incr</span> <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">contents</span> <span class="o">&lt;-</span> <span class="o">!</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">incr</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">ref</span> <span class="o">-&gt;</span> <span class="kt">unit</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>This works because references (<code class="docutils literal notranslate"><span class="pre">ref</span></code> cells) are records with a single
@@ -2006,18 +2009,18 @@ expressions and <code class="docutils literal notranslate"><span class="pre">beg
 multiple lines.</p>
 <p>Here’s an example of an (inefficient) imperative function to compute
 greatest common denominators (GCDs):</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let gcd m n =
-  let p = ref m in
-  let q = ref n in
-    begin
-      while !p &lt;&gt; !q do
-          if !p &gt; !q then
-            p := !p - !q
-          else
-            q := !q - !p
-      done;
-      !p
-    end
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">gcd</span> <span class="n">m</span> <span class="n">n</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">p</span> <span class="o">=</span> <span class="n">ref</span> <span class="n">m</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">q</span> <span class="o">=</span> <span class="n">ref</span> <span class="n">n</span> <span class="k">in</span>
+    <span class="k">begin</span>
+      <span class="k">while</span> <span class="o">!</span><span class="n">p</span> <span class="o">&lt;&gt;</span> <span class="o">!</span><span class="n">q</span> <span class="k">do</span>
+          <span class="k">if</span> <span class="o">!</span><span class="n">p</span> <span class="o">&gt;</span> <span class="o">!</span><span class="n">q</span> <span class="k">then</span>
+            <span class="n">p</span> <span class="o">:=</span> <span class="o">!</span><span class="n">p</span> <span class="o">-</span> <span class="o">!</span><span class="n">q</span>
+          <span class="k">else</span>
+            <span class="n">q</span> <span class="o">:=</span> <span class="o">!</span><span class="n">q</span> <span class="o">-</span> <span class="o">!</span><span class="n">p</span>
+      <span class="k">done</span><span class="o">;</span>
+      <span class="o">!</span><span class="n">p</span>
+    <span class="k">end</span>
 </pre></div>
 </div>
 <p>This also shows the use of an imperative <code class="docutils literal notranslate"><span class="pre">while</span></code> loop. It also shows
@@ -2032,16 +2035,16 @@ are “weakly polymorphic”. A truly polymorphic type can be parameterized
 on one or more type variables, which are written with a leading quote
 <em>i.e.</em> <code class="docutils literal notranslate"><span class="pre">'a</span></code>, <code class="docutils literal notranslate"><span class="pre">'b</span></code> <em>etc.</em> But some types are not actually
 polymorphic, they are “write-once” types. Look at this:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let r = ref [];;
-val r : &#39;_weak1 list ref = {contents = []}
-# !r;;
-- : &#39;_weak1 list = []
-# r := [1; 2; 3];;
-- : unit = ()
-# r;;
-- : int list ref = {contents = [1; 2; 3]}
-# !r;;
-- : int list = [1; 2; 3]
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">r</span> <span class="o">=</span> <span class="n">ref</span> <span class="bp">[]</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">r</span> <span class="o">:</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak1</span> <span class="kt">list</span> <span class="n">ref</span> <span class="o">=</span> <span class="o">{</span><span class="n">contents</span> <span class="o">=</span> <span class="bp">[]</span><span class="o">}</span>
+<span class="o">#</span> <span class="o">!</span><span class="n">r</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak1</span> <span class="kt">list</span> <span class="o">=</span> <span class="bp">[]</span>
+<span class="o">#</span> <span class="n">r</span> <span class="o">:=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
+<span class="o">#</span> <span class="n">r</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="n">ref</span> <span class="o">=</span> <span class="o">{</span><span class="n">contents</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">]}</span>
+<span class="o">#</span> <span class="o">!</span><span class="n">r</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">]</span>
 </pre></div>
 </div>
 <p>The initial type of <code class="docutils literal notranslate"><span class="pre">r</span></code> is <code class="docutils literal notranslate"><span class="pre">'_weak1</span> <span class="pre">list</span> <span class="pre">ref</span></code>, which is pretty odd.
@@ -2059,20 +2062,20 @@ you reassign a list of known type to <code class="docutils literal notranslate">
 <p>OK, so what if you aren’t using references or imperative features?
 Unfortunately, you can still get weakly polymorphic types if you
 partially apply a function. Here’s a trivial example:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let const x y = y ;;
-val const : &#39;a -&gt; &#39;b -&gt; &#39;b = &lt;fun&gt;
-# let f = const () ;;  (* partial application of the const function *)
-val f : &#39;_weak1 -&gt; &#39;_weak1 = &lt;fun&gt;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">const</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">;;</span>
+<span class="k">val</span> <span class="n">const</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">f</span> <span class="o">=</span> <span class="n">const</span> <span class="bp">()</span> <span class="o">;;</span>  <span class="c">(* partial application of the const function *)</span>
+<span class="k">val</span> <span class="n">f</span> <span class="o">:</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak1</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak1</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>This is purely functional code, but you still get a weak type! The
 reasons for this are quite involved (see the references below), but one
 trick that will work in most cases is to change the partial application
 to a full application by adding arguments:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let const x y = y ;;
-val const : &#39;a -&gt; &#39;b -&gt; &#39;b = &lt;fun&gt;
-# let f x = const () x ;;  (* no longer a partial application of the const function *)
-val f : &#39;a -&gt; &#39;a = &lt;fun&gt;
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">const</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">;;</span>
+<span class="k">val</span> <span class="n">const</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="n">const</span> <span class="bp">()</span> <span class="n">x</span> <span class="o">;;</span>  <span class="c">(* no longer a partial application of the const function *)</span>
+<span class="k">val</span> <span class="n">f</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>Now <code class="docutils literal notranslate"><span class="pre">f</span></code> has the expected type. This trick (called “eta expansion”) is

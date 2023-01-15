@@ -925,7 +925,7 @@ For each function parameter, you substitute the argument value
 for the function parameter name in the function body
 to get the substituted expression, which you then evaluate.
 For instance, this expression:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(fun x y -&gt; x + y) 2 3
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">)</span> <span class="mi">2</span> <span class="mi">3</span>
 </pre></div>
 </div>
 <p>evaluates as follows:</p>
@@ -983,28 +983,28 @@ definition of that function when looking up the name.
 This is usually obvious and probably won’t cause you any problems.
 It could get weird in pathological cases where you redefine a name.
 Here’s a silly example:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let factorial n = 0   (* obviously wrong *)
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">factorial</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c">(* obviously wrong *)</span>
 
-(* Redefine factorial. *)
-let factorial n =     (* oops, forgot the &quot;rec&quot; *)
-  if n = 0 then
-    1
-  else
-    n * factorial (n - 1)
+<span class="c">(* Redefine factorial. *)</span>
+<span class="k">let</span> <span class="n">factorial</span> <span class="n">n</span> <span class="o">=</span>     <span class="c">(* oops, forgot the &quot;rec&quot; *)</span>
+  <span class="k">if</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span>
+    <span class="mi">1</span>
+  <span class="k">else</span>
+    <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span> <span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
 </pre></div>
 </div>
 <p>When evaluating this function, the “recursive” call to <code class="docutils literal notranslate"><span class="pre">factorial</span></code>
 will actually pick up the previous definition,
 and <code class="docutils literal notranslate"><span class="pre">factorial</span></code> will return <code class="docutils literal notranslate"><span class="pre">0</span></code> for any input but <code class="docutils literal notranslate"><span class="pre">0</span></code>.
 The solution is to include the <code class="docutils literal notranslate"><span class="pre">rec</span></code> in the second definition:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let factorial n = 0   (* obviously wrong *)
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">factorial</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c">(* obviously wrong *)</span>
 
-(* Redefine factorial. *)
-let rec factorial n =
-  if n = 0 then
-    1
-  else
-    n * factorial (n - 1)
+<span class="c">(* Redefine factorial. *)</span>
+<span class="k">let</span> <span class="k">rec</span> <span class="n">factorial</span> <span class="n">n</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span>
+    <span class="mi">1</span>
+  <span class="k">else</span>
+    <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span> <span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
 </pre></div>
 </div>
 <p>Then everything will work correctly because the <code class="docutils literal notranslate"><span class="pre">rec</span></code> tells OCaml

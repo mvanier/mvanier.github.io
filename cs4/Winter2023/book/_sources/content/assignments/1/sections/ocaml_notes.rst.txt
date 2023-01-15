@@ -16,7 +16,7 @@ The interface file consists mostly of type signatures of functions,
 though occasionally it will have other things as well. The ``lab1.mli``
 interface file looks like this:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    (* Interface file for lab1.ml *)
 
@@ -35,7 +35,7 @@ particular value is being described. Here, all such values are functions
 (functions are values in OCaml). For instance, the ``factorial``
 function has the type signature:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    val factorial : int -> int
 
@@ -44,13 +44,13 @@ which indicates that it takes one argument (an ``int``) and returns an
 ``pascal_coefficient``, which takes two integer arguments) have somewhat
 less intuitive type signatures:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    val pascal_coefficient : int -> int -> int
 
 You might have expected something like this instead:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    val pascal_coefficient : int int -> int  (* WRONG *)
 
@@ -92,14 +92,14 @@ bit annoying, but we live with it.
 You can now load the ``.cmo`` file into an interactive OCaml session as
 follows:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # #load "lab1.cmo";;
 
 In this case, nothing will be printed if there are no errors. A
 different way to load your code is to use the ``#use`` command:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # #use "lab1.ml";;
 
@@ -111,7 +111,7 @@ developing code. You should know both forms.
 
 Let’s go back to what would happen if you typed:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # #load "lab1.cmo";;
 
@@ -119,7 +119,7 @@ You might expect that you could then use all the functions in
 ``lab1.ml`` (as you could if you’d used ``#use``). Actually, that isn’t
 the case (yet). If you try, this will happen:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # pascal_coefficient;;
    Error: Unbound value pascal_coefficient
@@ -131,7 +131,7 @@ name of the file, without the extension, and with the first letter
 capitalized). This is like saying ``import lab1`` in Python. We can get
 the function by using the module name as a prefix:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # Lab1.pascal_coefficient;;
    - : int -> int -> int = <fun>
@@ -142,7 +142,7 @@ names are always capitalized in OCaml.
 If this is too tedious, you can dump all the names in the module into
 the local namespace by using an ``open`` declaration:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # open Lab1;;
    # pascal_coefficient;;

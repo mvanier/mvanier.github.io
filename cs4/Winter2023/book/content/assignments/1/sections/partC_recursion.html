@@ -495,10 +495,10 @@ expansion which computes <em>e</em>:</p>
 </pre></div>
 </div>
 <p>We’ll start out with the factorial function itself:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(* This function computes the factorial of the input number,
-   which for a number n is equal to n * (n-1) * ... * 1. *)
-let rec factorial n =
-  if n = 0 then 1 else n * factorial (n - 1)
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(* This function computes the factorial of the input number,</span>
+<span class="c">   which for a number n is equal to n * (n-1) * ... * 1. *)</span>
+<span class="k">let</span> <span class="k">rec</span> <span class="n">factorial</span> <span class="n">n</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span> <span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -523,14 +523,14 @@ so you must do it explicitly if that’s what you want.</p>
 </div>
 <div class="admonition-examples admonition">
 <p class="admonition-title">Examples</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># e_term 0;;
-- : float = 1.
-# e_term 1;;
-- : float = 1.
-# e_term 2;;
-- : float = 0.5
-# e_term 5;;
-- : float = 0.00833333333333333322
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">e_term</span> <span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span>
+<span class="o">#</span> <span class="n">e_term</span> <span class="mi">1</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span>
+<span class="o">#</span> <span class="n">e_term</span> <span class="mi">2</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">5</span>
+<span class="o">#</span> <span class="n">e_term</span> <span class="mi">5</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">00833333333333333322</span>
 </pre></div>
 </div>
 </div>
@@ -546,16 +546,16 @@ function as a linear recursive process.</strong> Use your <code class="docutils 
 to help you write this one.</p>
 <div class="admonition-examples admonition">
 <p class="admonition-title">Examples</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># e_approximation 0;;
-- : float = 1.
-# e_approximation 1;;
-- : float = 2.
-# e_approximation 2;;
-- : float = 2.5
-# e_approximation 5;;
-- : float = 2.71666666666666634
-# e_approximation 10;;
-- : float = 2.71828180114638451
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">e_approximation</span> <span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span>
+<span class="o">#</span> <span class="n">e_approximation</span> <span class="mi">1</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">2</span><span class="o">.</span>
+<span class="o">#</span> <span class="n">e_approximation</span> <span class="mi">2</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">2</span><span class="o">.</span><span class="mi">5</span>
+<span class="o">#</span> <span class="n">e_approximation</span> <span class="mi">5</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">2</span><span class="o">.</span><span class="mi">71666666666666634</span>
+<span class="o">#</span> <span class="n">e_approximation</span> <span class="mi">10</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">2</span><span class="o">.</span><span class="mi">71828180114638451</span>
 </pre></div>
 </div>
 </div>
@@ -595,8 +595,8 @@ evenness and oddness!  It’s just for illustration purposes.</p>
 </div>
 <p>When defining mutually recursive functions in OCaml,
 you need to use the <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">rec</span> <span class="pre">...</span> <span class="pre">and</span> <span class="pre">...</span></code> syntax:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec f1 a b c = ...  (* ... may include f2 *)
-and f2 x y z = ...      (* ... may include f1 *)
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">f1</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span> <span class="o">=</span> <span class="o">...</span>  <span class="c">(* ... may include f2 *)</span>
+<span class="ow">and</span> <span class="n">f2</span> <span class="n">x</span> <span class="n">y</span> <span class="n">z</span> <span class="o">=</span> <span class="o">...</span>      <span class="c">(* ... may include f1 *)</span>
 </pre></div>
 </div>
 <p>This works for any number of mutually-recursive functions.
@@ -624,17 +624,17 @@ series, among other things.</p>
 </div>
 <div class="admonition-examples admonition">
 <p class="admonition-title">Examples</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># f_rec 0;;
-- : int = 0
-# f_rec 1;;
-- : int = 1
-# f_rec 3;;
-- : int = 4
-# f_rec 10;;
-- : int = 1892
-# f_rec 20;;
-- : int = 10771211
-(* f_iter gives the same results *)
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">f_rec</span> <span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">#</span> <span class="n">f_rec</span> <span class="mi">1</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">#</span> <span class="n">f_rec</span> <span class="mi">3</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="o">#</span> <span class="n">f_rec</span> <span class="mi">10</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1892</span>
+<span class="o">#</span> <span class="n">f_rec</span> <span class="mi">20</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">10771211</span>
+<span class="c">(* f_iter gives the same results *)</span>
 </pre></div>
 </div>
 </div>
@@ -670,22 +670,22 @@ This raises a <code class="docutils literal notranslate"><span class="pre">Failu
 We’ll talk more about exceptions later in the course.</p>
 <div class="admonition-examples admonition">
 <p class="admonition-title">Examples</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># pascal_coefficient 1 1 ;; (* row 1, index 1 in row *)
-- : int = 1
-# pascal_coefficient 2 1 ;;
-- : int = 1
-# pascal_coefficient 2 2 ;;
-- : int = 1
-# pascal_coefficient 3 1 ;;
-- : int = 1
-# pascal_coefficient 3 2 ;;
-- : int = 2
-# pascal_coefficient 3 3 ;;
-- : int = 1
-# pascal_coefficient 10 5 ;;
-- : int = 126
-# pascal_coefficient 1 0 ;;
-Exception: Failure &quot;invalid arguments&quot;.
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">pascal_coefficient</span> <span class="mi">1</span> <span class="mi">1</span> <span class="o">;;</span> <span class="c">(* row 1, index 1 in row *)</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">#</span> <span class="n">pascal_coefficient</span> <span class="mi">2</span> <span class="mi">1</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">#</span> <span class="n">pascal_coefficient</span> <span class="mi">2</span> <span class="mi">2</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">#</span> <span class="n">pascal_coefficient</span> <span class="mi">3</span> <span class="mi">1</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">#</span> <span class="n">pascal_coefficient</span> <span class="mi">3</span> <span class="mi">2</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="o">#</span> <span class="n">pascal_coefficient</span> <span class="mi">3</span> <span class="mi">3</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">#</span> <span class="n">pascal_coefficient</span> <span class="mi">10</span> <span class="mi">5</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">126</span>
+<span class="o">#</span> <span class="n">pascal_coefficient</span> <span class="mi">1</span> <span class="mi">0</span> <span class="o">;;</span>
+<span class="nc">Exception</span><span class="o">:</span> <span class="nc">Failure</span> <span class="s2">&quot;invalid arguments&quot;</span><span class="o">.</span>
 </pre></div>
 </div>
 </div>
@@ -702,15 +702,15 @@ form in a pattern when you need to specify non-structural conditions
 for a match (like two things being equal). Only use <code class="docutils literal notranslate"><span class="pre">when</span></code> when you
 can’t use structural pattern matching, though. For instance, don’t do
 this kind of thing:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>match x with
-  | x&#39; when x&#39; = 1 -&gt; ...
-  ...
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="n">x&#39;</span> <span class="k">when</span> <span class="n">x&#39;</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-&gt;</span> <span class="o">...</span>
+  <span class="o">...</span>
 </pre></div>
 </div>
 <p>when you can do this instead:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>match x with
-  | 1 -&gt; ...
-  ...
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="mi">1</span> <span class="o">-&gt;</span> <span class="o">...</span>
+  <span class="o">...</span>
 </pre></div>
 </div>
 <p>Also don’t forget about the <code class="docutils literal notranslate"><span class="pre">_</span></code> (wildcard) syntax for don’t-care

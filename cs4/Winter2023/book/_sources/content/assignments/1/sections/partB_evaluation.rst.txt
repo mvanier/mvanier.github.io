@@ -28,14 +28,14 @@ Ben Bitfiddle has invented a test to determine whether the interpreter
 he is faced with is using applicative order evaluation or normal order
 evaluation. He defines the following two functions:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let rec p () = p ()
    let test x y = if x = 0 then 0 else y
 
 Then he evaluates the expression:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    test 0 (p ())
 
@@ -64,7 +64,7 @@ special syntactic form. "Why can’t I just define ``if`` as an ordinary
 function?" she asks. Alyssa’s friend Eva Lu Ator claims this can indeed
 be done, and she defines a new version of ``if`` using pattern matching:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let new_if predicate then_clause else_clause =
      match predicate with
@@ -78,7 +78,7 @@ be done, and she defines a new version of ``if`` using pattern matching:
 
 Eva demonstrates its use to Alyssa:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    # new_if (2 = 3) 0 5;;
    - : int = 5
@@ -88,7 +88,7 @@ Eva demonstrates its use to Alyssa:
 Delighted, Alyssa uses ``new_if`` to write the following program to
 compute square roots:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let square x = x *. x
    let average x y = (x +. y) /. 2.0
@@ -115,7 +115,7 @@ Each of the following two functions defines a method for adding two
 positive integers in terms of the functions ``inc``, which increments
 its argument by 1, and ``dec``, which decrements its argument by 1.
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let rec add_a a b =
      if a = 0
@@ -129,7 +129,7 @@ its argument by 1, and ``dec``, which decrements its argument by 1.
 
 Note that ``inc`` or ``dec`` could trivially be defined as:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let inc a = a + 1
    let dec a = a - 1
@@ -194,7 +194,7 @@ function in evaluating ``add_a 2 5`` and ``add_b 2 5``.
 
    so your grader can easily identify them.
 
-   .. code-block:: text
+   .. code-block:: ocaml
 
       (*
       let rec add_b a b =

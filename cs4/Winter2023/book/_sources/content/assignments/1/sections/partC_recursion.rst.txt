@@ -23,7 +23,7 @@ where ``n!`` is the factorial of ``n``, which in defined as
 
 We’ll start out with the factorial function itself:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    (* This function computes the factorial of the input number,
       which for a number n is equal to n * (n-1) * ... * 1. *)
@@ -55,7 +55,7 @@ an OCaml ``int`` to a ``float``.
 
 .. admonition:: Examples
 
-   .. code-block:: text
+   .. code-block:: ocaml
 
       # e_term 0;;
       - : float = 1.
@@ -79,7 +79,7 @@ to help you write this one.
 
 .. admonition:: Examples
 
-   .. code-block:: text
+   .. code-block:: ocaml
 
       # e_approximation 0;;
       - : float = 1.
@@ -133,7 +133,7 @@ solution is very short.)
 When defining mutually recursive functions in OCaml,
 you need to use the ``let rec ... and ...`` syntax:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let rec f1 a b c = ...  (* ... may include f2 *)
    and f2 x y z = ...      (* ... may include f1 *)
@@ -167,7 +167,7 @@ that computes ``f`` by means of an iterative process.
 
 .. admonition:: Examples
 
-   .. code-block:: text
+   .. code-block:: ocaml
 
       # f_rec 0;;
       - : int = 0
@@ -220,7 +220,7 @@ We’ll talk more about exceptions later in the course.
 
 .. admonition:: Examples
 
-   .. code-block:: text
+   .. code-block:: ocaml
 
       # pascal_coefficient 1 1 ;; (* row 1, index 1 in row *)
       - : int = 1
@@ -253,7 +253,7 @@ We’ll talk more about exceptions later in the course.
      can’t use structural pattern matching, though. For instance, don’t do
      this kind of thing:
 
-     .. code-block:: text
+     .. code-block:: ocaml
 
         match x with
           | x' when x' = 1 -> ...
@@ -261,7 +261,7 @@ We’ll talk more about exceptions later in the course.
 
      when you can do this instead:
 
-     .. code-block:: text
+     .. code-block:: ocaml 
 
         match x with
           | 1 -> ...

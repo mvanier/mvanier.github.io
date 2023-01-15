@@ -363,7 +363,7 @@ for the function parameter name in the function body
 to get the substituted expression, which you then evaluate.
 For instance, this expression:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    (fun x y -> x + y) 2 3
 
@@ -431,7 +431,7 @@ This is usually obvious and probably won't cause you any problems.
 It could get weird in pathological cases where you redefine a name.
 Here's a silly example:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let factorial n = 0   (* obviously wrong *)
 
@@ -447,7 +447,7 @@ will actually pick up the previous definition,
 and ``factorial`` will return ``0`` for any input but ``0``.
 The solution is to include the ``rec`` in the second definition:
 
-.. code-block:: text
+.. code-block:: ocaml
 
    let factorial n = 0   (* obviously wrong *)
 
