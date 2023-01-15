@@ -1,96 +1,442 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Motivation &mdash; The CS 4 book 0.0.1 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../_static/js/theme.js"></script>
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Motivation &#8212; The CS 4 book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="History" href="History.html" />
-    <link rel="prev" title="Collaboration policies" href="admin/Collaboration_policies.html" /> 
-</head>
+    <link rel="prev" title="Collaboration policies" href="admin/Collaboration_policies.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> The CS 4 book
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="admin/index.html">Administrative information</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Motivation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#what-are-the-goals-of-this-course">What are the goals of this course?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#what-is-functional-programming">What is functional programming?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#why-learn-functional-programming">Why learn functional programming?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#is-functional-programming-better-than-other-kinds-of-programming">Is functional programming better than other kinds of programming?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#why-are-we-using-ocaml">Why are we using OCaml?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#going-further">Going further</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="History.html">History</a></li>
-<li class="toctree-l1"><a class="reference internal" href="assignments/index.html">Assignments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="readings/index.html">Readings</a></li>
-</ul>
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
 
-        </div>
-      </div>
-    </nav>
+    
+    <div class="container-fluid" id="banner"></div>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">The CS 4 book</a>
-      </nav>
+    
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active">Motivation</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">The CS 4 book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Introduction.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="admin/index.html">
+   Administrative information
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="admin/Syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="admin/Collaboration_policies.html">
+     Collaboration policies
+    </a>
+   </li>
   </ul>
-  <hr/>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Motivation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="History.html">
+   History
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="assignments/index.html">
+   Assignments
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="assignments/0/Assignment0.html">
+     Assignment 0: Getting set up
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="assignments/1/index.html">
+     Assignment 1: Evaluation and recursion
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="assignments/1/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="assignments/1/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="assignments/1/sections/partA_exercises.html">
+       Part A: Basic exercises
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="assignments/1/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="assignments/1/sections/partC_recursion.html">
+       Part C: Recursion
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="readings/index.html">
+   Readings
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="readings/ocaml_cheat_sheet.html">
+     OCaml syntax cheat sheet
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="readings/subst.html">
+     The substitution model
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/content/Motivation.rst.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.rst</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-are-the-goals-of-this-course">
+   What are the goals of this course?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-is-functional-programming">
+   What is functional programming?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-learn-functional-programming">
+   Why learn functional programming?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#is-functional-programming-better-than-other-kinds-of-programming">
+   Is functional programming better than other kinds of programming?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-are-we-using-ocaml">
+   Why are we using OCaml?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#going-further">
+   Going further
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Motivation</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-are-the-goals-of-this-course">
+   What are the goals of this course?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-is-functional-programming">
+   What is functional programming?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-learn-functional-programming">
+   Why learn functional programming?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#is-functional-programming-better-than-other-kinds-of-programming">
+   Is functional programming better than other kinds of programming?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-are-we-using-ocaml">
+   Why are we using OCaml?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#going-further">
+   Going further
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
   <section id="motivation">
-<span id="id1"></span><h1>Motivation<a class="headerlink" href="#motivation" title="Permalink to this heading"></a></h1>
+<span id="id1"></span><h1>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline"></a></h1>
 <p>Here we’ll talk about why we think you should learn the material in this
 course, and what you can hope to gain from taking it.</p>
 <section id="what-are-the-goals-of-this-course">
-<h2>What are the goals of this course?<a class="headerlink" href="#what-are-the-goals-of-this-course" title="Permalink to this heading"></a></h2>
+<h2>What are the goals of this course?<a class="headerlink" href="#what-are-the-goals-of-this-course" title="Permalink to this headline"></a></h2>
 <p>Very broadly speaking, I would say that the goals of this course are:</p>
 <ol class="arabic simple">
-<li><p>to teach you to become a better programmer,</p></li>
+<li><p>to make you a better programmer,</p></li>
 <li><p>to deepen your understanding of programming,</p></li>
 <li><p>to teach you to think about programming at a higher level,</p></li>
 <li><p>and to learn some beautiful ideas.</p></li>
@@ -117,7 +463,7 @@ of writing programs, a way that is usually referred to as
 “functional programming”.</p>
 </section>
 <section id="what-is-functional-programming">
-<h2>What is functional programming?<a class="headerlink" href="#what-is-functional-programming" title="Permalink to this heading"></a></h2>
+<h2>What is functional programming?<a class="headerlink" href="#what-is-functional-programming" title="Permalink to this headline"></a></h2>
 <p>What functional programming is will take many lectures to describe fully,
 but we can say a few things about it here.</p>
 <p>It’s important to realize that functional programming
@@ -137,8 +483,8 @@ aren’t specifically functional.</p>
 This has two interrelated aspects.  Compared to programs written
 in non-functional languages:</p>
 <ul class="simple">
-<li><p>programs are shorter;</p></li>
-<li><p>programs have fewer bugs.</p></li>
+<li><p>programs are <em>shorter</em></p></li>
+<li><p>programs have <em>fewer bugs</em></p></li>
 </ul>
 <p>Some important aspects of functional languages that contribute to these goals
 include the following.</p>
@@ -217,7 +563,7 @@ but it’s surprising how often this is the case.</p>
 </ul>
 </section>
 <section id="why-learn-functional-programming">
-<h2>Why learn functional programming?<a class="headerlink" href="#why-learn-functional-programming" title="Permalink to this heading"></a></h2>
+<h2>Why learn functional programming?<a class="headerlink" href="#why-learn-functional-programming" title="Permalink to this headline"></a></h2>
 <p>We learn functional programming because:</p>
 <ul class="simple">
 <li><p>we want to write less code,</p></li>
@@ -244,10 +590,11 @@ of mathematical ideas, if you can accept that some proofs are more
 “beautiful” than others, then it’s also likely that some ways of writing code
 are more “beautiful” than others.  But what would this elusive concept of
 “code beauty” entail?</p>
-<p>I think one important aspect of beautiful code is that it’s <em>lean</em>; it has
-nothing superfluous in it.  It’s concise without being cryptic. It expresses
-the essence of a computation in as straightforward and clear a way as it can be
-expressed.</p>
+<p>I think one important aspect of beautiful code is that it’s <em>lean</em> –
+it has nothing superfluous in it.
+It’s concise without being cryptic.
+It expresses the essence of a computation
+in as straightforward and clear a way as it can be expressed.</p>
 <p>The problem with this criterion is that what is “straightforward” and “clear”
 depends greatly on the way you’ve been taught to think about programming.
 And this is where the “higher level thinking” comes in.
@@ -283,10 +630,11 @@ the new value in place of the old value.  Then you return the new list.</p>
 </div>
 <p>What this is saying is “take a function which doubles its argument
 (<code class="docutils literal notranslate"><span class="pre">fun</span> <span class="pre">x</span> <span class="pre">-&gt;</span> <span class="pre">x</span> <span class="pre">*</span> <span class="pre">2</span></code>) and apply it to each element of a list,
-collecting all the values in a new list.  This includes two ideas which are
-fundamental to functional languages: anonymous functions
-(the doubling function doesn’t have a name), and mapping a function
-over a list (although other data structures can also be mapped over).
+collecting all the values in a new list”.
+This includes two ideas which are fundamental to functional languages:
+anonymous functions (the doubling function doesn’t have a name),
+and mapping a function over a list
+(although other data structures can also be mapped over).
 The <code class="docutils literal notranslate"><span class="pre">map</span></code> function is also a higher-order function,
 since its first argument is itself a function.
 And once you understand these ideas, you can write more elegant code.
@@ -313,13 +661,16 @@ about computational processes at a higher level, which will make the code
 you write better no matter what language you use.</p>
 </section>
 <section id="is-functional-programming-better-than-other-kinds-of-programming">
-<h2>Is functional programming better than other kinds of programming?<a class="headerlink" href="#is-functional-programming-better-than-other-kinds-of-programming" title="Permalink to this heading"></a></h2>
+<h2>Is functional programming better than other kinds of programming?<a class="headerlink" href="#is-functional-programming-better-than-other-kinds-of-programming" title="Permalink to this headline"></a></h2>
 <p>It depends on the application.</p>
-<p>We love functional programming, but we are not zealots.  Functional programming
-is a great fit for a lot of different programming tasks, but it isn’t right
-for everything.  Furthermore, language choice is usually much more likely to be
-made because of the availability of libraries than for any intrinsic quality of
-the language.</p>
+<p>We love functional programming, but we are not zealots.
+Functional programming is a great fit
+for a lot of different programming tasks,
+but it isn’t right for everything.
+Furthermore, in practice,
+language choice is usually much more likely to be made
+because of the availability of libraries
+than because of any intrinsic quality of the language.</p>
 <p>For instance, if you are programming graphical user interfaces (GUIs),
 you would probably be better off using Java than OCaml,
 because Java has more and better GUI libraries than OCaml does,
@@ -337,7 +688,7 @@ not least because other languages (even Java!) keep borrowing ideas
 from functional languages.</p>
 </section>
 <section id="why-are-we-using-ocaml">
-<h2>Why are we using OCaml?<a class="headerlink" href="#why-are-we-using-ocaml" title="Permalink to this heading"></a></h2>
+<h2>Why are we using OCaml?<a class="headerlink" href="#why-are-we-using-ocaml" title="Permalink to this headline"></a></h2>
 <p>There are a number of languages that are usually considered to be “functional
 programming languages”.  Why are we choosing to use OCaml instead of another
 one (say, Haskell)?</p>
@@ -360,13 +711,15 @@ language in a number of companies, including <a class="reference external" href=
 <a class="reference external" href="https://www.bloomberg.com/">Bloomberg</a>, and <a class="reference external" href="https://facebook.com/">Facebook</a>.</p>
 </section>
 <section id="going-further">
-<h2>Going further<a class="headerlink" href="#going-further" title="Permalink to this heading"></a></h2>
-<p>If you want to go deeper into the world of functional programming after taking
-this course, take CS 115 and you’ll learn <a class="reference external" href="https://www.haskell.org/">Haskell</a> and how it differs from (and
-in some ways extends) the ideas you’ll learn in CS 4.  In some ways, Haskell is
-a “super-OCaml” which pushes functional programming ideas to their limit.  In
-other ways (notably the module system and its multi-paradigm nature) OCaml
-still has the edge.</p>
+<h2>Going further<a class="headerlink" href="#going-further" title="Permalink to this headline"></a></h2>
+<p>If you want to go deeper into the world of functional programming
+after taking this course,
+take CS 115 and you’ll learn <a class="reference external" href="https://www.haskell.org/">Haskell</a>
+and how it differs from the ideas you’ll learn in CS 4.
+In some ways, Haskell is a “super-OCaml”
+which pushes functional programming ideas to their limits.
+In other ways (notably the module system and its multi-paradigm nature)
+OCaml still has the edge.</p>
 <p>Recently, the <a class="reference external" href="https://www.rustlang.org/">Rust</a> programming language has become quite popular.
 Rust is a systems-level language which does not use garbage collection
 and which is used for computationally-intensive tasks.  The Rust compiler
@@ -428,34 +781,51 @@ but so far he has vetoed it.</p>
 </section>
 
 
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="admin/Collaboration_policies.html" class="btn btn-neutral float-left" title="Collaboration policies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="History.html" class="btn btn-neutral float-right" title="History" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="admin/Collaboration_policies.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Collaboration policies</p>
         </div>
+    </a>
+    <a class='right-next' id="next-link" href="History.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">History</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Michael Vanier<br/>
+  
+      &copy; Copyright 2023, Michael C. Vanier. All rights reserved.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
       </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
  <script type="text/javascript">
     $(document).ready(function() {
         $(".toggle > *").hide();
@@ -467,6 +837,5 @@ but so far he has vetoed it.</p>
     });
 </script>
 
-
-</body>
+  </body>
 </html>

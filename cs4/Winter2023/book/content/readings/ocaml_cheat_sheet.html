@@ -1,135 +1,837 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OCaml syntax cheat sheet &mdash; The CS 4 book 0.0.1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../../_static/js/theme.js"></script>
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>OCaml syntax cheat sheet &#8212; The CS 4 book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="The substitution model" href="subst.html" />
-    <link rel="prev" title="Readings" href="index.html" /> 
-</head>
+    <link rel="prev" title="Readings" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> The CS 4 book
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrative information</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Motivation.html">Motivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../History.html">History</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../assignments/index.html">Assignments</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Readings</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">OCaml syntax cheat sheet</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#operators">Operators</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#operator-underloading">Operator underloading</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#operator-overloading">Operator overloading</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#operators-as-functions">Operators as functions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#equality-inequality-operators">Equality/inequality operators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#word-operators">Word operators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#unusual-operators">Unusual operators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#defining-new-operators">Defining new operators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#printf-and-format-strings"><code class="docutils literal notranslate"><span class="pre">printf</span></code> and format strings</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#lists">Lists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#arrays">Arrays</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tuples">Tuples</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#type-notation">Type notation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#implicit-parentheses">Implicit parentheses</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#commas-vs-semicolons">Commas <em>vs.</em> semicolons</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#strings">Strings</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#conditionals">Conditionals</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#if-expressions"><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#if-without-else"><code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#else-if"><code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#syntax-and-currying">Syntax and currying</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#anonymous-functions">Anonymous functions</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#match-expressions"><code class="docutils literal notranslate"><span class="pre">match</span></code> expressions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#optional-before-first-match">Optional <code class="docutils literal notranslate"><span class="pre">|</span></code> before first match</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#nested-match-expressions">Nested match expressions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-expressions"><code class="docutils literal notranslate"><span class="pre">function</span></code> expressions</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#let-expressions"><code class="docutils literal notranslate"><span class="pre">let</span></code> expressions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#explicit-recursion">Explicit recursion</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#imperative-programming">Imperative programming</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sequence-expressions">Sequence expressions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#weakly-polymorphic-types">Weakly polymorphic types</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="subst.html">The substitution model</a></li>
-</ul>
-</li>
-</ul>
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
 
-        </div>
-      </div>
-    </nav>
+    
+    <div class="container-fluid" id="banner"></div>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">The CS 4 book</a>
-      </nav>
+    
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">Readings</a></li>
-      <li class="breadcrumb-item active">OCaml syntax cheat sheet</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">The CS 4 book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Introduction.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../admin/index.html">
+   Administrative information
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../admin/Syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../admin/Collaboration_policies.html">
+     Collaboration policies
+    </a>
+   </li>
   </ul>
-  <hr/>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Motivation.html">
+   Motivation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../History.html">
+   History
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../assignments/index.html">
+   Assignments
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/0/Assignment0.html">
+     Assignment 0: Getting set up
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../assignments/1/index.html">
+     Assignment 1: Evaluation and recursion
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/1/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/1/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/1/sections/partA_exercises.html">
+       Part A: Basic exercises
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/1/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/1/sections/partC_recursion.html">
+       Part C: Recursion
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Readings
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     OCaml syntax cheat sheet
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="subst.html">
+     The substitution model
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/content/readings/ocaml_cheat_sheet.rst.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.rst</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#operators">
+   Operators
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#operator-underloading">
+     Operator underloading
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#operator-overloading">
+     Operator overloading
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#operators-as-functions">
+     Operators as functions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#equality-inequality-operators">
+     Equality/inequality operators
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#word-operators">
+     Word operators
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unusual-operators">
+     Unusual operators
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#defining-new-operators">
+     Defining new operators
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#printf-and-format-strings">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       printf
+      </span>
+     </code>
+     and format strings
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#lists">
+   Lists
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#arrays">
+   Arrays
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tuples">
+   Tuples
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#type-notation">
+     Type notation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#implicit-parentheses">
+     Implicit parentheses
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#commas-vs-semicolons">
+     Commas
+     <em>
+      vs.
+     </em>
+     semicolons
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#strings">
+   Strings
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conditionals">
+   Conditionals
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#if-expressions">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       if
+      </span>
+     </code>
+     expressions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#if-without-else">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       if
+      </span>
+     </code>
+     without
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       else
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#else-if">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       else
+      </span>
+      <span class="pre">
+       if
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#functions">
+   Functions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#syntax-and-currying">
+     Syntax and currying
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#anonymous-functions">
+     Anonymous functions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#match-expressions">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     match
+    </span>
+   </code>
+   expressions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optional-before-first-match">
+     Optional
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       |
+      </span>
+     </code>
+     before first match
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#nested-match-expressions">
+     Nested match expressions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#function-expressions">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       function
+      </span>
+     </code>
+     expressions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#let-expressions">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     let
+    </span>
+   </code>
+   expressions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#explicit-recursion">
+     Explicit recursion
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#imperative-programming">
+   Imperative programming
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#references">
+     References
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sequence-expressions">
+     Sequence expressions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#weakly-polymorphic-types">
+     Weakly polymorphic types
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>OCaml syntax cheat sheet</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#operators">
+   Operators
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#operator-underloading">
+     Operator underloading
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#operator-overloading">
+     Operator overloading
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#operators-as-functions">
+     Operators as functions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#equality-inequality-operators">
+     Equality/inequality operators
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#word-operators">
+     Word operators
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unusual-operators">
+     Unusual operators
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#defining-new-operators">
+     Defining new operators
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#printf-and-format-strings">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       printf
+      </span>
+     </code>
+     and format strings
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#lists">
+   Lists
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#arrays">
+   Arrays
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tuples">
+   Tuples
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#type-notation">
+     Type notation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#implicit-parentheses">
+     Implicit parentheses
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#commas-vs-semicolons">
+     Commas
+     <em>
+      vs.
+     </em>
+     semicolons
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#strings">
+   Strings
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conditionals">
+   Conditionals
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#if-expressions">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       if
+      </span>
+     </code>
+     expressions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#if-without-else">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       if
+      </span>
+     </code>
+     without
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       else
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#else-if">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       else
+      </span>
+      <span class="pre">
+       if
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#functions">
+   Functions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#syntax-and-currying">
+     Syntax and currying
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#anonymous-functions">
+     Anonymous functions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#match-expressions">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     match
+    </span>
+   </code>
+   expressions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optional-before-first-match">
+     Optional
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       |
+      </span>
+     </code>
+     before first match
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#nested-match-expressions">
+     Nested match expressions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#function-expressions">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       function
+      </span>
+     </code>
+     expressions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#let-expressions">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     let
+    </span>
+   </code>
+   expressions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#explicit-recursion">
+     Explicit recursion
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#imperative-programming">
+   Imperative programming
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#references">
+     References
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sequence-expressions">
+     Sequence expressions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#weakly-polymorphic-types">
+     Weakly polymorphic types
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
   <section id="ocaml-syntax-cheat-sheet">
-<span id="ocaml-cheat-sheet"></span><h1>OCaml syntax cheat sheet<a class="headerlink" href="#ocaml-syntax-cheat-sheet" title="Permalink to this heading"></a></h1>
+<span id="ocaml-cheat-sheet"></span><h1>OCaml syntax cheat sheet<a class="headerlink" href="#ocaml-syntax-cheat-sheet" title="Permalink to this headline"></a></h1>
 <p>OCaml is a great language, but its syntax is not its best feature.
 More importantly, the syntax is quite different from any other language
 you’ve probably learned already,
@@ -140,9 +842,9 @@ trip you up. This document is <strong>not</strong> a complete description of OCa
 For that, consult the lectures and/or the online documentation. We also refer
 you to the official OCaml cheat sheet which is <a class="reference external" href="http://alhassy.com/OCamlCheatSheet/CheatSheet.pdf">here</a>.</p>
 <section id="operators">
-<h2>Operators<a class="headerlink" href="#operators" title="Permalink to this heading"></a></h2>
+<h2>Operators<a class="headerlink" href="#operators" title="Permalink to this headline"></a></h2>
 <section id="operator-underloading">
-<h3>Operator underloading<a class="headerlink" href="#operator-underloading" title="Permalink to this heading"></a></h3>
+<h3>Operator underloading<a class="headerlink" href="#operator-underloading" title="Permalink to this headline"></a></h3>
 <p>OCaml doesn’t overload most of its operators. Notably, arithmetic
 operators like <code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code> and <code class="docutils literal notranslate"><span class="pre">/</span></code> are not overloaded.
 Instead, they are considered to be exclusively integer operators. The
@@ -159,7 +861,7 @@ for it is so that every operator has a very specific type, which makes
 type inference much simpler.</p>
 </section>
 <section id="operator-overloading">
-<h3>Operator overloading<a class="headerlink" href="#operator-overloading" title="Permalink to this heading"></a></h3>
+<h3>Operator overloading<a class="headerlink" href="#operator-overloading" title="Permalink to this headline"></a></h3>
 <p>On the other hand, OCaml <em>does</em> overload some operators. The
 comparison/equality operators (<code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>) are
 all <em>polymorphic</em>, which means they work on arbitrary OCaml datatypes.
@@ -179,7 +881,7 @@ Exception: Invalid_argument &quot;compare: functional value&quot;.
 <p>We’ll discuss equality comparisons and identity comparisons below.</p>
 </section>
 <section id="operators-as-functions">
-<h3>Operators as functions<a class="headerlink" href="#operators-as-functions" title="Permalink to this heading"></a></h3>
+<h3>Operators as functions<a class="headerlink" href="#operators-as-functions" title="Permalink to this headline"></a></h3>
 <p>This is a good feature, but it can be confusing as well. Operators can
 be converted into two-argument functions by wrapping parentheses around
 them. For instance, the operator <code class="docutils literal notranslate"><span class="pre">+</span></code> can be made into the two-argument
@@ -219,7 +921,7 @@ manually insert a <code class="docutils literal notranslate"><span class="pre">*
 a warning. However, this doesn’t always happen (see below).</p>
 </section>
 <section id="equality-inequality-operators">
-<h3>Equality/inequality operators<a class="headerlink" href="#equality-inequality-operators" title="Permalink to this heading"></a></h3>
+<h3>Equality/inequality operators<a class="headerlink" href="#equality-inequality-operators" title="Permalink to this headline"></a></h3>
 <p>OCaml has two different equality operators and two different inequality
 operators:</p>
 <ul class="simple">
@@ -263,9 +965,9 @@ val x : string = &quot;foo&quot;
 itself.</p>
 </section>
 <section id="word-operators">
-<span id="id1"></span><h3>Word operators<a class="headerlink" href="#word-operators" title="Permalink to this heading"></a></h3>
+<span id="id1"></span><h3>Word operators<a class="headerlink" href="#word-operators" title="Permalink to this headline"></a></h3>
 <p>OCaml has a number of infix operators which are words. Here they are:</p>
-<table class="colwidths-given docutils align-default">
+<table class="colwidths-given table">
 <colgroup>
 <col style="width: 29%" />
 <col style="width: 71%" />
@@ -310,12 +1012,12 @@ is handy:</p>
 </div>
 </section>
 <section id="unusual-operators">
-<h3>Unusual operators<a class="headerlink" href="#unusual-operators" title="Permalink to this heading"></a></h3>
+<h3>Unusual operators<a class="headerlink" href="#unusual-operators" title="Permalink to this headline"></a></h3>
 <p>The built-in OCaml operators are described in the documentation
 for the <code class="docutils literal notranslate"><span class="pre">Stdlib</span></code> library, which is
 <a class="reference external" href="https://v2.ocaml.org/api/Stdlib.html">here</a>.</p>
 <p>Note especially the following:</p>
-<table class="colwidths-given docutils align-default">
+<table class="colwidths-given table">
 <colgroup>
 <col style="width: 29%" />
 <col style="width: 71%" />
@@ -444,7 +1146,7 @@ arbitrary-precision integers, since the <code class="docutils literal notranslat
 these and arbitrary-precision rationals.)</p>
 </section>
 <section id="defining-new-operators">
-<h3>Defining new operators<a class="headerlink" href="#defining-new-operators" title="Permalink to this heading"></a></h3>
+<h3>Defining new operators<a class="headerlink" href="#defining-new-operators" title="Permalink to this headline"></a></h3>
 <p>Unusually for programming languages, OCaml allows you to define your own
 operators. All user-defined operators must be made from “operator
 characters” and get their operator precedence and associativity from the
@@ -505,7 +1207,7 @@ val r : int ref = {contents = 0}
 <p>We will have more to say about <code class="docutils literal notranslate"><span class="pre">ref</span></code> types below.</p>
 </section>
 <section id="printf-and-format-strings">
-<h3><code class="docutils literal notranslate"><span class="pre">printf</span></code> and format strings<a class="headerlink" href="#printf-and-format-strings" title="Permalink to this heading"></a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">printf</span></code> and format strings<a class="headerlink" href="#printf-and-format-strings" title="Permalink to this headline"></a></h3>
 <p>OCaml has a <code class="docutils literal notranslate"><span class="pre">printf</span></code> function (technically, <code class="docutils literal notranslate"><span class="pre">Printf.printf</span></code>) which
 has a number of pecularities. Check this out:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Printf.printf;;
@@ -610,7 +1312,7 @@ CamlinternalFormatBasics.Format
 </section>
 </section>
 <section id="lists">
-<h2>Lists<a class="headerlink" href="#lists" title="Permalink to this heading"></a></h2>
+<h2>Lists<a class="headerlink" href="#lists" title="Permalink to this headline"></a></h2>
 <p>There are three important things you need to remember about lists in
 OCaml:</p>
 <ol class="arabic simple">
@@ -627,7 +1329,7 @@ Python’s!</p>
 module with many useful functions on lists.</p>
 </section>
 <section id="arrays">
-<h2>Arrays<a class="headerlink" href="#arrays" title="Permalink to this heading"></a></h2>
+<h2>Arrays<a class="headerlink" href="#arrays" title="Permalink to this headline"></a></h2>
 <p>Syntactically, arrays are exactly like lists except that they use
 different delimiters. Instead of <code class="docutils literal notranslate"><span class="pre">[</span></code> and <code class="docutils literal notranslate"><span class="pre">]</span></code> arrays use <code class="docutils literal notranslate"><span class="pre">[|</span></code> and
 <code class="docutils literal notranslate"><span class="pre">|]</span></code>. Here is a literal array:</p>
@@ -660,7 +1362,7 @@ Exception: Invalid_argument &quot;index out of bounds&quot;.
 module with many useful functions on arrays.</p>
 </section>
 <section id="tuples">
-<span id="id2"></span><h2>Tuples<a class="headerlink" href="#tuples" title="Permalink to this heading"></a></h2>
+<span id="id2"></span><h2>Tuples<a class="headerlink" href="#tuples" title="Permalink to this headline"></a></h2>
 <p>A fundamental data type in OCaml is the <em>tuple</em> (pronounced “too-ple” or
 “tup-ple” depending on your preference; I prefer “too-ple”). It is
 nothing more than a sequence of arbitrary OCaml values wrapped in
@@ -673,7 +1375,7 @@ superfluous, being basically a restricted form of lists. In OCaml,
 tuples are necessary because lists can only contain one type of data.</p>
 </div>
 <section id="type-notation">
-<span id="id3"></span><h3>Type notation<a class="headerlink" href="#type-notation" title="Permalink to this heading"></a></h3>
+<span id="id3"></span><h3>Type notation<a class="headerlink" href="#type-notation" title="Permalink to this headline"></a></h3>
 <p>The notation for tuple types is a bit weird; they are written as the
 <em>product</em> of the individual types:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (1, &quot;foo&quot;, 3.14);;
@@ -687,7 +1389,7 @@ worry about that. Just make sure you realize that this use of the <code class="d
 operator doesn’t represent multiplication.</p>
 </section>
 <section id="implicit-parentheses">
-<h3>Implicit parentheses<a class="headerlink" href="#implicit-parentheses" title="Permalink to this heading"></a></h3>
+<h3>Implicit parentheses<a class="headerlink" href="#implicit-parentheses" title="Permalink to this headline"></a></h3>
 <p>Unfortunately, OCaml (like Python) allows you to omit the parentheses in
 many situations:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (1, &quot;foo&quot;, 3.14);;
@@ -723,7 +1425,7 @@ Ultimately, you just have to be able to recognize this problem for what
 it is, and learn to write lists the right way.</p>
 </section>
 <section id="commas-vs-semicolons">
-<h3>Commas <em>vs.</em> semicolons<a class="headerlink" href="#commas-vs-semicolons" title="Permalink to this heading"></a></h3>
+<h3>Commas <em>vs.</em> semicolons<a class="headerlink" href="#commas-vs-semicolons" title="Permalink to this headline"></a></h3>
 <p>What about the opposite problem: writing a tuple with semicolons as
 separators instead of using commas?</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span># (1, &quot;foo&quot;, 3.14);;
@@ -751,7 +1453,7 @@ discuss imperative programming.</p>
 </section>
 </section>
 <section id="strings">
-<h2>Strings<a class="headerlink" href="#strings" title="Permalink to this heading"></a></h2>
+<h2>Strings<a class="headerlink" href="#strings" title="Permalink to this headline"></a></h2>
 <p>Strings are pretty standard in OCaml, except that the notation for
 accessing characters in a string is weird:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let s = &quot;this is a string&quot;;;
@@ -768,9 +1470,9 @@ string). Thankfully, that is no longer the case. (There is a mutable
 string type called <code class="docutils literal notranslate"><span class="pre">bytes</span></code> if you really need it.)</p>
 </section>
 <section id="conditionals">
-<h2>Conditionals<a class="headerlink" href="#conditionals" title="Permalink to this heading"></a></h2>
+<h2>Conditionals<a class="headerlink" href="#conditionals" title="Permalink to this headline"></a></h2>
 <section id="if-expressions">
-<h3><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions<a class="headerlink" href="#if-expressions" title="Permalink to this heading"></a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions<a class="headerlink" href="#if-expressions" title="Permalink to this headline"></a></h3>
 <p>In most programming languages, <code class="docutils literal notranslate"><span class="pre">if</span></code> is a statement, but in functional
 languages like OCaml, <code class="docutils literal notranslate"><span class="pre">if</span></code> is an expression. This means that an <code class="docutils literal notranslate"><span class="pre">if</span></code>
 expression returns a value. This is nice in that you can use <code class="docutils literal notranslate"><span class="pre">if</span></code>
@@ -803,7 +1505,7 @@ Error: This expression has type int but an expression was expected of type
 will see.</p>
 </section>
 <section id="if-without-else">
-<h3><code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code><a class="headerlink" href="#if-without-else" title="Permalink to this heading"></a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code><a class="headerlink" href="#if-without-else" title="Permalink to this headline"></a></h3>
 <p>OCaml allows you to have an <code class="docutils literal notranslate"><span class="pre">if</span></code> expression without an <code class="docutils literal notranslate"><span class="pre">else</span></code>
 clause, but if you do that, the <code class="docutils literal notranslate"><span class="pre">then</span></code> clause <em>must</em> have type
 <code class="docutils literal notranslate"><span class="pre">unit</span></code>.</p>
@@ -838,7 +1540,7 @@ only want to do an <code class="docutils literal notranslate"><span class="pre">
 code in the <code class="docutils literal notranslate"><span class="pre">then</span></code> clause (see below).</p>
 </section>
 <section id="else-if">
-<h3><code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code><a class="headerlink" href="#else-if" title="Permalink to this heading"></a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code><a class="headerlink" href="#else-if" title="Permalink to this headline"></a></h3>
 <p>Technically, OCaml doesn’t have an <code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code> construct. However, if
 you’re careful you can use it anyway:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span># let abs x =
@@ -957,11 +1659,11 @@ the right arrow (<code class="docutils literal notranslate"><span class="pre">-&
 </section>
 </section>
 <section id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h2>
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h2>
 <p>OCaml is a functional language, so functions are fundamental. There are
 a number of unusual features of OCaml functions.</p>
 <section id="syntax-and-currying">
-<h3>Syntax and currying<a class="headerlink" href="#syntax-and-currying" title="Permalink to this heading"></a></h3>
+<h3>Syntax and currying<a class="headerlink" href="#syntax-and-currying" title="Permalink to this headline"></a></h3>
 <p>Unlike most conventional languages, OCaml doesn’t require you to put
 parentheses around the arguments to a function. In fact, if you do, you
 change the meaning! Consider this innocent-looking function:</p>
@@ -1056,7 +1758,7 @@ val add2 : int -&gt; int = &lt;fun&gt;
 </div>
 </section>
 <section id="anonymous-functions">
-<h3>Anonymous functions<a class="headerlink" href="#anonymous-functions" title="Permalink to this heading"></a></h3>
+<h3>Anonymous functions<a class="headerlink" href="#anonymous-functions" title="Permalink to this headline"></a></h3>
 <p>Functions are a kind of data in functional languages like OCaml, and you
 can define function values directly using the <code class="docutils literal notranslate"><span class="pre">fun</span></code> expression. So
 instead of writing:</p>
@@ -1083,11 +1785,11 @@ output).</p>
 </section>
 </section>
 <section id="match-expressions">
-<h2><code class="docutils literal notranslate"><span class="pre">match</span></code> expressions<a class="headerlink" href="#match-expressions" title="Permalink to this heading"></a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">match</span></code> expressions<a class="headerlink" href="#match-expressions" title="Permalink to this headline"></a></h2>
 <p>OCaml <code class="docutils literal notranslate"><span class="pre">match</span></code> expressions are pretty straightforward. They have a
 couple of subtleties you should know about.</p>
 <section id="optional-before-first-match">
-<h3>Optional <code class="docutils literal notranslate"><span class="pre">|</span></code> before first match<a class="headerlink" href="#optional-before-first-match" title="Permalink to this heading"></a></h3>
+<h3>Optional <code class="docutils literal notranslate"><span class="pre">|</span></code> before first match<a class="headerlink" href="#optional-before-first-match" title="Permalink to this headline"></a></h3>
 <p>In a <code class="docutils literal notranslate"><span class="pre">match</span></code> expression, the alternatives are separated by a vertical
 bar character (<code class="docutils literal notranslate"><span class="pre">|</span></code>). You can also (optionally) put a vertical bar
 character before the first pattern to be matched. This often makes the
@@ -1110,7 +1812,7 @@ the code for the second looks cleaner because of the extra <code class="docutils
 the first match.</p>
 </section>
 <section id="nested-match-expressions">
-<h3>Nested match expressions<a class="headerlink" href="#nested-match-expressions" title="Permalink to this heading"></a></h3>
+<h3>Nested match expressions<a class="headerlink" href="#nested-match-expressions" title="Permalink to this headline"></a></h3>
 <p>It’s not uncommon to want to put a <code class="docutils literal notranslate"><span class="pre">match</span></code> expression inside another
 <code class="docutils literal notranslate"><span class="pre">match</span></code> expression. If you do, you have to be careful with the inner
 <code class="docutils literal notranslate"><span class="pre">match</span></code> expression so that its clauses aren’t confused with the outer
@@ -1159,7 +1861,7 @@ internet</a>:</p>
 <p>Now it will do what it’s supposed to.</p>
 </section>
 <section id="function-expressions">
-<h3><code class="docutils literal notranslate"><span class="pre">function</span></code> expressions<a class="headerlink" href="#function-expressions" title="Permalink to this heading"></a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">function</span></code> expressions<a class="headerlink" href="#function-expressions" title="Permalink to this headline"></a></h3>
 <p>This kind of pattern is extremely common:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>let rec &lt;function name&gt; &lt;arg&gt; =
   match &lt;arg&gt; with
@@ -1211,9 +1913,9 @@ free to write all your code without it.</p>
 </section>
 </section>
 <section id="let-expressions">
-<h2><code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#let-expressions" title="Permalink to this heading"></a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#let-expressions" title="Permalink to this headline"></a></h2>
 <section id="explicit-recursion">
-<h3>Explicit recursion<a class="headerlink" href="#explicit-recursion" title="Permalink to this heading"></a></h3>
+<h3>Explicit recursion<a class="headerlink" href="#explicit-recursion" title="Permalink to this headline"></a></h3>
 <p>OCaml requires you to say <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">rec</span></code> when defining a recursive
 function.</p>
 <p>You can easily define mutually recursive functions by using the</p>
@@ -1240,9 +1942,9 @@ style.)</p>
 </section>
 </section>
 <section id="imperative-programming">
-<h2>Imperative programming<a class="headerlink" href="#imperative-programming" title="Permalink to this heading"></a></h2>
+<h2>Imperative programming<a class="headerlink" href="#imperative-programming" title="Permalink to this headline"></a></h2>
 <section id="references">
-<h3>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h3>
+<h3>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h3>
 <p>OCaml doesn’t have “variables” in the sense that most programming
 languages do. Instead, it has <em>references</em>, which are basically records
 with a single mutable field. These are effectively the same as variables
@@ -1289,7 +1991,7 @@ field called <code class="docutils literal notranslate"><span class="pre">conten
 can be used on them.</p>
 </section>
 <section id="sequence-expressions">
-<h3>Sequence expressions<a class="headerlink" href="#sequence-expressions" title="Permalink to this heading"></a></h3>
+<h3>Sequence expressions<a class="headerlink" href="#sequence-expressions" title="Permalink to this headline"></a></h3>
 <p>When you are doing imperative programming, it’s often necessary to have
 a notion of sequencing, as in do-this-then-do-that <em>etc.</em> In OCaml, this
 requires a <em>sequence expression</em>, which has two forms:</p>
@@ -1323,7 +2025,7 @@ how annoying imperative programming is in OCaml <code class="docutils literal no
 <code class="docutils literal notranslate"><span class="pre">!</span></code>all <code class="docutils literal notranslate"><span class="pre">!</span></code>the <code class="docutils literal notranslate"><span class="pre">!</span></code>exclamation <code class="docutils literal notranslate"><span class="pre">!</span></code>points!</p>
 </section>
 <section id="weakly-polymorphic-types">
-<h3>Weakly polymorphic types<a class="headerlink" href="#weakly-polymorphic-types" title="Permalink to this heading"></a></h3>
+<h3>Weakly polymorphic types<a class="headerlink" href="#weakly-polymorphic-types" title="Permalink to this headline"></a></h3>
 <p>OCaml’s type system has some peculiarities. One that you are likely to
 run into when you do imperative programming is that there are types that
 are “weakly polymorphic”. A truly polymorphic type can be parameterized
@@ -1386,34 +2088,51 @@ point), here are some good references:</p>
 </section>
 
 
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Readings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="subst.html" class="btn btn-neutral float-right" title="The substitution model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Readings</p>
         </div>
+    </a>
+    <a class='right-next' id="next-link" href="subst.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">The substitution model</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Michael Vanier<br/>
+  
+      &copy; Copyright 2023, Michael C. Vanier. All rights reserved.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
       </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
  <script type="text/javascript">
     $(document).ready(function() {
         $(".toggle > *").hide();
@@ -1425,6 +2144,5 @@ point), here are some good references:</p>
     });
 </script>
 
-
-</body>
+  </body>
 </html>

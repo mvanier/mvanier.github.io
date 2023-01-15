@@ -1,116 +1,650 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The substitution model &mdash; The CS 4 book 0.0.1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../../_static/js/theme.js"></script>
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>The substitution model &#8212; The CS 4 book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="OCaml syntax cheat sheet" href="ocaml_cheat_sheet.html" /> 
-</head>
+    <link rel="prev" title="OCaml syntax cheat sheet" href="ocaml_cheat_sheet.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> The CS 4 book
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../Introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrative information</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Motivation.html">Motivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../History.html">History</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../assignments/index.html">Assignments</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Readings</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="ocaml_cheat_sheet.html">OCaml syntax cheat sheet</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">The substitution model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#desugaring-and-precedence">Desugaring and precedence</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#desugaring">Desugaring</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#precedence">Precedence</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#the-basic-rule">The basic rule</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#specific-cases-of-the-basic-rule">Specific cases of the basic rule</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#let-bound-names"><code class="docutils literal notranslate"><span class="pre">let</span></code>-bound names</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#top-level-let-expressions">Top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#local-let-expressions">Local <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#if-expressions"><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#if-without-else"><code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#fun-expressions"><code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#function-application">Function application</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#applying-built-in-functions-or-operators">Applying built-in functions or operators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#applying-user-defined-functions-substitution">Applying user-defined functions: substitution</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#recursion">Recursion</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#nested-fun-expressions-and-shielding">Nested <code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions and shielding</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
 
-        </div>
-      </div>
-    </nav>
+    
+    <div class="container-fluid" id="banner"></div>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">The CS 4 book</a>
-      </nav>
+    
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">Readings</a></li>
-      <li class="breadcrumb-item active">The substitution model</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">The CS 4 book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Introduction.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../admin/index.html">
+   Administrative information
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../admin/Syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../admin/Collaboration_policies.html">
+     Collaboration policies
+    </a>
+   </li>
   </ul>
-  <hr/>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Motivation.html">
+   Motivation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../History.html">
+   History
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../assignments/index.html">
+   Assignments
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/0/Assignment0.html">
+     Assignment 0: Getting set up
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../assignments/1/index.html">
+     Assignment 1: Evaluation and recursion
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/1/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/1/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/1/sections/partA_exercises.html">
+       Part A: Basic exercises
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/1/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/1/sections/partC_recursion.html">
+       Part C: Recursion
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Readings
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="ocaml_cheat_sheet.html">
+     OCaml syntax cheat sheet
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     The substitution model
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/content/readings/subst.rst.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.rst</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#desugaring-and-precedence">
+   Desugaring and precedence
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#desugaring">
+     Desugaring
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#precedence">
+     Precedence
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-basic-rule">
+   The basic rule
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#specific-cases-of-the-basic-rule">
+   Specific cases of the basic rule
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#let-bound-names">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     let
+    </span>
+   </code>
+   -bound names
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#top-level-let-expressions">
+     Top-level
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       let
+      </span>
+     </code>
+     expressions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#local-let-expressions">
+     Local
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       let
+      </span>
+     </code>
+     expressions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#if-expressions">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     if
+    </span>
+   </code>
+   expressions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#if-without-else">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       if
+      </span>
+     </code>
+     without
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       else
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#fun-expressions">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     fun
+    </span>
+   </code>
+   expressions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#function-application">
+   Function application
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#applying-built-in-functions-or-operators">
+     Applying built-in functions or operators
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#applying-user-defined-functions-substitution">
+     Applying user-defined functions: substitution
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#recursion">
+     Recursion
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#nested-fun-expressions-and-shielding">
+     Nested
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       fun
+      </span>
+     </code>
+     expressions and shielding
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>The substitution model</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#desugaring-and-precedence">
+   Desugaring and precedence
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#desugaring">
+     Desugaring
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#precedence">
+     Precedence
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-basic-rule">
+   The basic rule
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#specific-cases-of-the-basic-rule">
+   Specific cases of the basic rule
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#let-bound-names">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     let
+    </span>
+   </code>
+   -bound names
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#top-level-let-expressions">
+     Top-level
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       let
+      </span>
+     </code>
+     expressions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#local-let-expressions">
+     Local
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       let
+      </span>
+     </code>
+     expressions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#if-expressions">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     if
+    </span>
+   </code>
+   expressions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#if-without-else">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       if
+      </span>
+     </code>
+     without
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       else
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#fun-expressions">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     fun
+    </span>
+   </code>
+   expressions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#function-application">
+   Function application
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#applying-built-in-functions-or-operators">
+     Applying built-in functions or operators
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#applying-user-defined-functions-substitution">
+     Applying user-defined functions: substitution
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#recursion">
+     Recursion
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#nested-fun-expressions-and-shielding">
+     Nested
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       fun
+      </span>
+     </code>
+     expressions and shielding
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
   <section id="the-substitution-model">
-<span id="subst"></span><h1>The substitution model<a class="headerlink" href="#the-substitution-model" title="Permalink to this heading"></a></h1>
-<p>This document is a summary of the rules of the substitution model,
+<span id="subst"></span><h1>The substitution model<a class="headerlink" href="#the-substitution-model" title="Permalink to this headline"></a></h1>
+<p>This reading is a summary of the rules of the substitution model,
 discussed in lecture 2.</p>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
 <p>The substitution model is a way of manually evaluating OCaml expressions.
 It’s similar to, but not identical to,
 what the computer does when it evaluates OCaml code.
@@ -129,12 +663,12 @@ of the course.</p>
 </div>
 </section>
 <section id="desugaring-and-precedence">
-<h2>Desugaring and precedence<a class="headerlink" href="#desugaring-and-precedence" title="Permalink to this heading"></a></h2>
+<h2>Desugaring and precedence<a class="headerlink" href="#desugaring-and-precedence" title="Permalink to this headline"></a></h2>
 <p>Before evaluating any OCaml code using the substitution model,
 the code should first be <em>desugared</em>,
 and then operator <em>precedence</em> should be made explicit using parentheses.</p>
 <section id="desugaring">
-<h3>Desugaring<a class="headerlink" href="#desugaring" title="Permalink to this heading"></a></h3>
+<h3>Desugaring<a class="headerlink" href="#desugaring" title="Permalink to this headline"></a></h3>
 <p>The main kind of desugaring we need is to replace expressions of this form:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="o">...</span>
 </pre></div>
@@ -160,7 +694,7 @@ unless you have to for some reason.</p>
 </div>
 </section>
 <section id="precedence">
-<h3>Precedence<a class="headerlink" href="#precedence" title="Permalink to this heading"></a></h3>
+<h3>Precedence<a class="headerlink" href="#precedence" title="Permalink to this headline"></a></h3>
 <p>Operator precedence should be made explicit by wrapping parentheses around
 nested operator expressions.  For instance, this code:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">7</span>
@@ -176,7 +710,7 @@ what the operands of an operator are.</p>
 </section>
 </section>
 <section id="the-basic-rule">
-<h2>The basic rule<a class="headerlink" href="#the-basic-rule" title="Permalink to this heading"></a></h2>
+<h2>The basic rule<a class="headerlink" href="#the-basic-rule" title="Permalink to this headline"></a></h2>
 <p>To evaluate an OCaml expression:</p>
 <ol class="arabic simple">
 <li><p>evaluate the <em>operands</em> of the expression</p></li>
@@ -198,7 +732,7 @@ do not use the basic rule; they have their own evaluation rules.
 Such expressions are called <em>special forms</em>.</p>
 </section>
 <section id="specific-cases-of-the-basic-rule">
-<h2>Specific cases of the basic rule<a class="headerlink" href="#specific-cases-of-the-basic-rule" title="Permalink to this heading"></a></h2>
+<h2>Specific cases of the basic rule<a class="headerlink" href="#specific-cases-of-the-basic-rule" title="Permalink to this headline"></a></h2>
 <ul class="simple">
 <li><p>Numbers evaluate to themselves: <code class="docutils literal notranslate"><span class="pre">10</span></code> <span class="raw-html">&rarr;</span> <code class="docutils literal notranslate"><span class="pre">10</span></code>
 (In fact, any literal data value evaluates to itself;
@@ -216,11 +750,11 @@ and evaluate to the value that they were previously bound to.
 </ul>
 </section>
 <section id="let-bound-names">
-<h2><code class="docutils literal notranslate"><span class="pre">let</span></code>-bound names<a class="headerlink" href="#let-bound-names" title="Permalink to this heading"></a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">let</span></code>-bound names<a class="headerlink" href="#let-bound-names" title="Permalink to this headline"></a></h2>
 <p>There are two kinds of <code class="docutils literal notranslate"><span class="pre">let</span></code>-bound names: top-level and in-expression.
 They evaluate differently.</p>
 <section id="top-level-let-expressions">
-<h3>Top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#top-level-let-expressions" title="Permalink to this heading"></a></h3>
+<h3>Top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#top-level-let-expressions" title="Permalink to this headline"></a></h3>
 <p>A top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> expression <a class="footnote-reference brackets" href="#id4" id="id1">1</a> looks like this:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="o">&lt;</span><span class="n">var</span><span class="o">&gt;</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">expr</span><span class="o">&gt;</span>
 </pre></div>
@@ -259,7 +793,7 @@ and in some cases can still have effects.</p>
 </div>
 </section>
 <section id="local-let-expressions">
-<h3>Local <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#local-let-expressions" title="Permalink to this heading"></a></h3>
+<h3>Local <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#local-let-expressions" title="Permalink to this headline"></a></h3>
 <p>A “local” <code class="docutils literal notranslate"><span class="pre">let</span></code> expression is a <code class="docutils literal notranslate"><span class="pre">let</span></code> expression where a name is bound
 to a value and then immediately used in another expression, such as this:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span> <span class="k">in</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
@@ -282,7 +816,7 @@ you’re creating a new one that is used only in a single expression.</p>
 </section>
 </section>
 <section id="if-expressions">
-<h2><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions<a class="headerlink" href="#if-expressions" title="Permalink to this heading"></a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions<a class="headerlink" href="#if-expressions" title="Permalink to this headline"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions consist of three subexpressions:</p>
 <ul class="simple">
 <li><p>the <em>test</em> subexpression (between the <code class="docutils literal notranslate"><span class="pre">if</span></code> and the <code class="docutils literal notranslate"><span class="pre">then</span></code> keywords)</p></li>
@@ -301,7 +835,7 @@ evaluate the <code class="docutils literal notranslate"><span class="pre">else</
 <code class="docutils literal notranslate"><span class="pre">then</span></code> and <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpressions.
 This is why <code class="docutils literal notranslate"><span class="pre">if</span></code> can’t be a function (it’s not just the syntax!) <a class="footnote-reference brackets" href="#id5" id="id2">2</a></p>
 <section id="if-without-else">
-<h3><code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code><a class="headerlink" href="#if-without-else" title="Permalink to this heading"></a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code><a class="headerlink" href="#if-without-else" title="Permalink to this headline"></a></h3>
 <p>When writing purely functional code in OCaml,
 <code class="docutils literal notranslate"><span class="pre">if</span></code> expressions always have both a <code class="docutils literal notranslate"><span class="pre">then</span></code> subexpression
 and an <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpression.
@@ -313,7 +847,7 @@ work, see the <a class="reference internal" href="ocaml_cheat_sheet.html"><span 
 </section>
 </section>
 <section id="fun-expressions">
-<h2><code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions<a class="headerlink" href="#fun-expressions" title="Permalink to this heading"></a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions<a class="headerlink" href="#fun-expressions" title="Permalink to this headline"></a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">fun</span></code> expression (like <code class="docutils literal notranslate"><span class="pre">fun</span> <span class="pre">x</span> <span class="pre">y</span> <span class="pre">-&gt;</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">y</span></code>) represents an anonymous
 function.
 In the substitution model, a <code class="docutils literal notranslate"><span class="pre">fun</span></code> expression is usually the result of
@@ -342,11 +876,11 @@ For this reason, in written evaluations you can write:</p>
 </div>
 </section>
 <section id="function-application">
-<h2>Function application<a class="headerlink" href="#function-application" title="Permalink to this heading"></a></h2>
+<h2>Function application<a class="headerlink" href="#function-application" title="Permalink to this headline"></a></h2>
 <p>Function application is at the heart of the substitution model.
 There are two cases.</p>
 <section id="applying-built-in-functions-or-operators">
-<h3>Applying built-in functions or operators<a class="headerlink" href="#applying-built-in-functions-or-operators" title="Permalink to this heading"></a></h3>
+<h3>Applying built-in functions or operators<a class="headerlink" href="#applying-built-in-functions-or-operators" title="Permalink to this headline"></a></h3>
 <p>Applying a built-in function or operator is simple: you just do it.
 For instance:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Evaluate: 2 + 3
@@ -372,7 +906,7 @@ Evaluate: abs (-10)
 <p>Don’t do this unless we explicitly say it’s OK.</p>
 </section>
 <section id="applying-user-defined-functions-substitution">
-<h3>Applying user-defined functions: substitution<a class="headerlink" href="#applying-user-defined-functions-substitution" title="Permalink to this heading"></a></h3>
+<h3>Applying user-defined functions: substitution<a class="headerlink" href="#applying-user-defined-functions-substitution" title="Permalink to this headline"></a></h3>
 <p>Now we come to the “substitution” part of the substitution model.
 It happens when you are applying a user-defined function
 (which means a <code class="docutils literal notranslate"><span class="pre">fun</span></code> expression, or a function which gets desugared
@@ -442,7 +976,7 @@ expression in all cases.  See below for more details.</p>
 </div>
 </section>
 <section id="recursion">
-<h3>Recursion<a class="headerlink" href="#recursion" title="Permalink to this heading"></a></h3>
+<h3>Recursion<a class="headerlink" href="#recursion" title="Permalink to this headline"></a></h3>
 <p>Recursion doesn’t require any special treatment in the substitution model,
 except that you have to replace a function name with the correct
 definition of that function when looking up the name.
@@ -483,7 +1017,7 @@ inside the OCaml interpreter.
 This can lead to very peculiar bugs.</p>
 </section>
 <section id="nested-fun-expressions-and-shielding">
-<h3>Nested <code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions and shielding<a class="headerlink" href="#nested-fun-expressions-and-shielding" title="Permalink to this heading"></a></h3>
+<h3>Nested <code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions and shielding<a class="headerlink" href="#nested-fun-expressions-and-shielding" title="Permalink to this headline"></a></h3>
 <p>TODO</p>
 <hr class="docutils" />
 <p class="rubric">Footnotes</p>
@@ -507,33 +1041,44 @@ but I’m not quite that mean.</p>
 </section>
 
 
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="ocaml_cheat_sheet.html" class="btn btn-neutral float-left" title="OCaml syntax cheat sheet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="ocaml_cheat_sheet.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">OCaml syntax cheat sheet</p>
         </div>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Michael Vanier<br/>
+  
+      &copy; Copyright 2023, Michael C. Vanier. All rights reserved.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
       </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
  <script type="text/javascript">
     $(document).ready(function() {
         $(".toggle > *").hide();
@@ -545,6 +1090,5 @@ but I’m not quite that mean.</p>
     });
 </script>
 
-
-</body>
+  </body>
 </html>
