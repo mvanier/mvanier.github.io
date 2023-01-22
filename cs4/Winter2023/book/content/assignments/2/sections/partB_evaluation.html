@@ -1,0 +1,668 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Part B: Evaluation &#8212; The CS 4 book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Part C. Higher-order functions" href="partC_higher_order_functions.html" />
+    <link rel="prev" title="Part A: Orders of growth" href="partA_orders_of_growth.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">The CS 4 book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../Introduction.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../admin/index.html">
+   Administrative information
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../admin/Syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../admin/Collaboration_policies.html">
+     Collaboration policies
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../Motivation.html">
+   Motivation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../History.html">
+   History
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../index.html">
+   Assignments
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../0/Assignment0.html">
+     Assignment 0: Getting set up
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../1/index.html">
+     Assignment 1: Evaluation and recursion
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partA_exercises.html">
+       Part A: Basic exercises
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partC_recursion.html">
+       Part C: Recursion
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="../index.html">
+     Assignment 2: Asymptotic complexity and higher-order functions
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="partA_orders_of_growth.html">
+       Part A: Orders of growth
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="partC_higher_order_functions.html">
+       Part C. Higher-order functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="partD_additional_problems.html">
+       Part D: Additional problems
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../readings/index.html">
+   Readings
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../readings/ocaml_cheat_sheet.html">
+     OCaml syntax cheat sheet
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../readings/subst.html">
+     The substitution model
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../../_sources/content/assignments/2/sections/partB_evaluation.rst.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.rst</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#desugaring-let">
+   1. Desugaring
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     let
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a">
+     a.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#b">
+     b.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#c">
+     c.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#d">
+     d.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#desugaring-let-and-the-substitution-model">
+   2. Desugaring
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     let
+    </span>
+   </code>
+   and the substitution model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-doesnt-this-work">
+   3. Why doesn’t this work?
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Part B: Evaluation</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#desugaring-let">
+   1. Desugaring
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     let
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a">
+     a.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#b">
+     b.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#c">
+     c.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#d">
+     d.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#desugaring-let-and-the-substitution-model">
+   2. Desugaring
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     let
+    </span>
+   </code>
+   and the substitution model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-doesnt-this-work">
+   3. Why doesn’t this work?
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="part-b-evaluation">
+<h1>Part B: Evaluation<a class="headerlink" href="#part-b-evaluation" title="Permalink to this headline">#</a></h1>
+<p>In this section, write all answers inside OCaml comments.
+(If you don’t, your <code class="docutils literal notranslate"><span class="pre">lab2.ml</span></code> file probably won’t compile.)</p>
+<section id="desugaring-let">
+<h2>1. Desugaring <code class="docutils literal notranslate"><span class="pre">let</span></code><a class="headerlink" href="#desugaring-let" title="Permalink to this headline">#</a></h2>
+<p>[<strong>4</strong>] (30 minutes)</p>
+<p>Desugar the following (nonrecursive) <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions to the
+equivalent <code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions applied to arguments. You do not need to
+evaluate the resulting <code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions. Use the OCaml interpreter to
+test that your desugared versions are equivalent to the original
+versions. (You don’t have to prove this to anyone but yourself.)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A non-recursive <code class="docutils literal notranslate"><span class="pre">let</span></code> / <code class="docutils literal notranslate"><span class="pre">and</span></code> form binds multiple values to
+the result of evaluating the corresponding expressions,
+but none of the binding expressions can depend on the other bindings.
+(In a recursive <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">rec</span></code> / <code class="docutils literal notranslate"><span class="pre">and</span></code> form,
+any or all of the binding expressions can depend on the bindings.)
+A non-recursive <code class="docutils literal notranslate"><span class="pre">let</span></code> / <code class="docutils literal notranslate"><span class="pre">and</span></code> form is therefore equivalent to a
+function of more than one argument applied to its arguments, as
+discussed in the lectures.</p>
+</div>
+<section id="a">
+<h3>a.<a class="headerlink" href="#a" title="Permalink to this headline">#</a></h3>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="ow">and</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">4</span>
+<span class="k">in</span> <span class="n">x</span> <span class="o">*</span> <span class="o">(</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">)</span>
+</pre></div>
+</div>
+</section>
+<section id="b">
+<h3>b.<a class="headerlink" href="#b" title="Permalink to this headline">#</a></h3>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span>
+<span class="ow">and</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">20</span><span class="o">.</span><span class="mi">0</span>
+<span class="ow">and</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">3</span><span class="o">.</span><span class="mi">0</span>
+<span class="k">in</span> <span class="n">sqrt</span> <span class="o">(</span><span class="n">b</span> <span class="o">*.</span> <span class="n">b</span> <span class="o">-.</span> <span class="mi">4</span><span class="o">.</span><span class="mi">0</span> <span class="o">*.</span> <span class="n">a</span> <span class="o">*.</span> <span class="n">c</span><span class="o">)</span>
+</pre></div>
+</div>
+</section>
+<section id="c">
+<h3>c.<a class="headerlink" href="#c" title="Permalink to this headline">#</a></h3>
+<p>For this problem, desugar all of the <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions. Note that
+successive <code class="docutils literal notranslate"><span class="pre">let</span></code>/<code class="docutils literal notranslate"><span class="pre">in</span></code> forms are <em>not</em> the same as a <code class="docutils literal notranslate"><span class="pre">let</span></code>/<code class="docutils literal notranslate"><span class="pre">and</span></code>
+form with multiple <code class="docutils literal notranslate"><span class="pre">and</span></code>s, because expressions can depend on earlier
+bindings.</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">in</span>
+<span class="k">let</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">in</span>
+<span class="k">let</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">3</span> <span class="k">in</span>
+  <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">z</span>
+</pre></div>
+</div>
+</section>
+<section id="d">
+<h3>d.<a class="headerlink" href="#d" title="Permalink to this headline">#</a></h3>
+<p>For this problem, desugar all of the <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions.</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">in</span>
+<span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">in</span>
+<span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">3</span> <span class="k">in</span>
+  <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="desugaring-let-and-the-substitution-model">
+<h2>2. Desugaring <code class="docutils literal notranslate"><span class="pre">let</span></code> and the substitution model<a class="headerlink" href="#desugaring-let-and-the-substitution-model" title="Permalink to this headline">#</a></h2>
+<p>[<strong>4</strong>] (30 minutes)</p>
+<p>Using the substitution model (including desugaring <code class="docutils literal notranslate"><span class="pre">let</span></code> to <code class="docutils literal notranslate"><span class="pre">fun</span></code>),
+evaluate the following expression. You may skip obvious steps (for
+instance, you can reduce <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">+</span> <span class="pre">2</span></code> to <code class="docutils literal notranslate"><span class="pre">4</span></code> in a single step). <em>Hint:</em>
+Desugar all the <code class="docutils literal notranslate"><span class="pre">let</span></code>s to <code class="docutils literal notranslate"><span class="pre">fun</span></code>s before doing anything else. Our
+evaluation took about 35 lines. Watch out for lambda shielding!</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">10</span>
+<span class="ow">and</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">4</span>
+<span class="k">in</span>
+  <span class="k">let</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">14</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">22</span> <span class="k">in</span>
+    <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">z</span>
+</pre></div>
+</div>
+</section>
+<section id="why-doesnt-this-work">
+<h2>3. Why doesn’t this work?<a class="headerlink" href="#why-doesnt-this-work" title="Permalink to this headline">#</a></h2>
+<p>[<strong>2</strong>] (20 minutes)</p>
+<p>Ben Bitfiddle can’t understand why the following code gives an error:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="ow">and</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="ow">and</span> <span class="n">z</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">3</span>
+<span class="k">in</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span>
+</pre></div>
+</div>
+<p>When Ben runs this (expecting the result to be 53), OCaml complains
+about <code class="docutils literal notranslate"><span class="pre">x</span></code> being an unbound value. “That’s not true!” cries Ben
+angrily, “<code class="docutils literal notranslate"><span class="pre">x</span></code> was bound on the first line!”. Explain why this doesn’t
+work by first desugaring the <code class="docutils literal notranslate"><span class="pre">let</span></code> to a <code class="docutils literal notranslate"><span class="pre">fun</span></code>, and then explain in
+words why it can’t work, by referring to the way expressions get
+evaluated (you don’t need to evaluate the expression explicitly). Then
+show Ben a simple way to fix this code to make it do what he wants.</p>
+</section>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="partA_orders_of_growth.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Part A: Orders of growth</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="partC_higher_order_functions.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Part C. Higher-order functions</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Michael Vanier<br/>
+  
+      &copy; Copyright 2023, Michael C. Vanier. All rights reserved.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

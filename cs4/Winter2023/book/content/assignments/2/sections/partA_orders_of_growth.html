@@ -1,0 +1,805 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Part A: Orders of growth &#8212; The CS 4 book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Part B: Evaluation" href="partB_evaluation.html" />
+    <link rel="prev" title="OCaml notes" href="ocaml_notes.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">The CS 4 book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../Introduction.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../admin/index.html">
+   Administrative information
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../admin/Syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../admin/Collaboration_policies.html">
+     Collaboration policies
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../Motivation.html">
+   Motivation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../History.html">
+   History
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../index.html">
+   Assignments
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../0/Assignment0.html">
+     Assignment 0: Getting set up
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../1/index.html">
+     Assignment 1: Evaluation and recursion
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partA_exercises.html">
+       Part A: Basic exercises
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partC_recursion.html">
+       Part C: Recursion
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="../index.html">
+     Assignment 2: Asymptotic complexity and higher-order functions
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       Part A: Orders of growth
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="partC_higher_order_functions.html">
+       Part C. Higher-order functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="partD_additional_problems.html">
+       Part D: Additional problems
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../readings/index.html">
+   Readings
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../readings/ocaml_cheat_sheet.html">
+     OCaml syntax cheat sheet
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../readings/subst.html">
+     The substitution model
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../../_sources/content/assignments/2/sections/partA_orders_of_growth.rst.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.rst</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#fibonacci-again">
+   1. Fibonacci again
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-15">
+   2. SICP, problem 1.15
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-16">
+   3. SICP, problem 1.16
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a">
+     a.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#b">
+     b.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-17">
+   4. SICP, problem 1.17
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-18">
+   5. SICP, problem 1.18
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-mysterious-function">
+   6. A mysterious function
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#fibonacci-yet-again">
+   7. Fibonacci yet again
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Part A: Orders of growth</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#fibonacci-again">
+   1. Fibonacci again
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-15">
+   2. SICP, problem 1.15
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-16">
+   3. SICP, problem 1.16
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a">
+     a.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#b">
+     b.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-17">
+   4. SICP, problem 1.17
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-18">
+   5. SICP, problem 1.18
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-mysterious-function">
+   6. A mysterious function
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#fibonacci-yet-again">
+   7. Fibonacci yet again
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="part-a-orders-of-growth">
+<h1>Part A: Orders of growth<a class="headerlink" href="#part-a-orders-of-growth" title="Permalink to this headline">#</a></h1>
+<p>This section will feature problems relating to estimating
+time and space complexity in OCaml functions.
+As usual, write essay-type answers as OCaml comments.</p>
+<section id="fibonacci-again">
+<h2>1. Fibonacci again<a class="headerlink" href="#fibonacci-again" title="Permalink to this headline">#</a></h2>
+<p>[<strong>1</strong>] (20 minutes)</p>
+<p>Consider the tree-recursive fibonacci function discussed in class:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">fib</span> <span class="n">n</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span>
+     <span class="k">then</span> <span class="n">n</span>
+     <span class="k">else</span> <span class="n">fib</span> <span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">fib</span> <span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>You know that the time complexity for this function is <span class="math notranslate nohighlight">\({O(2^n)}\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>More specifically, it is <span class="math notranslate nohighlight">\({\Theta(g^n)}\)</span>,
+where <span class="math notranslate nohighlight">\(g\)</span> is the golden ratio (<span class="math notranslate nohighlight">\(1.618...\)</span>).
+See <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-11.html#%_sec_1.2.2">SICP, section 1.2.2</a> and <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-11.html#%_thm_1.13">SICP, problem 1.13</a> for more on this.</p>
+</div>
+<p>If we assume that OCaml is using applicative-order evaluation
+(the normal OCaml evaluation rule),
+then what is its <em>space</em> complexity?
+Explain why this is different from the time complexity.</p>
+<p><em>Hint:</em> consider what the largest number of pending
+operations would have to be when evaluating <code class="docutils literal notranslate"><span class="pre">fib</span> <span class="pre">7</span></code>. You may assume
+that once an expression is fully evaluated, all the memory used in
+evaluating that expression is returned to the system.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You are not required to state what the effect of normal-order
+evaluation is on the space requirements of the <code class="docutils literal notranslate"><span class="pre">fib</span></code> function,
+though it is interesting! <svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-smiley smiley" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zM5 8a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zM5.32 9.636a.75.75 0 011.038.175l.007.009c.103.118.22.222.35.31.264.178.683.37 1.285.37.602 0 1.02-.192 1.285-.371.13-.088.247-.192.35-.31l.007-.008a.75.75 0 111.222.87l-.614-.431c.614.43.614.431.613.431v.001l-.001.002-.002.003-.005.007-.014.019a1.984 1.984 0 01-.184.213c-.16.166-.338.316-.53.445-.63.418-1.37.638-2.127.629-.946 0-1.652-.308-2.126-.63a3.32 3.32 0 01-.715-.657l-.014-.02-.005-.006-.002-.003v-.002h-.001l.613-.432-.614.43a.75.75 0 01.183-1.044h.001z"></path></svg></p>
+</div>
+</section>
+<section id="sicp-problem-1-15">
+<h2>2. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-11.html#%_thm_1.15">SICP, problem 1.15</a><a class="headerlink" href="#sicp-problem-1-15" title="Permalink to this headline">#</a></h2>
+<p>[<strong>1.5</strong>] (30 minutes)</p>
+<p>The sine of an angle (specified in radians) can be computed by making
+use of the approximation:</p>
+<div class="math notranslate nohighlight">
+\[sin\ x = x\]</div>
+<p>(if <span class="math notranslate nohighlight">\(x\)</span> is “sufficiently small”),
+and the trigonometric identity:</p>
+<div class="math notranslate nohighlight">
+\[sin\ x = 3 \ sin(x / 3) - 4 \ sin^3(x/3)\]</div>
+<p>to reduce the size of the argument of <span class="math notranslate nohighlight">\(sin\)</span>
+if <span class="math notranslate nohighlight">\(x\)</span> is <em>not</em> sufficiently small.
+For purposes of this exercise an angle is considered “sufficiently small” if
+its magnitude is less than 0.1 radians.</p>
+<p>These ideas are incorporated in the following functions (using
+floating-point arithmetic throughout):</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">cube</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*.</span> <span class="n">x</span> <span class="o">*.</span> <span class="n">x</span>
+<span class="k">let</span> <span class="n">p</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">3</span><span class="o">.</span><span class="mi">0</span> <span class="o">*.</span> <span class="n">x</span> <span class="o">-.</span> <span class="mi">4</span><span class="o">.</span><span class="mi">0</span> <span class="o">*.</span> <span class="n">cube</span> <span class="n">x</span>
+<span class="k">let</span> <span class="k">rec</span> <span class="n">sine</span> <span class="n">angle</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">abs_float</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
+     <span class="k">then</span> <span class="n">angle</span>
+     <span class="k">else</span> <span class="n">p</span> <span class="o">(</span><span class="n">sine</span> <span class="o">(</span><span class="n">angle</span> <span class="o">/.</span> <span class="mi">3</span><span class="o">.</span><span class="mi">0</span><span class="o">))</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>How many times is the function <code class="docutils literal notranslate"><span class="pre">p</span></code> applied when <code class="docutils literal notranslate"><span class="pre">sine</span> <span class="pre">12.15</span></code> is
+evaluated?</p></li>
+<li><p>What is the order of growth in space and number of steps
+used by the process generated by the <code class="docutils literal notranslate"><span class="pre">sine</span></code> function
+when <code class="docutils literal notranslate"><span class="pre">sine</span> <span class="pre">a</span></code> is evaluated (as a function of <code class="docutils literal notranslate"><span class="pre">a</span></code>)?</p></li>
+</ol>
+<p>By “growth in number of steps”,
+we mean the asymptotic time complexity of the <code class="docutils literal notranslate"><span class="pre">sine</span></code> function
+as a function of the size of the input.
+Explain the reason for the space/time complexities;
+don’t just state an answer.</p>
+</section>
+<section id="sicp-problem-1-16">
+<h2>3. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-11.html#%_thm_1.16">SICP, problem 1.16</a><a class="headerlink" href="#sicp-problem-1-16" title="Permalink to this headline">#</a></h2>
+<p>[<strong>1.5</strong>] (30 minutes)</p>
+<p>SICP describes a non-iterative function called <code class="docutils literal notranslate"><span class="pre">fast_expt</span></code> that does
+exponentiation using successive squaring (when possible). Translated
+into OCaml, that function looks like this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">fast_expt</span> <span class="n">b</span> <span class="n">n</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">is_even</span> <span class="n">m</span> <span class="o">=</span> <span class="n">m</span> <span class="ow">mod</span> <span class="mi">2</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">square</span> <span class="n">m</span> <span class="o">=</span> <span class="n">m</span> <span class="o">*</span> <span class="n">m</span> <span class="k">in</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">then</span> <span class="mi">1</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="n">is_even</span> <span class="n">n</span> <span class="k">then</span> <span class="n">square</span> <span class="o">(</span><span class="n">fast_expt</span> <span class="n">b</span> <span class="o">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="o">))</span>
+    <span class="k">else</span> <span class="n">b</span> <span class="o">*</span> <span class="n">fast_expt</span> <span class="n">b</span> <span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">mod</span></code> is a predefined infix operator in OCaml (not a
+function!) which computes remainders; you use it like this: <code class="docutils literal notranslate"><span class="pre">5</span> <span class="pre">mod</span> <span class="pre">2</span></code>
+(which will return <code class="docutils literal notranslate"><span class="pre">1</span></code>).</p>
+<section id="a">
+<h3>a.<a class="headerlink" href="#a" title="Permalink to this headline">#</a></h3>
+<p>This function uses nested <code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">then</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code> forms, which are a
+bit ugly and error-prone (since OCaml doesn’t actually have an
+<code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code> syntax). Rewrite the function using pattern matching on the
+<code class="docutils literal notranslate"><span class="pre">n</span></code> argument (a <code class="docutils literal notranslate"><span class="pre">match</span></code> expression); use <code class="docutils literal notranslate"><span class="pre">when</span></code> clauses in pattern
+matches when you need to test for non-structural conditions (and <em>only</em>
+then). Your function should not have any <code class="docutils literal notranslate"><span class="pre">if</span></code> expressions.</p>
+<p>Here is a skeleton version of the function you should write:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">fast_expt</span> <span class="n">b</span> <span class="n">n</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">is_even</span> <span class="n">m</span> <span class="o">=</span> <span class="n">m</span> <span class="ow">mod</span> <span class="mi">2</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">square</span> <span class="n">m</span> <span class="o">=</span> <span class="n">m</span> <span class="o">*</span> <span class="n">m</span> <span class="k">in</span>
+    <span class="k">match</span> <span class="n">n</span> <span class="k">with</span>
+      <span class="c">(* fill in the rest here *)</span>
+</pre></div>
+</div>
+<p><em>N.B.</em> the “wildcard” pattern <code class="docutils literal notranslate"><span class="pre">_</span></code> may be useful to you.
+Any compiler warnings will be considered to be errors.</p>
+</section>
+<section id="b">
+<h3>b.<a class="headerlink" href="#b" title="Permalink to this headline">#</a></h3>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">ifast_expt</span></code> that evolves an <em>iterative</em>
+exponentiation process that uses successive squaring and uses a
+logarithmic number of steps.</p>
+<p><em>Hint</em>: Using the observation that <span class="math notranslate nohighlight">\(b^n = (b^{n/2})^2 = (b^2)^{n/2}\)</span>,
+keep, along with the exponent <span class="math notranslate nohighlight">\(n\)</span> and the base <span class="math notranslate nohighlight">\(b\)</span>,
+an additional state variable <span class="math notranslate nohighlight">\(a\)</span>,
+and define the state transformation in such a way
+that the product <span class="math notranslate nohighlight">\(a b^n\)</span> is unchanged from state to state.
+At the beginning of the process <span class="math notranslate nohighlight">\(a\)</span> is taken to be 1,
+and the answer is given by the value of <span class="math notranslate nohighlight">\(a\)</span> at the end of the process.
+In general, the technique of defining an <em>invariant quantity</em>
+that remains unchanged from state to state
+is a powerful way to think about the design of iterative algorithms.</p>
+<p>Use integer arithmetic for this problem. You may assume that all the
+(integer) arguments to your function are non-negative.</p>
+<p>You will need some helper functions in the implementation of your
+<code class="docutils literal notranslate"><span class="pre">ifast_expt</span></code> function. You should make these internal to your
+<code class="docutils literal notranslate"><span class="pre">ifast_expt</span></code> function, as was done with the <code class="docutils literal notranslate"><span class="pre">fast_expt</span></code> function
+above. One of these will need to be recursive; call it <code class="docutils literal notranslate"><span class="pre">iter</span></code>. Only
+use <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">rec</span></code> with that function; use <code class="docutils literal notranslate"><span class="pre">let</span></code> for all other internal
+definitions and for the <code class="docutils literal notranslate"><span class="pre">ifast_expr</span></code> function as a whole.</p>
+<p>Use pattern matching instead of nested <code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">then</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code> forms as
+you did for the <code class="docutils literal notranslate"><span class="pre">fast_expt</span></code> function.</p>
+</section>
+</section>
+<section id="sicp-problem-1-17">
+<h2>4. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-11.html#%_thm_1.17">SICP, problem 1.17</a><a class="headerlink" href="#sicp-problem-1-17" title="Permalink to this headline">#</a></h2>
+<p>[<strong>1.5</strong>] (15 minutes)</p>
+<p>The exponentiation algorithms in this section are based on performing
+exponentiation by means of repeated multiplication. The simplest such
+function is this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">expt</span> <span class="n">a</span> <span class="n">b</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+     <span class="k">then</span> <span class="mi">1</span>
+     <span class="k">else</span> <span class="n">a</span> <span class="o">*</span> <span class="n">expt</span> <span class="n">a</span> <span class="o">(</span><span class="n">b</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>In a similar way, one can perform integer multiplication by means of
+repeated addition. The following multiplication function (in which it is
+assumed that our language can only add, not multiply), is analogous to
+the <code class="docutils literal notranslate"><span class="pre">expt</span></code> function:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">mult</span> <span class="n">a</span> <span class="n">b</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+     <span class="k">then</span> <span class="mi">0</span>
+     <span class="k">else</span> <span class="n">a</span> <span class="o">+</span> <span class="n">mult</span> <span class="n">a</span> <span class="o">(</span><span class="n">b</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>This algorithm takes a number of steps that is linear in <code class="docutils literal notranslate"><span class="pre">b</span></code>. Now
+suppose we include, together with addition, the operations <code class="docutils literal notranslate"><span class="pre">double</span></code>,
+which doubles an integer, and <code class="docutils literal notranslate"><span class="pre">halve</span></code>, which divides an (even) integer
+by 2. Using these, design a multiplication function analogous to
+<code class="docutils literal notranslate"><span class="pre">fast_expt</span></code> that uses a logarithmic number of steps.</p>
+<p>Use integer arithmetic for this problem. The multiplication function you
+write should generate a recursive process.</p>
+<p>For this problem, write all helper functions (including <code class="docutils literal notranslate"><span class="pre">double</span></code> and
+<code class="docutils literal notranslate"><span class="pre">halve</span></code>) inside the <code class="docutils literal notranslate"><span class="pre">fast_mult</span></code> function, and again use pattern
+matching on the <code class="docutils literal notranslate"><span class="pre">n</span></code> argument instead of nested
+<code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">then</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code> expressions.</p>
+</section>
+<section id="sicp-problem-1-18">
+<h2>5. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-11.html#%_thm_1.18">SICP, problem 1.18</a><a class="headerlink" href="#sicp-problem-1-18" title="Permalink to this headline">#</a></h2>
+<p>[<strong>1.5</strong>] (15 minutes)</p>
+<p>Using the results of the previous exercises, devise a function called
+<code class="docutils literal notranslate"><span class="pre">ifast_mult</span></code> that generates an iterative process for multiplying two
+integers in terms of adding, doubling, and halving and uses a
+logarithmic number of steps.</p>
+<p>This multiplication function should generate an iterative process.
+If you are multiplying integer <span class="math notranslate nohighlight">\(b\)</span> by integer <span class="math notranslate nohighlight">\(n\)</span>,
+you will need another state variable <span class="math notranslate nohighlight">\(a\)</span>
+such that the invariant is <span class="math notranslate nohighlight">\(a + bn\)</span>,
+and <span class="math notranslate nohighlight">\(n\)</span> will decrease to zero,
+at which point <span class="math notranslate nohighlight">\(a\)</span> will be the answer.</p>
+<p>Again, use pattern matching instead of nested <code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">then</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code>
+expressions. And again, only use <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">rec</span></code> where it’s absolutely
+necessary.</p>
+</section>
+<section id="a-mysterious-function">
+<h2>6. A mysterious function<a class="headerlink" href="#a-mysterious-function" title="Permalink to this headline">#</a></h2>
+<p>[<strong>1.5</strong>] (30 minutes)</p>
+<p>Consider the following (higher-order) function:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">foo</span> <span class="n">f</span> <span class="n">n</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+     <span class="k">then</span> <span class="n">f</span> <span class="mi">0</span>
+     <span class="k">else</span> <span class="n">foo</span> <span class="n">f</span> <span class="o">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="o">)</span> <span class="o">+</span> <span class="n">foo</span> <span class="n">f</span> <span class="o">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Note that function calls have the highest precedence in OCaml, so the
+last expression is the same as <code class="docutils literal notranslate"><span class="pre">(foo</span> <span class="pre">f</span> <span class="pre">(n</span> <span class="pre">/</span> <span class="pre">2))</span> <span class="pre">+</span> <span class="pre">(foo</span> <span class="pre">f</span> <span class="pre">(n</span> <span class="pre">/</span> <span class="pre">2))</span></code>.</p>
+<p>If we assume that the function <code class="docutils literal notranslate"><span class="pre">f</span></code> can compute its result in constant
+time and constant space, what are the (worst-case) time and space
+complexities of the function <code class="docutils literal notranslate"><span class="pre">foo</span></code>? Justify your answer. (It doesn’t
+have to be a full mathematical proof, but it should be a convincing
+argument.) Assume that the integer input <code class="docutils literal notranslate"><span class="pre">n</span></code> is always non-negative,
+and assume the usual applicative-order evaluation rule.</p>
+</section>
+<section id="fibonacci-yet-again">
+<h2>7. Fibonacci yet again<a class="headerlink" href="#fibonacci-yet-again" title="Permalink to this headline">#</a></h2>
+<p>[<strong>1.5</strong>] (15 minutes)</p>
+<p>Consider this function to compute fibonacci numbers:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">fib</span> <span class="n">n</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="k">rec</span> <span class="n">last_two</span> <span class="n">n</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">1</span>
+      <span class="k">then</span> <span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+      <span class="k">else</span>
+        <span class="k">let</span> <span class="o">(</span><span class="n">p0</span><span class="o">,</span> <span class="n">p1</span><span class="o">)</span> <span class="o">=</span> <span class="n">last_two</span> <span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="k">in</span>
+          <span class="o">(</span><span class="n">p1</span><span class="o">,</span> <span class="n">p0</span> <span class="o">+</span> <span class="n">p1</span><span class="o">)</span>
+  <span class="k">in</span>
+    <span class="n">fst</span> <span class="o">(</span><span class="n">last_two</span> <span class="n">n</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>A couple of OCaml notes:</p>
+<ul class="simple">
+<li><p>It’s legal to assign more than one value at a time in a <code class="docutils literal notranslate"><span class="pre">let</span></code>
+expression as shown above. Effectively you are doing a pattern match
+that cannot fail.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fst</span></code> is a function which extracts the first value of a two-tuple.</p></li>
+</ul>
+<p>Please answer the following two questions in OCaml comments:</p>
+<ol class="arabic simple">
+<li><p>What kind of process does this function represent (linear recursive,
+linear iterative, tree recursive <em>etc.</em>) and why?</p></li>
+<li><p>What is the space and time complexity of this function with respect
+to its argument <code class="docutils literal notranslate"><span class="pre">n</span></code>?</p></li>
+</ol>
+</section>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="ocaml_notes.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">OCaml notes</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="partB_evaluation.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Part B: Evaluation</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Michael Vanier<br/>
+  
+      &copy; Copyright 2023, Michael C. Vanier. All rights reserved.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,879 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Part C. Higher-order functions &#8212; The CS 4 book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Part D: Additional problems" href="partD_additional_problems.html" />
+    <link rel="prev" title="Part B: Evaluation" href="partB_evaluation.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">The CS 4 book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../Introduction.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../admin/index.html">
+   Administrative information
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../admin/Syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../admin/Collaboration_policies.html">
+     Collaboration policies
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../Motivation.html">
+   Motivation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../History.html">
+   History
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../index.html">
+   Assignments
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../0/Assignment0.html">
+     Assignment 0: Getting set up
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../1/index.html">
+     Assignment 1: Evaluation and recursion
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partA_exercises.html">
+       Part A: Basic exercises
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partC_recursion.html">
+       Part C: Recursion
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="../index.html">
+     Assignment 2: Asymptotic complexity and higher-order functions
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="partA_orders_of_growth.html">
+       Part A: Orders of growth
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       Part C. Higher-order functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="partD_additional_problems.html">
+       Part D: Additional problems
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../readings/index.html">
+   Readings
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../readings/ocaml_cheat_sheet.html">
+     OCaml syntax cheat sheet
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../readings/subst.html">
+     The substitution model
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../../_sources/content/assignments/2/sections/partC_higher_order_functions.rst.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.rst</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-30">
+   1. SICP, problem 1.30
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-31">
+   2. SICP, problem 1.31
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-32">
+   3. SICP, problem 1.32
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-42">
+   4. SICP, problem 1.42
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-43">
+   5. SICP, problem 1.43
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-44">
+   6. SICP, problem 1.44
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Part C. Higher-order functions</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-30">
+   1. SICP, problem 1.30
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-31">
+   2. SICP, problem 1.31
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-32">
+   3. SICP, problem 1.32
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-42">
+   4. SICP, problem 1.42
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-43">
+   5. SICP, problem 1.43
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-1-44">
+   6. SICP, problem 1.44
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="part-c-higher-order-functions">
+<h1>Part C. Higher-order functions<a class="headerlink" href="#part-c-higher-order-functions" title="Permalink to this headline">#</a></h1>
+<p>In this section, use <code class="docutils literal notranslate"><span class="pre">num</span></code> as the numeric type for all operations
+unless otherwise indicated. For convenience, put this at the top of the
+file:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">open</span> <span class="nc">Num</span>
+</pre></div>
+</div>
+<p>and define this helper function (really just an alias):</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">ni</span> <span class="o">=</span> <span class="n">num_of_int</span>     <span class="c">(* convert int -&gt; num *)</span>
+</pre></div>
+</div>
+<p>We will use <code class="docutils literal notranslate"><span class="pre">num</span></code> as the numeric type when we want either or both of
+arbitrarily large integers and rational numbers.
+Note that doing arithmetic on <code class="docutils literal notranslate"><span class="pre">num</span></code>s
+requires the use of the special <code class="docutils literal notranslate"><span class="pre">num</span></code> operators
+<code class="docutils literal notranslate"><span class="pre">+/</span></code>, <code class="docutils literal notranslate"><span class="pre">-/</span></code>, <code class="docutils literal notranslate"><span class="pre">*/</span></code>, <code class="docutils literal notranslate"><span class="pre">//</span></code> <em>etc.</em>
+The usual relational operators (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">=</span></code> <em>etc.</em>)
+will work if used on integers,
+but don’t work with rational numbers,
+so use the <code class="docutils literal notranslate"><span class="pre">num</span></code> equivalents <code class="docutils literal notranslate"><span class="pre">&lt;/</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=/</span></code>, <code class="docutils literal notranslate"><span class="pre">=/</span></code> in these cases.</p>
+<section id="sicp-problem-1-30">
+<h2>1. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-12.html#%_thm_1.30">SICP, problem 1.30</a><a class="headerlink" href="#sicp-problem-1-30" title="Permalink to this headline">#</a></h2>
+<p>[<strong>1</strong>] (10 minutes)</p>
+<p>The following <code class="docutils literal notranslate"><span class="pre">sum</span></code> function generates a linear recursion:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">sum</span> <span class="n">term</span> <span class="n">a</span> <span class="n">next</span> <span class="n">b</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;/</span> <span class="n">b</span>
+     <span class="k">then</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">0</span><span class="o">)</span>
+     <span class="k">else</span> <span class="n">term</span> <span class="n">a</span> <span class="o">+/</span> <span class="o">(</span><span class="n">sum</span> <span class="n">term</span> <span class="o">(</span><span class="n">next</span> <span class="n">a</span><span class="o">)</span> <span class="n">next</span> <span class="n">b</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>(Recall that the <code class="docutils literal notranslate"><span class="pre">&gt;/</span></code> operator is comparison of <code class="docutils literal notranslate"><span class="pre">num</span></code>s and the
+<code class="docutils literal notranslate"><span class="pre">+/</span></code> operator is addition of <code class="docutils literal notranslate"><span class="pre">num</span></code>s.) <code class="docutils literal notranslate"><span class="pre">term</span></code> is a function of
+one argument which generates the current term in a sequence given a
+sequence value, while <code class="docutils literal notranslate"><span class="pre">next</span></code> is a function of one argument which
+generates the next value in the sequence. For instance:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">sum</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">*/</span> <span class="n">x</span><span class="o">)</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">1</span><span class="o">)</span> <span class="o">(</span><span class="k">fun</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">n</span> <span class="o">+/</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">1</span><span class="o">))</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">10</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>will compute the sum of all squares of the numbers 1 through 10
+(expressed as <code class="docutils literal notranslate"><span class="pre">num</span></code>s).</p>
+<p>The function can be rewritten so that the sum is performed iteratively.
+Show how to do this by filling in the missing expressions in the
+following definition:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">isum</span> <span class="n">term</span> <span class="n">a</span> <span class="n">next</span> <span class="n">b</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="k">rec</span> <span class="n">iter</span> <span class="n">a</span> <span class="n">result</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="o">&lt;??&gt;</span>
+       <span class="k">then</span> <span class="o">&lt;??&gt;</span>
+       <span class="k">else</span> <span class="n">iter</span> <span class="o">&lt;??&gt;</span> <span class="o">&lt;??&gt;</span>
+  <span class="k">in</span>
+    <span class="n">iter</span> <span class="o">&lt;??&gt;</span> <span class="o">&lt;??&gt;</span>
+</pre></div>
+</div>
+<p>Assume that <code class="docutils literal notranslate"><span class="pre">term</span></code> is a function of type <code class="docutils literal notranslate"><span class="pre">num</span> <span class="pre">-&gt;</span> <span class="pre">num</span></code>.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">square</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*/</span> <span class="n">n</span> <span class="o">;;</span>
+<span class="k">val</span> <span class="n">square</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">-&gt;</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">step1</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+/</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">1</span><span class="o">)</span> <span class="o">;;</span>
+<span class="k">val</span> <span class="n">step1</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">-&gt;</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">isum</span> <span class="n">square</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">10</span><span class="o">)</span> <span class="n">step1</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">0</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">0</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">isum</span> <span class="n">square</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">4</span><span class="o">)</span> <span class="n">step1</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">4</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">16</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">isum</span> <span class="n">square</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">0</span><span class="o">)</span> <span class="n">step1</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">10</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">385</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="sicp-problem-1-31">
+<h2>2. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-12.html#%_thm_1.31">SICP, problem 1.31</a><a class="headerlink" href="#sicp-problem-1-31" title="Permalink to this headline">#</a></h2>
+<p>[<strong>2</strong>] (30 minutes)</p>
+<ol class="arabic">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">sum</span></code> function is only the simplest of a vast number of similar
+abstractions that can be captured as higher-order functions. Write an
+analogous function called <code class="docutils literal notranslate"><span class="pre">product</span></code> that returns the product of the
+values of a function at points over a given range. Show how to define
+<code class="docutils literal notranslate"><span class="pre">factorial</span></code> in terms of product. Also use <code class="docutils literal notranslate"><span class="pre">product</span></code> to compute
+approximations to <span class="math notranslate nohighlight">\(\pi\)</span> (3.1415926…) using the formula:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\\
+\frac{\pi}{4}
+= \frac{2 \cdot 4 \cdot 4 \cdot 6 \cdot 6 \cdot 8}
+       {3 \cdot 3 \cdot 5 \cdot 5 \cdot 7 \cdot 7}\end{split}\]</div>
+</li>
+<li><p>If your product function generates a recursive process, write one
+that generates an iterative process. If it generates an iterative
+process, write one that generates a recursive process.</p></li>
+</ol>
+<p>Call your recursive <code class="docutils literal notranslate"><span class="pre">product</span></code> function <code class="docutils literal notranslate"><span class="pre">product_rec</span></code> and your
+iterative one <code class="docutils literal notranslate"><span class="pre">product_iter</span></code>. Define a version of <code class="docutils literal notranslate"><span class="pre">factorial</span></code> using
+both forms of <code class="docutils literal notranslate"><span class="pre">product</span></code>, calling one <code class="docutils literal notranslate"><span class="pre">factorial_rec</span></code> and the other
+<code class="docutils literal notranslate"><span class="pre">factorial_iter</span></code>.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">factorial_rec</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">0</span><span class="o">)</span>
+<span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">1</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">factorial_iter</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">0</span><span class="o">)</span>
+<span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">1</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">factorial_rec</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">10</span><span class="o">)</span>
+<span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">3628800</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">factorial_iter</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">10</span><span class="o">)</span>
+<span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">3628800</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<p>Also write the code to generate an approximation to <span class="math notranslate nohighlight">\(\pi\)</span> (using either
+the recursive or iterative version of <code class="docutils literal notranslate"><span class="pre">product</span></code>) by filling in the
+following definitions using the formula described above. Use at least
+1000 terms from the product.</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">pi_product</span> <span class="n">n</span> <span class="o">=</span> <span class="o">&lt;??&gt;</span>   <span class="c">(* infinite product expansion up to n terms *)</span>
+<span class="k">let</span> <span class="n">pi_approx</span> <span class="o">=</span> <span class="o">&lt;??&gt;</span>      <span class="c">(* defined in terms of pi_product *)</span>
+</pre></div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">num</span></code> as the numeric type for all operations except for the
+<code class="docutils literal notranslate"><span class="pre">pi_approx</span></code> value, which should be a <code class="docutils literal notranslate"><span class="pre">float</span></code>. Use the
+<code class="docutils literal notranslate"><span class="pre">float_of_num</span></code> function to convert from a rational approximation to pi
+(obtained by the formula given above) to a <code class="docutils literal notranslate"><span class="pre">float</span></code>. Note that we’re
+using <code class="docutils literal notranslate"><span class="pre">num</span></code>s in this case because we want arbitrarily-precise
+rational numbers. Be careful to use <code class="docutils literal notranslate"><span class="pre">num</span></code> operators throughout!</p>
+<p>Note that none of these functions need to be more than a few lines long.
+(Our longest function for this problem is 7 lines long.)</p>
+</section>
+<section id="sicp-problem-1-32">
+<h2>3. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-12.html#%_thm_1.32">SICP, problem 1.32</a><a class="headerlink" href="#sicp-problem-1-32" title="Permalink to this headline">#</a></h2>
+<p>[<strong>2</strong>] (30 minutes)</p>
+<ol class="arabic">
+<li><p>Show that <code class="docutils literal notranslate"><span class="pre">sum</span></code> and <code class="docutils literal notranslate"><span class="pre">product</span></code> from the previous problems are both
+special cases of a still more general notion called <code class="docutils literal notranslate"><span class="pre">accumulate</span></code>
+<a class="footnote-reference brackets" href="#id2" id="id1">1</a> that combines a collection of terms, using some general
+accumulation function:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">accumulate</span> <span class="n">combiner</span> <span class="n">null_value</span> <span class="n">term</span> <span class="n">a</span> <span class="n">next</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">accumulate</span></code> takes as arguments the same term and range
+specifications as <code class="docutils literal notranslate"><span class="pre">sum</span></code> and <code class="docutils literal notranslate"><span class="pre">product</span></code>, together with a
+<code class="docutils literal notranslate"><span class="pre">combiner</span></code> function (of two arguments) that specifies how the
+current term is to be combined with the accumulation of the preceding
+terms, and a <code class="docutils literal notranslate"><span class="pre">null_value</span></code> that specifies what base value to use when
+the terms run out. Write <code class="docutils literal notranslate"><span class="pre">accumulate</span></code> and show how <code class="docutils literal notranslate"><span class="pre">sum</span></code> and
+<code class="docutils literal notranslate"><span class="pre">product</span></code> can both be defined as simple calls to <code class="docutils literal notranslate"><span class="pre">accumulate</span></code>.
+Assume that all numeric types are <code class="docutils literal notranslate"><span class="pre">num</span></code>.</p>
+</li>
+<li><p>If your <code class="docutils literal notranslate"><span class="pre">accumulate</span></code> function generates a recursive process, write
+one that generates an iterative process. If it generates an iterative
+process, write one that generates a recursive process.</p></li>
+</ol>
+<p>Call the recursive <code class="docutils literal notranslate"><span class="pre">accumulate</span></code> function <code class="docutils literal notranslate"><span class="pre">accumulate_rec</span></code> and the
+iterative version <code class="docutils literal notranslate"><span class="pre">accumulate_iter</span></code>. You can use either form to define
+<code class="docutils literal notranslate"><span class="pre">sum</span></code> and <code class="docutils literal notranslate"><span class="pre">product</span></code>. Note that in order to use an operator as a
+function, you must wrap it in parentheses (this is useful when passing
+an operator as an argument to a function). If the operator name starts
+with an asterisk, you have to put a space between it and the open
+parenthesis so OCaml doesn’t mistake it for a comment! In other words,
+write <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">*/</span> <span class="pre">)</span></code> instead of <code class="docutils literal notranslate"><span class="pre">(*/)</span></code>.</p>
+</section>
+<section id="sicp-problem-1-42">
+<h2>4. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-12.html#%_thm_1.42">SICP, problem 1.42</a><a class="headerlink" href="#sicp-problem-1-42" title="Permalink to this headline">#</a></h2>
+<p>[<strong>1</strong>] (10 minutes)</p>
+<p>Let <code class="docutils literal notranslate"><span class="pre">f</span></code> and <code class="docutils literal notranslate"><span class="pre">g</span></code> be two one-argument functions.
+The <em>composition</em> of function <span class="math notranslate nohighlight">\(f\)</span> after <span class="math notranslate nohighlight">\(g\)</span>
+(often written <span class="math notranslate nohighlight">\(f \circ g\)</span>)
+is defined to be the function <span class="math notranslate nohighlight">\(x \mapsto f(g(x))\)</span>.
+Define a function <code class="docutils literal notranslate"><span class="pre">compose</span></code> that implements composition.</p>
+<p>In the examples below, we use <code class="docutils literal notranslate"><span class="pre">int</span></code> instead of <code class="docutils literal notranslate"><span class="pre">num</span></code> as the numeric
+type. The type of <code class="docutils literal notranslate"><span class="pre">compose</span></code> doesn’t depend on what numeric type we
+use.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">square</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span><span class="o">;;</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">inc</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;;</span>
+<span class="o">#</span> <span class="o">(</span><span class="n">compose</span> <span class="n">square</span> <span class="n">inc</span><span class="o">)</span> <span class="mi">6</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">49</span>
+<span class="o">#</span> <span class="o">(</span><span class="n">compose</span> <span class="n">inc</span> <span class="n">square</span><span class="o">)</span> <span class="mi">6</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">37</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="sicp-problem-1-43">
+<h2>5. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-12.html#%_thm_1.43">SICP, problem 1.43</a><a class="headerlink" href="#sicp-problem-1-43" title="Permalink to this headline">#</a></h2>
+<p>[<strong>2</strong>] (20 minutes)</p>
+<p>If <span class="math notranslate nohighlight">\(f\)</span> is a numerical function and <span class="math notranslate nohighlight">\(n\)</span> is a positive integer, then
+we can form the <span class="math notranslate nohighlight">\(n\)</span>th repeated application of <span class="math notranslate nohighlight">\(f\)</span>, which is
+defined to be the function whose value at <span class="math notranslate nohighlight">\(x\)</span> is
+<span class="math notranslate nohighlight">\(f(f(\ldots(f(x))\ldots))\)</span>
+(with <span class="math notranslate nohighlight">\(n\)</span> <span class="math notranslate nohighlight">\(f\)</span>s).</p>
+<p>For example, if <span class="math notranslate nohighlight">\(f\)</span> is the function <span class="math notranslate nohighlight">\(x \mapsto x + 1\)</span>,
+then the <span class="math notranslate nohighlight">\(n\)</span>th repeated application of
+<span class="math notranslate nohighlight">\(f\)</span> is the function <span class="math notranslate nohighlight">\(x \mapsto x + n\)</span>.
+If <span class="math notranslate nohighlight">\(f\)</span> is the operation of squaring a number,
+then the <span class="math notranslate nohighlight">\(n\)</span>th repeated application of <span class="math notranslate nohighlight">\(f\)</span>
+is the function that raises its argument to the <span class="math notranslate nohighlight">\(2n\)</span>th power.</p>
+<p>Write a function that takes as inputs a function that computes <span class="math notranslate nohighlight">\(f\)</span>
+and a positive integer <span class="math notranslate nohighlight">\(n\)</span> and returns the function
+that computes the <span class="math notranslate nohighlight">\(n\)</span>th repeated application of <span class="math notranslate nohighlight">\(f\)</span>.
+Your function should be able to be used as follows:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="o">(</span><span class="n">repeated</span> <span class="n">square</span> <span class="mi">2</span><span class="o">)</span> <span class="mi">5</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">625</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>You may find it convenient to use <code class="docutils literal notranslate"><span class="pre">compose</span></code> from the previous exercise
+in your definition of <code class="docutils literal notranslate"><span class="pre">repeated</span></code>.</p>
+</div>
+<p>In the examples below, we use <code class="docutils literal notranslate"><span class="pre">int</span></code> instead of <code class="docutils literal notranslate"><span class="pre">num</span></code> as the numeric
+type. The type of <code class="docutils literal notranslate"><span class="pre">repeated</span></code> doesn’t depend on what numeric type we
+use.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">square</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span><span class="o">;;</span>
+<span class="o">#</span> <span class="o">(</span><span class="n">repeated</span> <span class="n">square</span> <span class="mi">0</span><span class="o">)</span> <span class="mi">6</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="o">#</span> <span class="o">(</span><span class="n">repeated</span> <span class="n">square</span> <span class="mi">1</span><span class="o">)</span> <span class="mi">6</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">36</span>
+<span class="o">#</span> <span class="o">(</span><span class="n">repeated</span> <span class="n">square</span> <span class="mi">2</span><span class="o">)</span> <span class="mi">6</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1296</span>
+</pre></div>
+</div>
+</div>
+<p>Note that a function repeated 0 times is the identity function.
+If you do this right, the solution will be very short.</p>
+</section>
+<section id="sicp-problem-1-44">
+<h2>6. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-12.html#%_thm_1.44">SICP, problem 1.44</a><a class="headerlink" href="#sicp-problem-1-44" title="Permalink to this headline">#</a></h2>
+<p>[<strong>2</strong>] (25 minutes)</p>
+<p>The idea of <em>smoothing</em> a function
+is an important concept in signal processing.
+If <span class="math notranslate nohighlight">\(f\)</span> is a function of one (numerical) argument
+and <span class="math notranslate nohighlight">\(dx\)</span> is some small number,
+then the smoothed version of <span class="math notranslate nohighlight">\(f\)</span>
+is the function whose value at a point <span class="math notranslate nohighlight">\(x\)</span>
+is the average of <span class="math notranslate nohighlight">\(f(x - dx)\)</span>, <span class="math notranslate nohighlight">\(f(x)\)</span>, and <span class="math notranslate nohighlight">\(f(x + dx)\)</span>.</p>
+<p>Write a function <code class="docutils literal notranslate"><span class="pre">smooth</span></code> that takes as input
+a function <code class="docutils literal notranslate"><span class="pre">f</span></code> and a <code class="docutils literal notranslate"><span class="pre">dx</span></code> value
+and returns a function (of one numerical argument)
+that computes the smoothed <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
+<p>It is sometimes valuable to repeatedly smooth a function
+(that is, smooth the smoothed function, and so on)
+to obtained the <span class="math notranslate nohighlight">\(n\)</span>-fold smoothed function.
+Show how to generate the <span class="math notranslate nohighlight">\(n\)</span>-fold smoothed function
+of any given function
+using <code class="docutils literal notranslate"><span class="pre">smooth</span></code> and the <code class="docutils literal notranslate"><span class="pre">repeated</span></code> function
+you defined in the previous problem.
+Call this second function <code class="docutils literal notranslate"><span class="pre">nsmoothed</span></code>.</p>
+<p>For this problem, we use <code class="docutils literal notranslate"><span class="pre">float</span></code> instead of <code class="docutils literal notranslate"><span class="pre">num</span></code> as the numeric
+type.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Be careful with the <code class="docutils literal notranslate"><span class="pre">dx</span></code> argument to <code class="docutils literal notranslate"><span class="pre">nsmoothed</span></code>!
+It’s actually more convenient to have <code class="docutils literal notranslate"><span class="pre">smooth</span></code>
+take the <code class="docutils literal notranslate"><span class="pre">dx</span></code> argument as its first argument,
+because you may need to partially apply <code class="docutils literal notranslate"><span class="pre">smooth</span></code> to <code class="docutils literal notranslate"><span class="pre">dx</span></code>
+in the definition of <code class="docutils literal notranslate"><span class="pre">nsmoothed</span></code>
+(at least, that’s one way to do it).</p>
+</div>
+<p>Note that both <code class="docutils literal notranslate"><span class="pre">smooth</span></code> and <code class="docutils literal notranslate"><span class="pre">nsmoothed</span></code> are very short if you write
+them the right way.</p>
+<p>Here are some examples. Note that your results may not be identical;
+floating-point math is notoriously hard to reproduce between computers.
+However, your results should be pretty close to these.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(* smooth examples *)</span>
+
+<span class="c">(* smoothed sin function *)</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">ssin</span> <span class="o">=</span> <span class="n">smooth</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span> <span class="n">sin</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">ssin</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">-&gt;</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">sin</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span>
+<span class="o">#</span> <span class="n">ssin</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span>
+<span class="o">#</span> <span class="n">sin</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0998334166468281548</span>
+<span class="o">#</span> <span class="n">ssin</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0995009158139631283</span>
+<span class="o">#</span> <span class="n">sin</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">841470984807896505</span>
+<span class="o">#</span> <span class="n">ssin</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">838668418165605112</span>
+<span class="o">#</span> <span class="n">sin</span> <span class="mi">3</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">141120008059867214</span>
+<span class="o">#</span> <span class="n">ssin</span> <span class="mi">3</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">14064999990238003</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">pi</span> <span class="o">=</span> <span class="mi">4</span><span class="o">.</span><span class="mi">0</span> <span class="o">*.</span> <span class="n">atan</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">#</span> <span class="n">sin</span> <span class="o">(</span><span class="n">pi</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span>
+<span class="o">#</span> <span class="n">ssin</span> <span class="o">(</span><span class="n">pi</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">996669443518683806</span>
+
+<span class="c">(* nsmoothed examples *)</span>
+
+<span class="o">#</span> <span class="k">let</span> <span class="n">nssin</span> <span class="n">n</span> <span class="o">=</span> <span class="n">nsmoothed</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span> <span class="n">sin</span> <span class="n">n</span>
+<span class="k">val</span> <span class="n">nssin</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">float</span> <span class="o">-&gt;</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+
+<span class="c">(* ssin0 is the same as sin *)</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">ssin0</span> <span class="o">=</span> <span class="n">nssin</span> <span class="mi">0</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">ssin0</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">-&gt;</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">ssin0</span> <span class="o">(</span><span class="n">pi</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span>
+<span class="o">#</span> <span class="n">sin</span> <span class="o">(</span><span class="n">pi</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span>
+<span class="o">#</span> <span class="n">ssin0</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">841470984807896505</span>
+<span class="o">#</span> <span class="n">sin</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">841470984807896505</span>
+
+<span class="c">(* ssin1 is the same as ssin *)</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">ssin1</span> <span class="o">=</span> <span class="n">nssin</span> <span class="mi">1</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">ssin1</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">-&gt;</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">ssin</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">838668418165605112</span>
+<span class="o">#</span> <span class="n">ssin1</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">838668418165605112</span>
+<span class="o">#</span> <span class="n">ssin</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">906268960387323297</span>
+<span class="o">#</span> <span class="n">ssin1</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">906268960387323297</span>
+
+<span class="c">(* ssin10 is flatter than ssin1 *)</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">ssin10</span> <span class="o">=</span> <span class="n">nssin</span> <span class="mi">10</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">ssin10</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">-&gt;</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">ssin10</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">813861644301632103</span>
+<span class="o">#</span> <span class="n">ssin1</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">838668418165605112</span>
+<span class="o">#</span> <span class="n">ssin1</span> <span class="o">(</span><span class="n">pi</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">996669443518683806</span>
+<span class="o">#</span> <span class="n">ssin10</span> <span class="o">(</span><span class="n">pi</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">);;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">96718919486859356</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<p class="rubric">Footnotes</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>The recursive and iterative forms of <code class="docutils literal notranslate"><span class="pre">accumulate</span></code> exist in the
+OCaml standard library as <code class="docutils literal notranslate"><span class="pre">List.fold_right</span></code> and <code class="docutils literal notranslate"><span class="pre">List.fold_left</span></code>
+respectively. You are not allowed to use these functions in your
+solution to this problem.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="partB_evaluation.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Part B: Evaluation</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="partD_additional_problems.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Part D: Additional problems</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Michael Vanier<br/>
+  
+      &copy; Copyright 2023, Michael C. Vanier. All rights reserved.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

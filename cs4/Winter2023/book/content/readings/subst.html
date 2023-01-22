@@ -182,14 +182,56 @@
      </li>
     </ul>
    </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../assignments/2/index.html">
+     Assignment 2: Asymptotic complexity and higher-order functions
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/2/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/2/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/2/sections/partA_orders_of_growth.html">
+       Part A: Orders of growth
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/2/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/2/sections/partC_higher_order_functions.html">
+       Part C. Higher-order functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../assignments/2/sections/partD_additional_problems.html">
+       Part D: Additional problems
+      </a>
+     </li>
+    </ul>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="index.html">
    Readings
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -640,11 +682,11 @@ title="Print to PDF"
               <div>
                 
   <section id="the-substitution-model">
-<span id="subst"></span><h1>The substitution model<a class="headerlink" href="#the-substitution-model" title="Permalink to this headline"></a></h1>
+<span id="subst"></span><h1>The substitution model<a class="headerlink" href="#the-substitution-model" title="Permalink to this headline">#</a></h1>
 <p>This reading is a summary of the rules of the substitution model,
 discussed in lecture 2.</p>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
 <p>The substitution model is a way of manually evaluating OCaml expressions.
 It’s similar to, but not identical to,
 what the computer does when it evaluates OCaml code.
@@ -663,12 +705,12 @@ of the course.</p>
 </div>
 </section>
 <section id="desugaring-and-precedence">
-<h2>Desugaring and precedence<a class="headerlink" href="#desugaring-and-precedence" title="Permalink to this headline"></a></h2>
+<h2>Desugaring and precedence<a class="headerlink" href="#desugaring-and-precedence" title="Permalink to this headline">#</a></h2>
 <p>Before evaluating any OCaml code using the substitution model,
 the code should first be <em>desugared</em>,
 and then operator <em>precedence</em> should be made explicit using parentheses.</p>
 <section id="desugaring">
-<h3>Desugaring<a class="headerlink" href="#desugaring" title="Permalink to this headline"></a></h3>
+<h3>Desugaring<a class="headerlink" href="#desugaring" title="Permalink to this headline">#</a></h3>
 <p>The main kind of desugaring we need is to replace expressions of this form:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="o">...</span>
 </pre></div>
@@ -694,7 +736,7 @@ unless you have to for some reason.</p>
 </div>
 </section>
 <section id="precedence">
-<h3>Precedence<a class="headerlink" href="#precedence" title="Permalink to this headline"></a></h3>
+<h3>Precedence<a class="headerlink" href="#precedence" title="Permalink to this headline">#</a></h3>
 <p>Operator precedence should be made explicit by wrapping parentheses around
 nested operator expressions.  For instance, this code:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">7</span>
@@ -710,7 +752,7 @@ what the operands of an operator are.</p>
 </section>
 </section>
 <section id="the-basic-rule">
-<h2>The basic rule<a class="headerlink" href="#the-basic-rule" title="Permalink to this headline"></a></h2>
+<h2>The basic rule<a class="headerlink" href="#the-basic-rule" title="Permalink to this headline">#</a></h2>
 <p>To evaluate an OCaml expression:</p>
 <ol class="arabic simple">
 <li><p>evaluate the <em>operands</em> of the expression</p></li>
@@ -732,7 +774,7 @@ do not use the basic rule; they have their own evaluation rules.
 Such expressions are called <em>special forms</em>.</p>
 </section>
 <section id="specific-cases-of-the-basic-rule">
-<h2>Specific cases of the basic rule<a class="headerlink" href="#specific-cases-of-the-basic-rule" title="Permalink to this headline"></a></h2>
+<h2>Specific cases of the basic rule<a class="headerlink" href="#specific-cases-of-the-basic-rule" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>Numbers evaluate to themselves: <code class="docutils literal notranslate"><span class="pre">10</span></code> <span class="raw-html">&rarr;</span> <code class="docutils literal notranslate"><span class="pre">10</span></code>
 (In fact, any literal data value evaluates to itself;
@@ -750,11 +792,11 @@ and evaluate to the value that they were previously bound to.
 </ul>
 </section>
 <section id="let-bound-names">
-<h2><code class="docutils literal notranslate"><span class="pre">let</span></code>-bound names<a class="headerlink" href="#let-bound-names" title="Permalink to this headline"></a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">let</span></code>-bound names<a class="headerlink" href="#let-bound-names" title="Permalink to this headline">#</a></h2>
 <p>There are two kinds of <code class="docutils literal notranslate"><span class="pre">let</span></code>-bound names: top-level and in-expression.
 They evaluate differently.</p>
 <section id="top-level-let-expressions">
-<h3>Top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#top-level-let-expressions" title="Permalink to this headline"></a></h3>
+<h3>Top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#top-level-let-expressions" title="Permalink to this headline">#</a></h3>
 <p>A top-level <code class="docutils literal notranslate"><span class="pre">let</span></code> expression <a class="footnote-reference brackets" href="#id4" id="id1">1</a> looks like this:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="o">&lt;</span><span class="n">var</span><span class="o">&gt;</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">expr</span><span class="o">&gt;</span>
 </pre></div>
@@ -793,7 +835,7 @@ and in some cases can still have effects.</p>
 </div>
 </section>
 <section id="local-let-expressions">
-<h3>Local <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#local-let-expressions" title="Permalink to this headline"></a></h3>
+<h3>Local <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#local-let-expressions" title="Permalink to this headline">#</a></h3>
 <p>A “local” <code class="docutils literal notranslate"><span class="pre">let</span></code> expression is a <code class="docutils literal notranslate"><span class="pre">let</span></code> expression where a name is bound
 to a value and then immediately used in another expression, such as this:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span> <span class="k">in</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
@@ -816,7 +858,7 @@ you’re creating a new one that is used only in a single expression.</p>
 </section>
 </section>
 <section id="if-expressions">
-<h2><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions<a class="headerlink" href="#if-expressions" title="Permalink to this headline"></a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions<a class="headerlink" href="#if-expressions" title="Permalink to this headline">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">if</span></code> expressions consist of three subexpressions:</p>
 <ul class="simple">
 <li><p>the <em>test</em> subexpression (between the <code class="docutils literal notranslate"><span class="pre">if</span></code> and the <code class="docutils literal notranslate"><span class="pre">then</span></code> keywords)</p></li>
@@ -835,7 +877,7 @@ evaluate the <code class="docutils literal notranslate"><span class="pre">else</
 <code class="docutils literal notranslate"><span class="pre">then</span></code> and <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpressions.
 This is why <code class="docutils literal notranslate"><span class="pre">if</span></code> can’t be a function (it’s not just the syntax!) <a class="footnote-reference brackets" href="#id5" id="id2">2</a></p>
 <section id="if-without-else">
-<h3><code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code><a class="headerlink" href="#if-without-else" title="Permalink to this headline"></a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">if</span></code> without <code class="docutils literal notranslate"><span class="pre">else</span></code><a class="headerlink" href="#if-without-else" title="Permalink to this headline">#</a></h3>
 <p>When writing purely functional code in OCaml,
 <code class="docutils literal notranslate"><span class="pre">if</span></code> expressions always have both a <code class="docutils literal notranslate"><span class="pre">then</span></code> subexpression
 and an <code class="docutils literal notranslate"><span class="pre">else</span></code> subexpression.
@@ -847,7 +889,7 @@ work, see the <a class="reference internal" href="ocaml_cheat_sheet.html"><span 
 </section>
 </section>
 <section id="fun-expressions">
-<h2><code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions<a class="headerlink" href="#fun-expressions" title="Permalink to this headline"></a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions<a class="headerlink" href="#fun-expressions" title="Permalink to this headline">#</a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">fun</span></code> expression (like <code class="docutils literal notranslate"><span class="pre">fun</span> <span class="pre">x</span> <span class="pre">y</span> <span class="pre">-&gt;</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">y</span></code>) represents an anonymous
 function.
 In the substitution model, a <code class="docutils literal notranslate"><span class="pre">fun</span></code> expression is usually the result of
@@ -876,11 +918,11 @@ For this reason, in written evaluations you can write:</p>
 </div>
 </section>
 <section id="function-application">
-<h2>Function application<a class="headerlink" href="#function-application" title="Permalink to this headline"></a></h2>
+<h2>Function application<a class="headerlink" href="#function-application" title="Permalink to this headline">#</a></h2>
 <p>Function application is at the heart of the substitution model.
 There are two cases.</p>
 <section id="applying-built-in-functions-or-operators">
-<h3>Applying built-in functions or operators<a class="headerlink" href="#applying-built-in-functions-or-operators" title="Permalink to this headline"></a></h3>
+<h3>Applying built-in functions or operators<a class="headerlink" href="#applying-built-in-functions-or-operators" title="Permalink to this headline">#</a></h3>
 <p>Applying a built-in function or operator is simple: you just do it.
 For instance:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Evaluate: 2 + 3
@@ -906,7 +948,7 @@ Evaluate: abs (-10)
 <p>Don’t do this unless we explicitly say it’s OK.</p>
 </section>
 <section id="applying-user-defined-functions-substitution">
-<h3>Applying user-defined functions: substitution<a class="headerlink" href="#applying-user-defined-functions-substitution" title="Permalink to this headline"></a></h3>
+<h3>Applying user-defined functions: substitution<a class="headerlink" href="#applying-user-defined-functions-substitution" title="Permalink to this headline">#</a></h3>
 <p>Now we come to the “substitution” part of the substitution model.
 It happens when you are applying a user-defined function
 (which means a <code class="docutils literal notranslate"><span class="pre">fun</span></code> expression, or a function which gets desugared
@@ -976,7 +1018,7 @@ expression in all cases.  See below for more details.</p>
 </div>
 </section>
 <section id="recursion">
-<h3>Recursion<a class="headerlink" href="#recursion" title="Permalink to this headline"></a></h3>
+<h3>Recursion<a class="headerlink" href="#recursion" title="Permalink to this headline">#</a></h3>
 <p>Recursion doesn’t require any special treatment in the substitution model,
 except that you have to replace a function name with the correct
 definition of that function when looking up the name.
@@ -1017,7 +1059,7 @@ inside the OCaml interpreter.
 This can lead to very peculiar bugs.</p>
 </section>
 <section id="nested-fun-expressions-and-shielding">
-<h3>Nested <code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions and shielding<a class="headerlink" href="#nested-fun-expressions-and-shielding" title="Permalink to this headline"></a></h3>
+<h3>Nested <code class="docutils literal notranslate"><span class="pre">fun</span></code> expressions and shielding<a class="headerlink" href="#nested-fun-expressions-and-shielding" title="Permalink to this headline">#</a></h3>
 <p>TODO</p>
 <hr class="docutils" />
 <p class="rubric">Footnotes</p>

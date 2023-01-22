@@ -25,7 +25,7 @@ OCaml doesn’t overload most of its operators. Notably, arithmetic
 operators like ``+``, ``-``, ``*`` and ``/`` are not overloaded.
 Instead, they are considered to be exclusively integer operators. The
 corresponding operators on floating-point numbers have an extra dot
-(``.``) at the end *e.g.* ``+.``, ``-.``, ``*.`` and ``/.``.
+(``.``) at the end |eg| ``+.``, ``-.``, ``*.`` and ``/.``.
 Confusingly, the floating-point power operator (``**``) doesn’t have a
 dot at the end.
 
@@ -119,9 +119,9 @@ operators:
 
 Almost always, you want to use the ``=`` operator for equality testing
 and the ``<>`` operator for inequality testing. They test for structural
-equality *i.e.* whether one operand is equivalent to the other (or "has
+equality |ie| whether one operand is equivalent to the other (or "has
 the same contents"). The ``==`` and ``!=`` operators check for identity
-*i.e.* whether two things are the exact same thing in memory. Even
+|ie| whether two things are the exact same thing in memory. Even
 though this may sometimes work, it can lead to very difficult-to-find
 bugs. (It’s unfortunate that the operators you shouldn’t use in OCaml
 are the ones you should use in most other languages.)
@@ -1365,7 +1365,7 @@ Sequence expressions
 ^^^^^^^^^^^^^^^^^^^^
 
 When you are doing imperative programming, it’s often necessary to have
-a notion of sequencing, as in do-this-then-do-that *etc.* In OCaml, this
+a notion of sequencing, as in do-this-then-do-that |etc| In OCaml, this
 requires a *sequence expression*, which has two forms:
 
 -  a series of statements separated by semicolons and wrapped with
@@ -1408,7 +1408,7 @@ OCaml’s type system has some peculiarities. One that you are likely to
 run into when you do imperative programming is that there are types that
 are "weakly polymorphic". A truly polymorphic type can be parameterized
 on one or more type variables, which are written with a leading quote
-*i.e.* ``'a``, ``'b`` *etc.* But some types are not actually
+|ie| ``'a``, ``'b`` |etc| But some types are not actually
 polymorphic, they are "write-once" types. Look at this:
 
 .. code-block:: ocaml
@@ -1425,7 +1425,7 @@ polymorphic, they are "write-once" types. Look at this:
    - : int list = [1; 2; 3]
 
 The initial type of ``r`` is ``'_weak1 list ref``, which is pretty odd.
-You might expect it to be ``'a list ref`` *i.e.* that ``r`` is a
+You might expect it to be ``'a list ref`` |ie| that ``r`` is a
 reference which can contain any kind of list. But this would not be
 type-safe; if ``r`` holds a list of ``int``\ s at one time and a list of
 ``bool``\ s at another, then all the types are not known at
