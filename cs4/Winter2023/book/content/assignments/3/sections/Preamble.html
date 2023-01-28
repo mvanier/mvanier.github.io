@@ -41,7 +41,7 @@
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="OCaml notes" href="ocaml_notes.html" />
-    <link rel="prev" title="Assignment 2: Asymptotic complexity and higher-order functions" href="../index.html" />
+    <link rel="prev" title="Assignment 3: Lists" href="../index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -183,12 +183,54 @@
      </li>
     </ul>
    </li>
-   <li class="toctree-l2 current active has-children">
-    <a class="reference internal" href="../index.html">
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../2/index.html">
      Assignment 2: Asymptotic complexity and higher-order functions
     </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
     <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partA_orders_of_growth.html">
+       Part A: Orders of growth
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partC_higher_order_functions.html">
+       Part C. Higher-order functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partD_additional_problems.html">
+       Part D: Additional problems
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="../index.html">
+     Assignment 3: Lists
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -204,59 +246,17 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="partA_orders_of_growth.html">
-       Part A: Orders of growth
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="partB_evaluation.html">
-       Part B: Evaluation
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="partC_higher_order_functions.html">
-       Part C. Higher-order functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="partD_additional_problems.html">
-       Part D: Additional problems
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="../../3/index.html">
-     Assignment 3: Lists
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-    <label for="toctree-checkbox-5">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../3/sections/Preamble.html">
-       Preamble
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../3/sections/ocaml_notes.html">
-       OCaml notes
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../3/sections/partA_lists.html">
+      <a class="reference internal" href="partA_lists.html">
        Part A: Working with lists
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../3/sections/partB_structural_generative_recursion.html">
+      <a class="reference internal" href="partB_structural_generative_recursion.html">
        Part B: Structural and generative recursion
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../3/sections/partC_more_lists.html">
+      <a class="reference internal" href="partC_more_lists.html">
        Part C: Some harder problems with lists
       </a>
      </li>
@@ -435,19 +435,19 @@ title="Fullscreen mode"
 <h1>Preamble<a class="headerlink" href="#preamble" title="Permalink to this headline">#</a></h1>
 <section id="due-date">
 <h2>Due date<a class="headerlink" href="#due-date" title="Permalink to this headline">#</a></h2>
-<p>This assignment is due on Friday, January 27th, at 2 AM.</p>
+<p>This assignment is due on Friday, February 3rd, at 2 AM.</p>
 </section>
 <section id="coverage">
 <h2>Coverage<a class="headerlink" href="#coverage" title="Permalink to this headline">#</a></h2>
-<p>This assignment covers the material up to lecture 6, corresponding to
-section 1.3.4 of SICP.</p>
+<p>This assignment covers the material up to lecture 8, corresponding to
+section 2.2.3 of SICP.</p>
 </section>
 <section id="what-to-hand-in">
 <h2>What to hand in<a class="headerlink" href="#what-to-hand-in" title="Permalink to this headline">#</a></h2>
-<p>All of your code should be saved to a file named <code class="docutils literal notranslate"><span class="pre">lab2.ml</span></code>.
-This file should be submitted to CodePost as <code class="docutils literal notranslate"><span class="pre">Assignment</span> <span class="pre">2</span></code>.
-Do not submit the interface file (<code class="docutils literal notranslate"><span class="pre">lab2.mli</span></code>),
-or the test script (<code class="docutils literal notranslate"><span class="pre">tests_lab2.ml</span></code>),
+<p>All of your code should be saved to a file named <code class="docutils literal notranslate"><span class="pre">lab3.ml</span></code>.
+This file should be submitted to CodePost as <code class="docutils literal notranslate"><span class="pre">Assignment</span> <span class="pre">3</span></code>.
+Do not submit the interface file (<code class="docutils literal notranslate"><span class="pre">lab3.mli</span></code>),
+or the test script (<code class="docutils literal notranslate"><span class="pre">tests_lab3.ml</span></code>),
 or the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> we supply for you.</p>
 </section>
 </section>
@@ -464,7 +464,7 @@ or the <code class="docutils literal notranslate"><span class="pre">Makefile</sp
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Assignment 2: Asymptotic complexity and higher-order functions</p>
+            <p class="prev-next-title">Assignment 3: Lists</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="ocaml_notes.html" title="next page">
