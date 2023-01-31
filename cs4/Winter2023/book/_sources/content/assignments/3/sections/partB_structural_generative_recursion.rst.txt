@@ -159,13 +159,13 @@ explaining which kind of recursion this represents.
 
 .. code-block:: ocaml
 
-   let rec insert_in_order new_result a_list cmp =
+   let rec insert_in_order cmp new_result a_list =
      match a_list with
        | [] -> [new_result]
        | h :: t when cmp new_result h -> new_result :: a_list
-       | h :: t ->  h :: insert_in_order new_result t cmp
+       | h :: t ->  h :: insert_in_order cmp new_result t
 
-   let rec insertion_sort a_list cmp =
+   let rec insertion_sort cmp a_list =
      match a_list with
        | [] -> []
        | h :: t -> <??>

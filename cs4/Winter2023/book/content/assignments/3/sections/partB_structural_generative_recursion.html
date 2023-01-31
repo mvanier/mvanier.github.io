@@ -576,13 +576,13 @@ as a linear recursive process. Fill in the <code class="docutils literal notrans
 following code to write the linear recursive insertion sort. Is this an
 example of structural recursion or generative recursion? Write a comment
 explaining which kind of recursion this represents.</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">insert_in_order</span> <span class="n">new_result</span> <span class="n">a_list</span> <span class="n">cmp</span> <span class="o">=</span>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">insert_in_order</span> <span class="n">cmp</span> <span class="n">new_result</span> <span class="n">a_list</span> <span class="o">=</span>
   <span class="k">match</span> <span class="n">a_list</span> <span class="k">with</span>
     <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="n">new_result</span><span class="o">]</span>
     <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="k">when</span> <span class="n">cmp</span> <span class="n">new_result</span> <span class="n">h</span> <span class="o">-&gt;</span> <span class="n">new_result</span> <span class="o">::</span> <span class="n">a_list</span>
-    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>  <span class="n">h</span> <span class="o">::</span> <span class="n">insert_in_order</span> <span class="n">new_result</span> <span class="n">t</span> <span class="n">cmp</span>
+    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>  <span class="n">h</span> <span class="o">::</span> <span class="n">insert_in_order</span> <span class="n">cmp</span> <span class="n">new_result</span> <span class="n">t</span>
 
-<span class="k">let</span> <span class="k">rec</span> <span class="n">insertion_sort</span> <span class="n">a_list</span> <span class="n">cmp</span> <span class="o">=</span>
+<span class="k">let</span> <span class="k">rec</span> <span class="n">insertion_sort</span> <span class="n">cmp</span> <span class="n">a_list</span> <span class="o">=</span>
   <span class="k">match</span> <span class="n">a_list</span> <span class="k">with</span>
     <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="bp">[]</span>
     <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="o">&lt;??&gt;</span>
