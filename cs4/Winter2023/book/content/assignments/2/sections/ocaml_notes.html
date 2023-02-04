@@ -571,7 +571,7 @@ informally to refer to the set of modules in a package.</p>
 </div>
 <p>Once your assignment is done, you should compile it and check that it
 conforms to the interface file by entering this command:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make compile
 </pre></div>
 </div>
 <p>Of course, you can also compile your code from inside the <code class="docutils literal notranslate"><span class="pre">utop</span></code> OCaml
@@ -584,7 +584,8 @@ directions). Note that it’s possible to write a function that type
 checks but doesn’t have the type we want it to have; that’s why using
 <code class="docutils literal notranslate"><span class="pre">make</span></code> is important. The type signatures we expect are in the
 <code class="docutils literal notranslate"><span class="pre">lab2.mli</span></code> interface file.</p>
-<p>Finally, to run the test script, type this:</p>
+<p>Finally, to run the test script, type this <em>after</em> compiling the code
+with <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">compile</span></code>:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make test
 </pre></div>
 </div>
@@ -599,6 +600,12 @@ instructor for help.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make all
 </pre></div>
 </div>
+<p>or just type:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make
+</pre></div>
+</div>
+<p>which does the same thing.  This is equivalent to typing <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">compile</span></code>
+followed by <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code>.</p>
 <p>Running the tests generates some log files; to get rid of them (as well
 as all compiled OCaml files), type:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make clean

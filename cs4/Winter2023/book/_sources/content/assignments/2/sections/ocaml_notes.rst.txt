@@ -87,7 +87,7 @@ conforms to the interface file by entering this command:
 
 .. code-block:: text
 
-  $ make
+  $ make compile
 
 Of course, you can also compile your code from inside the ``utop`` OCaml
 interpreter using the ``#use`` directive. Using ``#use`` is recommended
@@ -100,7 +100,8 @@ checks but doesn’t have the type we want it to have; that’s why using
 ``make`` is important. The type signatures we expect are in the
 ``lab2.mli`` interface file.
 
-Finally, to run the test script, type this:
+Finally, to run the test script, type this *after* compiling the code
+with ``make compile``:
 
 .. code-block:: text
 
@@ -119,6 +120,15 @@ If you want to compile the code and immediately run the test script
 .. code-block:: text
 
   $ make all
+
+or just type:
+
+.. code-block:: text
+
+  $ make
+
+which does the same thing.  This is equivalent to typing ``make compile``
+followed by ``make test``.
 
 Running the tests generates some log files; to get rid of them (as well
 as all compiled OCaml files), type:
