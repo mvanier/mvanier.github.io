@@ -1,0 +1,1061 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Part A: Abstraction &#8212; The CS 4 book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Part B: More abstraction problems" href="partB_more_abstraction.html" />
+    <link rel="prev" title="OCaml notes" href="ocaml_notes.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">The CS 4 book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../Introduction.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../admin/index.html">
+   Administrative information
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../admin/Syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../admin/Collaboration_policies.html">
+     Collaboration policies
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../Motivation.html">
+   Motivation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../History.html">
+   History
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../index.html">
+   Assignments
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../0/Assignment0.html">
+     Assignment 0: Getting set up
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../1/index.html">
+     Assignment 1: Evaluation and recursion
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partA_exercises.html">
+       Part A: Basic exercises
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partC_recursion.html">
+       Part C: Recursion
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../2/index.html">
+     Assignment 2: Asymptotic complexity and higher-order functions
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partA_orders_of_growth.html">
+       Part A: Orders of growth
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partC_higher_order_functions.html">
+       Part C. Higher-order functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partD_additional_problems.html">
+       Part D: Additional problems
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../3/index.html">
+     Assignment 3: Lists
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partA_lists.html">
+       Part A: Working with lists
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partB_structural_generative_recursion.html">
+       Part B: Structural and generative recursion
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partC_more_lists.html">
+       Part C: Some harder problems with lists
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="../index.html">
+     Assignment 4: Data abstraction
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       Part A: Abstraction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="partB_more_abstraction.html">
+       Part B: More abstraction problems
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="partC_algebra.html">
+       Part C: Miniproject: Algebraic expressions
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../readings/index.html">
+   Readings
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../readings/ocaml_cheat_sheet.html">
+     OCaml syntax cheat sheet
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../readings/subst.html">
+     The substitution model
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-2-2">
+   1. SICP, problem 2.2
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-2-3">
+   2. SICP, problem 2.3
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-2-4">
+   3. SICP, problem 2.4
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-2-5">
+   4. SICP, problem 2.5
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unary-numbers">
+   5. Unary numbers
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-2-6-church-numerals">
+   6. SICP, problem 2.6: Church numerals
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#church-numerals-types">
+   7. Church numerals: types
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Part A: Abstraction</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-2-2">
+   1. SICP, problem 2.2
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-2-3">
+   2. SICP, problem 2.3
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-2-4">
+   3. SICP, problem 2.4
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-2-5">
+   4. SICP, problem 2.5
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unary-numbers">
+   5. Unary numbers
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sicp-problem-2-6-church-numerals">
+   6. SICP, problem 2.6: Church numerals
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#church-numerals-types">
+   7. Church numerals: types
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="part-a-abstraction">
+<h1>Part A: Abstraction<a class="headerlink" href="#part-a-abstraction" title="Permalink to this headline">#</a></h1>
+<section id="sicp-problem-2-2">
+<h2>1. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-14.html#%_thm_2.2">SICP, problem 2.2</a><a class="headerlink" href="#sicp-problem-2-2" title="Permalink to this headline">#</a></h2>
+<p>[<strong>1</strong>] (20 minutes)</p>
+<p>Consider the problem of representing points and line segments in a
+plane. Points will be represented as a record type called <code class="docutils literal notranslate"><span class="pre">point</span></code>,
+containing two (floating-point) numbers (with field names <code class="docutils literal notranslate"><span class="pre">x</span></code> and
+<code class="docutils literal notranslate"><span class="pre">y</span></code>). Line segments will be represented as a record type called
+<code class="docutils literal notranslate"><span class="pre">segment</span></code> containing two points: a starting point (a field called
+<code class="docutils literal notranslate"><span class="pre">startp</span></code>) and an ending point (a field called <code class="docutils literal notranslate"><span class="pre">endp</span></code>). Define the
+two datatypes using OCaml <code class="docutils literal notranslate"><span class="pre">type</span></code> definitions.</p>
+<p>Using this representation, define the following functions:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">midpoint_segment</span></code>: this function will take a single <code class="docutils literal notranslate"><span class="pre">segment</span></code> as
+its only argument and return a <code class="docutils literal notranslate"><span class="pre">point</span></code> which is the midpoint of the
+line segment.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">segment_length</span></code>: this function will take a single <code class="docutils literal notranslate"><span class="pre">segment</span></code> as
+its only argument and return a <code class="docutils literal notranslate"><span class="pre">float</span></code> which is the length of the
+line segment.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">print_point</span></code>: this function will take a single <code class="docutils literal notranslate"><span class="pre">point</span></code> as its
+only argument and print its representation to the terminal.</p></li>
+</ol>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">Printf.printf</span></code> function with a suitable format string to
+print points. Use the <code class="docutils literal notranslate"><span class="pre">%g</span></code> formatting directive to print
+floating-point numbers without extra trailing zeros. The output should
+look like this when tested in the interactive OCaml interpreter:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">p1</span> <span class="o">=</span> <span class="o">...</span> <span class="o">;;</span> <span class="c">(* x = 1.0, y = 0.0 *)</span>
+<span class="o">#</span> <span class="n">print_point</span> <span class="n">p1</span><span class="o">;;</span>
+<span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">p2</span> <span class="o">=</span> <span class="o">...</span> <span class="o">;;</span> <span class="c">(* x = 3.4, y = -4.5 *)</span>
+<span class="o">#</span> <span class="n">print_point</span> <span class="n">p2</span><span class="o">;;</span>
+<span class="o">(</span><span class="mi">3</span><span class="o">.</span><span class="mi">4</span><span class="o">,</span> <span class="o">-</span><span class="mi">4</span><span class="o">.</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>You may find the built-in functions <code class="docutils literal notranslate"><span class="pre">abs_float</span></code> and <code class="docutils literal notranslate"><span class="pre">sqrt</span></code> useful
+for computing segment lengths.</p>
+<p>Finally, for testing purposes, write the following functions:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">make_point</span></code>: this function takes two <code class="docutils literal notranslate"><span class="pre">float</span></code> arguments
+(representing the <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> coordinates) and returns a
+<code class="docutils literal notranslate"><span class="pre">point</span></code> in your representation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_coords</span></code>: this function takes a <code class="docutils literal notranslate"><span class="pre">point</span></code> argument and returns
+a two-tuple of the (x, y) coordinates.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make_segment</span></code>: this function takes two <code class="docutils literal notranslate"><span class="pre">point</span></code> arguments
+(representing the start and endpoints) and returns a <code class="docutils literal notranslate"><span class="pre">segment</span></code> in
+your representation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_points</span></code>: this function takes a <code class="docutils literal notranslate"><span class="pre">segment</span></code> argument and
+returns a two-tuple of the (start, end) points.</p></li>
+</ol>
+<p>Note that these define an abstraction layer for <code class="docutils literal notranslate"><span class="pre">point</span></code>s and <code class="docutils literal notranslate"><span class="pre">segment</span></code>s.</p>
+</section>
+<section id="sicp-problem-2-3">
+<h2>2. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-14.html#%_thm_2.3">SICP, problem 2.3</a><a class="headerlink" href="#sicp-problem-2-3" title="Permalink to this headline">#</a></h2>
+<p>[<strong>2</strong>] (40 minutes)</p>
+<p>Implement a representation for rectangles in a plane. Create functions
+that compute the perimeter and the area of a given rectangle. Now
+implement a different representation for rectangles. Can you design your
+system with suitable abstraction barriers, so that the same perimeter
+and area functions will work using either representation?</p>
+<p>The first representation will store only a pair of points, representing
+the lower-left corner and the upper-right corner. The second
+representation will store four numbers, representing the lower and upper
+<code class="docutils literal notranslate"><span class="pre">x</span></code> values, and the lower and upper <code class="docutils literal notranslate"><span class="pre">y</span></code> values. Use the point and
+segment abstractions developed in the previous problem in your solution
+of this problem (you don’t have to re-type that code). For both
+representations, define these accessors:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">rectangle_lower_segment</span>
+<span class="n">rectangle_upper_segment</span>
+<span class="n">rectangle_left_segment</span>
+<span class="n">rectangle_right_segment</span>
+</pre></div>
+</div>
+<p><em>Note:</em> don’t define the accessors for one representation in terms of
+the accessors for the other representation even if you can. Pretend that
+the code for each representation was written by a different programmer
+with no knowledge of the other representation.</p>
+<p>Then define the functions <code class="docutils literal notranslate"><span class="pre">rectangle_perimeter</span></code> and <code class="docutils literal notranslate"><span class="pre">rectangle_area</span></code>
+using <em>only</em> these accessors and functions from the point representation
+described above.</p>
+<p>Since we want to be able to test both representations, use the following
+names for the second representation’s functions:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">rectangle_lower_segment2</span>
+<span class="n">rectangle_upper_segment2</span>
+<span class="n">rectangle_left_segment2</span>
+<span class="n">rectangle_right_segment2</span>
+<span class="n">rectangle_perimeter2</span>
+<span class="n">rectangle_area2</span>
+</pre></div>
+</div>
+<p>Note, though, that the code for <code class="docutils literal notranslate"><span class="pre">rectangle_perimeter</span></code> and
+<code class="docutils literal notranslate"><span class="pre">rectangle_perimeter2</span></code> will be identical except for name changes (and
+similarly for <code class="docutils literal notranslate"><span class="pre">rectangle_area</span></code> and <code class="docutils literal notranslate"><span class="pre">rectangle_area2</span></code>). The code for
+the other corresponding functions will necessarily be different, because
+they will use different data representations.</p>
+<p>Judicious use of field punning (see the “OCaml notes” section) will make this
+code much easier to write. Also, don’t forget about the dot syntax for
+accessing record fields, as it can be useful here too.</p>
+<p>Finally, for testing purposes, write the following functions:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">make_rectangle</span></code>: this function takes two <code class="docutils literal notranslate"><span class="pre">point</span></code> arguments and
+creates a rectangle using the first representation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make_rectangle2</span></code>: this function takes four <code class="docutils literal notranslate"><span class="pre">float</span></code> arguments and
+creates a rectangle using the second representation.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Technically, <code class="docutils literal notranslate"><span class="pre">make_rectangle</span></code> and <code class="docutils literal notranslate"><span class="pre">make_rectangle2</span></code> could take
+their arguments in whatever order you like. However, the test scripts
+expect the order to be</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">make_rectangle</span> <span class="pre">ll</span> <span class="pre">ur</span></code> where <code class="docutils literal notranslate"><span class="pre">ll</span></code> is the point representing
+the lower-left corner, and <code class="docutils literal notranslate"><span class="pre">ur</span></code> is the point representing the
+upper-right corner</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make_rectangle2</span> <span class="pre">lx</span> <span class="pre">ly</span> <span class="pre">ux</span> <span class="pre">uy</span></code>, where <code class="docutils literal notranslate"><span class="pre">lx</span></code> is the lower <code class="docutils literal notranslate"><span class="pre">x</span></code>
+value, <code class="docutils literal notranslate"><span class="pre">ux</span></code> is the upper <code class="docutils literal notranslate"><span class="pre">x</span></code> value, <code class="docutils literal notranslate"><span class="pre">ly</span></code> is the lower <code class="docutils literal notranslate"><span class="pre">y</span></code>
+value, and <code class="docutils literal notranslate"><span class="pre">uy</span></code> is the upper <code class="docutils literal notranslate"><span class="pre">y</span></code> value.</p></li>
+</ul>
+<p>so please define your functions that way.</p>
+</div>
+</section>
+<section id="sicp-problem-2-4">
+<h2>3. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-14.html#%_thm_2.4">SICP, problem 2.4</a><a class="headerlink" href="#sicp-problem-2-4" title="Permalink to this headline">#</a></h2>
+<p>[<strong>1</strong>] (30 minutes)</p>
+<p>There are many ways to represent data types. For instance, if we want to
+represent pairs of values, we could write:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="n">pair</span> <span class="o">=</span> <span class="nc">Pair</span> <span class="k">of</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">*</span> <span class="k">&#39;</span><span class="n">b</span>
+<span class="k">let</span> <span class="n">first</span> <span class="o">(</span><span class="nc">Pair</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="o">_))</span> <span class="o">=</span> <span class="n">x</span>
+<span class="k">let</span> <span class="n">second</span> <span class="o">(</span><span class="nc">Pair</span> <span class="o">(_,</span> <span class="n">y</span><span class="o">))</span> <span class="o">=</span> <span class="n">y</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">pair</span></code> is a polymorphic type, with two type variables <code class="docutils literal notranslate"><span class="pre">'a</span></code>
+and <code class="docutils literal notranslate"><span class="pre">'b</span></code>, since the same definition will work for arbitrary types.
+(OCaml already defines the built-in functions <code class="docutils literal notranslate"><span class="pre">fst</span></code> and <code class="docutils literal notranslate"><span class="pre">snd</span></code> to
+extract the first and second elements of an arbitrary two-tuple.)</p>
+<p>Alternatively, we could just use “bare” two-tuples as our
+representation, or some kind of record type with two fields. A more
+exotic representation of pairs uses a function with two arguments as the
+pair data type. Here is part of the code for this representation:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">make_pair</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="k">fun</span> <span class="n">m</span> <span class="o">-&gt;</span> <span class="n">m</span> <span class="n">x</span> <span class="n">y</span>
+<span class="c">(* Or, equivalently: let make_pair x y m = m x y *)</span>
+<span class="k">let</span> <span class="n">first</span> <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">x</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>What is the corresponding definition of <code class="docutils literal notranslate"><span class="pre">second</span></code>? Write the code in
+your answer (not in a comment). Then verify (in a comment) that
+<code class="docutils literal notranslate"><span class="pre">first</span> <span class="pre">(make_pair</span> <span class="pre">x</span> <span class="pre">y)</span></code> yields <code class="docutils literal notranslate"><span class="pre">x</span></code> for any objects <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.
+(You don’t need to do a full substitution model evaluation; just enough
+to show that you get the correct answer.) Then write out (again in a
+comment) the full substitution model evaluation of
+<code class="docutils literal notranslate"><span class="pre">second</span> <span class="pre">(make_pair</span> <span class="pre">1</span> <span class="pre">2)</span></code>. (Spoiler alert: the answer should be <code class="docutils literal notranslate"><span class="pre">2</span></code>.)
+The evaluation isn’t too long (about 25 lines).</p>
+<p>This representation for pairs is actually how pairs are represented in
+lambda calculus (LC), which adds strength to the argument that LC is in
+fact capable of representing arbitrary data and computations on that
+data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Depending on the warning settings, OCaml may complain about a function
+such as this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">fun</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>because the <code class="docutils literal notranslate"><span class="pre">y</span></code> argument isn’t used.  In that case, just use <code class="docutils literal notranslate"><span class="pre">_</span></code>
+instead:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">fun</span> <span class="n">x</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="sicp-problem-2-5">
+<h2>4. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-14.html#%_thm_2.5">SICP, problem 2.5</a><a class="headerlink" href="#sicp-problem-2-5" title="Permalink to this headline">#</a></h2>
+<p>[<strong>1</strong>] (20 minutes)</p>
+<p>Show that we can represent pairs of nonnegative integers using only
+numbers and arithmetic operations if we represent the pair
+of <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> as the integer <span class="math notranslate nohighlight">\(2^a 3^b\)</span>.
+Give the corresponding definitions of the functions
+<code class="docutils literal notranslate"><span class="pre">make_pair</span></code>, <code class="docutils literal notranslate"><span class="pre">first</span></code>, and <code class="docutils literal notranslate"><span class="pre">second</span></code>.
+To avoid name clashes with the previous problem,
+call them <code class="docutils literal notranslate"><span class="pre">make_pairi</span></code>, <code class="docutils literal notranslate"><span class="pre">firsti</span></code>, and <code class="docutils literal notranslate"><span class="pre">secondi</span></code>.</p>
+<p>Before you do this, define the following two helper functions:</p>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">pow</span></code>: This function takes two <code class="docutils literal notranslate"><span class="pre">int</span></code> arguments and returns the
+first raised to the power of the second. So <code class="docutils literal notranslate"><span class="pre">pow</span> <span class="pre">2</span> <span class="pre">10</span></code> would give
+<code class="docutils literal notranslate"><span class="pre">1024</span></code>. (You may have defined this in the last assignment, in which
+case you can re-use that definition.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">int_log</span></code>: This function takes two <code class="docutils literal notranslate"><span class="pre">int</span></code> arguments and returns
+the integer logarithm of the second to the base of the first, which
+we define as being the number of times that the base can be evenly
+divided into the number. Examples:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">int_log</span> <span class="mi">2</span> <span class="mi">1024</span> <span class="o">--&gt;</span> <span class="mi">10</span>
+<span class="n">int_log</span> <span class="mi">3</span> <span class="mi">1024</span> <span class="o">--&gt;</span> <span class="mi">0</span>    <span class="c">(* 1024 is not divisible by 3 *)</span>
+<span class="n">int_log</span> <span class="mi">2</span> <span class="mi">3888</span> <span class="o">--&gt;</span> <span class="mi">4</span>
+<span class="n">int_log</span> <span class="mi">3</span> <span class="mi">3888</span> <span class="o">--&gt;</span> <span class="mi">5</span>    <span class="c">(* 3888 = 2^4 * 3^5 *)</span>
+</pre></div>
+</div>
+<p>In general, if <code class="docutils literal notranslate"><span class="pre">pow</span> <span class="pre">a</span> <span class="pre">b</span></code> is <code class="docutils literal notranslate"><span class="pre">c</span></code>, then <code class="docutils literal notranslate"><span class="pre">int_log</span> <span class="pre">a</span> <span class="pre">c</span></code> is <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
+</li>
+</ol>
+<p>Once these functions have been defined, you can (and should) trivially
+define <code class="docutils literal notranslate"><span class="pre">make_pairi</span></code>, <code class="docutils literal notranslate"><span class="pre">firsti</span></code> and <code class="docutils literal notranslate"><span class="pre">secondi</span></code> in terms of them.</p>
+<p>You may assume that all arguments are positive integers, except that the
+second argument of <code class="docutils literal notranslate"><span class="pre">pow</span></code> can also be <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</section>
+<section id="unary-numbers">
+<h2>5. Unary numbers<a class="headerlink" href="#unary-numbers" title="Permalink to this headline">#</a></h2>
+<p>[<strong>1</strong>] (20 minutes)</p>
+<p>A very simple representation of non-negative integers is called the
+“unary number” representation. One way to represent a non-negative
+integer in unary is as follows:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span> <span class="o">--&gt;</span> <span class="o">[</span><span class="n">blank</span><span class="o">]</span>
+<span class="mi">1</span> <span class="o">--&gt;</span> <span class="mi">1</span>
+<span class="mi">2</span> <span class="o">--&gt;</span> <span class="mi">11</span>
+<span class="mi">3</span> <span class="o">--&gt;</span> <span class="mi">111</span>
+<span class="mi">4</span> <span class="o">--&gt;</span> <span class="mi">1111</span>
+<span class="mi">5</span> <span class="o">--&gt;</span> <span class="mi">11111</span>
+<span class="c">(* etc. *)</span>
+</pre></div>
+</div>
+<p>Clearly, the digit <code class="docutils literal notranslate"><span class="pre">1</span></code> is just a placeholder; we could just as well
+use anything else. In this problem, we’ll write some functions to work
+with unary numbers in OCaml. Our first representation will use lists:
+zero will be the empty list, one will be the list containing only the
+<code class="docutils literal notranslate"><span class="pre">unit</span></code> value (<code class="docutils literal notranslate"><span class="pre">[()]</span></code>), two will be the list containing two <code class="docutils literal notranslate"><span class="pre">unit</span></code>
+values (<code class="docutils literal notranslate"><span class="pre">[();</span> <span class="pre">()]</span></code>), and so on. So we have:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span> <span class="o">--&gt;</span> <span class="bp">[]</span>
+<span class="mi">1</span> <span class="o">--&gt;</span> <span class="o">[</span><span class="bp">()</span><span class="o">]</span>
+<span class="mi">2</span> <span class="o">--&gt;</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+<span class="mi">3</span> <span class="o">--&gt;</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+<span class="mi">4</span> <span class="o">--&gt;</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+<span class="mi">5</span> <span class="o">--&gt;</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+<span class="c">(* etc. *)</span>
+</pre></div>
+</div>
+<p>This can be expressed as the following OCaml code, which is our
+abstraction layer for working with unary integers:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">zero</span> <span class="o">=</span> <span class="bp">[]</span>
+
+<span class="k">let</span> <span class="n">is_zero</span> <span class="o">=</span> <span class="k">function</span>
+  <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="bp">true</span>
+  <span class="o">|</span> <span class="bp">()</span> <span class="o">::</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">false</span>
+
+<span class="k">let</span> <span class="n">succ</span> <span class="n">u</span> <span class="o">=</span> <span class="bp">()</span> <span class="o">::</span> <span class="n">u</span>
+</pre></div>
+</div>
+<p>You need to define the following functions:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">prev</span></code> This function takes one argument (a unary representation of
+an integer) and returns a unary integer one less than the argument.
+If the argument is (unary) zero, use the <code class="docutils literal notranslate"><span class="pre">invalid_arg</span></code> function
+with a reasonable error message to raise an exception.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integer_to_unary</span></code> This function takes one argument (an OCaml
+<code class="docutils literal notranslate"><span class="pre">int</span></code>) and returns a unary number representation of the same
+integer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unary_to_integer</span></code> This function takes one argument (a unary
+representation of an integer) and returns the corresponding OCaml
+<code class="docutils literal notranslate"><span class="pre">int</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unary_add</span></code> This function takes two arguments, both of which are
+unary representations of integers. It returns the result of adding
+the two integers together. The return value is a unary representation
+of an integer, not an OCaml <code class="docutils literal notranslate"><span class="pre">int</span></code>.</p></li>
+</ol>
+<p>We are going to insist on a few more restrictions. Only the <code class="docutils literal notranslate"><span class="pre">prev</span></code>
+function should use pattern matching. The rest of the functions should
+only use <code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">then</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code> statements, the abstraction layer
+functions (<code class="docutils literal notranslate"><span class="pre">zero</span></code>, <code class="docutils literal notranslate"><span class="pre">is_zero</span></code>, <code class="docutils literal notranslate"><span class="pre">succ</span></code>, and <code class="docutils literal notranslate"><span class="pre">prev</span></code>), recursion,
+integer operations where they are essential, and nothing else.</p>
+<p>Do not convert from unary numbers to integers to do any operations
+(except, obviously, in <code class="docutils literal notranslate"><span class="pre">unary_to_integer</span></code>). Similarly, do not convert
+integers to unary numbers to do any operations (except in
+<code class="docutils literal notranslate"><span class="pre">integer_to_unary</span></code>).</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">prev</span> <span class="o">[</span><span class="bp">()</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="bp">[]</span>
+
+<span class="o">#</span> <span class="n">prev</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+
+<span class="o">#</span> <span class="n">integer_to_unary</span> <span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="bp">[]</span>
+
+<span class="o">#</span> <span class="n">integer_to_unary</span> <span class="mi">1</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="bp">()</span><span class="o">]</span>
+
+<span class="o">#</span> <span class="n">integer_to_unary</span> <span class="mi">10</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+
+<span class="o">#</span> <span class="n">unary_to_integer</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">9</span>
+
+<span class="o">#</span> <span class="n">unary_to_integer</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="o">#</span> <span class="n">unary_to_integer</span> <span class="o">[</span><span class="bp">()</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="o">#</span> <span class="n">unary_to_integer</span> <span class="bp">[]</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="o">#</span> <span class="n">unary_add</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span> <span class="bp">[]</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+
+<span class="o">#</span> <span class="n">unary_add</span> <span class="bp">[]</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+
+<span class="o">#</span> <span class="n">unary_add</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">];;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+
+<span class="o">#</span> <span class="n">unary_to_integer</span>
+    <span class="o">(</span><span class="n">unary_add</span> <span class="o">(</span><span class="n">integer_to_unary</span> <span class="mi">1001</span><span class="o">)</span> <span class="o">(</span><span class="n">integer_to_unary</span> <span class="mi">65535</span><span class="o">));;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">66536</span>
+</pre></div>
+</div>
+</div>
+<p>Now consider changing the the list-of-unit representation to this
+alternative unary representation:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">nat</span> <span class="o">=</span> <span class="nc">Zero</span> <span class="o">|</span> <span class="nc">Succ</span> <span class="k">of</span> <span class="n">nat</span>
+
+<span class="k">let</span> <span class="n">zero&#39;</span> <span class="o">=</span> <span class="nc">Zero</span>
+
+<span class="k">let</span> <span class="n">is_zero&#39;</span> <span class="o">=</span> <span class="k">function</span>
+  <span class="o">|</span> <span class="nc">Zero</span> <span class="o">-&gt;</span> <span class="bp">true</span>
+  <span class="o">|</span> <span class="nc">Succ</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">false</span>
+
+<span class="k">let</span> <span class="n">succ&#39;</span> <span class="n">u</span> <span class="o">=</span> <span class="nc">Succ</span> <span class="n">u</span>
+</pre></div>
+</div>
+<p>Define <code class="docutils literal notranslate"><span class="pre">prev'</span></code> for this representation (you can use pattern matching).
+Do the other definitions (<code class="docutils literal notranslate"><span class="pre">integer_to_unary</span></code>, <code class="docutils literal notranslate"><span class="pre">unary_to_integer</span></code>,
+<code class="docutils literal notranslate"><span class="pre">unary_add</span></code>) have to change from their definitions in the previous
+representation (other than obvious name changes <em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">is_zero</span></code> to
+<code class="docutils literal notranslate"><span class="pre">is_zero'</span></code>)? Write your answer in a comment. If the answer is yes,
+indicate which changes other than name changes have to be made. Write
+the new versions (even if they only require name changes). Try to re-use
+as much code as possible between the two representations.</p>
+</section>
+<section id="sicp-problem-2-6-church-numerals">
+<h2>6. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-14.html#%_thm_2.6">SICP, problem 2.6</a>: Church numerals<a class="headerlink" href="#sicp-problem-2-6-church-numerals" title="Permalink to this headline">#</a></h2>
+<p>[<strong>2</strong>] (45 minutes)</p>
+<p>In case representing pairs as functions wasn’t mind-boggling enough,
+consider that, in a language that can manipulate functions as data, we
+can even get by without numbers (at least insofar as nonnegative
+integers are concerned) by implementing zero and the operation of adding
+one as:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(* zerof = &quot;functional zero&quot;; we call it this so as not to be confused with</span>
+<span class="c">   zero or zero&#39; previously defined. *)</span>
+
+<span class="k">let</span> <span class="n">zerof</span> <span class="o">=</span> <span class="k">fun</span> <span class="n">s</span> <span class="o">-&gt;</span> <span class="k">fun</span> <span class="n">z</span> <span class="o">-&gt;</span> <span class="n">z</span>
+  <span class="c">(* or equivalently: let zerof = fun s z -&gt; z *)</span>
+  <span class="c">(* or equivalently: let zerof s z = z *)</span>
+
+<span class="k">let</span> <span class="n">add1</span> <span class="n">n</span> <span class="o">=</span> <span class="k">fun</span> <span class="n">s</span> <span class="o">-&gt;</span> <span class="k">fun</span> <span class="n">z</span> <span class="o">-&gt;</span> <span class="n">s</span> <span class="o">(</span><span class="n">n</span> <span class="n">s</span> <span class="n">z</span><span class="o">)</span>
+  <span class="c">(* or equivalently: let add1 n = fun s z -&gt; s (n s z) *)</span>
+  <span class="c">(* or equivalently: let add1 n s z = s (n s z) *)</span>
+</pre></div>
+</div>
+<p>This representation is known as the “Church numeral” representation,
+after its inventor, Alonzo Church, the logician who invented the lambda
+calculus. Conceptually, <code class="docutils literal notranslate"><span class="pre">s</span></code> means “successor” and <code class="docutils literal notranslate"><span class="pre">z</span></code> means “zero”,
+though in reality they don’t really mean anything since they are just
+formal arguments of functions.</p>
+<p>Define <code class="docutils literal notranslate"><span class="pre">one</span></code> and <code class="docutils literal notranslate"><span class="pre">two</span></code> directly (not in terms of <code class="docutils literal notranslate"><span class="pre">zerof</span></code> and
+<code class="docutils literal notranslate"><span class="pre">add1</span></code>). (<em>Hint</em>: Use substitution to evaluate <code class="docutils literal notranslate"><span class="pre">add1</span> <span class="pre">zerof</span></code> and see
+what you get.) Continue by additionally defining all the integers from
+<code class="docutils literal notranslate"><span class="pre">three</span></code> to <code class="docutils literal notranslate"><span class="pre">ten</span></code> as Church numerals. Do not use <code class="docutils literal notranslate"><span class="pre">add1</span></code> or any of
+the smaller Church numerals to define the Church numerals. All Church
+numerals should have two arguments: <code class="docutils literal notranslate"><span class="pre">s</span></code> and <code class="docutils literal notranslate"><span class="pre">z</span></code> (like <code class="docutils literal notranslate"><span class="pre">zerof</span></code>
+does).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Once you see the pattern, it will be very easy to define
+(non-negative) integers as Church numerals. You’re not required to
+prove that your definitions are correct, but they have to <em>be</em>
+correct.</p>
+</div>
+<p>Define an addition function called <code class="docutils literal notranslate"><span class="pre">add</span></code> for Church numerals. Don’t
+use <code class="docutils literal notranslate"><span class="pre">add1</span></code> in this definition, and don’t use regular OCaml <code class="docutils literal notranslate"><span class="pre">int</span></code>s
+in this function either (directly or indirectly). It should have the
+form:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">add</span> <span class="n">m</span> <span class="n">n</span> <span class="n">s</span> <span class="n">z</span> <span class="o">=</span> <span class="o">...</span>
+<span class="c">(* equivalent to: let add m n = fun s z -&gt; ... *)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">m</span></code> and <code class="docutils literal notranslate"><span class="pre">n</span></code> are the Church numerals to be added. Note that
+when you pass Church numerals <code class="docutils literal notranslate"><span class="pre">m</span></code> and <code class="docutils literal notranslate"><span class="pre">n</span></code> to <code class="docutils literal notranslate"><span class="pre">add</span></code> you get a
+function of two arguments <code class="docutils literal notranslate"><span class="pre">s</span></code> and <code class="docutils literal notranslate"><span class="pre">z</span></code> as the return value; that is
+the Church numeral which is the sum of <code class="docutils literal notranslate"><span class="pre">m</span></code> and <code class="docutils literal notranslate"><span class="pre">n</span></code>. The definition
+of <code class="docutils literal notranslate"><span class="pre">add</span></code> is extremely short.</p>
+<p>Then define a function called <code class="docutils literal notranslate"><span class="pre">church_to_integer</span></code> which, given a
+Church numeral, returns the corresponding non-negative integer. This is
+also a very short function.</p>
+</section>
+<section id="church-numerals-types">
+<h2>7. Church numerals: types<a class="headerlink" href="#church-numerals-types" title="Permalink to this headline">#</a></h2>
+<p>[<strong>2</strong>] (45 minutes)</p>
+<p>We cheated a little bit on the previous problem. Although we defined
+Church numerals in OCaml and were able to define useful functions on
+them, in fact, Church’s original lambda calculus is <em>untyped</em>, whereas
+OCaml is very definitely typed, as you are well aware of by now. (Church
+later invented a typed lambda calculus as well, but that’s not what
+we’re referring to here.) Therefore, OCaml assigns types to all of the
+Church numerals (which are actually functions) as well as to the
+functions on Church numerals (<code class="docutils literal notranslate"><span class="pre">add1</span></code> and <code class="docutils literal notranslate"><span class="pre">add</span></code>). If you look at the
+<code class="docutils literal notranslate"><span class="pre">lab4.mli</span></code> interface file, you will see some types that you might not
+have expected:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">zerof</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span>
+<span class="k">val</span> <span class="n">add1</span> <span class="o">:</span> <span class="o">((</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">c</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">c</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span>
+<span class="k">val</span> <span class="n">one</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span>
+<span class="k">val</span> <span class="n">two</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+<span class="k">val</span> <span class="n">three</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+<span class="k">val</span> <span class="n">four</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+<span class="k">val</span> <span class="n">five</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+<span class="k">val</span> <span class="n">six</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+<span class="k">val</span> <span class="n">seven</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+<span class="k">val</span> <span class="n">eight</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+<span class="k">val</span> <span class="n">nine</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+<span class="k">val</span> <span class="n">ten</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+<span class="k">val</span> <span class="n">add</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">d</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">d</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">c</span>
+<span class="k">val</span> <span class="n">church_to_integer</span> <span class="o">:</span> <span class="o">((</span><span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>These are the types that were automatically inferred for the functions
+as defined in <code class="docutils literal notranslate"><span class="pre">lab4.ml</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can generate these type signatures yourself by running:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ocamlc -i lab4.ml
+</pre></div>
+</div>
+<p>on your <code class="docutils literal notranslate"><span class="pre">lab4.ml</span></code> file (assuming that it’s correct).</p>
+</div>
+<p>One peculiar aspect of this is that <code class="docutils literal notranslate"><span class="pre">zerof</span></code> and <code class="docutils literal notranslate"><span class="pre">one</span></code> don’t have the
+same types as the rest of the Church numerals. We might be OK with
+<code class="docutils literal notranslate"><span class="pre">one</span></code>, because it’s more general than the subsequent Church numerals
+but compatible with them, but <code class="docutils literal notranslate"><span class="pre">zerof</span></code> is a completely different type.
+And <code class="docutils literal notranslate"><span class="pre">church_to_integer</span></code> doesn’t even return an <code class="docutils literal notranslate"><span class="pre">int</span></code>! What is <em>that</em>
+all about? Let’s compile the code and try it out:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ocamlc -c lab4.mli  (* the code we supplied you with *)
+$ ocamlc -c lab4.ml   (* your code *)
+$ ocaml
+# #load &quot;lab4.cmo&quot;;;
+# open Lab4;;
+# church_to_integer;;
+- : ((int -&gt; int) -&gt; int -&gt; &#39;a) -&gt; &#39;a = &lt;fun&gt;
+# zerof;;
+- : &#39;a -&gt; &#39;b -&gt; &#39;b = &lt;fun&gt;
+# one;;
+- : (&#39;a -&gt; &#39;b) -&gt; &#39;a -&gt; &#39;b = &lt;fun&gt;
+# church_to_integer zerof;;
+- : int = 0
+# church_to_integer one;;
+- : int = 1
+# church_to_integer ten;;
+- : int = 10
+</pre></div>
+</div>
+<p>Somehow, it works: <code class="docutils literal notranslate"><span class="pre">church_to_integer</span></code> returns an <code class="docutils literal notranslate"><span class="pre">int</span></code> when given
+any of the Church numerals we defined. By assigning types to the type
+variables in <code class="docutils literal notranslate"><span class="pre">church_to_integer</span></code> when the argument of that function is
+either <code class="docutils literal notranslate"><span class="pre">zerof</span></code> or <code class="docutils literal notranslate"><span class="pre">one</span></code>, explain why both
+<code class="docutils literal notranslate"><span class="pre">church_to_integer</span> <span class="pre">zerof</span></code> and <code class="docutils literal notranslate"><span class="pre">church_to_integer</span> <span class="pre">one</span></code> return an
+integer. Write your answer as an OCaml comment.</p>
+<p><em>Hint:</em> Since type variables are simply arbitrary names, you can write
+the type of <code class="docutils literal notranslate"><span class="pre">church_to_integer</span></code> as:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">church_to_integer</span> <span class="o">:</span> <span class="o">((</span><span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">c</span>
+</pre></div>
+</div>
+<p>so that there is no chance of confusing the <code class="docutils literal notranslate"><span class="pre">'a</span></code> in its type with the
+<code class="docutils literal notranslate"><span class="pre">'a</span></code> in the types of <code class="docutils literal notranslate"><span class="pre">zerof</span></code> and <code class="docutils literal notranslate"><span class="pre">one</span></code>, which could refer to
+different types. Similarly, the <code class="docutils literal notranslate"><span class="pre">'a</span></code> and <code class="docutils literal notranslate"><span class="pre">'b</span></code> types in <code class="docutils literal notranslate"><span class="pre">zerof</span></code>
+don’t have to be the same as the <code class="docutils literal notranslate"><span class="pre">'a</span></code> and <code class="docutils literal notranslate"><span class="pre">'b</span></code> types in <code class="docutils literal notranslate"><span class="pre">one</span></code> for
+expressions involving <code class="docutils literal notranslate"><span class="pre">zerof</span></code> or <code class="docutils literal notranslate"><span class="pre">one</span></code>, and specifically for
+<code class="docutils literal notranslate"><span class="pre">church_to_integer</span> <span class="pre">zerof</span></code> and <code class="docutils literal notranslate"><span class="pre">church_to_integer</span> <span class="pre">one</span></code>.</p>
+<p>Your answer should indicate what type the type variables <code class="docutils literal notranslate"><span class="pre">'a</span></code>, <code class="docutils literal notranslate"><span class="pre">'b</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">'c</span></code> have to be when evaluating <code class="docutils literal notranslate"><span class="pre">church_to_integer</span> <span class="pre">zerof</span></code> and
+<code class="docutils literal notranslate"><span class="pre">church_to_integer</span> <span class="pre">one</span></code>. They won’t all be the same in both cases
+(which is OK because <code class="docutils literal notranslate"><span class="pre">church_to_integer</span></code> has a polymorphic type!).
+Then use this to argue that <code class="docutils literal notranslate"><span class="pre">church_to_integer</span> <span class="pre">zerof</span></code> and
+<code class="docutils literal notranslate"><span class="pre">church_to_integer</span> <span class="pre">one</span></code> both return values of type <code class="docutils literal notranslate"><span class="pre">int</span></code>.</p>
+<p>Also, don’t forget that the “type arrow” (<code class="docutils literal notranslate"><span class="pre">-&gt;</span></code>) associates to the
+right, so the type <code class="docutils literal notranslate"><span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">'b</span> <span class="pre">-&gt;</span> <span class="pre">'c</span></code> means <code class="docutils literal notranslate"><span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">('b</span> <span class="pre">-&gt;</span> <span class="pre">'c)</span></code>. It’s a
+very good idea to “desugar” type expressions in this manner before
+trying to compute type variable assignments.</p>
+<p>This process of assigning types to type variables in a consistent manner
+is called <em>type unification</em> and is one of the things that the OCaml
+compiler does for us.</p>
+<p>This is a somewhat challenging problem, so feel free to ask the TAs for
+help if you need it.</p>
+</section>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="ocaml_notes.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">OCaml notes</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="partB_more_abstraction.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Part B: More abstraction problems</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Michael Vanier<br/>
+  
+      &copy; Copyright 2023, Michael C. Vanier. All rights reserved.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

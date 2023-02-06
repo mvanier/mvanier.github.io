@@ -1,0 +1,270 @@
+Part B: More abstraction problems
+=================================
+
+1. :sicp_15:`2.29`
+------------------
+
+[**6**] (60 minutes)
+
+A binary mobile consists of two branches, a left branch and a right
+branch. Each branch is a rod of a certain length, from which hangs
+either a weight or another binary mobile. We can represent a binary
+mobile in OCaml using algebraic datatypes:
+
+.. code-block:: ocaml
+
+   type mobile = Mobile of branch * branch  (* left and right branches *)
+   and branch =
+     | Weight    of int * int     (* length and weight *)
+     | Structure of int * mobile  (* length and sub-mobile *)
+
+Note that these types are mutually recursive, which is why we define
+them with ``type ... and ...``. Note that this ``type`` declaration
+defines *two* types; ``mobile`` and ``branch`` are each distinct types.
+
+Here is an incomplete abstraction layer around these types:
+
+.. code-block:: ocaml
+
+   let make_mobile l r = Mobile (l, r)
+   let make_weight l w = Weight (l, w)
+   let make_structure l m = Structure (l, m)
+
+a. Complete the abstraction layer by defining accessors (which SICP
+   calls "selectors"). Define ``left_branch`` and ``right_branch`` to
+   return the branches of a mobile, ``branch_length`` to return a
+   branch’s length, and ``branch_structure`` to return a branch’s
+   structure. ``branch_structure`` should return a polymorphic variant
+   which will use the tag ```Weight`` along with an integer weight if
+   the structure is a weight, or ```Structure`` along with a mobile
+   if the structure is a (sub-)mobile. Neither the ```Weight`` nor
+   the ```Structure`` variant should contain the length of the branch
+   (|ie| they are not just copies of the ``Weight`` and ``Structure``
+   constructors of the ``branch`` type).
+
+b. Write the functions ``branch_weight1`` and ``total_weight1`` which
+   return the weight of a branch and the total weight of a mobile,
+   respectively. These functions should directly use the representation
+   of the data types ``mobile`` and ``branch``. These functions will
+   need to be mutually recursive, so use the ``let rec ... and ...``
+   syntactic form when defining them.
+
+   Then write new versions of these functions called ``branch_weight2``
+   and ``total_weight2`` which only use the abstraction layer functions.
+   These will also be mutually recursive. Make sure you don’t
+   inadvertently call ``branch_weight1`` or ``total_weight1`` in either
+   function!
+
+   Clearly, ``branch_weight1`` and ``branch_weight2`` must be different
+   functions (and similarly for the ``total_weight1`` and
+   ``total_weight2`` functions) but they should return the same results
+   given the same inputs.
+
+c. A mobile is said to be *balanced* if the torque applied by its
+   top-left branch is equal to that applied by its top-right branch
+   (that is, if the length of the left rod multiplied by the weight
+   hanging from that rod is equal to the corresponding product for the
+   right side) and if each of the submobiles hanging off its branches is
+   balanced. Design a predicate ``is_balanced`` that returns ``true`` if
+   a mobile is balanced according to this criterion. This function
+   should *only* use the abstraction layer functions described above. In
+   other words, it will be independent of the internal structure of the
+   mobile. We will be taking advantage of this fact below.
+
+d. Suppose we change the representation of mobiles so that the
+   constructors are
+
+   .. code-block:: ocaml
+
+      type mobile'  = { left: branch'; right: branch' }
+      and  branch'  = Branch' of int * contents
+      and  contents = Weight' of int | Structure' of mobile'
+
+   Write a new abstraction layer around the new representation. Call the
+   new functions ``make_mobile'``, ``make_weight'``,
+   ``make_structure'``, ``left_branch'``, ``right_branch'``,
+   ``branch_length'`` and ``branch_structure'``. They should return the
+   same kinds of values as their unprimed counterparts, taking into
+   account the new representation of mobiles and branches.
+
+   Modify your functions ``branch_weight2`` and ``total_weight2`` so
+   that they work with the new abstraction layer. Call the new versions
+   ``branch_weight'`` and ``total_weight'``. If you wrote
+   ``branch_weight2`` and ``total_weight2`` correctly (only using the
+   abstraction layer functions), this will be trivial (you’ll just have
+   to change the names of the abstraction layer functions in the
+   corresponding function definitions). If not, go back and do that now!
+   |smile|
+
+   Finally, write a version of ``is_balanced`` which works with the new
+   representation; call it ``is_balanced'``. Again, if you have done
+   everything right so far, this will be trivial (just involving name
+   changes from the unprimed to the primed versions).
+
+The main advantage of defining an abstraction layer is so you can
+rewrite the internal structure of a datatype without having to change
+much code. Here, for the sake of testing, we are preserving all versions
+of the abstraction layer functions and functions which depend on them.
+In a real world scenario, after changing the internal representation of
+mobiles we would simply change |eg| the ``make_mobile``,
+``make_weight``, ``make_structure``, ``left_branch`` and
+``right_branch`` functions to use the new representation. After that,
+all other code could remain the same.
+
+.. note::
+
+   Later in the course we will cover *modules* and *functors*,
+   which are OCaml language features that allows us to define
+   multiple different implementations of data structures
+   as well as the abstraction layers built on top of them
+   in a very convenient way.
+   Modules and functors have many other uses as well.
+   Currently, only OCaml or languages related to OCaml have functors. [1]_
+
+Here are some test cases you should use to test both representations.
+(You’ll have to modify the ``make_xxx`` names to work with the second
+representation.)
+
+.. code-block:: ocaml
+
+   let m0 =
+     make_mobile
+       (make_weight 1 1)
+       (make_weight 1 1)
+
+   let m1 =
+     make_mobile
+       (make_weight 3 4)
+       (make_structure
+         4
+         (make_mobile
+           (make_weight 1 2)
+           (make_weight 2 1)))
+
+   let m2 =
+     make_mobile
+       (make_weight 1 400)
+       (make_structure
+         10
+         (make_mobile
+           (make_weight 100 1)
+           (make_weight 1 200)))
+
+   let m3 =
+     make_mobile
+       (make_weight 1 (total_weight1 m2))
+       (make_structure 1 m2)
+
+For example:
+
+.. code-block:: ocaml
+
+   # total_weight m0 ;;
+   - : int = 2
+   # is_balanced m0 ;;
+   - : bool = true
+   # total_weight m1 ;;
+   - : int = 7
+   # is_balanced m1 ;;
+   - : bool = true
+   # total_weight m2 ;;
+   - : int = 601
+   # is_balanced m2 ;;
+   - : bool = false
+   # total_weight m3 ;;
+   - : int = 1202
+   # is_balanced m3 ;;
+   - : bool = false
+
+
+2. :sicp_15:`2.30`
+------------------
+
+[**3**] (30 minutes)
+
+A *tree* is a kind of data structure. There are many different kinds of
+tree-like data structures used in computer programming. One example is
+the following:
+
+.. code-block:: ocaml
+
+   type tree = Tree of elem list
+   and elem =
+     | Num of int
+     | Sub of tree
+
+This defines a tree where each component of the tree can be an integer
+or a subtree, and where a tree can have arbitrarily many components.
+Define a function called ``square_tree`` which will make a copy of a
+tree, except that all numbers in the tree will be squared. That is,
+``square_tree`` should behave as follows:
+
+.. code-block:: ocaml
+
+   # square_tree (Tree [Num 1;
+                        Sub (Tree [Num 2; Sub (Tree [Num 3; Num 4]); Num 5]);
+                        Sub (Tree [Num 6; Num 7])])
+   - : tree = Tree [Num 1;
+                    Sub (Tree [Num 4; Sub (Tree [Num 9; Num 16]); Num 25]);
+                    Sub (Tree [Num 36; Num 49])]
+
+Define ``square_tree`` both directly (|ie|, without using any
+higher-order functions) and also by using the ``map`` higher-order
+function (which is called ``List.map`` in Ocaml). Call the first
+function ``square_tree`` and the second one ``square_tree'``.
+
+Use these tests:
+
+.. code-block:: ocaml
+
+   let tree1 = Tree
+     [Num 10;
+      Sub (Tree [Num 20;
+                 Sub (Tree [Num 42; Sub (Tree []); Num 12]);
+                 Sub (Tree []);
+                 Sub (Tree [Num 13; Sub (Tree [])])]);
+      Sub (Tree []);
+      Sub (Tree [Num 1; Num 2; Num 3])]
+
+   let tree2 = Tree
+     [Num 100;
+      Sub (Tree [Num 400;
+                 Sub (Tree [Num 1764; Sub (Tree []); Num 144]);
+                 Sub (Tree []);
+                 Sub (Tree [Num 169; Sub (Tree [])])]);
+      Sub (Tree []);
+      Sub (Tree [Num 1; Num 4; Num 9])]
+
+   (* Check that these are equal: *)
+   (*
+   square_tree  (Tree []) = (Tree [])
+   square_tree' (Tree []) = (Tree [])
+   square_tree  tree1 = tree2
+   square_tree' tree1 = tree2
+   *)
+
+
+3. :sicp_15:`2.31`
+------------------
+
+[**1**] (15 minutes)
+
+Abstract your answer to the previous problem to produce a function
+``tree_map`` with the property that a version of ``square_tree`` could
+be defined as:
+
+.. code-block:: ocaml
+
+   let square_tree'' tree = tree_map (fun n -> n * n) tree
+
+The solution is very short.
+
+----
+
+.. rubric:: Footnotes
+
+.. [1] Many other languages (for instance, Haskell and C++)
+   have a feature that they *call* "functors",
+   but they are not at all like OCaml functors.
+   It seems like every language defines the word "functor"
+   to mean something completely different.

@@ -40,7 +40,7 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="Part A: Working with lists" href="partA_lists.html" />
+    <link rel="next" title="Part A: Abstraction" href="partA_abstraction.html" />
     <link rel="prev" title="Preamble" href="Preamble.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -225,12 +225,49 @@
      </li>
     </ul>
    </li>
-   <li class="toctree-l2 current active has-children">
-    <a class="reference internal" href="../index.html">
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../3/index.html">
      Assignment 3: Lists
     </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
     <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partA_lists.html">
+       Part A: Working with lists
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partB_structural_generative_recursion.html">
+       Part B: Structural and generative recursion
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partC_more_lists.html">
+       Part C: Some harder problems with lists
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="../index.html">
+     Assignment 4: Data abstraction
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -246,54 +283,17 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="partA_lists.html">
-       Part A: Working with lists
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="partB_structural_generative_recursion.html">
-       Part B: Structural and generative recursion
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="partC_more_lists.html">
-       Part C: Some harder problems with lists
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="../../4/index.html">
-     Assignment 4: Data abstraction
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-    <label for="toctree-checkbox-6">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../4/sections/Preamble.html">
-       Preamble
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../4/sections/ocaml_notes.html">
-       OCaml notes
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../4/sections/partA_abstraction.html">
+      <a class="reference internal" href="partA_abstraction.html">
        Part A: Abstraction
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../4/sections/partB_more_abstraction.html">
+      <a class="reference internal" href="partB_more_abstraction.html">
        Part B: More abstraction problems
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../4/sections/partC_algebra.html">
+      <a class="reference internal" href="partC_algebra.html">
        Part C: Miniproject: Algebraic expressions
       </a>
      </li>
@@ -415,29 +415,23 @@ title="Fullscreen mode"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ocaml-documentation">
-   OCaml documentation
+  <a class="reference internal nav-link" href="#records-and-field-punning">
+   Records and field punning
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#signalling-errors">
-   Signalling errors
+  <a class="reference internal nav-link" href="#records-and-pattern-matching-with-missing-fields">
+   Records and pattern matching with missing fields
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-function-keyword">
-   The
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     function
-    </span>
-   </code>
-   keyword
+  <a class="reference internal nav-link" href="#names-and-the-single-quote-character">
+   Names and the single quote character
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#terminology-cons-and-append">
-   Terminology: “cons” and “append”
+  <a class="reference internal nav-link" href="#polymorphic-variants">
+   Polymorphic variants
   </a>
  </li>
 </ul>
@@ -465,29 +459,23 @@ title="Fullscreen mode"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ocaml-documentation">
-   OCaml documentation
+  <a class="reference internal nav-link" href="#records-and-field-punning">
+   Records and field punning
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#signalling-errors">
-   Signalling errors
+  <a class="reference internal nav-link" href="#records-and-pattern-matching-with-missing-fields">
+   Records and pattern matching with missing fields
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-function-keyword">
-   The
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     function
-    </span>
-   </code>
-   keyword
+  <a class="reference internal nav-link" href="#names-and-the-single-quote-character">
+   Names and the single quote character
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#terminology-cons-and-append">
-   Terminology: “cons” and “append”
+  <a class="reference internal nav-link" href="#polymorphic-variants">
+   Polymorphic variants
   </a>
  </li>
 </ul>
@@ -506,156 +494,148 @@ title="Fullscreen mode"
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">#</a></h2>
 <p>For this assignment, we are supplying you with these support files:</p>
 <ol class="arabic simple">
-<li><p>a <code class="docutils literal notranslate"><span class="pre">.mli</span></code> OCaml interface file (<code class="docutils literal notranslate"><span class="pre">lab3.mli</span></code>)</p></li>
-<li><p>a test script (<code class="docutils literal notranslate"><span class="pre">tests_lab3.ml</span></code>)</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">.mli</span></code> OCaml interface file (<code class="docutils literal notranslate"><span class="pre">lab4.mli</span></code>)</p></li>
+<li><p>a test script (<code class="docutils literal notranslate"><span class="pre">tests_lab4.ml</span></code>)</p></li>
 <li><p>a <code class="docutils literal notranslate"><span class="pre">Makefile</span></code></p></li>
 </ol>
 <p>These files are all available on the course Canvas site
-in a single zip file called <code class="docutils literal notranslate"><span class="pre">lab3.zip</span></code>.  Download this file and
+in a single zip file called <code class="docutils literal notranslate"><span class="pre">lab4.zip</span></code>.  Download this file and
 unzip it:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ unzip lab3.zip
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ unzip lab4.zip
 </pre></div>
 </div>
-<p>This will create a <code class="docutils literal notranslate"><span class="pre">lab3</span></code> directory with the files inside it.
+<p>This will create a <code class="docutils literal notranslate"><span class="pre">lab4</span></code> directory with the files inside it.
 You should not change these files, and you should not submit them as part of
-your assignment submission.  You should create and edit the file
-<code class="docutils literal notranslate"><span class="pre">lab3.ml</span></code> (which you will be handing in) in the same directory.</p>
-<p>Once your assignment is done, you should compile it and check that it
-conforms to the interface file by entering this command:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make compile
-</pre></div>
-</div>
-<p>To run the test script, type this <em>after</em> compiling the code
-with <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">compile</span></code>:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make test
-</pre></div>
-</div>
-<p>This will compile the <code class="docutils literal notranslate"><span class="pre">tests_lab3.ml</span></code> file (which contains the unit
-tests) and output an executable program called <code class="docutils literal notranslate"><span class="pre">tests_lab3</span></code>. Then it
-will run that program and report all test failures.</p>
-<p>If you want to compile the code and immediately run the test script
-(useful during development/debugging), type:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make all
-</pre></div>
-</div>
-<p>or just type:</p>
+your assignment submission.  You should create, edit and compile the file
+<code class="docutils literal notranslate"><span class="pre">lab4.ml</span></code> (which you will be handing in) in the same directory.</p>
+<p>Compile and test the code the same way you did in previous assignments.
+Briefly:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make
 </pre></div>
 </div>
-<p>which does the same thing.  This is equivalent to typing <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">compile</span></code>
-followed by <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code>.</p>
-<p>Running the tests generates some log files; to get rid of them (as well
-as all compiled OCaml files), type:</p>
+<p>compiles the code and runs the tests.
+If you just want to compile the code to check for type errors,
+type:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make compile
+</pre></div>
+</div>
+<p>To remove all the generated files,
+including log files and all compiled OCaml files, type:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make clean
 </pre></div>
 </div>
+<p>Of course, you can also compile your code from inside the OCaml
+interpreter using the <code class="docutils literal notranslate"><span class="pre">#use</span></code> directive, as we’ve previously described.
+This will check that the code compiles, but it won’t check
+that it conforms to the <code class="docutils literal notranslate"><span class="pre">.mli</span></code> file, and it won’t run the tests.</p>
 </section>
-<section id="ocaml-documentation">
-<h2>OCaml documentation<a class="headerlink" href="#ocaml-documentation" title="Permalink to this headline">#</a></h2>
-<p>The OCaml library documentation is located <cite>here &lt;https://v2.ocaml.org/api/&gt;</cite>.
-(You should bookmark this page.)
-For this assignment, the documentation on the <code class="docutils literal notranslate"><span class="pre">List</span></code> library
-will be extremely useful.</p>
+<section id="records-and-field-punning">
+<h2>Records and field punning<a class="headerlink" href="#records-and-field-punning" title="Permalink to this headline">#</a></h2>
+<p>We will be using OCaml records extensively in this assignment, so this
+is a good time to introduce a nifty feature (which we also mentioned in
+the recitation lectures) which makes writing code that uses records much
+easier. This feature is called <em>field punning</em> for reasons that will
+become clear shortly.</p>
+<p>Consider a simple record datatype for complex numbers:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">complex</span> <span class="o">=</span> <span class="o">{</span> <span class="n">real</span> <span class="o">:</span> <span class="kt">float</span><span class="o">;</span> <span class="n">imag</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">}</span>
+</pre></div>
+</div>
+<p>Writing code that pattern-matches against a complex number can be a bit
+annoying:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">magnitude</span> <span class="o">{</span> <span class="n">real</span> <span class="o">=</span> <span class="n">r</span><span class="o">;</span> <span class="n">imag</span> <span class="o">=</span> <span class="n">i</span> <span class="o">}</span> <span class="o">=</span> <span class="n">sqrt</span> <span class="o">(</span><span class="n">r</span> <span class="o">*.</span> <span class="n">r</span> <span class="o">+.</span> <span class="n">i</span> <span class="o">*.</span> <span class="n">i</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>What’s annoying about this is that we have to come up with new names for
+the real and imaginary part of the complex number. Of course, we could
+do it this way without pattern matching:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">magnitude</span> <span class="n">c</span> <span class="o">=</span> <span class="n">sqrt</span> <span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="n">real</span> <span class="o">*.</span> <span class="n">c</span><span class="o">.</span><span class="n">real</span> <span class="o">+.</span> <span class="n">c</span><span class="o">.</span><span class="n">imag</span> <span class="o">*.</span> <span class="n">c</span><span class="o">.</span><span class="n">imag</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>because records support a “dot syntax” to access their components (like
+Python objects). However, this isn’t really an improvement. Yet another
+way to write this would be as follows:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">magnitude</span> <span class="o">{</span> <span class="n">real</span> <span class="o">=</span> <span class="n">real</span><span class="o">;</span> <span class="n">imag</span> <span class="o">=</span> <span class="n">imag</span> <span class="o">}</span> <span class="o">=</span> <span class="n">sqrt</span> <span class="o">(</span><span class="n">real</span> <span class="o">*.</span> <span class="n">real</span> <span class="o">+.</span> <span class="n">imag</span> <span class="o">*.</span> <span class="n">imag</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>The right-hand side of this definition looks pretty good, but the
+left-hand side is weird. It’s legal, because in OCaml you can use a
+field name as a variable name (they exist in different <em>namespaces</em>, to
+be technical), but it’s ugly. What field punning allows you to do is to
+write this code like this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">magnitude</span> <span class="o">{</span> <span class="n">real</span><span class="o">;</span> <span class="n">imag</span> <span class="o">}</span> <span class="o">=</span> <span class="n">sqrt</span> <span class="o">(</span><span class="n">real</span> <span class="o">*.</span> <span class="n">real</span> <span class="o">+.</span> <span class="n">imag</span> <span class="o">*.</span> <span class="n">imag</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>What this does is use the (variable) name <code class="docutils literal notranslate"><span class="pre">real</span></code> as the value of the
+(field) name <code class="docutils literal notranslate"><span class="pre">real</span></code>, and similarly for <code class="docutils literal notranslate"><span class="pre">imag</span></code>. This is a nice way to
+make functions which use records and which pattern-match on those
+records easier to write and easier to read.</p>
+<p>You can also use field punning when creating values of record types:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">c</span> <span class="o">=</span>
+    <span class="k">let</span> <span class="n">real</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span> <span class="k">in</span>
+    <span class="k">let</span> <span class="n">imag</span> <span class="o">=</span> <span class="mi">3</span><span class="o">.</span><span class="mi">4</span> <span class="k">in</span>
+      <span class="o">{</span> <span class="n">real</span><span class="o">;</span> <span class="n">imag</span> <span class="o">}</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="n">complex</span> <span class="o">=</span> <span class="o">{</span><span class="n">real</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.;</span> <span class="n">imag</span> <span class="o">=</span> <span class="mi">3</span><span class="o">.</span><span class="mi">4</span><span class="o">}</span>
+</pre></div>
+</div>
+<p>This is a bit more confusing to read, but it works fine. Remember: field
+names are in a different namespace than variable names. So it’s even
+legal to do this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">complex</span> <span class="o">=</span> <span class="o">{</span> <span class="n">real</span> <span class="o">:</span> <span class="kt">float</span><span class="o">;</span> <span class="n">imag</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">}</span>
+<span class="k">let</span> <span class="n">real</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="k">let</span> <span class="n">imag</span> <span class="o">=</span> <span class="s2">&quot;this is wacky&quot;</span>
+</pre></div>
+</div>
+<p>Here, the variables <code class="docutils literal notranslate"><span class="pre">real</span></code> and <code class="docutils literal notranslate"><span class="pre">imag</span></code> aren’t even floats, though the
+corresponding field names do refer to floats.</p>
+<p>You don’t have to use field punning in this (or any other) assignment,
+but we recommend it.
+A good reference on OCaml records is <a class="reference external" href="https://dev.realworldocaml.org/records.html">this chapter</a> from <a class="reference external" href="https://dev.realworldocaml.org">Real World OCaml</a>.
+The <a class="reference external" href="https://v2.ocaml.org/manual/index.html">OCaml manual</a> also has a section on records in the first chapter
+(“The core language”).</p>
 </section>
-<section id="signalling-errors">
-<h2>Signalling errors<a class="headerlink" href="#signalling-errors" title="Permalink to this headline">#</a></h2>
-<p>We will soon start to explore exception handling in OCaml, but in the
-meantime, if at any time you need to signal an error in a function (for
-instance, if the function received an invalid input), you can use the
-<code class="docutils literal notranslate"><span class="pre">invalid_arg</span></code> and <code class="docutils literal notranslate"><span class="pre">failwith</span></code> functions. They both take a single
-string as their only argument, and raise an exception which uses that
-string as an error message. The difference is that <code class="docutils literal notranslate"><span class="pre">invalid_arg</span></code>
-raises an <code class="docutils literal notranslate"><span class="pre">Invalid_argument</span></code> error (which is most appropriate if a
-function received an invalid argument), and <code class="docutils literal notranslate"><span class="pre">failwith</span></code> raises a
-<code class="docutils literal notranslate"><span class="pre">Failure</span></code> exception (which is more appropriate for other situations).
-For instance:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">invalid_arg</span> <span class="s2">&quot;argument should be &gt; 0&quot;</span> <span class="o">;;</span>
-<span class="nc">Exception</span><span class="o">:</span> <span class="nc">Invalid_argument</span> <span class="s2">&quot;argument should be &gt; 0&quot;</span><span class="o">.</span>
-<span class="o">#</span> <span class="k">raise</span> <span class="o">(</span><span class="nc">Invalid_argument</span> <span class="s2">&quot;argument should be &gt; 0&quot;</span><span class="o">)</span> <span class="o">;;</span>  <span class="c">(* same thing *)</span>
-<span class="nc">Exception</span><span class="o">:</span> <span class="nc">Invalid_argument</span> <span class="s2">&quot;argument should be &gt; 0&quot;</span><span class="o">.</span>
-<span class="o">#</span> <span class="n">failwith</span> <span class="s2">&quot;everything is messed up for no good reason!&quot;</span> <span class="o">;;</span>
-<span class="nc">Exception</span><span class="o">:</span> <span class="nc">Failure</span> <span class="s2">&quot;everything is messed up for no good reason!&quot;</span><span class="o">.</span>
-<span class="o">#</span> <span class="k">raise</span> <span class="o">(</span><span class="nc">Failure</span> <span class="s2">&quot;everything is messed up for no good reason!&quot;</span><span class="o">)</span> <span class="o">;;</span>  <span class="c">(* same thing *)</span>
-<span class="nc">Exception</span><span class="o">:</span> <span class="nc">Failure</span> <span class="s2">&quot;everything is messed up for no good reason!&quot;</span><span class="o">.</span>
+<section id="records-and-pattern-matching-with-missing-fields">
+<h2>Records and pattern matching with missing fields<a class="headerlink" href="#records-and-pattern-matching-with-missing-fields" title="Permalink to this headline">#</a></h2>
+<p>When pattern-matching on records, you don’t have to include all the
+record fields if you don’t want to.  For instance:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">complex</span> <span class="o">=</span> <span class="o">{</span> <span class="n">real</span> <span class="o">:</span> <span class="kt">float</span><span class="o">;</span> <span class="n">imag</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">}</span>
+<span class="k">let</span> <span class="n">real_of_complex</span> <span class="o">{</span> <span class="n">real</span> <span class="o">}</span> <span class="o">=</span> <span class="n">real</span>
 </pre></div>
 </div>
-<p>As you can see, <code class="docutils literal notranslate"><span class="pre">invalid_arg</span></code> and <code class="docutils literal notranslate"><span class="pre">failwith</span></code> are just functions that
-raise particular exceptions.</p>
+<p>This compiles and runs fine.  But if you have certain warnings enabled
+(which happens when you compile the code using our <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>),
+you’ll get a warning:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Warning 9 [missing-record-field-pattern]: the following labels are not bound in this record pattern:
+imag
+Either bind these labels explicitly or add &#39;; _&#39; to the pattern.
+</pre></div>
+</div>
+<p><strong>You should never ignore warnings!  Always fix the cause of the warning.</strong>
+In this case, the fix is as simple as changing the pattern by adding
+<code class="docutils literal notranslate"><span class="pre">;</span> <span class="pre">_</span></code> to the end of the pattern, as the error message indicated:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">real_of_complex</span> <span class="o">{</span> <span class="n">real</span><span class="o">;</span> <span class="o">_</span> <span class="o">}</span> <span class="o">=</span> <span class="n">real</span>
+</pre></div>
+</div>
+<p>Now, when you compile this code, there will be no warning.</p>
 </section>
-<section id="the-function-keyword">
-<h2>The <code class="docutils literal notranslate"><span class="pre">function</span></code> keyword<a class="headerlink" href="#the-function-keyword" title="Permalink to this headline">#</a></h2>
-<p>In OCaml code, it’s extremely common to see this pattern:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">n</span> <span class="o">=</span>
-  <span class="k">match</span> <span class="n">n</span> <span class="k">with</span>
-    <span class="o">|</span> <span class="mi">0</span> <span class="o">-&gt;</span> <span class="mi">1</span>
-    <span class="o">|</span> <span class="n">n&#39;</span> <span class="o">-&gt;</span> <span class="n">n&#39;</span> <span class="o">+</span> <span class="mi">1</span>
-</pre></div>
-</div>
-<p>In other words, you are defining a function with only one argument, and
-you are immediately pattern-matching on that argument. This is so common
-that there is a shorthand way of writing this:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="o">=</span> <span class="k">function</span>
-  <span class="o">|</span> <span class="mi">0</span> <span class="o">-&gt;</span> <span class="mi">1</span>
-  <span class="o">|</span> <span class="n">n&#39;</span> <span class="o">-&gt;</span> <span class="n">n&#39;</span> <span class="o">+</span> <span class="mi">1</span>   <span class="c">(* we could have used n here too *)</span>
-</pre></div>
-</div>
-<p>Note that <code class="docutils literal notranslate"><span class="pre">function</span></code> is not the same thing as <code class="docutils literal notranslate"><span class="pre">fun</span></code>! <code class="docutils literal notranslate"><span class="pre">function</span></code>
-just allows you to leave off the last argument of the function and
-instead pattern-match on it. <code class="docutils literal notranslate"><span class="pre">fun</span></code> can be used with any number of
-arguments, and doesn’t automatically define a pattern match (though you
-can add a <code class="docutils literal notranslate"><span class="pre">match</span></code> statement inside the <code class="docutils literal notranslate"><span class="pre">fun</span></code>, of course).</p>
-<p>Note also that <code class="docutils literal notranslate"><span class="pre">function</span></code> can be used with a functions of more than
-one argument. For instance, this (not very useful) function:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span>
-  <span class="k">match</span> <span class="n">y</span> <span class="k">with</span>
-    <span class="o">|</span> <span class="mi">0</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">n</span>
-    <span class="o">|</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span>
-</pre></div>
-</div>
-<p>could be written like this:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="k">function</span>
-  <span class="o">|</span> <span class="mi">0</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">n</span>
-  <span class="o">|</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span>
-</pre></div>
-</div>
-<p>This is harder to read, but the <code class="docutils literal notranslate"><span class="pre">function</span></code> keyword takes the place of
-the <code class="docutils literal notranslate"><span class="pre">y</span></code> argument and the <code class="docutils literal notranslate"><span class="pre">match</span></code> expression.</p>
-<p>There are some cases where you can instantly pattern match on the
-arguments of a <code class="docutils literal notranslate"><span class="pre">fun</span></code> definition (or even the arguments of a function
-which doesn’t use <code class="docutils literal notranslate"><span class="pre">fun</span></code>) if the arguments have only one kind of
-structure you can pattern match on. For instance:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">sum_of_pair</span> <span class="o">=</span> <span class="k">fun</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
-<span class="c">(* Or equivalently: let sum_of_pair (x, y) = x + y *)</span>
-</pre></div>
-</div>
-<p>defines a function <code class="docutils literal notranslate"><span class="pre">sum_of_pair</span></code> which takes a 2-tuple of <code class="docutils literal notranslate"><span class="pre">int</span></code>s
-as its only argument and immediately pattern matches on it to extract
-the two components. This is more convenient than having to write a
-trivial <code class="docutils literal notranslate"><span class="pre">match</span></code> expression in such cases.</p>
-<p>Using <code class="docutils literal notranslate"><span class="pre">function</span></code> where appropriate can make your code more concise and
-easier to read, especially when the function has only one argument.</p>
+<section id="names-and-the-single-quote-character">
+<h2>Names and the single quote character<a class="headerlink" href="#names-and-the-single-quote-character" title="Permalink to this headline">#</a></h2>
+<p>Unlike most programming languages,
+OCaml allows identifier names to contain the single quote character (<code class="docutils literal notranslate"><span class="pre">'</span></code>)
+in any position except the first position.
+Typically, we use the single quote character at the end of names,
+and sometimes we use more than one single quote character.
+These are often used to refer to a name
+which is related in some way to another name but distinct.
+The single quote character used this way is often called a “prime” character,
+which comes from its use in mathematics.
+So the name <code class="docutils literal notranslate"><span class="pre">foo'</span></code> would be pronounced “foo-prime”.</p>
 </section>
-<section id="terminology-cons-and-append">
-<h2>Terminology: “cons” and “append”<a class="headerlink" href="#terminology-cons-and-append" title="Permalink to this headline">#</a></h2>
-<p>Sometimes, we will refer to the act of adding an item to the front of a
-list using the <code class="docutils literal notranslate"><span class="pre">::</span></code> constructor as “cons-ing” the item to the front of
-the list. This terminology comes from the Scheme programming language
-(which borrowed it from the even older Lisp language), where the closest
-equivalent to <code class="docutils literal notranslate"><span class="pre">::</span></code> is a function called <code class="docutils literal notranslate"><span class="pre">cons</span></code>. Even though CS 4
-doesn’t use Scheme (unlike SICP)  <a class="footnote-reference brackets" href="#id2" id="id1">1</a>, we will use this term because
-there is no suitable replacement. This term is also commonly used in the
-functional programming literature for a variety of languages, whether
-they have a <code class="docutils literal notranslate"><span class="pre">cons</span></code> function or not.</p>
-<p>Similarly, we will refer to the adding of combining two lists together
-to form a single list using the <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> operator as “appending” the two
-lists. This is standard terminology.</p>
-<hr class="docutils" />
-<p class="rubric">Footnotes</p>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Long ago, CS 4 did use Scheme as the programming language.</p>
-</dd>
-</dl>
+<section id="polymorphic-variants">
+<h2>Polymorphic variants<a class="headerlink" href="#polymorphic-variants" title="Permalink to this headline">#</a></h2>
+<p>Problem B.1 uses polymorphic variants, which are similar to algebraic
+datatypes except that you don’t have to declare the type ahead of time.
+Polymorphic variants were discussed in lecture 10, and are discussed in
+the <a class="reference external" href="https://v2.ocaml.org/manual/index.html">OCaml manual</a> (chapter 5) and in <a class="reference external" href="https://dev.realworldocaml.org">Real World OCaml</a> (chapter 6).</p>
 </section>
 </section>
 
@@ -674,10 +654,10 @@ lists. This is standard terminology.</p>
             <p class="prev-next-title">Preamble</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="partA_lists.html" title="next page">
+    <a class='right-next' id="next-link" href="partA_abstraction.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Part A: Working with lists</p>
+        <p class="prev-next-title">Part A: Abstraction</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
