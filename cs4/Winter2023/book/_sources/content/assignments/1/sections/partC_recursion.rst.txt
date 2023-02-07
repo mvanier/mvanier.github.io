@@ -211,6 +211,12 @@ Use pattern matching to make the code cleaner.
 **This is not optional!**
 Use of ``if``/``then``/``else`` in your solution will result in lost marks.
 
+.. note::
+
+   If you have a ``match``, but use a ``when`` clause with each match case,
+   this is equivalent to having nested ``if``/``then``/``else``
+   expressions, and you will still lose marks.  See the hint below.
+
 For arguments that don’t correspond to locations in Pascal’s triangle
 (like numbers < 1 or index numbers that are greater than the row number)
 you should signal an error using the code:
@@ -249,9 +255,9 @@ We’ll talk more about exceptions later in the course.
 
    * Pattern match on a tuple of both input arguments. Use the ``when``
      form in a pattern when you need to specify non-structural conditions
-     for a match (like two things being equal). Only use ``when`` when you
-     can’t use structural pattern matching, though. For instance, don’t do
-     this kind of thing:
+     for a match (like two things being equal).
+     **Only use** ``when`` **when you can’t use structural pattern matching.**
+     For instance, don’t do this kind of thing:
 
      .. code-block:: ocaml
 

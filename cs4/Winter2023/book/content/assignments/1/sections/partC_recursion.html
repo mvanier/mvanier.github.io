@@ -732,6 +732,12 @@ and computes elements of Pascal’s triangle by means of a recursive process.</p
 <p>Use pattern matching to make the code cleaner.
 <strong>This is not optional!</strong>
 Use of <code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">then</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code> in your solution will result in lost marks.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you have a <code class="docutils literal notranslate"><span class="pre">match</span></code>, but use a <code class="docutils literal notranslate"><span class="pre">when</span></code> clause with each match case,
+this is equivalent to having nested <code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">then</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code>
+expressions, and you will still lose marks.  See the hint below.</p>
+</div>
 <p>For arguments that don’t correspond to locations in Pascal’s triangle
 (like numbers &lt; 1 or index numbers that are greater than the row number)
 you should signal an error using the code:
@@ -769,9 +775,9 @@ Since you don’t have to do it both ways,
 we recommend you write it as a recursive process.</p></li>
 <li><p>Pattern match on a tuple of both input arguments. Use the <code class="docutils literal notranslate"><span class="pre">when</span></code>
 form in a pattern when you need to specify non-structural conditions
-for a match (like two things being equal). Only use <code class="docutils literal notranslate"><span class="pre">when</span></code> when you
-can’t use structural pattern matching, though. For instance, don’t do
-this kind of thing:</p>
+for a match (like two things being equal).
+<strong>Only use</strong> <code class="docutils literal notranslate"><span class="pre">when</span></code> <strong>when you can’t use structural pattern matching.</strong>
+For instance, don’t do this kind of thing:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
   <span class="o">|</span> <span class="n">x&#39;</span> <span class="k">when</span> <span class="n">x&#39;</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-&gt;</span> <span class="o">...</span>
   <span class="o">...</span>
