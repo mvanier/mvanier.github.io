@@ -44,7 +44,8 @@ look like this when tested in the interactive OCaml interpreter:
 You may find the built-in functions ``abs_float`` and ``sqrt`` useful
 for computing segment lengths.
 
-Finally, for testing purposes, write the following functions:
+Finally, write the following functions, which serve as an abstraction
+layer for points and segments.
 
 #. ``make_point``: this function takes two ``float`` arguments
    (representing the ``x`` and ``y`` coordinates) and returns a
@@ -59,8 +60,6 @@ Finally, for testing purposes, write the following functions:
 
 #. ``get_points``: this function takes a ``segment`` argument and
    returns a two-tuple of the (start, end) points.
-
-Note that these define an abstraction layer for ``point``\s and ``segment``\s.
 
 
 2. :sicp_14:`2.3`
@@ -89,10 +88,19 @@ representations, define these accessors:
    rectangle_left_segment
    rectangle_right_segment
 
-*Note:* don’t define the accessors for one representation in terms of
-the accessors for the other representation even if you can. Pretend that
-the code for each representation was written by a different programmer
-with no knowledge of the other representation.
+.. note::
+
+   Don’t define the accessors for one representation in terms of
+   the accessors for the other representation even if you can. Pretend that
+   the code for each representation was written by a different programmer
+   with no knowledge of the other representation.
+
+   Use the point and segment abstraction layers, as needed,
+   to define these accessors.  Don't use the internal representation
+   of either points or segments.
+   You may also find it useful to define new point accessors
+   ``get_x`` and ``get_y`` to extract just the X or Y coordinates
+   of points.
 
 Then define the functions ``rectangle_perimeter`` and ``rectangle_area``
 using *only* these accessors and functions from the point representation

@@ -545,7 +545,8 @@ look like this when tested in the interactive OCaml interpreter:</p>
 </div>
 <p>You may find the built-in functions <code class="docutils literal notranslate"><span class="pre">abs_float</span></code> and <code class="docutils literal notranslate"><span class="pre">sqrt</span></code> useful
 for computing segment lengths.</p>
-<p>Finally, for testing purposes, write the following functions:</p>
+<p>Finally, write the following functions, which serve as an abstraction
+layer for points and segments.</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">make_point</span></code>: this function takes two <code class="docutils literal notranslate"><span class="pre">float</span></code> arguments
 (representing the <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> coordinates) and returns a
@@ -558,7 +559,6 @@ your representation.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">get_points</span></code>: this function takes a <code class="docutils literal notranslate"><span class="pre">segment</span></code> argument and
 returns a two-tuple of the (start, end) points.</p></li>
 </ol>
-<p>Note that these define an abstraction layer for <code class="docutils literal notranslate"><span class="pre">point</span></code>s and <code class="docutils literal notranslate"><span class="pre">segment</span></code>s.</p>
 </section>
 <section id="sicp-problem-2-3">
 <h2>2. <a class="reference external" href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-14.html#%_thm_2.3">SICP, problem 2.3</a><a class="headerlink" href="#sicp-problem-2-3" title="Permalink to this headline">#</a></h2>
@@ -581,10 +581,19 @@ representations, define these accessors:</p>
 <span class="n">rectangle_right_segment</span>
 </pre></div>
 </div>
-<p><em>Note:</em> don’t define the accessors for one representation in terms of
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Don’t define the accessors for one representation in terms of
 the accessors for the other representation even if you can. Pretend that
 the code for each representation was written by a different programmer
 with no knowledge of the other representation.</p>
+<p>Use the point and segment abstraction layers, as needed,
+to define these accessors.  Don’t use the internal representation
+of either points or segments.
+You may also find it useful to define new point accessors
+<code class="docutils literal notranslate"><span class="pre">get_x</span></code> and <code class="docutils literal notranslate"><span class="pre">get_y</span></code> to extract just the X or Y coordinates
+of points.</p>
+</div>
 <p>Then define the functions <code class="docutils literal notranslate"><span class="pre">rectangle_perimeter</span></code> and <code class="docutils literal notranslate"><span class="pre">rectangle_area</span></code>
 using <em>only</em> these accessors and functions from the point representation
 described above.</p>
