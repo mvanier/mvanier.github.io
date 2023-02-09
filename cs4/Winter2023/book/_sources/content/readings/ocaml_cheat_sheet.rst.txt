@@ -713,6 +713,99 @@ above). You probably won’t run into this pitfall, but you should be
 aware of it. We will talk about sequence expressions more below when we
 discuss imperative programming.
 
+Records
+-------
+
+Records are basically a generalization of tuples
+where each component of the record has a name
+(called a "field name", so each component is a "field" of the record).
+You need to define a record type before using a record.
+
+.. code-block:: ocaml
+
+   type my_record = { foo : int; bar : string }
+
+Then you can create records by giving the field names and the values
+like this:
+
+.. code-block:: ocaml
+
+   let a_record = { foo = 10; bar = "ten" }
+
+You can extract the contents of a record using the "dot notation"
+as in most programming languages:
+
+.. code-block:: ocaml
+
+   Printf.printf "foo field: %d\n" a_record.foo
+
+Pattern matching and field punning
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To pattern match on a record, you give the field names and
+corresponding variable names that you choose.
+
+.. code-block:: ocaml
+
+   type point = { x : int; y : int }
+   let sum_xy { x = x_coord; y = y_coord } = x_coord + y_coord
+
+Note that ``x`` and ``y`` are field names here,
+and ``x_coord`` and ``y_coord`` are variable names you chose
+for this function.
+
+Note that the field names don't have to come in any particular order:
+
+.. code-block:: ocaml
+
+   type point = { x : int; y : int }
+   let sum_xy { y = y_coord; x = x_coord } = x_coord + y_coord
+
+A shortcut is to use the field name as a variable name.
+This is called "field punning".
+
+.. code-block:: ocaml
+
+   type point = { x : int; y : int }
+   let sum_xy { x; y } = x + y
+   (* Also OK: let sum_xy { y; x } = x + y *)
+
+This is exactly equivalent to:
+
+.. code-block:: ocaml
+
+   type point = { x : int; y : int }
+   let sum_xy { x = x; y = y } = x + y
+
+but shorter.
+
+Matching a part of a record
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Often, we only need part of a record.  You could write code like this:
+
+.. code-block:: ocaml
+
+   type point = { x : int; y : int }
+   let point_x { x = x_coord; y = y_coord } = x_coord
+
+but you might get a warning about unused variable names.
+The solution is to use the ``_`` syntax:
+
+.. code-block:: ocaml
+
+   type point = { x : int; y : int }
+   let point_x { x = x_coord; _ } = x_coord
+
+The ``_`` means "all other fields in the record".
+
+With field punning, this becomes:
+
+.. code-block:: ocaml
+
+   type point = { x : int; y : int }
+   let point_x { x; _ } = x
+
 
 Strings
 -------

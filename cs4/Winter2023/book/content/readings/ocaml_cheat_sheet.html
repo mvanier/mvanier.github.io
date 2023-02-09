@@ -498,6 +498,23 @@ title="Fullscreen mode"
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#records">
+   Records
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pattern-matching-and-field-punning">
+     Pattern matching and field punning
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#matching-a-part-of-a-record">
+     Matching a part of a record
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#strings">
    Strings
   </a>
@@ -743,6 +760,23 @@ title="Fullscreen mode"
       vs.
      </em>
      semicolons
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#records">
+   Records
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pattern-matching-and-field-punning">
+     Pattern matching and field punning
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#matching-a-part-of-a-record">
+     Matching a part of a record
     </a>
    </li>
   </ul>
@@ -1521,6 +1555,76 @@ subexpression should have type <code class="docutils literal notranslate"><span 
 above). You probably won’t run into this pitfall, but you should be
 aware of it. We will talk about sequence expressions more below when we
 discuss imperative programming.</p>
+</section>
+</section>
+<section id="records">
+<h2>Records<a class="headerlink" href="#records" title="Permalink to this headline">#</a></h2>
+<p>Records are basically a generalization of tuples
+where each component of the record has a name
+(called a “field name”, so each component is a “field” of the record).
+You need to define a record type before using a record.</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">my_record</span> <span class="o">=</span> <span class="o">{</span> <span class="n">foo</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span> <span class="n">bar</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">}</span>
+</pre></div>
+</div>
+<p>Then you can create records by giving the field names and the values
+like this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">a_record</span> <span class="o">=</span> <span class="o">{</span> <span class="n">foo</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span> <span class="n">bar</span> <span class="o">=</span> <span class="s2">&quot;ten&quot;</span> <span class="o">}</span>
+</pre></div>
+</div>
+<p>You can extract the contents of a record using the “dot notation”
+as in most programming languages:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;foo field: %d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="n">a_record</span><span class="o">.</span><span class="n">foo</span>
+</pre></div>
+</div>
+<section id="pattern-matching-and-field-punning">
+<h3>Pattern matching and field punning<a class="headerlink" href="#pattern-matching-and-field-punning" title="Permalink to this headline">#</a></h3>
+<p>To pattern match on a record, you give the field names and
+corresponding variable names that you choose.</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">point</span> <span class="o">=</span> <span class="o">{</span> <span class="n">x</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span> <span class="n">y</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">}</span>
+<span class="k">let</span> <span class="n">sum_xy</span> <span class="o">{</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x_coord</span><span class="o">;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y_coord</span> <span class="o">}</span> <span class="o">=</span> <span class="n">x_coord</span> <span class="o">+</span> <span class="n">y_coord</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are field names here,
+and <code class="docutils literal notranslate"><span class="pre">x_coord</span></code> and <code class="docutils literal notranslate"><span class="pre">y_coord</span></code> are variable names you chose
+for this function.</p>
+<p>Note that the field names don’t have to come in any particular order:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">point</span> <span class="o">=</span> <span class="o">{</span> <span class="n">x</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span> <span class="n">y</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">}</span>
+<span class="k">let</span> <span class="n">sum_xy</span> <span class="o">{</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y_coord</span><span class="o">;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x_coord</span> <span class="o">}</span> <span class="o">=</span> <span class="n">x_coord</span> <span class="o">+</span> <span class="n">y_coord</span>
+</pre></div>
+</div>
+<p>A shortcut is to use the field name as a variable name.
+This is called “field punning”.</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">point</span> <span class="o">=</span> <span class="o">{</span> <span class="n">x</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span> <span class="n">y</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">}</span>
+<span class="k">let</span> <span class="n">sum_xy</span> <span class="o">{</span> <span class="n">x</span><span class="o">;</span> <span class="n">y</span> <span class="o">}</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="c">(* Also OK: let sum_xy { y; x } = x + y *)</span>
+</pre></div>
+</div>
+<p>This is exactly equivalent to:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">point</span> <span class="o">=</span> <span class="o">{</span> <span class="n">x</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span> <span class="n">y</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">}</span>
+<span class="k">let</span> <span class="n">sum_xy</span> <span class="o">{</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">}</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</pre></div>
+</div>
+<p>but shorter.</p>
+</section>
+<section id="matching-a-part-of-a-record">
+<h3>Matching a part of a record<a class="headerlink" href="#matching-a-part-of-a-record" title="Permalink to this headline">#</a></h3>
+<p>Often, we only need part of a record.  You could write code like this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">point</span> <span class="o">=</span> <span class="o">{</span> <span class="n">x</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span> <span class="n">y</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">}</span>
+<span class="k">let</span> <span class="n">point_x</span> <span class="o">{</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x_coord</span><span class="o">;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y_coord</span> <span class="o">}</span> <span class="o">=</span> <span class="n">x_coord</span>
+</pre></div>
+</div>
+<p>but you might get a warning about unused variable names.
+The solution is to use the <code class="docutils literal notranslate"><span class="pre">_</span></code> syntax:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">point</span> <span class="o">=</span> <span class="o">{</span> <span class="n">x</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span> <span class="n">y</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">}</span>
+<span class="k">let</span> <span class="n">point_x</span> <span class="o">{</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x_coord</span><span class="o">;</span> <span class="o">_</span> <span class="o">}</span> <span class="o">=</span> <span class="n">x_coord</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">_</span></code> means “all other fields in the record”.</p>
+<p>With field punning, this becomes:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">point</span> <span class="o">=</span> <span class="o">{</span> <span class="n">x</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span> <span class="n">y</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">}</span>
+<span class="k">let</span> <span class="n">point_x</span> <span class="o">{</span> <span class="n">x</span><span class="o">;</span> <span class="o">_</span> <span class="o">}</span> <span class="o">=</span> <span class="n">x</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="strings">
