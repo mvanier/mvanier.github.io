@@ -1,0 +1,761 @@
+Part B: Recursion and higher-order functions
+============================================
+
+In this section you’ll be writing some functions that involve recursion
+and higher-order functions. This section is worth 8 marks in all.
+
+
+1. ``merge_sort3``
+------------------
+
+[**1.5 marks**]
+
+In this problem, we will implement a merge sorting function that will
+split lists into three parts instead of two. We’ll call this function
+``merge_sort3``.
+
+We’ll begin by writing two helper functions: ``split3`` and ``merge3``.
+
+
+a. ``split3``
+~~~~~~~~~~~~~
+
+``split3`` takes an input list (which we will assume is a list of
+integers) and distributes it among three lists of equal size (or at
+least, as equal as is possible), which are returned. The original list
+elements in position 0, 3, 6 |etc| (where the head of the list is
+considered to be position 0) must go into output list 1, while those in
+position 1, 4, 7 |etc| go in list 2 and those in 2, 5, 8 |etc| into
+list 3. **No other kind of list splitting is allowed.** Your function
+should be able to split the lists in a single pass through the input
+list, and it must have a time complexity of :math:`O(n)`.
+
+
+Examples
+^^^^^^^^
+
+.. code-block:: ocaml
+
+   # split3 [];;
+   - : int list * int list * int list = ([], [], [])
+
+   # split3 [1];;
+   - : int list * int list * int list = ([1], [], [])
+
+   # split3 [2;1];;
+   - : int list * int list * int list = ([2], [1], [])
+
+   # split3 [2;1;3];;
+   - : int list * int list * int list = ([2], [1], [3])
+
+   # split3 [2;1;3;10];;
+   - : int list * int list * int list = ([2; 10], [1], [3])
+
+   # split3 [2;1;3;10;3];;
+   - : int list * int list * int list = ([2; 10], [1; 3], [3])
+
+   # split3 [2;1;3;10;3;4];;
+   - : int list * int list * int list = ([2; 10], [1; 3], [3; 4])
+
+
+.. hint::
+
+   You can define an iterative helper function whose arguments include
+   three lists that you add to as you pull values off the original list.
+   You should also have a counter argument that you increment
+   for each call of the helper function and use its value
+   to tell you which list to add to.
+
+   You may find the OCaml ``mod`` operator and the ``List.rev`` library
+   function to be useful.
+
+
+b. ``merge3``
+~~~~~~~~~~~~~
+
+``merge3`` takes three input lists of integers, each of which is assumed
+to be sorted. Their lengths are unimportant. It merges all three into a
+single sorted list of integers. The time complexity should be linear in
+the sum of the lengths of the three lists.
+
+
+Examples
+^^^^^^^^
+
+.. code-block:: ocaml
+
+   (* Arguments to merge3 should be sorted lists. *)
+   # merge3 [] [] [];;
+   - : int list = []
+
+   # merge3 [1] [] [];;
+   - : int list = [1]
+
+   # merge3 [] [2] [];;
+   - : int list = [2]
+
+   # merge3 [] [] [3];;
+   - : int list = [3]
+
+   # merge3 [1] [2] [];;
+   - : int list = [1; 2]
+
+   # merge3 [] [2] [3];;
+   - : int list = [2; 3]
+
+   # merge3 [1] [] [3];;
+   - : int list = [1; 3]
+
+   # merge3 [1] [2] [3];;
+   - : int list = [1; 2; 3]
+
+   # merge3 [1;4] [2;5] [3;6;7];;
+   - : int list = [1; 2; 3; 4; 5; 6; 7]
+
+   # merge3 [2;5] [1;4] [3;6;7];;
+   - : int list = [1; 2; 3; 4; 5; 6; 7]
+
+   # merge3 [2;5] [3;6;7] [1;4];;
+   - : int list = [1; 2; 3; 4; 5; 6; 7]
+
+   # merge3 [2;5] [3;5;7] [1;4];;
+   - : int list = [1; 2; 3; 4; 5; 5; 7]
+
+   # merge3 [1;2;4] [] [3;5;6;7];;
+   - : int list = [1; 2; 3; 4; 5; 6; 7]
+
+.. hint::
+
+   The easiest way to implement this function is to define a helper
+   function that merges two lists and then use this twice
+   (on the first two lists,
+   then on the result of the merge and the third list).
+
+   You may find the OCaml ``@`` (list append) operator
+   and the ``List.rev`` library function to be useful.
+
+
+c. ``merge_sort3``
+~~~~~~~~~~~~~~~~~~
+
+Now use ``split3`` and ``merge3`` to write ``merge_sort3``. This
+function does not have to be tail recursive.
+
+
+
+2. Block sorting
+----------------
+
+[**2.5 marks**]
+
+For this problem, we are going to implement a rather unusual sorting
+algorithm which we’ll call "block sorting". It is related to another
+unusual sorting algorithm called "pancake sorting" which was once
+studied by Bill Gates, among other people.  [1]_
+
+The basic idea is this: what if, when you are sorting a list, the only
+way you can rearrange the list is to flip an entire sublist of the list
+including the beginning of the list? So if the list is
+``[a; b; c; d; e]`` for some values ``a`` to ``e``, you can transform it
+to ``[b; a; c; d; e]`` (flip first two items), ``[c; b; a; d; e]`` (flip
+first three items), ``[d; c; b; a; e]`` (flip first four items), or
+``[e; d; c; b; a]`` (flip all items), and that’s all. How would you then
+sort the list?
+
+The algorithm is actually pretty simple:
+
+* Find the smallest element in the list.
+
+* Flip the sublist up to and including that element. That puts the
+  smallest element at the head of the list.
+
+* Recursively sort the tail of the list and combine with the head to
+  get the final sorted list.
+
+This is a contrived algorithm, and it has no practical value (it won’t
+be particularly efficient, for one thing) but implementing it is good
+practice in writing recursive list-processing functions. So let’s go!
+
+
+a. ``smallest_index``
+~~~~~~~~~~~~~~~~~~~~~
+
+Write a function called ``smallest_index`` which will take one argument
+(a list of integers) and return the *index* of the smallest element
+(*not* the value!). The index is ``0`` for the first element, ``1`` for
+the second element, and so on. Note that we don’t normally talk of
+"indices" for lists (as opposed to arrays, where we do), but we will do
+so here. If there is more than one copy of the smallest element, return
+the index of the first occurrence of the element in the list.
+
+Don’t use higher-order list processing functions in this problem; just
+write a regular recursive list processing function. It can implement a
+recursive or iterative process as you see fit. Most especially, you are
+**not** allowed to call any sorting functions in this function (such as
+the ``List.sort`` function in the OCaml standard libraries).
+
+If the input list is empty, raise an ``Invalid_argument`` exception with
+a meaningful error message. The easiest way to do this is to call the
+function ``invalid_arg`` with the error message; it will raise the
+exception for you.
+
+
+Examples
+^^^^^^^^
+
+.. code-block:: ocaml
+
+   # smallest_index [];;
+   Exception: Invalid_argument "smallest_index: not enough elements".
+
+   # smallest_index [1];;
+   - : int = 0
+
+   # smallest_index [2;1];;
+   - : int = 1
+
+   # smallest_index [2;1;3];;
+   - : int = 1
+
+   # smallest_index [2;1;1];;
+   - : int = 1
+
+   # smallest_index [2;1;3;1;4;5;0];;
+   - : int = 6
+
+
+b. ``flip_n``
+~~~~~~~~~~~~~
+
+Write a function called ``flip_n`` which takes two arguments: a
+non-negative argument ``n`` and a list of integers. (You may assume that
+the argument ``n`` is non-negative; you don’t have to check for this.)
+It should flip the order of the first ``n`` elements while leaving the
+rest unchanged, returning a new list. Since this will be done
+functionally, the input list will not (and cannot) be altered. If there
+aren’t enough elements in the list to do the flipping, the function
+should raise the ``Invalid_argument`` exception with a reasonable error
+message.
+
+
+Examples
+^^^^^^^^
+
+.. code-block:: ocaml
+
+   # flip_n 0 [];;
+   - : int list = []
+
+   # flip_n 0 [1;2;3;4;5];;
+   - : int list = [1; 2; 3; 4; 5]
+
+   # flip_n 1 [];;
+   Exception: Invalid_argument "flip_n: not enough elements".
+
+   # flip_n 1 [1;2;3;4;5];;
+   - : int list = [1; 2; 3; 4; 5]
+
+   # flip_n 2 [1;2;3;4;5];;
+   - : int list = [2; 1; 3; 4; 5]
+
+   # flip_n 3 [1;2;3;4;5];;
+   - : int list = [3; 2; 1; 4; 5]
+
+   # flip_n 4 [1;2;3;4;5];;
+   - : int list = [4; 3; 2; 1; 5]
+
+   # flip_n 5 [1;2;3;4;5];;
+   - : int list = [5; 4; 3; 2; 1]
+
+   # flip_n 6 [1;2;3;4;5];;
+   Exception: Invalid_argument "flip_n: not enough elements".
+
+
+c. ``block_sort1``
+~~~~~~~~~~~~~~~~~~
+
+Use your functions ``smallest_index`` and ``flip_n`` to write a short
+function called ``block_sort1`` which finds the smallest element in the
+list and flips the part of the list starting from the head and going up
+to and including that element. This is one iteration of the block
+sorting algorithm. Again, this is a purely functional function, so the
+input list is not altered; the new list is returned from the function.
+
+
+Examples
+^^^^^^^^
+
+.. code-block:: ocaml
+
+   # block_sort1 [];;
+   - : int list = []
+
+   # block_sort1 [1];;
+   - : int list = [1]
+
+   # block_sort1 [1;1;1];;
+   - : int list = [1; 1; 1]
+
+   # block_sort1 [1;2;3];;
+   - : int list = [1; 2; 3]
+
+   # block_sort1 [3;2;1];;
+   - : int list = [1; 2; 3]
+
+   # block_sort1 [5;4;3;2;1;2;3;4;5];;
+   - : int list = [1; 2; 3; 4; 5; 2; 3; 4; 5]
+
+   # block_sort1 [2;2;3;3;1;1;4;4;5;5];;
+   - : int list = [1; 3; 3; 2; 2; 1; 4; 4; 5; 5];;
+
+
+d. ``block_sort_r`` and ``block_sort_i``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now that we have defined ``block_sort1``,
+define two block sorting functions:
+
+* ``block_sort_r``, which generates a recursive process
+
+* ``block_sort_i``, which generates an iterative process
+
+
+Examples
+^^^^^^^^
+
+These examples work for both functions. We’ll just illustrate the
+answers using ``block_sort_r``.
+
+.. code-block:: ocaml
+
+   # block_sort_r [];;
+   - : int list = []
+
+   # block_sort_r [1];;
+   - : int list = [1]
+
+   # block_sort_r [1;1];;
+   - : int list = [1; 1]
+
+   # block_sort_r [1;2];;
+   - : int list = [1; 2]
+
+   # block_sort_r [2;1];;
+   - : int list = [1; 2]
+
+   # block_sort_r [5;4;3;2;1];;
+   - : int list = [1; 2; 3; 4; 5]
+
+   # block_sort_r [5;4;3;2;1;2;3;4;5];;
+   - : int list = [1; 2; 2; 3; 3; 4; 4; 5; 5]
+
+
+3. ``linrec``
+-------------
+
+[**1.5 marks**]
+
+We’ve seen in the assignments that it’s possible to abstract recursion
+patterns into higher-order functions (for instance, the
+``accumulate-rec`` and ``accumulate-iter`` functions we defined in
+assignment 2). However, we can actually go a lot further than we did in
+assignment 2 with fairly little effort and get amazingly general
+functions that express common recursion patterns. That’s what we’ll do
+in this problem and the next. Then we’ll use these functions to
+re-implement various recursive functions we’ve already seen.
+
+Probably the most basic recursion pattern is the one that yields a
+recursive process where there is only one recursive call in the
+function. Lots and lots of functions can be defined this way, including
+both functions on lists and functions on numbers. There is a very simple
+"recipe" for defining these functions which goes like this:
+
+#. Figure out what the base cases are.
+
+#. For each base case, figure out what to return.
+
+#. If the input is not a base case, figure out how to split it into the
+   part that we are going to recurse over, and anything else that we
+   need that we are not going to recurse over.
+
+#. Do the recursion, then figure out how to combine the result of the
+   recursion with the part we didn’t recurse over to get our final
+   answer.
+
+The neat thing is that we can express all of these items as functions!
+We will use these functions to define a higher-order function called
+``linrec`` (for "linear recursion"). It will take some arguments and
+return a function which is a recursive function over a single argument
+(which we’ll call "the input argument" below). The arguments to the
+``linrec`` function itself will be:
+
+* A function called ``is_base``, which will return ``true`` if the
+  input argument is one of the base cases of the recursive function we
+  are defining.
+
+* A function called ``on_base``, which will take the input argument
+  (assumed to be one of the base cases) and returns the correct result
+  for that base case. Note that sometimes the input argument isn’t
+  needed to compute the result of a base case, but sometimes it is.
+
+* A function called ``split``, which splits the input argument into the
+  part that is to be recursed over and the part that is not to be
+  recursed over. It returns a two-tuple, with the not-recursed-over
+  part coming first. **NOTE**: It doesn’t actually do any recursion!
+
+* A function called ``combine``, which takes two arguments (the
+  not-recursed-over part returned from ``split``, and the result of
+  recursing over the other part returned from ``split``) and
+  combines them to get the final answer. Again, this function doesn’t
+  do any recursion; only the ``linrec`` function itself does.
+
+This is probably pretty confusing, so let’s give a simple example: our
+old friend the factorial function. Described in the terms given above,
+we have:
+
+.. code-block:: ocaml
+
+   (* Base case: n = 0 *)
+   let is_base n = n = 0
+
+   (* If it's a base case, return 1. *)
+   let on_base _ = 1
+
+   (* Otherwise, split n into (n, n-1).  Recurse over (n-1). *)
+   let split n = (n, n - 1)
+
+   (* After recursing on n-1 to get factorial(n-1), multiply
+    * that by n to get factorial(n). *)
+   let combine a b = a * b   (* a --> n; b --> factorial(n - 1) *)
+
+So if we have ``linrec``, we can define factorial like this:
+
+.. code-block:: ocaml
+
+   let factorial =
+     let is_base n = n = 0 in
+     let on_base _ = 1 in
+     let split n = (n, n - 1) in
+     let combine a b = a * b in   (* or just: combine = ( * ) *)
+       linrec is_base on_base split combine
+
+and it will work!
+
+Here is what you need to do for this problem.
+
+
+a. Implementing ``linrec``
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Complete the following partial implementation of ``linrec``
+(removing the ``(* TODO: ... *)`` comments, of course):
+
+.. code-block:: ocaml
+
+   let linrec is_base on_base split combine =
+     let rec f x =
+       if is_base x then
+         on_base x
+       else
+         (* TODO: split using the split function *)
+         (* TODO: recurse on the second item in the tuple returned by split, using f *)
+         (* TODO: combine the results using the combine function *)
+     in f  (* return the resulting recursive function *)
+
+
+b. ``insert_r``
+~~~~~~~~~~~~~~~
+
+Use ``linrec`` to define a function called ``insert_r`` which takes two
+arguments: an integer called ``item`` and a list of integers which is
+assumed to be sorted in ascending order. ``insert_r`` will insert the
+item into the list, giving a sorted output list (sorted in ascending
+order). Here is a partial implementation of the code:
+
+.. code-block:: ocaml
+
+   let insert_r item =
+     (* two base cases: the empty list
+      * and when the item < the first element of the list *)
+     let is_base lst = lst = [] || item <= List.hd lst in
+
+     (* for both base cases, put the item on the front of the list *)
+     let on_base lst = item :: lst in
+
+     (* split the list.  Hint: structural recursion. *)
+     let split lst = (* TODO *) in
+
+     (* combine to get the final result *)
+     let combine first rest_after_rec = (* TODO *) in
+
+       linrec is_base on_base split combine
+
+Both the ``split`` and ``combine`` definitions are one-liners. You are
+allowed to use the ``List.hd`` and ``List.tl`` functions to get the head
+and tail of a list, respectively; here, it’s simpler than doing a
+pattern match.
+
+Note that ``insert_r`` takes two arguments, of which only the last is a
+list to be recursed over. That’s why our definition has the ``item``
+argument only; the ``linrec`` call returns a function that takes the
+list argument.
+
+
+c. ``insertion_sort``
+~~~~~~~~~~~~~~~~~~~~~
+
+Use ``linrec`` along with ``insert_r`` to define a function called
+``insertion_sort`` which implements an insertion sort (with the output
+list sorted in ascending order). Recall that an insertion sort of a
+non-empty list recursively sorts the tail of the list and then inserts
+the head into the sorted tail (here, using the ``insert_r`` function you
+just defined).
+
+Here is a partial implementation of the code, which you should complete.
+
+.. code-block:: ocaml
+
+   let insertion_sort =
+     (* base case: the list is empty *)
+     let is_base lst = lst = [] in
+
+     (* if it's a base case, return the empty list *)
+     let on_base _ = [] in
+
+     (* otherwise, split (hint: structural recursion again) *)
+     let split lst = (* TODO *) in
+
+     (* then combine *)
+     let combine first rest_after_rec = (* TODO *) in
+
+       linrec is_base on_base split combine
+
+Again, both the ``split`` and ``combine`` definitions are one-liners.
+
+.. note::
+
+   The test script won’t directly test your ``linrec`` function, but it
+   will test the ``insert_r`` and ``insertion_sort`` functions.
+
+
+4. ``binrec``
+-------------
+
+[**1 mark**]
+
+Even though ``linrec`` is amazing, it can’t do everything. Sometimes we
+need to do more than one recursive function call inside a recursive
+function. For instance, the naive ``fib`` (fibonacci) function had two
+recursive calls. Sorting functions like ``quicksort`` and ``mergesort``
+have two recursive calls as well. Shouldn’t we be able to define a
+two-recursive-call variant of ``linrec``? We can, and it’s called
+``binrec``! It takes arguments similar to those of ``linrec``, and
+returns a recursive function that does two recursions per call.
+Specifically, the arguments to ``binrec`` are:
+
+* ``is_base``: same as ``linrec``
+
+* ``on_base``: same as ``linrec``
+
+* ``split``: similar to ``linrec``, except that instead of splitting
+  the input argument into two parts, we split it into three parts and
+  return a three-tuple. The first element of the tuple is the part that
+  doesn’t get recursed over, while the other two elements do get
+  recursed over.
+
+* ``combine``: similar to ``linrec``, except that it combines three
+  values (the non-recursed-over value plus the result of recursing over
+  the other two values returned from ``split``).
+
+Let’s see what our old friend the tree-recursive ``fib`` function looks
+like when defined using ``binrec``:
+
+.. code-block:: ocaml
+
+   let fib =
+     let is_base n = n < 2 in
+     let on_base n = n in
+     let split n = (0, n-1, n-2) in
+     let combine _ n1 n2 = n1 + n2 in
+       binrec is_base on_base split combine
+
+The base cases should be straightforward;
+the base cases are ``n < 2`` and they are just returned as is.
+The ``split`` function generates the values to be recursed over
+(``n-1`` and ``n-2``);
+there is no need for a non-recursed-over value here,
+but we return ``0`` because ``split`` has to return something there.
+Finally, ``combine`` just adds the results of the recursion together;
+the non-recursed-over value is ignored.
+
+Here is what you need to do for this problem:
+
+
+a. Implementing ``binrec``
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Complete the following partial definition of ``binrec``:
+
+.. code-block:: ocaml
+
+   let binrec is_base on_base split combine =
+     let rec f x =
+       if is_base x then
+         on_base x
+       else
+         (* TODO: split using the split function *)
+         (* TODO: recurse on the second and third items in the tuple
+            returned by split, using f *)
+         (* TODO: combine the results using the combine function *)
+     in f  (* return the resulting recursive function *)
+
+
+b. ``quicksort``
+~~~~~~~~~~~~~~~~
+
+In assignment 3, we implemented the ``quicksort`` sorting algorithm.
+Recall how this algorithm works:
+
+* If the list is empty, return the empty list.
+
+* Otherwise, the first element in the list is called the *pivot*. Use
+  it to create a list of all the elements in the original list which
+  are smaller than the pivot (using the ``List.filter`` function), and
+  another list of elements in the original list which are equal to or
+  larger than the pivot (not including the pivot itself). Then
+  recursively quicksort those two lists and assemble the complete list
+  using the OCaml list append operator (``@``).
+
+Again, we will assume that we are sorting the list in ascending order.
+Write a version of this function using ``binrec``. Here is a partial
+implementation:
+
+.. code-block:: ocaml
+
+   let quicksort =
+     let is_base lst = lst = [] in
+     let on_base _ = [] in
+     let split lst =
+       match lst with
+         | [] -> invalid_arg "quicksort: can't split"
+         | h :: t -> (* TODO *)
+     in
+     let combine pivot lt ge = (* TODO *) in
+       binrec is_base on_base split combine
+
+
+5. ``tailrec``
+--------------
+
+[**1.5 marks**]
+
+The last function we’ll write in this section is a function which
+encapsulates the recursion pattern seen in tail-recursive functions
+which implement iterative processes. We’ll call this function
+``tailrec``. Surprisingly, it’s actually much simpler than either
+``linrec`` or ``binrec``. Like ``linrec`` and ``binrec``, when given the
+appropriate arguments it returns a recursive function. Unlike ``linrec``
+or ``binrec``, its arguments are all functions that take a single tuple
+as their only argument; this tuple contains all the actual input
+arguments to the tail-recursive function.
+
+Here are the arguments:
+
+* ``next``: This is a function which takes a tuple of input arguments
+  to the tail-recursive function and generates the next tuple to be
+  passed to the function. Note that this means that the inputs to the
+  tail-recursive function are represented as a single tuple instead of
+  as several separate arguments.
+
+* ``is_base``: This is the same as ``is_base`` in ``linrec``, except
+  that it receives the entire tuple of input arguments as its argument.
+
+* ``on_base``: This is the same as ``on_base`` in ``linrec``, except
+  that it receives the entire tuple of input arguments as its argument.
+
+Here is an example of its use: to define a tail-recursive factorial
+function called ``fact_iter``:
+
+.. code-block:: ocaml
+
+   let fact_iter n =
+     let is_base (n, _) = n = 0 in
+     let on_base (_, r) = r in
+     let next (n, r) = (n - 1, r * n) in
+     let iter = tailrec is_base on_base next in
+       iter (n, 1)
+
+Note the key difference between this definition and what we’ve seen with
+``linrec`` and ``binrec``: here, ``tailrec`` is used not to define the
+``fact_iter`` function itself but to define a tail-recursive helper
+function called ``iter``, which is then used to implement the
+``fact_iter`` function.
+
+All the functions ``is_base``, ``on_base``, and ``next`` take as their
+only argument a two-tuple of integers, representing the number being
+processed ``n`` and the running product ``r``. The ``is_base`` function
+states that the only base case is when ``n`` is zero. If that is the
+base case, then ``on_base`` specifies that the tail-recursive function
+should just return the result ``r``. The ``next`` function turns the
+current ``(n, r)`` pair into ``(n-1, r*n)`` for the next iteration. If
+``next`` is repeated until ``n = 0``, then ``r`` will be
+``factorial(n)``.
+
+Here is what you need to do for this problem.
+
+
+a. Implementing ``tailrec``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Complete the following partial definition of ``tailrec``:
+
+.. code-block:: ocaml
+
+   let tailrec is_base on_base next =
+     let rec f inputs =
+       (* TODO *)
+     in f  (* return the tail-recursive function *)
+
+
+b. ``insert_i``
+~~~~~~~~~~~~~~~
+
+Write a tail-recursive variant (using ``tailrec``) of the ``insert_r``
+function you defined above; call it ``insert_i``. Here is a partial
+implementation:
+
+.. code-block:: ocaml
+
+   let insert_i item lst =
+     let is_base (_, rest) = rest = [] || item <= List.hd rest in
+     let on_base (prev, rest) = (* TODO *) in
+     let next (prev, rest) = (* TODO *) in
+     let iter = tailrec is_base on_base next in
+       iter ([], lst)
+
+
+c. ``insertion_sort_i``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Write a tail-recursive variant (using ``tailrec``) of the
+``insertion_sort`` function you defined above; call it
+``insertion_sort_i``. Here is a partial implementation:
+
+.. code-block:: ocaml
+
+   let insertion_sort_i lst =
+     let is_base (_, rest) = rest = [] in
+     let on_base (prev, _) = (* TODO *) in
+     let next (prev, rest) = (* TODO *) in
+     let iter = tailrec is_base on_base next in
+       iter ([], lst)
+
+You can use ``List.hd``, ``List.tl``, and ``List.rev`` in your solution
+as needed.
+
+----
+
+.. rubric:: Footnotes
+
+.. [1] Bill Gates used to be the CEO of a software company. Apparently that
+   company is still around.

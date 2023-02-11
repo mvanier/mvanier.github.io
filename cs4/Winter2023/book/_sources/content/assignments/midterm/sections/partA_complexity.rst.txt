@@ -1,0 +1,150 @@
+Part A: Asymptotic time complexity
+==================================
+
+In this section, we’re going to look at asymptotic time complexity.
+First, we will show you some functions, ask you to deduce their
+asymptotic complexities, and explain your answer. Then there is a more
+open-ended question at the end of the section.
+
+This section is worth 6 marks, divided between the functions as
+indicated.
+
+For each of the following functions:
+
+* Deduce its (worst-case) asymptotic time complexity
+  with respect to one (or more) of the function arguments.
+  Use big-|bigO| notation,
+  but give the tightest bound you can
+  (in other words, write the answer using big-|bigO|
+  but really give the big-|Theta| value),
+  unless otherwise indicated.
+  Indicate which function argument
+  (or what function of which argument or arguments
+  |eg| the length of a list argument) the complexity refers to.
+  For instance, a function of two variables :math:`x` and :math:`y`
+  might be :math:`O(x)` or :math:`O(y)`
+  (or some function of :math:`x` and :math:`y`)).
+  Be clear about this
+  (don’t just write "linear" or "exponential" or you’ll lose marks).
+  If there are functions with exponential complexity
+  you should indicate what the base of the exponential is
+  (but not for functions with logarithmic complexity,
+  as we explained in class).
+
+* Explain the reasoning you used to deduce the asymptotic time
+  complexity. This should be only a couple of sentences, or at most a
+  short paragraph (don’t get carried away; just give us the general
+  idea).
+
+* You may assume that all built-in arithmetic functions are :math:`O(1)`
+  |ie| take a constant maximum time to execute
+  irrespective of the size of the arguments.
+
+
+Problem 1
+---------
+
+[**1 mark**]
+
+.. code-block:: ocaml
+
+  let f n =
+    let rec aux n r =
+      match n with
+        | 0 -> r
+        | _ -> aux (n - 1) (n + 1000 * n * r)
+    in
+      aux n 0
+
+
+Problem 2
+---------
+
+[**1 marks**]
+
+.. code-block:: ocaml
+
+  let rec bounce m n =
+    if m = n
+      then n
+      else
+        if m < n
+          then m + bounce (m + 1) n
+          else n + bounce (m - 1) n
+
+.. hint::
+
+   How many steps will it take this function to terminate, as a
+   function of ``m`` and ``n``?
+
+
+Problem 3
+---------
+
+[**1.5 marks**]
+
+Here is a variant of the recursive fibonacci function shown in the
+lectures. The sequence it generates is known as the "tribonacci
+sequence" for reasons that should be obvious.
+
+.. code-block:: ocaml
+
+  let rec trib n =
+    match n with
+      | 0 -> 0
+      | 1 -> 0
+      | 2 -> 1
+      | _ -> trib (n - 1) + trib (n - 2) + trib (n - 3)
+
+.. note::
+
+   You don’t have to give an absolutely precise bound here
+   |ie| give the big-|bigO| bound instead of the big-|Theta| bound.
+   Put differently, give the bound
+   as the smallest simple function >= the actual asymptotic bound.
+   You might find it useful to write up a simple equation for the
+   time complexity like we did in lecture 3, but this isn’t required.
+
+
+Problem 4
+---------
+
+[**1.5 marks**]
+
+.. code-block:: ocaml
+
+   let rec weird n =
+     match () with
+       | _ when n < 1 -> failwith "bad"
+       | _ when n = 1 -> 1
+       | _ when n mod 3 = 0 -> weird (n / 3)
+       | _ when n mod 2 = 0 -> weird (n / 2)
+       | _ -> weird (n - 1)
+
+Recall that the ``/`` operator on integers throws away remainders, and
+the ``mod`` operator computes the remainder after division.
+
+
+Problem 5
+---------
+
+[**1 mark**]
+
+Consider the following innocent-looking function:
+
+.. code-block:: ocaml
+
+   let rec f n =
+     match () with
+       | _ when n < 1 -> failwith "bad"
+       | _ when n = 1 -> 1
+       | _ when n mod 2 = 0 -> f (n / 2)
+       | _ -> f (3 * n + 1)
+
+We do not actually know if this function even *terminates* for arbitrary
+``n``, much less what its asymptotic time complexity would be. (This is
+known as the "Collatz Conjecture". If you could prove that this function
+terminates on all inputs, you would be famous. Fortunately, we’re not
+asking you to do that.) What aspect or aspects of this function makes it
+impossible to analyze by the methods we’ve shown you in this course?
+
