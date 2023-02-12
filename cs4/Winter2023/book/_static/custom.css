@@ -1,76 +1,76 @@
 /* Customizations to the Sphinx theme. */
  
 body {
-    /* Comment this out unless developing: */
-    /* background-color: #d0d0d0; */
-    /* Default fonts: */
-    /* Lato,proxima-nova,Helvetica Neue,Arial,sans-serif; */
-    /* For serif fonts: */
-    /* font-family:"Noto Serif", "DejaVu Serif", serif; */
+  /* Comment this out unless developing: */
+  /* background-color: #d0d0d0; */
+  /* Default fonts: */
+  /* Lato,proxima-nova,Helvetica Neue,Arial,sans-serif; */
+  /* For serif fonts: */
+  /* font-family:"Noto Serif", "DejaVu Serif", serif; */
 }
 
 div.document {
-    /* background-color: #efefe0; */
+  /* background-color: #efefe0; */
 }
 
 div.bd-sidebar__content {
-    background-color: #e0e0e0 !important;
+  background-color: #e0e0e0 !important;
 }
 
 .wy-body-for-nav {
-    /* background-color: #efefe0; !important */
-    background-color: #e4e4e4;
+  /* background-color: #efefe0; !important */
+  background-color: #e4e4e4;
 }
 
 /* Section headers. */
 
 div.section h3 {
-    /* color: red !important; */
-    font-style: italic !important;
+  /* color: red !important; */
+  font-style: italic !important;
 }
 
 /* Margin notes. */
 
 aside.margin.sidebar {
-    background: #e8e8e8 !important;
-    border-left: solid;
-    border-left-color: darkgreen;
-    border-radius: 5px;
+  background: #e8e8e8 !important;
+  border-left: solid;
+  border-left-color: darkgreen;
+  border-radius: 5px;
 }
 
 aside.margin.sidebar p {
-    color: black !important;
+  color: black !important;
 }
 
 /* Inline code padding and background color. */
 code.docutils.literal.notranslate {
-    padding-left: 4px !important;
-    padding-right: 4px !important;
-    padding-top: 2px !important;
-    padding-bottom: 2px !important;
-    background-color: #f0f0f0 !important;
-    white-space:nowrap;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  background-color: #f0f0f0 !important;
+  white-space:nowrap;
 }
 
 /* Inline code color. */
 span.pre {
-    /* color: #e74c3c; */ /* default */
-    /* color: #2980b9; */
-    color: #1950a0;
+  /* color: #e74c3c; */ /* default */
+  /* color: #2980b9; */
+  color: #1950a0;
 }
 
 .rst-content code {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 
 /* Code block colors. */
 div.highlight {
-    background-color: #f0f0f0 !important;
-    overflow-x: auto !important;
+  background-color: #f0f0f0 !important;
+  overflow-x: auto !important;
 }
 
 div.highlight-text {
-    color: #1950a0;
+  color: #1950a0;
 }
 
 .rst-content table.docutils td, .wy-table-bordered-all td {
@@ -117,43 +117,64 @@ li {
 /* Collapsible sections. */
 
 .toggle .header {
-    display: block;
-    clear: both;
+  display: block;
+  clear: both;
 }
 
 .toggle .header:after {
-    content: " ▶\a\a";
-    white-space: pre;
+  content: " ▶\a\a";
+  white-space: pre;
 }
 
 .toggle .header.open:after {
-    content: " ▼\a\a";
-    white-space: pre;
+  content: " ▼\a\a";
+  white-space: pre;
 }
 
 /* Custom admonitions. */
 
 .admonition-examples > .admonition-title::before {
-    content: none !important;
+  content: none !important;
 }
 
 .admonition-examples > .admonition-title {
-    background-color: #d8efef !important;
-    /* background-color: #088f8f !important; */
-    /* background-color: #00bfd0 !important; */
-    color: black !important;
-    /* color: white !important; */
-    font-style: italic !important;
-    font-size: 120% !important;
+  background-color: #d8efef !important;
+  /* background-color: #088f8f !important; */
+  /* background-color: #00bfd0 !important; */
+  color: black !important;
+  /* color: white !important; */
+  font-style: italic !important;
+  font-size: 120% !important;
 }
 
 .admonition-examples {
-    background-color: #f0f0f0 !important;
+  background-color: #f0f0f0 !important;
 }
 
 /* Icons. */
 
 .smiley {
-    /* color: red !important; */
-    margin-top: -5px !important;
+  /* color: red !important; */
+  margin-top: -5px !important;
+}
+
+/* BUG FIX for right-hand nav menu highlighting the wrong item. 
+ * Solution: disable highlighting entirely.
+ */
+
+/* Item text. */
+a.reference.internal.nav-link.active {
+  font-weight: normal !important;
+  color: inherit !important;
+}
+
+/* Vertical line on left side of highlighted item. */
+.bd-toc nav li.active > a.active {
+  /* border-left: 2px solid rgba(var(--pst-color-link),1); */
+  border-left: 0px solid rgba(var(--pst-color-link),1) !important;
+}
+
+.toc-entry > .nav-link.active {
+  /* border-left: 2px solid rgba(var(--pst-color-toc-link-active),1); */
+  border-left: 0px solid rgba(var(--pst-color-toc-link-active),1) !important;
 }
