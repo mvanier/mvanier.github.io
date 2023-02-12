@@ -15,6 +15,9 @@ For that, consult the lectures and/or the online documentation. We also refer
 you to the official OCaml cheat sheet which is `here
 <http://alhassy.com/OCamlCheatSheet/CheatSheet.pdf>`__.
 
+Along the way, we will also sometimes mention non-syntactic aspects of OCaml
+that are confusing to new OCaml programmers.
+
 Operators
 ---------
 
@@ -1030,7 +1033,7 @@ With ``begin``/``end`` it looks like this:
 Either are acceptable.
 
 If OCaml’s ``else if`` situation makes you uneasy, there is a perfectly
-reasonable alternative…​ that will probably also make you uneasy! It’s a
+reasonable alternative... that will probably also make you uneasy! It’s a
 way of using OCaml’s ``match`` form that is like a sequence of
 ``if``/``else if``/``else`` forms. Example:
 
@@ -1362,6 +1365,139 @@ argument is pattern match on it. It’s never necessary, though, so feel
 free to write all your code without it.
 
 
+The "fragile pattern match" compiler warning
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We like to compile OCaml code with most of the warning settings enabled.
+This provides a lot of suggestions for fixing problematic code which is still
+technically correct.  You can turn on all compiler warnings by compiling
+with the ``-w A`` (``A`` means "all") command-line option.
+This works both for ``ocamlc`` and for the interactive interpreters
+``ocaml`` and ``utop``.
+
+.. note::
+
+   We don't necessarily recommend the ``-w A`` option
+   for routine use with interactive interpreters,
+   because some warnings would cause problems with normal use of interpreters,
+   such as redefining datatypes.
+
+One particular compiler warning can be very confusing.  Consider this code:
+
+.. code-block:: ocaml
+
+   type foo =
+     | Foo
+     | Bar of int
+     | Baz of string
+
+   let get_foo_int f =
+     match f with
+       | Bar i -> i
+       | _ -> 0
+
+With warnings enabled, this gives this warning:
+
+.. code-block:: text
+
+   Warning 4 [fragile-match]: this pattern-matching is fragile.
+   It will remain exhaustive when constructors are added to type foo.
+   val get_foo_int : foo -> int = <fun>
+
+What this is complaining about is the last line
+in the ``get_foo_int`` function: ``| _ -> 0``.
+The intent of this line is to say that for all constructors
+except the ``Bar`` constructor, return the integer ``0``.
+This is not incorrect code!
+On the other hand, Let's say we modified the ``foo`` type
+to have another constructor that contained an ``int`` value:
+
+.. code-block:: ocaml
+
+   type foo =
+     | Foo
+     | Bar of int
+     | Baz of string
+     | Boom of int
+
+but we forgot to change the ``get_foo_int`` function.
+The function will still work, but it won't do the right thing.
+You would probably want to change it to this:
+
+.. code-block:: ocaml
+
+   let get_foo_int f =
+     match f with
+       | Bar i -> i
+       | Boom i -> i
+       | _ -> 0
+
+so that any constructor with an ``int`` value has the ``int`` value returned.
+But since the old code is still correct,
+you won't know that you need to make this change.
+
+This is what a "fragile pattern match" means: it's a catch-all case
+that matches more than one constructor, so if you happen to add more
+constructors to the datatype, it will match those as well.
+What you would like it to do is to warn you:
+"Hey!  I've never seen the ``Boom`` case before,
+and you're not handling it, so that's probably an error!"
+The way to do this is to explicitly handle all constructors
+in the original function.
+
+.. code-block:: ocaml
+
+   let get_foo_int f =
+     match f with
+       | Bar i -> i
+       | Foo -> 0
+       | Baz _ -> 0
+
+Then the warning will go away.  On the other hand, it's annoying to have
+to write the same value (here, ``0``) for two cases.
+In this case, we can use the "fall through" mechanism of pattern matching
+to make the code simpler:
+
+.. code-block:: ocaml
+
+   let get_foo_int f =
+     match f with
+       | Bar i -> i
+       | Foo   (* no `->` so fall through to next case *)
+       | Baz _ -> 0
+
+And we can write all the catch-all cases on one line:
+
+.. code-block:: ocaml
+
+   let get_foo_int f =
+     match f with
+       | Bar i -> i
+       | Foo | Baz _ -> 0
+
+Now, if we add the ``Boom`` constructor, we will have to add a case for that:
+
+.. code-block:: ocaml
+
+   type foo =
+     | Foo
+     | Bar of int
+     | Baz of string
+     | Boom of int   (* new constructor *)
+
+   let get_foo_int f =
+     match f with
+       | Bar i -> i
+       | Boom i -> i   (* new case *)
+       | Foo | Baz _ -> 0
+
+If we left out the ``Boom`` case, we would get a warning about a
+non-exhaustive pattern-match, and we would know just what to fix.
+
+Writing out catch-all cases like this is a bit tedious at times,
+but if you don't do it, you can get very weird bugs that are
+extremely hard to track down. [1]_
+
 ``let`` expressions
 -------------------
 
@@ -1563,4 +1699,15 @@ point), here are some good references:
 * https://caml.inria.fr/pub/docs/manual-ocaml/polymorphism.html
 
 * https://ocamlverse.github.io/content/weak_type_variables.html
+
+----
+
+.. rubric:: Footnotes
+
+.. [1] In the CS 164 course (Compilers), which uses OCaml,
+   this kind of situation comes up quite frequently,
+   because many of the compilers start with compiler passes
+   from a simpler compiler and extend them to handle
+   new constructors.
+
 

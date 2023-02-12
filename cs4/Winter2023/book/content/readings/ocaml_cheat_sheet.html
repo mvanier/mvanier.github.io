@@ -653,6 +653,11 @@ title="Fullscreen mode"
      expressions
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-fragile-pattern-match-compiler-warning">
+     The “fragile pattern match” compiler warning
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -920,6 +925,11 @@ title="Fullscreen mode"
      expressions
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-fragile-pattern-match-compiler-warning">
+     The “fragile pattern match” compiler warning
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -982,6 +992,8 @@ confusing and/or counterintuitive, as well as some other features which may
 trip you up. This document is <strong>not</strong> a complete description of OCaml syntax.
 For that, consult the lectures and/or the online documentation. We also refer
 you to the official OCaml cheat sheet which is <a class="reference external" href="http://alhassy.com/OCamlCheatSheet/CheatSheet.pdf">here</a>.</p>
+<p>Along the way, we will also sometimes mention non-syntactic aspects of OCaml
+that are confusing to new OCaml programmers.</p>
 <section id="operators">
 <h2>Operators<a class="headerlink" href="#operators" title="Permalink to this headline">#</a></h2>
 <section id="operator-underloading">
@@ -1852,7 +1864,7 @@ parentheses or a <code class="docutils literal notranslate"><span class="pre">be
 </div>
 <p>Either are acceptable.</p>
 <p>If OCaml’s <code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code> situation makes you uneasy, there is a perfectly
-reasonable alternative…​ that will probably also make you uneasy! It’s a
+reasonable alternative… that will probably also make you uneasy! It’s a
 way of using OCaml’s <code class="docutils literal notranslate"><span class="pre">match</span></code> form that is like a sequence of
 <code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code> forms. Example:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">abs</span> <span class="n">n</span> <span class="o">=</span>
@@ -2125,6 +2137,119 @@ functions of a simple argument where the only thing you do with the
 argument is pattern match on it. It’s never necessary, though, so feel
 free to write all your code without it.</p>
 </section>
+<section id="the-fragile-pattern-match-compiler-warning">
+<h3>The “fragile pattern match” compiler warning<a class="headerlink" href="#the-fragile-pattern-match-compiler-warning" title="Permalink to this headline">#</a></h3>
+<p>We like to compile OCaml code with most of the warning settings enabled.
+This provides a lot of suggestions for fixing problematic code which is still
+technically correct.  You can turn on all compiler warnings by compiling
+with the <code class="docutils literal notranslate"><span class="pre">-w</span> <span class="pre">A</span></code> (<code class="docutils literal notranslate"><span class="pre">A</span></code> means “all”) command-line option.
+This works both for <code class="docutils literal notranslate"><span class="pre">ocamlc</span></code> and for the interactive interpreters
+<code class="docutils literal notranslate"><span class="pre">ocaml</span></code> and <code class="docutils literal notranslate"><span class="pre">utop</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We don’t necessarily recommend the <code class="docutils literal notranslate"><span class="pre">-w</span> <span class="pre">A</span></code> option
+for routine use with interactive interpreters,
+because some warnings would cause problems with normal use of interpreters,
+such as redefining datatypes.</p>
+</div>
+<p>One particular compiler warning can be very confusing.  Consider this code:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">foo</span> <span class="o">=</span>
+  <span class="o">|</span> <span class="nc">Foo</span>
+  <span class="o">|</span> <span class="nc">Bar</span> <span class="k">of</span> <span class="kt">int</span>
+  <span class="o">|</span> <span class="nc">Baz</span> <span class="k">of</span> <span class="kt">string</span>
+
+<span class="k">let</span> <span class="n">get_foo_int</span> <span class="n">f</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">f</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="nc">Bar</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span>
+    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>With warnings enabled, this gives this warning:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Warning 4 [fragile-match]: this pattern-matching is fragile.
+It will remain exhaustive when constructors are added to type foo.
+val get_foo_int : foo -&gt; int = &lt;fun&gt;
+</pre></div>
+</div>
+<p>What this is complaining about is the last line
+in the <code class="docutils literal notranslate"><span class="pre">get_foo_int</span></code> function: <code class="docutils literal notranslate"><span class="pre">|</span> <span class="pre">_</span> <span class="pre">-&gt;</span> <span class="pre">0</span></code>.
+The intent of this line is to say that for all constructors
+except the <code class="docutils literal notranslate"><span class="pre">Bar</span></code> constructor, return the integer <code class="docutils literal notranslate"><span class="pre">0</span></code>.
+This is not incorrect code!
+On the other hand, Let’s say we modified the <code class="docutils literal notranslate"><span class="pre">foo</span></code> type
+to have another constructor that contained an <code class="docutils literal notranslate"><span class="pre">int</span></code> value:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">foo</span> <span class="o">=</span>
+  <span class="o">|</span> <span class="nc">Foo</span>
+  <span class="o">|</span> <span class="nc">Bar</span> <span class="k">of</span> <span class="kt">int</span>
+  <span class="o">|</span> <span class="nc">Baz</span> <span class="k">of</span> <span class="kt">string</span>
+  <span class="o">|</span> <span class="nc">Boom</span> <span class="k">of</span> <span class="kt">int</span>
+</pre></div>
+</div>
+<p>but we forgot to change the <code class="docutils literal notranslate"><span class="pre">get_foo_int</span></code> function.
+The function will still work, but it won’t do the right thing.
+You would probably want to change it to this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">get_foo_int</span> <span class="n">f</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">f</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="nc">Bar</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span>
+    <span class="o">|</span> <span class="nc">Boom</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span>
+    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>so that any constructor with an <code class="docutils literal notranslate"><span class="pre">int</span></code> value has the <code class="docutils literal notranslate"><span class="pre">int</span></code> value returned.
+But since the old code is still correct,
+you won’t know that you need to make this change.</p>
+<p>This is what a “fragile pattern match” means: it’s a catch-all case
+that matches more than one constructor, so if you happen to add more
+constructors to the datatype, it will match those as well.
+What you would like it to do is to warn you:
+“Hey!  I’ve never seen the <code class="docutils literal notranslate"><span class="pre">Boom</span></code> case before,
+and you’re not handling it, so that’s probably an error!”
+The way to do this is to explicitly handle all constructors
+in the original function.</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">get_foo_int</span> <span class="n">f</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">f</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="nc">Bar</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span>
+    <span class="o">|</span> <span class="nc">Foo</span> <span class="o">-&gt;</span> <span class="mi">0</span>
+    <span class="o">|</span> <span class="nc">Baz</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Then the warning will go away.  On the other hand, it’s annoying to have
+to write the same value (here, <code class="docutils literal notranslate"><span class="pre">0</span></code>) for two cases.
+In this case, we can use the “fall through” mechanism of pattern matching
+to make the code simpler:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">get_foo_int</span> <span class="n">f</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">f</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="nc">Bar</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span>
+    <span class="o">|</span> <span class="nc">Foo</span>   <span class="c">(* no `-&gt;` so fall through to next case *)</span>
+    <span class="o">|</span> <span class="nc">Baz</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>And we can write all the catch-all cases on one line:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">get_foo_int</span> <span class="n">f</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">f</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="nc">Bar</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span>
+    <span class="o">|</span> <span class="nc">Foo</span> <span class="o">|</span> <span class="nc">Baz</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Now, if we add the <code class="docutils literal notranslate"><span class="pre">Boom</span></code> constructor, we will have to add a case for that:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">foo</span> <span class="o">=</span>
+  <span class="o">|</span> <span class="nc">Foo</span>
+  <span class="o">|</span> <span class="nc">Bar</span> <span class="k">of</span> <span class="kt">int</span>
+  <span class="o">|</span> <span class="nc">Baz</span> <span class="k">of</span> <span class="kt">string</span>
+  <span class="o">|</span> <span class="nc">Boom</span> <span class="k">of</span> <span class="kt">int</span>   <span class="c">(* new constructor *)</span>
+
+<span class="k">let</span> <span class="n">get_foo_int</span> <span class="n">f</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">f</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="nc">Bar</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span>
+    <span class="o">|</span> <span class="nc">Boom</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span>   <span class="c">(* new case *)</span>
+    <span class="o">|</span> <span class="nc">Foo</span> <span class="o">|</span> <span class="nc">Baz</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>If we left out the <code class="docutils literal notranslate"><span class="pre">Boom</span></code> case, we would get a warning about a
+non-exhaustive pattern-match, and we would know just what to fix.</p>
+<p>Writing out catch-all cases like this is a bit tedious at times,
+but if you don’t do it, you can get very weird bugs that are
+extremely hard to track down. <a class="footnote-reference brackets" href="#id5" id="id4">1</a></p>
+</section>
 </section>
 <section id="let-expressions">
 <h2><code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#let-expressions" title="Permalink to this headline">#</a></h2>
@@ -2297,6 +2422,17 @@ point), here are some good references:</p>
 <li><p><a class="reference external" href="https://caml.inria.fr/pub/docs/manual-ocaml/polymorphism.html">https://caml.inria.fr/pub/docs/manual-ocaml/polymorphism.html</a></p></li>
 <li><p><a class="reference external" href="https://ocamlverse.github.io/content/weak_type_variables.html">https://ocamlverse.github.io/content/weak_type_variables.html</a></p></li>
 </ul>
+<hr class="docutils" />
+<p class="rubric">Footnotes</p>
+<dl class="footnote brackets">
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id4">1</a></span></dt>
+<dd><p>In the CS 164 course (Compilers), which uses OCaml,
+this kind of situation comes up quite frequently,
+because many of the compilers start with compiler passes
+from a simpler compiler and extend them to handle
+new constructors.</p>
+</dd>
+</dl>
 </section>
 </section>
 </section>
