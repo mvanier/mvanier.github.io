@@ -1,0 +1,76 @@
+Part B: Tagged Data
+===================
+
+In this problem we will extend the tagged data representation of units
+that we explored in lecture 10.
+
+
+1. Extending ``get_meter``
+--------------------------
+
+[**2**] (5 minutes)
+
+Recall the code we ended up with at the end of lecture 10:
+
+.. code-block:: ocaml
+
+   let meters_per_foot = 0.3048
+
+   let get_meters len =
+     match len with
+       | `Meter m -> m
+       | `Foot f -> f *. meters_per_foot
+
+   let length_add a b = `Meter (get_meters a +. get_meters b)
+
+This code is nice in that it makes it easy to add new unit types without
+modifying a lot of code. Show that this is right by modifying the code
+to work with inches (where a length in inches will be represented by the
+tag :literal:`\`Inch` |eg| :literal:`\`Inch 2.3`.
+You should only have to add a single line to one of the functions above.
+*Hint:* There are 12 inches in a foot. |smile|
+
+
+2. Mass and time abstractions
+-----------------------------
+
+[**4**] (15 minutes)
+
+By analogy with the length abstraction given above, create a mass
+abstraction using tagged data. Mass units you should handle include
+grams, kilograms, and slugs (using the variant tags :literal:`\`Gram`,
+:literal:`\`Kilo`, and :literal:`\`Slug`, respectively). Note that a
+slug is 14593.903203 grams. Write a function called ``get_grams`` which
+returns the gram equivalent of any mass value as a float. Use this to
+write a function called ``mass_add`` which will add together any two
+kinds of masses.
+
+Repeat this process by defining a time abstraction using tagged data.
+Time units you should handle include seconds, minutes, hours, and days
+(using the variant tags :literal:`\`Second`, :literal:`\`Minute`,
+:literal:`\`Hour`, and :literal:`\`Day`, respectively). Write a function
+called ``get_seconds`` which returns the seconds equivalent of any time
+value as a float. You can look up the conversion factors if you don’t
+know them. Use this to write a function called ``time_add`` which will
+add together any two kinds of times.
+
+
+3. Adding units
+---------------
+
+[**4**]  (15 minutes)
+
+Now that we have length, mass, and time abstractions, we can deepen the
+abstraction hierarchy and write a generic ``unit_add`` function which
+will take any two tagged data values and add them if they are compatible
+or signal an error (using the ``failwith`` function) if not. For this,
+assume that every tagged data value is tagged not just with its unit tag
+but with a unit "class" tag. So a length unit wouldn’t be just
+:literal:`\`Meter 1.0` but :literal:`\`Length (\`Meter 1.0)`, and
+similarly for other united data values. The unit class variant tags are:
+:literal:`\`Length`, :literal:`\`Mass`, and :literal:`\`Time`.
+
+Do we get into a combinatorial explosion when adding more unit classes,
+at least as far as unit addition is concerned? Why or why not? Write
+your answer in an OCaml comment.
+

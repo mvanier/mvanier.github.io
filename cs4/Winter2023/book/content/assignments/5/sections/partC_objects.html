@@ -1,0 +1,1035 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Part C: Objects &#8212; The CS 4 book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Readings" href="../../../readings/index.html" />
+    <link rel="prev" title="Part B: Tagged Data" href="partB_tagged_data.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">The CS 4 book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../Introduction.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../admin/index.html">
+   Administrative information
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../admin/Syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../admin/Collaboration_policies.html">
+     Collaboration policies
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../Motivation.html">
+   Motivation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../History.html">
+   History
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../index.html">
+   Assignments
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../0/Assignment0.html">
+     Assignment 0: Getting set up
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../1/index.html">
+     Assignment 1: Evaluation and recursion
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partA_exercises.html">
+       Part A: Basic exercises
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partC_recursion.html">
+       Part C: Recursion
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../2/index.html">
+     Assignment 2: Asymptotic complexity and higher-order functions
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partA_orders_of_growth.html">
+       Part A: Orders of growth
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partC_higher_order_functions.html">
+       Part C. Higher-order functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partD_additional_problems.html">
+       Part D: Additional problems
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../3/index.html">
+     Assignment 3: Lists
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partA_lists.html">
+       Part A: Working with lists
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partB_structural_generative_recursion.html">
+       Part B: Structural and generative recursion
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partC_more_lists.html">
+       Part C: Some harder problems with lists
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../4/index.html">
+     Assignment 4: Data abstraction
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/partA_abstraction.html">
+       Part A: Abstraction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/partB_more_abstraction.html">
+       Part B: More abstraction problems
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/partC_algebra.html">
+       Part C: Miniproject: Algebraic expressions
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../midterm/index.html">
+     Midterm exam
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/partA_complexity.html">
+       Part A: Asymptotic time complexity
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/partB_lists_hofs.html">
+       Part B: Recursion and higher-order functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/partC_data_structures.html">
+       Part C: Data structures: AA trees
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="../index.html">
+     Assignment 5: Tags and objects
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="partA_mutation.html">
+       Part A: Mutation and imperative programming
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="partB_tagged_data.html">
+       Part B: Tagged Data
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       Part C: Objects
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../readings/index.html">
+   Readings
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../readings/ocaml_cheat_sheet.html">
+     OCaml syntax cheat sheet
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../readings/subst.html">
+     The substitution model
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#object-oriented-grams">
+   1. Object-oriented grams
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#object-oriented-differentiator">
+   2. Object-oriented differentiator
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-make-product">
+     a.
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       make_product
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#b-testing-the-differentiator">
+     b. Testing the differentiator
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#i">
+       i.
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ii">
+       ii.
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#iii">
+       iii.
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#iv">
+       iv.
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#v">
+       v.
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#vi">
+       vi.
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Part C: Objects</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#object-oriented-grams">
+   1. Object-oriented grams
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#object-oriented-differentiator">
+   2. Object-oriented differentiator
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-make-product">
+     a.
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       make_product
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#b-testing-the-differentiator">
+     b. Testing the differentiator
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#i">
+       i.
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ii">
+       ii.
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#iii">
+       iii.
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#iv">
+       iv.
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#v">
+       v.
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#vi">
+       vi.
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="part-c-objects">
+<h1>Part C: Objects<a class="headerlink" href="#part-c-objects" title="Permalink to this headline">#</a></h1>
+<section id="object-oriented-grams">
+<h2>1. Object-oriented grams<a class="headerlink" href="#object-oriented-grams" title="Permalink to this headline">#</a></h2>
+<p>[<strong>4</strong>] (30 minutes)</p>
+<p>Give an object-oriented implementation of a gram unit which supports the
+following methods:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">get_grams</span></code></dt><dd><p>Returns a number (OCaml float) representing the mass in grams.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">get_slugs</span></code></dt><dd><p>Returns a number (OCaml float) representing the mass in slugs. Note
+that a slug is roughly equal to 14593.903203 grams.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">unit_type</span></code></dt><dd><p>Returns <code class="docutils literal notranslate"><span class="pre">`Gram</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compatible</span></code></dt><dd><p>Returns <code class="docutils literal notranslate"><span class="pre">true</span></code> when given anything which the <code class="docutils literal notranslate"><span class="pre">add</span></code> method of the
+gram object supports (<em>i.e.</em> a gram or a slug);
+here is an example:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(* NOTE: You do not have to define make_slug or make_foot.</span>
+<span class="c">   This is an example to show how it should work. *)</span>
+
+<span class="k">let</span> <span class="n">agram</span> <span class="o">=</span> <span class="n">make_gram</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span>
+<span class="k">let</span> <span class="n">bslug</span> <span class="o">=</span> <span class="n">make_slug</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span>
+<span class="k">let</span> <span class="n">cfoot</span> <span class="o">=</span> <span class="n">make_foot</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span>
+
+<span class="n">agram</span><span class="o">#</span><span class="n">compatible</span> <span class="n">agram</span>  <span class="c">(* true *)</span>
+<span class="n">agram</span><span class="o">#</span><span class="n">compatible</span> <span class="n">bslug</span>  <span class="c">(* true *)</span>
+<span class="n">agram</span><span class="o">#</span><span class="n">compatible</span> <span class="n">cfoot</span>  <span class="c">(* false *)</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>You can assume that both <code class="docutils literal notranslate"><span class="pre">make_slug</span></code> and <code class="docutils literal notranslate"><span class="pre">make_foot</span></code> return
+objects that have the <code class="docutils literal notranslate"><span class="pre">unit_type</span></code> method.</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">add</span></code></dt><dd><p>Adds a compatible mass, returning another mass object. Here’s an
+example:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">agram</span> <span class="o">=</span> <span class="n">make_gram</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span>
+<span class="k">let</span> <span class="n">bslug</span> <span class="o">=</span> <span class="n">make_slug</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span>  <span class="c">(* similarly, you do not have to define make_slug *)</span>
+<span class="k">let</span> <span class="n">cgram</span> <span class="o">=</span> <span class="n">agram</span><span class="o">#</span><span class="n">add</span> <span class="n">bslug</span>
+<span class="n">cgram</span><span class="o">#</span><span class="n">get_grams</span>  <span class="c">(* 14594.9 (grams) *)</span>
+</pre></div>
+</div>
+<p>An incompatible object passed in as an argument should cause an error
+to be signalled using the <code class="docutils literal notranslate"><span class="pre">failwith</span></code> function.</p>
+</dd>
+</dl>
+<p>Here is a template for your code:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">make_gram</span> <span class="n">g</span> <span class="o">=</span>
+  <span class="k">let</span>
+    <span class="o">...</span> <span class="c">(* internal definitions *)</span>
+  <span class="k">in</span>
+    <span class="k">object</span>
+      <span class="k">method</span> <span class="n">get_grams</span> <span class="o">=</span> <span class="o">...</span>
+      <span class="k">method</span> <span class="n">get_slugs</span> <span class="o">=</span> <span class="o">...</span>
+      <span class="k">method</span> <span class="n">unit_type</span> <span class="o">=</span> <span class="o">...</span>
+      <span class="k">method</span> <span class="n">compatible</span> <span class="n">other</span> <span class="o">=</span> <span class="o">...</span>
+      <span class="k">method</span> <span class="n">add</span> <span class="n">other</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="k">end</span>
+</pre></div>
+</div>
+<p>Fill in the parts marked <code class="docutils literal notranslate"><span class="pre">...</span></code>.
+This requires less than 20 lines of code.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Don’t use a <code class="docutils literal notranslate"><span class="pre">self</span></code> reference <em>i.e.</em></p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">object</span> <span class="o">(</span><span class="n">self</span><span class="o">)</span>
+  <span class="o">...</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>This isn’t necessary and (unfortunately) changes the type signature
+to something that isn’t compatible with the type signature
+in the <code class="docutils literal notranslate"><span class="pre">.mli</span></code> file.</p>
+</div>
+<p>You can do this without repeating code, and you should.
+Put the repeated parts into the “internal definitions” section.</p>
+</section>
+<section id="object-oriented-differentiator">
+<h2>2. Object-oriented differentiator<a class="headerlink" href="#object-oriented-differentiator" title="Permalink to this headline">#</a></h2>
+<p>[<strong>6</strong>] (60 minutes)</p>
+<p>In this problem, we will consider an object-oriented implementation of
+the differentiator from assignment 4. In addition to taking the derivative, it
+will be possible to convert an expression to a string and evaluate an
+expression. For evaluation, we will provide a value for a variable and
+compute the expression (or number) that results from substituting in the
+number for the value (much like evaluation in the substitution model,
+except that we will only be giving a value to one variable at a time, so
+we must keep track of symbolic expressions involving the variables which
+have not been given values).</p>
+<p>Each expression will be an OCaml object which responds to the following
+methods:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">value</span></code></dt><dd><p>Return the value of an expression as an OCaml <code class="docutils literal notranslate"><span class="pre">int</span></code> (only valid for
+expressions which represent numbers; anything else should signal an
+error).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">show</span></code></dt><dd><p>Return a representation of the expression as a string. Operator
+expressions should be wrapped in parentheses so we don’t have to
+worry about precedence.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">is_zero</span></code></dt><dd><p>Return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the expression is an object that represents the number 0.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">is_number</span></code></dt><dd><p>Return <code class="docutils literal notranslate"><span class="pre">true</span></code> if the expression is an object that represents a number.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">derive</span></code></dt><dd><p>Return the derivative of the expression with respect to the given
+variable. This derivative will be an OCaml object, just like the
+original expression was.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">evaluate</span></code></dt><dd><p>Evaluate the expression for a given variable and value. Note that
+this will not necessarily be the most simplified version of that
+expression, but it must be correct.</p>
+</dd>
+</dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(* g represents 5*x + x*y + 7*y *)</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">g</span> <span class="o">=</span>
+  <span class="n">make_sum</span>
+    <span class="o">(</span><span class="n">make_product</span>
+      <span class="o">(</span><span class="n">make_number</span> <span class="mi">5</span><span class="o">)</span>
+      <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;x&quot;</span><span class="o">))</span>
+    <span class="o">(</span><span class="n">make_sum</span>
+      <span class="o">(</span><span class="n">make_product</span>
+        <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;x&quot;</span><span class="o">)</span>
+        <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;y&quot;</span><span class="o">))</span>
+      <span class="o">(</span><span class="n">make_product</span>
+        <span class="o">(</span><span class="n">make_number</span> <span class="mi">7</span><span class="o">)</span>
+        <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;y&quot;</span><span class="o">)))</span> <span class="o">;;</span>
+<span class="k">val</span> <span class="n">g</span> <span class="o">:</span>
+  <span class="o">&lt;</span> <span class="n">derive</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">;</span> <span class="n">evaluate</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">;</span> <span class="n">is_number</span> <span class="o">:</span>
+    <span class="kt">bool</span><span class="o">;</span> <span class="n">is_zero</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">;</span> <span class="n">show</span> <span class="o">:</span> <span class="kt">string</span><span class="o">;</span> <span class="k">value</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">&gt;</span>
+  <span class="k">as</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">obj</span><span class="o">&gt;</span>
+
+<span class="o">#</span> <span class="n">g</span><span class="o">#</span><span class="n">show</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;((5 * x) + ((x * y) + (7 * y)))&quot;</span>
+<span class="c">(* Note that these results are not maximally simplified. *)</span>
+
+<span class="o">#</span> <span class="o">(</span><span class="n">g</span><span class="o">#</span><span class="n">evaluate</span> <span class="s2">&quot;x&quot;</span> <span class="mi">2</span><span class="o">)#</span><span class="n">show</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;(10 + ((2 * y) + (7 * y)))&quot;</span>
+
+<span class="o">#</span> <span class="o">(</span><span class="n">g</span><span class="o">#</span><span class="n">evaluate</span> <span class="s2">&quot;y&quot;</span> <span class="mi">3</span><span class="o">)#</span><span class="n">show</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;((5 * x) + ((x * 3) + 21))&quot;</span>
+
+<span class="o">#</span> <span class="o">((</span><span class="n">g</span><span class="o">#</span><span class="n">evaluate</span> <span class="s2">&quot;x&quot;</span> <span class="mi">2</span><span class="o">)#</span><span class="n">evaluate</span> <span class="s2">&quot;y&quot;</span> <span class="mi">3</span><span class="o">)#</span><span class="n">show</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;37&quot;</span>
+
+<span class="o">#</span> <span class="o">(</span><span class="n">g</span><span class="o">#</span><span class="n">derive</span> <span class="s2">&quot;x&quot;</span><span class="o">)#</span><span class="n">show</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;(5 + y)&quot;</span>
+
+<span class="o">#</span> <span class="o">(</span><span class="n">g</span><span class="o">#</span><span class="n">derive</span> <span class="s2">&quot;y&quot;</span><span class="o">)#</span><span class="n">show</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;(x + 7)&quot;</span>
+
+<span class="o">#</span> <span class="o">(</span><span class="n">g</span><span class="o">#</span><span class="n">derive</span> <span class="s2">&quot;z&quot;</span><span class="o">)#</span><span class="n">show</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+
+<span class="o">#</span> <span class="o">(((</span><span class="n">g</span><span class="o">#</span><span class="n">derive</span> <span class="s2">&quot;x&quot;</span><span class="o">)#</span><span class="n">evaluate</span> <span class="s2">&quot;x&quot;</span> <span class="mi">2</span><span class="o">)#</span><span class="n">evaluate</span> <span class="s2">&quot;y&quot;</span> <span class="mi">3</span><span class="o">)#</span><span class="n">show</span> <span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;8&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>Here is the starting code base for the problem:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(* Define a number as a message-passing object. *)</span>
+<span class="c">(* &quot;i&quot; is an int. *)</span>
+<span class="k">let</span> <span class="k">rec</span> <span class="n">make_number</span> <span class="n">i</span> <span class="o">=</span>
+  <span class="k">object</span>
+    <span class="k">method</span> <span class="k">value</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="k">method</span> <span class="n">show</span> <span class="o">=</span> <span class="n">string_of_int</span> <span class="n">i</span>
+    <span class="k">method</span> <span class="n">is_zero</span> <span class="o">=</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">method</span> <span class="n">is_number</span> <span class="o">=</span> <span class="bp">true</span>
+    <span class="k">method</span> <span class="n">evaluate</span> <span class="o">_</span> <span class="o">_</span> <span class="o">=</span> <span class="n">make_number</span> <span class="n">i</span>  <span class="c">(* must evaluate to an object *)</span>
+    <span class="k">method</span> <span class="n">derive</span> <span class="o">_</span> <span class="o">=</span> <span class="n">make_number</span> <span class="mi">0</span>  <span class="c">(* derivative of a number is 0 *)</span>
+  <span class="k">end</span>
+
+<span class="c">(* Define a variable as a message-passing object. *)</span>
+<span class="c">(* &quot;v&quot; is a string. *)</span>
+<span class="k">let</span> <span class="k">rec</span> <span class="n">make_variable</span> <span class="n">v</span> <span class="o">=</span>
+  <span class="k">object</span>
+    <span class="k">method</span> <span class="k">value</span> <span class="o">=</span> <span class="n">failwith</span> <span class="s2">&quot;variable has no numerical value&quot;</span>
+    <span class="k">method</span> <span class="n">show</span>  <span class="o">=</span> <span class="n">v</span>
+    <span class="k">method</span> <span class="n">is_zero</span> <span class="o">=</span> <span class="bp">false</span>
+    <span class="k">method</span> <span class="n">is_number</span> <span class="o">=</span> <span class="bp">false</span>
+    <span class="k">method</span> <span class="n">evaluate</span> <span class="n">v&#39;</span> <span class="n">n</span> <span class="o">=</span>
+      <span class="k">if</span> <span class="n">v</span> <span class="o">=</span> <span class="n">v&#39;</span>
+        <span class="k">then</span> <span class="n">make_number</span> <span class="n">n</span>
+        <span class="k">else</span> <span class="n">make_variable</span> <span class="n">v</span>
+    <span class="k">method</span> <span class="n">derive</span> <span class="n">v&#39;</span> <span class="o">=</span>
+      <span class="k">if</span> <span class="n">v</span> <span class="o">=</span> <span class="n">v&#39;</span>
+        <span class="k">then</span> <span class="n">make_number</span> <span class="mi">1</span>  <span class="c">(* d/dx(x) = 1 *)</span>
+        <span class="k">else</span> <span class="n">make_number</span> <span class="mi">0</span>  <span class="c">(* d/dx(y) = 0 *)</span>
+  <span class="k">end</span>
+
+<span class="c">(* Define a sum as a message-passing object. *)</span>
+<span class="k">let</span> <span class="k">rec</span> <span class="n">make_sum</span> <span class="n">expr1</span> <span class="n">expr2</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="bp">()</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="o">_</span> <span class="k">when</span> <span class="n">expr1</span><span class="o">#</span><span class="n">is_zero</span> <span class="o">-&gt;</span> <span class="n">expr2</span>  <span class="c">(* 0 + expr = expr *)</span>
+    <span class="o">|</span> <span class="o">_</span> <span class="k">when</span> <span class="n">expr2</span><span class="o">#</span><span class="n">is_zero</span> <span class="o">-&gt;</span> <span class="n">expr1</span>  <span class="c">(* expr + 0 = expr *)</span>
+    <span class="o">|</span> <span class="o">_</span> <span class="k">when</span> <span class="n">expr1</span><span class="o">#</span><span class="n">is_number</span> <span class="o">&amp;&amp;</span> <span class="n">expr2</span><span class="o">#</span><span class="n">is_number</span> <span class="o">-&gt;</span>  <span class="c">(* add numbers *)</span>
+          <span class="n">make_number</span> <span class="o">(</span><span class="n">expr1</span><span class="o">#</span><span class="k">value</span> <span class="o">+</span> <span class="n">expr2</span><span class="o">#</span><span class="k">value</span><span class="o">)</span>
+    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span>  <span class="c">(* create a new object representing the sum *)</span>
+          <span class="k">object</span>
+            <span class="k">method</span> <span class="k">value</span> <span class="o">=</span> <span class="n">failwith</span> <span class="s2">&quot;sum expression has no numerical value&quot;</span>
+            <span class="k">method</span> <span class="n">show</span> <span class="o">=</span> <span class="s2">&quot;(&quot;</span> <span class="o">^</span> <span class="n">expr1</span><span class="o">#</span><span class="n">show</span> <span class="o">^</span> <span class="s2">&quot; + &quot;</span> <span class="o">^</span> <span class="n">expr2</span><span class="o">#</span><span class="n">show</span> <span class="o">^</span> <span class="s2">&quot;)&quot;</span>
+            <span class="k">method</span> <span class="n">is_zero</span> <span class="o">=</span> <span class="bp">false</span>
+            <span class="k">method</span> <span class="n">is_number</span> <span class="o">=</span> <span class="bp">false</span>
+            <span class="k">method</span> <span class="n">evaluate</span> <span class="n">v</span> <span class="n">n</span> <span class="o">=</span>
+              <span class="n">make_sum</span> <span class="o">(</span><span class="n">expr1</span><span class="o">#</span><span class="n">evaluate</span> <span class="n">v</span> <span class="n">n</span><span class="o">)</span> <span class="o">(</span><span class="n">expr2</span><span class="o">#</span><span class="n">evaluate</span> <span class="n">v</span> <span class="n">n</span><span class="o">)</span>
+            <span class="k">method</span> <span class="n">derive</span> <span class="n">v</span> <span class="o">=</span>
+              <span class="n">make_sum</span> <span class="o">(</span><span class="n">expr1</span><span class="o">#</span><span class="n">derive</span> <span class="n">v</span><span class="o">)</span> <span class="o">(</span><span class="n">expr2</span><span class="o">#</span><span class="n">derive</span> <span class="n">v</span><span class="o">)</span>
+          <span class="k">end</span>
+
+<span class="c">(* Evaluate a message-passing expression with a number</span>
+<span class="c">   substituted for a variable. *)</span>
+<span class="k">let</span> <span class="n">evaluate</span> <span class="n">expr</span> <span class="n">v</span> <span class="n">n</span> <span class="o">=</span> <span class="n">expr</span><span class="o">#</span><span class="n">evaluate</span> <span class="n">v</span> <span class="n">n</span>
+
+<span class="c">(* Return the string representation of an expression. *)</span>
+<span class="k">let</span> <span class="n">show</span> <span class="n">expr</span> <span class="o">=</span> <span class="n">expr</span><span class="o">#</span><span class="n">show</span>
+
+<span class="c">(* Return the derivative of an expression. *)</span>
+<span class="k">let</span> <span class="n">differentiate</span> <span class="n">expr</span> <span class="n">v</span> <span class="o">=</span> <span class="n">expr</span><span class="o">#</span><span class="n">derive</span> <span class="n">v</span>
+</pre></div>
+</div>
+<p>You will be extending this in various ways.</p>
+<section id="a-make-product">
+<h3>a. <code class="docutils literal notranslate"><span class="pre">make_product</span></code><a class="headerlink" href="#a-make-product" title="Permalink to this headline">#</a></h3>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">make_product</span></code> to create objects representing
+product expressions (one expression multiplied by another) in a manner
+analogous to <code class="docutils literal notranslate"><span class="pre">make_sum</span></code>. It should return an object representing a
+number when possible (<em>i.e.</em> when all the argument expressions given are
+numbers). Multiplication by the number zero should be reduced to the
+number zero, and multiplication of a term by 1 should return the term.
+You can use the <code class="docutils literal notranslate"><span class="pre">make_sum</span></code> function above as a skeleton to build your
+solution around, but be careful to notice the differences between sums
+and products (for one thing, there are more base cases with products).
+Note that the derivative of a product of two expressions can be computed
+with the following rule:</p>
+<div class="math notranslate nohighlight">
+\[\frac{d}{dx} (f(x) \times g(x)) =
+\frac{df(x)}{dx} \times g(x) + f(x) \times \frac{dg(x)}{dx}\]</div>
+<p>where the derivatives are all with respect to <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<p>This function can be written in less than 30 lines.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Make sure that the return value of <code class="docutils literal notranslate"><span class="pre">make_product</span></code> is always a
+message-passing object, even if it’s just a wrapper around a number.
+If not, you may get extremely confusing type errors.</p>
+</div>
+</section>
+<section id="b-testing-the-differentiator">
+<h3>b. Testing the differentiator<a class="headerlink" href="#b-testing-the-differentiator" title="Permalink to this headline">#</a></h3>
+<p>Demonstrate that your operations work by evaluating the following
+expressions in the interactive OCaml interpreter and writing down your
+results in OCaml comments.</p>
+<section id="i">
+<h4>i.<a class="headerlink" href="#i" title="Permalink to this headline">#</a></h4>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(* f = x^3*y + 3*x^2*y^2 + y^2 + 2 *)</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">f</span> <span class="o">=</span>
+    <span class="n">make_sum</span>
+     <span class="o">(</span><span class="n">make_product</span>
+      <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;x&quot;</span><span class="o">)</span>
+      <span class="o">(</span><span class="n">make_product</span>
+       <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;x&quot;</span><span class="o">)</span>
+       <span class="o">(</span><span class="n">make_product</span>
+        <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;x&quot;</span><span class="o">)</span>
+        <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;y&quot;</span><span class="o">))))</span>
+     <span class="o">(</span><span class="n">make_sum</span>
+      <span class="o">(</span><span class="n">make_product</span>
+       <span class="o">(</span><span class="n">make_number</span> <span class="mi">3</span><span class="o">)</span>
+       <span class="o">(</span><span class="n">make_product</span>
+        <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;x&quot;</span><span class="o">)</span>
+        <span class="o">(</span><span class="n">make_product</span>
+         <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;x&quot;</span><span class="o">)</span>
+         <span class="o">(</span><span class="n">make_product</span>
+          <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;y&quot;</span><span class="o">)</span>
+          <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;y&quot;</span><span class="o">)))))</span>
+      <span class="o">(</span><span class="n">make_sum</span>
+       <span class="o">(</span><span class="n">make_product</span>
+        <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;y&quot;</span><span class="o">)</span>
+        <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;y&quot;</span><span class="o">))</span>
+       <span class="o">(</span><span class="n">make_number</span> <span class="mi">2</span><span class="o">)))</span> <span class="o">;;</span>
+</pre></div>
+</div>
+</section>
+<section id="ii">
+<h4>ii.<a class="headerlink" href="#ii" title="Permalink to this headline">#</a></h4>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">dfdx</span> <span class="o">=</span> <span class="n">differentiate</span> <span class="n">f</span> <span class="s2">&quot;x&quot;</span> <span class="o">;;</span>
+</pre></div>
+</div>
+</section>
+<section id="iii">
+<h4>iii.<a class="headerlink" href="#iii" title="Permalink to this headline">#</a></h4>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">show</span> <span class="n">dfdx</span> <span class="o">;;</span>
+</pre></div>
+</div>
+</section>
+<section id="iv">
+<h4>iv.<a class="headerlink" href="#iv" title="Permalink to this headline">#</a></h4>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">show</span> <span class="o">(</span><span class="n">evaluate</span> <span class="n">f</span> <span class="s2">&quot;x&quot;</span> <span class="mi">3</span><span class="o">)</span> <span class="o">;;</span>
+</pre></div>
+</div>
+</section>
+<section id="v">
+<h4>v.<a class="headerlink" href="#v" title="Permalink to this headline">#</a></h4>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">show</span> <span class="o">(</span><span class="n">evaluate</span> <span class="o">(</span><span class="n">evaluate</span> <span class="n">f</span> <span class="s2">&quot;x&quot;</span> <span class="mi">3</span><span class="o">)</span> <span class="s2">&quot;y&quot;</span> <span class="mi">4</span><span class="o">)</span> <span class="o">;;</span>
+</pre></div>
+</div>
+</section>
+<section id="vi">
+<h4>vi.<a class="headerlink" href="#vi" title="Permalink to this headline">#</a></h4>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">show</span> <span class="o">(</span><span class="n">evaluate</span> <span class="o">(</span><span class="n">evaluate</span> <span class="n">dfdx</span> <span class="s2">&quot;x&quot;</span> <span class="mi">3</span><span class="o">)</span> <span class="s2">&quot;y&quot;</span> <span class="mi">4</span><span class="o">)</span> <span class="o">;;</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>You probably want to test your functions on some simpler expressions
+first. Here are some examples. You do not have to submit the results of
+using your functions on these values.</p>
+</div>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">n0</span>  <span class="o">=</span> <span class="n">make_number</span> <span class="mi">0</span>
+<span class="k">let</span> <span class="n">n1</span>  <span class="o">=</span> <span class="n">make_number</span> <span class="mi">1</span>
+<span class="k">let</span> <span class="n">n2</span>  <span class="o">=</span> <span class="n">make_number</span> <span class="mi">2</span>
+<span class="k">let</span> <span class="n">x</span>   <span class="o">=</span> <span class="n">make_variable</span> <span class="s2">&quot;x&quot;</span>
+<span class="k">let</span> <span class="n">s1</span>  <span class="o">=</span> <span class="n">make_sum</span> <span class="n">n1</span> <span class="n">n2</span>
+<span class="k">let</span> <span class="n">s2</span>  <span class="o">=</span> <span class="n">make_sum</span> <span class="n">n1</span> <span class="n">n0</span>
+<span class="k">let</span> <span class="n">s3</span>  <span class="o">=</span> <span class="n">make_sum</span> <span class="n">x</span> <span class="n">n1</span>
+<span class="k">let</span> <span class="n">s4</span>  <span class="o">=</span> <span class="n">make_sum</span> <span class="o">(</span><span class="n">make_variable</span> <span class="s2">&quot;y&quot;</span><span class="o">)</span> <span class="o">(</span><span class="n">make_number</span> <span class="mi">4</span><span class="o">)</span>
+<span class="k">let</span> <span class="n">p1</span>  <span class="o">=</span> <span class="n">make_product</span> <span class="n">n2</span> <span class="n">n2</span>
+<span class="k">let</span> <span class="n">p2</span>  <span class="o">=</span> <span class="n">make_product</span> <span class="n">x</span> <span class="n">n0</span>
+<span class="k">let</span> <span class="n">p3</span>  <span class="o">=</span> <span class="n">make_product</span> <span class="n">x</span> <span class="n">n2</span>
+<span class="k">let</span> <span class="n">p4</span>  <span class="o">=</span> <span class="n">make_product</span> <span class="n">x</span> <span class="n">s1</span>
+<span class="k">let</span> <span class="n">sl1</span> <span class="o">=</span> <span class="n">make_sum</span> <span class="n">p3</span> <span class="o">(</span><span class="n">make_sum</span> <span class="n">p4</span> <span class="n">s3</span><span class="o">)</span>
+<span class="k">let</span> <span class="n">p5</span>  <span class="o">=</span> <span class="n">make_product</span> <span class="n">n2</span> <span class="n">p4</span>
+<span class="k">let</span> <span class="n">p6</span>  <span class="o">=</span> <span class="n">make_product</span> <span class="n">x</span> <span class="n">s3</span>
+<span class="k">let</span> <span class="n">ap1</span> <span class="o">=</span> <span class="n">make_sum</span> <span class="n">p3</span> <span class="n">p4</span>
+<span class="k">let</span> <span class="n">pa1</span> <span class="o">=</span> <span class="n">make_product</span> <span class="n">s3</span> <span class="n">s4</span>
+<span class="k">let</span> <span class="n">pl1</span> <span class="o">=</span> <span class="n">make_product</span> <span class="n">s2</span> <span class="o">(</span><span class="n">make_product</span> <span class="n">s4</span> <span class="n">sl1</span><span class="o">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="partB_tagged_data.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Part B: Tagged Data</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../../../readings/index.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Readings</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Michael Vanier<br/>
+  
+      &copy; Copyright 2023, Michael C. Vanier. All rights reserved.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,412 @@
+Part C: Objects
+===============
+
+..
+  MAYBE TO ADD: A convert-from-base message to complete the lecture 11 code.
+
+  The idea is that, when adding two units, do this:
+
+  1) Convert both units to a canonical representation (e.g. meters).
+  2) Add them.
+  3) Convert the result back to the representation of the current object
+     using a convert-from-base message.
+
+  This way, adding feet + meters gives feet, but adding meters + feet gives
+  meters.  And it scales well.
+
+1. Object-oriented grams
+------------------------
+
+[**4**] (30 minutes)
+
+Give an object-oriented implementation of a gram unit which supports the
+following methods:
+
+``get_grams``
+  Returns a number (OCaml float) representing the mass in grams.
+
+``get_slugs``
+  Returns a number (OCaml float) representing the mass in slugs. Note
+  that a slug is roughly equal to 14593.903203 grams.
+
+``unit_type``
+  Returns :literal:`\`Gram`.
+
+``compatible``
+  Returns ``true`` when given anything which the ``add`` method of the
+  gram object supports (|ie| a gram or a slug);
+  here is an example:
+
+  .. code-block:: ocaml
+
+     (* NOTE: You do not have to define make_slug or make_foot.
+        This is an example to show how it should work. *)
+
+     let agram = make_gram 1.0
+     let bslug = make_slug 1.0
+     let cfoot = make_foot 1.0
+
+     agram#compatible agram  (* true *)
+     agram#compatible bslug  (* true *)
+     agram#compatible cfoot  (* false *)
+
+  .. hint::
+
+     You can assume that both ``make_slug`` and ``make_foot`` return
+     objects that have the ``unit_type`` method.
+
+``add``
+  Adds a compatible mass, returning another mass object. Here’s an
+  example:
+
+  .. code-block:: ocaml
+
+     let agram = make_gram 1.0
+     let bslug = make_slug 1.0  (* similarly, you do not have to define make_slug *)
+     let cgram = agram#add bslug
+     cgram#get_grams  (* 14594.9 (grams) *)
+
+  An incompatible object passed in as an argument should cause an error
+  to be signalled using the ``failwith`` function.
+
+Here is a template for your code:
+
+.. code-block:: ocaml
+
+   let rec make_gram g =
+     let
+       ... (* internal definitions *)
+     in
+       object
+         method get_grams = ...
+         method get_slugs = ...
+         method unit_type = ...
+         method compatible other = ...
+         method add other = ...
+       end
+
+Fill in the parts marked ``...``.
+This requires less than 20 lines of code.
+
+.. warning::
+
+  Don’t use a ``self`` reference |ie|
+
+  .. code-block:: ocaml
+
+     object (self)
+       ...
+     end
+
+  This isn’t necessary and (unfortunately) changes the type signature
+  to something that isn't compatible with the type signature
+  in the ``.mli`` file.
+
+You can do this without repeating code, and you should.
+Put the repeated parts into the "internal definitions" section.
+
+
+2. Object-oriented differentiator
+---------------------------------
+
+[**6**] (60 minutes)
+
+In this problem, we will consider an object-oriented implementation of
+the differentiator from assignment 4. In addition to taking the derivative, it
+will be possible to convert an expression to a string and evaluate an
+expression. For evaluation, we will provide a value for a variable and
+compute the expression (or number) that results from substituting in the
+number for the value (much like evaluation in the substitution model,
+except that we will only be giving a value to one variable at a time, so
+we must keep track of symbolic expressions involving the variables which
+have not been given values).
+
+Each expression will be an OCaml object which responds to the following
+methods:
+
+``value``
+  Return the value of an expression as an OCaml ``int`` (only valid for
+  expressions which represent numbers; anything else should signal an
+  error).
+
+``show``
+  Return a representation of the expression as a string. Operator
+  expressions should be wrapped in parentheses so we don’t have to
+  worry about precedence.
+
+``is_zero``
+  Return ``true`` if the expression is an object that represents the number 0.
+
+``is_number``
+  Return ``true`` if the expression is an object that represents a number.
+
+``derive``
+  Return the derivative of the expression with respect to the given
+  variable. This derivative will be an OCaml object, just like the
+  original expression was.
+
+``evaluate``
+  Evaluate the expression for a given variable and value. Note that
+  this will not necessarily be the most simplified version of that
+  expression, but it must be correct.
+
+
+.. admonition:: Examples
+
+   .. code-block:: ocaml
+
+     (* g represents 5*x + x*y + 7*y *)
+     # let g =
+       make_sum
+         (make_product
+           (make_number 5)
+           (make_variable "x"))
+         (make_sum
+           (make_product
+             (make_variable "x")
+             (make_variable "y"))
+           (make_product
+             (make_number 7)
+             (make_variable "y"))) ;;
+     val g :
+       < derive : string -> 'a; evaluate : string -> int -> 'a; is_number :
+         bool; is_zero : bool; show : string; value : int >
+       as 'a = <obj>
+
+     # g#show ;;
+     - : string = "((5 * x) + ((x * y) + (7 * y)))"
+     (* Note that these results are not maximally simplified. *)
+
+     # (g#evaluate "x" 2)#show ;;
+     - : string = "(10 + ((2 * y) + (7 * y)))"
+
+     # (g#evaluate "y" 3)#show ;;
+     - : string = "((5 * x) + ((x * 3) + 21))"
+
+     # ((g#evaluate "x" 2)#evaluate "y" 3)#show ;;
+     - : string = "37"
+
+     # (g#derive "x")#show ;;
+     - : string = "(5 + y)"
+
+     # (g#derive "y")#show ;;
+     - : string = "(x + 7)"
+
+     # (g#derive "z")#show ;;
+     - : string = "0"
+
+     # (((g#derive "x")#evaluate "x" 2)#evaluate "y" 3)#show ;;
+     - : string = "8"
+
+Here is the starting code base for the problem:
+
+.. code-block:: ocaml
+
+   (* Define a number as a message-passing object. *)
+   (* "i" is an int. *)
+   let rec make_number i =
+     object
+       method value = i
+       method show = string_of_int i
+       method is_zero = i = 0
+       method is_number = true
+       method evaluate _ _ = make_number i  (* must evaluate to an object *)
+       method derive _ = make_number 0  (* derivative of a number is 0 *)
+     end
+
+   (* Define a variable as a message-passing object. *)
+   (* "v" is a string. *)
+   let rec make_variable v =
+     object
+       method value = failwith "variable has no numerical value"
+       method show  = v
+       method is_zero = false
+       method is_number = false
+       method evaluate v' n =
+         if v = v'
+           then make_number n
+           else make_variable v
+       method derive v' =
+         if v = v'
+           then make_number 1  (* d/dx(x) = 1 *)
+           else make_number 0  (* d/dx(y) = 0 *)
+     end
+
+   (* Define a sum as a message-passing object. *)
+   let rec make_sum expr1 expr2 =
+     match () with
+       | _ when expr1#is_zero -> expr2  (* 0 + expr = expr *)
+       | _ when expr2#is_zero -> expr1  (* expr + 0 = expr *)
+       | _ when expr1#is_number && expr2#is_number ->  (* add numbers *)
+             make_number (expr1#value + expr2#value)
+       | _ ->  (* create a new object representing the sum *)
+             object
+               method value = failwith "sum expression has no numerical value"
+               method show = "(" ^ expr1#show ^ " + " ^ expr2#show ^ ")"
+               method is_zero = false
+               method is_number = false
+               method evaluate v n =
+                 make_sum (expr1#evaluate v n) (expr2#evaluate v n)
+               method derive v =
+                 make_sum (expr1#derive v) (expr2#derive v)
+             end
+
+   (* Evaluate a message-passing expression with a number
+      substituted for a variable. *)
+   let evaluate expr v n = expr#evaluate v n
+
+   (* Return the string representation of an expression. *)
+   let show expr = expr#show
+
+   (* Return the derivative of an expression. *)
+   let differentiate expr v = expr#derive v
+
+You will be extending this in various ways.
+
+
+a. ``make_product``
+~~~~~~~~~~~~~~~~~~~
+
+Write a function called ``make_product`` to create objects representing
+product expressions (one expression multiplied by another) in a manner
+analogous to ``make_sum``. It should return an object representing a
+number when possible (|ie| when all the argument expressions given are
+numbers). Multiplication by the number zero should be reduced to the
+number zero, and multiplication of a term by 1 should return the term.
+You can use the ``make_sum`` function above as a skeleton to build your
+solution around, but be careful to notice the differences between sums
+and products (for one thing, there are more base cases with products).
+Note that the derivative of a product of two expressions can be computed
+with the following rule:
+
+.. math::
+
+   \frac{d}{dx} (f(x) \times g(x)) =
+   \frac{df(x)}{dx} \times g(x) + f(x) \times \frac{dg(x)}{dx}
+
+where the derivatives are all with respect to :math:`x`.
+
+This function can be written in less than 30 lines.
+
+.. note::
+
+   Make sure that the return value of ``make_product`` is always a
+   message-passing object, even if it’s just a wrapper around a number.
+   If not, you may get extremely confusing type errors.
+
+
+b. Testing the differentiator
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Demonstrate that your operations work by evaluating the following
+expressions in the interactive OCaml interpreter and writing down your
+results in OCaml comments.
+
+i.
+^^
+
+.. code-block:: ocaml
+
+   (* f = x^3*y + 3*x^2*y^2 + y^2 + 2 *)
+   # let f =
+       make_sum
+        (make_product
+         (make_variable "x")
+         (make_product
+          (make_variable "x")
+          (make_product
+           (make_variable "x")
+           (make_variable "y"))))
+        (make_sum
+         (make_product
+          (make_number 3)
+          (make_product
+           (make_variable "x")
+           (make_product
+            (make_variable "x")
+            (make_product
+             (make_variable "y")
+             (make_variable "y")))))
+         (make_sum
+          (make_product
+           (make_variable "y")
+           (make_variable "y"))
+          (make_number 2))) ;;
+
+
+ii.
+^^^
+
+.. code-block:: ocaml
+
+   # let dfdx = differentiate f "x" ;;
+
+
+iii.
+^^^^
+
+.. code-block:: ocaml
+
+   # show dfdx ;;
+
+
+iv.
+^^^
+
+.. code-block:: ocaml
+
+   # show (evaluate f "x" 3) ;;
+
+
+v.
+^^
+
+.. code-block:: ocaml
+
+   # show (evaluate (evaluate f "x" 3) "y" 4) ;;
+
+
+vi.
+^^^
+
+.. code-block:: ocaml
+
+   # show (evaluate (evaluate dfdx "x" 3) "y" 4) ;;
+
+..
+  There may be some minor differences from a student’s output and the
+  output given here; it’s OK as long as the result is equivalent. For
+  instance, the product ``x * y * z`` could be represented as either
+  ``(x * y) * z`` or ``x * (y * z)``. Don’t expect it to be identical to
+  what we show.
+
+  You should manually run the students' code through the interpreter to
+  check that the results are reasonable and the same as what they claim
+  them to be. This is a pain, I know!
+
+.. hint::
+
+   You probably want to test your functions on some simpler expressions
+   first. Here are some examples. You do not have to submit the results of
+   using your functions on these values.
+
+.. code-block:: ocaml
+
+   let n0  = make_number 0
+   let n1  = make_number 1
+   let n2  = make_number 2
+   let x   = make_variable "x"
+   let s1  = make_sum n1 n2
+   let s2  = make_sum n1 n0
+   let s3  = make_sum x n1
+   let s4  = make_sum (make_variable "y") (make_number 4)
+   let p1  = make_product n2 n2
+   let p2  = make_product x n0
+   let p3  = make_product x n2
+   let p4  = make_product x s1
+   let sl1 = make_sum p3 (make_sum p4 s3)
+   let p5  = make_product n2 p4
+   let p6  = make_product x s3
+   let ap1 = make_sum p3 p4
+   let pa1 = make_product s3 s4
+   let pl1 = make_product s2 (make_product s4 sl1)
