@@ -1,0 +1,188 @@
+Part B: Imperative objects
+==========================
+
+..
+  NOTE: This section may be removed or greatly altered
+  when I revamp the course materials.
+  One option would be to add a third version of `make_stats`
+  which uses classes.
+
+In this section we'll work with objects that also maintain mutable state
+|ie| imperative objects.
+
+The *mean*, *variance*, and *standard deviation* are three useful
+statistical values often computed over a set of numeric data. (If you
+don’t know what these terms refer to, look them up in Wikipedia.) We will
+be using the "population variance" and "population standard deviation"
+in what follows (as opposed to "sample variance" and "sample standard
+deviation"); in other words, divide by ``n`` instead of by ``n - 1`` in
+the denominators of the variance and standard deviation, where ``n`` is
+the number of data values.
+
+Often, when collecting data, we receive it one element at a time instead
+of all at once. It might, then, be useful to be able to determine the
+mean, variance, and standard deviation "on-the-fly" as we add new values
+to the object.
+
+Your job in this section is to create *statistics objects* to provide this
+functionality. You will explore OCaml’s object-oriented programming features by
+writing two variants of the statistics object. This will also give you
+experience with using object-oriented programming in conjunction with mutation,
+which is a very common programming scenario. (In fact, it could be argued that
+one of the main purposes of object-oriented programming is to make mutation
+more manageable.)
+
+Your statistics objects should adhere to the following interface:
+
+* The constructor function should be called ``make_stat_N``, where
+  ``N`` will be either ``1`` or ``2``, and should take a single
+  argument of type ``unit``. The constructor should create a new
+  statistics object with no data, but which is capable of storing data
+  and computing statistical summaries of input data.
+
+* You should provide a method called ``append`` to insert an additional
+  data value into the object. This method takes a single argument (the
+  new data value, which must be a ``float``). It updates the internal
+  state variables (see below) to their new values.
+
+* You should provide methods to obtain the current mean, variance, and
+  standard deviation of the numbers previously appended to the object:
+  ``mean``, ``variance``, and ``stdev`` respectively. Calling these
+  methods on a statistics object to which no data has been appended
+  should result in a ``Stat_error`` exception being raised with an
+  error message (you will have to define ``Stat_error`` as a new
+  exception type yourself). These methods take no arguments.
+
+* You should have a ``clear`` method which resets all state variables
+  to their original values. This method takes no arguments.
+
+Use the following equations to compute the mean, variance, and standard
+deviation given the sum, sum of squares, and number of items :math:`n`:
+
+.. math::
+
+   \\
+   mean &= \frac{sum}{n} \\
+   variance &= \frac{(sum\ of\ squares) - \frac{sum^2}{n}}{n} \\
+   standard\ deviation &= \sqrt{variance} \\
+
+.. note::
+
+   A key aspect of designing an object is knowing
+   where to put the state variable(s).
+   In this case, use ``let`` expressions
+   *outside* of the ``object`` expression
+   to store the state variables.
+   The environment model will show you why this works.
+   Putting the ``let`` inside the ``object`` will *not* work.
+
+You should have the following state variables:
+
+* ``sum``: the sum of all the appended values
+* ``sumsq``: the sum of the squares of all the appended values
+* ``n``: the number of values that have been appended
+
+All state variables are initially zero. ``sum`` and ``sumsq`` are
+references to ``float``\ s; ``n`` is a reference to an ``int``. All of
+these are reference cells because they need to be updated as new data
+comes in. (It would also be possible to use a record with mutable
+fields, but don’t do that.)
+
+Note that there will *not* be a state variable to hold all the data
+values that have been added to the list. This would be extremely costly
+in terms of space usage, and wouldn’t help us to compute any of the
+statistics we want. Therefore, when a new value is "appended" to the
+object, all that happens is that the state variables are updated as
+needed; the actual data value itself is not stored.
+
+.. note::
+
+   Do not write any helper functions for your statistics objects. This
+   may seem counterproductive, but there is a larger point we are trying
+   to make. This means that there will be some unavoidably duplicated
+   code in the different object implementations.
+
+There are two different statistics objects (actually functions that
+return these objects) that you need to write.
+
+
+1. ``make_stat_1``
+------------------
+
+[**6**] (20 minutes)
+
+The first statistics object will be created by a call to the constructor
+function ``make_stat_1``. This function will return an object which supports
+all the methods described above.
+
+For this problem, we don’t want you to use a ``self`` reference in the object
+or private methods. This will mean that you will have to duplicate some code in
+some of the methods.
+
+Here are some example interactions with one of these statistics objects.
+
+.. code-block:: ocaml
+
+   # let mystat = make_stat_1 ();;
+   val mystat :
+     < append : float -> unit; clear : unit; mean : float; stdev : float;
+       variance : float > =
+     <obj>
+   # mystat#mean;;
+   Exception: Stat_error "need at least one value for mean".
+   # mystat#variance;;
+   Exception: Stat_error "need at least one value for variance".
+   # mystat#stdev;;
+   Exception: Stat_error "need at least one value for stdev".
+   # mystat#append 1.0;;
+   - : unit = ()
+   # mystat#append 2.0;;
+   - : unit = ()
+   # mystat#append 3.0;;
+   - : unit = ()
+   # mystat#mean;;
+   - : float = 2.
+   # mystat#append 4.0;;
+   - : unit = ()
+   # mystat#variance;;
+   - : float = 1.25
+   # mystat#stdev;;
+   - : float = 1.1180339887498949
+   # mystat#clear;;
+   - : unit = ()
+   # mystat#append 1.0;;
+   - : unit = ()
+   # mystat#mean;;
+   - : float = 1.
+   # mystat#variance;;
+   - : float = 0.
+   # mystat#stdev;;
+   - : float = 0.
+
+
+2. ``make_stat_2``
+------------------
+
+[**4**] (10 minutes)
+
+The second statistics object will be created by a call to the constructor
+function ``make_stat_2``. We will take this opportunity to improve the code in
+``make_stat_1``, though the examples given above will still work and will give
+the same results.
+
+Most of this code will be identical to that in ``make_stat_1``.
+We want you to make the following changes:
+
+* Aside from error handling and a single call to ``sqrt``, the code in
+  the ``variance`` and ``stdev`` methods is almost identical. Factor
+  out the similar differences into a method called ``_variance`` that
+  computes the variance assuming that there has been at least one
+  number appended to the stats object (in other words, ``_variance``
+  will not do any error checking). Add a ``self`` reference to the
+  ``object`` form (see the OCaml notes section above for details on
+  this) and call the ``_variance`` method from both the ``stdev`` and
+  ``variance`` methods to compute the variance where needed.
+
+* Since the ``_variance`` method is not part of the object’s interface,
+  make it a ``private`` method.
+
