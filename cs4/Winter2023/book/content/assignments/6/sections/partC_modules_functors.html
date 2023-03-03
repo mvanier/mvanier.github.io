@@ -876,7 +876,7 @@ To make this more generic, let’s define some types and module types:</p>
 </pre></div>
 </div>
 <p>What you have to do now is generalize your priority queue implementation
-into a functor that takes a module implementing the <code class="docutils literal notranslate"><span class="pre">ORDERED</span></code> module
+into a functor that takes a module implementing the <code class="docutils literal notranslate"><span class="pre">ORDERED_TYPE</span></code> module
 type as its argument, and produces a priority queue (implemented using a
 leftist heap) which is specialized for that particular type of data. For
 instance, you can define a module of ordered strings like this:</p>
@@ -902,7 +902,7 @@ new function <code class="docutils literal notranslate"><span class="pre">heap_s
 strings.</p>
 <p>To get you started, here is a skeleton of the code you should use for
 the functor definition:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">MakePriorityQueue</span> <span class="o">(</span><span class="nc">Elt</span> <span class="o">:</span> <span class="nc">ORDERED</span><span class="o">)</span>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">MakePriorityQueue</span> <span class="o">(</span><span class="nc">Elt</span> <span class="o">:</span> <span class="nc">ORDERED_TYPE</span><span class="o">)</span>
   <span class="o">:</span> <span class="o">(</span><span class="nc">PRIORITY_QUEUE</span> <span class="k">with</span> <span class="k">type</span> <span class="n">elem</span> <span class="o">=</span> <span class="nn">Elt</span><span class="p">.</span><span class="n">t</span><span class="o">)</span> <span class="o">=</span>
   <span class="k">struct</span>
     <span class="c">(* Your code goes here... *)</span>
@@ -911,7 +911,7 @@ the functor definition:</p>
 </div>
 <p>Note that again you have to specify what the type <code class="docutils literal notranslate"><span class="pre">elem</span></code> in the
 <code class="docutils literal notranslate"><span class="pre">PRIORITY_QUEUE</span></code> represents. Here, it better be the same type as the
-type <code class="docutils literal notranslate"><span class="pre">t</span></code> in the <code class="docutils literal notranslate"><span class="pre">ORDERED</span></code> argument (which we have called <code class="docutils literal notranslate"><span class="pre">Elt</span></code>).</p>
+type <code class="docutils literal notranslate"><span class="pre">t</span></code> in the <code class="docutils literal notranslate"><span class="pre">ORDERED_TYPE</span></code> argument (which we have called <code class="docutils literal notranslate"><span class="pre">Elt</span></code>).</p>
 <p>This code will be nearly identical to the code above. All you are really
 doing is repackaging that code into a functor.</p>
 </section>

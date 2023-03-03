@@ -279,7 +279,7 @@ To make this more generic, let’s define some types and module types:
      end
 
 What you have to do now is generalize your priority queue implementation
-into a functor that takes a module implementing the ``ORDERED`` module
+into a functor that takes a module implementing the ``ORDERED_TYPE`` module
 type as its argument, and produces a priority queue (implemented using a
 leftist heap) which is specialized for that particular type of data. For
 instance, you can define a module of ordered strings like this:
@@ -314,7 +314,7 @@ the functor definition:
 
 .. code-block:: ocaml
 
-   module MakePriorityQueue (Elt : ORDERED)
+   module MakePriorityQueue (Elt : ORDERED_TYPE)
      : (PRIORITY_QUEUE with type elem = Elt.t) =
      struct
        (* Your code goes here... *)
@@ -322,7 +322,7 @@ the functor definition:
 
 Note that again you have to specify what the type ``elem`` in the
 ``PRIORITY_QUEUE`` represents. Here, it better be the same type as the
-type ``t`` in the ``ORDERED`` argument (which we have called ``Elt``).
+type ``t`` in the ``ORDERED_TYPE`` argument (which we have called ``Elt``).
 
 This code will be nearly identical to the code above. All you are really
 doing is repackaging that code into a functor.
