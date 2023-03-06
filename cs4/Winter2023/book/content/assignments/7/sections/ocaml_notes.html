@@ -1,0 +1,956 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>OCaml notes &#8212; The CS 4 book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Miniproject: The “Klotski” sliding-block puzzle game" href="miniproject_klotski.html" />
+    <link rel="prev" title="Details" href="Preamble.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">The CS 4 book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../Introduction.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../admin/index.html">
+   Administrative information
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../admin/Syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../admin/Collaboration_policies.html">
+     Collaboration policies
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../Motivation.html">
+   Motivation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../History.html">
+   History
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../index.html">
+   Assignments
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../0/Assignment0.html">
+     Assignment 0: Getting set up
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../1/index.html">
+     Assignment 1: Evaluation and recursion
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partA_exercises.html">
+       Part A: Basic exercises
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partC_recursion.html">
+       Part C: Recursion
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../2/index.html">
+     Assignment 2: Asymptotic complexity and higher-order functions
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partA_orders_of_growth.html">
+       Part A: Orders of growth
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partC_higher_order_functions.html">
+       Part C. Higher-order functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partD_additional_problems.html">
+       Part D: Additional problems
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../3/index.html">
+     Assignment 3: Lists
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partA_lists.html">
+       Part A: Working with lists
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partB_structural_generative_recursion.html">
+       Part B: Structural and generative recursion
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partC_more_lists.html">
+       Part C: Some harder problems with lists
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../4/index.html">
+     Assignment 4: Data abstraction
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/partA_abstraction.html">
+       Part A: Abstraction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/partB_more_abstraction.html">
+       Part B: More abstraction problems
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/partC_algebra.html">
+       Part C: Miniproject: Algebraic expressions
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../midterm/index.html">
+     Midterm exam
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/partA_complexity.html">
+       Part A: Asymptotic time complexity
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/partB_lists_hofs.html">
+       Part B: Recursion and higher-order functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/partC_data_structures.html">
+       Part C: Data structures: AA trees
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../5/index.html">
+     Assignment 5: Tags and objects
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../5/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../5/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../5/sections/partA_mutation.html">
+       Part A: Mutation and imperative programming
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../5/sections/partB_tagged_data.html">
+       Part B: Tagged Data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../5/sections/partC_objects.html">
+       Part C: Objects
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../6/index.html">
+     Assignment 6: Environmentally-friendly
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../6/sections/Preamble.html">
+       Details
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../6/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../6/sections/partA_environment_model.html">
+       Part A: The environment model
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../6/sections/partB_imperative_objects.html">
+       Part B: Imperative objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../6/sections/partC_modules_functors.html">
+       Part C: Modules and functors
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../6/sections/partD_special_topics.html">
+       Part D: Special topics
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="../index.html">
+     Assignment 7: Final exam preparation
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="Preamble.html">
+       Details
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="miniproject_klotski.html">
+       Miniproject: The “Klotski” sliding-block puzzle game
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../readings/index.html">
+   Readings
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../readings/ocaml_cheat_sheet.html">
+     OCaml syntax cheat sheet
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../readings/subst.html">
+     The substitution model
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#testing">
+   Testing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#option-types">
+   Option types
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#design-guidelines">
+   Design guidelines
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#set-and-map-functors">
+   Set and map functors
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multi-parameter-functors">
+   Multi-parameter functors
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>OCaml notes</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#testing">
+   Testing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#option-types">
+   Option types
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#design-guidelines">
+   Design guidelines
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#set-and-map-functors">
+   Set and map functors
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multi-parameter-functors">
+   Multi-parameter functors
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="ocaml-notes">
+<h1>OCaml notes<a class="headerlink" href="#ocaml-notes" title="Permalink to this headline">#</a></h1>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">#</a></h2>
+<p>Please run the test script while you are writing the code! Comment out
+all tests that are not relevant to the code you are working on and just
+run the relevant tests. You don’t want to write hundreds of lines of
+code before starting the testing process. If you do this, you may find
+that you have made a fundamental mistake early on, and you’ll have to
+rewrite most of your code. Instead, write a little code, then test a
+little code, then repeat until done. (This is more fun anyway.)</p>
+<p>The easiest way to comment out tests is in the definition of the
+<code class="docutils literal notranslate"><span class="pre">all_tests</span></code> list at the bottom of the <code class="docutils literal notranslate"><span class="pre">tests_lab7.ml</span></code> file.
+Each item in the list represents a series of tests
+which can be commented out simply by commenting out
+the line the item is in.</p>
+</section>
+<section id="option-types">
+<h2>Option types<a class="headerlink" href="#option-types" title="Permalink to this headline">#</a></h2>
+<p>There is little explicit use of exceptions in this assignment. However,
+a number of functions can fail, and their return types are <code class="docutils literal notranslate"><span class="pre">option</span></code>
+types. Recall that this family of types has this definition:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">option</span> <span class="o">=</span> <span class="nc">None</span> <span class="o">|</span> <span class="nc">Some</span> <span class="k">of</span> <span class="k">&#39;</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>If the function fails, it returns a <code class="docutils literal notranslate"><span class="pre">None</span></code> value. If it succeeds, it
+returns a <code class="docutils literal notranslate"><span class="pre">Some</span> <span class="pre">&lt;value&gt;</span></code> value (where <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> is the value you
+want to return). Note that to use that value you will need to do a
+pattern match, <em>e.g.</em></p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">match</span> <span class="n">option_value</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="nc">None</span> <span class="o">-&gt;</span> <span class="o">...</span>  <span class="c">(* fail *)</span>
+  <span class="o">|</span> <span class="nc">Some</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="o">...</span>  <span class="c">(* succeed *)</span>
+</pre></div>
+</div>
+<p>Functional programmers view this style of programming as being purer
+than code that uses exceptions, though it isn’t always as convenient.</p>
+<p>The one use of exceptions is in code that uses OCaml’s <code class="docutils literal notranslate"><span class="pre">Map</span></code> datatype,
+which raises <code class="docutils literal notranslate"><span class="pre">Not_found</span></code> exceptions in some cases.</p>
+</section>
+<section id="design-guidelines">
+<h2>Design guidelines<a class="headerlink" href="#design-guidelines" title="Permalink to this headline">#</a></h2>
+<p>The main guideline we want you to follow is that all of your code (with
+one quasi-exception) should be <em>purely functional</em>. In particular, the
+code in <code class="docutils literal notranslate"><span class="pre">klotski.ml</span></code> is purely functional. You will not need to use
+references or mutable arrays in any of your code, and you should
+not! We will guide you in the data structures to use below; if you use
+them as we suggest, you won’t have a problem.</p>
+<p>The one quasi-exception to the “all-functional” rule is that the search
+algorithms used in <code class="docutils literal notranslate"><span class="pre">search.ml</span></code> will use OCaml <code class="docutils literal notranslate"><span class="pre">Stack</span></code>s and
+<code class="docutils literal notranslate"><span class="pre">Queue</span></code>s as fundamental components of their structure. These data
+structures are <em>not</em> purely functional; adding data to them or removing
+data from them causes their internal contents to change. However, all
+the imperative code you will need is in the OCaml standard library, so
+you won’t have to write any yourself, other than that which is necessary
+to successfully interact with the stack/queue values (<em>e.g.</em>
+<code class="docutils literal notranslate"><span class="pre">begin</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code> sequencing statements). Be aware that you do <em>not</em>
+have to use <code class="docutils literal notranslate"><span class="pre">ref</span></code> cells or imperative loops (<code class="docutils literal notranslate"><span class="pre">for</span></code>/<code class="docutils literal notranslate"><span class="pre">while</span></code> loops)
+in the code, and you should not.</p>
+<p>If you violate these guidelines (<em>e.g.</em> by using imperative code
+unnecessarily), you will lose a lot of marks.</p>
+<p>If you’re curious: it is possible to implement stacks and queues in a
+purely functional way, but (at least for queues) there can be a
+performance penalty in doing so.</p>
+</section>
+<section id="set-and-map-functors">
+<h2>Set and map functors<a class="headerlink" href="#set-and-map-functors" title="Permalink to this headline">#</a></h2>
+<p>In assignment 6, you saw how to use functors to implement interesting
+datatypes. The two most-used functors in practice are sets and maps, and
+we will be using both of these in this assignment. Specifically, we will
+be using sets of board locations (represented as pairs of integers <em>i.e.</em>
+(row, column) pairs) extensively. We will represent pieces on the
+Klotski board by the set of locations the piece occupies, and we will
+also use a set of locations to represent the unoccupied locations on the
+board. A set of locations is created using the <code class="docutils literal notranslate"><span class="pre">Set.Make</span></code> functor,
+which requires a module which conforms to the <code class="docutils literal notranslate"><span class="pre">OrderedType</span></code> module
+type as input:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">loc</span> <span class="o">=</span> <span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span>
+
+<span class="k">module</span> <span class="nc">LocM</span> <span class="o">:</span> <span class="nn">Set</span><span class="p">.</span><span class="nc">OrderedType</span> <span class="k">with</span> <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="n">loc</span> <span class="o">=</span>
+  <span class="k">struct</span>
+    <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="n">loc</span>
+    <span class="k">let</span> <span class="n">compare</span> <span class="o">=</span> <span class="nn">Stdlib</span><span class="p">.</span><span class="n">compare</span>
+  <span class="k">end</span>
+
+<span class="k">module</span> <span class="nc">LocSet</span> <span class="o">:</span> <span class="nn">Set</span><span class="p">.</span><span class="nc">S</span> <span class="k">with</span> <span class="k">type</span> <span class="n">elt</span> <span class="o">=</span> <span class="n">loc</span> <span class="o">=</span> <span class="nn">Set</span><span class="p">.</span><span class="nc">Make</span><span class="o">(</span><span class="nc">LocM</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Set.S</span> <span class="pre">with</span> <span class="pre">type</span> <span class="pre">elt</span> <span class="pre">=</span> <span class="pre">loc</span></code> annotation just exposes the <code class="docutils literal notranslate"><span class="pre">elt</span></code>
+(set element) type outside the module. Similarly, the
+<code class="docutils literal notranslate"><span class="pre">Set.OrderedType</span> <span class="pre">with</span> <span class="pre">type</span> <span class="pre">t</span> <span class="pre">=</span> <span class="pre">loc</span></code> exposes the <code class="docutils literal notranslate"><span class="pre">t</span></code> type outside the
+<code class="docutils literal notranslate"><span class="pre">LocM</span></code> module. Actually, it would be OK if we just defined <code class="docutils literal notranslate"><span class="pre">LocM</span></code>
+like this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">loc</span> <span class="o">=</span> <span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span>
+
+<span class="k">module</span> <span class="nc">LocM</span> <span class="o">=</span>
+  <span class="k">struct</span>
+    <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="n">loc</span>
+    <span class="k">let</span> <span class="n">compare</span> <span class="o">=</span> <span class="nn">Stdlib</span><span class="p">.</span><span class="n">compare</span>
+  <span class="k">end</span>
+</pre></div>
+</div>
+<p>because then the entire <code class="docutils literal notranslate"><span class="pre">LocM</span></code> module would be exposed. What’s
+important is that this module implements the <code class="docutils literal notranslate"><span class="pre">OrderedType</span></code> interface
+(so that it can be used as the module input to the <code class="docutils literal notranslate"><span class="pre">Set.Make</span></code> functor)
+not that it declares that it does so (OCaml can figure this out).</p>
+<p>Documentation for OCaml’s <code class="docutils literal notranslate"><span class="pre">Set</span></code> library is found
+<a class="reference external" href="https://caml.inria.fr/pub/docs/manual-ocaml/libref/Set.html">here</a>
+and
+<a class="reference external" href="https://caml.inria.fr/pub/docs/manual-ocaml/libref/Set.S.html">here</a>.
+Many of the functions on sets will be very useful to you; we’ll mention
+them below as they come up.</p>
+<p>In addition, we will be using OCaml’s <code class="docutils literal notranslate"><span class="pre">Map.Make</span></code> functor to make a
+mapping between characters and pieces (where pieces are represented as
+sets of locations). A “map” in this context doesn’t mean the
+higher-order <code class="docutils literal notranslate"><span class="pre">List.map</span></code> function; a map here is a purely functional
+version of something like Python’s dictionaries. We can create a map
+like this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">CharM</span> <span class="o">:</span> <span class="nn">Map</span><span class="p">.</span><span class="nc">OrderedType</span> <span class="k">with</span> <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="kt">char</span> <span class="o">=</span>
+  <span class="k">struct</span>
+    <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="kt">char</span>
+    <span class="k">let</span> <span class="n">compare</span> <span class="o">=</span> <span class="nn">Stdlib</span><span class="p">.</span><span class="n">compare</span>
+  <span class="k">end</span>
+
+<span class="k">module</span> <span class="nc">CharMap</span> <span class="o">:</span> <span class="nn">Map</span><span class="p">.</span><span class="nc">S</span> <span class="k">with</span> <span class="k">type</span> <span class="n">key</span> <span class="o">=</span> <span class="kt">char</span> <span class="o">=</span> <span class="nn">Map</span><span class="p">.</span><span class="nc">Make</span><span class="o">(</span><span class="nc">CharM</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Map.S</span> <span class="pre">with</span> <span class="pre">type</span> <span class="pre">key</span> <span class="pre">=</span> <span class="pre">char</span></code> annotation just exposes the <code class="docutils literal notranslate"><span class="pre">key</span></code>
+(map key) type outside the module. Note that the argument to the
+<code class="docutils literal notranslate"><span class="pre">Map.Make</span></code> functor is again a module which conforms to the
+<code class="docutils literal notranslate"><span class="pre">OrderedType</span></code> module type. <code class="docutils literal notranslate"><span class="pre">Set.OrderedType</span></code> and <code class="docutils literal notranslate"><span class="pre">Map.OrderedType</span></code>
+are the same. Again, you could have written <code class="docutils literal notranslate"><span class="pre">CharM</span></code> as just:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">CharM</span> <span class="o">=</span>
+  <span class="k">struct</span>
+    <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="kt">char</span>
+    <span class="k">let</span> <span class="n">compare</span> <span class="o">=</span> <span class="nn">Stdlib</span><span class="p">.</span><span class="n">compare</span>
+  <span class="k">end</span>
+</pre></div>
+</div>
+<p>We won’t bother with the module type signatures with <code class="docutils literal notranslate"><span class="pre">OrderedType</span></code>s
+any more, since they don’t really help us.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">CharMap</span></code> data structure maps characters (which in this case
+represent piece labels) to some (unspecified) value type. We will always
+be using pieces (which are just sets of locations) as our value type in
+<code class="docutils literal notranslate"><span class="pre">CharMap</span></code>s. In other words, the <code class="docutils literal notranslate"><span class="pre">CharMap</span></code> maps characters to the
+piece (set of locations) with that character label. All the pieces on a
+Klotski board will collectively be represented by a single <code class="docutils literal notranslate"><span class="pre">CharMap</span></code>
+of this type. The board data structure is a record with this definition:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">piece</span> <span class="o">=</span> <span class="nn">LocSet</span><span class="p">.</span><span class="n">t</span>
+<span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="o">{</span> <span class="n">pieces</span> <span class="o">:</span> <span class="n">piece</span> <span class="nn">CharMap</span><span class="p">.</span><span class="n">t</span> <span class="o">;</span> <span class="n">unoccupied</span> <span class="o">:</span> <span class="nn">LocSet</span><span class="p">.</span><span class="n">t</span> <span class="o">}</span>
+</pre></div>
+</div>
+<p>The type <code class="docutils literal notranslate"><span class="pre">t</span></code> (more precisely, <code class="docutils literal notranslate"><span class="pre">Klotski.t</span></code>) is the board type.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Don’t worry: all of this code is in the template files!</p>
+</div>
+<p>To reiterate: a Klotski board consists of two things:</p>
+<ol class="arabic simple">
+<li><p>a set of unoccupied locations</p></li>
+<li><p>a map between characters (which are piece labels) and sets of
+locations which represent where a particular piece is located on the
+board.</p></li>
+</ol>
+<p>Note that this representation doesn’t enforce certain important
+invariants: that none of the pieces overlap each other, and that none of
+them contain locations that are also in the <code class="docutils literal notranslate"><span class="pre">unoccupied</span></code> set. You will
+have to maintain these invariants yourself in the functions you will
+write below.  <a class="footnote-reference brackets" href="#id2" id="id1">1</a> Note that Klotski board values are originally created
+by the <code class="docutils literal notranslate"><span class="pre">read</span></code> function which is supplied for you; it takes a string
+containing 20 characters as its only argument and returns a board value.
+Sample “board strings” are given in the file <code class="docutils literal notranslate"><span class="pre">boards.ml</span></code>; these are
+used in the test script.</p>
+<p>Documentation for OCaml’s <code class="docutils literal notranslate"><span class="pre">Map</span></code> library is found
+<a class="reference external" href="https://caml.inria.fr/pub/docs/manual-ocaml/libref/Map.html">here</a>
+and
+<a class="reference external" href="https://caml.inria.fr/pub/docs/manual-ocaml/libref/Map.S.html">here</a>.
+Again, many of the functions on maps will be very useful to you; and
+again, we’ll mention them below as they come up.</p>
+</section>
+<section id="multi-parameter-functors">
+<h2>Multi-parameter functors<a class="headerlink" href="#multi-parameter-functors" title="Permalink to this headline">#</a></h2>
+<p>We hope that by now you have been convinced that OCaml’s functors are a
+powerful language feature. Actually, you don’t yet realize how powerful
+they are! One aspect of this power that we will be using in this
+assignment is <em>multi-parameter functors</em>. These are just functors that
+take more than one module argument. In the file <code class="docutils literal notranslate"><span class="pre">search.ml</span></code> there is a
+functor called <code class="docutils literal notranslate"><span class="pre">Search</span></code> with this (incomplete) definition:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="k">type</span> <span class="nc">Storage</span> <span class="o">=</span>
+  <span class="k">sig</span>
+    <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span>
+    <span class="k">exception</span> <span class="nc">Empty</span>
+
+    <span class="k">val</span> <span class="n">create</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span>
+    <span class="k">val</span> <span class="n">push</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="kt">unit</span>
+    <span class="k">val</span> <span class="n">pop</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+    <span class="k">val</span> <span class="n">is_empty</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="kt">bool</span>
+  <span class="k">end</span>
+
+<span class="k">module</span> <span class="k">type</span> <span class="nc">Domain</span> <span class="o">=</span>
+  <span class="k">sig</span>
+    <span class="k">type</span> <span class="n">t</span>
+    <span class="k">val</span> <span class="n">show</span> <span class="o">:</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="kt">string</span>
+    <span class="k">val</span> <span class="n">is_solved</span> <span class="o">:</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="kt">bool</span>
+    <span class="k">val</span> <span class="n">compare</span> <span class="o">:</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="kt">int</span>
+    <span class="k">val</span> <span class="n">next</span> <span class="o">:</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="n">t</span> <span class="kt">list</span>
+  <span class="k">end</span>
+
+<span class="k">module</span> <span class="nc">Search</span> <span class="o">(</span><span class="nc">S</span> <span class="o">:</span> <span class="nc">Storage</span><span class="o">)</span> <span class="o">(</span><span class="nc">D</span> <span class="o">:</span> <span class="nc">Domain</span><span class="o">)</span> <span class="o">=</span>
+  <span class="k">struct</span>
+    <span class="k">module</span> <span class="nc">DS</span> <span class="o">=</span> <span class="nn">Set</span><span class="p">.</span><span class="nc">Make</span><span class="o">(</span><span class="nc">D</span><span class="o">)</span>
+
+    <span class="k">let</span> <span class="n">search</span> <span class="n">init</span> <span class="o">=</span> <span class="n">failwith</span> <span class="s2">&quot;TODO&quot;</span>
+
+    <span class="k">let</span> <span class="n">show_history</span> <span class="n">hist</span> <span class="o">=</span>
+      <span class="o">(</span><span class="nn">String</span><span class="p">.</span><span class="n">concat</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">----</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">(</span><span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="nn">D</span><span class="p">.</span><span class="n">show</span> <span class="o">(</span><span class="nn">List</span><span class="p">.</span><span class="n">rev</span> <span class="n">hist</span><span class="o">)))</span> <span class="o">^</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+</pre></div>
+</div>
+<p>Let’s walk through this. It looks complicated but it really isn’t.</p>
+<p>First off, we define a module type called <code class="docutils literal notranslate"><span class="pre">Storage</span></code>. This includes a
+polymorphic type <code class="docutils literal notranslate"><span class="pre">t</span></code> whose corresponding values are data structures
+that are used to store board configurations (more precisely, board
+configuration histories) during the search process when solving a
+Klotski board. It turns out that the built-in OCaml modules <code class="docutils literal notranslate"><span class="pre">Stack</span></code>
+and <code class="docutils literal notranslate"><span class="pre">Queue</span></code> both instantiate all the functions of this module type, so
+we can use either of them as <code class="docutils literal notranslate"><span class="pre">Storage</span></code> arguments to the <code class="docutils literal notranslate"><span class="pre">Search</span></code>
+functor. (You don’t have to declare that they instantiate the
+<code class="docutils literal notranslate"><span class="pre">Storage</span></code> module type either; the compiler checks this for you.)</p>
+<p>The other argument of the <code class="docutils literal notranslate"><span class="pre">Search</span></code> functor has the module type <code class="docutils literal notranslate"><span class="pre">Domain</span></code>.
+This represents the thing you are searching over, which in this case are
+Klotski boards. Any module representing a <code class="docutils literal notranslate"><span class="pre">Domain</span></code> must have:</p>
+<ul class="simple">
+<li><p>a data type <code class="docutils literal notranslate"><span class="pre">t</span></code>, which here represents the Klotski board type</p></li>
+<li><p>a way to convert a value of type <code class="docutils literal notranslate"><span class="pre">t</span></code> to a string, for display
+purposes</p></li>
+<li><p>a way to determine if a value of type <code class="docutils literal notranslate"><span class="pre">t</span></code> is “solved” (here, if the
+Klotski board is in its solved configuration)</p></li>
+<li><p>a way to compare two values of type <code class="docutils literal notranslate"><span class="pre">t</span></code></p></li>
+<li><p>and a way to go from a value of its data type <code class="docutils literal notranslate"><span class="pre">t</span></code> to a list of its
+successors. In this case, the successors of a Klotski board will be
+the boards that can be obtained from a given board by a single move.</p></li>
+</ul>
+<p>Note also that we define an internal module <code class="docutils literal notranslate"><span class="pre">DS</span></code> in the <code class="docutils literal notranslate"><span class="pre">Search</span></code>
+functor; this represents a set of Klotski boards. We use this to store
+all boards that have been previously seen, so we don’t search them
+again. Since the <code class="docutils literal notranslate"><span class="pre">Domain</span></code> module type has the <code class="docutils literal notranslate"><span class="pre">compare</span></code> function, it
+is a superset of the <code class="docutils literal notranslate"><span class="pre">OrderedType</span></code> module type, so it can be used as
+an argument to the <code class="docutils literal notranslate"><span class="pre">Set.Make</span></code> functor.</p>
+<p>We’ll go into how to write the <code class="docutils literal notranslate"><span class="pre">search</span></code> function below. Sneak preview:
+it can easily be done in under 25 lines.</p>
+<hr class="docutils" />
+<p class="rubric">Footnotes</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>In addition,
+all of the locations in each piece should be connected,
+but this isn’t something you need to enforce.
+As long as they start out connected
+(which they will) they will remain connected.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="Preamble.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Details</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="miniproject_klotski.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Miniproject: The “Klotski” sliding-block puzzle game</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Michael Vanier<br/>
+  
+      &copy; Copyright 2023, Michael C. Vanier. All rights reserved.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

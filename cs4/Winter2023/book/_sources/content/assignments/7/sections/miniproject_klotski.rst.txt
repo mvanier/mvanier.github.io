@@ -1,0 +1,887 @@
+Miniproject: The "Klotski" sliding-block puzzle game
+====================================================
+
+Game description
+----------------
+
+The puzzle game `Klotski <https://en.wikipedia.org/wiki/Klotski>`__
+is an example of a "sliding block puzzle game",
+whereby the pieces (blocks) can slide around on the game board,
+and the goal is to reach a desired configuration.
+There are a number of these games ("Rush Hour" is another well-known one).
+Klotski is both extremely simple (in terms of the rules) and extremely
+difficult to solve for many possible puzzles.
+
+The Wikipedia page for Klotski is
+`here <https://en.wikipedia.org/wiki/Klotski>`__.
+
+Here are the rules of the game. The game is played on a 5x4 grid (5
+rows, 4 columns) which we’ll call the "board". The pieces are either 1x1
+blocks, 1x2 horizontal blocks (1 row by 2 columns), 2x1 vertical blocks
+(2 rows by 1 column), or 2x2 blocks (2 rows by 2 columns). There is
+always exactly one 2x2 block on the board, but there can be any number
+(including zero) of the other kinds of blocks, except that blocks can’t
+overlap each other and there is only enough space for so many blocks.
+The game starts with a number of pieces already placed on the board,
+including the special 2x2 block. Once this has been done, you play the
+game by moving one piece per move. Pieces can be moved in either the
+horizontal or vertical direction, but they can’t rotate. You can move a
+piece any number of spaces, as long as (a) you don’t move any part of
+the piece off the board, and (b) no part of the piece goes over another
+piece or lands on another piece. The goal of the game is to move the 2x2
+piece to the two bottom rows and the two middle columns. Conceptually,
+this puts the piece next to an "exit door" right below the middle two
+columns, so the piece can "escape". The objective of the game is to get
+the 2x2 piece to the target location in the fewest number of moves. And
+that is it for rules.
+
+To illustrate these rules in action, see the example game in the next
+section.
+
+The name "Klotski" comes from the Polish word "klocki", which means
+"wooden blocks". The original Klotski puzzles were physical puzzles made
+from sliding wooden blocks. The game may have actually originated in
+America; versions of it were known to exist in 1909.
+
+
+Example game
+------------
+
+Here is an example of what a complete game will look like when you
+compile the code in the file ``interact.ml`` (assuming that all your own
+code in ``klotski.ml`` works properly) by typing ``make interact`` at
+the command prompt (or just ``make``). You run the game by typing this
+at the terminal prompt:
+
+.. code-block:: text
+
+   $ ./klotski_interact 0
+
+This will use board number 0 (from ``boards.ml``) as the starting
+configuration. Board numbers can range from 0 to 7, with higher numbers
+requiring many more moves to solve.
+
+Here is a transcript of an interactive game in its entirety with this
+input board. Pieces are displayed using letters, with the different
+locations of a piece represented by the same letter on adjacent
+locations.  Empty squares are represented by a period (``.``).
+The goal is to get the 2x2 piece (represented on this
+particular board by the character ``'f'``) to the bottom two rows and
+the middle two columns as described above.
+
+User input comes after the prompt ``"Enter move: "``. User input
+consists of a string of three characters, which are: (1) the name
+(label) of the piece to be moved (for instance, piece ``c``), which
+direction to move it (``u`` for up, ``d`` for down, ``l`` for left, or
+``r`` for right) and how far to move it (for instance, ``1`` or ``2``).
+The distance must be a positive integer no larger than ``4`` (otherwise,
+the piece would end up off the board). You are not allowed to make a
+move which moves any component of a piece off the board or on top of or
+through another piece.
+
+.. code-block:: text
+
+   $ ./klotski_interact 0
+
+   aabb
+   .cc.
+   ddee
+   ffgh
+   ffij
+
+   Enter move: cl1   (* move piece "c" to the (l)eft one (1) location *)
+
+   aabb
+   cc..
+   ddee
+   ffgh
+   ffij
+
+   Enter move: eu1
+
+   aabb
+   ccee
+   dd..
+   ffgh
+   ffij
+
+   Enter move: gu1
+
+   aabb
+   ccee
+   ddg.
+   ff.h
+   ffij
+
+   Enter move: gr1
+
+   aabb
+   ccee
+   dd.g
+   ff.h
+   ffij
+
+   Enter move: iu2
+
+   aabb
+   ccee
+   ddig
+   ff.h
+   ff.j
+
+   Enter move: fr1
+
+   aabb
+   ccee
+   ddig
+   .ffh
+   .ffj
+
+   The board is solved!
+
+Since the 2x2 ``f`` piece is in the final location, the board is solved.
+(Of course, most puzzles will require many more moves than this.)
+
+
+Part A: The ``Klotski`` module
+------------------------------
+
+The code for this section will be written in the file ``klotski.ml``.
+You have to write six functions. None of them require more than 25 lines
+of code in all (including helper functions), and most can be done in
+fewer lines.
+
+The Klotski board representation is described in the "OCaml notes" section.
+Please read it if you haven’t already,
+because you will need to know it to write these functions.
+In the ``klotski.ml`` file, Klotski boards have the type ``t``.
+
+The value of each function in points is noted in bold after the start of
+each function’s description.
+
+
+Board locations
+~~~~~~~~~~~~~~~
+
+Locations are represented by the ``loc`` type which is just an alias for
+a 2-tuple of ``int``\ s. Locations are ``(<row index>, <column index>)``
+tuples, where the indices start at 0. So location ``(0, 0)`` is the
+upper-left corner (row 0, column 0), location ``(0, 1)`` (row 0, column
+1) is one to the right of ``(0, 0)``, and location ``(1, 0)`` (row 1,
+column 0) is one down from ``(0, 0)``.
+
+
+1. ``is_solved``
+~~~~~~~~~~~~~~~~
+
+[**2 points**]
+
+Write a function called ``is_solved`` that takes as its only argument a
+Klotski board and returns ``true`` if the board is solved, or ``false``
+otherwise. A board is considered solved if there is a 2x2 piece on the
+board which occupies the four locations in the bottom two rows and the
+two center columns. This function can be written in a couple of lines.
+*Hint*: use the ``equal`` function from the ``Set.S`` module type and
+the ``exists`` function from the ``Map.S`` module type.
+
+
+2. ``compare``
+~~~~~~~~~~~~~~
+
+[**3 points**]
+
+Write a function called ``compare`` that takes two arguments, both of
+which are Klotski boards. It returns an ``int`` which represents whether
+the two boards are "equal", or one of the two is "greater" than the
+other. If the two boards are equal, return ``0``. If the first board is
+greater than the second, return ``1``. If the second board is greater
+than the first one, return ``-1``.
+
+The two boards are considered to be equal if:
+
+* the set of unoccupied locations is the same for both boards
+
+* the set of pieces are the same for both boards
+
+To compare the sets of pieces, use the ``LocSetSet`` module we’ve
+provided for you. A value of type ``LocSetSet.t`` is a set of set of
+locations, so a set of pieces can be a value of this type, since pieces
+are represented as sets of locations. In the board, the pieces are
+stored in a ``CharMap.t`` value, which maps character labels to pieces.
+Be aware that the character labels of the pieces are not important in
+the comparison; if the pieces had different labels two boards would
+still be equivalent as long as the same kinds of pieces occupied the
+same locations. You can extract the pieces from the ``CharMap.t`` value
+using the ``CharMap.bindings`` function.
+
+You can use the ``compare`` functions of ``LocSet`` and ``LocSetSet`` to
+compare sets and sets of sets respectively. This will not only compare
+values for equality but will also do the right thing if the two values
+are not equal (return ``-1`` if the first is smaller than the second, or
+``1`` if the first is larger than the second).
+
+To be absolutely clear: for the ``compare`` function to return ``0``,
+both boards must have the same set of unoccupied locations and the same
+set of pieces (though the piece labels are irrelevant). The criteria for
+the boards to be "less than" or "greater than" each other is less
+critical, except that for any two unequal boards, if ``compare b1 b2``
+gives the result ``-1``, then ``compare b2 b1`` *must* give the result
+``1``. In other words, ``compare`` must be a true ordering on the
+boards.
+
+This function is also quite short. It’s important to get this right,
+because if you don’t, your ``search`` function in part B will either be
+incredibly slow or won’t work at all.
+
+.. note::
+
+  Be aware that you do not have to call this function *at all* in your
+  own code! The *only* reason for this function to exist is to make
+  Klotski boards orderable, which means you can make sets of boards
+  (because the implementation of sets requires that their elements be
+  orderable). So don’t feel like you are doing something wrong if you
+  don’t call this function in your code; in fact, you are doing
+  something wrong if you *do* call this function in your code.
+
+
+3. ``remove``
+~~~~~~~~~~~~~
+
+[**3 points**]
+
+Write a function called ``remove`` that takes two arguments:
+a character (which is a piece label) and a board.
+It removes the piece with the given character label
+from the ``pieces`` map of the board,
+updates the ``unoccupied`` set
+by adding the locations of the piece to that set,
+and returns the resulting board.
+If the piece isn’t on the board, the board is returned unchanged.
+
+Again, this is a very short function. You may find the ``union``
+function on sets to be useful here.
+
+4. ``add``
+~~~~~~~~~~
+
+[**3 points**]
+
+Write a function called ``add`` which takes two arguments:
+
+- a two-tuple representing a piece. This consists of a character label
+  and a set of locations that the piece occupies.
+
+- a Klotski board
+
+It places the piece on the board if possible, updates the ``unoccupied``
+set, and returns the new board. If the piece is already on the board or
+can’t be placed on the board because some of its locations are occupied
+by other pieces, return ``None``. If the piece can be placed, return
+``Some <new board>``, where ``<new board>`` is the resulting board.
+
+Note that the new piece can only be placed on the unoccupied locations
+on the board.
+
+This is another short function. The ``subset`` and ``diff`` functions of
+sets may be useful to you here.
+
+
+5. ``make_move``
+~~~~~~~~~~~~~~~~
+
+[**5 points**]
+
+Write a function called ``make_move`` which takes two arguments:
+
+* a three-tuple representing a move. This consists of a character (a
+  piece label), a direction (one of ``Up``, ``Down``, ``Left`` or
+  ``Right``), and an ``int`` representing how far to move the piece
+  (this should be at least 1).
+
+* a Klotski board
+
+It returns ``None`` if the move can’t be made for any reason (including
+if the labeled piece is not on the board, or if the move distance is
+less than 1). Otherwise, it makes the move on the board, updates the
+character/piece map and the unoccupied set, and returns
+``Some <new board>``.
+
+This function is a bit harder and a bit longer than the previous ones.
+You may find the ``map`` function on sets to be useful; this is like
+``List.map`` except for sets |ie| it applies a function to every value
+in a set.
+
+Be careful! It’s not hard to remove a piece from a board, get the piece
+locations, move them in some direction, and add the piece back to the
+board, but this won’t be enough in all cases. You also have to make sure
+that the piece doesn’t go *through* any other pieces when it moves. This
+is especially important for large moves |eg| moving a 1x1 piece 4
+locations up or down. One way to deal with this is to only allow a move
+of distance ``n`` if you would also allow a move of distances ``n-1``,
+``n-2`` …​ ``1``.
+
+Helper functions are your friend here. The ``add`` function you just
+defined above will also be very helpful.
+
+
+6. ``next``
+~~~~~~~~~~~
+
+[**4 points**]
+
+Write a function called ``next`` which takes a single argument (a
+Klotski board). It figures out all possible moves on the board, makes
+all the moves starting from the board, collects all the resulting boards
+into a list and returns the list.
+
+To give a very simple example: consider this board (represented here as
+a 2d array of characters, which is not how we are doing it in the
+program):
+
+.. code-block:: text
+
+   .aa.
+   .aa.
+   ....
+   ....
+   ....
+
+The following list of boards would be returned by this function (again
+representing boards as 2d character arrays, which isn’t accurate, but
+you get the idea):
+
+.. code-block:: text
+
+   aa..
+   aa..
+   ....
+   ....
+   ....
+
+   ..aa
+   ..aa
+   ....
+   ....
+   ....
+
+   ....
+   .aa.
+   .aa.
+   ....
+   ....
+
+   ....
+   ....
+   .aa.
+   .aa.
+   ....
+
+   ....
+   ....
+   ....
+   .aa.
+   .aa.
+
+So the result will be a list of 5 boards, each of which could be derived
+from the input board by moving the ``'a'`` piece in some direction by
+some number of squares.
+
+This function is a bit tricky. It’s also the most critical function for
+the ``search`` function in part B. However, it doesn’t have to be that
+long (we did it in less than 25 lines). The basic idea is this. Imagine
+if, for a particular piece on the board and a particular direction, you
+could compute all the possible moves with that piece in that direction
+and could collect all the resulting boards. Do that for all directions
+and for all pieces, and collect up all the boards. You can use the
+``make_move`` function you defined above to make your life easier, but
+you don’t have to. Once again, make sure you aren’t moving a piece
+through another piece or on top of another piece.
+
+You may find the ``List.concat`` and ``List.map`` functions to be
+useful, or you can combine them with the ``List.concat_map`` function.
+
+
+Part B: The ``Search`` module
+-----------------------------
+
+The code for this file will be written in the file ``search.ml``. You
+only have to write one function in this section, and it can be written
+in less than 25 lines (including helper functions). The goal of this
+module is to allow you to start with a Klotski board and find a solution
+to the board. The solution will be a list of all the boards leading up
+to the final one (which has the 2x2 piece in the target location). In
+fact, the solution will be in reverse order, with the last board at the
+front of the list.
+
+
+Breadth-first and depth-first search
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The code for this section is not hard to write, but you have to
+understand the breadth-first and depth-first search algorithms.
+
+References:
+`here <https://en.wikipedia.org/wiki/Breadth-first_search>`__ for
+breadth-first search;
+`here <https://en.wikipedia.org/wiki/Depth-first_search>`__ for
+depth-first search.
+
+Finding an optimal solution to a puzzle game like Klotski is an example
+of a *tree search* problem. Trees come up all the time in computer
+science. We can consider the starting board of a Klotski puzzle as the
+root node of a tree. The moves that can be made on the starting board
+can be applied to that board to generate new boards which are the
+"children" of the root node, and each of them can then generate more
+boards which are their children, and so on. A tree representing a
+Klotski puzzle is actually of infinite depth, because you can move the
+same piece back and forth as often as you want. However, it’s useful
+when solving to stipulate that you can’t have two boards (nodes) in the
+tree which are identical; this makes the tree finite and thus makes it
+feasible to search for a particular board configuration (like one in
+which the 2x2 piece is in the bottom two rows and the middle two
+columns).
+
+The two most basic algorithms for doing a tree search are known as
+"depth-first search" (also known as DFS) and "breadth-first search"
+(also known as BFS). Let’s see how they work.
+
+The idea in depth-first search is to start at the root node, then (if
+that node isn’t a solution to the problem), generate all its child
+nodes, pick one of the child nodes, inspect it to see if it solves the
+problem, then (if not) generate *its* child nodes, pick one of its child
+nodes (grandchild of the root node), inspect it, and so on until you
+eventually reach a node that has no children (perhaps because all of its
+actual children have already been visited, and so are ineligible for
+searching). At that point, you back up to the parent node of the current
+node, pick a different child node, and continue. In this way, you will
+eventually visit all the nodes in the tree. Basically, you search as far
+as possible down one branch of the tree before you back up and search a
+different branch. The Wikipedia article
+`here <https://en.wikipedia.org/wiki/Depth-first_search>`__ has a
+picture which illustrates the order in which nodes are visited in DFS.
+
+In contrast, in breadth-first search, you search the entire tree level
+by level. First, you check the root node, then you check each of its
+children, and only then each of the children’s children, and so on.
+Again, you should eliminate any nodes that are the same as nodes already
+seen in order to speed up the search. The Wikipedia article
+`here <https://en.wikipedia.org/wiki/Breadth-first_search>`__ has a
+picture which illustrates the order in which nodes are visited in BFS.
+
+For the Klotski problem, BFS has a tremendous advantage over DFS: the
+first solution found using BFS is guaranteed to be the optimal solution
+of a board (in the sense of requiring the fewest number of moves).
+That’s because the number of moves it takes to get to a particular board
+node from the root board node is equal to the depth of the tree at that
+point; put differently, each new level of the tree corresponds to
+another move in the solution. So if there were a better solution in the
+tree by the time you find one solution, you would already have seen it,
+so the first solution found is the optimal one. In contrast, DFS will
+usually not find an optimal solution, as you will see below.
+
+A really amazing fact is that BFS and DFS can both be implemented in
+terms of simple data structures which can have exactly the same
+interface. DFS is naturally implemented in terms of a *stack*, which is
+a data structure where you push values into the stack and pop them off
+the stack, and the first value popped off the stack is the last value
+pushed onto the stack. This is called a LIFO data structure, for "Last
+In, First Out". From the perspective of a tree search, using a stack
+works like this:
+
+* Start with the root node (original board). Push it onto the stack.
+
+* Repeat the following steps:
+
+  *  Pop the first node off the stack. Check to see if it solves the
+     problem. If so, you win!
+
+  *  Otherwise, generate all its child nodes and push them onto the
+     stack *as long as none of them have ever been pushed onto the
+     stack before*.
+
+* If the stack empties out before a solution is found, there is no
+  solution.
+
+For BFS, the process is exactly the same except that you use a *queue*
+instead of a stack to store the nodes. A queue is like a stack except
+that instead of "Last In, First Out" a queue is "First In, First Out" or
+FIFO (like a line for movie tickets). That is literally the only
+difference, but it means that pushing a node onto the queue puts it at
+the back of the queue, not the front, so all the other child nodes that
+were generated earlier will be inspected before the pushed node. In
+contrast, popping a node off the queue pops off the front of the queue
+(which is the same as for a stack). This difference is enough to change
+DFS into BFS. Pretty cool!
+
+There are two additional wrinkles to the tree searching process. The
+first is that (as mentioned) we take care to not push nodes onto the
+stack/queue if they have already been inspected before. The second is
+that we don’t just want to find a solution board; we want to find the
+entire *history* of the solution (the sequence of boards leading to the
+solution). The way we will do this is a bit clever. Instead of storing
+individual boards on the stack or queue, we will store lists of boards,
+where a particular list represents the history of boards leading to the
+current board. For convenience, we store it in reverse order, so that
+the first board in the list is the last board in the history. So if a
+board list is ``[board3; board2; board1]``, this represents a history
+where the original board was ``board1``, then ``board2`` is a child of
+``board1`` (generated by making one move on ``board1``) and ``board3``
+is a child of ``board2``. We generate new histories by taking the head
+of the list, generating a list of child boards, and for each child
+board, putting it at the front of the list. So if ``board3`` has three
+children: ``board4a``, ``board4b``, and ``board4c`` (representing three
+possible moves on ``board3``), the new histories will be:
+``[board4a; board3; board2; board1]``,
+``[board4b; board3; board2; board1]``, and
+``[board4c; board3; board2; board1]``. Each of these will get pushed
+onto the stack/queue. When we pop a history off the stack/queue, we will
+look at the head of the list (the most recent board in the history) to
+see if it solves the problem; if not (and if it hasn’t been seen
+before), we generate new histories, push them back onto the stack/queue,
+and continue. Once we find a board which is a solution, we will also
+have all the boards that led to that solution, so it’s easy to print out
+the solution.
+
+
+The ``Storage`` module type
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The file ``search.ml`` defines a module type called ``Storage`` which
+represents the data structure that will store the board histories. It
+will be either a stack or a queue. Here is the definition:
+
+.. code-block:: ocaml
+
+   module type Storage =
+     sig
+       type 'a t
+       exception Empty
+
+       val create : unit -> 'a t
+       val push : 'a -> 'a t -> unit
+       val pop : 'a t -> 'a
+       val is_empty : 'a t -> bool
+     end
+
+This means that any module that has this module type defines a type
+``t`` which is polymorphic (|ie| you can store any kind of data in the
+type ``t``). You create a new data structure of type ``t`` by calling
+the ``create`` function with a unit argument:
+
+.. code-block:: ocaml
+
+   let storage = create () in ...
+
+You push a new value onto the data structure using the ``push``
+function:
+
+.. code-block:: ocaml
+
+   push new_history storage
+
+*Note*: These data structures can’t overflow.
+
+You pop a value off the data structure using the ``pop`` function:
+
+.. code-block:: ocaml
+
+   let next_history = pop storage in ...
+
+You can check if the storage is empty using the ``is_empty`` function.
+If you pop an empty data structure, the ``Empty`` exception will be
+raised.
+
+Remarkably, the ``Stack`` and ``Queue`` modules which are part of the
+OCaml standard library both implement the ``Storage`` module type. We’ll
+see how to use this below.
+
+Note that the ``Storage`` module type defines an *imperative* storage
+data structure. That’s why ``push`` and ``pop`` don’t return an updated
+value of type ``'a t``; instead, they mutate the input value of that
+type. Both the OCaml ``Stack`` and ``Queue`` modules implement
+imperative data structures. This is the only use of imperative
+programming in this assignment.
+
+
+Code to write
+~~~~~~~~~~~~~
+
+[**10 points**]
+
+Write the ``search`` function in the ``Search`` functor.
+
+The ``Search`` functor looks like this:
+
+.. code-block:: ocaml
+
+   module Search (S : Storage) (D : Domain) =
+     struct
+       module DS = Set.Make(D)
+
+       let search init = ...
+
+       let show_history hist = (* code supplied for you *)
+     end
+
+and you have to fill in the code marked ``...``. The ``Storage`` (``S``)
+argument will either be the OCaml ``Stack`` or ``Queue`` module
+(depending on whether you want DFS or BFS searching). The ``Domain``
+(``D``) argument will be the ``Klotski`` module you defined in part A in
+the file ``klotski.ml``. See below for how this code will actually be
+used. The ``DS`` module will be a set of Klotski boards; these will be
+used to make sure we don’t push a board history onto the stack or queue
+whose most recent board has already been seen. Note that the ``compare``
+function in the ``Klotski`` module that you wrote in part A is
+incredibly important here! Without it, you couldn’t create a set of
+boards because the ``Klotski`` module wouldn’t implement the
+``Ordered_type`` module type. If you don’t implement it correctly (the
+way we described above) you could still create a set of boards but the
+tree search may be incredibly slow (because there are too many distinct
+boards).
+
+The ``search`` function takes one argument, which is the starting board.
+It will perform a tree search starting from that board. If it finds a
+solution, it will return a board history (a list of boards in reverse
+order, with the final board at the head of the list). If it doesn’t find
+a solution, it will raise the ``Not_found`` exception.
+
+Here’s an outline of the algorithm to use:
+
+* Create a new ``Storage`` structure (using ``S.create``).
+
+* Create a history which is just a list containing the initial board.
+  Push it onto the storage structure.
+
+* Create an empty set of visited boards (using ``DS.empty``).
+
+* Repeat the following steps:
+
+  *  If the storage structure is empty, the search has failed, so raise
+     the ``Not_found`` exception.
+
+  *  Otherwise, pop a history off the storage structure. Then:
+
+     *  Check the most recent board in the history. If it has already
+        been seen (use the set of visited boards to check for this),
+        throw the history away and go to the next one.
+
+     *  Otherwise, check to see if the board solves the problem. If so,
+        return the history and you’re done!
+
+     *  Otherwise, add the board to the set of visited boards, find the
+        children of the current board (using the ``D.next`` function,
+        which will actually be the ``next`` function you wrote in part
+        A), generate the new histories, and push them back onto the
+        storage structure. Then continue.
+
+Remember that in this function you need to use the correct module prefix
+to use functions from the ``S`` module (of module type ``Storage``) and
+the ``D`` module (of module type ``Domain``), so instead of ``create``,
+``push``, ``pop`` |etc| from module ``S`` it’s ``S.create``, ``S.push``,
+``S.pop`` |etc| and instead of ``is_solved``, ``compare``, ``next`` from
+module ``D`` it’s ``D.is_solved``, ``D.compare``, and ``D.next``.
+
+As usual, it’s OK to write helper functions. You may find the
+``List.iter`` function useful.
+
+
+How the ``Search`` functor is used
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Even if you’ve implemented the ``Search`` functor correctly, you may be
+confused as to how it is actually used. For that, look at the
+``solve.ml`` file. It has this code:
+
+.. code-block:: ocaml
+
+   open Klotski
+   open Search
+
+   module DFS = Search(Stack)
+   module BFS = Search(Queue)
+   module K_DFS = DFS(Klotski)
+   module K_BFS = BFS(Klotski)
+
+   let search_and_print search show b =
+     let h = search b in
+       begin
+         print_newline ();
+         print_string (show h);
+         Printf.printf "Solution in %d moves.\n\n" (List.length h - 1)
+       end
+
+   (* ... using depth-first search with initial board b ... *)
+      search_and_print K_DFS.search K_DFS.show_history b
+
+   (* ... using breadth-first search with initial board b ... *)
+      search_and_print K_BFS.search K_BFS.show_history b
+
+We create two functors called ``DFS`` and ``BFS`` by partially
+instantiating the ``Search`` functor (OCaml lets you do this!), giving
+it a ``Stack`` or a ``Queue`` module argument, respectively (these
+modules are part of OCaml’s standard library). Then we use those
+(single-argument) functors to generate the ``K_DFS`` and ``K_BFS``
+modules, which provide the code needed to solve the Klotski problem
+using depth-first search or breadth-first search, respectively. Note
+that we could instead have created ``K_DFS`` and ``K_BFS`` directly like
+this:
+
+.. code-block:: ocaml
+
+   module K_DFS = Search(Stack)(Klotski)
+   module K_BFS = Search(Queue)(Klotski)
+
+Then we use ``K_DFS.search`` to search for the solution using DFS or
+``K_BFS.search`` to search using BFS. We use ``K_DFS.show_history`` or
+``K_BFS.show_history`` to display the solution (these are actually the
+same).
+
+This is a nice illustration of how using functors can decompose code
+along natural boundaries. If we had a new problem that could be solved
+using a tree search, we could use the exact same ``DFS`` and ``BFS``
+modules as those given above to solve it. We would simply have to create
+a new ``Domain`` module representing the problem like we did for the
+Klotski problem, and pass it to the ``DFS`` or ``BFS`` functor to
+generate a module that could do the searching and display the solution.
+
+The ``show_history`` function defined in the ``Search`` module will be
+used as the ``show`` argument in the ``search_and_print`` function.
+
+
+Running the board solver
+------------------------
+
+We saw above how to run the interactive Klotski program. However, for
+some of the boards (|eg| boards 5-7), the minimum number of moves to
+solve the board is so large that it’s not really reasonable to expect a
+human to be able to do it. Therefore, let’s use computers! Once all the
+code above has been written, type ``make`` to compile the
+``klotski_solve`` program. You can run it like this:
+
+.. code-block:: text
+
+   $ ./klotski_solve 0
+
+and it will solve board 0 and print out the solution, like this:
+
+.. code-block:: text
+
+   $ ./klotski_solve 0
+
+   aabb
+   .cc.
+   ddee
+   ffgh
+   ffij
+
+   ----
+
+   aabb
+   cc..
+   ddee
+   ffgh
+   ffij
+
+   ----
+
+   aabb
+   ccee
+   dd..
+   ffgh
+   ffij
+
+   ----
+
+   aabb
+   ccee
+   ddg.
+   ff.h
+   ffij
+
+   ----
+
+   aabb
+   ccee
+   dd.g
+   ff.h
+   ffij
+
+   ----
+
+   aabb
+   ccee
+   ddig
+   ff.h
+   ff.j
+
+   ----
+
+   aabb
+   ccee
+   ddig
+   .ffh
+   .ffj
+
+   Solution in 6 moves.
+
+At the end, the program prints out how many moves the solution took. You
+can run the solver on any board from 0 to 7.
+
+To time the solver, you can run the program like this:
+
+.. code-block:: text
+
+   $ /usr/bin/time ./klotski_solve 7
+
+   [... solution omitted ...]
+
+   Solution in 150 moves.
+
+           5.31 real         5.28 user         0.03 sys
+
+This means that the solver took just over 5 seconds to find the
+solution.
+
+By default, the board solver uses a breadth-first search algorithm to
+find the optimal solution (|ie| the one requiring the fewest moves). You
+can alternatively use depth-first search by adding the ``-dfs``
+command-line argument, but don’t expect a good result! For instance:
+
+.. code-block:: text
+
+   $ ./klotski_solve -dfs 0
+
+   [... solution omitted ...]
+
+   Solution in 1334 moves.
+
+It sure looks like breadth-first search is the way to go for this
+problem.
+
+.. note::
+
+   Don’t worry if your program doesn’t give the exact same number of DFS
+   moves as reported here. DFS is not guaranteed to give the minimum
+   number of moves (as you can see), and the exact number of moves
+   depends on the details of how the search is set up (notably, the
+   ordering of the boards when generating the next boards from a
+   particular board).
+
+
+Efficiency of the board solver
+------------------------------
+
+For full marks, the board solver should be "reasonably efficient". This
+means that, **when compiled to native code**, none of the boards should
+take more than (say) 30 seconds to solve. Note that to compile to native
+code you have to type
+
+.. code-block:: text
+
+   $ make solve_native
+
+You can also run the solver when it’s compiled to byte code, but it will
+take a long time on the harder boards. Our solver (compiled to byte
+code) took 45 seconds on board 7, or about 9 times as long as the native
+code version.
+

@@ -1,0 +1,305 @@
+OCaml notes
+===========
+
+Testing
+-------
+
+Please run the test script while you are writing the code! Comment out
+all tests that are not relevant to the code you are working on and just
+run the relevant tests. You don’t want to write hundreds of lines of
+code before starting the testing process. If you do this, you may find
+that you have made a fundamental mistake early on, and you’ll have to
+rewrite most of your code. Instead, write a little code, then test a
+little code, then repeat until done. (This is more fun anyway.)
+
+The easiest way to comment out tests is in the definition of the
+``all_tests`` list at the bottom of the ``tests_lab7.ml`` file.
+Each item in the list represents a series of tests
+which can be commented out simply by commenting out
+the line the item is in.
+
+
+Option types
+------------
+
+There is little explicit use of exceptions in this assignment. However,
+a number of functions can fail, and their return types are ``option``
+types. Recall that this family of types has this definition:
+
+.. code-block:: ocaml
+
+   type 'a option = None | Some of 'a
+
+If the function fails, it returns a ``None`` value. If it succeeds, it
+returns a ``Some <value>`` value (where ``<value>`` is the value you
+want to return). Note that to use that value you will need to do a
+pattern match, |eg|
+
+.. code-block:: ocaml
+
+   match option_value with
+     | None -> ...  (* fail *)
+     | Some x -> ...  (* succeed *)
+
+Functional programmers view this style of programming as being purer
+than code that uses exceptions, though it isn’t always as convenient.
+
+The one use of exceptions is in code that uses OCaml’s ``Map`` datatype,
+which raises ``Not_found`` exceptions in some cases.
+
+
+Design guidelines
+-----------------
+
+The main guideline we want you to follow is that all of your code (with
+one quasi-exception) should be *purely functional*. In particular, the
+code in ``klotski.ml`` is purely functional. You will not need to use
+references or mutable arrays in any of your code, and you should
+not! We will guide you in the data structures to use below; if you use
+them as we suggest, you won’t have a problem.
+
+The one quasi-exception to the "all-functional" rule is that the search
+algorithms used in ``search.ml`` will use OCaml ``Stack``\ s and
+``Queue``\ s as fundamental components of their structure. These data
+structures are *not* purely functional; adding data to them or removing
+data from them causes their internal contents to change. However, all
+the imperative code you will need is in the OCaml standard library, so
+you won’t have to write any yourself, other than that which is necessary
+to successfully interact with the stack/queue values (|eg|
+``begin``/``end`` sequencing statements). Be aware that you do *not*
+have to use ``ref`` cells or imperative loops (``for``/``while`` loops)
+in the code, and you should not.
+
+If you violate these guidelines (|eg| by using imperative code
+unnecessarily), you will lose a lot of marks.
+
+If you’re curious: it is possible to implement stacks and queues in a
+purely functional way, but (at least for queues) there can be a
+performance penalty in doing so.
+
+
+Set and map functors
+--------------------
+
+In assignment 6, you saw how to use functors to implement interesting
+datatypes. The two most-used functors in practice are sets and maps, and
+we will be using both of these in this assignment. Specifically, we will
+be using sets of board locations (represented as pairs of integers |ie|
+(row, column) pairs) extensively. We will represent pieces on the
+Klotski board by the set of locations the piece occupies, and we will
+also use a set of locations to represent the unoccupied locations on the
+board. A set of locations is created using the ``Set.Make`` functor,
+which requires a module which conforms to the ``OrderedType`` module
+type as input:
+
+.. code-block:: ocaml
+
+   type loc = int * int
+
+   module LocM : Set.OrderedType with type t = loc =
+     struct
+       type t = loc
+       let compare = Stdlib.compare
+     end
+
+   module LocSet : Set.S with type elt = loc = Set.Make(LocM)
+
+The ``Set.S with type elt = loc`` annotation just exposes the ``elt``
+(set element) type outside the module. Similarly, the
+``Set.OrderedType with type t = loc`` exposes the ``t`` type outside the
+``LocM`` module. Actually, it would be OK if we just defined ``LocM``
+like this:
+
+.. code-block:: ocaml
+
+   type loc = int * int
+
+   module LocM =
+     struct
+       type t = loc
+       let compare = Stdlib.compare
+     end
+
+because then the entire ``LocM`` module would be exposed. What’s
+important is that this module implements the ``OrderedType`` interface
+(so that it can be used as the module input to the ``Set.Make`` functor)
+not that it declares that it does so (OCaml can figure this out).
+
+Documentation for OCaml’s ``Set`` library is found
+`here <https://caml.inria.fr/pub/docs/manual-ocaml/libref/Set.html>`__
+and
+`here <https://caml.inria.fr/pub/docs/manual-ocaml/libref/Set.S.html>`__.
+Many of the functions on sets will be very useful to you; we’ll mention
+them below as they come up.
+
+In addition, we will be using OCaml’s ``Map.Make`` functor to make a
+mapping between characters and pieces (where pieces are represented as
+sets of locations). A "map" in this context doesn’t mean the
+higher-order ``List.map`` function; a map here is a purely functional
+version of something like Python’s dictionaries. We can create a map
+like this:
+
+.. code-block:: ocaml
+
+   module CharM : Map.OrderedType with type t = char =
+     struct
+       type t = char
+       let compare = Stdlib.compare
+     end
+
+   module CharMap : Map.S with type key = char = Map.Make(CharM)
+
+The ``Map.S with type key = char`` annotation just exposes the ``key``
+(map key) type outside the module. Note that the argument to the
+``Map.Make`` functor is again a module which conforms to the
+``OrderedType`` module type. ``Set.OrderedType`` and ``Map.OrderedType``
+are the same. Again, you could have written ``CharM`` as just:
+
+.. code-block:: ocaml
+
+   module CharM =
+     struct
+       type t = char
+       let compare = Stdlib.compare
+     end
+
+We won’t bother with the module type signatures with ``OrderedType``\ s
+any more, since they don’t really help us.
+
+A ``CharMap`` data structure maps characters (which in this case
+represent piece labels) to some (unspecified) value type. We will always
+be using pieces (which are just sets of locations) as our value type in
+``CharMap``\ s. In other words, the ``CharMap`` maps characters to the
+piece (set of locations) with that character label. All the pieces on a
+Klotski board will collectively be represented by a single ``CharMap``
+of this type. The board data structure is a record with this definition:
+
+.. code-block:: ocaml
+
+   type piece = LocSet.t
+   type t = { pieces : piece CharMap.t ; unoccupied : LocSet.t }
+
+The type ``t`` (more precisely, ``Klotski.t``) is the board type.
+
+.. note::
+
+   Don’t worry: all of this code is in the template files!
+
+To reiterate: a Klotski board consists of two things:
+
+1. a set of unoccupied locations
+
+2. a map between characters (which are piece labels) and sets of
+   locations which represent where a particular piece is located on the
+   board.
+
+Note that this representation doesn’t enforce certain important
+invariants: that none of the pieces overlap each other, and that none of
+them contain locations that are also in the ``unoccupied`` set. You will
+have to maintain these invariants yourself in the functions you will
+write below.  [1]_ Note that Klotski board values are originally created
+by the ``read`` function which is supplied for you; it takes a string
+containing 20 characters as its only argument and returns a board value.
+Sample "board strings" are given in the file ``boards.ml``; these are
+used in the test script.
+
+Documentation for OCaml’s ``Map`` library is found
+`here <https://caml.inria.fr/pub/docs/manual-ocaml/libref/Map.html>`__
+and
+`here <https://caml.inria.fr/pub/docs/manual-ocaml/libref/Map.S.html>`__.
+Again, many of the functions on maps will be very useful to you; and
+again, we’ll mention them below as they come up.
+
+
+Multi-parameter functors
+------------------------
+
+We hope that by now you have been convinced that OCaml’s functors are a
+powerful language feature. Actually, you don’t yet realize how powerful
+they are! One aspect of this power that we will be using in this
+assignment is *multi-parameter functors*. These are just functors that
+take more than one module argument. In the file ``search.ml`` there is a
+functor called ``Search`` with this (incomplete) definition:
+
+.. code-block:: ocaml
+
+   module type Storage =
+     sig
+       type 'a t
+       exception Empty
+
+       val create : unit -> 'a t
+       val push : 'a -> 'a t -> unit
+       val pop : 'a t -> 'a
+       val is_empty : 'a t -> bool
+     end
+
+   module type Domain =
+     sig
+       type t
+       val show : t -> string
+       val is_solved : t -> bool
+       val compare : t -> t -> int
+       val next : t -> t list
+     end
+
+   module Search (S : Storage) (D : Domain) =
+     struct
+       module DS = Set.Make(D)
+
+       let search init = failwith "TODO"
+
+       let show_history hist =
+         (String.concat "\n----\n\n" (List.map D.show (List.rev hist))) ^ "\n"
+     end
+
+Let’s walk through this. It looks complicated but it really isn’t.
+
+First off, we define a module type called ``Storage``. This includes a
+polymorphic type ``t`` whose corresponding values are data structures
+that are used to store board configurations (more precisely, board
+configuration histories) during the search process when solving a
+Klotski board. It turns out that the built-in OCaml modules ``Stack``
+and ``Queue`` both instantiate all the functions of this module type, so
+we can use either of them as ``Storage`` arguments to the ``Search``
+functor. (You don’t have to declare that they instantiate the
+``Storage`` module type either; the compiler checks this for you.)
+
+The other argument of the ``Search`` functor has the module type ``Domain``.
+This represents the thing you are searching over, which in this case are
+Klotski boards. Any module representing a ``Domain`` must have:
+
+* a data type ``t``, which here represents the Klotski board type
+
+* a way to convert a value of type ``t`` to a string, for display
+  purposes
+
+* a way to determine if a value of type ``t`` is "solved" (here, if the
+  Klotski board is in its solved configuration)
+
+* a way to compare two values of type ``t``
+
+* and a way to go from a value of its data type ``t`` to a list of its
+  successors. In this case, the successors of a Klotski board will be
+  the boards that can be obtained from a given board by a single move.
+
+Note also that we define an internal module ``DS`` in the ``Search``
+functor; this represents a set of Klotski boards. We use this to store
+all boards that have been previously seen, so we don’t search them
+again. Since the ``Domain`` module type has the ``compare`` function, it
+is a superset of the ``OrderedType`` module type, so it can be used as
+an argument to the ``Set.Make`` functor.
+
+We’ll go into how to write the ``search`` function below. Sneak preview:
+it can easily be done in under 25 lines.
+
+----
+
+.. rubric:: Footnotes
+
+.. [1] In addition,
+   all of the locations in each piece should be connected,
+   but this isn’t something you need to enforce.
+   As long as they start out connected
+   (which they will) they will remain connected.
+

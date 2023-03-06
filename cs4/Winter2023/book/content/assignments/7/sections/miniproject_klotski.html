@@ -1,0 +1,1699 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Miniproject: The “Klotski” sliding-block puzzle game &#8212; The CS 4 book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Readings" href="../../../readings/index.html" />
+    <link rel="prev" title="OCaml notes" href="ocaml_notes.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">The CS 4 book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../Introduction.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../admin/index.html">
+   Administrative information
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../admin/Syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../admin/Collaboration_policies.html">
+     Collaboration policies
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../Motivation.html">
+   Motivation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../History.html">
+   History
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../index.html">
+   Assignments
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../0/Assignment0.html">
+     Assignment 0: Getting set up
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../1/index.html">
+     Assignment 1: Evaluation and recursion
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partA_exercises.html">
+       Part A: Basic exercises
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../1/sections/partC_recursion.html">
+       Part C: Recursion
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../2/index.html">
+     Assignment 2: Asymptotic complexity and higher-order functions
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partA_orders_of_growth.html">
+       Part A: Orders of growth
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partB_evaluation.html">
+       Part B: Evaluation
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partC_higher_order_functions.html">
+       Part C. Higher-order functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../2/sections/partD_additional_problems.html">
+       Part D: Additional problems
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../3/index.html">
+     Assignment 3: Lists
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partA_lists.html">
+       Part A: Working with lists
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partB_structural_generative_recursion.html">
+       Part B: Structural and generative recursion
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../3/sections/partC_more_lists.html">
+       Part C: Some harder problems with lists
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../4/index.html">
+     Assignment 4: Data abstraction
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/partA_abstraction.html">
+       Part A: Abstraction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/partB_more_abstraction.html">
+       Part B: More abstraction problems
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../4/sections/partC_algebra.html">
+       Part C: Miniproject: Algebraic expressions
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../midterm/index.html">
+     Midterm exam
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/partA_complexity.html">
+       Part A: Asymptotic time complexity
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/partB_lists_hofs.html">
+       Part B: Recursion and higher-order functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../midterm/sections/partC_data_structures.html">
+       Part C: Data structures: AA trees
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../5/index.html">
+     Assignment 5: Tags and objects
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../5/sections/Preamble.html">
+       Preamble
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../5/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../5/sections/partA_mutation.html">
+       Part A: Mutation and imperative programming
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../5/sections/partB_tagged_data.html">
+       Part B: Tagged Data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../5/sections/partC_objects.html">
+       Part C: Objects
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../6/index.html">
+     Assignment 6: Environmentally-friendly
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../6/sections/Preamble.html">
+       Details
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../6/sections/ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../6/sections/partA_environment_model.html">
+       Part A: The environment model
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../6/sections/partB_imperative_objects.html">
+       Part B: Imperative objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../6/sections/partC_modules_functors.html">
+       Part C: Modules and functors
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../6/sections/partD_special_topics.html">
+       Part D: Special topics
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="../index.html">
+     Assignment 7: Final exam preparation
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="Preamble.html">
+       Details
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="ocaml_notes.html">
+       OCaml notes
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       Miniproject: The “Klotski” sliding-block puzzle game
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../readings/index.html">
+   Readings
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../readings/ocaml_cheat_sheet.html">
+     OCaml syntax cheat sheet
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../readings/subst.html">
+     The substitution model
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#game-description">
+   Game description
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-game">
+   Example game
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#part-a-the-klotski-module">
+   Part A: The
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Klotski
+    </span>
+   </code>
+   module
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#board-locations">
+     Board locations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#is-solved">
+     1.
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       is_solved
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#compare">
+     2.
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       compare
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#remove">
+     3.
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       remove
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#add">
+     4.
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       add
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#make-move">
+     5.
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       make_move
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#next">
+     6.
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       next
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#part-b-the-search-module">
+   Part B: The
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Search
+    </span>
+   </code>
+   module
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#breadth-first-and-depth-first-search">
+     Breadth-first and depth-first search
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-storage-module-type">
+     The
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Storage
+      </span>
+     </code>
+     module type
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code-to-write">
+     Code to write
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-the-search-functor-is-used">
+     How the
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Search
+      </span>
+     </code>
+     functor is used
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-the-board-solver">
+   Running the board solver
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#efficiency-of-the-board-solver">
+   Efficiency of the board solver
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Miniproject: The “Klotski” sliding-block puzzle game</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#game-description">
+   Game description
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-game">
+   Example game
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#part-a-the-klotski-module">
+   Part A: The
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Klotski
+    </span>
+   </code>
+   module
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#board-locations">
+     Board locations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#is-solved">
+     1.
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       is_solved
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#compare">
+     2.
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       compare
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#remove">
+     3.
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       remove
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#add">
+     4.
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       add
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#make-move">
+     5.
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       make_move
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#next">
+     6.
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       next
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#part-b-the-search-module">
+   Part B: The
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Search
+    </span>
+   </code>
+   module
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#breadth-first-and-depth-first-search">
+     Breadth-first and depth-first search
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-storage-module-type">
+     The
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Storage
+      </span>
+     </code>
+     module type
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code-to-write">
+     Code to write
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-the-search-functor-is-used">
+     How the
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Search
+      </span>
+     </code>
+     functor is used
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-the-board-solver">
+   Running the board solver
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#efficiency-of-the-board-solver">
+   Efficiency of the board solver
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="miniproject-the-klotski-sliding-block-puzzle-game">
+<h1>Miniproject: The “Klotski” sliding-block puzzle game<a class="headerlink" href="#miniproject-the-klotski-sliding-block-puzzle-game" title="Permalink to this headline">#</a></h1>
+<section id="game-description">
+<h2>Game description<a class="headerlink" href="#game-description" title="Permalink to this headline">#</a></h2>
+<p>The puzzle game <a class="reference external" href="https://en.wikipedia.org/wiki/Klotski">Klotski</a>
+is an example of a “sliding block puzzle game”,
+whereby the pieces (blocks) can slide around on the game board,
+and the goal is to reach a desired configuration.
+There are a number of these games (“Rush Hour” is another well-known one).
+Klotski is both extremely simple (in terms of the rules) and extremely
+difficult to solve for many possible puzzles.</p>
+<p>The Wikipedia page for Klotski is
+<a class="reference external" href="https://en.wikipedia.org/wiki/Klotski">here</a>.</p>
+<p>Here are the rules of the game. The game is played on a 5x4 grid (5
+rows, 4 columns) which we’ll call the “board”. The pieces are either 1x1
+blocks, 1x2 horizontal blocks (1 row by 2 columns), 2x1 vertical blocks
+(2 rows by 1 column), or 2x2 blocks (2 rows by 2 columns). There is
+always exactly one 2x2 block on the board, but there can be any number
+(including zero) of the other kinds of blocks, except that blocks can’t
+overlap each other and there is only enough space for so many blocks.
+The game starts with a number of pieces already placed on the board,
+including the special 2x2 block. Once this has been done, you play the
+game by moving one piece per move. Pieces can be moved in either the
+horizontal or vertical direction, but they can’t rotate. You can move a
+piece any number of spaces, as long as (a) you don’t move any part of
+the piece off the board, and (b) no part of the piece goes over another
+piece or lands on another piece. The goal of the game is to move the 2x2
+piece to the two bottom rows and the two middle columns. Conceptually,
+this puts the piece next to an “exit door” right below the middle two
+columns, so the piece can “escape”. The objective of the game is to get
+the 2x2 piece to the target location in the fewest number of moves. And
+that is it for rules.</p>
+<p>To illustrate these rules in action, see the example game in the next
+section.</p>
+<p>The name “Klotski” comes from the Polish word “klocki”, which means
+“wooden blocks”. The original Klotski puzzles were physical puzzles made
+from sliding wooden blocks. The game may have actually originated in
+America; versions of it were known to exist in 1909.</p>
+</section>
+<section id="example-game">
+<h2>Example game<a class="headerlink" href="#example-game" title="Permalink to this headline">#</a></h2>
+<p>Here is an example of what a complete game will look like when you
+compile the code in the file <code class="docutils literal notranslate"><span class="pre">interact.ml</span></code> (assuming that all your own
+code in <code class="docutils literal notranslate"><span class="pre">klotski.ml</span></code> works properly) by typing <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">interact</span></code> at
+the command prompt (or just <code class="docutils literal notranslate"><span class="pre">make</span></code>). You run the game by typing this
+at the terminal prompt:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./klotski_interact 0
+</pre></div>
+</div>
+<p>This will use board number 0 (from <code class="docutils literal notranslate"><span class="pre">boards.ml</span></code>) as the starting
+configuration. Board numbers can range from 0 to 7, with higher numbers
+requiring many more moves to solve.</p>
+<p>Here is a transcript of an interactive game in its entirety with this
+input board. Pieces are displayed using letters, with the different
+locations of a piece represented by the same letter on adjacent
+locations.  Empty squares are represented by a period (<code class="docutils literal notranslate"><span class="pre">.</span></code>).
+The goal is to get the 2x2 piece (represented on this
+particular board by the character <code class="docutils literal notranslate"><span class="pre">'f'</span></code>) to the bottom two rows and
+the middle two columns as described above.</p>
+<p>User input comes after the prompt <code class="docutils literal notranslate"><span class="pre">&quot;Enter</span> <span class="pre">move:</span> <span class="pre">&quot;</span></code>. User input
+consists of a string of three characters, which are: (1) the name
+(label) of the piece to be moved (for instance, piece <code class="docutils literal notranslate"><span class="pre">c</span></code>), which
+direction to move it (<code class="docutils literal notranslate"><span class="pre">u</span></code> for up, <code class="docutils literal notranslate"><span class="pre">d</span></code> for down, <code class="docutils literal notranslate"><span class="pre">l</span></code> for left, or
+<code class="docutils literal notranslate"><span class="pre">r</span></code> for right) and how far to move it (for instance, <code class="docutils literal notranslate"><span class="pre">1</span></code> or <code class="docutils literal notranslate"><span class="pre">2</span></code>).
+The distance must be a positive integer no larger than <code class="docutils literal notranslate"><span class="pre">4</span></code> (otherwise,
+the piece would end up off the board). You are not allowed to make a
+move which moves any component of a piece off the board or on top of or
+through another piece.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./klotski_interact 0
+
+aabb
+.cc.
+ddee
+ffgh
+ffij
+
+Enter move: cl1   (* move piece &quot;c&quot; to the (l)eft one (1) location *)
+
+aabb
+cc..
+ddee
+ffgh
+ffij
+
+Enter move: eu1
+
+aabb
+ccee
+dd..
+ffgh
+ffij
+
+Enter move: gu1
+
+aabb
+ccee
+ddg.
+ff.h
+ffij
+
+Enter move: gr1
+
+aabb
+ccee
+dd.g
+ff.h
+ffij
+
+Enter move: iu2
+
+aabb
+ccee
+ddig
+ff.h
+ff.j
+
+Enter move: fr1
+
+aabb
+ccee
+ddig
+.ffh
+.ffj
+
+The board is solved!
+</pre></div>
+</div>
+<p>Since the 2x2 <code class="docutils literal notranslate"><span class="pre">f</span></code> piece is in the final location, the board is solved.
+(Of course, most puzzles will require many more moves than this.)</p>
+</section>
+<section id="part-a-the-klotski-module">
+<h2>Part A: The <code class="docutils literal notranslate"><span class="pre">Klotski</span></code> module<a class="headerlink" href="#part-a-the-klotski-module" title="Permalink to this headline">#</a></h2>
+<p>The code for this section will be written in the file <code class="docutils literal notranslate"><span class="pre">klotski.ml</span></code>.
+You have to write six functions. None of them require more than 25 lines
+of code in all (including helper functions), and most can be done in
+fewer lines.</p>
+<p>The Klotski board representation is described in the “OCaml notes” section.
+Please read it if you haven’t already,
+because you will need to know it to write these functions.
+In the <code class="docutils literal notranslate"><span class="pre">klotski.ml</span></code> file, Klotski boards have the type <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+<p>The value of each function in points is noted in bold after the start of
+each function’s description.</p>
+<section id="board-locations">
+<h3>Board locations<a class="headerlink" href="#board-locations" title="Permalink to this headline">#</a></h3>
+<p>Locations are represented by the <code class="docutils literal notranslate"><span class="pre">loc</span></code> type which is just an alias for
+a 2-tuple of <code class="docutils literal notranslate"><span class="pre">int</span></code>s. Locations are <code class="docutils literal notranslate"><span class="pre">(&lt;row</span> <span class="pre">index&gt;,</span> <span class="pre">&lt;column</span> <span class="pre">index&gt;)</span></code>
+tuples, where the indices start at 0. So location <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0)</span></code> is the
+upper-left corner (row 0, column 0), location <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">1)</span></code> (row 0, column
+1) is one to the right of <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0)</span></code>, and location <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">0)</span></code> (row 1,
+column 0) is one down from <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0)</span></code>.</p>
+</section>
+<section id="is-solved">
+<h3>1. <code class="docutils literal notranslate"><span class="pre">is_solved</span></code><a class="headerlink" href="#is-solved" title="Permalink to this headline">#</a></h3>
+<p>[<strong>2 points</strong>]</p>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">is_solved</span></code> that takes as its only argument a
+Klotski board and returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if the board is solved, or <code class="docutils literal notranslate"><span class="pre">false</span></code>
+otherwise. A board is considered solved if there is a 2x2 piece on the
+board which occupies the four locations in the bottom two rows and the
+two center columns. This function can be written in a couple of lines.
+<em>Hint</em>: use the <code class="docutils literal notranslate"><span class="pre">equal</span></code> function from the <code class="docutils literal notranslate"><span class="pre">Set.S</span></code> module type and
+the <code class="docutils literal notranslate"><span class="pre">exists</span></code> function from the <code class="docutils literal notranslate"><span class="pre">Map.S</span></code> module type.</p>
+</section>
+<section id="compare">
+<h3>2. <code class="docutils literal notranslate"><span class="pre">compare</span></code><a class="headerlink" href="#compare" title="Permalink to this headline">#</a></h3>
+<p>[<strong>3 points</strong>]</p>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">compare</span></code> that takes two arguments, both of
+which are Klotski boards. It returns an <code class="docutils literal notranslate"><span class="pre">int</span></code> which represents whether
+the two boards are “equal”, or one of the two is “greater” than the
+other. If the two boards are equal, return <code class="docutils literal notranslate"><span class="pre">0</span></code>. If the first board is
+greater than the second, return <code class="docutils literal notranslate"><span class="pre">1</span></code>. If the second board is greater
+than the first one, return <code class="docutils literal notranslate"><span class="pre">-1</span></code>.</p>
+<p>The two boards are considered to be equal if:</p>
+<ul class="simple">
+<li><p>the set of unoccupied locations is the same for both boards</p></li>
+<li><p>the set of pieces are the same for both boards</p></li>
+</ul>
+<p>To compare the sets of pieces, use the <code class="docutils literal notranslate"><span class="pre">LocSetSet</span></code> module we’ve
+provided for you. A value of type <code class="docutils literal notranslate"><span class="pre">LocSetSet.t</span></code> is a set of set of
+locations, so a set of pieces can be a value of this type, since pieces
+are represented as sets of locations. In the board, the pieces are
+stored in a <code class="docutils literal notranslate"><span class="pre">CharMap.t</span></code> value, which maps character labels to pieces.
+Be aware that the character labels of the pieces are not important in
+the comparison; if the pieces had different labels two boards would
+still be equivalent as long as the same kinds of pieces occupied the
+same locations. You can extract the pieces from the <code class="docutils literal notranslate"><span class="pre">CharMap.t</span></code> value
+using the <code class="docutils literal notranslate"><span class="pre">CharMap.bindings</span></code> function.</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">compare</span></code> functions of <code class="docutils literal notranslate"><span class="pre">LocSet</span></code> and <code class="docutils literal notranslate"><span class="pre">LocSetSet</span></code> to
+compare sets and sets of sets respectively. This will not only compare
+values for equality but will also do the right thing if the two values
+are not equal (return <code class="docutils literal notranslate"><span class="pre">-1</span></code> if the first is smaller than the second, or
+<code class="docutils literal notranslate"><span class="pre">1</span></code> if the first is larger than the second).</p>
+<p>To be absolutely clear: for the <code class="docutils literal notranslate"><span class="pre">compare</span></code> function to return <code class="docutils literal notranslate"><span class="pre">0</span></code>,
+both boards must have the same set of unoccupied locations and the same
+set of pieces (though the piece labels are irrelevant). The criteria for
+the boards to be “less than” or “greater than” each other is less
+critical, except that for any two unequal boards, if <code class="docutils literal notranslate"><span class="pre">compare</span> <span class="pre">b1</span> <span class="pre">b2</span></code>
+gives the result <code class="docutils literal notranslate"><span class="pre">-1</span></code>, then <code class="docutils literal notranslate"><span class="pre">compare</span> <span class="pre">b2</span> <span class="pre">b1</span></code> <em>must</em> give the result
+<code class="docutils literal notranslate"><span class="pre">1</span></code>. In other words, <code class="docutils literal notranslate"><span class="pre">compare</span></code> must be a true ordering on the
+boards.</p>
+<p>This function is also quite short. It’s important to get this right,
+because if you don’t, your <code class="docutils literal notranslate"><span class="pre">search</span></code> function in part B will either be
+incredibly slow or won’t work at all.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Be aware that you do not have to call this function <em>at all</em> in your
+own code! The <em>only</em> reason for this function to exist is to make
+Klotski boards orderable, which means you can make sets of boards
+(because the implementation of sets requires that their elements be
+orderable). So don’t feel like you are doing something wrong if you
+don’t call this function in your code; in fact, you are doing
+something wrong if you <em>do</em> call this function in your code.</p>
+</div>
+</section>
+<section id="remove">
+<h3>3. <code class="docutils literal notranslate"><span class="pre">remove</span></code><a class="headerlink" href="#remove" title="Permalink to this headline">#</a></h3>
+<p>[<strong>3 points</strong>]</p>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">remove</span></code> that takes two arguments:
+a character (which is a piece label) and a board.
+It removes the piece with the given character label
+from the <code class="docutils literal notranslate"><span class="pre">pieces</span></code> map of the board,
+updates the <code class="docutils literal notranslate"><span class="pre">unoccupied</span></code> set
+by adding the locations of the piece to that set,
+and returns the resulting board.
+If the piece isn’t on the board, the board is returned unchanged.</p>
+<p>Again, this is a very short function. You may find the <code class="docutils literal notranslate"><span class="pre">union</span></code>
+function on sets to be useful here.</p>
+</section>
+<section id="add">
+<h3>4. <code class="docutils literal notranslate"><span class="pre">add</span></code><a class="headerlink" href="#add" title="Permalink to this headline">#</a></h3>
+<p>[<strong>3 points</strong>]</p>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">add</span></code> which takes two arguments:</p>
+<ul class="simple">
+<li><p>a two-tuple representing a piece. This consists of a character label
+and a set of locations that the piece occupies.</p></li>
+<li><p>a Klotski board</p></li>
+</ul>
+<p>It places the piece on the board if possible, updates the <code class="docutils literal notranslate"><span class="pre">unoccupied</span></code>
+set, and returns the new board. If the piece is already on the board or
+can’t be placed on the board because some of its locations are occupied
+by other pieces, return <code class="docutils literal notranslate"><span class="pre">None</span></code>. If the piece can be placed, return
+<code class="docutils literal notranslate"><span class="pre">Some</span> <span class="pre">&lt;new</span> <span class="pre">board&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;new</span> <span class="pre">board&gt;</span></code> is the resulting board.</p>
+<p>Note that the new piece can only be placed on the unoccupied locations
+on the board.</p>
+<p>This is another short function. The <code class="docutils literal notranslate"><span class="pre">subset</span></code> and <code class="docutils literal notranslate"><span class="pre">diff</span></code> functions of
+sets may be useful to you here.</p>
+</section>
+<section id="make-move">
+<h3>5. <code class="docutils literal notranslate"><span class="pre">make_move</span></code><a class="headerlink" href="#make-move" title="Permalink to this headline">#</a></h3>
+<p>[<strong>5 points</strong>]</p>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">make_move</span></code> which takes two arguments:</p>
+<ul class="simple">
+<li><p>a three-tuple representing a move. This consists of a character (a
+piece label), a direction (one of <code class="docutils literal notranslate"><span class="pre">Up</span></code>, <code class="docutils literal notranslate"><span class="pre">Down</span></code>, <code class="docutils literal notranslate"><span class="pre">Left</span></code> or
+<code class="docutils literal notranslate"><span class="pre">Right</span></code>), and an <code class="docutils literal notranslate"><span class="pre">int</span></code> representing how far to move the piece
+(this should be at least 1).</p></li>
+<li><p>a Klotski board</p></li>
+</ul>
+<p>It returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if the move can’t be made for any reason (including
+if the labeled piece is not on the board, or if the move distance is
+less than 1). Otherwise, it makes the move on the board, updates the
+character/piece map and the unoccupied set, and returns
+<code class="docutils literal notranslate"><span class="pre">Some</span> <span class="pre">&lt;new</span> <span class="pre">board&gt;</span></code>.</p>
+<p>This function is a bit harder and a bit longer than the previous ones.
+You may find the <code class="docutils literal notranslate"><span class="pre">map</span></code> function on sets to be useful; this is like
+<code class="docutils literal notranslate"><span class="pre">List.map</span></code> except for sets <em>i.e.</em> it applies a function to every value
+in a set.</p>
+<p>Be careful! It’s not hard to remove a piece from a board, get the piece
+locations, move them in some direction, and add the piece back to the
+board, but this won’t be enough in all cases. You also have to make sure
+that the piece doesn’t go <em>through</em> any other pieces when it moves. This
+is especially important for large moves <em>e.g.</em> moving a 1x1 piece 4
+locations up or down. One way to deal with this is to only allow a move
+of distance <code class="docutils literal notranslate"><span class="pre">n</span></code> if you would also allow a move of distances <code class="docutils literal notranslate"><span class="pre">n-1</span></code>,
+<code class="docutils literal notranslate"><span class="pre">n-2</span></code> …​ <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+<p>Helper functions are your friend here. The <code class="docutils literal notranslate"><span class="pre">add</span></code> function you just
+defined above will also be very helpful.</p>
+</section>
+<section id="next">
+<h3>6. <code class="docutils literal notranslate"><span class="pre">next</span></code><a class="headerlink" href="#next" title="Permalink to this headline">#</a></h3>
+<p>[<strong>4 points</strong>]</p>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">next</span></code> which takes a single argument (a
+Klotski board). It figures out all possible moves on the board, makes
+all the moves starting from the board, collects all the resulting boards
+into a list and returns the list.</p>
+<p>To give a very simple example: consider this board (represented here as
+a 2d array of characters, which is not how we are doing it in the
+program):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>.aa.
+.aa.
+....
+....
+....
+</pre></div>
+</div>
+<p>The following list of boards would be returned by this function (again
+representing boards as 2d character arrays, which isn’t accurate, but
+you get the idea):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>aa..
+aa..
+....
+....
+....
+
+..aa
+..aa
+....
+....
+....
+
+....
+.aa.
+.aa.
+....
+....
+
+....
+....
+.aa.
+.aa.
+....
+
+....
+....
+....
+.aa.
+.aa.
+</pre></div>
+</div>
+<p>So the result will be a list of 5 boards, each of which could be derived
+from the input board by moving the <code class="docutils literal notranslate"><span class="pre">'a'</span></code> piece in some direction by
+some number of squares.</p>
+<p>This function is a bit tricky. It’s also the most critical function for
+the <code class="docutils literal notranslate"><span class="pre">search</span></code> function in part B. However, it doesn’t have to be that
+long (we did it in less than 25 lines). The basic idea is this. Imagine
+if, for a particular piece on the board and a particular direction, you
+could compute all the possible moves with that piece in that direction
+and could collect all the resulting boards. Do that for all directions
+and for all pieces, and collect up all the boards. You can use the
+<code class="docutils literal notranslate"><span class="pre">make_move</span></code> function you defined above to make your life easier, but
+you don’t have to. Once again, make sure you aren’t moving a piece
+through another piece or on top of another piece.</p>
+<p>You may find the <code class="docutils literal notranslate"><span class="pre">List.concat</span></code> and <code class="docutils literal notranslate"><span class="pre">List.map</span></code> functions to be
+useful, or you can combine them with the <code class="docutils literal notranslate"><span class="pre">List.concat_map</span></code> function.</p>
+</section>
+</section>
+<section id="part-b-the-search-module">
+<h2>Part B: The <code class="docutils literal notranslate"><span class="pre">Search</span></code> module<a class="headerlink" href="#part-b-the-search-module" title="Permalink to this headline">#</a></h2>
+<p>The code for this file will be written in the file <code class="docutils literal notranslate"><span class="pre">search.ml</span></code>. You
+only have to write one function in this section, and it can be written
+in less than 25 lines (including helper functions). The goal of this
+module is to allow you to start with a Klotski board and find a solution
+to the board. The solution will be a list of all the boards leading up
+to the final one (which has the 2x2 piece in the target location). In
+fact, the solution will be in reverse order, with the last board at the
+front of the list.</p>
+<section id="breadth-first-and-depth-first-search">
+<h3>Breadth-first and depth-first search<a class="headerlink" href="#breadth-first-and-depth-first-search" title="Permalink to this headline">#</a></h3>
+<p>The code for this section is not hard to write, but you have to
+understand the breadth-first and depth-first search algorithms.</p>
+<p>References:
+<a class="reference external" href="https://en.wikipedia.org/wiki/Breadth-first_search">here</a> for
+breadth-first search;
+<a class="reference external" href="https://en.wikipedia.org/wiki/Depth-first_search">here</a> for
+depth-first search.</p>
+<p>Finding an optimal solution to a puzzle game like Klotski is an example
+of a <em>tree search</em> problem. Trees come up all the time in computer
+science. We can consider the starting board of a Klotski puzzle as the
+root node of a tree. The moves that can be made on the starting board
+can be applied to that board to generate new boards which are the
+“children” of the root node, and each of them can then generate more
+boards which are their children, and so on. A tree representing a
+Klotski puzzle is actually of infinite depth, because you can move the
+same piece back and forth as often as you want. However, it’s useful
+when solving to stipulate that you can’t have two boards (nodes) in the
+tree which are identical; this makes the tree finite and thus makes it
+feasible to search for a particular board configuration (like one in
+which the 2x2 piece is in the bottom two rows and the middle two
+columns).</p>
+<p>The two most basic algorithms for doing a tree search are known as
+“depth-first search” (also known as DFS) and “breadth-first search”
+(also known as BFS). Let’s see how they work.</p>
+<p>The idea in depth-first search is to start at the root node, then (if
+that node isn’t a solution to the problem), generate all its child
+nodes, pick one of the child nodes, inspect it to see if it solves the
+problem, then (if not) generate <em>its</em> child nodes, pick one of its child
+nodes (grandchild of the root node), inspect it, and so on until you
+eventually reach a node that has no children (perhaps because all of its
+actual children have already been visited, and so are ineligible for
+searching). At that point, you back up to the parent node of the current
+node, pick a different child node, and continue. In this way, you will
+eventually visit all the nodes in the tree. Basically, you search as far
+as possible down one branch of the tree before you back up and search a
+different branch. The Wikipedia article
+<a class="reference external" href="https://en.wikipedia.org/wiki/Depth-first_search">here</a> has a
+picture which illustrates the order in which nodes are visited in DFS.</p>
+<p>In contrast, in breadth-first search, you search the entire tree level
+by level. First, you check the root node, then you check each of its
+children, and only then each of the children’s children, and so on.
+Again, you should eliminate any nodes that are the same as nodes already
+seen in order to speed up the search. The Wikipedia article
+<a class="reference external" href="https://en.wikipedia.org/wiki/Breadth-first_search">here</a> has a
+picture which illustrates the order in which nodes are visited in BFS.</p>
+<p>For the Klotski problem, BFS has a tremendous advantage over DFS: the
+first solution found using BFS is guaranteed to be the optimal solution
+of a board (in the sense of requiring the fewest number of moves).
+That’s because the number of moves it takes to get to a particular board
+node from the root board node is equal to the depth of the tree at that
+point; put differently, each new level of the tree corresponds to
+another move in the solution. So if there were a better solution in the
+tree by the time you find one solution, you would already have seen it,
+so the first solution found is the optimal one. In contrast, DFS will
+usually not find an optimal solution, as you will see below.</p>
+<p>A really amazing fact is that BFS and DFS can both be implemented in
+terms of simple data structures which can have exactly the same
+interface. DFS is naturally implemented in terms of a <em>stack</em>, which is
+a data structure where you push values into the stack and pop them off
+the stack, and the first value popped off the stack is the last value
+pushed onto the stack. This is called a LIFO data structure, for “Last
+In, First Out”. From the perspective of a tree search, using a stack
+works like this:</p>
+<ul class="simple">
+<li><p>Start with the root node (original board). Push it onto the stack.</p></li>
+<li><p>Repeat the following steps:</p>
+<ul>
+<li><p>Pop the first node off the stack. Check to see if it solves the
+problem. If so, you win!</p></li>
+<li><p>Otherwise, generate all its child nodes and push them onto the
+stack <em>as long as none of them have ever been pushed onto the
+stack before</em>.</p></li>
+</ul>
+</li>
+<li><p>If the stack empties out before a solution is found, there is no
+solution.</p></li>
+</ul>
+<p>For BFS, the process is exactly the same except that you use a <em>queue</em>
+instead of a stack to store the nodes. A queue is like a stack except
+that instead of “Last In, First Out” a queue is “First In, First Out” or
+FIFO (like a line for movie tickets). That is literally the only
+difference, but it means that pushing a node onto the queue puts it at
+the back of the queue, not the front, so all the other child nodes that
+were generated earlier will be inspected before the pushed node. In
+contrast, popping a node off the queue pops off the front of the queue
+(which is the same as for a stack). This difference is enough to change
+DFS into BFS. Pretty cool!</p>
+<p>There are two additional wrinkles to the tree searching process. The
+first is that (as mentioned) we take care to not push nodes onto the
+stack/queue if they have already been inspected before. The second is
+that we don’t just want to find a solution board; we want to find the
+entire <em>history</em> of the solution (the sequence of boards leading to the
+solution). The way we will do this is a bit clever. Instead of storing
+individual boards on the stack or queue, we will store lists of boards,
+where a particular list represents the history of boards leading to the
+current board. For convenience, we store it in reverse order, so that
+the first board in the list is the last board in the history. So if a
+board list is <code class="docutils literal notranslate"><span class="pre">[board3;</span> <span class="pre">board2;</span> <span class="pre">board1]</span></code>, this represents a history
+where the original board was <code class="docutils literal notranslate"><span class="pre">board1</span></code>, then <code class="docutils literal notranslate"><span class="pre">board2</span></code> is a child of
+<code class="docutils literal notranslate"><span class="pre">board1</span></code> (generated by making one move on <code class="docutils literal notranslate"><span class="pre">board1</span></code>) and <code class="docutils literal notranslate"><span class="pre">board3</span></code>
+is a child of <code class="docutils literal notranslate"><span class="pre">board2</span></code>. We generate new histories by taking the head
+of the list, generating a list of child boards, and for each child
+board, putting it at the front of the list. So if <code class="docutils literal notranslate"><span class="pre">board3</span></code> has three
+children: <code class="docutils literal notranslate"><span class="pre">board4a</span></code>, <code class="docutils literal notranslate"><span class="pre">board4b</span></code>, and <code class="docutils literal notranslate"><span class="pre">board4c</span></code> (representing three
+possible moves on <code class="docutils literal notranslate"><span class="pre">board3</span></code>), the new histories will be:
+<code class="docutils literal notranslate"><span class="pre">[board4a;</span> <span class="pre">board3;</span> <span class="pre">board2;</span> <span class="pre">board1]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">[board4b;</span> <span class="pre">board3;</span> <span class="pre">board2;</span> <span class="pre">board1]</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">[board4c;</span> <span class="pre">board3;</span> <span class="pre">board2;</span> <span class="pre">board1]</span></code>. Each of these will get pushed
+onto the stack/queue. When we pop a history off the stack/queue, we will
+look at the head of the list (the most recent board in the history) to
+see if it solves the problem; if not (and if it hasn’t been seen
+before), we generate new histories, push them back onto the stack/queue,
+and continue. Once we find a board which is a solution, we will also
+have all the boards that led to that solution, so it’s easy to print out
+the solution.</p>
+</section>
+<section id="the-storage-module-type">
+<h3>The <code class="docutils literal notranslate"><span class="pre">Storage</span></code> module type<a class="headerlink" href="#the-storage-module-type" title="Permalink to this headline">#</a></h3>
+<p>The file <code class="docutils literal notranslate"><span class="pre">search.ml</span></code> defines a module type called <code class="docutils literal notranslate"><span class="pre">Storage</span></code> which
+represents the data structure that will store the board histories. It
+will be either a stack or a queue. Here is the definition:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="k">type</span> <span class="nc">Storage</span> <span class="o">=</span>
+  <span class="k">sig</span>
+    <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span>
+    <span class="k">exception</span> <span class="nc">Empty</span>
+
+    <span class="k">val</span> <span class="n">create</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span>
+    <span class="k">val</span> <span class="n">push</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="kt">unit</span>
+    <span class="k">val</span> <span class="n">pop</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+    <span class="k">val</span> <span class="n">is_empty</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="kt">bool</span>
+  <span class="k">end</span>
+</pre></div>
+</div>
+<p>This means that any module that has this module type defines a type
+<code class="docutils literal notranslate"><span class="pre">t</span></code> which is polymorphic (<em>i.e.</em> you can store any kind of data in the
+type <code class="docutils literal notranslate"><span class="pre">t</span></code>). You create a new data structure of type <code class="docutils literal notranslate"><span class="pre">t</span></code> by calling
+the <code class="docutils literal notranslate"><span class="pre">create</span></code> function with a unit argument:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">storage</span> <span class="o">=</span> <span class="n">create</span> <span class="bp">()</span> <span class="k">in</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>You push a new value onto the data structure using the <code class="docutils literal notranslate"><span class="pre">push</span></code>
+function:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">push</span> <span class="n">new_history</span> <span class="n">storage</span>
+</pre></div>
+</div>
+<p><em>Note</em>: These data structures can’t overflow.</p>
+<p>You pop a value off the data structure using the <code class="docutils literal notranslate"><span class="pre">pop</span></code> function:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">next_history</span> <span class="o">=</span> <span class="n">pop</span> <span class="n">storage</span> <span class="k">in</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>You can check if the storage is empty using the <code class="docutils literal notranslate"><span class="pre">is_empty</span></code> function.
+If you pop an empty data structure, the <code class="docutils literal notranslate"><span class="pre">Empty</span></code> exception will be
+raised.</p>
+<p>Remarkably, the <code class="docutils literal notranslate"><span class="pre">Stack</span></code> and <code class="docutils literal notranslate"><span class="pre">Queue</span></code> modules which are part of the
+OCaml standard library both implement the <code class="docutils literal notranslate"><span class="pre">Storage</span></code> module type. We’ll
+see how to use this below.</p>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">Storage</span></code> module type defines an <em>imperative</em> storage
+data structure. That’s why <code class="docutils literal notranslate"><span class="pre">push</span></code> and <code class="docutils literal notranslate"><span class="pre">pop</span></code> don’t return an updated
+value of type <code class="docutils literal notranslate"><span class="pre">'a</span> <span class="pre">t</span></code>; instead, they mutate the input value of that
+type. Both the OCaml <code class="docutils literal notranslate"><span class="pre">Stack</span></code> and <code class="docutils literal notranslate"><span class="pre">Queue</span></code> modules implement
+imperative data structures. This is the only use of imperative
+programming in this assignment.</p>
+</section>
+<section id="code-to-write">
+<h3>Code to write<a class="headerlink" href="#code-to-write" title="Permalink to this headline">#</a></h3>
+<p>[<strong>10 points</strong>]</p>
+<p>Write the <code class="docutils literal notranslate"><span class="pre">search</span></code> function in the <code class="docutils literal notranslate"><span class="pre">Search</span></code> functor.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Search</span></code> functor looks like this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">Search</span> <span class="o">(</span><span class="nc">S</span> <span class="o">:</span> <span class="nc">Storage</span><span class="o">)</span> <span class="o">(</span><span class="nc">D</span> <span class="o">:</span> <span class="nc">Domain</span><span class="o">)</span> <span class="o">=</span>
+  <span class="k">struct</span>
+    <span class="k">module</span> <span class="nc">DS</span> <span class="o">=</span> <span class="nn">Set</span><span class="p">.</span><span class="nc">Make</span><span class="o">(</span><span class="nc">D</span><span class="o">)</span>
+
+    <span class="k">let</span> <span class="n">search</span> <span class="n">init</span> <span class="o">=</span> <span class="o">...</span>
+
+    <span class="k">let</span> <span class="n">show_history</span> <span class="n">hist</span> <span class="o">=</span> <span class="c">(* code supplied for you *)</span>
+  <span class="k">end</span>
+</pre></div>
+</div>
+<p>and you have to fill in the code marked <code class="docutils literal notranslate"><span class="pre">...</span></code>. The <code class="docutils literal notranslate"><span class="pre">Storage</span></code> (<code class="docutils literal notranslate"><span class="pre">S</span></code>)
+argument will either be the OCaml <code class="docutils literal notranslate"><span class="pre">Stack</span></code> or <code class="docutils literal notranslate"><span class="pre">Queue</span></code> module
+(depending on whether you want DFS or BFS searching). The <code class="docutils literal notranslate"><span class="pre">Domain</span></code>
+(<code class="docutils literal notranslate"><span class="pre">D</span></code>) argument will be the <code class="docutils literal notranslate"><span class="pre">Klotski</span></code> module you defined in part A in
+the file <code class="docutils literal notranslate"><span class="pre">klotski.ml</span></code>. See below for how this code will actually be
+used. The <code class="docutils literal notranslate"><span class="pre">DS</span></code> module will be a set of Klotski boards; these will be
+used to make sure we don’t push a board history onto the stack or queue
+whose most recent board has already been seen. Note that the <code class="docutils literal notranslate"><span class="pre">compare</span></code>
+function in the <code class="docutils literal notranslate"><span class="pre">Klotski</span></code> module that you wrote in part A is
+incredibly important here! Without it, you couldn’t create a set of
+boards because the <code class="docutils literal notranslate"><span class="pre">Klotski</span></code> module wouldn’t implement the
+<code class="docutils literal notranslate"><span class="pre">Ordered_type</span></code> module type. If you don’t implement it correctly (the
+way we described above) you could still create a set of boards but the
+tree search may be incredibly slow (because there are too many distinct
+boards).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">search</span></code> function takes one argument, which is the starting board.
+It will perform a tree search starting from that board. If it finds a
+solution, it will return a board history (a list of boards in reverse
+order, with the final board at the head of the list). If it doesn’t find
+a solution, it will raise the <code class="docutils literal notranslate"><span class="pre">Not_found</span></code> exception.</p>
+<p>Here’s an outline of the algorithm to use:</p>
+<ul class="simple">
+<li><p>Create a new <code class="docutils literal notranslate"><span class="pre">Storage</span></code> structure (using <code class="docutils literal notranslate"><span class="pre">S.create</span></code>).</p></li>
+<li><p>Create a history which is just a list containing the initial board.
+Push it onto the storage structure.</p></li>
+<li><p>Create an empty set of visited boards (using <code class="docutils literal notranslate"><span class="pre">DS.empty</span></code>).</p></li>
+<li><p>Repeat the following steps:</p>
+<ul>
+<li><p>If the storage structure is empty, the search has failed, so raise
+the <code class="docutils literal notranslate"><span class="pre">Not_found</span></code> exception.</p></li>
+<li><p>Otherwise, pop a history off the storage structure. Then:</p>
+<ul>
+<li><p>Check the most recent board in the history. If it has already
+been seen (use the set of visited boards to check for this),
+throw the history away and go to the next one.</p></li>
+<li><p>Otherwise, check to see if the board solves the problem. If so,
+return the history and you’re done!</p></li>
+<li><p>Otherwise, add the board to the set of visited boards, find the
+children of the current board (using the <code class="docutils literal notranslate"><span class="pre">D.next</span></code> function,
+which will actually be the <code class="docutils literal notranslate"><span class="pre">next</span></code> function you wrote in part
+A), generate the new histories, and push them back onto the
+storage structure. Then continue.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Remember that in this function you need to use the correct module prefix
+to use functions from the <code class="docutils literal notranslate"><span class="pre">S</span></code> module (of module type <code class="docutils literal notranslate"><span class="pre">Storage</span></code>) and
+the <code class="docutils literal notranslate"><span class="pre">D</span></code> module (of module type <code class="docutils literal notranslate"><span class="pre">Domain</span></code>), so instead of <code class="docutils literal notranslate"><span class="pre">create</span></code>,
+<code class="docutils literal notranslate"><span class="pre">push</span></code>, <code class="docutils literal notranslate"><span class="pre">pop</span></code> <em>etc.</em> from module <code class="docutils literal notranslate"><span class="pre">S</span></code> it’s <code class="docutils literal notranslate"><span class="pre">S.create</span></code>, <code class="docutils literal notranslate"><span class="pre">S.push</span></code>,
+<code class="docutils literal notranslate"><span class="pre">S.pop</span></code> <em>etc.</em> and instead of <code class="docutils literal notranslate"><span class="pre">is_solved</span></code>, <code class="docutils literal notranslate"><span class="pre">compare</span></code>, <code class="docutils literal notranslate"><span class="pre">next</span></code> from
+module <code class="docutils literal notranslate"><span class="pre">D</span></code> it’s <code class="docutils literal notranslate"><span class="pre">D.is_solved</span></code>, <code class="docutils literal notranslate"><span class="pre">D.compare</span></code>, and <code class="docutils literal notranslate"><span class="pre">D.next</span></code>.</p>
+<p>As usual, it’s OK to write helper functions. You may find the
+<code class="docutils literal notranslate"><span class="pre">List.iter</span></code> function useful.</p>
+</section>
+<section id="how-the-search-functor-is-used">
+<h3>How the <code class="docutils literal notranslate"><span class="pre">Search</span></code> functor is used<a class="headerlink" href="#how-the-search-functor-is-used" title="Permalink to this headline">#</a></h3>
+<p>Even if you’ve implemented the <code class="docutils literal notranslate"><span class="pre">Search</span></code> functor correctly, you may be
+confused as to how it is actually used. For that, look at the
+<code class="docutils literal notranslate"><span class="pre">solve.ml</span></code> file. It has this code:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">open</span> <span class="nc">Klotski</span>
+<span class="k">open</span> <span class="nc">Search</span>
+
+<span class="k">module</span> <span class="nc">DFS</span> <span class="o">=</span> <span class="nc">Search</span><span class="o">(</span><span class="nc">Stack</span><span class="o">)</span>
+<span class="k">module</span> <span class="nc">BFS</span> <span class="o">=</span> <span class="nc">Search</span><span class="o">(</span><span class="nc">Queue</span><span class="o">)</span>
+<span class="k">module</span> <span class="nc">K_DFS</span> <span class="o">=</span> <span class="nc">DFS</span><span class="o">(</span><span class="nc">Klotski</span><span class="o">)</span>
+<span class="k">module</span> <span class="nc">K_BFS</span> <span class="o">=</span> <span class="nc">BFS</span><span class="o">(</span><span class="nc">Klotski</span><span class="o">)</span>
+
+<span class="k">let</span> <span class="n">search_and_print</span> <span class="n">search</span> <span class="n">show</span> <span class="n">b</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">h</span> <span class="o">=</span> <span class="n">search</span> <span class="n">b</span> <span class="k">in</span>
+    <span class="k">begin</span>
+      <span class="n">print_newline</span> <span class="bp">()</span><span class="o">;</span>
+      <span class="n">print_string</span> <span class="o">(</span><span class="n">show</span> <span class="n">h</span><span class="o">);</span>
+      <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;Solution in %d moves.</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">(</span><span class="nn">List</span><span class="p">.</span><span class="n">length</span> <span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="k">end</span>
+
+<span class="c">(* ... using depth-first search with initial board b ... *)</span>
+   <span class="n">search_and_print</span> <span class="nn">K_DFS</span><span class="p">.</span><span class="n">search</span> <span class="nn">K_DFS</span><span class="p">.</span><span class="n">show_history</span> <span class="n">b</span>
+
+<span class="c">(* ... using breadth-first search with initial board b ... *)</span>
+   <span class="n">search_and_print</span> <span class="nn">K_BFS</span><span class="p">.</span><span class="n">search</span> <span class="nn">K_BFS</span><span class="p">.</span><span class="n">show_history</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>We create two functors called <code class="docutils literal notranslate"><span class="pre">DFS</span></code> and <code class="docutils literal notranslate"><span class="pre">BFS</span></code> by partially
+instantiating the <code class="docutils literal notranslate"><span class="pre">Search</span></code> functor (OCaml lets you do this!), giving
+it a <code class="docutils literal notranslate"><span class="pre">Stack</span></code> or a <code class="docutils literal notranslate"><span class="pre">Queue</span></code> module argument, respectively (these
+modules are part of OCaml’s standard library). Then we use those
+(single-argument) functors to generate the <code class="docutils literal notranslate"><span class="pre">K_DFS</span></code> and <code class="docutils literal notranslate"><span class="pre">K_BFS</span></code>
+modules, which provide the code needed to solve the Klotski problem
+using depth-first search or breadth-first search, respectively. Note
+that we could instead have created <code class="docutils literal notranslate"><span class="pre">K_DFS</span></code> and <code class="docutils literal notranslate"><span class="pre">K_BFS</span></code> directly like
+this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">K_DFS</span> <span class="o">=</span> <span class="nc">Search</span><span class="o">(</span><span class="nc">Stack</span><span class="o">)(</span><span class="nc">Klotski</span><span class="o">)</span>
+<span class="k">module</span> <span class="nc">K_BFS</span> <span class="o">=</span> <span class="nc">Search</span><span class="o">(</span><span class="nc">Queue</span><span class="o">)(</span><span class="nc">Klotski</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Then we use <code class="docutils literal notranslate"><span class="pre">K_DFS.search</span></code> to search for the solution using DFS or
+<code class="docutils literal notranslate"><span class="pre">K_BFS.search</span></code> to search using BFS. We use <code class="docutils literal notranslate"><span class="pre">K_DFS.show_history</span></code> or
+<code class="docutils literal notranslate"><span class="pre">K_BFS.show_history</span></code> to display the solution (these are actually the
+same).</p>
+<p>This is a nice illustration of how using functors can decompose code
+along natural boundaries. If we had a new problem that could be solved
+using a tree search, we could use the exact same <code class="docutils literal notranslate"><span class="pre">DFS</span></code> and <code class="docutils literal notranslate"><span class="pre">BFS</span></code>
+modules as those given above to solve it. We would simply have to create
+a new <code class="docutils literal notranslate"><span class="pre">Domain</span></code> module representing the problem like we did for the
+Klotski problem, and pass it to the <code class="docutils literal notranslate"><span class="pre">DFS</span></code> or <code class="docutils literal notranslate"><span class="pre">BFS</span></code> functor to
+generate a module that could do the searching and display the solution.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">show_history</span></code> function defined in the <code class="docutils literal notranslate"><span class="pre">Search</span></code> module will be
+used as the <code class="docutils literal notranslate"><span class="pre">show</span></code> argument in the <code class="docutils literal notranslate"><span class="pre">search_and_print</span></code> function.</p>
+</section>
+</section>
+<section id="running-the-board-solver">
+<h2>Running the board solver<a class="headerlink" href="#running-the-board-solver" title="Permalink to this headline">#</a></h2>
+<p>We saw above how to run the interactive Klotski program. However, for
+some of the boards (<em>e.g.</em> boards 5-7), the minimum number of moves to
+solve the board is so large that it’s not really reasonable to expect a
+human to be able to do it. Therefore, let’s use computers! Once all the
+code above has been written, type <code class="docutils literal notranslate"><span class="pre">make</span></code> to compile the
+<code class="docutils literal notranslate"><span class="pre">klotski_solve</span></code> program. You can run it like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./klotski_solve 0
+</pre></div>
+</div>
+<p>and it will solve board 0 and print out the solution, like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./klotski_solve 0
+
+aabb
+.cc.
+ddee
+ffgh
+ffij
+
+----
+
+aabb
+cc..
+ddee
+ffgh
+ffij
+
+----
+
+aabb
+ccee
+dd..
+ffgh
+ffij
+
+----
+
+aabb
+ccee
+ddg.
+ff.h
+ffij
+
+----
+
+aabb
+ccee
+dd.g
+ff.h
+ffij
+
+----
+
+aabb
+ccee
+ddig
+ff.h
+ff.j
+
+----
+
+aabb
+ccee
+ddig
+.ffh
+.ffj
+
+Solution in 6 moves.
+</pre></div>
+</div>
+<p>At the end, the program prints out how many moves the solution took. You
+can run the solver on any board from 0 to 7.</p>
+<p>To time the solver, you can run the program like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ /usr/bin/time ./klotski_solve 7
+
+[... solution omitted ...]
+
+Solution in 150 moves.
+
+        5.31 real         5.28 user         0.03 sys
+</pre></div>
+</div>
+<p>This means that the solver took just over 5 seconds to find the
+solution.</p>
+<p>By default, the board solver uses a breadth-first search algorithm to
+find the optimal solution (<em>i.e.</em> the one requiring the fewest moves). You
+can alternatively use depth-first search by adding the <code class="docutils literal notranslate"><span class="pre">-dfs</span></code>
+command-line argument, but don’t expect a good result! For instance:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./klotski_solve -dfs 0
+
+[... solution omitted ...]
+
+Solution in 1334 moves.
+</pre></div>
+</div>
+<p>It sure looks like breadth-first search is the way to go for this
+problem.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Don’t worry if your program doesn’t give the exact same number of DFS
+moves as reported here. DFS is not guaranteed to give the minimum
+number of moves (as you can see), and the exact number of moves
+depends on the details of how the search is set up (notably, the
+ordering of the boards when generating the next boards from a
+particular board).</p>
+</div>
+</section>
+<section id="efficiency-of-the-board-solver">
+<h2>Efficiency of the board solver<a class="headerlink" href="#efficiency-of-the-board-solver" title="Permalink to this headline">#</a></h2>
+<p>For full marks, the board solver should be “reasonably efficient”. This
+means that, <strong>when compiled to native code</strong>, none of the boards should
+take more than (say) 30 seconds to solve. Note that to compile to native
+code you have to type</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make solve_native
+</pre></div>
+</div>
+<p>You can also run the solver when it’s compiled to byte code, but it will
+take a long time on the harder boards. Our solver (compiled to byte
+code) took 45 seconds on board 7, or about 9 times as long as the native
+code version.</p>
+</section>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="ocaml_notes.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">OCaml notes</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../../../readings/index.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Readings</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Michael Vanier<br/>
+  
+      &copy; Copyright 2023, Michael C. Vanier. All rights reserved.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>
