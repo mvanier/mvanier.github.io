@@ -1,0 +1,62 @@
+Ideas for scripts
+=================
+
+**********
+
+An "overlay.py" script to process overlays.
+
+Often there are multiple slides that all have the same equations or code in
+them.  Instead of having to write this:
+
+  ---
+  # title
+
+  ```
+  bla bla bla
+  ```
+
+  * comment 1
+
+  ---
+  # title
+
+  ```
+  bla bla bla
+  ```
+
+  * comment 2
+
+  ---
+  # title
+
+  ```
+  bla bla bla
+  ```
+
+  * comment 3
+
+I would like to be able to write:
+
+  ---
+  # title
+
+  ```
+  bla bla bla
+  ```
+
+  // OVERLAY
+  // --> 1
+  * comment 1
+  // <-- 1
+  // --> 2
+  * comment 2
+  // <-- 2
+  // --> 3
+  * comment 3
+  // <-- 3
+  // END OVERLAY
+
+What would even be more ambitious is to allow varying the code as well (e.g. by
+highlighting different sections) but that quickly leads to diminishing returns.
+
+
