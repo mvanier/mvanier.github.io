@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Part A: Exercises &mdash; The CS 115 book</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../_static/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Part B: Pitfalls" href="partB_pitfalls.html" />
+    <link rel="prev" title="Preamble" href="Preamble.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            The CS 115 book, Spring 2023
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Software.html">Installing the course software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 1: Evaluation and recursion</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Part A: Exercises</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#defining-new-operators">1. Defining new operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rangeproduct">2. <code class="docutils literal notranslate"><span class="pre">rangeProduct</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prod">3. <code class="docutils literal notranslate"><span class="pre">prod</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#map-and-variations">4. <code class="docutils literal notranslate"><span class="pre">map</span></code> and variations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dot-product">5. Dot product</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fun-with-list-comprehensions">6. Fun with list comprehensions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sum-of-primes">7. Sum of primes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#balanced-parentheses">8. Balanced parentheses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="partB_pitfalls.html">Part B: Pitfalls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partC_evaluation.html">Part C: Evaluation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The CS 115 book, Spring 2023</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 1: Evaluation and recursion</a></li>
+      <li class="breadcrumb-item active">Part A: Exercises</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="part-a-exercises">
+<h1>Part A: Exercises<a class="headerlink" href="#part-a-exercises" title="Permalink to this heading"></a></h1>
+<section id="defining-new-operators">
+<h2>1. Defining new operators<a class="headerlink" href="#defining-new-operators" title="Permalink to this heading"></a></h2>
+<p>Haskell lets you define your own operators. Here are a couple of simple
+examples. (See lecture 2 for how to define new operators.)</p>
+<section id="a-sum-of-squares">
+<h3>a. <code class="docutils literal notranslate"><span class="pre">+*</span></code> (sum of squares)<a class="headerlink" href="#a-sum-of-squares" title="Permalink to this heading"></a></h3>
+<p>Write a definition for an operator called <code class="docutils literal notranslate"><span class="pre">+*</span></code> that computes the sum
+of the squares of its arguments. Assume both arguments are
+<code class="docutils literal notranslate"><span class="pre">Double</span></code>s. Make it left-associative and give it a precedence of 7.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Define this operator directly – don’t just define a function and make
+the operator another name for the function. This applies for the next
+problem as well.</p>
+</div>
+</section>
+<section id="b-exclusive-or">
+<h3>b. <code class="docutils literal notranslate"><span class="pre">^||</span></code> (exclusive-or)<a class="headerlink" href="#b-exclusive-or" title="Permalink to this heading"></a></h3>
+<p>Write a definition for an operator called <code class="docutils literal notranslate"><span class="pre">^||</span></code> that computes the
+exclusive-OR of its two (boolean) arguments. Make it right-associative
+with a precedence of 3. Your definition should be only two (very simple)
+lines (not counting the type declaration) and shouldn’t use <code class="docutils literal notranslate"><span class="pre">if</span></code>.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Use pattern matching; if the first argument is <code class="docutils literal notranslate"><span class="pre">False</span></code>,
+what must the answer be?</p>
+</div>
+</section>
+</section>
+<section id="rangeproduct">
+<h2>2. <code class="docutils literal notranslate"><span class="pre">rangeProduct</span></code><a class="headerlink" href="#rangeproduct" title="Permalink to this heading"></a></h2>
+<p>Write a recursive function called <code class="docutils literal notranslate"><span class="pre">rangeProduct</span></code> that takes two
+<code class="docutils literal notranslate"><span class="pre">Integers</span></code> and computes the product of all the integers in the range
+from one integer to the other (inclusive). For instance:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="nf">rangeProduct</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="mi">20</span>
+<span class="cm">{-</span>
+<span class="cm">--&gt; 10 * 11 * 12 * 13 * 14 * 15 * 16 * 17 * 18 * 19 * 20</span>
+<span class="cm">--&gt; 6704425728000</span>
+<span class="cm">-}</span>
+</pre></div>
+</div>
+<p>If the first argument is greater than the second argument, signal an
+error using the <code class="docutils literal notranslate"><span class="pre">error</span></code> function. If the two arguments are the same,
+return the argument value (so <code class="docutils literal notranslate"><span class="pre">rangeProduct</span> <span class="pre">42</span> <span class="pre">42</span></code> is just <code class="docutils literal notranslate"><span class="pre">42</span></code>).
+Use pattern guards instead of explicit <code class="docutils literal notranslate"><span class="pre">if</span></code> expressions to test the
+cases. Make sure all cases are exhaustive!</p>
+</section>
+<section id="prod">
+<h2>3. <code class="docutils literal notranslate"><span class="pre">prod</span></code><a class="headerlink" href="#prod" title="Permalink to this heading"></a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">foldr</span></code> to define a one-line point-free function called <code class="docutils literal notranslate"><span class="pre">prod</span></code>
+that returns the product of all the numbers in a list of <code class="docutils literal notranslate"><span class="pre">Integer</span></code>s
+(or <code class="docutils literal notranslate"><span class="pre">1</span></code> if the list is empty). Use this function to define a one-line
+(not including the type signature) <strong>non-recursive</strong> definition for
+<code class="docutils literal notranslate"><span class="pre">rangeProduct</span></code>, which you should call <code class="docutils literal notranslate"><span class="pre">rangeProduct2</span></code>. (This will be
+a two-line definition if you also include the line containing
+<code class="docutils literal notranslate"><span class="pre">error</span></code>.)</p>
+</section>
+<section id="map-and-variations">
+<h2>4. <code class="docutils literal notranslate"><span class="pre">map</span></code> and variations<a class="headerlink" href="#map-and-variations" title="Permalink to this heading"></a></h2>
+<p>You learned about the <code class="docutils literal notranslate"><span class="pre">map</span></code> higher-order function in class. Here you
+will write some variations on <code class="docutils literal notranslate"><span class="pre">map</span></code>.</p>
+<section id="a-map2">
+<h3>a. <code class="docutils literal notranslate"><span class="pre">map2</span></code><a class="headerlink" href="#a-map2" title="Permalink to this heading"></a></h3>
+<p>First, write a function <code class="docutils literal notranslate"><span class="pre">map2</span></code> which maps a two-argument function over
+two lists. Write it as a recursive function (there is a trivial
+definition using <code class="docutils literal notranslate"><span class="pre">zipWith</span></code> which you shouldn’t use). It could be used
+like this:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="nf">ghci</span><span class="o">&gt;</span><span class="w"> </span><span class="n">map2</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">18</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Your solution should have a completely polymorphic type signature (<em>i.e.</em>
+the most general type signature). Extra elements in either list should
+be ignored.</p>
+</section>
+<section id="b-map3">
+<h3>b. <code class="docutils literal notranslate"><span class="pre">map3</span></code><a class="headerlink" href="#b-map3" title="Permalink to this heading"></a></h3>
+<p>Now, write a <code class="docutils literal notranslate"><span class="pre">map3</span></code> function that will work for functions of 3
+arguments. For instance:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="nf">ghci</span><span class="o">&gt;</span><span class="w"> </span><span class="n">map3</span><span class="w"> </span><span class="p">(</span><span class="nf">\</span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">18</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="dot-product">
+<h2>5. Dot product<a class="headerlink" href="#dot-product" title="Permalink to this heading"></a></h2>
+<p>It’s easy to use <code class="docutils literal notranslate"><span class="pre">map2</span></code> along with the <code class="docutils literal notranslate"><span class="pre">sum</span></code> function to define a
+function to compute the dot product of two lists of integers, as
+follows:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="nf">dot</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Integer</span>
+<span class="nf">dot</span><span class="w"> </span><span class="n">lst1</span><span class="w"> </span><span class="n">lst2</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="p">(</span><span class="n">map2</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">lst1</span><span class="w"> </span><span class="n">lst2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or we can save some parentheses by writing it as:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="nf">dot</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Integer</span>
+<span class="nf">dot</span><span class="w"> </span><span class="n">lst1</span><span class="w"> </span><span class="n">lst2</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">$</span><span class="w"> </span><span class="n">map2</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">lst1</span><span class="w"> </span><span class="n">lst2</span>
+</pre></div>
+</div>
+<p>You might think that you can write this as a point-free version using
+the <code class="docutils literal notranslate"><span class="pre">(.)</span></code> function composition operator as follows:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="nf">dot</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Integer</span>
+<span class="nf">dot</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="n">map2</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>However, this does not type check! The correct point-free version is:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="nf">dot</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Integer</span>
+<span class="nf">dot</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="p">(</span><span class="n">sum</span><span class="w"> </span><span class="o">.</span><span class="p">)</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="n">map2</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Write out a short (less than 10 lines) evaluation showing that
+<code class="docutils literal notranslate"><span class="pre">dot</span> <span class="pre">lst1</span> <span class="pre">lst2</span></code> using the point-free definition is equivalent to the
+explicit (point-wise) definition given above. Note that <code class="docutils literal notranslate"><span class="pre">(sum</span> <span class="pre">.)</span></code> is
+an operator section equivalent to <code class="docutils literal notranslate"><span class="pre">\x</span> <span class="pre">-&gt;</span> <span class="pre">sum</span> <span class="pre">.</span> <span class="pre">x</span></code>.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Don’t forget about currying!</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Fun fact: there’s an obscure Haskell library called
+<code class="docutils literal notranslate"><span class="pre">Data.Composition</span></code> that contains a composition operator called
+<code class="docutils literal notranslate"><span class="pre">.:</span></code> which can compose a unary function with a binary one. Using
+this operator, <code class="docutils literal notranslate"><span class="pre">dot</span></code> can be written as:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="nf">dot</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">.:</span><span class="w"> </span><span class="n">map2</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The definition is simply:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="o">.:</span><span class="p">)</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">d</span>
+<span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="o">.:</span><span class="w"> </span><span class="n">g</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="p">(</span><span class="n">g</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The moral of the story is: if you think Haskell’s <code class="docutils literal notranslate"><span class="pre">.</span></code> composition
+operator isn’t good enough for a particular task, you can always
+define a new composition operator!</p>
+</div>
+</section>
+<section id="fun-with-list-comprehensions">
+<h2>6. Fun with list comprehensions<a class="headerlink" href="#fun-with-list-comprehensions" title="Permalink to this heading"></a></h2>
+<p>Using a list comprehension, write a one-line expression which computes
+the sum of the natural numbers below one thousand which are multiples of
+3 or 5. Write the result in a comment. You may use the Haskell <code class="docutils literal notranslate"><span class="pre">sum</span></code>
+function to do the actual sum.</p>
+</section>
+<section id="sum-of-primes">
+<h2>7. Sum of primes<a class="headerlink" href="#sum-of-primes" title="Permalink to this heading"></a></h2>
+<p>Calculate the sum of all the prime numbers below 10000.</p>
+<p>Do this as follows:</p>
+<ol class="arabic simple">
+<li><p>First, generate an infinite list of prime numbers using the “Sieve of
+Eratosthenes” algorithm. This consists of generating all positive
+integers and removing all multiples of successive prime numbers.
+Write a function called <code class="docutils literal notranslate"><span class="pre">sieve</span></code> which takes a list of
+integers, retains the first one, removes all multiples of the first
+one from the rest, and then sieves the rest. Name the infinite list
+of primes <code class="docutils literal notranslate"><span class="pre">primes</span></code>. Note that <code class="docutils literal notranslate"><span class="pre">sieve</span></code> is a two-line definition
+(not including type declaration) and <code class="docutils literal notranslate"><span class="pre">primes</span></code> is trivial given
+<code class="docutils literal notranslate"><span class="pre">sieve</span></code>. Make sure your code doesn’t generate any compiler
+warnings.</p></li>
+<li><p>Then, use the <code class="docutils literal notranslate"><span class="pre">takeWhile</span></code> function on the primes list to take the
+appropriate prime numbers and compute their sum.</p></li>
+<li><p>Write the answer as a Haskell comment.</p></li>
+</ol>
+</section>
+<section id="balanced-parentheses">
+<h2>8. Balanced parentheses<a class="headerlink" href="#balanced-parentheses" title="Permalink to this heading"></a></h2>
+<p>For this problem we are going to write functions that take in a string
+and return a boolean value. This returned value will be <code class="docutils literal notranslate"><span class="pre">True</span></code> if the
+parentheses in the string are “balanced” and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise. By
+“balanced” we mean:</p>
+<ul class="simple">
+<li><p>there are an equal number of open and close parentheses (they pair
+up),</p></li>
+<li><p>and a close parenthesis never occurs before its matching open
+parenthesis.</p></li>
+</ul>
+<p>Here are some strings that have balanced parentheses:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;&quot;</span><span class="p">,</span>
+<span class="s">&quot;foo&quot;</span><span class="p">,</span>
+<span class="s">&quot;()&quot;</span><span class="p">,</span>
+<span class="s">&quot;(foo)&quot;</span><span class="p">,</span>
+<span class="s">&quot;()()()&quot;</span><span class="p">,</span>
+<span class="s">&quot;(()())&quot;</span><span class="p">,</span>
+<span class="s">&quot;(((())))&quot;</span><span class="p">,</span>
+<span class="s">&quot;(((()())()))&quot;</span>
+</pre></div>
+</div>
+<p>Here are some strings with unbalanced parentheses:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;(&quot;</span>
+<span class="s">&quot;)&quot;</span>
+<span class="s">&quot;)(&quot;</span>
+<span class="s">&quot;)a(&quot;</span>
+<span class="s">&quot;()()(&quot;</span>
+<span class="s">&quot;(()))(()&quot;</span>
+</pre></div>
+</div>
+<p>Note that characters other than <code class="docutils literal notranslate"><span class="pre">'('</span></code> or <code class="docutils literal notranslate"><span class="pre">')'</span></code> are irrelevant to
+determining if parentheses are balanced or not.</p>
+<p>You have to write three different functions to determine if a string has
+balanced parentheses. We will use this to contrast writing a function
+using explicit recursion <em>vs.</em> using higher-order functions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Remember that strings in Haskell are (by default) just lists of
+characters <em>i.e.</em> lists of <code class="docutils literal notranslate"><span class="pre">Char</span></code> values.
+So you can use list functions on strings as you would on any list.</p>
+</div>
+<section id="a-balancedparentheses">
+<h3>a. <code class="docutils literal notranslate"><span class="pre">balancedParentheses</span></code><a class="headerlink" href="#a-balancedparentheses" title="Permalink to this heading"></a></h3>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">balancedParentheses</span></code> that takes a <code class="docutils literal notranslate"><span class="pre">String</span></code>
+and returns a <code class="docutils literal notranslate"><span class="pre">Bool</span></code> which is <code class="docutils literal notranslate"><span class="pre">True</span></code> if the string has balanced
+parentheses or <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise. Use a recursive helper function
+which traverses the string one character at a time and keeps a running
+count of the “parenthesis imbalance”. This can be done by starting the
+count at zero, adding 1 every time a left parenthesis is encountered,
+and subtracting 1 every time a right parenthesis is encountered. At the
+end of the string, the imbalance count will be 0 if the string has
+balanced parentheses. In addition, the count should never go negative;
+if it does, the string doesn’t have balanced parentheses
+(there are too many close parentheses at that point in the string),
+so <code class="docutils literal notranslate"><span class="pre">False</span></code> should immediately be returned.</p>
+<p>Put the helper function in a <code class="docutils literal notranslate"><span class="pre">where</span></code> clause of the
+<code class="docutils literal notranslate"><span class="pre">balancedParentheses</span></code> function.</p>
+</section>
+<section id="b-balancedparentheses2">
+<h3>b. <code class="docutils literal notranslate"><span class="pre">balancedParentheses2</span></code><a class="headerlink" href="#b-balancedparentheses2" title="Permalink to this heading"></a></h3>
+<p>In general, Haskell programmers prefer to use higher-order functions
+instead of writing explicitly recursive functions. Rewrite
+<code class="docutils literal notranslate"><span class="pre">balancedParentheses</span></code> into a new version called
+<code class="docutils literal notranslate"><span class="pre">balancedParentheses2</span></code> which is <em>not</em> recursive but which uses the
+<code class="docutils literal notranslate"><span class="pre">foldl</span></code> (left fold) higher-order function. (Don’t use <code class="docutils literal notranslate"><span class="pre">foldr</span></code>, even
+though you could make it work that way.) The function being folded has
+the type <code class="docutils literal notranslate"><span class="pre">Int</span> <span class="pre">-&gt;</span> <span class="pre">Char</span> <span class="pre">-&gt;</span> <span class="pre">Int</span></code>. It takes the existing imbalance count
+at some location in the string and the current character in the string,
+and returns the new count (1 higher if the character is a <code class="docutils literal notranslate"><span class="pre">'('</span></code>, 1
+lower if it’s a <code class="docutils literal notranslate"><span class="pre">')'</span></code>, or the same otherwise). The fold as a whole
+will return the final imbalance count of the string; if it’s 0, the
+string has balanced parentheses.</p>
+<p>Some hints and advice:</p>
+<ol class="arabic">
+<li><p>This function should be shorter than <code class="docutils literal notranslate"><span class="pre">balancedParentheses</span></code>.</p></li>
+<li><p>If the imbalance count ever goes negative, it should stay negative
+through the entire fold. Basically, once the count is negative, then
+the string has unbalanced parentheses, and you can just propagate the
+negative value through to the end of the fold. This can be done
+simply by writing the folded function a particular way. If the fold
+returns a negative number you know that the string has unbalanced
+parentheses.</p></li>
+<li><p>We’ve seen in class that some functions in Haskell can lead to large
+expressions being generated because of Haskell’s lazy evaluation
+rule. Careless use of <code class="docutils literal notranslate"><span class="pre">foldl</span></code> can easily do this, and this function
+is no exception. To avoid a “space leak” (where a function that
+should run in constant space instead runs in <em>e.g.</em> O(N) space),
+use <code class="docutils literal notranslate"><span class="pre">foldl'</span></code> (called “fold-ell-prime”) instead of <code class="docutils literal notranslate"><span class="pre">foldl</span></code>,
+which makes the function being folded evaluate strictly.  <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> Other
+than the single <code class="docutils literal notranslate"><span class="pre">'</span></code> character, <code class="docutils literal notranslate"><span class="pre">foldl'</span></code> is used the exact same
+way as <code class="docutils literal notranslate"><span class="pre">foldl</span></code>.</p></li>
+<li><p>In order to use <code class="docutils literal notranslate"><span class="pre">foldl'</span></code>, you will need to import the <code class="docutils literal notranslate"><span class="pre">Data.List</span></code>
+library. Put this line at the top of your code (after the
+<code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">Lab1</span> <span class="pre">where</span></code> line):</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span><span class="w"> </span><span class="nn">Data.List</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Even using <code class="docutils literal notranslate"><span class="pre">foldl'</span></code> may not be enough to guarantee strict
+evaluation. There are more tricks for ensuring strict evaluation
+that we will teach you later in the course, but don’t worry too
+much about this now.</p>
+</div>
+</li>
+</ol>
+</section>
+<section id="c-balancedparentheses3">
+<h3>c. <code class="docutils literal notranslate"><span class="pre">balancedParentheses3</span></code><a class="headerlink" href="#c-balancedparentheses3" title="Permalink to this heading"></a></h3>
+<p>One problem with <code class="docutils literal notranslate"><span class="pre">balancedParentheses2</span></code> is that using <code class="docutils literal notranslate"><span class="pre">foldl'</span></code>
+doesn’t exit early if the imbalance count goes negative. This means that
+<code class="docutils literal notranslate"><span class="pre">balancedParentheses2</span></code> is less efficient than <code class="docutils literal notranslate"><span class="pre">balancedParentheses</span></code>.
+It seems a shame that converting from a crude recursive definition to an
+elegant definition using higher-order functions costs us in efficiency.
+It would be nice to have the best of both worlds.</p>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">balancedParentheses3</span></code> which solves the
+balanced parentheses problem using this algorithm:</p>
+<ol class="arabic">
+<li><p>Write a function called <code class="docutils literal notranslate"><span class="pre">ctoi</span></code> which converts <code class="docutils literal notranslate"><span class="pre">Char</span></code> values
+(characters) to <code class="docutils literal notranslate"><span class="pre">Int</span></code> values. This should return <code class="docutils literal notranslate"><span class="pre">1</span></code> if the input
+character is <code class="docutils literal notranslate"><span class="pre">'('</span></code>, <code class="docutils literal notranslate"><span class="pre">-1</span></code> if it’s <code class="docutils literal notranslate"><span class="pre">')'</span></code>, and <code class="docutils literal notranslate"><span class="pre">0</span></code> otherwise.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">map</span></code> to convert each character in the string to an <code class="docutils literal notranslate"><span class="pre">Int</span></code>
+using <code class="docutils literal notranslate"><span class="pre">ctoi</span></code>. This will return a list of <code class="docutils literal notranslate"><span class="pre">Int</span></code>s.</p></li>
+<li><p>The sum of all the <code class="docutils literal notranslate"><span class="pre">Int</span></code> values will be <code class="docutils literal notranslate"><span class="pre">0</span></code> for a string with
+balanced parentheses. However, we also want to make sure that for
+each prefix of the string (<em>i.e.</em> each string that starts on the first
+character of the original string and ends before the last character),
+the imbalance count isn’t negative (which would imply unbalanced
+parentheses for the entire string). For this, we can use the
+<code class="docutils literal notranslate"><span class="pre">scanl</span></code> function. <code class="docutils literal notranslate"><span class="pre">scanl</span></code> works a lot like <code class="docutils literal notranslate"><span class="pre">foldl</span></code> but collects
+up the results for all prefixes of the list (string) argument. For
+instance:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="nf">foldl</span><span class="w"> </span><span class="p">(</span><span class="o">+</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="mi">15</span>
+<span class="nf">scanl</span><span class="w"> </span><span class="p">(</span><span class="o">+</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="mi">5</span><span class="p">]</span>
+<span class="w">  </span><span class="o">--&gt;</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">5</span><span class="p">]</span>
+<span class="w">  </span><span class="o">--&gt;</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Using <code class="docutils literal notranslate"><span class="pre">scanl</span></code> on the results of the <code class="docutils literal notranslate"><span class="pre">map</span></code> gives us the list of
+partial imbalance counts of the string. (To avoid problems with
+laziness, use the strict version <code class="docutils literal notranslate"><span class="pre">scanl'</span></code> instead of
+just <code class="docutils literal notranslate"><span class="pre">scanl</span></code> itself.)</p>
+</li>
+<li><p>Now that we have a list of the imbalance counts at each character, we
+can test if this corresponds to a string with balanced parentheses.
+If so, either the list is empty (corresponding to an empty string),
+or its last element is <code class="docutils literal notranslate"><span class="pre">0</span></code> and none of its elements are negative.
+Write a function called <code class="docutils literal notranslate"><span class="pre">test</span></code> that takes a list of <code class="docutils literal notranslate"><span class="pre">Int</span></code>s and
+returns a <code class="docutils literal notranslate"><span class="pre">Bool</span></code> which is <code class="docutils literal notranslate"><span class="pre">True</span></code> if the list has the desired
+properties. (The <code class="docutils literal notranslate"><span class="pre">all</span></code> and <code class="docutils literal notranslate"><span class="pre">last</span></code> functions will probably be
+useful to you; look them up in <a class="reference external" href="https://hoogle.haskell.org/">Hoogle</a>.) You can write this as a
+recursive function if you must, but try not to.
+(<em>Hint</em>: use <code class="docutils literal notranslate"><span class="pre">all</span></code> and <code class="docutils literal notranslate"><span class="pre">last</span></code>.)  Also, the function <code class="docutils literal notranslate"><span class="pre">null</span></code>
+returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if its argument is an empty list.</p></li>
+<li><p>Assemble the <code class="docutils literal notranslate"><span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">scanl'</span></code>, and <code class="docutils literal notranslate"><span class="pre">map</span></code> functions in a
+(short!) single line to write the <code class="docutils literal notranslate"><span class="pre">balancedParentheses3</span></code> function.
+Put the <code class="docutils literal notranslate"><span class="pre">test</span></code> and <code class="docutils literal notranslate"><span class="pre">ctoi</span></code> functions as helper functions in a
+<code class="docutils literal notranslate"><span class="pre">where</span></code> clause. (They can be more than one line long.)</p></li>
+</ol>
+<p>If you do this right, you will have an elegant function to compute
+balanced parentheses which will quit at the first character which
+guarantees unbalanced parentheses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Haskell’s lazy evaluation is key to understanding why this function
+will exit when the imbalance count first goes negative. Basically,
+the <code class="docutils literal notranslate"><span class="pre">scanl'</span></code> call will generate one prefix count at a time, and the
+<code class="docutils literal notranslate"><span class="pre">test</span></code> function will look at each of these and return <code class="docutils literal notranslate"><span class="pre">False</span></code>
+immediately if a negative count is ever seen.</p>
+<p>Also, the fact that you use <code class="docutils literal notranslate"><span class="pre">scanl'</span></code> instead of <code class="docutils literal notranslate"><span class="pre">scanl</span></code> <em>doesn’t</em>
+mean that the entire list of partial counts will be generated
+strictly (this would ruin the efficiency of the function). It just
+means that the function which is being folded over the list is
+applied strictly, which is what you want.</p>
+<p>If this seems like a lot of mental effort to write a simple function,
+be aware that this is the nature of Haskell: you write much less
+code, but you think more about the code you do write. (Some people
+like this trade off, and some don’t.) The good news is that the more
+you do it, the less thinking it will require.</p>
+</div>
+<hr class="docutils" />
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Technically, it makes it evaluate <em>more</em> strictly,
+as we will see later in the course.</p>
+</aside>
+</aside>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Preamble.html" class="btn btn-neutral float-left" title="Preamble" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="partB_pitfalls.html" class="btn btn-neutral float-right" title="Part B: Pitfalls" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
