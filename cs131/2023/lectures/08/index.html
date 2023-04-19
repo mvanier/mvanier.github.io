@@ -207,13 +207,15 @@
 
 <pre><code>    ...
     | If (l, cond, t, e) -&gt;
-      <em>match (eval_expr env cond) with</em>
-        <em>| Value v -&gt;</em>
-          if truthy l v then
-            eval_expr env t
-          else
-            eval_expr env e
-        <em>| other -&gt; other</em>
+      begin
+        <em>match (eval_expr env cond) with</em>
+          <em>| Value v -&gt;</em>
+            if truthy l v then
+              eval_expr env t
+            else
+              eval_expr env e
+          <em>| other -&gt; other</em>
+      end
     ...
 </code></pre>
 
