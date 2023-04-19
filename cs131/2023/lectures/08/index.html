@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- <section data-background-color="#ffffd0"> -->
+          <section data-markdown>
+            <textarea data-template>
+# CS 131:<br/>Programming Languages
+## _Lecture 8_:<br/>The _$\mu$Scheme+_ Language
+
+---
+## Today
+
+* The _$\mu$Scheme+_ language
+
+* Control operators:
+  * `break`, `continue` 
+  * `try-catch`, `throw`
+  * `return`
+
+* Small-step semantics
+* Evaluation using a context stack
+
+---
+## Overview
+
+* We've been talking about the _$\mu$Scheme_ language
+
+* _$\mu$Scheme_ is a fairly decent dynamically-typed mostly-functional language
+
+---
+## Overview
+
+* However, _$\mu$Scheme_ is less successful as an imperative language
+  * It's lacking certain features found in nearly all imperative languages
+
+* Today, we'll define a new language called<br/>_$\mu$Scheme+_
+  that fixes this problem
+
+---
+## Loops
+
+* Loops are a pervasive feature of imperative programming
+
+* In _$\mu$Scheme_, the only loop construct is `while`
+
+---
+## Loops
+
+* A `while` loop:
+  * checks to see if a test expression returns `#t`
+  * If it does:
+    * it executes a body expression<br/>(for side effects)
+    * it re-runs the entire `while` loop
+  * Otherwise, it terminates and returns a unit (`#u`) value
+
+---
+## Loops
+
+* "Real" imperative languages have more kinds of loop statements, _e.g._
+  * `do`/`while` (C)
+  * `for` (C)
+  * `foreach` (Python, confusingly called `for`)
+
+* We saw how to implement some of these as syntactic sugar in assignment 1
+
+---
+## Loops
+
+* Implementing these control flow structures as syntactic sugar
+  is fun and useful, but it doesn't require any real change to the language
+
+* It's much more complicated to implement control flow statements
+  that change the course of a loop in progress
+
+---
+## Loops
+
+* Most imperative languages support at least two of these:
+  * `break` (to "break out of" a loop)
+  * `continue` (to restart the loop _i.e._ skip the rest of this iteration)
+
+---
+## Loops
+
+* `break` and `continue` may not seem very important,
+  but implementing them will require a completely new approach!
+
+* Even our operational semantics will be completely transformed
+
+---
+## Loops
+
+* With this approach, we'll also be able to easily handle
+  exception-handling constructs like `try/catch` and `throw`,
+  as well as `return` to return early from a function
+
+* We'll also be able to do useful things like _tail-call optimization_ (TCO)
+
+---
+## The trouble with `break`
+
+* _Why_ does something as seemingly innocuous as `break`
+  require us to completely change our implementation strategy?
+
+---
+## The trouble with `break`
+
+* Our interpreters have two basic kinds of constructs:
+  * _expressions_ which evaluate to a value
+  * _definitions_ which extend an environment
+
+---
+## The trouble with `break`
+
+* Since `break` occurs within `while` loops (a kind of expression),
+  they have to be "expressions" too
+  * (Can't have definitions inside expressions)
+
+* What kind of value should a `break` evaluate to?
+* Does this question even have meaning?
+
+---
+## The trouble with `break`
+
+* A `break` expression isn't an _expression_ in the normal sense
+
+* It's really a different kind of thing altogether: a _control flow operator_
+
+---
+## The trouble with `break`
+
+* `break` changes the way a `while` loop executes
+
+* Conceptually, it's very simple: it just forces early exit from the loop
+
+* However, our interpreter hasn't been structured to allow us to do this
+
+---
+## The trouble with `break`
+
+* The function which evaluates expressions is called `eval_expr`
+
+* It takes an environment and an expression and returns a value
+
+* But `break` doesn't return a value;
+  it alters the control flow of the `while` loop it is embedded in
+
+* The `while` loop is evaluated by a call to `eval_expr`
+  further down on the call stack
+
+---
+## The trouble with `break`
+
+* If `break` were evaluated by this function,
+  it wouldn't have access to the `while` loop's evaluation,
+  so it couldn't affect it
+
+* How could we fix this?
+
+---
+## Fixing `break`
+
+* Maybe we could have `eval_expr` return a special value
+  when evaluating a `break`
+
+* We could create a datatype for this:
+
+<pre><code>type eval_expr_result =
+  | Value of value
+  | Break
+</code></pre>
+
+* Most forms would return a `Value` result, but `break` would return `Break`
+
+* Opinions?  Good?  Bad?
+
+---
+## Fixing `break`
+
+* One problem: we would need to extend this to deal with
+  other control flow constructs.  Soon we'd have:
+
+<pre><code>type eval_expr_result =
+  | Value of value
+  | Break
+  | Continue
+  | Throw expr
+</code></pre>
+
+---
+## Fixing `break`
+
+* Another problem is that formerly simple forms would have to deal
+  with all the extra cases
+
+* Usually they would just pass them through,
+  leading to lots of boilerplate code
+
+---
+## Fixing `break`
+
+<pre><code>    ...
+    | If (l, cond, t, e) -&gt;
+      <em>match (eval_expr env cond) with</em>
+        <em>| Value v -&gt;</em>
+          if truthy l v then
+            eval_expr env t
+          else
+            eval_expr env e
+        <em>| other -&gt; other</em>
+    ...
+</code></pre>
+
+* There should be a better way...
+
+---
+## Fixing `break`
+
+* Maybe we could raise a particular kind of exception
+  for `break` and `continue`
+
+* Opinions on this?  Good, bad, mixed?
+
+---
+## Fixing `break`
+
+* Good:
+  * Might not have to alter the code that much;
+    Recursive calls that can handle `break` can simply catch that exception
+
+---
+## Fixing `break`
+
+* Bad:
+  * Heavy reliance on a meta-language feature (exception handling)
+    that isn't there in all implementation languages
+  * Pretty hard to express this in operational semantics
+
+
+* We won't go this route
+
+---
+## Evaluation contexts
+
+* The problem we have is that
+  we have no _explicit_ representation of the _context_
+  in which an evaluation occurs
+
+* The runtime stack provides an _implicit_ representation of context,
+  but this isn't good enough to express things like
+  "abort this evaluation and every evaluation
+  back to the first `while` expression on the stack"
+
+* Solution: make the context explicit!
+
+---
+## Evaluation contexts
+
+* Recall the CS 4 lecture on continuation-passing style &#9786;
+
+* There, we showed that you can add an extra argument to a function representing
+"the thing that needs the result of the computation"
+
+* We will use a similar trick here
+  * (This is a continuation-passing interpreter)
+
+---
+## Evaluation contexts
+
+* However, the extra argument will not be a function, but a _stack_ of
+  _frames_
+
+* The top frame of the stack will represent the context of the previous
+  evaluation (one up on the runtime stack)
+
+* The next frame down represents the context of the evaluation before that,
+  _etc._ all the way back to the initial expression that was evaluated
+
+---
+## Frames
+
+* What is in these "frames"?
+
+* A frame can be thought of as an _incompletely evaluated form_  
+
+* The expression being evaluated is often a subexpression of a larger form
+
+---
+## Frames
+
+* The frame consists of 
+  * Every part of the larger expression that has already been evaluated
+  * Every part of the larger expression that still needs to be evaluated
+    (other than the current expression)
+
+---
+## Frames
+
+* One useful way to think about frames is "expressions with holes"
+
+* The current expression is the part of the larger expression that
+  (when evaluated) will "go in the hole"
+  to continue evaluating the larger expression
+
+* Let's look at an example: the `if` expression
+
+---
+## Frames: `if` expressions
+
+* Previously, evaluating an `if` expression<br/>`(if e1 e2 e3)` went as follows:
+  * Evaluate `e1` to a value `v1`
+  * If `v1` is `#f`, evaluate `e3` to get the result `v3`
+  * Otherwise, evaluate `e2` to get the result `v2`
+
+* We can write this using operational semantics notation,
+  but it's basically the same thing
+
+---
+## "Big-step" semantics
+
+* This way of describing evaluation is called "big-step" semantics
+
+* "Big-step" means that the entire expression is reduced to a value
+  in the conclusion of a particular rule or rules
+
+---
+## "Big-step" semantics
+
+* For `if` statements, there are two rules: _IfTrue_ and _IfFalse_:
+  * _IfTrue_ rule conclusion:<br/>`(if e1 e2 e3)` $\Downarrow$ `v2`
+  * _IfFalse_ rule conclusion:<br/>`(if e1 e2 e3)` $\Downarrow$ `v3`
+
+* (The store ($\sigma$) might get updated too)
+
+---
+## "Big-step" semantics
+
+$$
+\hspace{1em}
+$$
+
+$$
+\frac{
+\langle e_1, \rho, \sigma \rangle
+\Downarrow
+\langle v_1, \sigma' \rangle
+\hspace{1em}
+v_1 \neq BoolVal(\text{\\#f}) \hspace{1em}
+\langle e_2, \rho, \sigma' \rangle
+\Downarrow
+\langle v_2, \sigma'' \rangle
+}{
+\langle IF(e_1, e_2, e_3), \rho, \sigma \rangle
+\Downarrow
+\langle v_2, \sigma'' \rangle
+}
+$$
+
+$$
+\label{}\tag{IfTrue}
+$$
+
+
+$$
+\hspace{1em}
+$$
+
+$$
+\frac{
+\langle e_1, \rho, \sigma \rangle
+\Downarrow
+\langle v_1, \sigma' \rangle
+\hspace{1em}
+v_1 = BoolVal(\text{\\#f})
+\hspace{1em}
+}{
+\langle IF(e_1, e_2, e_3), \rho, \sigma \rangle
+\Downarrow
+\langle v_3, \sigma'' \rangle
+}
+$$
+
+$$
+\label{}\tag{IfFalse}
+$$
+
+---
+## "Small-step" semantics
+
+* With a stack of frames (contexts) we will not use big-step semantics
+
+* Instead, we will use "small-step" semantics
+  which shows how the parts of an expression
+  are evaluated step-by-step
+
+---
+## "Small-step" semantics
+
+* In words, here is what the small-step semantics for `(if e1 e2 e3)` say:
+  * Create a frame from `e2` and `e3` that has a "hole" where the value
+    resulting from evaluating `e1` will go
+  * Push the frame onto the context stack
+  * Evaluate `e1` to get `v1`
+  * Pop the context stack to get `e2` and `e3` back
+  * If `v1` is `#f`, evaluate `e3`
+  * Otherwise, evaluate `e2`
+
+---
+## "Small-step" semantics
+
+* Here is what the math version looks like:
+
+$$
+\frac{
+}{
+\langle
+IF(e_1, e_2, e_3), \rho, \sigma, S
+\rangle
+\rightarrow
+\langle
+e_1, \rho, \sigma, IF(\bullet, e2, e3) :: S
+\rangle
+}
+$$
+
+$$
+\label{}\tag{SmallStepIf}
+$$
+
+* Here, $S$ is the stack of contexts
+
+* It may not actually be a list, but we treat it as if it were one
+  (hence the use of the $::$ operator to push a new frame onto the stack)
+
+---
+## "Small-step" semantics
+
+* Here is what the math version looks like:
+
+$$
+\frac{
+}{
+\langle
+IF(e_1, e_2, e_3), \rho, \sigma, S
+\rangle
+\rightarrow
+\langle
+e_1, \rho, \sigma, IF(\bullet, e2, e3) :: S
+\rangle
+}
+$$
+
+$$
+\label{}\tag{SmallStepIf}
+$$
+
+* The "`if` frame" is $IF(\bullet, e2, e3)$
+
+* The $\bullet$ is the "hole", which is the place where the value of `e1` will
+  eventually go
+
+---
+## "Small-step" semantics
+
+* There are two more small-step reduction rules:
+
+$$
+\frac{
+v \neq BoolVal(\text{\\#f})
+}{
+\langle
+v, \rho, \sigma, IF(\bullet, e2, e3) :: S
+\rangle
+\rightarrow
+\langle
+e_2, \rho, \sigma, S
+\rangle
+}
+$$
+
+$$
+\label{}\tag{SmallStepIfTrue}
+$$
+
+$$
+\frac{
+v = BoolVal(\text{\\#f})
+}{
+\langle
+v, \rho, \sigma, IF(\bullet, e2, e3) :: S
+\rangle
+\rightarrow
+\langle
+e_3, \rho, \sigma, S
+\rangle
+}
+$$
+
+$$
+\label{}\tag{SmallStepIfFalse}
+$$
+
+---
+## "Small-step" semantics
+
+* In words:
+  * If the result of the test isn't `#f`,<br/>
+    pop the frame stack and start evaluating $e_2$
+  * If the result of the test is `#f`,<br/>
+    pop the frame stack and start evaluating $e_3$
+
+---
+## "Small-step" semantics
+
+* The `if` evaluation rules are divided up into 
+  * a rule for evaluating the test expression
+  * two rules for evaluating either the "then" expression or the "else"
+    expression, depending on the value of the test expression
+
+---
+## "Small-step" semantics
+
+* The small-step semantics is clearly more "granular"
+  than the big-step semantics
+
+* However, we haven't really gained anything
+  by switching to small-step semantics in this case
+
+---
+## "Small-step" semantics
+
+* For other forms (like `break` and `continue`),
+  the small-step semantics will give a precise description
+  of exactly what has to happen when those forms execute
+  * (and there is no big-step counterpart of these semantics)
+
+---
+## "Small-step" semantics
+
+* We will go over these semantics in detail in the next lecture
+
+* For now, we'll give a description of the `break` semantics
+
+---
+## "Small-step" semantics: `break`
+
+* In words, here is what `break` does:
+  * `break` is supposed to occur only inside a `while` loop
+  * There is a kind of frame called _WHILE_RUNNING_BODY_ which occurs when a
+    `while` loop is executing
+
+---
+## "Small-step" semantics: `break`
+
+* In words, here is what `break` does:
+  * If the _WHILE_RUNNING_BODY_ frame is at the top of the context stack
+    when `break` occurs,
+    pop it off the stack and the `while` evaluates to `#u`
+  * If the top of the context stack represents returning from a function call,
+    it's an error
+  * Otherwise, pop the top of the context stack and continue evaluating
+    `break`<br/>(this is called _unwinding the stack_)
+
+---
+## "Small-step" semantics: `break`
+
+* _N.B._ Unwinding the stack is the key thing that `break` does
+  that couldn't be done before
+
+---
+## "Small-step" semantics: `break`
+
+* The stack continues to unwind until one of these happens:
+  * it gets to a _WHILE_RUNNING_BODY_ frame (which terminates the `break`)
+  * an error occurs
+  * it pops all frames off the stack (which is also an error)
+
+* This gives us the semantics for `break`<br/>that we want
+
+---
+## Aside: Relation to compilers
+
+* This approach to writing interpreters is _not_
+  what most actual programming language interpreters do
+
+* However, it _is_ found in a lot of compilers,
+  notably compilers for functional languages
+
+---
+## Aside: Relation to compilers
+
+* A common approach to compiling functional languages
+  is to convert the entire program into continuation-passing style,
+  which yields very simplified code
+
+* Then this code can be either interpreted or converted to assembly language
+
+---
+## Aside: Relation to compilers
+
+* Reference: <u>Compiling With Continuations</u> by Andrew Appel
+
+---
+## Next time
+
+* Hopefully, this gave you a flavor of how<br/>_$\mu$Scheme+_ evaluates
+
+* Next time, we'll walk through
+  the operational semantics of _$\mu$Scheme+_ in detail
+
+            </textarea>
+          </section>
+      </div>
+    </div>
+    <script src="plugin/math/math.js"></script>
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <!-- Uncomment if you want syntax highlighting. -->
+    <!--
+    <link rel="stylesheet" href="plugin/highlight/arduino-light.css">
+    -->
+    <style>
+/* MCV: My new reveal.js styles. */
+
+.reveal {
+  font-family: "Arial", sans-serif;
+  font-size: 28pt;
+  font-weight: normal;
+  color: #000; 
+}
+
+.reveal .slide-number {
+  background: white;
+  /* border: 1px solid black; */
+}
+
+.reveal .slide-number-a {
+  background: white;
+  color: black;
+  font-size: 24px;
+}
+
+.reveal .slides h1 {
+  text-align: center;
+  text-transform: none;
+  padding: 150px 0 20px 0;
+  font-size: 64pt;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif;
+  font-weight: normal;
+  color: #4f271c;
+  background: #d0d0f0;
+  margin-bottom: 0.5em;
+}
+
+.reveal h2 { 
+  text-transform: none;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif !important;
+  /* text-shadow: 2px 2px 3px #a0a0a0; */
+  color: #4f271c !important;
+  font-size: 60pt !important;
+  font-weight: normal !important;
+  /* background: #d0d0d0; */
+  width: 80% !important;
+  margin-left: 10%;
+}
+
+/* First level bullet color. */
+.reveal .slides ul li::marker {
+  color: #3891a7;
+}
+
+/* Second level bullet spacing. */
+.reveal .slides ul li ul {
+  margin-top: 0px;
+}
+
+.reveal .slides li {
+  margin-top: 10px;
+}
+
+/* Second level bullet color. */
+.reveal .slides ul li ul li::marker {
+  color: #3891a7;
+}
+
+.reveal li {
+  font-size: 36pt !important;
+}
+
+.reveal .smaller li {
+  font-size: 32pt !important;
+}
+
+.reveal li ul li {
+  font-size: 32pt !important;
+}
+
+.reveal li .smaller ul li {
+  font-size: 28pt !important;
+}
+
+.reveal ul {
+  width: 80% !important;
+  text-align: left !important;
+}
+
+.reveal code em {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal em code {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal code .comment {
+  color: #cc44cc !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+.reveal blockquote {
+  text-align: left !important;
+  color: #668888 !important;
+}
+
+.katex-display > .katex {
+  color: #0040b0 !important;
+}
+
+.katex-display > .katex > .katex-html > .tag {
+  color: #808080 !important;
+  margin-right: 100px !important;
+}
+
+.katex > .katex-html {
+  color: #0040b0 !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.katex {
+  font-size: 1.1em !important;
+}
+
+.reveal pre {
+  margin-left: 200px !important;
+  width: 75% !important;
+  font-size: 24pt !important;
+}
+
+.reveal pre.smaller {
+  font-size: 20pt !important;
+}
+
+.reveal code {
+  color: #0040b0 !important;
+  font-size: 90%;
+}
+
+.reveal pre code {
+  /* max vertical size of code block */
+  max-height: 700px !important;
+}
+
+.reveal li ul li code {
+  font-size: 80%;
+}
+
+    </style>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        katex: {
+          version: 'latest',
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            "\\eqref": "\\href{###1}{(\\text{#1})}",
+            "\\ref": "\\href{###1}{\\text{#1}}",
+            "\\label": "\\htmlId{#1}{}",
+          },
+        },
+        plugins: [ 
+          RevealMarkdown,
+          // RevealHighlight,
+          RevealMath.KaTeX,
+        ],
+        center: false,
+        controls: false,
+        disableLayout: false,  // set to true to use custom CSS for layout
+        showSlideNumber: 'all',
+        slideNumber: true,
+        transition: 'none',
+        width: 1280,
+        height: 800,
+      });
+    </script>
+  </body>
+</html>
