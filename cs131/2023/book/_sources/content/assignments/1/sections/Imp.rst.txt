@@ -140,6 +140,20 @@ Add a C-like ``do-while`` form with this translation:
 
    (do-while <exp> <test-exp>) ==> (begin <exp> (while <test-exp> <exp>))
 
+.. admonition:: Example
+   :class: example
+
+   .. code-block:: text
+
+      >>> (val x 5)
+      variable x = 5 
+      >>> (do-while (println x) (set x (- x 1)))
+      5
+      4
+      3
+      2
+      1
+      0
 
 b. ``while*``
 ~~~~~~~~~~~~~
@@ -156,6 +170,21 @@ This allows you to write ``while`` loops without having an explicit
 syntax error, as is one with no expressions at all.
 
 
+.. admonition:: Example
+   :class: example
+
+   .. code-block:: text
+
+      >>> (val x 5)
+      variable x = 5
+      >>> (while* (> x 0) (println x) (set x (- x 1)))
+      5
+      4
+      3
+      2
+      1
+      0
+
 c. ``for``
 ~~~~~~~~~~
 
@@ -168,6 +197,30 @@ Add a C-like ``for`` loop with this translation:
    (begin <begin-exp>
      (while <test-exp>
        (begin <body-exp1> <body-exp2> ... <body-expN> <incr-exp>)))
+
+.. admonition:: Example
+   :class: example
+
+   .. code-block:: text
+
+      >>> (val x 0)
+      variable x = 0
+      >>> (val n 0)
+      variable n = 0
+      >>> (for (set x 5) (> x 0) (set x (- x 1)) ((println x) (set n (+ n 1))))
+      5
+      4
+      3
+      2
+      1
+      0
+      >>> n
+      5
+
+.. note::
+
+   Don't forget the parentheses around the body expressions!
+   Think of it as a ``begin`` expression without the ``begin`` keyword.
 
 Note that for all of these changes, you will have to decide what the
 location of the newly-created forms are. Here are some guidelines:
