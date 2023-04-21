@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; The CS 115 book</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../_static/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Part A: Red-black trees" href="partA_red_black_trees.html" />
+    <link rel="prev" title="Preamble" href="Preamble.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            The CS 115 book, Spring 2023
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Software.html">Installing the course software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../1/index.html">Assignment 1: Evaluation and recursion</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 2: Algebraic datatypes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partA_red_black_trees.html">Part A: Red-black trees</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partB_sets.html">Part B: Implementing sets using red-black trees</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The CS 115 book, Spring 2023</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 2: Algebraic datatypes</a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h1>
+<p>The purpose of this assignment is to get you comfortable working with
+algebraic datatypes in Haskell. To do this, you will be implementing a
+data structure called a <em>red-black tree</em> and you’ll use it to implement a set
+data type. You’ll see that once you’ve implemented a red-black tree,
+implementing set operations will be very simple.</p>
+<p>A red-black tree is an ordered binary tree where all the elements are
+stored in the nodes and not the leaves. In addition, each node has a
+“color” which is either “red” or “black”; this will be used to make sure
+that the tree is balanced. A perfectly balanced binary tree has all the
+leaves at the same <em>depth</em> (distance from the root node), but we won’t
+require that our trees be perfectly balanced, just “balanced enough”.
+Having a balanced tree is very important,
+because if the tree is balanced
+the tree operations can all be done in <span class="math notranslate nohighlight">\(\Theta(log\ n)\)</span> time.
+If the tree is not balanced,
+some operations can take up to <span class="math notranslate nohighlight">\(\Theta(log\ n)\)</span> time,
+which completely negates all the benefits of using a tree in the first place.</p>
+<p>Let’s be more specific. In Haskell, we’ll define the tree using two
+datatypes:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="c1">-- A color is either red or black.</span>
+<span class="kr">data</span><span class="w"> </span><span class="kt">Color</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Red</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">Black</span>
+<span class="w">  </span><span class="kr">deriving</span><span class="w"> </span><span class="kt">Show</span>
+
+<span class="c1">-- A red-black tree is either empty (a &quot;leaf&quot;) or a tree node with a color,</span>
+<span class="c1">-- two branches (both of which are red-black trees), and a value of type a.</span>
+<span class="kr">data</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Leaf</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">Node</span><span class="w"> </span><span class="kt">Color</span><span class="w"> </span><span class="p">(</span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="p">)</span>
+<span class="w">  </span><span class="kr">deriving</span><span class="w"> </span><span class="kt">Show</span>
+</pre></div>
+</div>
+<p>We see from the definition of the <code class="docutils literal notranslate"><span class="pre">Tree</span></code> datatype that trees are
+parameterized around a type <code class="docutils literal notranslate"><span class="pre">a</span></code>. We will be using integers as tree
+elements for testing, but you can use this with any orderable type.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">deriving</span> <span class="pre">Show</span></code> part is just to make it possible to
+display trees interactively in <code class="docutils literal notranslate"><span class="pre">ghci</span></code>.</p>
+</div>
+<p>The tree needs to obey these invariants:</p>
+<dl class="simple">
+<dt>Order invariant</dt><dd><p>The elements (of type <code class="docutils literal notranslate"><span class="pre">a</span></code>) are orderable. (Consequently, type <code class="docutils literal notranslate"><span class="pre">a</span></code>
+should be an instance of the type class <code class="docutils literal notranslate"><span class="pre">Ord</span></code>.) All elements in the
+left subtree of a node are strictly smaller than the element stored
+in the node, and all elements in the right subtree of a node are
+strictly larger than the element stored in the node. (This also
+implies that there can be no duplicated elements in the tree.)</p>
+</dd>
+<dt>Red invariant</dt><dd><p>No red node has a red parent. (Leaves are considered to be black, so
+they can have either red or black nodes as parents.)</p>
+</dd>
+<dt>Black invariant</dt><dd><p>Every path from the root node to a leaf contains the same number of
+black nodes. We will refer below to the <em>distance</em> from the root node
+to a leaf node; this means the number of nodes in such a path. More
+specifically, the distance from the root node to a leaf is the number
+of times you can go from a node to one of its branch nodes before you
+hit the leaf, starting from the root node. (For a particular node and
+leaf, there can be only one such path.)</p>
+</dd>
+</dl>
+<p>The order invariant is simply the definition of an ordered binary tree,
+and applies to all such trees, not just red-black trees.
+The red and black invariants are what ensure
+that the red-black tree is balanced.
+By “balanced” we don’t mean that all leaves
+must be exactly the same distance from the root of the tree,
+but that there is some constraint on the tree
+that guarantees <span class="math notranslate nohighlight">\(\Theta(log\ n)\)</span> performance for all tree operations.
+In this case, the red and black invariants guarantee that
+the longest path from the root node to a leaf
+is no more than twice as long as the shortest path.
+When you think about it, it makes sense:
+the shortest such path would be all black nodes,
+whereas the longest path would be alternating black and red nodes
+(since you can’t have red nodes with red parents).
+Since all paths from the root to a leaf have the same number of black nodes,
+the shortest path would be half the length of the longest path.
+This is enough to guarantee <span class="math notranslate nohighlight">\(\Theta(log\ n)\)</span> performance.</p>
+<p>Here is a diagram of a red-black tree of integers:</p>
+<figure class="align-default" id="id3">
+<div class="graphviz"><img src="../../../../_images/graphviz-7a3baa6b86a25641b6f13e573044812bdebd5d67.png" alt="digraph {
+  graph [pad=&quot;0.212,0.055&quot; bgcolor=&quot;#d8d8d8&quot;]
+  node [
+    style=filled, shape=circle, label=&quot;&quot;,
+    fixedsize=true, width=0.5
+    fontcolor=&quot;#f0f0f0&quot;, fontname=&quot;Courier New Bold&quot;, fontsize=&quot;16&quot;,
+    fillcolor=black,
+  ]
+  node [fillcolor=black]
+  n1 [pos=&quot;0,0!&quot;,label=13]
+  node [fillcolor=red]
+  n2 [pos=&quot;-2,-1!&quot;,label=8]
+  n3 [pos=&quot;2,-1!&quot;,label=17]
+  node [fillcolor=black]
+  n4 [pos=&quot;-3,-2!&quot;,label=1]
+  n5 [pos=&quot;-1,-2!&quot;,label=11]
+  n6 [pos=&quot;1,-2!&quot;,label=15]
+  n7 [pos=&quot;3,-2!&quot;,label=25]
+  node [width=0.15]
+  n8 [pos=&quot;-3.5,-3!&quot;]
+  n9 [pos=&quot;-2.5,-3!&quot;,fillcolor=red,width=0.5,label=6]
+  n10 [pos=&quot;-1.5,-3!&quot;]
+  n11 [pos=&quot;-0.5,-3!&quot;]
+  n12 [pos=&quot;0.5,-3!&quot;]
+  n13 [pos=&quot;1.5,-3!&quot;]
+  n14 [pos=&quot;2.5,-3!&quot;,fillcolor=red,width=0.5,label=22]
+  n15 [pos=&quot;3.5,-3!&quot;,fillcolor=red,width=0.5,label=27]
+  n16 [pos=&quot;-2.75,-4!&quot;]
+  n17 [pos=&quot;-2.25,-4!&quot;]
+  n18 [pos=&quot;2.25,-4!&quot;]
+  n19 [pos=&quot;2.75,-4!&quot;]
+  n20 [pos=&quot;3.25,-4!&quot;]
+  n21 [pos=&quot;3.75,-4!&quot;]
+  n1 -&gt; n2
+  n1 -&gt; n3
+  n2 -&gt; n4
+  n2 -&gt; n5
+  n3 -&gt; n6
+  n3 -&gt; n7
+  n4 -&gt; n8
+  n4 -&gt; n9
+  n5 -&gt; n10
+  n5 -&gt; n11
+  n6 -&gt; n12
+  n6 -&gt; n13
+  n7 -&gt; n14
+  n7 -&gt; n15
+  n9 -&gt; n16
+  n9 -&gt; n17
+  n14 -&gt; n18
+  n14 -&gt; n19
+  n15 -&gt; n20
+  n15 -&gt; n21
+}" class="graphviz" /></div>
+<figcaption>
+<p><span class="caption-text">An example of a red-black tree</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Note that in this diagram, <code class="docutils literal notranslate"><span class="pre">Leaf</span></code> nodes are represented
+by the small black unlabelled circles (leaves are considered to be black).
+Also notice how the tree obeys all three invariants. However, don’t
+think that red-black trees have to have alternating red and black nodes
+like this one does; they can have more black nodes than red nodes,
+or even have only black nodes in some cases.
+Note also that each path from the root to a leaf
+contains exactly three black nodes.</p>
+<p>Here are the type signatures of the core red-black tree operations you
+will need to implement:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Return `True` if the given element is in the tree.</span>
+<span class="nf">member</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Ord</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Bool</span>
+
+<span class="c1">-- Insert a new element into a tree.</span>
+<span class="nf">insert</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Ord</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span>
+
+<span class="c1">-- Convert a tree to a list.</span>
+<span class="nf">toList</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+
+<span class="c1">-- Convert a list to a tree.</span>
+<span class="nf">fromList</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Ord</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span>
+</pre></div>
+</div>
+<p>In addition, we want you to write several functions which will help in
+testing the correctness of your implementation, as well as helper
+functions that will be used in implementing the above operations.
+Details are given in the following sections.</p>
+<p>One fundamental tree operation that we will <em>not</em> ask you to implement
+is removing an element from a tree. This turns out to be surprisingly
+complicated  <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, and would probably not increase your understanding of
+how to use algebraic datatypes in Haskell, so we’re leaving it out.</p>
+<p>Once you’ve implemented red-black trees, you will use them to implement
+sets. A red-black tree can be used as a set without changing it at all,
+but in addition to the operations given above you will implement subset
+testing, set equality testing, union, intersection and set difference in
+terms of the fundamental tree operations. By using higher-order
+functions, you can implement all these operations in one line each.</p>
+<hr class="docutils" />
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>At least, it’s complicated in a purely functional language like
+Haskell.  This may be one reason why Haskell doesn’t use red-black
+trees as the base type for the set and map types (in the libraries
+<code class="docutils literal notranslate"><span class="pre">Data.Set</span></code> and <code class="docutils literal notranslate"><span class="pre">Data.Map</span></code> respectively); those are implemented
+using weight-balanced trees.</p>
+</aside>
+</aside>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Preamble.html" class="btn btn-neutral float-left" title="Preamble" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="partA_red_black_trees.html" class="btn btn-neutral float-right" title="Part A: Red-black trees" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
