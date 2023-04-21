@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Part A: Programming in Imp &mdash; The CS 131 book</title>
@@ -13,10 +13,11 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
         <script src="../../../../_static/clipboard.min.js"></script>
         <script src="../../../../_static/copybutton.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -31,11 +32,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../../index.html" class="icon icon-home"> The CS 131 book, Spring 2023
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            The CS 131 book, Spring 2023
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -86,7 +91,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Assignment 1: The <em>Imp</em> language</a></li>
       <li class="breadcrumb-item active">Part A: Programming in <em>Imp</em></li>
@@ -99,7 +104,7 @@
            <div itemprop="articleBody">
              
   <section id="part-a-programming-in-imp">
-<h1>Part A: Programming in <em>Imp</em><a class="headerlink" href="#part-a-programming-in-imp" title="Permalink to this headline"></a></h1>
+<h1>Part A: Programming in <em>Imp</em><a class="headerlink" href="#part-a-programming-in-imp" title="Permalink to this heading"></a></h1>
 <p>In this section you will write a few functions in the base <em>Imp</em>
 language to familiarize yourself with how it works. This code will go in
 the file <code class="docutils literal notranslate"><span class="pre">lab1a.imp</span></code>.</p>
@@ -119,7 +124,7 @@ local variables</p></li>
 change the values of function arguments using the <code class="docutils literal notranslate"><span class="pre">set</span></code> form.</p>
 </div>
 <section id="sigma">
-<h2>1. <code class="docutils literal notranslate"><span class="pre">sigma</span></code><a class="headerlink" href="#sigma" title="Permalink to this headline"></a></h2>
+<h2>1. <code class="docutils literal notranslate"><span class="pre">sigma</span></code><a class="headerlink" href="#sigma" title="Permalink to this heading"></a></h2>
 <p>Define a function <code class="docutils literal notranslate"><span class="pre">sigma</span></code> satisfying
 <code class="docutils literal notranslate"><span class="pre">(sigma</span> <span class="pre">m</span> <span class="pre">n)</span> <span class="pre">=</span> <span class="pre">m</span> <span class="pre">+</span> <span class="pre">(m+1)</span> <span class="pre">+</span> <span class="pre">...</span> <span class="pre">+</span> <span class="pre">n</span></code>. When <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">&gt;</span> <span class="pre">n</span></code>, the behavior
 of <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is unspecified; your implementation may do anything you
@@ -128,7 +133,7 @@ recursively while <code class="docutils literal notranslate"><span class="pre">s
 loop.</p>
 </section>
 <section id="exp-and-log">
-<h2>2. <code class="docutils literal notranslate"><span class="pre">exp</span></code> and <code class="docutils literal notranslate"><span class="pre">log</span></code><a class="headerlink" href="#exp-and-log" title="Permalink to this headline"></a></h2>
+<h2>2. <code class="docutils literal notranslate"><span class="pre">exp</span></code> and <code class="docutils literal notranslate"><span class="pre">log</span></code><a class="headerlink" href="#exp-and-log" title="Permalink to this heading"></a></h2>
 <p>Define functions <code class="docutils literal notranslate"><span class="pre">exp</span></code> and <code class="docutils literal notranslate"><span class="pre">log</span></code>. When base <code class="docutils literal notranslate"><span class="pre">b</span></code> and exponent <code class="docutils literal notranslate"><span class="pre">n</span></code>
 are nonnegative, <code class="docutils literal notranslate"><span class="pre">(exp</span> <span class="pre">b</span> <span class="pre">n)</span> <span class="pre">=</span> <span class="pre">b^n</span></code>, and when <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>,
 <code class="docutils literal notranslate"><span class="pre">(log</span> <span class="pre">b</span> <span class="pre">m)</span></code> is the smallest integer <code class="docutils literal notranslate"><span class="pre">n</span></code> such that <code class="docutils literal notranslate"><span class="pre">b^(n</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">&gt;</span> <span class="pre">m</span></code>.
@@ -137,7 +142,7 @@ that don’t satisfy the preconditions, your implementation may do
 anything you like — even fail to terminate.</p>
 </section>
 <section id="fact">
-<h2>3. <code class="docutils literal notranslate"><span class="pre">fact</span></code><a class="headerlink" href="#fact" title="Permalink to this headline"></a></h2>
+<h2>3. <code class="docutils literal notranslate"><span class="pre">fact</span></code><a class="headerlink" href="#fact" title="Permalink to this heading"></a></h2>
 <p>Define a function <code class="docutils literal notranslate"><span class="pre">fact</span></code> such that <code class="docutils literal notranslate"><span class="pre">(fact</span> <span class="pre">n)</span></code> is the factorial of
 <code class="docutils literal notranslate"><span class="pre">n</span></code>. Define two versions of this function. The first (<code class="docutils literal notranslate"><span class="pre">fact1</span></code>) will
 be a simply-recursive function that is familiar from the definition of
@@ -145,7 +150,7 @@ factorials. The second (<code class="docutils literal notranslate"><span class="
 a <code class="docutils literal notranslate"><span class="pre">while</span></code> loop.</p>
 </section>
 <section id="fib">
-<h2>4. <code class="docutils literal notranslate"><span class="pre">fib</span></code><a class="headerlink" href="#fib" title="Permalink to this headline"></a></h2>
+<h2>4. <code class="docutils literal notranslate"><span class="pre">fib</span></code><a class="headerlink" href="#fib" title="Permalink to this heading"></a></h2>
 <p>Define a function <code class="docutils literal notranslate"><span class="pre">fib</span></code> such that <code class="docutils literal notranslate"><span class="pre">(fib</span> <span class="pre">n)</span></code> is the <code class="docutils literal notranslate"><span class="pre">n</span></code>th
 Fibonacci number. The Fibonacci numbers are a sequence of numbers
 defined by these laws:</p>
@@ -160,7 +165,7 @@ be extremely slow for large input values. <code class="docutils literal notransl
 function using a <code class="docutils literal notranslate"><span class="pre">while</span></code> loop and will be fast.</p>
 </section>
 <section id="binary">
-<h2>5. <code class="docutils literal notranslate"><span class="pre">binary</span></code><a class="headerlink" href="#binary" title="Permalink to this headline"></a></h2>
+<h2>5. <code class="docutils literal notranslate"><span class="pre">binary</span></code><a class="headerlink" href="#binary" title="Permalink to this heading"></a></h2>
 <p>Define a function <code class="docutils literal notranslate"><span class="pre">binary</span></code> such that <code class="docutils literal notranslate"><span class="pre">(binary</span> <span class="pre">m)</span></code> is the number
 whose decimal representation looks like the binary representation of
 <code class="docutils literal notranslate"><span class="pre">m</span></code>. For example <code class="docutils literal notranslate"><span class="pre">(binary</span> <span class="pre">12)</span> <span class="pre">=</span> <span class="pre">1100</span></code>, since <code class="docutils literal notranslate"><span class="pre">11002</span></code> =
@@ -168,9 +173,9 @@ whose decimal representation looks like the binary representation of
 </section>
 </section>
 <section id="part-b-extending-imp">
-<h1>Part B: Extending <em>Imp</em><a class="headerlink" href="#part-b-extending-imp" title="Permalink to this headline"></a></h1>
+<h1>Part B: Extending <em>Imp</em><a class="headerlink" href="#part-b-extending-imp" title="Permalink to this heading"></a></h1>
 <section id="read">
-<h2>1. <code class="docutils literal notranslate"><span class="pre">read</span></code><a class="headerlink" href="#read" title="Permalink to this headline"></a></h2>
+<h2>1. <code class="docutils literal notranslate"><span class="pre">read</span></code><a class="headerlink" href="#read" title="Permalink to this heading"></a></h2>
 <p>Add the primitive <code class="docutils literal notranslate"><span class="pre">read</span></code> to the <em>Imp</em> interpreter and the initial
 basis. Function <code class="docutils literal notranslate"><span class="pre">read</span></code> is executed for its side effect; it takes no
 arguments, reads a number from standard input, and returns the number.
@@ -182,7 +187,7 @@ function (in the <code class="docutils literal notranslate"><span class="pre">St
 use <code class="docutils literal notranslate"><span class="pre">read_int</span></code> or <code class="docutils literal notranslate"><span class="pre">read_int_opt</span></code> to read the number.</p>
 </section>
 <section id="adding-syntactic-sugar">
-<h2>2. Adding syntactic sugar<a class="headerlink" href="#adding-syntactic-sugar" title="Permalink to this headline"></a></h2>
+<h2>2. Adding syntactic sugar<a class="headerlink" href="#adding-syntactic-sugar" title="Permalink to this heading"></a></h2>
 <p>One interesting way to extend a language is to add <em>syntactic sugar</em> to
 it. This means to add forms that are trivially convertible to existing
 forms. For this problem, we want you to add a few language forms
@@ -209,14 +214,14 @@ be raised with a meaningful error message.</p>
 interpreter!</p>
 </div>
 <section id="a-do-while">
-<h3>a. <code class="docutils literal notranslate"><span class="pre">do-while</span></code><a class="headerlink" href="#a-do-while" title="Permalink to this headline"></a></h3>
+<h3>a. <code class="docutils literal notranslate"><span class="pre">do-while</span></code><a class="headerlink" href="#a-do-while" title="Permalink to this heading"></a></h3>
 <p>Add a C-like <code class="docutils literal notranslate"><span class="pre">do-while</span></code> form with this translation:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(do-while &lt;exp&gt; &lt;test-exp&gt;) ==&gt; (begin &lt;exp&gt; (while &lt;test-exp&gt; &lt;exp&gt;))
 </pre></div>
 </div>
 </section>
 <section id="b-while">
-<h3>b. <code class="docutils literal notranslate"><span class="pre">while*</span></code><a class="headerlink" href="#b-while" title="Permalink to this headline"></a></h3>
+<h3>b. <code class="docutils literal notranslate"><span class="pre">while*</span></code><a class="headerlink" href="#b-while" title="Permalink to this heading"></a></h3>
 <p>Add a <code class="docutils literal notranslate"><span class="pre">while*</span></code> form with this translation:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(while* &lt;test-exp&gt; &lt;exp1&gt; &lt;exp2&gt; ... &lt;expN&gt;)
   ==&gt; (while &lt;test-exp&gt; (begin &lt;exp1&gt; &lt;exp2&gt; ... &lt;expN&gt;))
@@ -227,7 +232,7 @@ interpreter!</p>
 syntax error, as is one with no expressions at all.</p>
 </section>
 <section id="c-for">
-<h3>c. <code class="docutils literal notranslate"><span class="pre">for</span></code><a class="headerlink" href="#c-for" title="Permalink to this headline"></a></h3>
+<h3>c. <code class="docutils literal notranslate"><span class="pre">for</span></code><a class="headerlink" href="#c-for" title="Permalink to this heading"></a></h3>
 <p>Add a C-like <code class="docutils literal notranslate"><span class="pre">for</span></code> loop with this translation:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(for &lt;begin-exp&gt; &lt;test-exp&gt; &lt;incr-exp&gt; (&lt;body-exp1&gt; &lt;body-exp2&gt; ... &lt;body-expN))
 ==&gt;
@@ -253,7 +258,7 @@ same.</p></li>
 </section>
 </section>
 <section id="and-and-or">
-<h2>3. <code class="docutils literal notranslate"><span class="pre">and</span></code> and <code class="docutils literal notranslate"><span class="pre">or</span></code><a class="headerlink" href="#and-and-or" title="Permalink to this headline"></a></h2>
+<h2>3. <code class="docutils literal notranslate"><span class="pre">and</span></code> and <code class="docutils literal notranslate"><span class="pre">or</span></code><a class="headerlink" href="#and-and-or" title="Permalink to this heading"></a></h2>
 <p>The initial basis of the <em>Imp</em> language is split between primitive
 functions and user functions. The user functions are defined in the
 string <code class="docutils literal notranslate"><span class="pre">initial_basis</span></code> near the end of the file. Two of these
@@ -293,7 +298,7 @@ Or (l, e1, e2) ==&gt; If (l, e1, e1, e2)
 <p>Again, make sure that the locations used in derived forms are reasonable ones.</p>
 </section>
 <section id="improving-while-and-begin">
-<h2>4. Improving <code class="docutils literal notranslate"><span class="pre">while</span></code> and <code class="docutils literal notranslate"><span class="pre">begin</span></code><a class="headerlink" href="#improving-while-and-begin" title="Permalink to this headline"></a></h2>
+<h2>4. Improving <code class="docutils literal notranslate"><span class="pre">while</span></code> and <code class="docutils literal notranslate"><span class="pre">begin</span></code><a class="headerlink" href="#improving-while-and-begin" title="Permalink to this heading"></a></h2>
 <p>The way that <code class="docutils literal notranslate"><span class="pre">while</span></code> and <code class="docutils literal notranslate"><span class="pre">begin</span></code> expressions are evaluated in the
 <code class="docutils literal notranslate"><span class="pre">eval_expr</span></code> function is somewhat inefficient. In both cases, we
 sometimes have to create new <code class="docutils literal notranslate"><span class="pre">while</span></code>/<code class="docutils literal notranslate"><span class="pre">begin</span></code> expressions and
@@ -311,7 +316,7 @@ helper function (for <code class="docutils literal notranslate"><span class="pre
 function or an equivalent higher-order function (for <code class="docutils literal notranslate"><span class="pre">begin</span></code>).</p>
 </section>
 <section id="adding-support-for-local-variables">
-<h2>5. Adding support for local variables<a class="headerlink" href="#adding-support-for-local-variables" title="Permalink to this headline"></a></h2>
+<h2>5. Adding support for local variables<a class="headerlink" href="#adding-support-for-local-variables" title="Permalink to this heading"></a></h2>
 <p>One glaring weakness of the <em>Imp</em> language is that it has no local
 variables, even though it has an environment for storing them. In this
 problem we will implement them.</p>
@@ -367,7 +372,7 @@ are added to the local variable environment with an initial value of
 </section>
 </section>
 <section id="part-c-programming-in-extended-imp">
-<h1>Part C: Programming in extended <em>Imp</em><a class="headerlink" href="#part-c-programming-in-extended-imp" title="Permalink to this headline"></a></h1>
+<h1>Part C: Programming in extended <em>Imp</em><a class="headerlink" href="#part-c-programming-in-extended-imp" title="Permalink to this heading"></a></h1>
 <p>Rewrite your functions from part A as follows. Even if you used helper
 functions to implement your functions in part A (which is allowed),
 don’t do that here; all functions should be self-contained. Also, none
