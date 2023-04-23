@@ -56,20 +56,6 @@ Then implement the functions described below.
      function.) Pattern matching on the datatypes can do everything you
      need.
 
-..
-  GRADING NOTES
-
-  Take off half marks for any function that doesn’t have a (correct) type
-  signature. (This applies to the next section as well.) This might seem
-  harsh but students can easily make up for this in the rework.
-
-  Give a 0 per problem if the student converts trees into element lists
-  (or any other collection type |eg| arrays), except where I expressly say
-  or indicate that it’s OK.
-
-  Take off some marks (say, 25% of the problem points) for compiler
-  warnings.
-
 Here are the descriptions of the functions you need to implement.
 
 
@@ -513,15 +499,6 @@ whose balancing code is even worse than this. [1]_ The nice thing about
 red-black trees is that they are very efficient in practice, so once we
 get through writing the code, we have a very useful data structure.
 
-..
-  GRADING NOTES
-
-  Students are required to fill in the code template. If they implement
-  this code any other way, they get a 0 on this problem.
-
-  As mentioned above, this problem should be worth half the marks of the
-  entire section. Give part marks where appropriate.
-
 
 4. ``fromList``
 ---------------
@@ -582,17 +559,6 @@ compare a node value against every single value in its left/right
 subtree, because that isn’t necessary. Marks will be taken off for
 inefficient solutions. Doing it right isn’t hard or tricky.
 
-..
-  GRADING NOTES
-
-  Watch out for students doing the ``case`` analysis right but failing to
-  recurse on the subtrees. Take 3/4 marks off if they do that.
-
-  A less efficient way to write this function is to test that the node
-  value is larger than *all* values in the left subtree, smaller than
-  *all* values in the right subtree, and then recursing on both subtrees.
-  Only give a 2 for that kind of solution.
-
 
 7. ``testInvariant2``
 ---------------------
@@ -616,16 +582,6 @@ red parent. Don’t forget to use ``_`` for unused components of the
    You do *not* have to compare colors using the ``==`` or ``/=``
    operators, so don’t make ``Color`` an instance of the ``Eq`` type
    class or define a color comparison function.
-
-..
-  GRADING NOTES
-
-  Watch out for students not recursing down the tree during the test.
-
-  Some students have wanted to change the ``Color`` definition to add a
-  ``deriving Eq``; the idea is to compare color values at a level of the
-  tree. Do *not* allow that because it defeats the purpose of the
-  exercise, which is to handle more complex pattern matches.
 
 
 8. ``testInvariant3``
