@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Part A: Finishing and extending \(\mu{\sf Scheme}\) : parsing &mdash; The CS 131 book</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../_static/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Part B: Finishing and extending \(\mu{\sf Scheme}\) : evaluation" href="partB_extending2.html" />
+    <link rel="prev" title="Debugging" href="Debugging.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            The CS 131 book, Spring 2023
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Software.html">Installing the course software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lectures.html">Lectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../1/index.html">Assignment 1: The <em>Imp</em> language</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 2: The <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> language</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Debugging.html">Debugging</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Part A: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : parsing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#intermediate-representations">Intermediate representations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementing-simple-desugarings">1. Implementing simple desugarings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extending-literals">2. Extending literals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extending-let-lambda-define-and-while-forms">3. Extending <code class="docutils literal notranslate"><span class="pre">let</span></code>, <code class="docutils literal notranslate"><span class="pre">lambda</span></code>, <code class="docutils literal notranslate"><span class="pre">define</span></code> and <code class="docutils literal notranslate"><span class="pre">while</span></code> forms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-the-cond-form">4. Adding the <code class="docutils literal notranslate"><span class="pre">cond</span></code> form</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-the-and-and-or-forms">5. Adding the <code class="docutils literal notranslate"><span class="pre">and</span></code> and <code class="docutils literal notranslate"><span class="pre">or</span></code> forms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-the-valrec-form">6. Adding the <code class="docutils literal notranslate"><span class="pre">valrec</span></code> form</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#functions-with-variable-numbers-of-arguments">7. Functions with variable numbers of arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="partB_extending2.html">Part B: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : evaluation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partC_programming.html">Part C: Programming in extended <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The CS 131 book, Spring 2023</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 2: The <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> language</a></li>
+      <li class="breadcrumb-item active">Part A: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : parsing</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="part-a-finishing-and-extending-uscheme-parsing">
+<h1>Part A: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : parsing<a class="headerlink" href="#part-a-finishing-and-extending-uscheme-parsing" title="Permalink to this heading"></a></h1>
+<p>In this section, you will be completing the parsing of forms to IR forms
+(described below) by both implementing desugarings and adding features
+to both the AST and IR.</p>
+<section id="intermediate-representations">
+<h2>Intermediate representations<a class="headerlink" href="#intermediate-representations" title="Permalink to this heading"></a></h2>
+<p>The theme of this assignment is <em>intermediate representations</em>.
+Previously we’ve assumed that the interpreter
+converts the S-expression representation to an AST representation
+and then directly evaluates the AST representation.
+However, the main purpose of an AST
+is to serve as a faithful representation of the language syntax
+that is easy to manipulate inside a program.
+ASTs are generally <em>not</em> the optimal form for evaluators to work on.
+For one thing, there are almost always forms in the AST that aren’t necessary,
+because they can be desugared into simpler forms.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>“Desugaring” a form means to convert it to an equivalent form
+which will give the exact same result when evaluated,
+but which is “simpler” in some sense.
+In our case, we want the desugared form to be converted to
+another form that already exists, so the evaluator has fewer forms
+that it needs to be able to handle.
+The fewer the forms an evaluator needs to handle,
+the easier it is to write.</p>
+</div>
+<p>In assignment 1, we saw one way to desugar forms,
+which was by directly converting S-expressions into other S-expressions.
+However, there are two problems with this approach:</p>
+<ul class="simple">
+<li><p>Working with S-expressions directly is very tedious in OCaml.</p></li>
+<li><p>Most languages don’t even use S-expressions.</p></li>
+</ul>
+<p>Some languages (notably most Lisp and Scheme dialects)
+contain powerful <em>macro systems</em> that operate at the level of S-expressions,
+and given a good enough macro system,
+desugaring at the level of S-expressions makes sense.
+(Probably the most powerful macro system
+ever implemented in a programming language
+is the one at the heart of the <a class="reference external" href="https://www.racket-lang.org/">Racket</a> family of languages.
+Check it out sometime.)</p>
+<p>However, we don’t have a macro system in <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span>,
+so we will do something more conventional:
+we will <em>not</em> desugar S-expressions,
+but instead we will convert them to AST expressions as usual,
+and then convert AST expressions
+into a simpler <em>intermediate representation</em> (or IR for short).
+This IR form is like an AST form except that there is no redundancy;
+all AST expressions that can be converted to simpler expressions
+are converted.
+Furthermore, this conversion happens
+before the evaluator ever sees the code,
+so that there is no need to convert the same expression over and over,
+which may occur if the evaluator interprets the AST directly.
+The cost is that you have one more conversion step
+before you can evaluate the code,
+but this is usually a cost worth paying.</p>
+<p>Note that by converting AST forms into IR forms,
+we will write what in compiler terminology is called a <em>simplification pass</em>.
+Many forms will be nearly identical in both the AST and IR
+(so converting them will be tedious “boilerplate” code)
+but some forms will change and others will be eliminated altogether.
+We’ll describe all the changes below.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Yes, you are actually writing a compiler. It’s a very simple
+compiler, and it doesn’t output machine code or assembly language,
+but it’s a compiler nonetheless, because it takes in one
+representation of a language (the AST) and outputs a different one
+(the IR).</p>
+</div>
+<p>Note also that many (most?) languages
+have more than one intermediate representation.
+“Real” compilers, in particular, usually have a number of IRs,
+and the output of one IR transformation is the input to the next one.
+There are many things that can be done in IRs;
+simplification is only one of them.
+(Take CS 164 if you want to learn more about compilers.)</p>
+<p>Before beginning, take a look at the <code class="docutils literal notranslate"><span class="pre">expr</span></code> and <code class="docutils literal notranslate"><span class="pre">def</span></code> type
+definitions in the <code class="docutils literal notranslate"><span class="pre">ast.mli</span></code> and <code class="docutils literal notranslate"><span class="pre">ir.mli</span></code> files.
+Notice which forms are present in the AST types but not in the IR types.
+This is where the desugaring will happen.
+(You will also be making some modifications to both the AST and IR types.)</p>
+<p>The files that you need to change for this section are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ast.mli</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ast.ml</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ir.mli</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ir.ml</span></code></p></li>
+</ul>
+</section>
+<section id="implementing-simple-desugarings">
+<h2>1. Implementing simple desugarings<a class="headerlink" href="#implementing-simple-desugarings" title="Permalink to this heading"></a></h2>
+<p>The code base we have provided for you
+defines the IR in the files <code class="docutils literal notranslate"><span class="pre">ir.ml</span></code> and <code class="docutils literal notranslate"><span class="pre">ir.mli</span></code>.
+These files define the IR types <code class="docutils literal notranslate"><span class="pre">expr</span></code> and <code class="docutils literal notranslate"><span class="pre">def</span></code>
+and contain most of the code for converting between AST and IR forms.
+However, the conversion code for one expression form
+(corresponding to <code class="docutils literal notranslate"><span class="pre">let*</span></code> forms)
+and two definition forms
+(corresponding to <code class="docutils literal notranslate"><span class="pre">define</span></code> forms and top-level expressions)
+are not implemented.
+Since the basis functions defined in <code class="docutils literal notranslate"><span class="pre">basis.ml</span></code>
+use <code class="docutils literal notranslate"><span class="pre">define</span></code> in particular,
+you can’t run this interpreter as is.
+Therefore, your first task
+is to finish implementing the code in <code class="docutils literal notranslate"><span class="pre">ir.ml</span></code>
+by replacing the <code class="docutils literal notranslate"><span class="pre">failwith</span> <span class="pre">&quot;TODO&quot;</span></code> expressions
+with code that implements the correct transformations.</p>
+<p>Note that the evaluator code in <code class="docutils literal notranslate"><span class="pre">eval.ml</span></code> acts on IR expressions,
+not AST expressions.
+You will need to modify that code in various ways, but not in this section.</p>
+<p>Here are the transformations we want you to implement:</p>
+<section id="a-let">
+<h3>a. <code class="docutils literal notranslate"><span class="pre">let*</span></code><a class="headerlink" href="#a-let" title="Permalink to this heading"></a></h3>
+<p>For <code class="docutils literal notranslate"><span class="pre">let*</span></code>, use the transformation:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(let* () e) --&gt; e
+(let* ([x1 e1] [x2 e2] ...) e) --&gt; (let ([x1 e1]) (let* ([x2 e2] ...) e))
+; repeat until there are no more &quot;let*&quot; expressions
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is <em>not</em> a transformation at the level of S-expressions; we’re
+only writing it in terms of S-expressions for the sake of brevity. In
+actual fact, you would be converting <code class="docutils literal notranslate"><span class="pre">LetStar</span> <span class="pre">(...)</span></code> expressions
+(in the AST) into nested <code class="docutils literal notranslate"><span class="pre">Let</span> <span class="pre">(...)</span></code> expressions (in the IR). If
+you implement this at the S-expression level you will get no credit
+(and you’ll work much harder than you should!)</p>
+</div>
+<p>If you find this transformation tedious, reread the operational
+semantics for <code class="docutils literal notranslate"><span class="pre">let*</span></code> in lecture 6. Then feel better knowing that you
+don’t have to implement this in the evaluator! One of the great things
+about desugaring is that it simplifies the evaluator, which also means
+that it makes it much easier to get the evaluator correct (and to prove
+it correct, if you’re so inclined). Of course, you can specify the
+desugaring in the operational semantics as well.</p>
+</section>
+<section id="b-define">
+<h3>b. <code class="docutils literal notranslate"><span class="pre">define</span></code><a class="headerlink" href="#b-define" title="Permalink to this heading"></a></h3>
+<p>For <code class="docutils literal notranslate"><span class="pre">define</span></code>, use the transformation:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(define f (x1 x2 ...) e) --&gt; (val f (lambda (x1 x2 ...) e))
+</pre></div>
+</div>
+<p>Again, this is not a transformation at the level of S-expressions but at
+the level of the AST and IR forms. In fact, the IR doesn’t even have a
+<code class="docutils literal notranslate"><span class="pre">Define</span></code> form, so this transformation is necessary.</p>
+</section>
+<section id="c-top-level-expressions">
+<h3>c. Top-level expressions<a class="headerlink" href="#c-top-level-expressions" title="Permalink to this heading"></a></h3>
+<p>For top-level expressions, use the transformation:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>e --&gt; (val _ e)
+</pre></div>
+</div>
+</section>
+</section>
+<section id="extending-literals">
+<h2>2. Extending literals<a class="headerlink" href="#extending-literals" title="Permalink to this heading"></a></h2>
+<p>In both the AST and the IR, the only kind of literals are integers.
+But in reality, we have several literal values:</p>
+<ul class="simple">
+<li><p>integers</p></li>
+<li><p>booleans (the special identifiers <code class="docutils literal notranslate"><span class="pre">#t</span></code> and <code class="docutils literal notranslate"><span class="pre">#f</span></code>,
+representing “true” and “false” respectively)</p></li>
+<li><p>the unit value <code class="docutils literal notranslate"><span class="pre">#u</span></code> (used as a return value for functions
+that don’t really return anything, like <code class="docutils literal notranslate"><span class="pre">println</span></code>)</p></li>
+</ul>
+<p>In addition, <code class="docutils literal notranslate"><span class="pre">nil</span></code> (the empty list) and quoted S-expressions could also be
+considered literals.  We won’t do that, because quoted S-expressions
+have their own AST form and <code class="docutils literal notranslate"><span class="pre">nil</span></code> is just an identifier we bind to the
+empty list value.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These decisions are quite arbitrary.  Programming language designers use
+their own sense of aesthetics to determine what forms to include and
+how to categorize them.  For instance, we could easily have made
+<code class="docutils literal notranslate"><span class="pre">nil</span></code> into a literal, but it seems cleaner to us not to do that.
+In fact, most real Scheme implementations
+don’t even define <code class="docutils literal notranslate"><span class="pre">nil</span></code>, using <code class="docutils literal notranslate"><span class="pre">'()</span></code> instead
+(which we can also use).</p>
+</div>
+<section id="adding-literals-to-the-ast">
+<h3>Adding literals to the AST<a class="headerlink" href="#adding-literals-to-the-ast" title="Permalink to this heading"></a></h3>
+<p>In the AST module (the files <code class="docutils literal notranslate"><span class="pre">ast.mli</span></code> and <code class="docutils literal notranslate"><span class="pre">ast.ml</span></code>)
+extend the set of literals by defining a separate <code class="docutils literal notranslate"><span class="pre">lit</span></code> type.
+This type will have constructors for integers, booleans, and unit literals.
+Then rewrite the <code class="docutils literal notranslate"><span class="pre">Literal</span></code> constructor of the <code class="docutils literal notranslate"><span class="pre">expr</span></code> type so that it
+takes a <code class="docutils literal notranslate"><span class="pre">lit</span></code> value instead of an <code class="docutils literal notranslate"><span class="pre">int</span></code> value.</p>
+<p>Extend the <code class="docutils literal notranslate"><span class="pre">parse_expr</span></code> function so that it parses S-expressions
+representing literals into the corresponding AST literals.</p>
+<p>Remove the names <code class="docutils literal notranslate"><span class="pre">#u</span></code>, <code class="docutils literal notranslate"><span class="pre">#t</span></code> and <code class="docutils literal notranslate"><span class="pre">#f</span></code> from the list of reserved
+identifiers.  (These names are not identifiers any more.)
+Keep <code class="docutils literal notranslate"><span class="pre">nil</span></code> as the only reserved identifier.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The purpose of this transformation is so that
+the evaluator doesn’t have to waste time
+looking up the identifiers <code class="docutils literal notranslate"><span class="pre">#t</span></code>, <code class="docutils literal notranslate"><span class="pre">#f</span></code> and <code class="docutils literal notranslate"><span class="pre">#u</span></code> at run-time,
+since they can only represent one thing.</p>
+</div>
+</section>
+<section id="adding-literals-to-the-ir">
+<h3>Adding literals to the IR<a class="headerlink" href="#adding-literals-to-the-ir" title="Permalink to this heading"></a></h3>
+<p>In the IR module (the files <code class="docutils literal notranslate"><span class="pre">ir.mli</span></code> and <code class="docutils literal notranslate"><span class="pre">ir.ml</span></code>),
+add this line to the type definitions:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>type lit = Ast.lit
+</pre></div>
+</div>
+<p>and then change the <code class="docutils literal notranslate"><span class="pre">Literal</span></code> constructor so that it takes a <code class="docutils literal notranslate"><span class="pre">lit</span></code>
+value instead of an <code class="docutils literal notranslate"><span class="pre">int</span></code> value as well.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do <em>not</em> define a new <code class="docutils literal notranslate"><span class="pre">lit</span></code> type in the IR.
+Just re-use the AST <code class="docutils literal notranslate"><span class="pre">lit</span></code> type,
+because it’s the same in the AST and the IR.
+We only define the type alias for convenience,
+so we can type <code class="docutils literal notranslate"><span class="pre">lit</span></code> instead of <code class="docutils literal notranslate"><span class="pre">Ast.lit</span></code>.</p>
+</div>
+<p>Rewrite the <code class="docutils literal notranslate"><span class="pre">Literal</span></code> constructor of the IR
+so it takes a <code class="docutils literal notranslate"><span class="pre">lit</span></code> value instead of an <code class="docutils literal notranslate"><span class="pre">int</span></code> value.</p>
+</section>
+</section>
+<section id="extending-let-lambda-define-and-while-forms">
+<h2>3. Extending <code class="docutils literal notranslate"><span class="pre">let</span></code>, <code class="docutils literal notranslate"><span class="pre">lambda</span></code>, <code class="docutils literal notranslate"><span class="pre">define</span></code> and <code class="docutils literal notranslate"><span class="pre">while</span></code> forms<a class="headerlink" href="#extending-let-lambda-define-and-while-forms" title="Permalink to this heading"></a></h2>
+<p>Writing a <code class="docutils literal notranslate"><span class="pre">begin</span></code> expression for the body of a <code class="docutils literal notranslate"><span class="pre">let</span></code>, <code class="docutils literal notranslate"><span class="pre">lambda</span></code>,
+<code class="docutils literal notranslate"><span class="pre">define</span></code> or <code class="docutils literal notranslate"><span class="pre">while</span></code> expression when the body consists of more
+than one expression is annoying; let’s fix that!</p>
+<p>Extend the <code class="docutils literal notranslate"><span class="pre">let</span></code>/<code class="docutils literal notranslate"><span class="pre">let*</span></code>/<code class="docutils literal notranslate"><span class="pre">letrec</span></code>, <code class="docutils literal notranslate"><span class="pre">lambda</span></code>, <code class="docutils literal notranslate"><span class="pre">define</span></code> and
+<code class="docutils literal notranslate"><span class="pre">while</span></code> forms in the AST to allow multiple expressions in the body. To
+do this, you have to modify the AST in <code class="docutils literal notranslate"><span class="pre">ast.ml</span></code> and <code class="docutils literal notranslate"><span class="pre">ast.mli</span></code>
+for the affected forms, then change the way S-expressions are converted
+to AST expressions (adding support for the new ways of writing the
+forms), and finally change the way AST expressions are converted to IR
+expressions in <code class="docutils literal notranslate"><span class="pre">ir.ml</span></code>. Note that the IR versions of these forms only
+have a single expression in the body, and the IR doesn’t have <code class="docutils literal notranslate"><span class="pre">let*</span></code>
+or <code class="docutils literal notranslate"><span class="pre">define</span></code> forms.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The IR types should not change.</p>
+</div>
+<p>In each case, the multiple body expressions evaluate as if they were
+wrapped in a <code class="docutils literal notranslate"><span class="pre">begin</span></code> expression, and when you convert them to IR
+expressions, you should explicitly wrap the body expressions with a
+<code class="docutils literal notranslate"><span class="pre">begin</span></code> expression.</p>
+<p>To be specific, here are the desugarings you need to make when
+converting between the AST and the IR forms
+(again written schematically as S-expression transformations,
+though that’s not what they are).</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(let ([&lt;name1&gt; &lt;expr1] ...) &lt;body-expr1&gt; &lt;body-expr2&gt; ...)
+--&gt;
+(let ([&lt;name1&gt; &lt;expr1] ...) (begin &lt;body-expr1&gt; &lt;body-expr2&gt; ...))
+
+(let* ([&lt;name1&gt; &lt;expr1] ...) &lt;body-expr1&gt; &lt;body-expr2&gt; ...)
+--&gt;
+(let* ([&lt;name1&gt; &lt;expr1] ...) (begin &lt;body-expr1&gt; &lt;body-expr2&gt; ...))
+[then desugar let* to let as described above]
+
+(letrec ([&lt;name1&gt; &lt;expr1] ...) &lt;body-expr1&gt; &lt;body-expr2&gt; ...)
+--&gt;
+(letrec ([&lt;name1&gt; &lt;expr1] ...) (begin &lt;body-expr1&gt; &lt;body-expr2&gt; ...))
+
+(lambda (&lt;name1&gt; ...) &lt;body-expr1&gt; &lt;body-expr2&gt; ...)
+--&gt;
+(lambda (&lt;name1&gt; ...) (begin &lt;body-expr1&gt; &lt;body-expr2&gt; ...))
+
+(define &lt;name&gt; (&lt;arg1&gt; ...) &lt;body-expr1&gt; &lt;body-expr2&gt; ...)
+--&gt;
+(define &lt;name&gt; (&lt;arg1&gt; ...) (begin &lt;body-expr1&gt; &lt;body-expr2&gt; ...))
+
+(while &lt;test-expr&gt; &lt;body-expr1&gt; &lt;body-expr2&gt; ...)
+--&gt;
+(while &lt;test-expr&gt; (begin &lt;body-expr1&gt; &lt;body-expr2&gt; ...))
+</pre></div>
+</div>
+<p>One other thing: we do not allow empty bodies for <code class="docutils literal notranslate"><span class="pre">let</span></code>, <code class="docutils literal notranslate"><span class="pre">let*</span></code>,
+<code class="docutils literal notranslate"><span class="pre">letrec</span></code>, <code class="docutils literal notranslate"><span class="pre">lambda</span></code> expressions, or for <code class="docutils literal notranslate"><span class="pre">define</span></code> forms.
+(In contrast, an empty bodies is OK in a <code class="docutils literal notranslate"><span class="pre">while</span></code> expression.)
+So all of these are syntax errors:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(let ())
+(let* ())
+(letrec ())
+(lambda (x))
+(lambda args)
+(define foo ())
+(define foo args)
+</pre></div>
+</div>
+<p>The test scripts will check for this.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Instead of counting the number of body expressions
+and raising a syntax error exception when there aren’t any,
+you can enforce this by a clever use of pattern matching.
+Instead of matching zero or more expressions using
+<code class="docutils literal notranslate"><span class="pre">exprs</span></code>, match one or more expressions using
+<code class="docutils literal notranslate"><span class="pre">expr</span> <span class="pre">::</span> <span class="pre">exprs</span></code>.  Anything that doesn’t match
+is a malformed form, and will be considered to be a syntax error.</p>
+</div>
+</section>
+<section id="adding-the-cond-form">
+<h2>4. Adding the <code class="docutils literal notranslate"><span class="pre">cond</span></code> form<a class="headerlink" href="#adding-the-cond-form" title="Permalink to this heading"></a></h2>
+<p>Real Scheme has a conditional expression form called <code class="docutils literal notranslate"><span class="pre">cond</span></code> which is
+easier to use than <code class="docutils literal notranslate"><span class="pre">if</span></code> for most applications. It has the following
+syntax:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(cond [&lt;test-exprA&gt; &lt;expr1a&gt; &lt;expr2a&gt; ...]
+      [&lt;test-exprB&gt; &lt;expr1b&gt; &lt;expr2b&gt; ...]
+       ...)
+</pre></div>
+</div>
+<p>In other words, <code class="docutils literal notranslate"><span class="pre">cond</span></code> is followed by zero or more <em>clauses</em>, where
+each clause has a test expression (an expression which evaluates to a
+boolean value) followed by zero or more body expressions. <code class="docutils literal notranslate"><span class="pre">cond</span></code>
+evaluates each clause in order; if a test expression returns a true
+value (which in Scheme is any value that isn’t explicitly false), then
+the body expressions are evaluated in order and the value of the last
+one is the value of the <code class="docutils literal notranslate"><span class="pre">cond</span></code> expression. If the test expression
+evaluates to false, the next clause is evaluated. If there are no more
+clauses, the <code class="docutils literal notranslate"><span class="pre">cond</span></code> returns a unit (<code class="docutils literal notranslate"><span class="pre">#u</span></code>) value. Note that a
+<code class="docutils literal notranslate"><span class="pre">cond</span></code> expression doesn’t have to have any clauses, in which case it
+again returns <code class="docutils literal notranslate"><span class="pre">#u</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The square brackets are just for readability;
+they could be replaced with parentheses as long as they are balanced.
+You don’t have to worry about this,
+since the <code class="docutils literal notranslate"><span class="pre">sexpr</span></code> library handles parsing S-expressions.</p>
+</div>
+<p>If you want the equivalent of an “else” clause in a <code class="docutils literal notranslate"><span class="pre">cond</span></code> expression,
+just use <code class="docutils literal notranslate"><span class="pre">#t</span></code> for the test expression. This is normally done only in
+the last clause. (You could easily add <code class="docutils literal notranslate"><span class="pre">else</span></code> as a keyword with a little
+extra work, but don’t do that.)</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cond</span></code> form exists in the AST only; it is desugared in the IR to a
+series of nested <code class="docutils literal notranslate"><span class="pre">if</span></code> forms. You need to add a <code class="docutils literal notranslate"><span class="pre">Cond</span></code> constructor to
+the AST, convert S-expressions to AST <code class="docutils literal notranslate"><span class="pre">Cond</span></code> forms where appropriate,
+and write the code to convert AST <code class="docutils literal notranslate"><span class="pre">Cond</span></code> forms to nested IR <code class="docutils literal notranslate"><span class="pre">If</span></code>
+forms.  Here is the desugaring of <code class="docutils literal notranslate"><span class="pre">cond</span></code> to <code class="docutils literal notranslate"><span class="pre">if</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(cond [&lt;test-exprA&gt; &lt;expr1a&gt; &lt;expr2a&gt; ...]
+      [&lt;test-exprB&gt; &lt;expr1b&gt; &lt;expr2b&gt; ...]
+       ...)
+--&gt;
+(if &lt;test-exprA&gt; (begin &lt;expr1a&gt; &lt;expr2a&gt; ...)
+    (cond [&lt;test-exprB&gt; &lt;expr1b&gt; &lt;expr2b&gt; ...]
+          ...))
+[repeat until there are no more &quot;cond&quot; expressions]
+
+(cond) --&gt; #u
+</pre></div>
+</div>
+<p>Finally, add <code class="docutils literal notranslate"><span class="pre">cond</span></code> to the list of keywords in <code class="docutils literal notranslate"><span class="pre">ast.ml</span></code>.</p>
+</section>
+<section id="adding-the-and-and-or-forms">
+<h2>5. Adding the <code class="docutils literal notranslate"><span class="pre">and</span></code> and <code class="docutils literal notranslate"><span class="pre">or</span></code> forms<a class="headerlink" href="#adding-the-and-and-or-forms" title="Permalink to this heading"></a></h2>
+<p>Add <code class="docutils literal notranslate"><span class="pre">and</span></code> and <code class="docutils literal notranslate"><span class="pre">or</span></code> expression forms to the language. In the AST they
+will be represented as <code class="docutils literal notranslate"><span class="pre">And</span></code> and <code class="docutils literal notranslate"><span class="pre">Or</span></code> constructors. Write the code
+to convert from S-expressions to AST <code class="docutils literal notranslate"><span class="pre">And</span></code>/<code class="docutils literal notranslate"><span class="pre">Or</span></code> forms where
+appropriate. Note that both forms are <em>variadic</em> <em>i.e.</em> they can take any
+number of arguments, including zero. The IR does not have <code class="docutils literal notranslate"><span class="pre">And</span></code> or
+<code class="docutils literal notranslate"><span class="pre">Or</span></code> constructors; instead, convert them to <code class="docutils literal notranslate"><span class="pre">Let</span></code> and <code class="docutils literal notranslate"><span class="pre">If</span></code> forms,
+using this desugaring:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(and) --&gt; #t
+(and x) --&gt; x
+(and x y z ...) --&gt; (if x (and y z ...) #f)
+[repeat until there are no more &quot;and&quot; expressions]
+
+(or) --&gt; #f
+(or x) --&gt; x
+(or x y z ...) --&gt; (let (({or} x)) (if {or} {or} (or y z ...)))
+[repeat until there are no more &quot;or&quot; expressions]
+</pre></div>
+</div>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">And</span></code> AST form gets converted to a series of nested
+<code class="docutils literal notranslate"><span class="pre">If</span></code> IR forms, whereas an <code class="docutils literal notranslate"><span class="pre">Or</span></code> AST form gets converted to a
+combination of <code class="docutils literal notranslate"><span class="pre">Let</span></code> and <code class="docutils literal notranslate"><span class="pre">If</span></code> forms. The <code class="docutils literal notranslate"><span class="pre">{or}</span></code> in the desugaring
+is the actual string <code class="docutils literal notranslate"><span class="pre">&quot;{or}&quot;</span></code>, which you should use as an identifier;
+this is safe because actual <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> identifiers can’t have curly
+braces, so this synthesized identifier can’t be captured by any user
+code.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The problem of <em>variable capture</em> when desugaring expressions into
+expressions that contain new identifiers is complex and subtle; this
+is a hack that will work in this specific case, but it’s not a good
+general approach. To get a feel for the issues involved, think about
+what could happen if, instead of using <code class="docutils literal notranslate"><span class="pre">{or}</span></code> as an identifier, you
+just used <code class="docutils literal notranslate"><span class="pre">x</span></code>. Could this break under any circumstances?</p>
+</div>
+<p>Finally, add <code class="docutils literal notranslate"><span class="pre">and</span></code> and <code class="docutils literal notranslate"><span class="pre">or</span></code> to the list of keywords in <code class="docutils literal notranslate"><span class="pre">ast.ml</span></code>.</p>
+</section>
+<section id="adding-the-valrec-form">
+<h2>6. Adding the <code class="docutils literal notranslate"><span class="pre">valrec</span></code> form<a class="headerlink" href="#adding-the-valrec-form" title="Permalink to this heading"></a></h2>
+<p>A <code class="docutils literal notranslate"><span class="pre">val</span></code> or <code class="docutils literal notranslate"><span class="pre">define</span></code> definition can be bound to a recursive function,
+but we can’t do that with mutually recursive functions. (In language
+terminology, this is called a “language wart” <em>i.e.</em> a misfeature or
+missing feature.) We will fix this limitation in this problem.</p>
+<p>Define a <code class="docutils literal notranslate"><span class="pre">valrec</span></code> definition form that supports both recursion and
+mutual recursion. Use this syntax:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(valrec
+  [f ...]
+  [g ...])
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">...</span></code> parts can be arbitrary <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> expressions,
+but are normally <code class="docutils literal notranslate"><span class="pre">lambda</span></code> expressions.
+The semantics and its implementation will be discussion in part B.</p>
+<p>An empty <code class="docutils literal notranslate"><span class="pre">valrec</span></code> form (<em>i.e.</em> <code class="docutils literal notranslate"><span class="pre">(valrec)</span></code>) should be a syntax error.
+As with <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions, all the names that are bound in a
+<code class="docutils literal notranslate"><span class="pre">valrec</span></code> expression must be unique.</p>
+<p>Implement the <code class="docutils literal notranslate"><span class="pre">valrec</span></code> syntax by extending the AST and IR type
+definitions to include <code class="docutils literal notranslate"><span class="pre">ValRec</span></code> constructors:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(* In ast.ml and ast.mli: *)
+type def =
+  | ...
+  | ValRec of loc * (id * expr) list
+  | ...
+
+(* In ir.ml and ir.mli: *)
+type def =
+  | ...
+  | ValRec of loc * (id * expr) list
+  | ...
+</pre></div>
+</div>
+<p>Note that the form of the constructors is identical in the AST and the
+IR. Extend the code in <code class="docutils literal notranslate"><span class="pre">ast.ml</span></code> that converts from S-expressions to
+AST forms so that it correctly parses <code class="docutils literal notranslate"><span class="pre">valrec</span></code> forms.</p>
+<p>Finally, add <code class="docutils literal notranslate"><span class="pre">valrec</span></code> to the list of keywords in <code class="docutils literal notranslate"><span class="pre">ast.ml</span></code>.</p>
+</section>
+<section id="functions-with-variable-numbers-of-arguments">
+<h2>7. Functions with variable numbers of arguments<a class="headerlink" href="#functions-with-variable-numbers-of-arguments" title="Permalink to this heading"></a></h2>
+<p>Actual Scheme implementations allow us to define functions that can take
+a variable number of arguments.
+In fact, in real Scheme, many common functions,
+like <code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> <em>etc.</em> take arbitrary numbers of arguments
+(sometimes including zero).
+Some functions, like the <code class="docutils literal notranslate"><span class="pre">list</span></code> function which creates new lists,
+<em>have</em> to take arbitrary numbers of arguments
+because we don’t know in advance how many values the list being created
+will contain.
+In this problem, we’ll extend the <code class="docutils literal notranslate"><span class="pre">lambda</span></code> and <code class="docutils literal notranslate"><span class="pre">define</span></code> forms
+so that they can handle arbitrary numbers of arguments (including zero).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Of course, not all functions will accept arbitrary numbers of arguments,
+but enforcing that is the responsibility of the function;
+it’s not a syntax error.</p>
+</div>
+<p>To do this, we will implement two new forms in the AST:
+<code class="docutils literal notranslate"><span class="pre">LambdaX</span></code> and <code class="docutils literal notranslate"><span class="pre">DefineX</span></code>, representing (respectively)
+<code class="docutils literal notranslate"><span class="pre">lambda</span></code> expressions and <code class="docutils literal notranslate"><span class="pre">define</span></code> expressions
+that can take arbitrary numbers of arguments.
+(The old <code class="docutils literal notranslate"><span class="pre">Lambda</span></code> and <code class="docutils literal notranslate"><span class="pre">Define</span></code> constructors are still present in the AST.)
+The new constructors are as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(* in ast.ml: *)
+
+type expr =
+  | ...
+  | LambdaX of loc * id list * id * expr list
+  | ...
+
+type def =
+  | ...
+  | DefineX of loc * id * id list * id * expr list
+  | ...
+</pre></div>
+</div>
+<p>The last <code class="docutils literal notranslate"><span class="pre">id</span></code> field in each new constructor represents the name of the
+argument which will be bound to a list of all non-required argument
+values (often referred to as the “rest” arguments because they contain
+the rest of the arguments after the required ones are bound).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When we say “bound to a list of all non-required argument values” we
+have to be very careful what we mean by a <em>list</em>.</p>
+<p>When a <code class="docutils literal notranslate"><span class="pre">lambda</span></code> expression with a rest argument
+is applied to its actual arguments,
+whichever ones are not matched by name
+(<em>i.e.</em> whichever “extra” arguments are present)
+are converted into a <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> list (not an OCaml list!)
+and bound to the name of the rest argument
+while evaluating the body of the <code class="docutils literal notranslate"><span class="pre">lambda</span></code>.</p>
+<p>Since the environment can only bind names to <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> values,
+this list must be a single <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> value <em>i.e.</em>
+a list that can be created out of other <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> values.
+The way to build lists in any Scheme dialect is to
+create chains of pairs ending in <code class="docutils literal notranslate"><span class="pre">nil</span></code>,
+where the list elements are stored
+in the <code class="docutils literal notranslate"><span class="pre">car</span></code> (first element) of the pairs,
+and the <code class="docutils literal notranslate"><span class="pre">cdr</span></code> (second element) of each pair is the pair that
+contains the rest of the list, or <code class="docutils literal notranslate"><span class="pre">nil</span></code> if the list ends there.
+So a <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> list is a chain of <code class="docutils literal notranslate"><span class="pre">PairVal</span></code> constructors
+ending in a <code class="docutils literal notranslate"><span class="pre">NilVal</span></code> constructor.
+The <code class="docutils literal notranslate"><span class="pre">NilVal</span></code> constructor represents the empty list
+when used by itself or the end of the list when used with pairs.</p>
+</div>
+<p>The concrete syntax for these forms is as follows. For <code class="docutils literal notranslate"><span class="pre">lambda</span></code>, there
+are two cases:</p>
+<ul class="simple">
+<li><p>a function which takes a single argument which represents all the
+arguments of the function looks like this: <code class="docutils literal notranslate"><span class="pre">(lambda</span> <span class="pre">args</span> <span class="pre">&lt;body&gt;)</span></code>.
+(Note that <code class="docutils literal notranslate"><span class="pre">args</span></code> is <em>not</em> surrounded by parentheses.)</p></li>
+<li><p>a function which takes one or more required arguments and then an
+argument representing all other (non-required) arguments looks like
+this: <code class="docutils literal notranslate"><span class="pre">(lambda</span> <span class="pre">(x</span> <span class="pre">y</span> <span class="pre">.</span> <span class="pre">rest)</span> <span class="pre">&lt;body&gt;)</span></code>.</p></li>
+</ul>
+<p>In both cases, <code class="docutils literal notranslate"><span class="pre">&lt;body&gt;</span></code> represents the body of the <code class="docutils literal notranslate"><span class="pre">lambda</span></code>
+expression, which can be one or more expressions
+(but not zero expressions, as mentioned above).</p>
+<p>When the first form (<code class="docutils literal notranslate"><span class="pre">(lambda</span> <span class="pre">args</span> <span class="pre">&lt;body&gt;)</span></code>) is applied to its arguments,
+those arguments are bound to the <code class="docutils literal notranslate"><span class="pre">args</span></code> formal parameter
+as a (<span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span>) list of values
+(of course, the name of the formal parameter doesn’t have to be <code class="docutils literal notranslate"><span class="pre">args</span></code>).
+When the second form is applied to its arguments,
+all formal parameters before the <code class="docutils literal notranslate"><span class="pre">.</span></code> represent required arguments,
+so they are taken from the values at the front of the argument list;
+any arguments left over become bound to the <code class="docutils literal notranslate"><span class="pre">rest</span></code> formal parameter as a list
+of values (again, the argument doesn’t have to be called <code class="docutils literal notranslate"><span class="pre">rest</span></code>). In the
+second form, the dot (<code class="docutils literal notranslate"><span class="pre">.</span></code>) is special syntax; it does not represent an
+identifier. Only a single argument can follow the dot in the argument list, or
+it’s a syntax error. Similarly, the dot can’t be the first or last thing in the
+argument list or it’s a syntax error.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">define</span></code> form is extended similarly:</p>
+<ul class="simple">
+<li><p>a function which takes a single argument which represents all the
+arguments of the function is defined like this:
+<code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">&lt;name&gt;</span> <span class="pre">args</span> <span class="pre">&lt;body&gt;)</span></code>. (Again, <code class="docutils literal notranslate"><span class="pre">args</span></code> is <em>not</em> surrounded
+by parentheses.)</p></li>
+<li><p>a function which takes one or more required arguments and then an
+argument representing all other (non-required) arguments is defined
+like this: <code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">foo</span> <span class="pre">(x</span> <span class="pre">y</span> <span class="pre">.</span> <span class="pre">rest)</span> <span class="pre">&lt;body&gt;)</span></code>.</p></li>
+</ul>
+<p>If a <code class="docutils literal notranslate"><span class="pre">lambda</span></code> or <code class="docutils literal notranslate"><span class="pre">define</span></code> form doesn’t use the new syntax, it should
+be converted into the <code class="docutils literal notranslate"><span class="pre">Lambda</span></code> or <code class="docutils literal notranslate"><span class="pre">Define</span></code> AST forms as before. If
+it does, it should be converted into <code class="docutils literal notranslate"><span class="pre">LambdaX</span></code> or <code class="docutils literal notranslate"><span class="pre">DefineX</span></code>,
+respectively.</p>
+<p>At the level of the IR, there are no <code class="docutils literal notranslate"><span class="pre">Define</span></code> or <code class="docutils literal notranslate"><span class="pre">DefineX</span></code>
+constructors in the <code class="docutils literal notranslate"><span class="pre">def</span></code> type. There is also no <code class="docutils literal notranslate"><span class="pre">LambdaX</span></code>
+constructor, but you will change the definition of <code class="docutils literal notranslate"><span class="pre">Lambda</span></code> to this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(* In ir.ml: *)
+
+type expr =
+  | ...
+  | Lambda of loc * id list * id option * expr
+  | ...
+</pre></div>
+</div>
+<p>The only change is that the <code class="docutils literal notranslate"><span class="pre">id</span> <span class="pre">option</span></code> tuple field has been added.
+When the <code class="docutils literal notranslate"><span class="pre">lambda</span></code>/<code class="docutils literal notranslate"><span class="pre">define</span></code> doesn’t use arbitrary numbers of
+arguments, this field should be <code class="docutils literal notranslate"><span class="pre">None</span></code>; otherwise, it should be
+<code class="docutils literal notranslate"><span class="pre">Some</span> <span class="pre">&lt;name&gt;</span></code> where <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> is the name of the formal parameter
+which represents all non-required arguments. Having only a single
+<code class="docutils literal notranslate"><span class="pre">Lambda</span></code> form in the IR helps keep the evaluator simple (which is the
+whole reason we’re using an IR in the first place!)</p>
+<p>Note that a <code class="docutils literal notranslate"><span class="pre">lambda</span></code> expression of the form <code class="docutils literal notranslate"><span class="pre">(lambda</span> <span class="pre">&lt;name&gt;</span> <span class="pre">...)</span></code>
+(representing a function with one argument
+that gets all the actual arguments)
+will have an empty <code class="docutils literal notranslate"><span class="pre">id</span> <span class="pre">list</span></code> field
+but the <code class="docutils literal notranslate"><span class="pre">id</span> <span class="pre">option</span></code> field will be <code class="docutils literal notranslate"><span class="pre">Some</span> <span class="pre">&lt;name&gt;</span></code>.</p>
+<p>Wow, that took a while to explain! Now here is what you need to do:</p>
+<ol class="arabic">
+<li><p>Extend the AST as described above.</p></li>
+<li><p>Extend the functions which convert from S-expressions to AST
+expressions/definitions so that they can handle the new <code class="docutils literal notranslate"><span class="pre">lambda</span></code>
+and <code class="docutils literal notranslate"><span class="pre">define</span></code> forms.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Make sure you check for syntax errors involving improper use of
+the <code class="docutils literal notranslate"><span class="pre">.</span></code> syntax! All of these forms are errors:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>; can&#39;t have &quot;.&quot; as the first thing in the argument list...
+(lambda (. x) ...)
+
+; ... or as the last
+(lambda (x .) ...)
+
+; &quot;.&quot; can&#39;t be followed by more than one argument name
+(lambda (x y . z w) ...)
+
+; can&#39;t have more than one &quot;.&quot; in an argument list
+(lambda (x . y . z) ...)
+
+; same, but for &quot;define&quot;
+(define foo (. x) ...)
+(define foo (x .) ...)
+(define foo (x y . z w) ...)
+(define foo (x . y . z) ...)
+</pre></div>
+</div>
+<p>In addition, using <code class="docutils literal notranslate"><span class="pre">&quot;.&quot;</span></code> as a variable name in a <code class="docutils literal notranslate"><span class="pre">val</span></code> or
+<code class="docutils literal notranslate"><span class="pre">let</span></code>/<code class="docutils literal notranslate"><span class="pre">let*</span></code>/<code class="docutils literal notranslate"><span class="pre">letrec</span></code>/<code class="docutils literal notranslate"><span class="pre">valrec</span></code> expression is an error, and
+you have to check for this.</p>
+</div>
+<p>Checking that the dot is used correctly in argument lists is quite
+tedious. Making sure it isn’t used as a variable name is also
+tedious. You could make <code class="docutils literal notranslate"><span class="pre">.</span></code> a keyword (which would also prevent it
+from being used as a variable name), but we found it easier to make
+it a special case and write some helper functions instead. You can
+use your own coding judgment, but here are some test cases that
+should all cause syntax errors (and not <em>e.g.</em> name errors). Note that
+we can’t use <code class="docutils literal notranslate"><span class="pre">check-error</span></code> with these forms (why?).</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>. ; not just a name error!
+
+(val . 10)
+
+(set . 10)  ; not just a name error!
+
+(valrec [. 10])
+
+(let ([. 10]) 10)
+(let ([. 10]) .)
+
+(let* ([. 10]) 10)
+(let* ([. 10]) .)
+
+(letrec ([. 10]) 10)
+(letrec ([. 10]) .)
+
+(lambda (. x) .)
+(lambda (. x) x)
+(lambda (x .) .)
+(lambda (x .) x)
+(lambda (x . y z) .)
+(lambda (x . y z) x)
+(lambda (x . y . z) x)
+
+(define foo (. x) .)
+(define foo (. x) x)
+(define foo (x .) .)
+(define foo (x .) x)
+(define foo (x . y z) .)
+(define foo (x . y z) x)
+(define foo (x . y . z) x)
+</pre></div>
+</div>
+<p>To test for syntax errors,
+we have a shell script that runs <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span>
+on files containing syntax errors
+and checks for the phrase “syntax error” in the output.
+It’s crude but it works.</p>
+</li>
+<li><p>Extend the IR as described above. This will involve changes to the
+files <code class="docutils literal notranslate"><span class="pre">ir.ml</span></code> and <code class="docutils literal notranslate"><span class="pre">ir.mli</span></code>.</p></li>
+<li><p>Extend the functions that convert from AST expressions/definitions to
+IR expressions/definitions so that they can handle the new forms.
+This will involve additional changes to the file <code class="docutils literal notranslate"><span class="pre">ir.ml</span></code>.</p></li>
+</ol>
+<p>There will be additional modifications needed (notably to the evaluator);
+we’ll cover those in the next section.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Debugging.html" class="btn btn-neutral float-left" title="Debugging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="partB_extending2.html" class="btn btn-neutral float-right" title="Part B: Finishing and extending \(\mu{\sf Scheme}\) : evaluation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

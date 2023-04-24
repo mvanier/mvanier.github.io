@@ -1,0 +1,740 @@
+Part A: Finishing and extending |uscheme| : parsing
+===================================================
+
+In this section, you will be completing the parsing of forms to IR forms
+(described below) by both implementing desugarings and adding features
+to both the AST and IR.
+
+Intermediate representations
+----------------------------
+
+The theme of this assignment is *intermediate representations*.
+Previously we’ve assumed that the interpreter
+converts the S-expression representation to an AST representation
+and then directly evaluates the AST representation.
+However, the main purpose of an AST
+is to serve as a faithful representation of the language syntax
+that is easy to manipulate inside a program.
+ASTs are generally *not* the optimal form for evaluators to work on.
+For one thing, there are almost always forms in the AST that aren’t necessary,
+because they can be desugared into simpler forms.
+
+.. note::
+   
+   "Desugaring" a form means to convert it to an equivalent form
+   which will give the exact same result when evaluated,
+   but which is "simpler" in some sense.
+   In our case, we want the desugared form to be converted to
+   another form that already exists, so the evaluator has fewer forms
+   that it needs to be able to handle.
+   The fewer the forms an evaluator needs to handle,
+   the easier it is to write.
+
+In assignment 1, we saw one way to desugar forms,
+which was by directly converting S-expressions into other S-expressions.
+However, there are two problems with this approach:
+
+* Working with S-expressions directly is very tedious in OCaml.
+* Most languages don’t even use S-expressions.
+
+Some languages (notably most Lisp and Scheme dialects)
+contain powerful *macro systems* that operate at the level of S-expressions,
+and given a good enough macro system,
+desugaring at the level of S-expressions makes sense.
+(Probably the most powerful macro system
+ever implemented in a programming language
+is the one at the heart of the Racket_ family of languages.
+Check it out sometime.)
+
+However, we don’t have a macro system in |uscheme|,
+so we will do something more conventional:
+we will *not* desugar S-expressions,
+but instead we will convert them to AST expressions as usual,
+and then convert AST expressions
+into a simpler *intermediate representation* (or IR for short).
+This IR form is like an AST form except that there is no redundancy;
+all AST expressions that can be converted to simpler expressions
+are converted.
+Furthermore, this conversion happens
+before the evaluator ever sees the code,
+so that there is no need to convert the same expression over and over,
+which may occur if the evaluator interprets the AST directly.
+The cost is that you have one more conversion step
+before you can evaluate the code,
+but this is usually a cost worth paying.
+
+Note that by converting AST forms into IR forms,
+we will write what in compiler terminology is called a *simplification pass*.
+Many forms will be nearly identical in both the AST and IR
+(so converting them will be tedious "boilerplate" code)
+but some forms will change and others will be eliminated altogether.
+We’ll describe all the changes below.
+
+.. note::
+
+   Yes, you are actually writing a compiler. It’s a very simple
+   compiler, and it doesn’t output machine code or assembly language,
+   but it’s a compiler nonetheless, because it takes in one
+   representation of a language (the AST) and outputs a different one
+   (the IR).
+
+Note also that many (most?) languages
+have more than one intermediate representation.
+"Real" compilers, in particular, usually have a number of IRs,
+and the output of one IR transformation is the input to the next one.
+There are many things that can be done in IRs;
+simplification is only one of them.
+(Take CS 164 if you want to learn more about compilers.)
+
+Before beginning, take a look at the ``expr`` and ``def`` type
+definitions in the ``ast.mli`` and ``ir.mli`` files.
+Notice which forms are present in the AST types but not in the IR types.
+This is where the desugaring will happen.
+(You will also be making some modifications to both the AST and IR types.)
+
+The files that you need to change for this section are:
+
+* ``ast.mli``
+* ``ast.ml``
+* ``ir.mli``
+* ``ir.ml``
+
+
+1. Implementing simple desugarings
+----------------------------------
+
+The code base we have provided for you
+defines the IR in the files ``ir.ml`` and ``ir.mli``.
+These files define the IR types ``expr`` and ``def``
+and contain most of the code for converting between AST and IR forms.
+However, the conversion code for one expression form
+(corresponding to ``let*`` forms)
+and two definition forms
+(corresponding to ``define`` forms and top-level expressions)
+are not implemented.
+Since the basis functions defined in ``basis.ml``
+use ``define`` in particular,
+you can’t run this interpreter as is.
+Therefore, your first task
+is to finish implementing the code in ``ir.ml``
+by replacing the ``failwith "TODO"`` expressions
+with code that implements the correct transformations.
+
+Note that the evaluator code in ``eval.ml`` acts on IR expressions,
+not AST expressions.
+You will need to modify that code in various ways, but not in this section.
+
+Here are the transformations we want you to implement:
+
+
+a. ``let*``
+~~~~~~~~~~~
+
+For ``let*``, use the transformation:
+
+.. code-block:: text
+
+   (let* () e) --> e
+   (let* ([x1 e1] [x2 e2] ...) e) --> (let ([x1 e1]) (let* ([x2 e2] ...) e))
+   ; repeat until there are no more "let*" expressions
+
+.. warning::
+
+   This is *not* a transformation at the level of S-expressions; we’re
+   only writing it in terms of S-expressions for the sake of brevity. In
+   actual fact, you would be converting ``LetStar (...)`` expressions
+   (in the AST) into nested ``Let (...)`` expressions (in the IR). If
+   you implement this at the S-expression level you will get no credit
+   (and you'll work much harder than you should!)
+
+If you find this transformation tedious, reread the operational
+semantics for ``let*`` in lecture 6. Then feel better knowing that you
+don’t have to implement this in the evaluator! One of the great things
+about desugaring is that it simplifies the evaluator, which also means
+that it makes it much easier to get the evaluator correct (and to prove
+it correct, if you're so inclined). Of course, you can specify the
+desugaring in the operational semantics as well.
+
+
+b. ``define``
+~~~~~~~~~~~~~
+
+For ``define``, use the transformation:
+
+.. code-block:: text
+
+   (define f (x1 x2 ...) e) --> (val f (lambda (x1 x2 ...) e))
+
+Again, this is not a transformation at the level of S-expressions but at
+the level of the AST and IR forms. In fact, the IR doesn’t even have a
+``Define`` form, so this transformation is necessary.
+
+
+c. Top-level expressions
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+For top-level expressions, use the transformation:
+
+.. code-block:: text
+
+   e --> (val _ e)
+
+
+2. Extending literals
+---------------------
+
+In both the AST and the IR, the only kind of literals are integers.
+But in reality, we have several literal values:
+
+* integers
+* booleans (the special identifiers ``#t`` and ``#f``,
+  representing "true" and "false" respectively)
+* the unit value ``#u`` (used as a return value for functions
+  that don't really return anything, like ``println``)
+
+In addition, ``nil`` (the empty list) and quoted S-expressions could also be
+considered literals.  We won't do that, because quoted S-expressions
+have their own AST form and ``nil`` is just an identifier we bind to the
+empty list value.
+
+.. note::
+
+   These decisions are quite arbitrary.  Programming language designers use
+   their own sense of aesthetics to determine what forms to include and
+   how to categorize them.  For instance, we could easily have made
+   ``nil`` into a literal, but it seems cleaner to us not to do that.
+   In fact, most real Scheme implementations
+   don't even define ``nil``, using ``'()`` instead
+   (which we can also use).
+
+Adding literals to the AST
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In the AST module (the files ``ast.mli`` and ``ast.ml``)
+extend the set of literals by defining a separate ``lit`` type.
+This type will have constructors for integers, booleans, and unit literals.
+Then rewrite the ``Literal`` constructor of the ``expr`` type so that it
+takes a ``lit`` value instead of an ``int`` value.
+
+Extend the ``parse_expr`` function so that it parses S-expressions
+representing literals into the corresponding AST literals.
+
+Remove the names ``#u``, ``#t`` and ``#f`` from the list of reserved
+identifiers.  (These names are not identifiers any more.)
+Keep ``nil`` as the only reserved identifier.
+
+.. note::
+
+   The purpose of this transformation is so that
+   the evaluator doesn’t have to waste time
+   looking up the identifiers ``#t``, ``#f`` and ``#u`` at run-time,
+   since they can only represent one thing.
+
+
+Adding literals to the IR
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In the IR module (the files ``ir.mli`` and ``ir.ml``),
+add this line to the type definitions:
+
+.. code-block:: text
+
+   type lit = Ast.lit
+
+and then change the ``Literal`` constructor so that it takes a ``lit``
+value instead of an ``int`` value as well.
+
+.. note::
+
+   Do *not* define a new ``lit`` type in the IR.
+   Just re-use the AST ``lit`` type,
+   because it's the same in the AST and the IR.
+   We only define the type alias for convenience,
+   so we can type ``lit`` instead of ``Ast.lit``.
+
+Rewrite the ``Literal`` constructor of the IR
+so it takes a ``lit`` value instead of an ``int`` value.
+
+
+3. Extending ``let``, ``lambda``, ``define`` and ``while`` forms
+----------------------------------------------------------------
+
+Writing a ``begin`` expression for the body of a ``let``, ``lambda``,
+``define`` or ``while`` expression when the body consists of more 
+than one expression is annoying; let's fix that!
+
+Extend the ``let``/``let*``/``letrec``, ``lambda``, ``define`` and
+``while`` forms in the AST to allow multiple expressions in the body. To
+do this, you have to modify the AST in ``ast.ml`` and ``ast.mli``
+for the affected forms, then change the way S-expressions are converted
+to AST expressions (adding support for the new ways of writing the
+forms), and finally change the way AST expressions are converted to IR
+expressions in ``ir.ml``. Note that the IR versions of these forms only
+have a single expression in the body, and the IR doesn’t have ``let*``
+or ``define`` forms.
+
+.. warning::
+
+   The IR types should not change.
+
+In each case, the multiple body expressions evaluate as if they were
+wrapped in a ``begin`` expression, and when you convert them to IR
+expressions, you should explicitly wrap the body expressions with a
+``begin`` expression.
+
+To be specific, here are the desugarings you need to make when
+converting between the AST and the IR forms
+(again written schematically as S-expression transformations,
+though that's not what they are).
+
+.. code-block:: text
+
+   (let ([<name1> <expr1] ...) <body-expr1> <body-expr2> ...)
+   -->
+   (let ([<name1> <expr1] ...) (begin <body-expr1> <body-expr2> ...))
+
+   (let* ([<name1> <expr1] ...) <body-expr1> <body-expr2> ...)
+   -->
+   (let* ([<name1> <expr1] ...) (begin <body-expr1> <body-expr2> ...))
+   [then desugar let* to let as described above]
+
+   (letrec ([<name1> <expr1] ...) <body-expr1> <body-expr2> ...)
+   -->
+   (letrec ([<name1> <expr1] ...) (begin <body-expr1> <body-expr2> ...))
+
+   (lambda (<name1> ...) <body-expr1> <body-expr2> ...)
+   -->
+   (lambda (<name1> ...) (begin <body-expr1> <body-expr2> ...))
+
+   (define <name> (<arg1> ...) <body-expr1> <body-expr2> ...)
+   -->
+   (define <name> (<arg1> ...) (begin <body-expr1> <body-expr2> ...))
+
+   (while <test-expr> <body-expr1> <body-expr2> ...)
+   -->
+   (while <test-expr> (begin <body-expr1> <body-expr2> ...))
+
+One other thing: we do not allow empty bodies for ``let``, ``let*``,
+``letrec``, ``lambda`` expressions, or for ``define`` forms.
+(In contrast, an empty bodies is OK in a ``while`` expression.)
+So all of these are syntax errors:
+
+.. code-block:: text
+
+   (let ())
+   (let* ())
+   (letrec ())
+   (lambda (x))
+   (lambda args)
+   (define foo ())
+   (define foo args)
+
+The test scripts will check for this.
+
+.. tip::
+
+   Instead of counting the number of body expressions
+   and raising a syntax error exception when there aren't any,
+   you can enforce this by a clever use of pattern matching.
+   Instead of matching zero or more expressions using
+   ``exprs``, match one or more expressions using
+   ``expr :: exprs``.  Anything that doesn't match
+   is a malformed form, and will be considered to be a syntax error.
+
+
+
+4. Adding the ``cond`` form
+---------------------------
+
+Real Scheme has a conditional expression form called ``cond`` which is
+easier to use than ``if`` for most applications. It has the following
+syntax:
+
+.. code-block:: text
+
+   (cond [<test-exprA> <expr1a> <expr2a> ...]
+         [<test-exprB> <expr1b> <expr2b> ...]
+          ...)
+
+In other words, ``cond`` is followed by zero or more *clauses*, where
+each clause has a test expression (an expression which evaluates to a
+boolean value) followed by zero or more body expressions. ``cond``
+evaluates each clause in order; if a test expression returns a true
+value (which in Scheme is any value that isn’t explicitly false), then
+the body expressions are evaluated in order and the value of the last
+one is the value of the ``cond`` expression. If the test expression
+evaluates to false, the next clause is evaluated. If there are no more
+clauses, the ``cond`` returns a unit (``#u``) value. Note that a
+``cond`` expression doesn’t have to have any clauses, in which case it
+again returns ``#u``.
+
+.. note::
+
+   The square brackets are just for readability;
+   they could be replaced with parentheses as long as they are balanced.
+   You don’t have to worry about this,
+   since the ``sexpr`` library handles parsing S-expressions.
+
+If you want the equivalent of an "else" clause in a ``cond`` expression,
+just use ``#t`` for the test expression. This is normally done only in
+the last clause. (You could easily add ``else`` as a keyword with a little
+extra work, but don't do that.)
+
+The ``cond`` form exists in the AST only; it is desugared in the IR to a
+series of nested ``if`` forms. You need to add a ``Cond`` constructor to
+the AST, convert S-expressions to AST ``Cond`` forms where appropriate,
+and write the code to convert AST ``Cond`` forms to nested IR ``If``
+forms.  Here is the desugaring of ``cond`` to ``if``:
+
+.. code-block:: text
+
+   (cond [<test-exprA> <expr1a> <expr2a> ...]
+         [<test-exprB> <expr1b> <expr2b> ...]
+          ...)
+   -->
+   (if <test-exprA> (begin <expr1a> <expr2a> ...)
+       (cond [<test-exprB> <expr1b> <expr2b> ...]
+             ...))
+   [repeat until there are no more "cond" expressions]
+
+   (cond) --> #u
+
+Finally, add ``cond`` to the list of keywords in ``ast.ml``.
+
+
+5. Adding the ``and`` and ``or`` forms
+--------------------------------------
+
+Add ``and`` and ``or`` expression forms to the language. In the AST they
+will be represented as ``And`` and ``Or`` constructors. Write the code
+to convert from S-expressions to AST ``And``/``Or`` forms where
+appropriate. Note that both forms are *variadic* |ie| they can take any
+number of arguments, including zero. The IR does not have ``And`` or
+``Or`` constructors; instead, convert them to ``Let`` and ``If`` forms,
+using this desugaring:
+
+.. code-block:: text
+
+   (and) --> #t
+   (and x) --> x
+   (and x y z ...) --> (if x (and y z ...) #f)
+   [repeat until there are no more "and" expressions]
+
+   (or) --> #f
+   (or x) --> x
+   (or x y z ...) --> (let (({or} x)) (if {or} {or} (or y z ...)))
+   [repeat until there are no more "or" expressions]
+
+Note that the ``And`` AST form gets converted to a series of nested
+``If`` IR forms, whereas an ``Or`` AST form gets converted to a
+combination of ``Let`` and ``If`` forms. The ``{or}`` in the desugaring
+is the actual string ``"{or}"``, which you should use as an identifier;
+this is safe because actual |uscheme| identifiers can’t have curly
+braces, so this synthesized identifier can’t be captured by any user
+code.
+
+.. note::
+
+   The problem of *variable capture* when desugaring expressions into
+   expressions that contain new identifiers is complex and subtle; this
+   is a hack that will work in this specific case, but it’s not a good
+   general approach. To get a feel for the issues involved, think about
+   what could happen if, instead of using ``{or}`` as an identifier, you
+   just used ``x``. Could this break under any circumstances?
+
+
+Finally, add ``and`` and ``or`` to the list of keywords in ``ast.ml``.
+
+
+6. Adding the ``valrec`` form
+-----------------------------
+
+A ``val`` or ``define`` definition can be bound to a recursive function,
+but we can’t do that with mutually recursive functions. (In language
+terminology, this is called a "language wart" |ie| a misfeature or
+missing feature.) We will fix this limitation in this problem.
+
+Define a ``valrec`` definition form that supports both recursion and
+mutual recursion. Use this syntax:
+
+.. code-block:: text
+
+   (valrec
+     [f ...]
+     [g ...])
+
+The ``...`` parts can be arbitrary |uscheme| expressions,
+but are normally ``lambda`` expressions.
+The semantics and its implementation will be discussion in part B.
+
+An empty ``valrec`` form (|ie| ``(valrec)``) should be a syntax error.
+As with ``let`` expressions, all the names that are bound in a
+``valrec`` expression must be unique.
+
+Implement the ``valrec`` syntax by extending the AST and IR type
+definitions to include ``ValRec`` constructors:
+
+.. code-block:: text
+
+   (* In ast.ml and ast.mli: *)
+   type def =
+     | ...
+     | ValRec of loc * (id * expr) list
+     | ...
+
+   (* In ir.ml and ir.mli: *)
+   type def =
+     | ...
+     | ValRec of loc * (id * expr) list
+     | ...
+
+Note that the form of the constructors is identical in the AST and the
+IR. Extend the code in ``ast.ml`` that converts from S-expressions to
+AST forms so that it correctly parses ``valrec`` forms.
+
+Finally, add ``valrec`` to the list of keywords in ``ast.ml``.
+
+
+7. Functions with variable numbers of arguments
+-----------------------------------------------
+
+Actual Scheme implementations allow us to define functions that can take
+a variable number of arguments.
+In fact, in real Scheme, many common functions,
+like ``+``, ``*``, ``<`` |etc| take arbitrary numbers of arguments
+(sometimes including zero).
+Some functions, like the ``list`` function which creates new lists,
+*have* to take arbitrary numbers of arguments
+because we don’t know in advance how many values the list being created
+will contain.
+In this problem, we’ll extend the ``lambda`` and ``define`` forms
+so that they can handle arbitrary numbers of arguments (including zero).
+
+.. note::
+
+   Of course, not all functions will accept arbitrary numbers of arguments,
+   but enforcing that is the responsibility of the function;
+   it's not a syntax error.
+
+To do this, we will implement two new forms in the AST:
+``LambdaX`` and ``DefineX``, representing (respectively)
+``lambda`` expressions and ``define`` expressions
+that can take arbitrary numbers of arguments.
+(The old ``Lambda`` and ``Define`` constructors are still present in the AST.)
+The new constructors are as follows:
+
+.. code-block:: text
+
+   (* in ast.ml: *)
+
+   type expr =
+     | ...
+     | LambdaX of loc * id list * id * expr list
+     | ...
+
+   type def =
+     | ...
+     | DefineX of loc * id * id list * id * expr list
+     | ...
+
+The last ``id`` field in each new constructor represents the name of the
+argument which will be bound to a list of all non-required argument
+values (often referred to as the "rest" arguments because they contain
+the rest of the arguments after the required ones are bound).
+
+.. warning::
+
+   When we say "bound to a list of all non-required argument values" we
+   have to be very careful what we mean by a *list*.
+
+   When a ``lambda`` expression with a rest argument
+   is applied to its actual arguments,
+   whichever ones are not matched by name
+   (|ie| whichever "extra" arguments are present)
+   are converted into a |uscheme| list (not an OCaml list!)
+   and bound to the name of the rest argument
+   while evaluating the body of the ``lambda``.
+
+   Since the environment can only bind names to |uscheme| values,
+   this list must be a single |uscheme| value |ie|
+   a list that can be created out of other |uscheme| values.
+   The way to build lists in any Scheme dialect is to
+   create chains of pairs ending in ``nil``,
+   where the list elements are stored
+   in the ``car`` (first element) of the pairs,
+   and the ``cdr`` (second element) of each pair is the pair that
+   contains the rest of the list, or ``nil`` if the list ends there.
+   So a |uscheme| list is a chain of ``PairVal`` constructors
+   ending in a ``NilVal`` constructor.
+   The ``NilVal`` constructor represents the empty list
+   when used by itself or the end of the list when used with pairs.
+
+The concrete syntax for these forms is as follows. For ``lambda``, there
+are two cases:
+
+* a function which takes a single argument which represents all the
+  arguments of the function looks like this: ``(lambda args <body>)``.
+  (Note that ``args`` is *not* surrounded by parentheses.)
+
+* a function which takes one or more required arguments and then an
+  argument representing all other (non-required) arguments looks like
+  this: ``(lambda (x y . rest) <body>)``.
+
+In both cases, ``<body>`` represents the body of the ``lambda``
+expression, which can be one or more expressions
+(but not zero expressions, as mentioned above).
+
+When the first form (``(lambda args <body>)``) is applied to its arguments,
+those arguments are bound to the ``args`` formal parameter
+as a (|uscheme|) list of values
+(of course, the name of the formal parameter doesn’t have to be ``args``).
+When the second form is applied to its arguments,
+all formal parameters before the ``.`` represent required arguments,
+so they are taken from the values at the front of the argument list;
+any arguments left over become bound to the ``rest`` formal parameter as a list
+of values (again, the argument doesn’t have to be called ``rest``). In the
+second form, the dot (``.``) is special syntax; it does not represent an
+identifier. Only a single argument can follow the dot in the argument list, or
+it’s a syntax error. Similarly, the dot can’t be the first or last thing in the
+argument list or it’s a syntax error.
+
+The ``define`` form is extended similarly:
+
+* a function which takes a single argument which represents all the
+  arguments of the function is defined like this:
+  ``(define <name> args <body>)``. (Again, ``args`` is *not* surrounded
+  by parentheses.)
+
+* a function which takes one or more required arguments and then an
+  argument representing all other (non-required) arguments is defined
+  like this: ``(define foo (x y . rest) <body>)``.
+
+If a ``lambda`` or ``define`` form doesn’t use the new syntax, it should
+be converted into the ``Lambda`` or ``Define`` AST forms as before. If
+it does, it should be converted into ``LambdaX`` or ``DefineX``,
+respectively.
+
+At the level of the IR, there are no ``Define`` or ``DefineX``
+constructors in the ``def`` type. There is also no ``LambdaX``
+constructor, but you will change the definition of ``Lambda`` to this:
+
+.. code-block:: text
+
+   (* In ir.ml: *)
+
+   type expr =
+     | ...
+     | Lambda of loc * id list * id option * expr
+     | ...
+
+The only change is that the ``id option`` tuple field has been added.
+When the ``lambda``/``define`` doesn’t use arbitrary numbers of
+arguments, this field should be ``None``; otherwise, it should be
+``Some <name>`` where ``<name>`` is the name of the formal parameter
+which represents all non-required arguments. Having only a single
+``Lambda`` form in the IR helps keep the evaluator simple (which is the
+whole reason we’re using an IR in the first place!)
+
+Note that a ``lambda`` expression of the form ``(lambda <name> ...)``
+(representing a function with one argument
+that gets all the actual arguments)
+will have an empty ``id list`` field
+but the ``id option`` field will be ``Some <name>``.
+
+Wow, that took a while to explain! Now here is what you need to do:
+
+#. Extend the AST as described above.
+
+#. Extend the functions which convert from S-expressions to AST
+   expressions/definitions so that they can handle the new ``lambda``
+   and ``define`` forms.
+
+   .. warning::
+
+      Make sure you check for syntax errors involving improper use of
+      the ``.`` syntax! All of these forms are errors:
+
+      .. code-block:: text
+
+         ; can't have "." as the first thing in the argument list...
+         (lambda (. x) ...)
+
+         ; ... or as the last
+         (lambda (x .) ...)
+
+         ; "." can't be followed by more than one argument name
+         (lambda (x y . z w) ...)
+
+         ; can't have more than one "." in an argument list
+         (lambda (x . y . z) ...)
+
+         ; same, but for "define"
+         (define foo (. x) ...)
+         (define foo (x .) ...)
+         (define foo (x y . z w) ...)
+         (define foo (x . y . z) ...)
+
+      In addition, using ``"."`` as a variable name in a ``val`` or
+      ``let``/``let*``/``letrec``/``valrec`` expression is an error, and
+      you have to check for this.
+
+   Checking that the dot is used correctly in argument lists is quite
+   tedious. Making sure it isn’t used as a variable name is also
+   tedious. You could make ``.`` a keyword (which would also prevent it
+   from being used as a variable name), but we found it easier to make
+   it a special case and write some helper functions instead. You can
+   use your own coding judgment, but here are some test cases that
+   should all cause syntax errors (and not |eg| name errors). Note that
+   we can’t use ``check-error`` with these forms (why?).
+
+   .. code-block:: text
+
+      . ; not just a name error!
+
+      (val . 10)
+
+      (set . 10)  ; not just a name error!
+
+      (valrec [. 10])
+
+      (let ([. 10]) 10)
+      (let ([. 10]) .)
+
+      (let* ([. 10]) 10)
+      (let* ([. 10]) .)
+
+      (letrec ([. 10]) 10)
+      (letrec ([. 10]) .)
+
+      (lambda (. x) .)
+      (lambda (. x) x)
+      (lambda (x .) .)
+      (lambda (x .) x)
+      (lambda (x . y z) .)
+      (lambda (x . y z) x)
+      (lambda (x . y . z) x)
+
+      (define foo (. x) .)
+      (define foo (. x) x)
+      (define foo (x .) .)
+      (define foo (x .) x)
+      (define foo (x . y z) .)
+      (define foo (x . y z) x)
+      (define foo (x . y . z) x)
+
+   To test for syntax errors,
+   we have a shell script that runs |uscheme|
+   on files containing syntax errors
+   and checks for the phrase "syntax error" in the output.
+   It’s crude but it works.
+
+#. Extend the IR as described above. This will involve changes to the
+   files ``ir.ml`` and ``ir.mli``.
+
+#. Extend the functions that convert from AST expressions/definitions to
+   IR expressions/definitions so that they can handle the new forms.
+   This will involve additional changes to the file ``ir.ml``.
+
+There will be additional modifications needed (notably to the evaluator);
+we'll cover those in the next section.
+
