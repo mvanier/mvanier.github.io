@@ -66,6 +66,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#the-equal-basis-function">4. The <code class="docutils literal notranslate"><span class="pre">equal?</span></code> basis function</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#the-valrec-definition-form">5. The <code class="docutils literal notranslate"><span class="pre">valrec</span></code> definition form</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#functions-with-variable-numbers-of-arguments">6. Functions with variable numbers of arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#other-modifications">7. Other modifications</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="partC_programming.html">Part C: Programming in extended <em>uScheme</em></a></li>
@@ -320,6 +321,26 @@ just call the function the usual way.</p></li>
 </ol>
 <p>You need to modify several different files in this problem:
 <code class="docutils literal notranslate"><span class="pre">env.ml</span></code>, <code class="docutils literal notranslate"><span class="pre">env.mli</span></code>, <code class="docutils literal notranslate"><span class="pre">error.ml</span></code>, <code class="docutils literal notranslate"><span class="pre">error.mli</span></code>, and <code class="docutils literal notranslate"><span class="pre">eval.ml</span></code>.</p>
+</section>
+<section id="other-modifications">
+<h2>7. Other modifications<a class="headerlink" href="#other-modifications" title="Permalink to this heading"></a></h2>
+<p>You need to make a trivial modification in <code class="docutils literal notranslate"><span class="pre">uscheme.ml</span></code>
+on line 52:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">scheme_basis</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</pre></div>
+</div>
+<p>Change this to:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">scheme_basis</span> <span class="o">=</span> <span class="nn">Basis</span><span class="p">.</span><span class="n">scheme_basis</span>
+</pre></div>
+</div>
+<p>This will make the interpreter load the <em>uScheme</em> “basis”
+(the built-in <em>uScheme</em> functions) when it starts.
+The reason this change wasn’t already in the code
+is because, if it were there,
+the <em>uScheme</em> interpreter compiled from the unmodified code
+would crash as soon as it started.
+As is, it doesn’t, so you can run <em>e.g.</em> syntax tests
+even if you haven’t made any changes to the code.</p>
 </section>
 </section>
 
