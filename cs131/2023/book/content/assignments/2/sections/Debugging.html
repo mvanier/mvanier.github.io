@@ -24,7 +24,7 @@
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="Part A: Finishing and extending \(\mu{\sf Scheme}\) : parsing" href="partA_extending1.html" />
+    <link rel="next" title="Part A: Finishing and extending uScheme : parsing" href="partA_extending1.html" />
     <link rel="prev" title="Preamble" href="Preamble.html" /> 
 </head>
 
@@ -55,18 +55,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../1/index.html">Assignment 1: The <em>Imp</em> language</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 2: The <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> language</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 2: The <em>uScheme</em> language</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Debugging</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#about-repls">About REPLs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#using-the-uscheme-repl">Using the <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> REPL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-the-uscheme-repl">Using the <em>uScheme</em> REPL</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#using-the-ocaml-repl">Using the OCaml REPL</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#the-ocaml-debugger">The OCaml debugger</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="partA_extending1.html">Part A: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : parsing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="partB_extending2.html">Part B: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : evaluation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="partC_programming.html">Part C: Programming in extended <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="partA_extending1.html">Part A: Finishing and extending <em>uScheme</em> : parsing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partB_extending2.html">Part B: Finishing and extending <em>uScheme</em> : evaluation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partC_programming.html">Part C: Programming in extended <em>uScheme</em></a></li>
 </ul>
 </li>
 </ul>
@@ -88,7 +88,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Assignment 2: The <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> language</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 2: The <em>uScheme</em> language</a></li>
       <li class="breadcrumb-item active">Debugging</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -120,7 +120,7 @@ the OCaml REPL and the REPL for the language being implemented.
 Each of them has different uses, which we’ll describe below.</p>
 </section>
 <section id="using-the-uscheme-repl">
-<h2>Using the <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> REPL<a class="headerlink" href="#using-the-uscheme-repl" title="Permalink to this heading"></a></h2>
+<h2>Using the <em>uScheme</em> REPL<a class="headerlink" href="#using-the-uscheme-repl" title="Permalink to this heading"></a></h2>
 <p>Running <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> will work fine if all of the tests pass,
 but if a test fails, you have to dig deeper.
 Since each of the languages we will implement provides a REPL,
@@ -140,7 +140,7 @@ You will be told that a test in a particular file timed out,
 but not which test timed out.
 What do you do then?</p>
 <p>Fundamentally, all that <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> is doing is running the
-<span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> interpreter on all of the test files,
+<em>uScheme</em> interpreter on all of the test files,
 and collecting and displaying the output if a test fails.
 You can also manually run a test file.  For instance,
 if a test in <code class="docutils literal notranslate"><span class="pre">tests/lists.scm</span></code> fails, you can type:</p>
@@ -178,7 +178,7 @@ So you should look for the test following the test on line 2,
 which is the one that calls <code class="docutils literal notranslate"><span class="pre">(loop)</span></code> and thus loops forever.
 (Of course, most examples will be more complicated than this.)</p>
 <p>Once you have located the test that fails, try running it interactively
-in the <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> REPL:</p>
+in the <em>uScheme</em> REPL:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./uscheme
 &gt;&gt;&gt; (define loop () (loop))
 &gt;&gt;&gt; (loop)  ; runs forever
@@ -189,7 +189,7 @@ Now you’ve narrowed down the problem significantly.</p>
 </section>
 <section id="using-the-ocaml-repl">
 <h2>Using the OCaml REPL<a class="headerlink" href="#using-the-ocaml-repl" title="Permalink to this heading"></a></h2>
-<p>Often a bug won’t be in the code you write in <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span>
+<p>Often a bug won’t be in the code you write in <em>uScheme</em>
 but in the OCaml code you write to implement the interpreter.
 Finding these bugs can be tricky.
 For simple OCaml programs (like most of the ones in CS 4),
@@ -275,7 +275,7 @@ debugger available.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Preamble.html" class="btn btn-neutral float-left" title="Preamble" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="partA_extending1.html" class="btn btn-neutral float-right" title="Part A: Finishing and extending \(\mu{\sf Scheme}\) : parsing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="partA_extending1.html" class="btn btn-neutral float-right" title="Part A: Finishing and extending uScheme : parsing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

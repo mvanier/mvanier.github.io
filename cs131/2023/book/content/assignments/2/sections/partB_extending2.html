@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Part B: Finishing and extending \(\mu{\sf Scheme}\) : evaluation &mdash; The CS 131 book</title>
+  <title>Part B: Finishing and extending uScheme : evaluation &mdash; The CS 131 book</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="Part C: Programming in extended \(\mu{\sf Scheme}\)" href="partC_programming.html" />
-    <link rel="prev" title="Part A: Finishing and extending \(\mu{\sf Scheme}\) : parsing" href="partA_extending1.html" /> 
+    <link rel="next" title="Part C: Programming in extended uScheme" href="partC_programming.html" />
+    <link rel="prev" title="Part A: Finishing and extending uScheme : parsing" href="partA_extending1.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,11 +55,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../1/index.html">Assignment 1: The <em>Imp</em> language</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 2: The <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> language</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 2: The <em>uScheme</em> language</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Debugging.html">Debugging</a></li>
-<li class="toctree-l3"><a class="reference internal" href="partA_extending1.html">Part A: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : parsing</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Part B: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="partA_extending1.html">Part A: Finishing and extending <em>uScheme</em> : parsing</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Part B: Finishing and extending <em>uScheme</em> : evaluation</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#literals">1. Literals</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#the-primitive-function">2. The <code class="docutils literal notranslate"><span class="pre">=</span></code> primitive function</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#extending-pairs">3. Extending pairs</a></li>
@@ -68,7 +68,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#functions-with-variable-numbers-of-arguments">6. Functions with variable numbers of arguments</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="partC_programming.html">Part C: Programming in extended <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="partC_programming.html">Part C: Programming in extended <em>uScheme</em></a></li>
 </ul>
 </li>
 </ul>
@@ -90,8 +90,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Assignment 2: The <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> language</a></li>
-      <li class="breadcrumb-item active">Part B: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : evaluation</li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 2: The <em>uScheme</em> language</a></li>
+      <li class="breadcrumb-item active">Part B: Finishing and extending <em>uScheme</em> : evaluation</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -101,9 +101,9 @@
            <div itemprop="articleBody">
              
   <section id="part-b-finishing-and-extending-uscheme-evaluation">
-<h1>Part B: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : evaluation<a class="headerlink" href="#part-b-finishing-and-extending-uscheme-evaluation" title="Permalink to this heading"></a></h1>
+<h1>Part B: Finishing and extending <em>uScheme</em> : evaluation<a class="headerlink" href="#part-b-finishing-and-extending-uscheme-evaluation" title="Permalink to this heading"></a></h1>
 <p>Now that we’ve dealt with the parsing issues,
-we can concentrate on making the entire extended version of <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> work.</p>
+we can concentrate on making the entire extended version of <em>uScheme</em> work.</p>
 <section id="literals">
 <h2>1. Literals<a class="headerlink" href="#literals" title="Permalink to this heading"></a></h2>
 <p>Edit the literal-handling code in <code class="docutils literal notranslate"><span class="pre">eval.ml</span></code> to work with the new literal
@@ -232,14 +232,14 @@ Extend the REPL printing code in <code class="docutils literal notranslate"><spa
 (specifically, the <code class="docutils literal notranslate"><span class="pre">repl_print</span></code> helper function) to achieve this.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">valrec</span></code> returns an environment and a <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> value,
+<p><code class="docutils literal notranslate"><span class="pre">valrec</span></code> returns an environment and a <em>uScheme</em> value,
 like all definition forms.
-In this case, the <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> value
+In this case, the <em>uScheme</em> value
 needs to be able to contain multiple values
 (for multiple mutually-recursive functions).
-To do this, create a <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> value
-which is a <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> list containing the values.
-(Recall that a <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> list
+To do this, create a <em>uScheme</em> value
+which is a <em>uScheme</em> list containing the values.
+(Recall that a <em>uScheme</em> list
 is made from pairs <code class="docutils literal notranslate"><span class="pre">cons</span></code>ed to each other
 and ending in a <code class="docutils literal notranslate"><span class="pre">nil</span></code> value.)</p>
 </div>
@@ -309,7 +309,7 @@ Here are the semantics:</p>
 raise a <code class="docutils literal notranslate"><span class="pre">CallErrorRest</span></code> exception
 using the <code class="docutils literal notranslate"><span class="pre">call_err_rest</span></code> function.</p></li>
 <li><p>Otherwise, bind the required arguments as usual,
-collect all other arguments into a <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> list,
+collect all other arguments into a <em>uScheme</em> list,
 and bind that list to the rest argument.</p></li>
 </ul>
 </li>
@@ -327,8 +327,8 @@ just call the function the usual way.</p></li>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="partA_extending1.html" class="btn btn-neutral float-left" title="Part A: Finishing and extending \(\mu{\sf Scheme}\) : parsing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="partC_programming.html" class="btn btn-neutral float-right" title="Part C: Programming in extended \(\mu{\sf Scheme}\)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="partA_extending1.html" class="btn btn-neutral float-left" title="Part A: Finishing and extending uScheme : parsing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="partC_programming.html" class="btn btn-neutral float-right" title="Part C: Programming in extended uScheme" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
