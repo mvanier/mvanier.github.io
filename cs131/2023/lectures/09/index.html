@@ -227,6 +227,10 @@ strap yourself in!
 <img src="images/literal.png" alt="literal.png" />
 
 * The upper rule is the big-step rule; the lower rule is the small-step rule
+---
+## Small-step semantics: literals
+
+<img src="images/literal.png" alt="literal.png" />
 
 * Other than the presence of the stack $S$ (which doesn't change), there is no
 difference: literals evaluate to themselves
@@ -292,6 +296,11 @@ stack and finish the assignment:
 
 * In an `if` form, we start by evaluating the test expression $e_1$
 
+---
+## Small-step semantics: `if`
+
+<img src="images/if_1.png" alt="if_1.png" />
+
 * The rest of the expression (the `if` with a hole where the result of
 evaluating $e_1$ goes) gets pushed onto the stack
 
@@ -305,7 +314,12 @@ evaluating $e_1$ goes) gets pushed onto the stack
 * These two rules show how we resolve the `if` once the test expression $e_1$
 has been evaluated to the value $v$
 
-* Notice how the _IF_ frame gets popped off the stack
+---
+## Small-step semantics: `if`
+
+<img src="images/if_2.png" alt="if_2.png" />
+
+* Notice how the _IF_ frame gets popped off the stack in both cases
 
 ---
 ## Small-step semantics: Function application
@@ -320,18 +334,18 @@ function)
 ---
 ## Small-step semantics: Function application
 
-<img src="images/Small-Step-Apply.png" alt="Small-Step-Apply.png" />
+<img src="images/function_1.png" alt="function_1.png" />
 
 * To apply a function, first evaluate the expression in "function position",
 which is $e$
 
 * The rest of the expression is pushed onto the stack, with a hole where the
-function goes
+function will go
 
 ---
 ## Small-step semantics: Function application
 
-<img src="images/Small-Step-Apply-First-Arg.png" alt="Small-Step-Apply-First-Arg.png" />
+<img src="images/function_2.png" alt="function_2.png" />
 
 * Once the function position expression has been evaluated to a value $v$,
 evaluate the expression in the first argument position $e_1$
@@ -339,16 +353,17 @@ evaluate the expression in the first argument position $e_1$
 ---
 ## Small-step semantics: Function application
 
-<img src="images/Small-Step-Apply-First-Arg.png" alt="Small-Step-Apply-First-Arg.png" />
+<img src="images/function_2.png" alt="function_2.png" />
 
-* Push the rest of the expression (evaluated and unevaluated parts) onto the stack:
-  * The function value $v$ (which has been evaluated)
-  * The other arguments $e_2$, $e_3$, ... $e_n$ (which haven't been evaluated yet)
+* Push the rest of the expression (evaluated and unevaluated parts)
+  back onto the stack:
+  * The function value $v$ (evaluated)
+  * The other arguments $e_2$, $e_3$, ... $e_n$<br/>(not evaluated)
 
 ---
 ## Small-step semantics: Function application
 
-<img src="images/Small-Step-Apply-Next-Arg.png" alt="Small-Step-Apply-Next-Arg.png" />
+<img src="images/function_3.png" alt="function_3.png" />
 
 * When you are in the middle of evaluating the function's argument expressions,
 some of them have been evaluated to values and some haven't
@@ -356,7 +371,7 @@ some of them have been evaluated to values and some haven't
 ---
 ## Small-step semantics: Function application
 
-<img src="images/Small-Step-Apply-Next-Arg.png" alt="Small-Step-Apply-Next-Arg.png" />
+<img src="images/function_3.png" alt="function_3.png" />
 
 * Take the first unevaluated expression $e_{i+1}$ and evaluate that, putting the
 previously-evaluated argument value $v_i$ back onto the stack along with the
@@ -365,9 +380,9 @@ rest of the expression (evaluated and unevaluated parts)
 ---
 ## Small-step semantics: Function application
 
-<img src="images/Small-Step-Apply-Next-Arg.png" alt="Small-Step-Apply-Next-Arg.png" />
+<img src="images/function_3.png" alt="function_3.png" />
 
-* This represents a left-to-right evaluation order
+* (This represents a left-to-right evaluation order)
 
 ---
 ## Small-step semantics: Function application
