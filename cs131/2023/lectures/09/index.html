@@ -245,7 +245,7 @@ difference: literals evaluate to themselves
 ---
 ## Small-step semantics: `lambda`
 
-<img src="images/Lambda.png" alt="Lambda.png" />
+<img src="images/lambda.png" alt="lambda.png" />
 
 * `lambda` forms are also the same: just make a closure
 
@@ -387,7 +387,7 @@ rest of the expression (evaluated and unevaluated parts)
 ---
 ## Small-step semantics: Function application
 
-<img src="images/Small-Step-Apply-Last-Arg.png" alt="Small-Step-Apply-Last-Arg.png" />
+<img src="images/function_4.png" alt="function_4.png" />
 
 * Once you've evaluated the last argument (to the value $v_n$), things get more
 complicated
@@ -395,16 +395,17 @@ complicated
 ---
 ## Small-step semantics: Function application
 
-<img src="images/Small-Step-Apply-Last-Arg.png" alt="Small-Step-Apply-Last-Arg.png" />
+<img src="images/function_4.png" alt="function_4.png" />
 
-* We have to evaluate the body expression of the function ($e_c$)
+* We evaluate the function body expression ($e_c$)
   in a new environment which extends the original environment $\rho_c$
   by binding the formal argument names $x_i$ to their values $v_i$
+  (via $\sigma_n$ and $\ell_i$)
 
 ---
 ## Small-step semantics: Function application
 
-<img src="images/Small-Step-Apply-Last-Arg.png" alt="Small-Step-Apply-Last-Arg.png" />
+<img src="images/function_4.png" alt="function_4.png" />
 
 * The store is used as an intermediary between the names and the values,
   as usual
@@ -412,7 +413,7 @@ complicated
 ---
 ## Small-step semantics: Function application
 
-<img src="images/Small-Step-Apply-Last-Arg.png" alt="Small-Step-Apply-Last-Arg.png" />
+<img src="images/function_4.png" alt="function_4.png" />
 
 * Also, we have to be able to restore the old environment $\rho$
   when we finish evaluating the body of the function
@@ -420,7 +421,7 @@ complicated
 ---
 ## Small-step semantics: Function application
 
-<img src="images/Small-Step-Apply-Last-Arg.png" alt="Small-Step-Apply-Last-Arg.png" />
+<img src="images/function_4.png" alt="function_4.png" />
 
 * We do this by pushing a _CALLENV_ frame onto the stack
   which contains the old environment $\rho$
@@ -428,7 +429,7 @@ complicated
 ---
 ## Small-step semantics: Function application
 
-<img src="images/Small-Step-Restore-Calling-Environment.png" alt="Small-Step-Restore-Calling-Environment.png" />
+<img src="images/function_5.png" alt="function_5.png" />
 
 * Once the body of the function has been evaluated to a value $v$,
   we don't need the new environment anymore, so we restore the old one
@@ -437,7 +438,7 @@ complicated
 ---
 ## Small-step semantics: Function application
 
-<img src="images/Small-Step-Apply-Add.png" alt="Small-Step-Apply-Add.png" />
+<img src="images/function_6.png" alt="function_6.png" />
 
 * The previous discussion assumed that the function being applied
   was a user-defined function (a closure)
@@ -445,7 +446,7 @@ complicated
 ---
 ## Small-step semantics: Function application
 
-<img src="images/Small-Step-Apply-Add.png" alt="Small-Step-Apply-Add.png" />
+<img src="images/function_6.png" alt="function_6.png" />
 
 * However, it could also be a primitive (like `+`)
 
