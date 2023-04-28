@@ -502,11 +502,15 @@ missing feature.) We will fix this limitation in this problem.</p>
 mutual recursion. Use this syntax:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(valrec
   [f ...]
-  [g ...])
+  [g ...]
+  ...)
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">...</span></code> parts can be arbitrary <em>uScheme</em> expressions,
+<p>The binding expressions
+(the <code class="docutils literal notranslate"><span class="pre">...</span></code> parts following the names <code class="docutils literal notranslate"><span class="pre">f</span></code> and <code class="docutils literal notranslate"><span class="pre">g</span></code> in this case)
+can be arbitrary <em>uScheme</em> expressions,
 but are normally <code class="docutils literal notranslate"><span class="pre">lambda</span></code> expressions.
+There can be any number of bindings, but there must be at least one.
 The semantics and its implementation will be discussion in part B.</p>
 <p>An empty <code class="docutils literal notranslate"><span class="pre">valrec</span></code> form (<em>i.e.</em> <code class="docutils literal notranslate"><span class="pre">(valrec)</span></code>) should be a syntax error.
 As with <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions, all the names that are bound in a

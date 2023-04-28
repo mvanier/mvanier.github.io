@@ -461,10 +461,14 @@ mutual recursion. Use this syntax:
 
    (valrec
      [f ...]
-     [g ...])
+     [g ...]
+     ...)
 
-The ``...`` parts can be arbitrary |uscheme| expressions,
+The binding expressions
+(the ``...`` parts following the names ``f`` and ``g`` in this case)
+can be arbitrary |uscheme| expressions,
 but are normally ``lambda`` expressions.
+There can be any number of bindings, but there must be at least one.
 The semantics and its implementation will be discussion in part B.
 
 An empty ``valrec`` form (|ie| ``(valrec)``) should be a syntax error.
