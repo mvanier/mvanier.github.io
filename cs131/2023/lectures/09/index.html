@@ -282,8 +282,8 @@ the stack
 ---
 ## Small-step semantics: `set`
 
-* Once the expression $e$ has been evaluated to the value $v$, we can pop the
-stack and finish the assignment:
+* Once the expression $e$ has been evaluated to the value $v$,
+we can pop the stack and finish the assignment:
 
 <img src="images/small_step_set_2.png" alt="small_step_set_2.png" />
 
@@ -389,8 +389,8 @@ rest of the expression (evaluated and unevaluated parts)
 
 <img src="images/function_4.png" alt="function_4.png" />
 
-* Once you've evaluated the last argument (to the value $v_n$), things get more
-complicated
+* Once you've evaluated the last argument<br/>
+  (to the value $v_n$), things get more complicated
 
 ---
 ## Small-step semantics: Function application
@@ -464,14 +464,14 @@ between multiple rules (like it is for function application)
 ---
 ## Small-step semantics: `let`
 
-<img src="images/Small-Step-Let-Start.png" alt="Small-Step-Let-Start.png" />
+<img src="images/let_1.png" alt="let_1.png" />
 
 * To start with, evaluate the first expression $e_1$ in the first binding
 
 ---
 ## Small-step semantics: `let`
 
-<img src="images/Small-Step-Let-Next-Exp.png" alt="Small-Step-Let-Next-Exp.png" />
+<img src="images/let_2.png" alt="let_2.png" />
 
 * Continue evaluating the binding expressions, adjusting the stack frame
 accordingly
@@ -479,20 +479,21 @@ accordingly
 ---
 ## Small-step semantics: `let`
 
-<img src="images/Small-Step-Let-Body.png" alt="Small-Step-Let-Body.png" />
+<img src="images/let_3.png" alt="let_3.png" />
 
 * After evaluating the last binding expression:
-  * Create a new environment with all the $x_i \mapsto v_i$ bindings
-  * Evaluate the body $e$ in that environment
+  * Create new environment $\rho$ and store $\sigma$
+    with all the $x_i \mapsto \ell_i$ and $\ell_i \mapsto v_i$ bindings
   * Push a _LETENV_ frame containing the old environment onto the stack
+  * Evaluate the body $e$
 
 ---
 ## Small-step semantics: `let`
 
-<img src="images/Small-Step-Let-Restore-Env.png" alt="Small-Step-Let-Restore-Env.png" />
+<img src="images/let_4.png" alt="let_4.png" />
 
-* Once the let body is evaluated to a value $v$, restore the original
-environment
+* Once the let body is evaluated to a value $v$,
+  restore the original environment
 
 ---
 ## Small-step semantics: `let*`
