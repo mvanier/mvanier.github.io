@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Part C: Miniproject: Sparse Matrices &mdash; The CS 115 book</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../_static/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="prev" title="Part B: Operators" href="partB_operators.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            The CS 115 book, Spring 2023
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Software.html">Installing the course software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../1/index.html">Assignment 1: Evaluation and recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2/index.html">Assignment 2: Algebraic datatypes</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 3: A touch of class</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partA_exercises.html">Part A: Basic exercises</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partB_operators.html">Part B: Operators</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Part C: Miniproject: Sparse Matrices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sparse-matrix-representation">Sparse matrix representation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#structure-of-the-code">Structure of the code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#useful-library-functions">Useful library functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sparsematrix">1. <code class="docutils literal notranslate"><span class="pre">sparseMatrix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#addsm">2. <code class="docutils literal notranslate"><span class="pre">addSM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#negatesm">3. <code class="docutils literal notranslate"><span class="pre">negateSM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#subsm">4. <code class="docutils literal notranslate"><span class="pre">subSM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mulsm">5. <code class="docutils literal notranslate"><span class="pre">mulSM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#accessors">6. Accessors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operators">7. Operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#num-instance-of-sparsematrix">8. <code class="docutils literal notranslate"><span class="pre">Num</span></code> instance of <code class="docutils literal notranslate"><span class="pre">SparseMatrix</span></code>?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#things-to-watch-out-for">Things to watch out for</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The CS 115 book, Spring 2023</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 3: A touch of class</a></li>
+      <li class="breadcrumb-item active">Part C: Miniproject: Sparse Matrices</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="part-c-miniproject-sparse-matrices">
+<h1>Part C: Miniproject: Sparse Matrices<a class="headerlink" href="#part-c-miniproject-sparse-matrices" title="Permalink to this heading"></a></h1>
+<p>In this section, you will be implementing a Haskell module which
+includes datatypes and functions to represent and compute with sparse
+matrices. A sparse matrix is a matrix which contains a large number of
+zero elements, which are not represented explicitly. Typically, the vast
+majority of the elements in the matrix are zeros. Sparse matrices arise
+naturally in a wide variety of applications.</p>
+<p>Because of the large number of zero elements, computing with sparse
+matrices requires different algorithms than with non-sparse (“dense”)
+matrices, or else the resulting code will be very inefficient. (Note
+that here we use the term “matrix” to include not only square matrices
+but matrices with any number of rows or columns.) In this module, you
+will be implementing sparse matrix addition, subtraction,
+multiplication, and negation. <strong>While doing so, it is very important
+that you take advantage of the sparseness of the matrices in your
+implementation.</strong> If you implement any of the functions by treating
+sparse matrices as dense matrices, the code will be considered invalid
+and you will get no credit on the problem!</p>
+<p>In addition to the challenge of implementing efficient functions for
+computing with sparse matrices, this miniproject has some other goals.
+You will learn to work with some of the data structures from the Haskell
+libraries, and you will learn to use <a class="reference external" href="https://hoogle.haskell.org/">Hoogle</a> to search through the
+APIs. The total amount of code you need to write for this section is not
+large; our code is about 100 lines of non-comment code. (Note that we do
+expect you to write a reasonable amount of comments in your code
+explaining what your functions do.)</p>
+<section id="sparse-matrix-representation">
+<h2>Sparse matrix representation<a class="headerlink" href="#sparse-matrix-representation" title="Permalink to this heading"></a></h2>
+<p>A particular element of each sparse matrix is identified by its row
+index and its column index. Row and column indices start at 1 (not 0!).
+Therefore, the basic representation for sparse matrices will be a map
+between pairs of <code class="docutils literal notranslate"><span class="pre">Integer</span></code>s (don’t use <code class="docutils literal notranslate"><span class="pre">Int</span></code>s) and values, where
+the integers must be at least 1 and values can be any Haskell type which
+instantiates the <code class="docutils literal notranslate"><span class="pre">Num</span></code> type class. To represent the map you will use
+the <code class="docutils literal notranslate"><span class="pre">Data.Map</span></code> module and the <code class="docutils literal notranslate"><span class="pre">Map</span></code> datatype. Browse through the
+<a class="reference external" href="https://hoogle.haskell.org/">Hoogle</a> documentation on <code class="docutils literal notranslate"><span class="pre">Data.Map</span></code> to learn how to use <code class="docutils literal notranslate"><span class="pre">Map</span></code>s.
+Note that you don’t have to know how <code class="docutils literal notranslate"><span class="pre">Map</span></code>s are <em>implemented</em>,
+though you can browse the source code if you’re curious; what’s
+important here is that you know how to use them.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you use 0-based indexing you will get at most half marks on this
+section of the assignment.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Don’t confuse the <code class="docutils literal notranslate"><span class="pre">Map</span></code> type (which is a container type similar to
+a Python dictionary, but immutable) to the <code class="docutils literal notranslate"><span class="pre">map</span></code> higher-order
+function. There is no connection between them.</p>
+</div>
+<p>In addition to the map between pairs of <code class="docutils literal notranslate"><span class="pre">Integer</span></code>s and values, we
+need some extra bookkeeping information in each sparse matrix.
+Specifically, we have to store:</p>
+<ul class="simple">
+<li><p>The bounds of the matrix (number of rows and columns), as a pair of
+<code class="docutils literal notranslate"><span class="pre">Integer</span></code>s.</p></li>
+<li><p>A set of row indices, representing all rows that have nonzero
+elements.</p></li>
+<li><p>A set of column indices, representing all columns that have nonzero
+elements.</p></li>
+</ul>
+<p>The row and column indices are stored to allow us to skip rows and
+columns that contain only zeros. This is particularly important when
+implementing multiplication. To implement sets, use the <code class="docutils literal notranslate"><span class="pre">Set</span></code> datatype
+contained in the <code class="docutils literal notranslate"><span class="pre">Data.Set</span></code> module. Again, see <a class="reference external" href="https://hoogle.haskell.org/">Hoogle</a> for details.</p>
+<p>Here is the definition of the sparse matrix datatype you should use:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span><span class="w"> </span><span class="k">qualified</span><span class="w"> </span><span class="nn">Data.Map</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">M</span>
+<span class="kr">import</span><span class="w"> </span><span class="k">qualified</span><span class="w"> </span><span class="nn">Data.Set</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">S</span>
+
+<span class="kr">data</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=</span>
+<span class="w">  </span><span class="kt">SM</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">bounds</span><span class="w">     </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="kt">Integer</span><span class="p">),</span><span class="w">  </span><span class="c1">-- number of rows, columns</span>
+<span class="w">       </span><span class="n">rowIndices</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">S</span><span class="o">.</span><span class="kt">Set</span><span class="w"> </span><span class="kt">Integer</span><span class="p">,</span><span class="w">       </span><span class="c1">-- row indices with nonzeros</span>
+<span class="w">       </span><span class="n">colIndices</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">S</span><span class="o">.</span><span class="kt">Set</span><span class="w"> </span><span class="kt">Integer</span><span class="p">,</span><span class="w">       </span><span class="c1">-- column indices with nonzeros</span>
+<span class="w">       </span><span class="n">vals</span><span class="w">       </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="kt">M</span><span class="o">.</span><span class="kt">Map</span><span class="w"> </span><span class="p">(</span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="kt">Integer</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">}</span><span class="w">  </span><span class="c1">-- values</span>
+<span class="w">  </span><span class="kr">deriving</span><span class="w"> </span><span class="p">(</span><span class="kt">Eq</span><span class="p">,</span><span class="w"> </span><span class="kt">Show</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that this is a polymorphic type where the type <code class="docutils literal notranslate"><span class="pre">a</span></code> must be an
+instance of the <code class="docutils literal notranslate"><span class="pre">Num</span></code> type class. (We don’t include that as a datatype
+context because Haskell doesn’t allow adding contexts to datatypes by
+default, so this must be enforced by functions that act on the
+datatype.) <strong>You are not allowed to choose a different sparse matrix
+representation.</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">qualified</span> <span class="pre">...</span> <span class="pre">as</span> <span class="pre">...</span></code> lines indicate that you should
+import the indicated modules and give a one-letter prefix to names in
+those modules. (It doesn’t have to be one-letter, but that’s what we’re
+doing here.) So the <code class="docutils literal notranslate"><span class="pre">Set</span></code> datatype in <code class="docutils literal notranslate"><span class="pre">Data.Set</span></code> becomes <code class="docutils literal notranslate"><span class="pre">S.Set</span></code>
+instead of <code class="docutils literal notranslate"><span class="pre">Data.Set.Set</span></code>, and the <code class="docutils literal notranslate"><span class="pre">Map</span></code> datatype in <code class="docutils literal notranslate"><span class="pre">Data.Map</span></code>
+becomes <code class="docutils literal notranslate"><span class="pre">M.Map</span></code> instead of <code class="docutils literal notranslate"><span class="pre">Data.Map.Map</span></code>. This allows you to keep
+different namespaces separate without having to do too much extra
+typing. This is important here because the <code class="docutils literal notranslate"><span class="pre">Set</span></code> and <code class="docutils literal notranslate"><span class="pre">Map</span></code> modules
+contain a number of functions with the same names.</p>
+<p>One important point about the data representation is that after any
+sparse matrix operation (including the function to construct a sparse
+matrix!), you must make sure that:</p>
+<ul class="simple">
+<li><p>there are no zeros stored in the matrix (<em>i.e.</em> in the <code class="docutils literal notranslate"><span class="pre">vals</span></code> map)</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">rowIndices</span></code> and <code class="docutils literal notranslate"><span class="pre">colIndices</span></code> fields have been updated so
+that they contain all (and only!) the rows/columns with nonzero
+elements.</p></li>
+</ul>
+</section>
+<section id="structure-of-the-code">
+<h2>Structure of the code<a class="headerlink" href="#structure-of-the-code" title="Permalink to this heading"></a></h2>
+<p>The Haskell code for the sparse matrix module will be called
+<code class="docutils literal notranslate"><span class="pre">SparseMatrix.hs</span></code> and will implement the <code class="docutils literal notranslate"><span class="pre">SparseMatrix</span></code> module. The
+first few lines will be as follows (add comments as you see fit):</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="kr">module</span><span class="w"> </span><span class="nn">SparseMatrix</span><span class="w"> </span><span class="kr">where</span>
+
+<span class="kr">import</span><span class="w"> </span><span class="k">qualified</span><span class="w"> </span><span class="nn">Data.Map</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">M</span>
+<span class="kr">import</span><span class="w"> </span><span class="k">qualified</span><span class="w"> </span><span class="nn">Data.Set</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">S</span>
+
+<span class="kr">data</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=</span>
+<span class="w">  </span><span class="kt">SM</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">bounds</span><span class="w">     </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="kt">Integer</span><span class="p">),</span><span class="w">  </span><span class="c1">-- number of rows, columns</span>
+<span class="w">       </span><span class="n">rowIndices</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">S</span><span class="o">.</span><span class="kt">Set</span><span class="w"> </span><span class="kt">Integer</span><span class="p">,</span><span class="w">       </span><span class="c1">-- row indices with nonzeros</span>
+<span class="w">       </span><span class="n">colIndices</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">S</span><span class="o">.</span><span class="kt">Set</span><span class="w"> </span><span class="kt">Integer</span><span class="p">,</span><span class="w">       </span><span class="c1">-- column indices with nonzeros</span>
+<span class="w">       </span><span class="n">vals</span><span class="w">       </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="kt">M</span><span class="o">.</span><span class="kt">Map</span><span class="w"> </span><span class="p">(</span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="kt">Integer</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">}</span><span class="w">  </span><span class="c1">-- values</span>
+<span class="w">  </span><span class="kr">deriving</span><span class="w"> </span><span class="p">(</span><span class="kt">Eq</span><span class="p">,</span><span class="w"> </span><span class="kt">Show</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Following this, write the code for your function/operator definitions,
+along with any helper functions you may want to write.</p>
+</section>
+<section id="useful-library-functions">
+<h2>Useful library functions<a class="headerlink" href="#useful-library-functions" title="Permalink to this heading"></a></h2>
+<p>Here are the names of some library functions you may find useful. Look
+them up in <a class="reference external" href="https://hoogle.haskell.org/">Hoogle</a> to find out how they work. You aren’t required to
+use them if you don’t need to. You may also find other functions in
+these modules to be useful; use whichever ones you like. Don’t use other
+modules.</p>
+<section id="from-data-map">
+<h3>From <code class="docutils literal notranslate"><span class="pre">Data.Map</span></code><a class="headerlink" href="#from-data-map" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">elems</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filterWithKey</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">findWithDefault</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">foldr</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fromList</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">intersectionWith</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keys</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lookup</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mapKeys</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">toList</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unionWith</span></code></p></li>
+</ul>
+<p>Note that the functions called <code class="docutils literal notranslate"><span class="pre">map</span></code> and <code class="docutils literal notranslate"><span class="pre">filter</span></code> in this module are
+not the same as those called <code class="docutils literal notranslate"><span class="pre">map</span></code> and <code class="docutils literal notranslate"><span class="pre">filter</span></code> in the Prelude (<em>i.e.</em>
+that work on lists). This is another reason why we use
+<code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">qualified</span></code> when importing this module.</p>
+</section>
+<section id="from-data-set">
+<h3>From <code class="docutils literal notranslate"><span class="pre">Data.Set</span></code><a class="headerlink" href="#from-data-set" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fromList</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">toList</span></code></p></li>
+</ul>
+<p>Note that these two functions are not the same as the functions with the
+same name from the <code class="docutils literal notranslate"><span class="pre">Data.Map</span></code> module. (This is why we use
+<code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">qualified</span></code> when importing these modules.)</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Avoid converting <code class="docutils literal notranslate"><span class="pre">Set</span></code>s to or from lists unless you have to.
+(For one thing, this can make your functions much less efficient.)
+If a <code class="docutils literal notranslate"><span class="pre">Set</span></code> function can do the same thing as a similar list function,
+use the <code class="docutils literal notranslate"><span class="pre">Set</span></code> version.</p>
+</div>
+</section>
+<section id="from-data-list">
+<h3>From <code class="docutils literal notranslate"><span class="pre">Data.List</span></code><a class="headerlink" href="#from-data-list" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">all</span></code></p></li>
+</ul>
+<p>Here are the functions you have to implement.</p>
+</section>
+</section>
+<section id="sparsematrix">
+<h2>1. <code class="docutils literal notranslate"><span class="pre">sparseMatrix</span></code><a class="headerlink" href="#sparsematrix" title="Permalink to this heading"></a></h2>
+<p>[<strong>2 marks</strong>]</p>
+<p>Implement a function called <code class="docutils literal notranslate"><span class="pre">sparseMatrix</span></code> which creates a sparse
+matrix from a list of index/value pairs and the array bounds.</p>
+<p>The type signature of this function will be:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="nf">sparseMatrix</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="kt">Eq</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">Num</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="ow">=&gt;</span>
+<span class="w">  </span><span class="p">[((</span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="kt">Integer</span><span class="p">),</span><span class="w"> </span><span class="n">a</span><span class="p">)]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="kt">Integer</span><span class="p">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span>
+<span class="c1">-- sparseMatrix &lt;list of index/element pairs&gt; &lt;bounds&gt; -&gt; sparse matrix</span>
+</pre></div>
+</div>
+<p>Note that the indices in the index/value pairs are themselves pairs of
+integers. The function must check that the given bounds are valid (<em>i.e.</em>
+at least 1 each), and that all the index pairs given are within those
+bounds. If not, an error must be signalled.</p>
+<p>The function must not put zero values into the sparse matrix, even if
+some of the values in the input index/value pair list are zeros.
+Similarly, the function must store the row indices and column indices of
+only the rows/columns that have nonzero values.</p>
+<p>You can assume that the list of index/value pairs will not have
+duplicated indices. If there are duplicated indices, you can do whatever
+is most convenient.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The number <code class="docutils literal notranslate"><span class="pre">0</span></code> is a valid value of any type that is an instance of
+the <code class="docutils literal notranslate"><span class="pre">Num</span></code> type class.</p>
+</div>
+</section>
+<section id="addsm">
+<h2>2. <code class="docutils literal notranslate"><span class="pre">addSM</span></code><a class="headerlink" href="#addsm" title="Permalink to this heading"></a></h2>
+<p>[<strong>1 mark</strong>]</p>
+<p>Implement a function called <code class="docutils literal notranslate"><span class="pre">addSM</span></code> which adds two compatible sparse
+matrices.</p>
+<p>The type signature of this function will be:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="nf">addSM</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="kt">Eq</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">Num</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span>
+</pre></div>
+</div>
+<p>If the two sparse matrices cannot be added (<em>i.e.</em> they don’t have the
+same number of rows or columns) an error must be signalled. Be sure to
+adjust the <code class="docutils literal notranslate"><span class="pre">rowIndices</span></code> and <code class="docutils literal notranslate"><span class="pre">colIndices</span></code> after adding, and make sure
+that there are no zero elements in the matrix after adding.</p>
+</section>
+<section id="negatesm">
+<h2>3. <code class="docutils literal notranslate"><span class="pre">negateSM</span></code><a class="headerlink" href="#negatesm" title="Permalink to this heading"></a></h2>
+<p>[<strong>0.5 marks</strong>]</p>
+<p>Implement a function called <code class="docutils literal notranslate"><span class="pre">negateSM</span></code> which negates a sparse matrix.</p>
+</section>
+<section id="subsm">
+<h2>4. <code class="docutils literal notranslate"><span class="pre">subSM</span></code><a class="headerlink" href="#subsm" title="Permalink to this heading"></a></h2>
+<p>[<strong>0.5 marks</strong>]</p>
+<p>Implement a function called <code class="docutils literal notranslate"><span class="pre">subSM</span></code> which subtracts two compatible
+sparse matrices.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This function can trivially be defined in terms of the previous two.</p>
+</div>
+</section>
+<section id="mulsm">
+<h2>5. <code class="docutils literal notranslate"><span class="pre">mulSM</span></code><a class="headerlink" href="#mulsm" title="Permalink to this heading"></a></h2>
+<p>[<strong>3 marks</strong>]</p>
+<p>Implement a function called <code class="docutils literal notranslate"><span class="pre">mulSM</span></code> which multiplies two compatible sparse
+matrices.</p>
+<p>Recall that for two matrices to be compatible for multiplication, the
+number of columns in the first matrix must equal the number of rows in
+the second matrix. Your function must check for this and signal an error
+if the two matrices cannot be multiplied.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function is by far the trickiest one to implement of all the
+sparse matrix functions in this miniproject. We recommend that you
+write a helper function to multiply a row of one matrix (a row
+vector) by a column of the other (a column vector), and use that to
+construct the product matrix. Use the <code class="docutils literal notranslate"><span class="pre">rowIndices</span></code> and
+<code class="docutils literal notranslate"><span class="pre">colIndices</span></code> fields of the matrices to avoid multiplying empty rows
+or columns.</p>
+<p>As always, make sure that none of the stored entries of the sparse
+matrix are zeros.</p>
+</div>
+</section>
+<section id="accessors">
+<h2>6. Accessors<a class="headerlink" href="#accessors" title="Permalink to this heading"></a></h2>
+<p>[<strong>1 mark</strong>]</p>
+<p>Define three accessor functions for sparse matrices: <code class="docutils literal notranslate"><span class="pre">getSM</span></code>, which
+retrieves a value from a sparse matrix given the row and column,
+<code class="docutils literal notranslate"><span class="pre">rowsSM</span></code>, which returns the number of rows in a sparse matrix, and
+<code class="docutils literal notranslate"><span class="pre">colsSM</span></code>, which returns the number of columns in a sparse matrix.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">rowsSM</span></code>/<code class="docutils literal notranslate"><span class="pre">colsSM</span></code> return the <em>total</em> number of rows/columns in
+the sparse matrix, <em>not</em> the number of nonzero rows/columns.</p>
+</div>
+<p>Here are the type signatures:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="nf">getSM</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Num</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="kt">Integer</span><span class="p">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">a</span>
+<span class="nf">rowsSM</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Num</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Integer</span>
+<span class="nf">colsSM</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Num</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Integer</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">getSM</span></code> retrieves the value at the index represented by the pair of
+integers. If this row/column location is invalid (out of bounds of the
+matrix), signal an error. If it’s in bounds but there is no value stored
+in the matrix at that location, return a zero.</p>
+</section>
+<section id="operators">
+<h2>7. Operators<a class="headerlink" href="#operators" title="Permalink to this heading"></a></h2>
+<p>[<strong>1 mark</strong>]</p>
+<p>Define operator shortcuts for the <code class="docutils literal notranslate"><span class="pre">addSM</span></code>, <code class="docutils literal notranslate"><span class="pre">subSM</span></code>, <code class="docutils literal notranslate"><span class="pre">mulSM</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">getSM</span></code> functions defined previously.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">&lt;|+|&gt;</span></code> as the operator for <code class="docutils literal notranslate"><span class="pre">addSM</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;|-|&gt;</span></code> for <code class="docutils literal notranslate"><span class="pre">subSM</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&lt;|*|&gt;</span></code> for <code class="docutils literal notranslate"><span class="pre">mulSM</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;!&gt;</span></code> for <code class="docutils literal notranslate"><span class="pre">getSM</span></code>. The type signatures
+of these operators are identical to those of the corresponding functions
+(but you should write them out anyway).</p>
+</section>
+<section id="num-instance-of-sparsematrix">
+<h2>8. <code class="docutils literal notranslate"><span class="pre">Num</span></code> instance of <code class="docutils literal notranslate"><span class="pre">SparseMatrix</span></code>?<a class="headerlink" href="#num-instance-of-sparsematrix" title="Permalink to this heading"></a></h2>
+<p>[<strong>1 mark</strong>]</p>
+<p>Why doesn’t it make sense to define the <code class="docutils literal notranslate"><span class="pre">SparseMatrix</span></code> datatype as an
+instance of the <code class="docutils literal notranslate"><span class="pre">Num</span></code> type class?  Write your answer in a comment.</p>
+</section>
+<section id="things-to-watch-out-for">
+<h2>Things to watch out for<a class="headerlink" href="#things-to-watch-out-for" title="Permalink to this heading"></a></h2>
+<p>By far the biggest pitfall when writing sparse matrix code is writing
+code that inadvertently breaks the sparse matrix invariants <em>i.e.</em> where
+explicit zero elements are stored in the sparse matrix, or where the
+row/column indices stored are invalid (<em>e.g.</em> by containing indices for
+rows with no nonzero elements). Pay special attention to this when
+writing the code, especially the <code class="docutils literal notranslate"><span class="pre">sparseMatrix</span></code> function and the
+addition and multiplication functions.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Don’t forget to run the test suite on your code (see above).</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="partB_operators.html" class="btn btn-neutral float-left" title="Part B: Operators" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
