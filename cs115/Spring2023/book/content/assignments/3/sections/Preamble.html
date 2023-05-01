@@ -63,6 +63,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#grading-update">Grading update</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#what-to-hand-in">What to hand in</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#writing-and-testing-your-code">Writing and testing your code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#haskell-note-infinite-loops-in-tests">Haskell note: Infinite loops in tests</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#haskell-note-the-scopedtypevariables-pragma">Haskell note: The <code class="docutils literal notranslate"><span class="pre">ScopedTypeVariables</span></code> pragma</a></li>
 </ul>
 </li>
@@ -176,6 +177,21 @@ you will get a printout indicating what the value of <code class="docutils liter
 at that point in the program.
 This is the Haskell way of emulating
 the common style of debugging used in other languages using print statements.</p>
+</section>
+<section id="haskell-note-infinite-loops-in-tests">
+<h2>Haskell note: Infinite loops in tests<a class="headerlink" href="#haskell-note-infinite-loops-in-tests" title="Permalink to this heading"></a></h2>
+<p>One thing to be wary of with the randomized tests in parts A and C
+is infinite loops.  The test framework can’t detect this,
+so it will seem that the tests have just stopped producing output.</p>
+<p>It turns out that reporting failures on infinite loops is very hard to do
+reliably in GHC Haskell.  There is a <code class="docutils literal notranslate"><span class="pre">timeout</span></code> function,
+but it doesn’t work when the infinite loop happens in a tight inner loop
+of a function that doesn’t internally allocate memory.
+If you’re curious, there is a discussion at <a class="reference external" href="https://stackoverflow.com/questions/55336948/how-can-i-use-the-haskell-timeout-function-in-system-timeout-to-halt-runaway-c">this link</a>
+and also <a class="reference external" href="https://downloads.haskell.org/ghc/latest/docs/users_guide/bugs.html#bugs-in-ghc">here</a>.</p>
+<p>The bottom line is that if you see your tests hanging,
+you probably have an infinite loop in the code being tested,
+and you need to look at it carefully.</p>
 </section>
 <section id="haskell-note-the-scopedtypevariables-pragma">
 <h2>Haskell note: The <code class="docutils literal notranslate"><span class="pre">ScopedTypeVariables</span></code> pragma<a class="headerlink" href="#haskell-note-the-scopedtypevariables-pragma" title="Permalink to this heading"></a></h2>

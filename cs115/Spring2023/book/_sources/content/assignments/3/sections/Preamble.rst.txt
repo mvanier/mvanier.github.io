@@ -95,6 +95,27 @@ This is the Haskell way of emulating
 the common style of debugging used in other languages using print statements.
 
 
+Haskell note: Infinite loops in tests
+-------------------------------------
+
+One thing to be wary of with the randomized tests in parts A and C
+is infinite loops.  The test framework can't detect this,
+so it will seem that the tests have just stopped producing output.
+
+It turns out that reporting failures on infinite loops is very hard to do
+reliably in GHC Haskell.  There is a ``timeout`` function,
+but it doesn't work when the infinite loop happens in a tight inner loop
+of a function that doesn't internally allocate memory.
+If you're curious, there is a discussion at `this link
+<https://stackoverflow.com/questions/55336948/how-can-i-use-the-haskell-timeout-function-in-system-timeout-to-halt-runaway-c>`_
+and also `here
+<https://downloads.haskell.org/ghc/latest/docs/users_guide/bugs.html#bugs-in-ghc>`_.
+
+The bottom line is that if you see your tests hanging,
+you probably have an infinite loop in the code being tested,
+and you need to look at it carefully.
+
+
 Haskell note: The ``ScopedTypeVariables`` pragma
 ------------------------------------------------
 
