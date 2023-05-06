@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Part B: Implementing tail call optimization &mdash; The CS 131 book</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../_static/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="prev" title="Part A: Implementing control operators" href="partA_control_operators.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            The CS 131 book, Spring 2023
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Software.html">Installing the course software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lectures.html">Lectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../1/index.html">Assignment 1: The <em>Imp</em> language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2/index.html">Assignment 2: The <em>uScheme</em> language</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 3: The <em>uScheme+</em> language</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Overview.html">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partA_control_operators.html">Part A: Implementing control operators</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Part B: Implementing tail call optimization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#push-env-frame">1. <code class="docutils literal notranslate"><span class="pre">push_env_frame</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#taking-account-of-begin">2. Taking account of <code class="docutils literal notranslate"><span class="pre">begin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing-tail-call-optimization">Testing tail-call optimization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The CS 131 book, Spring 2023</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 3: The <em>uScheme+</em> language</a></li>
+      <li class="breadcrumb-item active">Part B: Implementing tail call optimization</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="part-b-implementing-tail-call-optimization">
+<h1>Part B: Implementing tail call optimization<a class="headerlink" href="#part-b-implementing-tail-call-optimization" title="Permalink to this heading"></a></h1>
+<p>Tail call optimization is a way of making sure that the context stack
+doesn’t grow unnecessarily. For instance, consider the following
+functions:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(define fact-iter (n r)
+  (if (= n 0)
+      r
+      (fact-iter (- n 1) (* r n))))
+(define fact (n) (fact-iter n 1))
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">fact</span></code> function computes factorials of non-negative integers. It
+does this by dispatching to the tail-recursive function <code class="docutils literal notranslate"><span class="pre">fact-iter</span></code>.
+With tail call optimization (often abbreviated as TCO, and often
+inaccurately referred to as “tail recursion optimization”)  <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, the
+recursive calls to <code class="docutils literal notranslate"><span class="pre">fact-iter</span></code> will not have to return to the call
+site and the entire function can execute in a constant context stack
+size (<em>i.e.</em> not dependent on the value of <code class="docutils literal notranslate"><span class="pre">n</span></code>). Without TCO, every
+recursive call will put down a <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code> onto the context stack,
+even if the top of the context stack was another <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code>. This
+is unnecessary; the previous <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code> is sufficient because the
+subsequent <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code> will change the environment when removed
+from the stack and then the previous one will immediately change it
+again. It’s also undesirable because it grows the context stack; in a
+very deep recursion, the context stack might grow to a point where the
+implementation runs out of stack space (the dreaded “stack overflow”).
+Having TCO is what allows us to use recursion in place of explicit
+<code class="docutils literal notranslate"><span class="pre">while</span></code> loops in functional languages. This is necessary to enable the
+functional style of programming you learned about in CS 4.</p>
+<p>To see how <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code>s can build up without TCO, consider the
+function call <code class="docutils literal notranslate"><span class="pre">(fact-iter</span> <span class="pre">5</span> <span class="pre">1)</span></code>. This will push an <code class="docutils literal notranslate"><span class="pre">ApplyFrame</span></code>
+frame onto the context stack. Once all the argument values are
+evaluated, it will be replaced by a <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code>. Then the body of
+<code class="docutils literal notranslate"><span class="pre">fact-iter</span></code> will be evaluated, which will push an <code class="docutils literal notranslate"><span class="pre">IfFrame</span></code> onto the
+context stack while <code class="docutils literal notranslate"><span class="pre">(=</span> <span class="pre">n</span> <span class="pre">0)</span></code> is evaluated. Once that happens, the
+<code class="docutils literal notranslate"><span class="pre">IfFrame</span></code> is popped off, to be replaced (in the false case) with the
+recursive call to <code class="docutils literal notranslate"><span class="pre">fact-iter</span></code>. This gives rise to another
+<code class="docutils literal notranslate"><span class="pre">ApplyFrame</span></code>, and once the arguments to the recursive call are
+evaluated, the <code class="docutils literal notranslate"><span class="pre">ApplyFrame</span></code> will be popped off the context stack and
+another <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code> will be pushed onto the stack so that the body
+of <code class="docutils literal notranslate"><span class="pre">fact-iter</span></code> can be evaluated again. From this we can see that we
+will eventually have a sequence of consecutive <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code>s on
+the context stack, even though the only one that matters is the lowest
+one. TCO will get rid of this problem.</p>
+<p>The good news is that implementing TCO is quite easy!
+There are two changes you need to make.</p>
+<section id="push-env-frame">
+<h2>1. <code class="docutils literal notranslate"><span class="pre">push_env_frame</span></code><a class="headerlink" href="#push-env-frame" title="Permalink to this heading"></a></h2>
+<p>First, you need to edit the <code class="docutils literal notranslate"><span class="pre">push_env_frame</span></code> function in <code class="docutils literal notranslate"><span class="pre">eval.ml</span></code>.
+This function is only used to push either
+<code class="docutils literal notranslate"><span class="pre">LetEnvFrame</span></code> or <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code> frames,
+each of which just wraps an environment which needs to be restored.
+If <code class="docutils literal notranslate"><span class="pre">push_env_frame</span></code> determines that pushing the environment is unnecessary,
+it doesn’t push the frame; otherwise, it does.
+The rules that you should use to decide
+if the environment push is unnecessary are the following:</p>
+<ol class="arabic simple">
+<li><p>Pushing a <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code> onto another <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code> is
+unnecessary. This is the “classic” tail-call optimization.</p></li>
+<li><p>Pushing a <code class="docutils literal notranslate"><span class="pre">LetEnvFrame</span></code> onto a <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code> is also
+unnecessary.</p></li>
+<li><p>Pushing a <code class="docutils literal notranslate"><span class="pre">LetEnvFrame</span></code> onto another <code class="docutils literal notranslate"><span class="pre">LetEnvFrame</span></code> is also
+unnecessary.</p></li>
+<li><p>Pushing a <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code> onto a <code class="docutils literal notranslate"><span class="pre">LetEnvFrame</span></code>... here’s where
+things get weird. On the one hand, you might think that you don’t
+need to do this because the <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code> environment will be
+immediately replaced by a <code class="docutils literal notranslate"><span class="pre">LetEnvFrame</span></code> environment. On the other
+hand, a <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code> is used to indicate where to unwind a
+<code class="docutils literal notranslate"><span class="pre">return</span></code> to, and to signal an error if a <code class="docutils literal notranslate"><span class="pre">break</span></code> unwinds to this
+point, so you can’t just get rid of it. On the other other hand, just
+doing nothing isn’t optimal either. Think about this and figure out
+the best approach. (Ask a TA or the instructor if you need a hint.
+The test scripts will <em>definitely</em> be checking this.)
+The good news is that the correct approach is very simple
+and doesn’t require much code.</p></li>
+</ol>
+<p>There is some debugging/tracing code in <code class="docutils literal notranslate"><span class="pre">push_env_frame</span></code> which you
+shouldn’t alter. The part you should edit consists of this line:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">stack_push</span> <span class="n">l</span> <span class="n">frame</span> <span class="n">context</span>  <span class="c">(* TODO FIXME: This is incorrect. *)</span>
+</pre></div>
+</div>
+<p>Of course, this line will need to be replaced by more than one line.</p>
+</section>
+<section id="taking-account-of-begin">
+<h2>2. Taking account of <code class="docutils literal notranslate"><span class="pre">begin</span></code><a class="headerlink" href="#taking-account-of-begin" title="Permalink to this heading"></a></h2>
+<p>The last expression in a <code class="docutils literal notranslate"><span class="pre">begin</span></code> expression is considered to be
+“in tail position” if the <code class="docutils literal notranslate"><span class="pre">begin</span></code> expression itself is.
+What this means, basically, is that when you are evaluating the
+last subexpression of a non-empty <code class="docutils literal notranslate"><span class="pre">begin</span></code> expression,
+you shouldn’t push an empty <code class="docutils literal notranslate"><span class="pre">BeginFrame</span></code> onto the stack,
+because if you do, you will break tail call optimization.
+Fortunately, this is very easy to implement,
+and the tests will check that you did it right.</p>
+</section>
+<section id="testing-tail-call-optimization">
+<h2>Testing tail-call optimization<a class="headerlink" href="#testing-tail-call-optimization" title="Permalink to this heading"></a></h2>
+<p>We’ve added some instrumentation to the supplied code to make it easy to
+check if your implementation of tail-call optimization is, well,
+optimal. The built-in function <code class="docutils literal notranslate"><span class="pre">trace-fs</span></code> (which stands for <strong>“trace
+frame stack”</strong>) takes a single integer, normally <code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>, or <code class="docutils literal notranslate"><span class="pre">2</span></code>.
+Any integer larger than <code class="docutils literal notranslate"><span class="pre">2</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">2</span></code>, and any integer
+less than <code class="docutils literal notranslate"><span class="pre">0</span></code> is an error. Here’s what these settings mean:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">(trace-fs</span> <span class="pre">0)</span></code></dt><dd><p>Turn stack tracing off. Return the maximum depth of the stack since
+the last time stack tracing was turned on. (If it was never turned
+on, return 0.)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">(trace-fs</span> <span class="pre">1)</span></code></dt><dd><p>Turn stack tracing on. Return <code class="docutils literal notranslate"><span class="pre">0</span></code>. Every time <code class="docutils literal notranslate"><span class="pre">push_env_frame</span></code> is
+called, print the current stack frame depth.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">(trace-fs</span> <span class="pre">2)</span></code></dt><dd><p>Turn stack tracing on. Return <code class="docutils literal notranslate"><span class="pre">0</span></code>. Every time <code class="docutils literal notranslate"><span class="pre">push_env_frame</span></code> is
+called, print a representation of the state of the stack frame as
+well as the stack frame depth.</p>
+</dd>
+</dl>
+<p>Let’s see how this works through two example functions:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>;; not tail-recursive:
+(define fact (n)
+  (if (= n 0)
+      1
+      (* n (fact (- n 1)))))
+
+;; tail-recursive:
+(define fact-iter (n r)
+  (if (= n 0)
+      r
+      (fact-iter (- n 1) (* r n))))
+</pre></div>
+</div>
+<p>If we set stack tracing to <code class="docutils literal notranslate"><span class="pre">0</span></code>, no tracing happens:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; (trace-fs 0)
+0
+&gt;&gt;&gt; (fact 10)
+3628800
+&gt;&gt;&gt; (fact-iter 10 1)
+3628800
+&gt;&gt;&gt; (trace-fs 0)
+0
+</pre></div>
+</div>
+<p>If we turn on stack tracing, look what happens:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; (trace-fs 1)
+0
+&gt;&gt;&gt; (fact 10)
+Stack frame depth: 0
+Stack frame depth: 2
+Stack frame depth: 4
+Stack frame depth: 6
+Stack frame depth: 8
+Stack frame depth: 10
+Stack frame depth: 12
+Stack frame depth: 14
+Stack frame depth: 16
+Stack frame depth: 18
+Stack frame depth: 20
+3628800
+&gt;&gt;&gt; (trace-fs 0)
+20
+</pre></div>
+</div>
+<p>The non-tail-recursive <code class="docutils literal notranslate"><span class="pre">fact</span></code> function grew the context stack to 20
+frames when executing <code class="docutils literal notranslate"><span class="pre">(fact</span> <span class="pre">10)</span></code>. If we try this with
+<code class="docutils literal notranslate"><span class="pre">(fact-iter</span> <span class="pre">10</span> <span class="pre">1)</span></code>, <strong>and if we have properly implemented tail call
+optimization</strong>, we see something very different:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; (trace-fs 1)
+0
+&gt;&gt;&gt; (fact-iter 10 1)
+Stack frame depth: 0
+Stack frame depth: 1
+Stack frame depth: 1
+Stack frame depth: 1
+Stack frame depth: 1
+Stack frame depth: 1
+Stack frame depth: 1
+Stack frame depth: 1
+Stack frame depth: 1
+Stack frame depth: 1
+Stack frame depth: 1
+3628800
+&gt;&gt;&gt; (trace-fs 0)
+1
+</pre></div>
+</div>
+<p>Note that the stack depth doesn’t grow beyond <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+<p>On the other hand, if tail call optimization is <strong>not</strong> implemented, we
+see this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; (trace-fs 1)
+0
+&gt;&gt;&gt; (fact-iter 10 1)
+Stack frame depth: 0
+Stack frame depth: 1
+Stack frame depth: 2
+Stack frame depth: 3
+Stack frame depth: 4
+Stack frame depth: 5
+Stack frame depth: 6
+Stack frame depth: 7
+Stack frame depth: 8
+Stack frame depth: 9
+Stack frame depth: 10
+3628800
+&gt;&gt;&gt; (trace-fs 0)
+10
+</pre></div>
+</div>
+<p>Now the stack is growing proportional to the size of the <code class="docutils literal notranslate"><span class="pre">n</span></code> argument.</p>
+<p>If we really want to see exactly what’s happening on the context stack,
+we should use tracing level 2, which prints out the state of the entire
+stack instead of just the depth. Let’s see it in both the
+non-tail-recursive and tail-recursive cases.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; (trace-fs 2)
+0
+&gt;&gt;&gt; (fact 3)
+Stack frame depth: 0
+
+== Frame stack ==
+
+  &lt;empty&gt;
+
+Stack frame depth: 2
+
+== Frame stack ==
+
+  ApplyFrame
+  CallEnvFrame
+
+Stack frame depth: 4
+
+== Frame stack ==
+
+  ApplyFrame
+  CallEnvFrame
+  ApplyFrame
+  CallEnvFrame
+
+Stack frame depth: 6
+
+== Frame stack ==
+
+  ApplyFrame
+  CallEnvFrame
+  ApplyFrame
+  CallEnvFrame
+  ApplyFrame
+  CallEnvFrame
+
+6
+</pre></div>
+</div>
+<p>Note the alternating <code class="docutils literal notranslate"><span class="pre">ApplyFrame</span></code>s and <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code>s on the
+stack. Compare this to the corresponding call to <code class="docutils literal notranslate"><span class="pre">fact-iter</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; (trace-fs 2)
+0
+&gt;&gt;&gt; (fact-iter 3 1)
+Stack frame depth: 0
+
+== Frame stack ==
+
+  &lt;empty&gt;
+
+Stack frame depth: 1
+
+== Frame stack ==
+
+  CallEnvFrame
+
+Stack frame depth: 1
+
+== Frame stack ==
+
+  CallEnvFrame
+
+Stack frame depth: 1
+
+== Frame stack ==
+
+  CallEnvFrame
+
+6
+</pre></div>
+</div>
+<p>On the other hand, if tail call optimization is <strong>not</strong> implemented, we
+see this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; (trace-fs 2)
+0
+&gt;&gt;&gt; (fact-iter 3 1)
+Stack frame depth: 0
+
+== Frame stack ==
+
+  &lt;empty&gt;
+
+Stack frame depth: 1
+
+== Frame stack ==
+
+  CallEnvFrame
+
+Stack frame depth: 2
+
+== Frame stack ==
+
+  CallEnvFrame
+  CallEnvFrame
+
+Stack frame depth: 3
+
+== Frame stack ==
+
+  CallEnvFrame
+  CallEnvFrame
+  CallEnvFrame
+
+6
+</pre></div>
+</div>
+<p>Note how the <code class="docutils literal notranslate"><span class="pre">CallEnvFrame</span></code>s pile up on the context stack.</p>
+<p>Using stack tracing will be very helpful in debugging tail call
+optimization. It’s also used by the test scripts.</p>
+<hr class="docutils" />
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>A tail call does not have to be recursive.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="partA_control_operators.html" class="btn btn-neutral float-left" title="Part A: Implementing control operators" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
