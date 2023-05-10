@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Part A: Finishing and extending \(\mu{\sf Scheme}\) : parsing &mdash; The CS 131 book</title>
+  <title>Part A: Finishing and extending uScheme : parsing &mdash; The CS 131 book</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="Part B: Finishing and extending \(\mu{\sf Scheme}\) : evaluation" href="partB_extending2.html" />
+    <link rel="next" title="Part B: Finishing and extending uScheme : evaluation" href="partB_extending2.html" />
     <link rel="prev" title="Debugging" href="Debugging.html" /> 
 </head>
 
@@ -55,10 +55,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../1/index.html">Assignment 1: The <em>Imp</em> language</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 2: The <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> language</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 2: The <em>uScheme</em> language</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Debugging.html">Debugging</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Part A: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : parsing</a><ul>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Part A: Finishing and extending <em>uScheme</em> : parsing</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#intermediate-representations">Intermediate representations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#implementing-simple-desugarings">1. Implementing simple desugarings</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#extending-literals">2. Extending literals</a></li>
@@ -69,10 +69,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#functions-with-variable-numbers-of-arguments">7. Functions with variable numbers of arguments</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="partB_extending2.html">Part B: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : evaluation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="partC_programming.html">Part C: Programming in extended <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="partB_extending2.html">Part B: Finishing and extending <em>uScheme</em> : evaluation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partC_programming.html">Part C: Programming in extended <em>uScheme</em></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../3/index.html">Assignment 3: The <em>uScheme+</em> language</a></li>
 </ul>
 </li>
 </ul>
@@ -92,8 +93,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Assignment 2: The <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> language</a></li>
-      <li class="breadcrumb-item active">Part A: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : parsing</li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 2: The <em>uScheme</em> language</a></li>
+      <li class="breadcrumb-item active">Part A: Finishing and extending <em>uScheme</em> : parsing</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -103,7 +104,7 @@
            <div itemprop="articleBody">
              
   <section id="part-a-finishing-and-extending-uscheme-parsing">
-<h1>Part A: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : parsing<a class="headerlink" href="#part-a-finishing-and-extending-uscheme-parsing" title="Permalink to this heading"></a></h1>
+<h1>Part A: Finishing and extending <em>uScheme</em> : parsing<a class="headerlink" href="#part-a-finishing-and-extending-uscheme-parsing" title="Permalink to this heading"></a></h1>
 <p>In this section, you will be completing the parsing of forms to IR forms
 (described below) by both implementing desugarings and adding features
 to both the AST and IR.</p>
@@ -145,7 +146,7 @@ desugaring at the level of S-expressions makes sense.
 ever implemented in a programming language
 is the one at the heart of the <a class="reference external" href="https://www.racket-lang.org/">Racket</a> family of languages.
 Check it out sometime.)</p>
-<p>However, we don’t have a macro system in <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span>,
+<p>However, we don’t have a macro system in <em>uScheme</em>,
 so we will do something more conventional:
 we will <em>not</em> desugar S-expressions,
 but instead we will convert them to AST expressions as usual,
@@ -478,7 +479,7 @@ using this desugaring:</p>
 <code class="docutils literal notranslate"><span class="pre">If</span></code> IR forms, whereas an <code class="docutils literal notranslate"><span class="pre">Or</span></code> AST form gets converted to a
 combination of <code class="docutils literal notranslate"><span class="pre">Let</span></code> and <code class="docutils literal notranslate"><span class="pre">If</span></code> forms. The <code class="docutils literal notranslate"><span class="pre">{or}</span></code> in the desugaring
 is the actual string <code class="docutils literal notranslate"><span class="pre">&quot;{or}&quot;</span></code>, which you should use as an identifier;
-this is safe because actual <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> identifiers can’t have curly
+this is safe because actual <em>uScheme</em> identifiers can’t have curly
 braces, so this synthesized identifier can’t be captured by any user
 code.</p>
 <div class="admonition note">
@@ -502,11 +503,15 @@ missing feature.) We will fix this limitation in this problem.</p>
 mutual recursion. Use this syntax:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(valrec
   [f ...]
-  [g ...])
+  [g ...]
+  ...)
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">...</span></code> parts can be arbitrary <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> expressions,
+<p>The binding expressions
+(the <code class="docutils literal notranslate"><span class="pre">...</span></code> parts following the names <code class="docutils literal notranslate"><span class="pre">f</span></code> and <code class="docutils literal notranslate"><span class="pre">g</span></code> in this case)
+can be arbitrary <em>uScheme</em> expressions,
 but are normally <code class="docutils literal notranslate"><span class="pre">lambda</span></code> expressions.
+There can be any number of bindings, but there must be at least one.
 The semantics and its implementation will be discussion in part B.</p>
 <p>An empty <code class="docutils literal notranslate"><span class="pre">valrec</span></code> form (<em>i.e.</em> <code class="docutils literal notranslate"><span class="pre">(valrec)</span></code>) should be a syntax error.
 As with <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions, all the names that are bound in a
@@ -581,19 +586,19 @@ have to be very careful what we mean by a <em>list</em>.</p>
 is applied to its actual arguments,
 whichever ones are not matched by name
 (<em>i.e.</em> whichever “extra” arguments are present)
-are converted into a <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> list (not an OCaml list!)
+are converted into a <em>uScheme</em> list (not an OCaml list!)
 and bound to the name of the rest argument
 while evaluating the body of the <code class="docutils literal notranslate"><span class="pre">lambda</span></code>.</p>
-<p>Since the environment can only bind names to <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> values,
-this list must be a single <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> value <em>i.e.</em>
-a list that can be created out of other <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> values.
+<p>Since the environment can only bind names to <em>uScheme</em> values,
+this list must be a single <em>uScheme</em> value <em>i.e.</em>
+a list that can be created out of other <em>uScheme</em> values.
 The way to build lists in any Scheme dialect is to
 create chains of pairs ending in <code class="docutils literal notranslate"><span class="pre">nil</span></code>,
 where the list elements are stored
 in the <code class="docutils literal notranslate"><span class="pre">car</span></code> (first element) of the pairs,
 and the <code class="docutils literal notranslate"><span class="pre">cdr</span></code> (second element) of each pair is the pair that
 contains the rest of the list, or <code class="docutils literal notranslate"><span class="pre">nil</span></code> if the list ends there.
-So a <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> list is a chain of <code class="docutils literal notranslate"><span class="pre">PairVal</span></code> constructors
+So a <em>uScheme</em> list is a chain of <code class="docutils literal notranslate"><span class="pre">PairVal</span></code> constructors
 ending in a <code class="docutils literal notranslate"><span class="pre">NilVal</span></code> constructor.
 The <code class="docutils literal notranslate"><span class="pre">NilVal</span></code> constructor represents the empty list
 when used by itself or the end of the list when used with pairs.</p>
@@ -613,7 +618,7 @@ expression, which can be one or more expressions
 (but not zero expressions, as mentioned above).</p>
 <p>When the first form (<code class="docutils literal notranslate"><span class="pre">(lambda</span> <span class="pre">args</span> <span class="pre">&lt;body&gt;)</span></code>) is applied to its arguments,
 those arguments are bound to the <code class="docutils literal notranslate"><span class="pre">args</span></code> formal parameter
-as a (<span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span>) list of values
+as a (<em>uScheme</em>) list of values
 (of course, the name of the formal parameter doesn’t have to be <code class="docutils literal notranslate"><span class="pre">args</span></code>).
 When the second form is applied to its arguments,
 all formal parameters before the <code class="docutils literal notranslate"><span class="pre">.</span></code> represent required arguments,
@@ -737,7 +742,7 @@ we can’t use <code class="docutils literal notranslate"><span class="pre">chec
 </pre></div>
 </div>
 <p>To test for syntax errors,
-we have a shell script that runs <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span>
+we have a shell script that runs <em>uScheme</em>
 on files containing syntax errors
 and checks for the phrase “syntax error” in the output.
 It’s crude but it works.</p>
@@ -758,7 +763,7 @@ we’ll cover those in the next section.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Debugging.html" class="btn btn-neutral float-left" title="Debugging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="partB_extending2.html" class="btn btn-neutral float-right" title="Part B: Finishing and extending \(\mu{\sf Scheme}\) : evaluation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="partB_extending2.html" class="btn btn-neutral float-right" title="Part B: Finishing and extending uScheme : evaluation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

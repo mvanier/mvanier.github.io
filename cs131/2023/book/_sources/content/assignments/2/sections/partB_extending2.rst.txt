@@ -252,3 +252,28 @@ Here is what you need to do:
 You need to modify several different files in this problem:
 ``env.ml``, ``env.mli``, ``error.ml``, ``error.mli``, and ``eval.ml``.
 
+7. Other modifications
+----------------------
+
+You need to make a trivial modification in ``uscheme.ml``
+on line 52:
+
+.. code-block:: ocaml
+
+   let scheme_basis = ""
+
+Change this to:
+
+.. code-block:: ocaml
+
+   let scheme_basis = Basis.scheme_basis
+
+This will make the interpreter load the |uscheme| "basis"
+(the built-in |uscheme| functions) when it starts.
+The reason this change wasn't already in the code
+is because, if it were there,
+the |uscheme| interpreter compiled from the unmodified code
+would crash as soon as it started.
+As is, it doesn't, so you can run |eg| syntax tests
+even if you haven't made any changes to the code.
+

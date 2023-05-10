@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Part C: Programming in extended \(\mu{\sf Scheme}\) &mdash; The CS 131 book</title>
+  <title>Part C: Programming in extended uScheme &mdash; The CS 131 book</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
@@ -24,7 +24,8 @@
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="prev" title="Part B: Finishing and extending \(\mu{\sf Scheme}\) : evaluation" href="partB_extending2.html" /> 
+    <link rel="next" title="Assignment 3: The uScheme+ language" href="../../3/index.html" />
+    <link rel="prev" title="Part B: Finishing and extending uScheme : evaluation" href="partB_extending2.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,12 +55,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../1/index.html">Assignment 1: The <em>Imp</em> language</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 2: The <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> language</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 2: The <em>uScheme</em> language</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Debugging.html">Debugging</a></li>
-<li class="toctree-l3"><a class="reference internal" href="partA_extending1.html">Part A: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : parsing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="partB_extending2.html">Part B: Finishing and extending <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> : evaluation</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Part C: Programming in extended <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="partA_extending1.html">Part A: Finishing and extending <em>uScheme</em> : parsing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partB_extending2.html">Part B: Finishing and extending <em>uScheme</em> : evaluation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Part C: Programming in extended <em>uScheme</em></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#map">1. <code class="docutils literal notranslate"><span class="pre">map</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#filter">2. <code class="docutils literal notranslate"><span class="pre">filter</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#exists">3. <code class="docutils literal notranslate"><span class="pre">exists?</span></code></a></li>
@@ -77,6 +78,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../3/index.html">Assignment 3: The <em>uScheme+</em> language</a></li>
 </ul>
 </li>
 </ul>
@@ -96,8 +98,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Assignment 2: The <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> language</a></li>
-      <li class="breadcrumb-item active">Part C: Programming in extended <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 2: The <em>uScheme</em> language</a></li>
+      <li class="breadcrumb-item active">Part C: Programming in extended <em>uScheme</em></li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -107,10 +109,10 @@
            <div itemprop="articleBody">
              
   <section id="part-c-programming-in-extended-uscheme">
-<h1>Part C: Programming in extended <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span><a class="headerlink" href="#part-c-programming-in-extended-uscheme" title="Permalink to this heading"></a></h1>
+<h1>Part C: Programming in extended <em>uScheme</em><a class="headerlink" href="#part-c-programming-in-extended-uscheme" title="Permalink to this heading"></a></h1>
 <p>Whew! If you got through parts A and B, relax. This part will be a breeze.
 <span class="raw-html">&#128512;</span></p>
-<p>In this section you will write a number of <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> functions to test
+<p>In this section you will write a number of <em>uScheme</em> functions to test
 your implementation and also to get some practice writing idiomatic
 Scheme functions. You should use the file <code class="docutils literal notranslate"><span class="pre">uscheme/tests/lab2c.scm</span></code> as
 a template file. Just delete the lines that say</p>
@@ -118,7 +120,7 @@ a template file. Just delete the lines that say</p>
 </pre></div>
 </div>
 <p>and replace them with your code.
-The unit tests are already in the file, so once you’ve compiled <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span>,
+The unit tests are already in the file, so once you’ve compiled <em>uScheme</em>,
 if you type <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> at the terminal prompt,
 it will run these tests (as well as all the other ones).
 Alternatively, to run only the tests in this file, type:</p>
@@ -131,7 +133,7 @@ the function, as documentation.</p>
 <code class="docutils literal notranslate"><span class="pre">set</span></code>, <code class="docutils literal notranslate"><span class="pre">begin</span></code> or <code class="docutils literal notranslate"><span class="pre">while</span></code> expressions (this is a requirement).</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Look at the primitive <span class="math notranslate nohighlight">\(\mu{\sf Scheme}\)</span> functions defined in <code class="docutils literal notranslate"><span class="pre">basis.ml</span></code>
+<p>Look at the primitive <em>uScheme</em> functions defined in <code class="docutils literal notranslate"><span class="pre">basis.ml</span></code>
 and make sure you understand what each one does. That will make this
 section much easier.</p>
 </div>
@@ -292,7 +294,8 @@ usually used in math books to represent function composition.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="partB_extending2.html" class="btn btn-neutral float-left" title="Part B: Finishing and extending \(\mu{\sf Scheme}\) : evaluation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="partB_extending2.html" class="btn btn-neutral float-left" title="Part B: Finishing and extending uScheme : evaluation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../3/index.html" class="btn btn-neutral float-right" title="Assignment 3: The uScheme+ language" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
