@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- <section data-background-color="#ffffd0"> -->
+          <section data-markdown>
+            <textarea data-template>
+# CS 131:<br/>Programming Languages
+## _Lecture 13_:<br/>The _Typed Imp_ Language:<br/>Operational semantics
+
+---
+## Previously
+
+* We described the forms of the _Typed Imp_ language
+
+* Essentially, exactly like the _Imp_ language,
+  but with type annotations on function arguments and function return types
+
+---
+## Today
+
+* We'll describe the operational semantics of the _Typed Imp_ type system
+
+---
+## One perspective
+
+* Looked at one way, we can think of the type system as a very simple evaluator
+
+* It takes an expression or definition (along with type annotations)
+  and outputs one of two things:
+  * "Thumbs up!" if no type errors
+  * "Thumbs down!" plus an error message if there are type errors
+
+---
+## Monomorphic _vs._ polymorphic
+
+* _Typed Imp_ has a _monomorphic_ type system
+
+* All this means is that expressions have a single type,
+  and all function arguments and return types must be of a single type
+
+---
+## Monomorphic _vs._ polymorphic
+
+* _Typed Imp_ has a _monomorphic_ type system
+
+* This actually rules out a lot of interesting cases:
+  * printing a value of an arbitrary type
+  * checking two values for equality
+  * array operations
+
+---
+## Monomorphic _vs._ polymorphic
+
+* _Typed Imp_ has a _monomorphic_ type system
+
+* Anything that would use a type variable in OCaml
+  requires a polymorphic type system
+
+---
+## Monomorphic _vs._ polymorphic
+
+* Monomorphic type systems are a good starting point:
+  it's relatively easy to write their type checkers
+
+* However, you need _some_ polymorphic operations in a language,
+  so these become extra special cases in the abstract syntax,
+  the type checker, and the evaluator
+  * Arguably, this "clutters them up"
+
+---
+## Type environments
+
+* Since type checking is a kind of evaluation,
+  it makes sense that there should be a notion of environments
+  when type checking expressions and definitions
+
+---
+## Type environments
+
+* Recall that in the _Imp_ language, we had three distinct environments:
+  * the local variable environment $\rho$
+  * the global variable environment $\xi$
+  * the global function environment $\phi$
+
+---
+## Type environments
+
+* We have the same three environments for the type environment
+* However, they store type information, not values
+* For instance, a "type binding" in $\rho$ might say
+  "the variable `x` has the type `int`"
+
+---
+## Operational semantics
+
+* The operational semantics rules of the type system are used
+  to deduce the types of expressions given the types of constituents
+  of the expressions
+
+* For the most part, the rules are quite simple (even obvious)
+  * _Much_ simpler than the operational semantics of _e.g._ _$\mu$Scheme_
+
+---
+## Type formation rules
+
+* The type system is simple; only a few kinds of values can be types
+
+&nbsp;
+
+$$
+\frac
+{
+\tau \in \{\text{UNIT}, \text{INT}, \text{BOOL}\}
+}
+{
+\tau\ \text{is a type}
+}
+$$
+
+$$
+\label{}\tag{BaseTypes}
+$$
+
+$$
+\frac
+{
+\tau\ \text{is a type}
+}
+{
+\text{ARRAY}(\tau)\ \text{is a type}
+}
+$$
+
+$$
+\label{}\tag{ArrayType}
+$$
+
+---
+## Type formation rules
+
+* _N.B._ Functions also have types, but functions are not values!
+
+---
+## Type judgments for expressions
+
+* The bottom half of each inference rule is a "type judgment"
+
+* For expressions, they have this form:
+
+$$\Large\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e : \tau$$
+
+---
+## Type judgments for expressions
+
+* The bottom half of each inference rule is a "type judgment"
+
+* These judgments use the "turnstile symbol" $\vdash$
+  * To the left of the turnstile go the type environments _e.g._ $\Gamma_\xi$
+  * To the right go some expression $e$ and its type $\tau$
+
+---
+## Expressions: literals
+
+$$
+\frac
+{}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash LITERAL(\text{UNIT}) : \text{UNIT}
+}
+$$
+
+$$
+\label{}\tag{LiteralUnit}
+$$
+
+* _N.B._ $\text{UNIT}$ is the AST version of `#u`
+
+---
+## Expressions: literals
+
+* Similarly...
+
+$$
+\frac
+{}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash LITERAL(\text{BOOL}(v)) : \text{BOOL}
+}
+$$
+
+$$
+\label{}\tag{LiteralBool}
+$$
+
+$$
+\frac
+{}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash LITERAL(\text{INT}(v)) : \text{INT}
+}
+$$
+
+$$
+\label{}\tag{LiteralInt}
+$$
+
+---
+## Expressions: variables
+
+$$
+\frac
+{x \in \text{dom}\ \Gamma_\rho}
+{\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{VAR}(x) : \Gamma_\rho(x)}
+$$
+
+$$
+\label{}\tag{FormalVar}
+$$
+
+* To find the type of a variable,
+  look it up in the local type environment $\Gamma_\rho$
+
+---
+## Expressions: variables
+
+$$
+\frac
+{x \notin \text{dom}\ \Gamma_\rho \hspace{2em} x \in \text{dom}\ \Gamma_\xi}
+{\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{VAR}(x) : \Gamma_\xi(x)}
+$$
+
+$$
+\label{}\tag{GlobalVar}
+$$
+
+* If there is no "type binding" for that variable
+  in the local type environment,
+  search the global type environment $\Gamma_\xi$
+
+* Otherwise, it's a _type error_
+
+---
+## Expressions: `set`
+
+$$
+\frac
+{
+\begin{gathered}
+x \in \text{dom}\ \Gamma_\rho
+\hspace{2em}
+\Gamma_\rho(x) = \tau
+\hspace{2em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e : \tau
+\end{gathered}
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{SET}(x, e) : \tau
+}
+$$
+
+$$
+\label{}\tag{FormalAssign}
+$$
+
+* For `set`, compute the type of the expression to set
+
+* Then look up the existing type of the variable to set
+  * in the local type environment if possible, else global
+
+---
+## Expressions: `set`
+
+$$
+\frac
+{
+\begin{gathered}
+x \notin \text{dom}\ \Gamma_\rho
+\hspace{1.5em}
+x \in \text{dom}\ \Gamma_\xi
+\hspace{1.5em}
+\Gamma_\xi(x) = \tau
+\hspace{1.5em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e : \tau
+\end{gathered}
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{SET}(x, e) : \tau
+}
+$$
+
+$$
+\label{}\tag{GlobalAssign}
+$$
+
+* For `set`, compute the type of the expression to set
+
+* Then look up the existing type of the variable to set
+  * in the local type environment if possible, else global
+
+---
+## Expressions: `set`
+
+$$
+\frac
+{
+\begin{gathered}
+x \notin \text{dom}\ \Gamma_\rho
+\hspace{1.5em}
+x \in \text{dom}\ \Gamma_\xi
+\hspace{1.5em}
+\Gamma_\xi(x) = \tau
+\hspace{1.5em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e : \tau
+\end{gathered}
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{SET}(x, e) : \tau
+}
+$$
+
+$$
+\label{}\tag{GlobalAssign}
+$$
+
+* If types are equal, entire expression has that type
+  * (It could just as well be the $\text{UNIT}$ type)
+
+* Otherwise, it's a type error
+
+---
+## Expressions: `if`
+
+&nbsp;
+
+$$
+\frac
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_1 : \text{BOOL}
+\hspace{2em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_2 : \tau
+\hspace{2em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_3 : \tau
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{IF}(e_1, e_2, e_3) : \tau
+}
+$$
+
+$$
+\label{}\tag{If}
+$$
+
+* If the test expression has type $\text{BOOL}$
+  and both "then" and "else" expressions have the same type $\tau$
+
+* Then the entire `if` expression has the type $\tau$
+
+---
+## Expressions: `while`
+
+&nbsp;
+
+$$
+\frac
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_1 : \text{BOOL}
+\hspace{2em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_2 : \tau
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{WHILE}(e_1, e_2) : \text{UNIT}
+}
+$$
+
+$$
+\label{}\tag{While}
+$$
+
+* If the test expression has type $\text{BOOL}$,
+  and the body expressions has the type $\tau$
+
+* Then entire `while` expression has type $\text{UNIT}$
+
+---
+## Expressions: `while`
+
+&nbsp;
+
+$$
+\frac
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_1 : \text{BOOL}
+\hspace{2em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_2 : \tau
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{WHILE}(e_1, e_2) : \text{UNIT}
+}
+$$
+
+$$
+\label{}\tag{While}
+$$
+
+* _N.B._ still have to compute $\tau$, even if it isn't used!
+
+* We have to know that the body _has_ a type!
+
+---
+## Expressions: `begin`
+
+&nbsp;
+
+$$
+\frac
+{}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{BEGIN}() : \text{UNIT}
+}
+$$
+
+$$
+\label{}\tag{EmptyBegin}
+$$
+
+* Empty `begin` has type $\text{UNIT}$
+
+---
+## Expressions: `begin`
+
+&nbsp;
+
+$$
+\frac
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_1 : \tau_1 
+\hspace{1em}
+\cdots 
+\hspace{1em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_n : \tau_n
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{BEGIN}(e_1, \ldots, e_n) : \tau_n
+}
+$$
+
+$$
+\label{}\tag{Begin}
+$$
+
+* For non-empty `begin`, compute all types;
+  the last one is the type of the entire `begin` expression
+
+---
+## Expressions: function application
+
+$$
+\frac
+{
+\Gamma_\phi(f\hspace{0.05em}) = \tau_1 \times \cdots \times \tau_n \rightarrow \tau
+\hspace{2em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_i : \tau_i,
+\hspace{1em}
+1 \leq i \leq n
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{APPLY}(f, e_1, \ldots, e_n) : \tau
+}
+$$
+
+$$
+\label{}\tag{Apply}
+$$
+
+* Look up type of function $\thinspace f$ in function environment $\phi$
+
+* Compute types of all function argument expressions $e_i$ to get $\tau_i$
+
+---
+## Expressions: function application
+
+$$
+\frac
+{
+\Gamma_\phi(f\hspace{0.05em}) = \tau_1 \times \cdots \times \tau_n \rightarrow \tau
+\hspace{2em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_i : \tau_i,
+\hspace{1em}
+1 \leq i \leq n
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{APPLY}(f, e_1, \ldots, e_n) : \tau
+}
+$$
+
+$$
+\label{}\tag{Apply}
+$$
+
+* If argument types match argument types of function $f$,
+  type of function application is $f$'s return type $\tau$
+
+* Otherwise, it's a type error
+
+---
+## Expressions: equality checking
+
+$$
+\frac
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_1 : \tau
+\hspace{2em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_2 : \tau
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{EQ}({e_1, e_2}) : \text{BOOL}
+}
+$$
+
+$$
+\label{}\tag{Eq}
+$$
+
+* Equality checking is inherently a type-polymorphic function
+
+* The type of `=` is $\tau\times\tau\rightarrow \text{BOOL}$
+
+---
+## Expressions: equality checking
+
+$$
+\frac
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_1 : \tau
+\hspace{2em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_2 : \tau
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{EQ}({e_1, e_2}) : \text{BOOL}
+}
+$$
+
+$$
+\label{}\tag{Eq}
+$$
+
+* However, the _Typed Imp_ type system can't express polymorphic functions
+
+* Therefore, the `=` operator
+  (and other polymorphic functions) have to be built-in
+  * special AST forms, special type checking rules, special evaluator cases
+
+---
+## Expressions: `println`
+
+$$
+\frac
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e : \tau
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{PRINTLN}(e) : \text{UNIT}
+}
+$$
+
+$$
+\label{}\tag{Println}
+$$
+
+* `println` is another polymorphic function
+
+* It should work on _any_ type of argument,<br/>
+  so it has to be hard-wired into the interpreter
+  * Can't be defined by users!
+
+---
+## Definitions: `val`
+
+$$
+\frac
+{
+\Gamma_\xi, \Gamma_\phi, \\{\\} \vdash e : \tau
+\hspace{2em}
+x \notin \text{dom}\\, \Gamma_\xi
+}
+{
+\langle \hspace{1pt} \text{VAL}(x, e), \Gamma_\xi, \Gamma_\phi \rangle 
+\rightarrow 
+\langle
+\Gamma_\xi\\{x \mapsto \tau\\}, \Gamma_\phi
+\rangle
+}
+$$
+
+$$
+\label{}\tag{NewVal}
+$$
+
+* A new global variable has the type of its expression
+  and is added to the global type environment $\xi$
+
+---
+## Definitions: `val`
+
+$$
+\frac
+{
+\Gamma_\xi, \Gamma_\phi, \{\} \vdash e : \tau
+\hspace{2em}
+\Gamma_\xi(x) = \tau
+}
+{
+\langle \hspace{1pt} \text{VAL}(x, e), \Gamma_\xi, \Gamma_\phi \rangle 
+\rightarrow 
+\langle 
+\Gamma_\xi, \Gamma_\phi
+\rangle
+}
+$$
+
+$$
+\label{}\tag{OldVal}
+$$
+
+* Redefining an old global variable must preserve the original type
+
+---
+## Definitions: `define`
+
+$$
+\small
+\frac
+{
+\begin{gathered}
+\tau_1, \ldots, \tau_n\ \text{are types} \newline
+f\\, \notin \text{dom}\\,\Gamma_\phi \newline
+\Gamma_\xi, \Gamma_\phi
+\\{f \mapsto \tau_1 \times \cdots \times \tau_n \rightarrow \tau \\},
+\\{ x_1 \mapsto \tau_1, \ldots, x_n \mapsto \tau_n \\}
+\vdash e : \tau
+\end{gathered}
+}
+{
+\begin{gathered}
+\langle 
+\text{DEFINE}(f,(\langle x_1 : \tau_1, \ldots, x_n : \tau_n \rangle, e : \tau)),
+\Gamma_\xi, \Gamma_\phi
+\rangle
+\rightarrow \newline
+\langle 
+\Gamma_\xi, \Gamma_\phi
+\\{f \mapsto \tau_1 \times \cdots \times \tau_n \rightarrow \tau \\}
+\rangle
+\end{gathered}
+}
+$$
+
+$$
+\label{}\tag{Define}
+$$
+
+* Defining a function uses type annotations provided by the programmer
+
+---
+## Definitions: `define`
+
+$$
+\small
+\frac
+{
+\begin{gathered}
+\tau_1, \ldots, \tau_n\ \text{are types} \newline
+f\\, \notin \text{dom}\\,\Gamma_\phi \newline
+\Gamma_\xi, \Gamma_\phi
+\\{f \mapsto \tau_1 \times \cdots \times \tau_n \rightarrow \tau \\},
+\\{ x_1 \mapsto \tau_1, \ldots, x_n \mapsto \tau_n \\}
+\vdash e : \tau
+\end{gathered}
+}
+{
+\begin{gathered}
+\langle 
+\text{DEFINE}(f,(\langle x_1 : \tau_1, \ldots, x_n : \tau_n \rangle, e : \tau)),
+\Gamma_\xi, \Gamma_\phi
+\rangle
+\rightarrow \newline
+\langle 
+\Gamma_\xi, \Gamma_\phi
+\\{f \mapsto \tau_1 \times \cdots \times \tau_n \rightarrow \tau \\}
+\rangle
+\end{gathered}
+}
+$$
+
+$$
+\label{}\tag{Define}
+$$
+
+* Therefore, we know the type of the function $\thinspace f$
+  will be $\tau_1 \times \cdots \times \tau_n \rightarrow \tau\thinspace$
+  if $\tau_i$ are all valid types
+
+---
+## Definitions: `define`
+
+$$
+\small
+\frac
+{
+\begin{gathered}
+\tau_1, \ldots, \tau_n\ \text{are types} \newline
+f\\, \notin \text{dom}\\,\Gamma_\phi \newline
+\Gamma_\xi, \Gamma_\phi
+\\{f \mapsto \tau_1 \times \cdots \times \tau_n \rightarrow \tau \\},
+\\{ x_1 \mapsto \tau_1, \ldots, x_n \mapsto \tau_n \\}
+\vdash e : \tau
+\end{gathered}
+}
+{
+\begin{gathered}
+\langle 
+\text{DEFINE}(f,(\langle x_1 : \tau_1, \ldots, x_n : \tau_n \rangle, e : \tau)),
+\Gamma_\xi, \Gamma_\phi
+\rangle
+\rightarrow \newline
+\langle 
+\Gamma_\xi, \Gamma_\phi
+\\{f \mapsto \tau_1 \times \cdots \times \tau_n \rightarrow \tau \\}
+\rangle
+\end{gathered}
+}
+$$
+
+$$
+\label{}\tag{Define}
+$$
+
+* We add $\thinspace f$ to the function type environment $\phi$
+  _before_ computing the return type $\tau$ to support recursive functions
+
+---
+## Definitions: `define`
+
+$$
+\frac
+{
+\begin{gathered}
+\tau_1, \ldots, \tau_n\ \text{are types} \newline
+\Gamma_\phi(f\hspace{0.05em}) = \tau_1 \times \cdots \times \tau_n \rightarrow \tau \newline
+\Gamma_\xi, \Gamma_\phi
+\\{f \mapsto \tau_1 \times \cdots \times \tau_n \rightarrow \tau \\},
+\\{ x_1 \mapsto \tau_1, \ldots, x_n \mapsto \tau_n \\}
+\vdash e : \tau
+\end{gathered}
+}
+{
+\langle 
+\text{DEFINE}(f,(\langle x_1 : \tau_1, \ldots, x_n : \tau_n \rangle, e : \tau)),
+\Gamma_\xi, \Gamma_\phi
+\rangle
+\rightarrow
+\langle 
+\Gamma_\xi, \Gamma_\phi
+\rangle
+}
+$$
+
+$$
+\label{}\tag{Redefine}
+$$
+
+* Redefining a function is the same,
+  except that we can't change the type of
+  the previously-defined version of the function
+
+---
+## Top-level expressions
+
+$$
+\frac
+{
+\Gamma_\xi, \Gamma_\phi, \{\} \vdash e : \tau
+}
+{
+\langle
+\text{EXP}(e), \Gamma_\xi, \Gamma_\phi
+\rangle
+\rightarrow
+\langle
+\Gamma_\xi, \Gamma_\phi
+\rangle
+}
+$$
+
+$$
+\label{}\tag{Exp}
+$$
+
+* A top-level expression is type-checked, but the type is ignored
+
+---
+## Arrays: checking types
+
+* Arrays need special cases in the type checker and evaluator
+
+* Type checking array types is simple:
+
+$$
+\large
+\frac
+{
+\tau\hspace{0.3em}\text{is a type}
+}
+{
+\text{ARRAY}(\tau)\hspace{0.3em}\text{is a type}
+}
+$$
+
+$$
+\label{}\tag{ArrayFormation}
+$$
+
+---
+## Arrays: making arrays
+
+&nbsp;
+
+$$
+\frac
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_1 : \text{INT}
+\hspace{2em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_2 : \tau
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash
+\text{MAKE-ARRAY}(e_1, e_2) : \text{ARRAY}(\tau)
+}
+$$
+
+$$
+\label{}\tag{MakeArray}
+$$
+
+* As long as $e_1$ is an int and $e_2$ type checks and has type $\tau$...
+
+* ...then `(make_array $e_1$ $e_2$)`
+  also type checks and has type $\text{ARRAY}(\tau)$
+
+---
+## Arrays: accessing
+
+&nbsp;
+
+$$
+\frac
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_1 : \text{ARRAY}(\tau)
+\hspace{2em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_2 : \text{INT}
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{ARRAY-AT}(e_1, e_2) : \tau
+}
+$$
+
+$$
+\label{}\tag{ArrayAt}
+$$
+
+* Type checking accessing array elements is also simple
+
+---
+## Arrays: mutating
+
+&nbsp;
+
+$$
+\small
+\frac
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_1 : \text{ARRAY}(\tau)
+\hspace{2em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_2 : \text{INT}
+\hspace{2em}
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_3 : \tau
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{ARRAY-PUT}(e_1, e_2, e_3) : \tau
+}
+$$
+
+$$
+\label{}\tag{ArrayPut}
+$$
+
+* Type checking mutating array elements is also simple
+* (Return type could also be $\text{UNIT}$)
+
+---
+## Arrays: size
+
+$$
+\frac
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash
+e : \text{ARRAY}(\tau)
+}
+{
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash
+\text{ARRAY-SIZE}(e) : \text{INT}
+}
+$$
+
+$$
+\label{}\tag{ArraySize}
+$$
+
+* And type checking finding the size of an array is _really_ simple
+  (it's always $\text{INT}$)
+
+---
+## Next time
+
+* We'll start digging into the _Typed Imp_ source code
+
+            </textarea>
+          </section>
+      </div>
+    </div>
+    <script src="plugin/math/math.js"></script>
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <!-- Uncomment if you want syntax highlighting. -->
+    <!--
+    <link rel="stylesheet" href="plugin/highlight/arduino-light.css">
+    -->
+    <style>
+/* MCV: My new reveal.js styles. */
+
+.reveal {
+  font-family: "Arial", sans-serif;
+  font-size: 28pt;
+  font-weight: normal;
+  color: #000; 
+}
+
+.reveal .slide-number {
+  background: white;
+  /* border: 1px solid black; */
+}
+
+.reveal .slide-number-a {
+  background: white;
+  color: black;
+  font-size: 24px;
+}
+
+.reveal .slides h1 {
+  text-align: center;
+  text-transform: none;
+  padding: 150px 0 20px 0;
+  font-size: 64pt;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif;
+  font-weight: normal;
+  color: #4f271c;
+  background: #d0d0f0;
+  margin-bottom: 0.5em;
+}
+
+.reveal h2 { 
+  text-transform: none;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif !important;
+  /* text-shadow: 2px 2px 3px #a0a0a0; */
+  color: #4f271c !important;
+  font-size: 60pt !important;
+  font-weight: normal !important;
+  /* background: #d0d0d0; */
+  width: 80% !important;
+  margin-left: 10%;
+}
+
+/* First level bullet color. */
+.reveal .slides ul li::marker {
+  color: #3891a7;
+}
+
+/* Second level bullet spacing. */
+.reveal .slides ul li ul {
+  margin-top: 0px;
+}
+
+.reveal .slides li {
+  margin-top: 10px;
+}
+
+/* Second level bullet color. */
+.reveal .slides ul li ul li::marker {
+  color: #3891a7;
+}
+
+.reveal li {
+  font-size: 36pt !important;
+}
+
+.reveal .smaller li {
+  font-size: 32pt !important;
+}
+
+.reveal li ul li {
+  font-size: 32pt !important;
+}
+
+.reveal li .smaller ul li {
+  font-size: 28pt !important;
+}
+
+.reveal ul {
+  width: 80% !important;
+  text-align: left !important;
+}
+
+.reveal code em {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal em code {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal code .comment {
+  color: #cc44cc !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+.reveal blockquote {
+  text-align: left !important;
+  color: #668888 !important;
+}
+
+.katex-display > .katex {
+  color: #0040b0 !important;
+}
+
+.katex-display > .katex > .katex-html > .tag {
+  color: #808080 !important;
+  margin-right: 100px !important;
+}
+
+.katex > .katex-html {
+  color: #0040b0 !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.katex {
+  font-size: 1.1em !important;
+}
+
+.reveal pre {
+  margin-left: 200px !important;
+  width: 75% !important;
+  font-size: 24pt !important;
+}
+
+.reveal pre.smaller {
+  font-size: 20pt !important;
+}
+
+.reveal code {
+  color: #0040b0 !important;
+  font-size: 90%;
+}
+
+.reveal pre code {
+  /* max vertical size of code block */
+  max-height: 700px !important;
+}
+
+.reveal li ul li code {
+  font-size: 80%;
+}
+
+    </style>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        katex: {
+          version: 'latest',
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            "\\eqref": "\\href{###1}{(\\text{#1})}",
+            "\\ref": "\\href{###1}{\\text{#1}}",
+            "\\label": "\\htmlId{#1}{}",
+          },
+        },
+        plugins: [ 
+          RevealMarkdown,
+          // RevealHighlight,
+          RevealMath.KaTeX,
+        ],
+        center: false,
+        controls: false,
+        disableLayout: false,  // set to true to use custom CSS for layout
+        showSlideNumber: 'all',
+        slideNumber: true,
+        transition: 'none',
+        width: 1280,
+        height: 800,
+      });
+    </script>
+  </body>
+</html>
