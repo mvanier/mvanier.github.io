@@ -260,7 +260,7 @@ x \in \text{dom}\ \Gamma_\rho
 \end{gathered}
 }
 {
-\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{SET}(x, e) : \tau
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{SET}(x, e) : \text{UNIT}
 }
 $$
 
@@ -290,7 +290,7 @@ x \in \text{dom}\ \Gamma_\xi
 \end{gathered}
 }
 {
-\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{SET}(x, e) : \tau
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{SET}(x, e) : \text{UNIT}
 }
 $$
 
@@ -320,7 +320,7 @@ x \in \text{dom}\ \Gamma_\xi
 \end{gathered}
 }
 {
-\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{SET}(x, e) : \tau
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{SET}(x, e) : \text{UNIT}
 }
 $$
 
@@ -328,8 +328,7 @@ $$
 \label{}\tag{GlobalAssign}
 $$
 
-* If types are equal, entire expression has that type
-  * (It could just as well be the $\text{UNIT}$ type)
+* If types are equal, entire expression has the $\text{UNIT}$ type
 
 * Otherwise, it's a type error
 
@@ -892,7 +891,8 @@ $$
 \Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e_3 : \tau
 }
 {
-\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{ARRAY-PUT}(e_1, e_2, e_3) : \tau
+\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash \text{ARRAY-PUT}(e_1, e_2, e_3)
+: \text{UNIT}
 }
 $$
 
@@ -901,7 +901,6 @@ $$
 $$
 
 * Type checking mutating array elements is also simple
-* (Return type could also be $\text{UNIT}$)
 
 ---
 ## Arrays: size
