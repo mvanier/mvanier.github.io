@@ -24,7 +24,7 @@
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="Part A: Implementing control operators" href="partA_control_operators.html" />
+    <link rel="next" title="Part A: Implementing arrays" href="partA_implementing_arrays.html" />
     <link rel="prev" title="Preamble" href="Preamble.html" /> 
 </head>
 
@@ -56,14 +56,15 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../1/index.html">Assignment 1: The <em>Imp</em> language</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../2/index.html">Assignment 2: The <em>uScheme</em> language</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 3: The <em>uScheme+</em> language</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../3/index.html">Assignment 3: The <em>uScheme+</em> language</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 4: The <em>Typed Imp</em> language</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="partA_control_operators.html">Part A: Implementing control operators</a></li>
-<li class="toctree-l3"><a class="reference internal" href="partB_tail_calls.html">Part B: Implementing tail call optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partA_implementing_arrays.html">Part A: Implementing arrays</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partB_implementing_local_variables.html">Part B: Implementing local variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partC_functions_with_arrays_and_locals.html">Part C: Writing functions using arrays and locals</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../4/index.html">Assignment 4: The <em>Typed Imp</em> language</a></li>
 </ul>
 </li>
 </ul>
@@ -83,7 +84,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Assignment 3: The <em>uScheme+</em> language</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 4: The <em>Typed Imp</em> language</a></li>
       <li class="breadcrumb-item active">Overview</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -95,26 +96,18 @@
              
   <section id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h1>
-<p>The theme of this assignment is “control operators”. In part A, you will
-be implementing the control operators that we have described in class,
-specifically:</p>
+<p>The theme of this assignment is “type checking”. In part A, you will be
+implementing the array operations we have discussed in class (both the
+type checking code and the evaluation code). Specifically, you’ll be
+implementing:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">break</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">continue</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">return</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">throw</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">try-catch</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make-array</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">array-at</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">array-put</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">array-size</span></code></p></li>
 </ul>
-<p>In part B, you will implement tail call optimization, which is a
-fundamental technique in functional programming languages (it’s what
-allows us to use recursion for loops).</p>
-<p>What we <em>won’t</em> do in this assignment is make you write code in
-<em>uScheme+</em>. The reason for this is that control operators don’t lend
-themselves to writing new and exciting kinds of code, unlike (say) the
-addition of first-class functions in μScheme. Mostly, control operators
-are useful for specific tasks, and you know when you need one. Instead,
-we are providing you with test scripts that exercise all the features we
-want you to implement.</p>
+<p>In part B, you will add typed local variables to the language.</p>
+<p>In part C, you’ll write some functions using the new features.</p>
 </section>
 
 
@@ -122,7 +115,7 @@ want you to implement.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Preamble.html" class="btn btn-neutral float-left" title="Preamble" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="partA_control_operators.html" class="btn btn-neutral float-right" title="Part A: Implementing control operators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="partA_implementing_arrays.html" class="btn btn-neutral float-right" title="Part A: Implementing arrays" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

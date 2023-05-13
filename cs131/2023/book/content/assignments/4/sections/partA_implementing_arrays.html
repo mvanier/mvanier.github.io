@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Part A: Implementing arrays &mdash; The CS 131 book</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../_static/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Part B: Implementing local variables" href="partB_implementing_local_variables.html" />
+    <link rel="prev" title="Overview" href="Overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            The CS 131 book, Spring 2023
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Software.html">Installing the course software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lectures.html">Lectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../1/index.html">Assignment 1: The <em>Imp</em> language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2/index.html">Assignment 2: The <em>uScheme</em> language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3/index.html">Assignment 3: The <em>uScheme+</em> language</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 4: The <em>Typed Imp</em> language</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Overview.html">Overview</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Part A: Implementing arrays</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#array-forms">Array forms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-syntactic-support-for-arrays">1. Adding syntactic support for arrays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-array-values">2. Adding array values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-array-related-error-conditions">3. Adding array-related error conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-type-checking-code-for-array-forms">4. Adding type checking code for array forms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-evaluator-code-for-array-forms">5. Adding evaluator code for array forms</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="partB_implementing_local_variables.html">Part B: Implementing local variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partC_functions_with_arrays_and_locals.html">Part C: Writing functions using arrays and locals</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The CS 131 book, Spring 2023</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 4: The <em>Typed Imp</em> language</a></li>
+      <li class="breadcrumb-item active">Part A: Implementing arrays</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="part-a-implementing-arrays">
+<h1>Part A: Implementing arrays<a class="headerlink" href="#part-a-implementing-arrays" title="Permalink to this heading"></a></h1>
+<p>Implementing arrays naturally divides into several steps, which we
+describe below.</p>
+<section id="array-forms">
+<h2>Array forms<a class="headerlink" href="#array-forms" title="Permalink to this heading"></a></h2>
+<p>Here are the array forms you’ll be implementing:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">make-array</span></code></p>
+<blockquote>
+<div><p>This takes two arguments: an integer (representing the length of the
+resulting array) and a value, and creates an array of the given
+length where each element equals the value. <em>Note</em>: if the value
+being replicated into the array is itself an array, you are not
+required to make unique copies of the value; it’s OK to just do a
+reference copy. Making unique copies is desirable but tricky. If you
+do want to attempt it, you may find the <code class="docutils literal notranslate"><span class="pre">Array.init</span></code> function to be
+helpful, and we suggest that you define a <code class="docutils literal notranslate"><span class="pre">deepcopy</span></code> function that
+computes a deep copy of a <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">array-at</span></code></p>
+<blockquote>
+<div><p>This takes two arguments: an array and an integer index. It returns
+the element at the index. If the index is out of range, an
+<code class="docutils literal notranslate"><span class="pre">IndexError</span></code> is raised using the <code class="docutils literal notranslate"><span class="pre">index_err</span></code> function you will
+define below.</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">array-put</span></code></p>
+<blockquote>
+<div><p>This takes three arguments: an array, an integer index, and a value.
+It sets the element at the given index of the array to the value. If
+the index is out of range, an <code class="docutils literal notranslate"><span class="pre">IndexError</span></code> is raised using the
+<code class="docutils literal notranslate"><span class="pre">index_err</span></code> function you will define below.
+<code class="docutils literal notranslate"><span class="pre">array-put</span></code> returns a unit value (<code class="docutils literal notranslate"><span class="pre">#u</span></code>).</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">array-size</span></code></p>
+<blockquote>
+<div><p>This takes one argument (an array), and returns the length of the
+array.</p>
+</div></blockquote>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We call these “forms” instead of “functions” because they are
+language constructs, even though they are effectively built-in
+functions. They can’t be defined as functions in the language because
+of the limitations of the <em>Typed Imp</em> type system, as we’ve described
+(all of these are <em>polymorphic</em> operations, which means they can act
+on more than one type).</p>
+</div>
+</section>
+<section id="adding-syntactic-support-for-arrays">
+<h2>1. Adding syntactic support for arrays<a class="headerlink" href="#adding-syntactic-support-for-arrays" title="Permalink to this heading"></a></h2>
+<p>Files to edit:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ast.ml</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ast.mli</span></code></p></li>
+</ul>
+<p>You will need to modify the abstract syntax types <code class="docutils literal notranslate"><span class="pre">imp_type</span></code> and
+<code class="docutils literal notranslate"><span class="pre">exp</span></code> to incorporate the array forms. Here are the modifications:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">imp_type</span></code> gets another constructor <code class="docutils literal notranslate"><span class="pre">ArrayType</span> <span class="pre">of</span> <span class="pre">imp_type</span></code> which
+represents all array types.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exp</span></code> gets new constructors
+<code class="docutils literal notranslate"><span class="pre">ArrayMake</span></code>, <code class="docutils literal notranslate"><span class="pre">ArrayAt</span></code>, <code class="docutils literal notranslate"><span class="pre">ArrayPut</span></code>, and <code class="docutils literal notranslate"><span class="pre">ArraySize</span></code>,
+corresponding to the expressions
+<code class="docutils literal notranslate"><span class="pre">make-array</span></code>, <code class="docutils literal notranslate"><span class="pre">array-at</span></code>, <code class="docutils literal notranslate"><span class="pre">array-put</span></code>, and <code class="docutils literal notranslate"><span class="pre">array-size</span></code>.
+Each constructor gets a <code class="docutils literal notranslate"><span class="pre">loc</span></code> field and
+however many <code class="docutils literal notranslate"><span class="pre">exp</span></code> fields are needed.
+Note that the non-<code class="docutils literal notranslate"><span class="pre">loc</span></code> arguments of the form are all expressions,
+and not <em>e.g.</em> integers,
+even if the expression needs to evaluate to an integer.</p></li>
+</ul>
+<p>While you’re at it, make sure you update the <code class="docutils literal notranslate"><span class="pre">loc_of_exp</span></code> function so
+it works for array forms too. (The compiler will remind you if you
+forget.)</p>
+<p>Then you will have to modify the code that converts from S-expressions
+to AST forms. Here are the steps:</p>
+<ul class="simple">
+<li><p>Add the names of the array forms (<code class="docutils literal notranslate"><span class="pre">make-array</span></code>, <code class="docutils literal notranslate"><span class="pre">array-at</span></code>,
+<code class="docutils literal notranslate"><span class="pre">array-put</span></code>, and <code class="docutils literal notranslate"><span class="pre">array-size</span></code>) to the <code class="docutils literal notranslate"><span class="pre">keywords</span></code> list. Also add
+the type constructor name <code class="docutils literal notranslate"><span class="pre">array</span></code> to the <code class="docutils literal notranslate"><span class="pre">reserved_ids</span></code> list.</p></li>
+<li><p>Modify the <code class="docutils literal notranslate"><span class="pre">parse_expr</span></code> function to correctly parse all four array
+forms. Note that an array form with the wrong number of
+subexpressions should result in a syntax error. Use the other forms
+handled by the function as models.</p></li>
+<li><p>Modify the <code class="docutils literal notranslate"><span class="pre">parse_type</span></code> function to correctly parse array types
+(<em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">(array</span> <span class="pre">int)</span></code> or <code class="docutils literal notranslate"><span class="pre">(array</span> <span class="pre">(array</span> <span class="pre">bool))</span></code>).</p></li>
+</ul>
+</section>
+<section id="adding-array-values">
+<h2>2. Adding array values<a class="headerlink" href="#adding-array-values" title="Permalink to this heading"></a></h2>
+<p>Files to edit:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">value.ml</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value.mli</span></code></p></li>
+</ul>
+<p>Modify the <code class="docutils literal notranslate"><span class="pre">value</span></code> type by adding the array constructor:
+<code class="docutils literal notranslate"><span class="pre">Array</span> <span class="pre">of</span> <span class="pre">value</span> <span class="pre">array</span></code>. Also modify the <code class="docutils literal notranslate"><span class="pre">string_of_value</span></code> function
+so that it works for arrays as well. The string representation for an
+array puts the array values inside a pair of square brackets. For
+instance:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ ./typed_imp
+&gt;&gt;&gt; (make-array 10 0)
+[0 0 0 0 0 0 0 0 0 0] : (array int)
+</pre></div>
+</div>
+<p>Here, the string representation of the array is
+<code class="docutils literal notranslate"><span class="pre">[0</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">0]</span></code>. The <code class="docutils literal notranslate"><span class="pre">(array</span> <span class="pre">int)</span></code> part is the string
+representation of the array type, which we’ll get to below.</p>
+<p>Also modify the function <code class="docutils literal notranslate"><span class="pre">equal_values</span></code> so that it works for arrays as
+well. The algorithm for array equality is simple: two arrays are equal
+if they have the same length and if each of the corresponding elements
+are equal in the <code class="docutils literal notranslate"><span class="pre">equal_values</span></code> sense. You will probably want to make
+the <code class="docutils literal notranslate"><span class="pre">equal_values</span></code> function recursive.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not implement the <code class="docutils literal notranslate"><span class="pre">equal_values</span></code> function just by using the
+<code class="docutils literal notranslate"><span class="pre">=</span></code> operator even though equality is polymorphic in OCaml.
+<code class="docutils literal notranslate"><span class="pre">equal_values</span></code> needs to check that the types of the two values are
+the same, even though the type checker should catch it if they
+aren’t. So if <code class="docutils literal notranslate"><span class="pre">equal_values</span></code> is ever called with two arguments
+which aren’t of the same type, there is a bug in the type checker and
+the <code class="docutils literal notranslate"><span class="pre">BugInTypeChecker</span></code> error must be raised (using the
+<code class="docutils literal notranslate"><span class="pre">Error.bug_in_type_checker</span></code> function).</p>
+</div>
+</section>
+<section id="adding-array-related-error-conditions">
+<h2>3. Adding array-related error conditions<a class="headerlink" href="#adding-array-related-error-conditions" title="Permalink to this heading"></a></h2>
+<p>Files to edit:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">error.ml</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">error.mli</span></code></p></li>
+</ul>
+<p>When your programming language supports arrays, there is always the
+chance that a program will try to access or modify array elements whose
+index is outside the range of allowable indices. Our arrays have indices
+that start at 0 and go up to one less than the length of the array;
+anything outside that range can’t be accessed. Modify the <code class="docutils literal notranslate"><span class="pre">error_tag</span></code>
+type in <code class="docutils literal notranslate"><span class="pre">error.ml</span></code> by adding this constructor: <code class="docutils literal notranslate"><span class="pre">IndexError</span> <span class="pre">of</span> <span class="pre">int</span></code>.
+This represents an invalid access/modification, and the argument is the
+invalid integer index. Since we don’t want other modules to have to use
+this type directly, add a new function <code class="docutils literal notranslate"><span class="pre">index_err</span></code> which is modeled
+after the other <code class="docutils literal notranslate"><span class="pre">XXX_err</span></code> functions in the <code class="docutils literal notranslate"><span class="pre">Error</span></code> module. This
+function takes a source code location and an <code class="docutils literal notranslate"><span class="pre">int</span></code> and raises an
+<code class="docutils literal notranslate"><span class="pre">Imp_err</span></code> exception corresponding to an <code class="docutils literal notranslate"><span class="pre">IndexError</span></code>. Also modify
+the <code class="docutils literal notranslate"><span class="pre">print_err</span></code> function so it also works on <code class="docutils literal notranslate"><span class="pre">IndexError</span></code>s.</p>
+</section>
+<section id="adding-type-checking-code-for-array-forms">
+<h2>4. Adding type checking code for array forms<a class="headerlink" href="#adding-type-checking-code-for-array-forms" title="Permalink to this heading"></a></h2>
+<p>File to edit:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">typecheck.ml</span></code></p></li>
+</ul>
+<p>First, do a couple of simple things. Modify the <code class="docutils literal notranslate"><span class="pre">string_of_type</span></code>
+function so it converts array types to strings too. Modify the <code class="docutils literal notranslate"><span class="pre">ty_eq</span></code>
+function so it works on array types too.</p>
+<p>Now modify the type-checking code in <code class="docutils literal notranslate"><span class="pre">typecheck_expr</span></code> to work on all
+four array forms. Use the operational semantics from lecture 13 as your
+guide. This code is very straightforward to write. Make sure all
+arguments to each form are typechecked, and make sure that arguments
+with expected types (<em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">int</span></code>) do in fact have those types. Again,
+use the existing code as a model. Make sure each form returns the
+correct type.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The return type of <code class="docutils literal notranslate"><span class="pre">array-put</span></code> was the same as the type of the
+array elements in previous versions of this course, but has been
+changed to be <code class="docutils literal notranslate"><span class="pre">unit</span></code>, which is more reasonable.</p>
+</div>
+</section>
+<section id="adding-evaluator-code-for-array-forms">
+<h2>5. Adding evaluator code for array forms<a class="headerlink" href="#adding-evaluator-code-for-array-forms" title="Permalink to this heading"></a></h2>
+<p>File to edit:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">eval.ml</span></code></p></li>
+</ul>
+<p>First of all, note that the arguments to the array forms are often
+required to be either arrays or integers. If type checking has been
+successful, the expressions in these positions will always have the
+right types. However, if the type checker has bugs, they may not. Even
+if they do have the right types, you still have to extract the array or
+integer from a <code class="docutils literal notranslate"><span class="pre">value</span></code>. Write two functions called <code class="docutils literal notranslate"><span class="pre">to_int</span></code> and
+<code class="docutils literal notranslate"><span class="pre">to_array</span></code> which each take two arguments (a code location and a
+<code class="docutils literal notranslate"><span class="pre">value</span></code>) and return an <code class="docutils literal notranslate"><span class="pre">int</span></code> or an array, respectively. If they
+can’t convert the argument to the right type, they should raise an
+exception using the <code class="docutils literal notranslate"><span class="pre">Error.bug_in_type_checker</span></code> function.</p>
+<p>Once this is done, extend the <code class="docutils literal notranslate"><span class="pre">eval_expr</span></code> function with cases
+for the array constructors
+(<code class="docutils literal notranslate"><span class="pre">ArrayMake</span></code>, <code class="docutils literal notranslate"><span class="pre">ArrayAt</span></code>, <code class="docutils literal notranslate"><span class="pre">ArrayPut</span></code>, <code class="docutils literal notranslate"><span class="pre">ArraySize</span></code>),
+so that they implement the semantics described above.
+When an argument needs to be an array or an integer,
+use the <code class="docutils literal notranslate"><span class="pre">to_array</span></code> or <code class="docutils literal notranslate"><span class="pre">to_int</span></code> function, respectively.
+Make sure to update environments after evaluating each subexpression;
+remember that a subexpression can contain <code class="docutils literal notranslate"><span class="pre">set</span></code> expressions
+that mutate the environment.
+Catch array-out-of-bounds errors when they can occur
+and use <code class="docutils literal notranslate"><span class="pre">Error.index_err</span></code> to raise the corresponding exception.
+You’ll find all the functions you need to implement array functionality
+in the OCaml <code class="docutils literal notranslate"><span class="pre">Array</span></code> module.
+Make sure the return value of <code class="docutils literal notranslate"><span class="pre">ArrayPut</span></code> is <code class="docutils literal notranslate"><span class="pre">#u</span></code>.</p>
+<p>Once all of these features have been implemented, all of the test
+scripts except for <code class="docutils literal notranslate"><span class="pre">locals</span></code> and <code class="docutils literal notranslate"><span class="pre">lab4</span></code> should work. Implementing
+local variables is the topic of the next section.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Overview.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="partB_implementing_local_variables.html" class="btn btn-neutral float-right" title="Part B: Implementing local variables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

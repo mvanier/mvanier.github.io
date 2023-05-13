@@ -24,8 +24,8 @@
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="Debugging" href="Debugging.html" />
-    <link rel="prev" title="Assignment 2: The uScheme language" href="../index.html" /> 
+    <link rel="next" title="Overview" href="Overview.html" />
+    <link rel="prev" title="Assignment 4: The Typed Imp language" href="../index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,7 +55,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../1/index.html">Assignment 1: The <em>Imp</em> language</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 2: The <em>uScheme</em> language</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../2/index.html">Assignment 2: The <em>uScheme</em> language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3/index.html">Assignment 3: The <em>uScheme+</em> language</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 4: The <em>Typed Imp</em> language</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Preamble</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#due-date">Due date</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#coverage">Coverage</a></li>
@@ -63,14 +65,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#what-to-hand-in">What to hand in</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="Debugging.html">Debugging</a></li>
-<li class="toctree-l3"><a class="reference internal" href="partA_extending1.html">Part A: Finishing and extending <em>uScheme</em> : parsing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="partB_extending2.html">Part B: Finishing and extending <em>uScheme</em> : evaluation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="partC_programming.html">Part C: Programming in extended <em>uScheme</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Overview.html">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partA_implementing_arrays.html">Part A: Implementing arrays</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partB_implementing_local_variables.html">Part B: Implementing local variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partC_functions_with_arrays_and_locals.html">Part C: Writing functions using arrays and locals</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../3/index.html">Assignment 3: The <em>uScheme+</em> language</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../4/index.html">Assignment 4: The <em>Typed Imp</em> language</a></li>
 </ul>
 </li>
 </ul>
@@ -90,7 +90,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Assignment 2: The <em>uScheme</em> language</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 4: The <em>Typed Imp</em> language</a></li>
       <li class="breadcrumb-item active">Preamble</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -104,62 +104,59 @@
 <h1>Preamble<a class="headerlink" href="#preamble" title="Permalink to this heading"></a></h1>
 <section id="due-date">
 <h2>Due date<a class="headerlink" href="#due-date" title="Permalink to this heading"></a></h2>
-<p>This assignment is due on Friday, May 5th at 2 AM.</p>
+<p>This assignment is due on Friday, May 19th at 2 AM.</p>
 </section>
 <section id="coverage">
 <h2>Coverage<a class="headerlink" href="#coverage" title="Permalink to this heading"></a></h2>
-<p>This assignment covers the material up to lecture 7.</p>
+<p>This assignment covers the material up to lecture 14.</p>
 </section>
 <section id="code-base">
 <h2>Code base<a class="headerlink" href="#code-base" title="Permalink to this heading"></a></h2>
-<p>We are supplying you with a zip file called <code class="docutils literal notranslate"><span class="pre">uscheme.zip</span></code>. It contains two
-subdirectories: <code class="docutils literal notranslate"><span class="pre">sexpr</span></code> and <code class="docutils literal notranslate"><span class="pre">uscheme</span></code>. The <code class="docutils literal notranslate"><span class="pre">sexpr</span></code> subdirectory contains
-the code to parse S-expressions from strings and files. The <code class="docutils literal notranslate"><span class="pre">uscheme</span></code>
-subdirectory contains the base implementation of the <code class="docutils literal notranslate"><span class="pre">uscheme</span></code> language,
-which (unlike <em>Imp</em>) is spread over a number of files. You should unzip the
-file in a directory and do the following:</p>
+<p>We are supplying you with a zip file called <code class="docutils literal notranslate"><span class="pre">lab4.zip</span></code>.
+It contains two subdirectories: <code class="docutils literal notranslate"><span class="pre">sexpr</span></code> and <code class="docutils literal notranslate"><span class="pre">typed_imp</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">sexpr</span></code> subdirectory contains the code
+to parse S-expressions from strings and files.
+The <code class="docutils literal notranslate"><span class="pre">typed_imp</span></code> subdirectory contains the base implementation
+of the <em>Typed Imp</em> language,
+as well as test scripts in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> subdirectory.
+You should unzip the file in a directory and do the following:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">cd</span></code> into the <code class="docutils literal notranslate"><span class="pre">sexpr</span></code> subdirectory and run <code class="docutils literal notranslate"><span class="pre">make</span></code>.</p></li>
-<li><p>Then <code class="docutils literal notranslate"><span class="pre">cd</span></code> into the <code class="docutils literal notranslate"><span class="pre">uscheme</span></code> subdirectory and run <code class="docutils literal notranslate"><span class="pre">make</span></code>.</p></li>
+<li><p>Then <code class="docutils literal notranslate"><span class="pre">cd</span></code> into the <code class="docutils literal notranslate"><span class="pre">typed_imp</span></code> subdirectory and run <code class="docutils literal notranslate"><span class="pre">make</span></code>.</p></li>
 </ul>
-<p>If all goes well, this should create the <code class="docutils literal notranslate"><span class="pre">uscheme</span></code> executable, which
+<p>If all goes well, this should create the <code class="docutils literal notranslate"><span class="pre">typed_imp</span></code> executable, which
 you can run as follows:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="o">./</span><span class="n">uscheme</span>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="o">./</span><span class="n">typed_imp</span>
 </pre></div>
 </div>
-<p>If you’ve installed <code class="docutils literal notranslate"><span class="pre">rlwrap</span></code> (see the last assignment), you should run it
-like this:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">rlwrap</span> <span class="o">./</span><span class="n">uscheme</span>
-</pre></div>
-</div>
-<p>That way you will get nice line-editing features.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The version of <code class="docutils literal notranslate"><span class="pre">uscheme</span></code> we supply you with is unfinished.
-If you run it, it will start up but you won’t be able to do much
-until you add a few missing features.
-The sections below describe what you have to do.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This version of <code class="docutils literal notranslate"><span class="pre">typed_imp</span></code> (compiled from the code we supply
+you with) is unfinished, but it will still run. However, it will not
+pass all the tests. The following sections describe what you have to do
+to complete it.</p>
 </div>
 </section>
 <section id="what-to-hand-in">
 <h2>What to hand in<a class="headerlink" href="#what-to-hand-in" title="Permalink to this heading"></a></h2>
-<p>You will hand in these files:</p>
+<p>For this assignment, you will need to modify the following files from
+the supplied code:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ast.mli</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ast.ml</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ir.mli</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ir.ml</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">env.mli</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">env.ml</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">error.mli</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ast.mli</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">error.ml</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">quote.ml</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">error.mli</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value.ml</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value.mli</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">typecheck.ml</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">eval.ml</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">basis.ml</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">uscheme.ml</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">booleans.scm</span></code>  (from the <code class="docutils literal notranslate"><span class="pre">tests</span></code> subdirectory)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lab2c.scm</span></code>  (from the <code class="docutils literal notranslate"><span class="pre">tests</span></code> subdirectory)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tests/lab4.timp</span></code></p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please do not modify or submit any other files!</p>
+</div>
+<p>Submit these files as the CodePost assignment named <code class="docutils literal notranslate"><span class="pre">Assignment</span> <span class="pre">4</span></code>.</p>
 </section>
 </section>
 
@@ -167,8 +164,8 @@ The sections below describe what you have to do.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../index.html" class="btn btn-neutral float-left" title="Assignment 2: The uScheme language" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Debugging.html" class="btn btn-neutral float-right" title="Debugging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="Assignment 4: The Typed Imp language" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Overview.html" class="btn btn-neutral float-right" title="Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
