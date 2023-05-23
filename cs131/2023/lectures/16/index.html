@@ -66,8 +66,10 @@
 ---
 ## `forall` types and type variables
 
-* We also refer to these types as "universally-quantified types",
-  "quantified types", or just "polymorphic types" for short
+* We also refer to these types as
+  * "universally-quantified types"
+  * "quantified types"
+  * or just "polymorphic types" for short
 
 ---
 ## `forall` types and type variables
@@ -243,6 +245,9 @@
 * We saw in _Typed Imp_ that adding a new polymorphic type (arrays)
   required changes to the abstract syntax of the language
   and new type formation rules
+---
+## Kinds
+
 * That approach is not scalable;
   there are potentially an unbound number of new polymorphic types
   we might want to add
@@ -365,7 +370,7 @@ $$
 * That's it!
 
 ---
-## Kind Environment
+## Kind formation rules
 
 * Actually, these kind formation rules are more general than we will need
 
@@ -373,20 +378,87 @@ $$
   the function kinds will always have arguments and types that have kind `*`
 
 ---
-## Kind Environment
+## Review: environments
 
-* To determine which type constructors have which kinds,
-  we define a "kind environment",
-  which we represent symbolically as `$\Delta$`
+* Before we go further, we should review the notion of *environment*
+
+* We already have two environments:
+  * value environment (for evaluation)
+  * type environment (for type checking)
+
+* ... and we are going to add a third:
+  * a kind environment
+
+---
+## Value environment
+
+* The "value environment" is the same as the environment used in an
+  untyped language like _$\mu$Scheme_
+
+* It consists of bindings between *variable names* and *values*
+
+* It's used by the evaluator to assign *values* to *expressions*
+  being evaluated
+
+---
+## Value environment
+
+* (Note that _Typed $\mu$Scheme_ uses only a single value environment; 
+  it doesn't split them into three parts like _Typed Imp_)
+
+---
+## Type environment
+
+* Like _Typed Imp_, _Typed $\mu$Scheme_ will also have a _type environment_
+  * represented in equations by the symbol $\Gamma$
+
+* It consists of bindings between *variable names* and *types*
+
+* It's used by the type checker to assign *types* to *expressions*
+  being type-checked
+
+---
+## Kind environment
+
+* OK, so what the heck is a *kind environment*?
+
+* It consists of bindings between "type names" and *kinds*
+
+* It's used by a "kind checker" to assign *kinds* to *types*
+  during type checking
+
+---
+## Kind environment
+
+* One difference: the "type names" are not "variable names"
+
+* There are actually three distinct groups of "type names":
+  * *base types* (like `int`, `bool`, `unit`)
+  * *type constructors* (like `list`, `pair`)
+  * *type variables* (like $\alpha$, $\beta$ _etc._)
+
+---
+## Kind environment
+
+* You could consider base types as "nullary type constructors"
+  (_i.e._ type constructors with no arguments) if you prefer
+
+---
+## Kind environment
+
+* What the kind environment does is tell you which types are valid
+  and which ones are not
+
+* The kind environment is represented symbolically as `$\Delta$`
 
 * We represent membership in `$\Delta$`
   by the notation `$\tau :: \kappa$`
   where `$\tau$` is a type constructor and `$\kappa$` is a kind
 
 ---
-## Kind Environment
+## Kind environment
 
-* A sample kind environment:
+* For instance: given this type environment:
 
 $$
 \Delta_0 = \\{
@@ -396,9 +468,15 @@ list :: * \Rightarrow *
 \\}
 $$
 
-* Note that the kind environment can also contain "nullary" type constructors
-  such as `int`, `bool` and `unit`
-  * _i.e._ "base types" with kinds `*`
+* Which of the following types are valid?
+<div class="smaller">
+
+  * `int`, `bool`, `unit`, `list`, `pair`
+  * `(list int)`, `(pair int)`, `(list list)`, `(unit bool)`
+  * `(list int bool)`, `(pair int bool)`
+  * `(list (list int))`, `(pair (list int))`
+
+</div>
 
 ---
 ## Kind Environment
@@ -407,13 +485,15 @@ $$
   we can add new type constructors
   simply by adding them to the kind environment (no new rules!)
 
-* However, in _Typed $\mu$Scheme_
-  the set of type constructors will be fixed (not user-extensible)
+  * However, in _Typed $\mu$Scheme_
+    the set of type constructors will be fixed<br/>(not user-extensible)
+
+* We can also add type variables temporarily during type checking
 
 ---
 ## Kind Environment
 
-* Note that the kind environment $\Delta$ doesn't contain kinds for
+* The kind environment $\Delta$ doesn't contain kinds for
   all _possible_ types...
 
 * ... but it must be possible to _deduce_ any type's kind given the
@@ -425,16 +505,35 @@ $$
 * Figuring out the kind of arbitrary types is _kind checking_
 
 ---
+## Kind Environment
+
+* This is analogous to type checking:
+
+  * Type environment $\Gamma$ doesn't contain types for all possible
+    expressions...
+
+  * ... but the types of all possible expressions must be
+    *deducible* from the type environment
+
+* Actual types can be viewed as "kind expressions" in a sense
+
+---
 ## Type formation rules (informal)
 
 * Now we'll present the (informal) rules for constructing types,
   assuming a kind environment `$\Delta$`
 
+* For the purposes of these rules, we'll consider
+  type constructors to be "types"
+
+  * Essentially, anything with a valid kind is a "type"
+    according to these rules
+
 ---
 ## Type formation rules (informal)
 
 * A type can be formed by writing a type constructor
-  (including nullary type constructors)
+  * including nullary type constructors<br/>(base types)
 
 * This is valid as long as the type constructor
   is bound in the kind environment `$\Delta$`
@@ -445,19 +544,7 @@ $$
 ---
 ## Type formation rules (informal)
 
-* A type can be formed by writing a type constructor
-  (including nullary type constructors)
-
-* This is valid as long as the type constructor
-  is bound in the kind environment `$\Delta$`
-
-* Confusingly, we can also get the "types" `list` and `pair`,
-  but if we do, type checking will fail later
-
----
-## Type formation rules (informal)
-
-* A type can be formed by applying a type to other types
+* A type can be formed by applying a "type" (type constructor) to other types
 
 * For instance, `(list int)` is the type of lists of integers,
   and `(pair int bool)` is the type of integer/boolean pairs
@@ -465,7 +552,7 @@ $$
 ---
 ## Type formation rules (informal)
 
-* A type can be formed by applying a type to other types
+* A type can be formed by applying a "type" (type constructor) to other types
 
 * For a type application to be well-formed,
   the type arguments must have the right number
@@ -552,7 +639,7 @@ $$
 * Think of these as the "building blocks" of types
 
 ---
-## Note 1
+## Note
 
 * We can use type _variables_ to stand for (unknown, nullary) constructors
 
@@ -677,7 +764,8 @@ $$
 * This says that for a type expression
   of the form `$\text{TYCON}(\mu)$`,
   where `$\mu$` is a type constructor,
-  just look up `$\mu$` in the kind environment `$\Delta$`
+  look up `$\mu$` in the kind environment `$\Delta$`
+  to get its kind
 
 ---
 ## Type formation rules (formal)
@@ -727,17 +815,30 @@ $$
   `$\text{CONAPP}(\tau, [\tau_1, \ldots, \tau_n])$`...
   * ...where the type constructor `$\tau$`
   is applied to type arguments `$\tau_1, \ldots, \tau_n$`
-  * ...the type expression is valid<br/>(and has kind `$\kappa$`)
+  * ...the type expression is valid<br/>(and has kind `$\kappa$`)...
 ---
 ## Type formation rules (formal)
 
 * This says that for a type expression
   `$\text{CONAPP}(\tau, [\tau_1, \ldots, \tau_n])$`...
   * ...if the type constructor `$\tau$`
-    is in the kind environment `$\Delta$`
+       is in the kind environment `$\Delta$`
   * ...has a function kind
   * ...there are the right number of argument types $\tau_i$
   * ...and each of them has the right kind `$\kappa_i$`
+
+---
+## Type formation rules (formal)
+
+* Note that these rules are more general than we need!
+
+* In our language, type constructor applications will always have
+  kind `*`
+  * _e.g._ `(list int)`, `(pair int bool)`,<br/>`(list (list int))`
+    _etc._
+
+* In some more complex languages (like Haskell),
+  there can be type constructor applications that yield type constructors
 
 ---
 ## Type formation rules (formal)
@@ -778,32 +879,16 @@ $$
 
 * which will have kind `*`
 
----
-## Note 2
-
-* It's important to realize
-  that the kind environment `$\Delta$` _only_ has kind bindings
-  for type constructors and type variables,
-  _not_ for every possible type in the program
-
----
-## Note 2
-
-* Having kinds for every possible type would be impossible
-  since there are an infinite number of possible types
-  (`int`, `(list int)`, `(list (list int))`, ...
-
-* Instead, the kinds of all valid types
-  can be _deduced_ from the kind environment
-
-* So "has kind X in $\Delta$" means
-  "has a kind X which can be deduced from the constructor kinds in $\Delta$"
 
 ---
 ## Type formation rules (formal)
 
-* We still have to have formal type formation rules
-  for type variables and universally-quantified types
+* We still have to have formal type formation rules for:
+  * type variables
+  * universally-quantified types
+
+---
+## Type formation rules (formal)
 
 * Type variables are simple: just look them up in the kind environment:
 
@@ -817,7 +902,9 @@ $$
 }
 $$
 
-* We will assume that type variables always have kind `*`
+* (Just like type constructors!)
+
+* We will assume that type variables always have kind `*` in our language
 
 ---
 ## Type formation rules (formal)
@@ -844,18 +931,21 @@ $$
 ---
 ## Type formation rules (formal)
 
-* This says that if you add to the kind environment `$\Delta$`
-  the type variables `$\alpha_i$`, each with kind `*`,
-  and can then deduce that type `$\tau$` has kind `*`,
-  then the type
-  $\text{FORALL}(\langle \alpha_1, \ldots, \alpha_n \rangle, \tau)$
-  is a valid type with kind `*`
+* This says that if you:
+  * add to the kind environment `$\Delta$` the type variables `$\alpha_i$`,
+    each with kind `*`,
+  * and can then deduce that type `$\tau$` has kind `*`,
+  * then the type
+    $\text{FORALL}(\langle \alpha_1, \ldots, \alpha_n \rangle, \tau)$
+    is a valid type with kind `*`
 
 * (Presumably, `$\tau$` will contain some/all
   of the type variables `$\alpha_i$`)
 
 ---
 ## Whew!
+
+* That's it for type formation rules!
 
 * Take a deep breath.  We're done for today!
 
