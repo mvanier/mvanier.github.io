@@ -192,7 +192,20 @@
 ---
 ## The `type-lambda` form
 
+<pre><code>(val-rec
+  (forall ['a] ((list 'a) -&gt; int))
+  length
+  (type-lambda ['a]
+    (lambda ([lst : (list 'a)])
+      <em>(if ((@ null? 'a) lst)</em>
+          <em>0</em>
+          <em>(+ 1 ((@ length 'a) ((@ cdr 'a) lst))))</em>)))
+</code></pre>
+
 * The rest of the code is basically the same as the untyped version...
+
+---
+## The `type-lambda` form
 
 <pre><code>(val-rec
   (forall ['a] ((list 'a) -&gt; int))
@@ -291,7 +304,7 @@
 * When we write out pair kinds in equations,
   we write them as a product _e.g._ $* \times *$
 
-* So the pair type constructor's kind is $* \times * \rightarrow *$
+* So the pair type constructor's kind is $* \times * \Rightarrow *$
 
 ---
 ## Kinds
@@ -597,7 +610,7 @@ $$
   * ... and all types are bound in (or deducible from)
     the kind environment `$\Delta$`
   * ... then the function type
-    `$\tau_1 \times \cdots \times \tau_n \Rightarrow \tau$`
+    `$\tau_1 \times \cdots \times \tau_n \rightarrow \tau$`
     is well-formed (valid)
 
 ---
@@ -867,7 +880,7 @@ $$
 }
 {
 \Delta \vdash
-\tau_1 \times \cdots \times \tau_n \Rightarrow
+\tau_1 \times \cdots \times \tau_n \rightarrow
 \tau :: *
 }
 $$
@@ -885,7 +898,7 @@ $$
   then we can form the function type
 
 $$
-\tau_1 \times \cdots \times \tau_n \Rightarrow \tau :: *
+\tau_1 \times \cdots \times \tau_n \rightarrow \tau :: *
 $$
 
 * which will have kind `*`
