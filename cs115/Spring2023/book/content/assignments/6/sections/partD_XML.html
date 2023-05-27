@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Part D: Writing a simple XML parser &mdash; The CS 115 book</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../_static/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="prev" title="Part C: Extending the S-expression parser" href="partC_Sexpr.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            The CS 115 book, Spring 2023
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Software.html">Installing the course software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../1/index.html">Assignment 1: Evaluation and recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2/index.html">Assignment 2: Algebraic datatypes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3/index.html">Assignment 3: A touch of class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4/index.html">Assignment 4: <code class="docutils literal notranslate"><span class="pre">IO</span></code>, <code class="docutils literal notranslate"><span class="pre">IO</span></code>, it’s off to work we go!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../5/index.html">Assignment 5: Monads and lists, oh my!</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 6: Fun with parsing</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partA_State.html">Part A: <code class="docutils literal notranslate"><span class="pre">IORef</span></code>s and state monads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partB_Reader.html">Part B: Deriving the reader monad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partC_Sexpr.html">Part C: Extending the S-expression parser</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Part D: Writing a simple XML parser</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#template-code-and-testing">Template code and testing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#simplified-xml-syntax">Simplified XML syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#datatypes">Datatypes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#code-to-write">Code to write</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hints-and-suggestions">Hints and suggestions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The CS 115 book, Spring 2023</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 6: Fun with parsing</a></li>
+      <li class="breadcrumb-item active">Part D: Writing a simple XML parser</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="part-d-writing-a-simple-xml-parser">
+<h1>Part D: Writing a simple XML parser<a class="headerlink" href="#part-d-writing-a-simple-xml-parser" title="Permalink to this heading"></a></h1>
+<p>In this section,
+you will write an extremely simplified XML parser using parser combinators.
+In case you don’t know, XML is a structured data format
+which is a generalization of the HTML (HyperText Markup Language) format
+commonly used to write web pages.
+Unlike HTML, XML is extremely regular
+and is used for much more than just formatting documents.
+It is a general-purpose data format which is heavily used in the real world.
+XML is not terribly complex,
+but writing a full XML parser would take too long,
+so the parser you will write here will be missing many XML features.
+Some of these missing features include:</p>
+<ul class="simple">
+<li><p>XML comments, which consist of text
+between the delimiters <code class="docutils literal notranslate"><span class="pre">&lt;!--</span></code> and <code class="docutils literal notranslate"><span class="pre">--&gt;</span></code>.</p></li>
+<li><p>Initial <code class="docutils literal notranslate"><span class="pre">DOCTYPE</span></code> declarations and similar declarations.</p></li>
+<li><p>Forms without specific end tags <em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">&lt;hr</span> <span class="pre">/&gt;</span></code>.</p></li>
+<li><p>Forms with attributes <em>e.g.</em>
+<code class="docutils literal notranslate"><span class="pre">&lt;a</span> <span class="pre">href=&quot;https://cms.caltech.edu/&quot;&gt;Caltech</span> <span class="pre">CMS&lt;/a&gt;</span></code>.</p></li>
+</ul>
+<p>If none of this means anything to you, don’t worry;
+we’ll explain exactly what syntax your parser will have to handle below.</p>
+<section id="template-code-and-testing">
+<h2>Template code and testing<a class="headerlink" href="#template-code-and-testing" title="Permalink to this heading"></a></h2>
+<p>As in part C, we are supplying you with a file of template code
+called <code class="docutils literal notranslate"><span class="pre">XML.hs</span></code>.
+You should modify it according to the instructions given below.
+The template code defines the XML data structures and the pretty-printer,
+so you can concentrate on writing the parser.
+There is also a test file called <code class="docutils literal notranslate"><span class="pre">test.xml</span></code>
+which you should use to test the parser;
+it contains all the forms that your parser should be able to parse.
+You can test your parser interactively
+by starting <code class="docutils literal notranslate"><span class="pre">ghci</span></code> and typing these lines:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ghci&gt; :set -package parsec
+ghci&gt; :load XML.hs
+ghci&gt; runPpSexpr &quot;test.xml&quot;
+</pre></div>
+</div>
+<p>As in part C, this will attempt to load the test file,
+parse its contents and output a “pretty-printed” version of the XML.
+Again, if the parser gives errors on any part of this code,
+it isn’t working properly.
+Do <em>not</em> change the pretty-printer code at all for this section.</p>
+<p>As described in the preamble,
+you can also test the code from the terminal by typing:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make xml
+$ make xml_test
+</pre></div>
+</div>
+<p>As in part C, this works by running the parser on the <code class="docutils literal notranslate"><span class="pre">test.xml</span></code> file
+and comparing it to an expected output file.</p>
+<p>The template code as given doesn’t work;
+you need to fill in the parts labeled <code class="docutils literal notranslate"><span class="pre">{-</span> <span class="pre">TODO</span> <span class="pre">-}</span></code> with real code,
+and please remove the <code class="docutils literal notranslate"><span class="pre">{-</span> <span class="pre">TODO</span> <span class="pre">-}</span></code> comments as you fill in the code.
+Note that there are lines containing the <code class="docutils literal notranslate"><span class="pre">&lt;?&gt;</span></code> operator
+following the <code class="docutils literal notranslate"><span class="pre">{-</span> <span class="pre">TODO</span> <span class="pre">-}</span></code> comments;
+these should be left in,
+as they will affect the kind of error messages your code generates.
+(The <code class="docutils literal notranslate"><span class="pre">&lt;?&gt;</span></code> operator is defined in the <code class="docutils literal notranslate"><span class="pre">Parsec</span></code> libraries.)</p>
+<p>Also, there exist some Haskell modules that contain XML parsing code.
+You are not allowed to use these for this assignment,
+for what should be obvious reasons.
+(If you do, you will get no credit for this section.)</p>
+</section>
+<section id="simplified-xml-syntax">
+<h2>Simplified XML syntax<a class="headerlink" href="#simplified-xml-syntax" title="Permalink to this heading"></a></h2>
+<p>The XML parser you will write will handle only two kinds of forms:</p>
+<ul class="simple">
+<li><p>Tagged forms, which look like this: <code class="docutils literal notranslate"><span class="pre">&lt;TAGNAME&gt;TEXT...&lt;/TAGNAME&gt;</span></code>.
+The tag name (in the place marked <code class="docutils literal notranslate"><span class="pre">TAGNAME</span></code>)
+consists of one or more characters,
+all of which are either letters
+(upper- or lowercase, from <code class="docutils literal notranslate"><span class="pre">a</span></code> (or <code class="docutils literal notranslate"><span class="pre">A</span></code>) to <code class="docutils literal notranslate"><span class="pre">z</span></code> (or <code class="docutils literal notranslate"><span class="pre">Z</span></code>))
+or digits from <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">9</span></code> (but no symbolic characters).
+Tags can contain a mixture of uppercase characters,
+lowercase characters, and digits.
+The <code class="docutils literal notranslate"><span class="pre">TEXT</span></code> part can consist of any number of characters
+(or no characters at all)
+except for the characters <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>.
+Notice that the end tag is distinct from the start tag
+because it contains the forward-slash character (<code class="docutils literal notranslate"><span class="pre">/</span></code>) before the tag name.</p></li>
+<li><p>Special character entities, which look like this: <code class="docutils literal notranslate"><span class="pre">&amp;NAME;</span></code>.
+Entities always start with the <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> character,
+followed by the entity name
+(which consists of lower-case letter characters only),
+followed by a semicolon.
+In fact, only a few character entities will be recognized by the parser;
+anything else that has the correct entity syntax
+but isn’t one of the specified entities is an error.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>We require that start and end tags match <em>exactly</em>,
+which means that <code class="docutils literal notranslate"><span class="pre">&lt;/foo&gt;</span></code> will only match <code class="docutils literal notranslate"><span class="pre">&lt;foo&gt;</span></code>
+but not <code class="docutils literal notranslate"><span class="pre">&lt;FOO&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">&lt;Foo&gt;</span></code>.</p>
+</div>
+<p>Here are some examples of tagged forms:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;p&gt;This is a test.&lt;/p&gt;
+
+&lt;a&gt;&lt;b&gt;&lt;c&gt;Forms&lt;/c&gt; can be &lt;b&gt;nested&lt;/b&gt; as long as their &lt;emphasis&gt;start tags match
+their end tags!&lt;/emphasis&gt;&lt;/b&gt;&lt;/a&gt;
+</pre></div>
+</div>
+<p>Here are the character entities that the parser will recognize:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&amp;lt;  (means the &lt; (less-than) character)
+&amp;gt;  (means the &gt; (greater-than) character)
+&amp;amp; (means the &amp; (ampersand) character)
+</pre></div>
+</div>
+<p>Note that the limitation on text
+(that it can’t contain the literal characters <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>)
+is not a real limitation
+because we could just use the character entities
+<code class="docutils literal notranslate"><span class="pre">&amp;lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&amp;gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&amp;amp;</span></code> instead.</p>
+</section>
+<section id="datatypes">
+<h2>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this heading"></a></h2>
+<p>Here are the datatypes you will use when writing your XML parser:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="kr">type</span><span class="w"> </span><span class="kt">Tag</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">String</span>
+
+<span class="kr">data</span><span class="w"> </span><span class="kt">Entity</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">LT_E</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">GT_E</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">AMP_E</span>
+<span class="w">   </span><span class="kr">deriving</span><span class="w"> </span><span class="p">(</span><span class="kt">Show</span><span class="p">)</span>
+
+<span class="kr">data</span><span class="w"> </span><span class="kt">Elem</span><span class="w"> </span><span class="ow">=</span>
+<span class="w">    </span><span class="kt">TextE</span><span class="w"> </span><span class="kt">String</span><span class="w">     </span><span class="c1">-- raw text</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="kt">EntE</span><span class="w"> </span><span class="kt">Entity</span><span class="w">      </span><span class="c1">-- entity</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="kt">FormE</span><span class="w"> </span><span class="kt">Tag</span><span class="w"> </span><span class="p">[</span><span class="kt">Elem</span><span class="p">]</span><span class="w"> </span><span class="c1">-- tagged data</span>
+<span class="w">  </span><span class="kr">deriving</span><span class="w"> </span><span class="p">(</span><span class="kt">Show</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We use the type name <code class="docutils literal notranslate"><span class="pre">Tag</span></code> as an abbreviation for <code class="docutils literal notranslate"><span class="pre">String</span></code>
+in cases where we intend the string to be used as a tag.
+<code class="docutils literal notranslate"><span class="pre">Entity</span></code> refers to the character entities, which are either
+<code class="docutils literal notranslate"><span class="pre">&amp;lt;</span></code> (less-than sign),
+<code class="docutils literal notranslate"><span class="pre">&amp;gt;</span></code> (greater-than sign),
+or <code class="docutils literal notranslate"><span class="pre">&amp;amp;</span></code> (ampersand symbol),
+as described above.
+They are represented by the constructors
+<code class="docutils literal notranslate"><span class="pre">LT_E</span></code>, <code class="docutils literal notranslate"><span class="pre">GT_E</span></code>, and <code class="docutils literal notranslate"><span class="pre">AMP_E</span></code> respectively.
+The <code class="docutils literal notranslate"><span class="pre">Elem</span></code> type is the type of all XML elements;
+these are either a text string, an entity or a tagged form.
+The contents of a tagged form are a list of XML elements,
+which is a bit like the lists in S-expressions
+(this is what allows tags to be nested).</p>
+</section>
+<section id="code-to-write">
+<h2>Code to write<a class="headerlink" href="#code-to-write" title="Permalink to this heading"></a></h2>
+<p>[<strong>10 marks</strong>]</p>
+<p>Modify the template file <code class="docutils literal notranslate"><span class="pre">XML.hs</span></code>.
+Remove the <code class="docutils literal notranslate"><span class="pre">{-</span> <span class="pre">TODO</span> <span class="pre">-}</span></code> comments and replace them with your own code.
+You should test the sub-parsers individually using <code class="docutils literal notranslate"><span class="pre">parseTest</span></code>
+as described above and make sure they each work before continuing.
+When you are done, run <code class="docutils literal notranslate"><span class="pre">test</span></code> at the <code class="docutils literal notranslate"><span class="pre">ghci</span></code> prompt to test the parser.
+You will need to have downloaded the <code class="docutils literal notranslate"><span class="pre">test.xml</span></code> file
+into the current directory before you do this.</p>
+</section>
+<section id="hints-and-suggestions">
+<h2>Hints and suggestions<a class="headerlink" href="#hints-and-suggestions" title="Permalink to this heading"></a></h2>
+<ul>
+<li><p>There is not a lot of code to write for this section (about 30 lines),
+so if you find yourself writing a large amount of code,
+you are doing something wrong
+(or at least not doing it in the most efficient way).</p></li>
+<li><p><a class="reference external" href="https://hoogle.haskell.org/">Hoogle</a> is your friend!
+Before you write a parser,
+check to see if there is already
+a parser defined in the Parsec libraries that does what you need
+(or most of what you need).
+Some of the sub-parsers you will write
+can be defined in one line in terms of parsers in the Parsec libraries.
+Check out the documentation for the following modules:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Text.Parsec
+Text.Parsec.Combinator
+Text.Parsec.Char
+Text.Parsec.Prim
+</pre></div>
+</div>
+</li>
+<li><p>Somewhere in the code you are likely to run into a situation
+where you want a parser to backtrack when it fails.
+In that case, you need to use the <code class="docutils literal notranslate"><span class="pre">try</span></code> combinator.
+We only needed to use <code class="docutils literal notranslate"><span class="pre">try</span></code> once in all of our code,
+but it was critical in that location, so watch out for it.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="partC_Sexpr.html" class="btn btn-neutral float-left" title="Part C: Extending the S-expression parser" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
