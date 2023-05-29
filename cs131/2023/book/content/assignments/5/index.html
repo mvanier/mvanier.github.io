@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assignment 3: The uScheme+ language &mdash; The CS 131 book</title>
+  <title>Assignment 5: The Typed uScheme language &mdash; The CS 131 book</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Preamble" href="sections/Preamble.html" />
-    <link rel="prev" title="Part C: Programming in extended uScheme" href="../2/sections/partC_programming.html" /> 
+    <link rel="prev" title="Part C: Writing functions using arrays and locals" href="../4/sections/partC_functions_with_arrays_and_locals.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -56,15 +56,15 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Assignments</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../1/index.html">Assignment 1: The <em>Imp</em> language</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../2/index.html">Assignment 2: The <em>uScheme</em> language</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Assignment 3: The <em>uScheme+</em> language</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/index.html">Assignment 3: The <em>uScheme+</em> language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/index.html">Assignment 4: The <em>Typed Imp</em> language</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Assignment 5: The <em>Typed uScheme</em> language</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="sections/Preamble.html">Preamble</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sections/Overview.html">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sections/partA_control_operators.html">Part A: Implementing control operators</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sections/partB_tail_calls.html">Part B: Implementing tail call optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sections/partA_substitution.html">Part A: Implementing capture-avoiding substitution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sections/partB_type_checking.html">Part B: Implementing the type checker</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../4/index.html">Assignment 4: The <em>Typed Imp</em> language</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../5/index.html">Assignment 5: The <em>Typed uScheme</em> language</a></li>
 </ul>
 </li>
 </ul>
@@ -84,7 +84,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Assignments</a></li>
-      <li class="breadcrumb-item active">Assignment 3: The <em>uScheme+</em> language</li>
+      <li class="breadcrumb-item active">Assignment 5: The <em>Typed uScheme</em> language</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -93,8 +93,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="assignment-3-the-uschemeplus-language">
-<h1>Assignment 3: The <em>uScheme+</em> language<a class="headerlink" href="#assignment-3-the-uschemeplus-language" title="Permalink to this heading"></a></h1>
+  <section id="assignment-5-the-typeduscheme-language">
+<h1>Assignment 5: The <em>Typed uScheme</em> language<a class="headerlink" href="#assignment-5-the-typeduscheme-language" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="sections/Preamble.html">Preamble</a><ul>
@@ -104,19 +104,31 @@
 <li class="toctree-l2"><a class="reference internal" href="sections/Preamble.html#what-to-hand-in">What to hand in</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="sections/Overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sections/partA_control_operators.html">Part A: Implementing control operators</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="sections/partA_control_operators.html#break">1. <code class="docutils literal notranslate"><span class="pre">break</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="sections/partA_control_operators.html#continue">2. <code class="docutils literal notranslate"><span class="pre">continue</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="sections/partA_control_operators.html#return">3. <code class="docutils literal notranslate"><span class="pre">return</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="sections/partA_control_operators.html#throw-and-try-catch">4. <code class="docutils literal notranslate"><span class="pre">throw</span></code> and <code class="docutils literal notranslate"><span class="pre">try-catch</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="sections/partA_control_operators.html#question-about-letenvframe">5. Question about <code class="docutils literal notranslate"><span class="pre">LetEnvFrame</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="sections/Overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sections/Overview.html#code-organization">Code organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sections/Overview.html#error-handling">Error handling</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="sections/partB_tail_calls.html">Part B: Implementing tail call optimization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="sections/partB_tail_calls.html#push-env-frame">1. <code class="docutils literal notranslate"><span class="pre">push_env_frame</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="sections/partB_tail_calls.html#taking-account-of-begin">2. Taking account of <code class="docutils literal notranslate"><span class="pre">begin</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="sections/partB_tail_calls.html#testing-tail-call-optimization">Testing tail-call optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sections/partA_substitution.html">Part A: Implementing capture-avoiding substitution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sections/partA_substitution.html#the-subst-mli-file">The <code class="docutils literal notranslate"><span class="pre">subst.mli</span></code> file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sections/partA_substitution.html#the-subst-ml-file">The <code class="docutils literal notranslate"><span class="pre">subst.ml</span></code> file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sections/partA_substitution.html#implementing-subst">1. Implementing <code class="docutils literal notranslate"><span class="pre">subst</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sections/partA_substitution.html#variable-capture">Variable capture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sections/partA_substitution.html#substitution-algorithm">Substitution algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sections/partA_substitution.html#implementing-rename-for-all-avoiding">2. Implementing <code class="docutils literal notranslate"><span class="pre">rename_for_all_avoiding</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sections/partB_type_checking.html">Part B: Implementing the type checker</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sections/partB_type_checking.html#typecheck-expr">1. <code class="docutils literal notranslate"><span class="pre">typecheck_expr</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sections/partB_type_checking.html#lambda"><code class="docutils literal notranslate"><span class="pre">Lambda</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sections/partB_type_checking.html#typeapply"><code class="docutils literal notranslate"><span class="pre">TypeApply</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sections/partB_type_checking.html#typelambda"><code class="docutils literal notranslate"><span class="pre">TypeLambda</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sections/partB_type_checking.html#appears-unprotected-in">2. <code class="docutils literal notranslate"><span class="pre">appears_unprotected_in</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="sections/partB_type_checking.html#typecheck-valrec">3. <code class="docutils literal notranslate"><span class="pre">typecheck_valrec</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -127,7 +139,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../2/sections/partC_programming.html" class="btn btn-neutral float-left" title="Part C: Programming in extended uScheme" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../4/sections/partC_functions_with_arrays_and_locals.html" class="btn btn-neutral float-left" title="Part C: Writing functions using arrays and locals" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="sections/Preamble.html" class="btn btn-neutral float-right" title="Preamble" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
