@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Part C: Extending the S-expression parser &mdash; The CS 115 book</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../_static/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Part D: Writing a simple XML parser" href="partD_XML.html" />
+    <link rel="prev" title="Part B: Deriving the reader monad" href="partB_Reader.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            The CS 115 book, Spring 2023
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Software.html">Installing the course software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../1/index.html">Assignment 1: Evaluation and recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2/index.html">Assignment 2: Algebraic datatypes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3/index.html">Assignment 3: A touch of class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4/index.html">Assignment 4: <code class="docutils literal notranslate"><span class="pre">IO</span></code>, <code class="docutils literal notranslate"><span class="pre">IO</span></code>, it’s off to work we go!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../5/index.html">Assignment 5: Monads and lists, oh my!</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 6: Fun with parsing</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partA_State.html">Part A: <code class="docutils literal notranslate"><span class="pre">IORef</span></code>s and state monads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partB_Reader.html">Part B: Deriving the reader monad</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Part C: Extending the S-expression parser</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#template-code-and-testing">Template code and testing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#simplifying-the-sexpr-datatype">1. Simplifying the <code class="docutils literal notranslate"><span class="pre">Sexpr</span></code> datatype</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generalized-parentheses">2. Generalized parentheses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#why-not-try">3. Why not <code class="docutils literal notranslate"><span class="pre">try</span></code>?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#better-floats">4. Better floats</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-strings">5. Adding strings</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="partD_XML.html">Part D: Writing a simple XML parser</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The CS 115 book, Spring 2023</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 6: Fun with parsing</a></li>
+      <li class="breadcrumb-item active">Part C: Extending the S-expression parser</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="part-c-extending-the-s-expression-parser">
+<h1>Part C: Extending the S-expression parser<a class="headerlink" href="#part-c-extending-the-s-expression-parser" title="Permalink to this heading"></a></h1>
+<p>In lecture 21 we created a very simple S-expression parser for a
+Scheme-like language. In this section you will extend the S-expression
+parser in several ways to get some practice working with parser
+combinators.</p>
+<p>While doing this, you should be aware that there is nothing about an
+S-expression parser that necessarily connects it to the Scheme
+programming language. Scheme does use S-expressions as the basis for its
+syntax (though with lots of extensions, such as the dot notation for
+improper lists), but you could use S-expressions in other contexts as
+well, and people do.  <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<section id="template-code-and-testing">
+<h2>Template code and testing<a class="headerlink" href="#template-code-and-testing" title="Permalink to this heading"></a></h2>
+<p>The code used in the lecture is available in the file <code class="docutils literal notranslate"><span class="pre">Sexpr.hs</span></code>.
+You will be modifying various parts of this code in this section.
+There is also a file of sample Scheme-like code called <code class="docutils literal notranslate"><span class="pre">test.scm</span></code>.
+Use this to test your parser.
+You can test your parser interactively
+by starting <code class="docutils literal notranslate"><span class="pre">ghci</span></code> and typing these lines:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ghci&gt; :set -package parsec
+ghci&gt; :load Sexpr.hs
+ghci&gt; runPpSexpr &quot;test.scm&quot;
+</pre></div>
+</div>
+<p>This will load your code and run the <code class="docutils literal notranslate"><span class="pre">runPpSexpr</span></code> function
+on the <code class="docutils literal notranslate"><span class="pre">test.scm</span></code> file.
+This function will parse all the code and output a “pretty-printed”
+version of the code representation.
+(You may not think it’s particularly pretty,
+but it will display the data structures very explicitly.)
+If the parser gives errors on any part of this code,
+it isn’t working properly.
+Do <em>not</em> change the pretty-printer code itself
+unless specifically indicated below.
+(You will have to modify other parts of the code, of course.)
+Note that you can also create your own file of S-expressions
+and test it this way.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you create your own test file,
+please call the file something other than <code class="docutils literal notranslate"><span class="pre">test.scm</span></code>
+or you may break the tests in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
+</div>
+<p>As described in the preamble,
+you can also test the code from the terminal by typing:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ make sexpr
+$ make sexpr_test
+</pre></div>
+</div>
+<p>This tests that the output of running the parser on <code class="docutils literal notranslate"><span class="pre">test.scm</span></code>
+is what was expected.  It does this by comparing the output
+to an expected output file.</p>
+</section>
+<section id="simplifying-the-sexpr-datatype">
+<h2>1. Simplifying the <code class="docutils literal notranslate"><span class="pre">Sexpr</span></code> datatype<a class="headerlink" href="#simplifying-the-sexpr-datatype" title="Permalink to this heading"></a></h2>
+<p>[<strong>2 marks</strong>]</p>
+<p>The parser given to you in the original version of the file <code class="docutils literal notranslate"><span class="pre">Sexpr.hs</span></code>
+has these datatypes as the basic S-expression datatypes:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="kr">data</span><span class="w"> </span><span class="kt">Atom</span><span class="w"> </span><span class="ow">=</span>
+<span class="w">    </span><span class="kt">BoolA</span><span class="w">  </span><span class="kt">Bool</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="kt">IntA</span><span class="w">   </span><span class="kt">Integer</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="kt">FloatA</span><span class="w"> </span><span class="kt">Double</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="kt">IdA</span><span class="w">    </span><span class="kt">String</span>
+<span class="w">  </span><span class="kr">deriving</span><span class="w"> </span><span class="p">(</span><span class="kt">Show</span><span class="p">)</span>
+
+<span class="kr">data</span><span class="w"> </span><span class="kt">Sexpr</span><span class="w"> </span><span class="ow">=</span>
+<span class="w">    </span><span class="kt">AtomS</span><span class="w"> </span><span class="kt">Atom</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="kt">ListS</span><span class="w"> </span><span class="p">[</span><span class="kt">Sexpr</span><span class="p">]</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="kt">QuoteS</span><span class="w"> </span><span class="kt">Sexpr</span>
+<span class="w">  </span><span class="kr">deriving</span><span class="w"> </span><span class="p">(</span><span class="kt">Show</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Atom</span></code> type is fairly standard (though we’ll be extending it
+below), but the <code class="docutils literal notranslate"><span class="pre">Sexpr</span></code> type itself is a bit odd. There is actually no
+need for the <code class="docutils literal notranslate"><span class="pre">QuoteS</span></code> constructor for quoted expressions. If you know
+Scheme, you’ll know that expression like these ones:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&#39;a
+&#39;(foo bar baz)
+</pre></div>
+</div>
+<p>are actually syntactic sugar for these expressions:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(quote a)
+(quote (foo bar baz))
+</pre></div>
+</div>
+<p>These S-expressions can be represented as <code class="docutils literal notranslate"><span class="pre">Sexpr</span></code> expressions without
+the <code class="docutils literal notranslate"><span class="pre">QuoteS</span></code> constructor as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ListS [AtomS (IdA &quot;quote&quot;), AtomS (IdA &quot;a&quot;)]
+ListS [AtomS (IdA &quot;quote&quot;),
+       ListS [AtomS (IdA &quot;foo&quot;),
+              AtomS (IdA &quot;bar&quot;),
+              AtomS (IdA &quot;baz&quot;)]
+</pre></div>
+</div>
+<p>Therefore, your first exercise is to remove all the code dealing with
+the <code class="docutils literal notranslate"><span class="pre">QuoteS</span></code> constructor (including the code in the pretty-printer
+<em>i.e.</em> the <code class="docutils literal notranslate"><span class="pre">ppSexpr</span></code> function).  Nevertheless, your parser must be
+able to parse quoted expressions, converting them into S-expressions of
+the form given above. The <code class="docutils literal notranslate"><span class="pre">Sexpr</span></code> datatype will become simply:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="kr">data</span><span class="w"> </span><span class="kt">Sexpr</span><span class="w"> </span><span class="ow">=</span>
+<span class="w">    </span><span class="kt">AtomS</span><span class="w"> </span><span class="kt">Atom</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="kt">ListS</span><span class="w"> </span><span class="p">[</span><span class="kt">Sexpr</span><span class="p">]</span>
+<span class="w">  </span><span class="kr">deriving</span><span class="w"> </span><span class="p">(</span><span class="kt">Show</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This exercise is mostly to get you familiar with the code base. You
+won’t be changing the way parsing is done, but you will have to modify
+the function <code class="docutils literal notranslate"><span class="pre">parseSexpr</span></code> and change the way quoted expressions are
+converted into <code class="docutils literal notranslate"><span class="pre">Sexpr</span></code>s.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You don’t have to modify <code class="docutils literal notranslate"><span class="pre">parseQuote</span></code>, and you shouldn’t.</p>
+</div>
+</section>
+<section id="generalized-parentheses">
+<h2>2. Generalized parentheses<a class="headerlink" href="#generalized-parentheses" title="Permalink to this heading"></a></h2>
+<p>[<strong>2 marks</strong>]</p>
+<p>Many (if not most) Schemes allow you to use square brackets or curly
+braces to delimit S-expressions instead of parentheses. This is
+convenient in deeply-nested expressions; you can easily tell visually
+where an expression starts and ends. A closing square bracket can only
+match an opening square bracket, and not an opening parenthesis (and
+similarly for curly braces). In this exercise, you will extend the
+S-expression parser to allow it to parse S-expressions using square
+brackets or curly braces. Some examples:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(this is an expression using parentheses)
+[this is an expresssion using square brackets]
+{this uses curly braces}
+(this [weird expression] {uses all [kinds (of matching delimiters)]})
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The delimiters must match, so if a particular list uses (say)
+an open square bracket as the starting delimiter,
+it must use a close square bracket as the ending delimiter.
+(The same goes for parentheses and curly braces.)</p>
+</div>
+<p>Modify the <code class="docutils literal notranslate"><span class="pre">parseList</span></code> function so that it can parse S-expressions
+with any of the three types of delimiters. The best way to do this is to
+define a helper function which takes the two delimiter characters as
+arguments and outputs a parser, and then use three such parsers in the
+body of <code class="docutils literal notranslate"><span class="pre">parseList</span></code>. Use the <code class="docutils literal notranslate"><span class="pre">&lt;|&gt;</span></code> (alternation) operator to combine
+the three parsers into one big parser.</p>
+<p>Note that the fact that a given S-expression uses parentheses or square
+brackets or curly braces is <em>not</em> encoded into the datatype; the
+datatype doesn’t care about which delimiters were used for a given
+S-expression.</p>
+</section>
+<section id="why-not-try">
+<h2>3. Why not <code class="docutils literal notranslate"><span class="pre">try</span></code>?<a class="headerlink" href="#why-not-try" title="Permalink to this heading"></a></h2>
+<p>[<strong>2 marks</strong>]</p>
+<p>Note that you don’t need to use the <code class="docutils literal notranslate"><span class="pre">try</span></code> combinator in the
+<code class="docutils literal notranslate"><span class="pre">parseList</span></code> function (in the event that you tried to parse one kind of
+delimiter and failed). Why not? (Write the answer in a comment.)</p>
+</section>
+<section id="better-floats">
+<h2>4. Better floats<a class="headerlink" href="#better-floats" title="Permalink to this heading"></a></h2>
+<p>[<strong>2 marks</strong>]</p>
+<p>The floating-point number parser in the template code is limited; it
+can’t handle floating-point numbers with exponents. So these are valid
+floating-point numbers according to the parser:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1.2
+-3.4
+42.12334
+</pre></div>
+</div>
+<p>but these aren’t:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1.2e10
+-3.4e-10
+42.12334E+10
+</pre></div>
+</div>
+<p>Modify the function <code class="docutils literal notranslate"><span class="pre">parseFloat</span></code> to make it parse floating-point
+numbers with exponents. Exponents are optional, but if present they have
+this syntax: exponent letter (<code class="docutils literal notranslate"><span class="pre">e</span></code> or <code class="docutils literal notranslate"><span class="pre">E</span></code>), optional sign (<code class="docutils literal notranslate"><span class="pre">+</span></code> or
+<code class="docutils literal notranslate"><span class="pre">-</span></code> (or no sign)), and one or more digits (<code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">9</span></code>).</p>
+<p>There are a couple of things you should know about the floating-point
+number parser in the template code:</p>
+<ul class="simple">
+<li><p>Floating-point numbers are required to have a decimal point, and at
+least one digit after the decimal point. Most computer languages will
+accept floating-point numbers without decimal points if <em>e.g.</em> an
+exponent is present, but requiring the decimal point simplifies the
+parsing. Requiring a digit after the decimal point is my personal
+preference; I think that floating-point numbers without digits after
+the decimal point look ugly <span class="raw-html">&#128512;</span>. You don’t need to change any of
+this; it’s just for your information.</p></li>
+<li><p>The parser works by creating a string version of the floating-point
+number and then using the Haskell <code class="docutils literal notranslate"><span class="pre">read</span></code> function to convert the
+string to a floating-point number. This approach will still work with
+exponents, but in this case the string version of the floating-point
+number may have an exponent (represented as a string concatenated to
+the end of the rest of the floating-point number’s string
+representation).</p></li>
+</ul>
+</section>
+<section id="adding-strings">
+<h2>5. Adding strings<a class="headerlink" href="#adding-strings" title="Permalink to this heading"></a></h2>
+<p>[<strong>2 marks</strong>]</p>
+<p>Scheme includes strings as a basic data type, but the <code class="docutils literal notranslate"><span class="pre">Atom</span></code> datatype
+in the parser doesn’t support strings. Change it to this type:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="kr">data</span><span class="w"> </span><span class="kt">Atom</span><span class="w"> </span><span class="ow">=</span>
+<span class="w">    </span><span class="kt">BoolA</span><span class="w">   </span><span class="kt">Bool</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="kt">IntA</span><span class="w">    </span><span class="kt">Integer</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="kt">FloatA</span><span class="w">  </span><span class="kt">Double</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="kt">IdA</span><span class="w">     </span><span class="kt">String</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="kt">StringA</span><span class="w"> </span><span class="kt">String</span>
+<span class="w">  </span><span class="kr">deriving</span><span class="w"> </span><span class="p">(</span><span class="kt">Show</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you can see, now strings are a special kind of atom which use the
+<code class="docutils literal notranslate"><span class="pre">StringA</span></code> constructor. Extend the atom parser <code class="docutils literal notranslate"><span class="pre">parseAtom</span></code> so that it
+can parse strings as well. Do this by defining a parser called
+<code class="docutils literal notranslate"><span class="pre">parseString</span></code> which parses strings, and then call that inside of
+<code class="docutils literal notranslate"><span class="pre">parseAtom</span></code>.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Inside <code class="docutils literal notranslate"><span class="pre">parseAtom</span></code>, handle strings after integers but before identifiers.</p>
+</div>
+<p>The string syntax we’ll use is extremely simple:
+a string is a sequence of characters
+between two double-quote (<code class="docutils literal notranslate"><span class="pre">&quot;</span></code>) characters.
+The double-quote character cannot occur in a string
+(there is no backslash-escaping, for instance),
+but you can put newline characters in a string directly
+(you don’t have to write <em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">\n</span></code> for a newline,
+and in fact that will give you two characters, not one).
+Here are some example strings the parser can recognize:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&quot;I am a string&quot;
+&quot;This string
+spans
+multiple lines&quot;
+&quot;I can have &#39;single quotes&#39; inside but not double quotes&quot;
+</pre></div>
+</div>
+<p>It isn’t too hard to improve the string parser to handle backslash
+escapes, but it isn’t required.</p>
+<hr class="docutils" />
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Notably, there are popular OCaml libraries
+which use S-expressions as a serialization format.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="partB_Reader.html" class="btn btn-neutral float-left" title="Part B: Deriving the reader monad" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="partD_XML.html" class="btn btn-neutral float-right" title="Part D: Writing a simple XML parser" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

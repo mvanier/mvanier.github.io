@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Part B: Implementing the type checker &mdash; The CS 131 book</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../_static/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="prev" title="Part A: Implementing capture-avoiding substitution" href="partA_substitution.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            The CS 131 book, Spring 2023
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Software.html">Installing the course software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Lectures.html">Lectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrative information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Assignments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../1/index.html">Assignment 1: The <em>Imp</em> language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2/index.html">Assignment 2: The <em>uScheme</em> language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3/index.html">Assignment 3: The <em>uScheme+</em> language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4/index.html">Assignment 4: The <em>Typed Imp</em> language</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Assignment 5: The <em>Typed uScheme</em> language</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Preamble.html">Preamble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Overview.html">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="partA_substitution.html">Part A: Implementing capture-avoiding substitution</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Part B: Implementing the type checker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#typecheck-expr">1. <code class="docutils literal notranslate"><span class="pre">typecheck_expr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#appears-unprotected-in">2. <code class="docutils literal notranslate"><span class="pre">appears_unprotected_in</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typecheck-valrec">3. <code class="docutils literal notranslate"><span class="pre">typecheck_valrec</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The CS 131 book, Spring 2023</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Assignments</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Assignment 5: The <em>Typed uScheme</em> language</a></li>
+      <li class="breadcrumb-item active">Part B: Implementing the type checker</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="part-b-implementing-the-type-checker">
+<h1>Part B: Implementing the type checker<a class="headerlink" href="#part-b-implementing-the-type-checker" title="Permalink to this heading"></a></h1>
+<p>The code you will write for this section is in the <code class="docutils literal notranslate"><span class="pre">Typecheck</span></code> module,
+which consists of the files <code class="docutils literal notranslate"><span class="pre">typecheck.ml</span></code> and <code class="docutils literal notranslate"><span class="pre">typecheck.mli</span></code>. You
+will only have to modify the <code class="docutils literal notranslate"><span class="pre">typecheck.ml</span></code> file. In that file you are
+provided with a partial implementation of the type checker. You have to
+complete the definition of the following functions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">typecheck_expr</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">appears_unprotected_in</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">typecheck_valrec</span></code></p></li>
+</ul>
+<p>We describe these three functions below.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Makes sure that you read through the code that is provided for you!
+There are lots of useful helper functions defined that will make your
+code much more concise and understandable if you use them. In
+particular, the <code class="docutils literal notranslate"><span class="pre">assert_types_equal</span></code> function is extremely useful.</p>
+</div>
+<section id="typecheck-expr">
+<h2>1. <code class="docutils literal notranslate"><span class="pre">typecheck_expr</span></code><a class="headerlink" href="#typecheck-expr" title="Permalink to this heading"></a></h2>
+<p>This is the main type checking function. It takes in three arguments:</p>
+<ol class="arabic simple">
+<li><p>a kind environment mapping type names to their kinds (also known as
+<span class="math notranslate nohighlight">\({\Delta}\)</span>)</p></li>
+<li><p>a type environment mapping variable names to their types (also known
+as <span class="math notranslate nohighlight">\({\Gamma}\)</span>)</p></li>
+<li><p>an expression to be type checked</p></li>
+</ol>
+<p>and returns the type of the expression. If there is a type error, a
+suitable exception is raised.</p>
+<p>Most of the cases are just translations into code of the operational
+semantics of type checking described in lecture 17. There are a few
+cases that are a bit more subtle, so we discuss them here.</p>
+<section id="lambda">
+<h3><code class="docutils literal notranslate"><span class="pre">Lambda</span></code><a class="headerlink" href="#lambda" title="Permalink to this heading"></a></h3>
+<p>Remember that all the formal argument types are required to have the
+kind <code class="docutils literal notranslate"><span class="pre">*</span></code>.</p>
+</section>
+<section id="typeapply">
+<h3><code class="docutils literal notranslate"><span class="pre">TypeApply</span></code><a class="headerlink" href="#typeapply" title="Permalink to this heading"></a></h3>
+<p>This case can (and should) be written in a single line by taking
+advantage of the <code class="docutils literal notranslate"><span class="pre">Subst</span></code> module.</p>
+</section>
+<section id="typelambda">
+<h3><code class="docutils literal notranslate"><span class="pre">TypeLambda</span></code><a class="headerlink" href="#typelambda" title="Permalink to this heading"></a></h3>
+<p>This is the only slightly tricky case. The operational semantics for
+<code class="docutils literal notranslate"><span class="pre">TypeLambda</span></code> given in lecture 17 talks about picking new type
+variables if any of the type variables exist in the type environment
+<span class="math notranslate nohighlight">\({\Gamma}\)</span>. That makes sense in an operational semantics, because we are
+describing how to derive a proof of the type-correctness of a
+<code class="docutils literal notranslate"><span class="pre">type-lambda</span></code> expression given the correctness of its parts. Here we
+are working in the opposite direction; we are given a particular
+<code class="docutils literal notranslate"><span class="pre">type-lambda</span></code> and want to know what its type is. Instead of trying to
+rename it to be compatible with the type environment, we choose a
+simpler solution and simply don’t allow <code class="docutils literal notranslate"><span class="pre">type-lambda</span></code> expressions
+whose type variables are present in <span class="math notranslate nohighlight">\({\Gamma}\)</span>. <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> If any of the
+<code class="docutils literal notranslate"><span class="pre">type-lambda</span></code> type variables are present in <span class="math notranslate nohighlight">\({\Gamma}\)</span>, simply raise a
+type error exception with the error message
+<code class="docutils literal notranslate"><span class="pre">&quot;type-lambda</span> <span class="pre">type</span> <span class="pre">variables</span> <span class="pre">are</span> <span class="pre">free</span> <span class="pre">in</span> <span class="pre">type</span> <span class="pre">environment&quot;</span></code>. Then the
+programmer can manually rename the type variables as necessary so that
+everything type checks.</p>
+<p>You’ll find that the <code class="docutils literal notranslate"><span class="pre">free_tyvars_gamma</span></code> function from the <code class="docutils literal notranslate"><span class="pre">Subst</span></code>
+module is useful here.</p>
+<p>The other subtle issue here is that when checking the body of a
+<code class="docutils literal notranslate"><span class="pre">type-lambda</span></code> expression, the kind environment <span class="math notranslate nohighlight">\({\Delta}\)</span> must be
+extended with the type variable names, each of which must have the kind
+<code class="docutils literal notranslate"><span class="pre">*</span></code>. (This kind is represented in the code as <code class="docutils literal notranslate"><span class="pre">Type</span></code>.) The body is
+then typechecked in this new kind environment, and then the type of the
+entire <code class="docutils literal notranslate"><span class="pre">type-lambda</span></code> expression is returned as a <code class="docutils literal notranslate"><span class="pre">ForAll</span></code> type.</p>
+</section>
+</section>
+<section id="appears-unprotected-in">
+<h2>2. <code class="docutils literal notranslate"><span class="pre">appears_unprotected_in</span></code><a class="headerlink" href="#appears-unprotected-in" title="Permalink to this heading"></a></h2>
+<p>We know that the <code class="docutils literal notranslate"><span class="pre">val-rec</span></code> definition form is almost always used to
+define a recursive function, where the function being defined is
+referenced inside the body of the definition. However, nothing actually
+requires us to do that. We could use <code class="docutils literal notranslate"><span class="pre">val-rec</span></code> to define simple
+variables, for instance:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="k">val</span><span class="o">-</span><span class="k">rec</span> <span class="kt">int</span> <span class="n">x</span> <span class="mi">10</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>and there’s nothing wrong with that. However, we should disallow uses of
+the name being defined (here, <code class="docutils literal notranslate"><span class="pre">x</span></code>) if they are used outside of a
+<code class="docutils literal notranslate"><span class="pre">lambda</span></code> expression, since then you have a self-referential definition
+which can never terminate when evaluated. That would be something like
+this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="k">val</span><span class="o">-</span><span class="k">rec</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">(+</span> <span class="n">x</span> <span class="mi">1</span><span class="o">))</span>
+</pre></div>
+</div>
+<p>We refer to errors of this sort as the defined name (here, <code class="docutils literal notranslate"><span class="pre">x</span></code>)
+appearing “unprotected” in the body of the definition (here,
+<code class="docutils literal notranslate"><span class="pre">(+</span> <span class="pre">x</span> <span class="pre">1)</span></code>). The “unprotected” means “not occurring inside a <code class="docutils literal notranslate"><span class="pre">lambda</span></code>
+expression” since a <code class="docutils literal notranslate"><span class="pre">lambda</span></code> expression delays evaluation of the
+name. <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+<p>We define the function <code class="docutils literal notranslate"><span class="pre">appears_unprotected_in</span></code> which takes two
+arguments: a variable name and a (value) expression. It returns <code class="docutils literal notranslate"><span class="pre">true</span></code>
+if the name appears unprotected in the expression, and otherwise returns
+<code class="docutils literal notranslate"><span class="pre">false</span></code>. The basic rules for this are:</p>
+<ol class="arabic simple">
+<li><p>any name inside a <code class="docutils literal notranslate"><span class="pre">lambda</span></code> expression is protected</p></li>
+<li><p>any literal has no unprotected names inside it</p></li>
+<li><p>a name is unprotected in a variable if the variable name is the same
+as the name</p></li>
+<li><p>a name is unprotected in any other expression with subexpressions if
+it’s unprotected in <em>any</em> of the subexpressions</p></li>
+</ol>
+<p>This code is a straightforward case analysis on the structure of value
+expressions. There is an extensive test suite to make sure that you
+don’t miss any cases. This function is (obviously) going to be used in
+the <code class="docutils literal notranslate"><span class="pre">val-rec</span></code> type checking code, which we now turn to.</p>
+</section>
+<section id="typecheck-valrec">
+<h2>3. <code class="docutils literal notranslate"><span class="pre">typecheck_valrec</span></code><a class="headerlink" href="#typecheck-valrec" title="Permalink to this heading"></a></h2>
+<p>This function type checks <code class="docutils literal notranslate"><span class="pre">val-rec</span></code> expressions. It’s a simple code
+translation of the operational semantics of <code class="docutils literal notranslate"><span class="pre">val-rec</span></code> given in lecture
+17. A partial implementation is provided.</p>
+<p>[End of assignment]</p>
+<hr class="docutils" />
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id3" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>You might wonder how “real” languages handle this problem.
+You should keep on wondering, since almost no “real” language
+I know of actually has a <code class="docutils literal notranslate"><span class="pre">type-lambda</span></code> expression
+(except Scala, and Scala is pretty complicated even without type lambdas).
+Instead, real languages use <em>type inference</em>
+to get rid of the need for <code class="docutils literal notranslate"><span class="pre">type-lambda</span></code> expressions.</p>
+</aside>
+<aside class="footnote brackets" id="id4" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Note that this doesn’t rule out definitions of functions
+which never terminate,
+but it does rule out some obviously incorrect cases.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="partA_substitution.html" class="btn btn-neutral float-left" title="Part A: Implementing capture-avoiding substitution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael C. Vanier. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
