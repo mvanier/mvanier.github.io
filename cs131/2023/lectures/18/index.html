@@ -49,9 +49,52 @@
 
 * It may sound trivial, but there are a _lot_ of subtleties to it!
 
+---
+## Type checking
+
 * One way that this manifests itself:
   real language implementations have often had subtle bugs
   that were related to mistakes in the substitution process
+
+---
+## Glossary of symbols
+
+* We will be going through a number of derivation rules
+  featuring a number of Greek letters (symbols)
+
+* Here is what they mean:
+
+---
+## Glossary of symbols
+
+* We will be going through a number of derivation rules
+  featuring a number of Greek letters (symbols)
+
+* Here is what they mean:
+
+  * $\alpha$ and $\beta$ are type variables
+---
+## Glossary of symbols
+
+* We will be going through a number of derivation rules
+  featuring a number of Greek letters (symbols)
+
+* Here is what they mean:
+
+  * $\mu$ represents a type constructor<br/>
+    * either "nullary" like `int` and `bool`<br/>(having no arguments)
+    * or with arguments,<br/>like `list` or `pair`
+---
+## Glossary of symbols
+
+* We will be going through a number of derivation rules
+  featuring a number of Greek letters (symbols)
+
+* Here is what they mean:
+
+  * $\tau$ represents a type
+    * either simple or complex
+    * could be a type variable, or not
 
 ---
 ## Type equivalence
@@ -148,6 +191,16 @@
   which is a completely different type!
 
 * We say that the (bad) renaming has _captured_ the type variable $\alpha$
+  * The $\alpha$ in the $\forall$ binding part (before the $:$)
+    "captures" a formerly "free" variable
+  * (We'll be precise about what a free variable is soon)
+
+---
+## Variable capture
+
+* Variable capture is a bad thing because renaming type variables
+  shouldn't change the meaning of a type, but when a variable is captured,
+  it does
 
 * How do we avoid this?
 
@@ -191,7 +244,8 @@
 ## Important points
 
 * In _Typed $\mu$Scheme_, type variables occur
-  in both `forall` type expressions and<br/>`type-lambda` value expressions
+  in both `forall` *type* expressions and
+  <br/>`type-lambda` *value* expressions
 
 * Some type variables are _bound_
   by an enclosing `forall` or `type-lambda`,
@@ -203,6 +257,11 @@
 * When we rename a bound variable,
   we mustn't rename it to something
   that will cause us to capture a free variable
+
+  * like the type $\forall \alpha : \alpha \rightarrow \beta$:
+    renaming $\alpha$ to $\beta$ makes the type into
+    $\forall \beta : \beta \rightarrow \beta$
+    which is a different type
 
 * If we can rename two types *without capturing variables*
   so that they are identical, the types are equivalent
@@ -676,7 +735,8 @@ $$
 ## Free and bound type variables
 
 * A _bound_ type variable
-  is one that occurs inside a `forall` form (type level)
+  is one that occurs inside the body of
+  a `forall` form (type level)
   or a `type-lambda` form (value level)
 
 * Examples:
@@ -716,6 +776,8 @@ $$
 \label{}\tag{FreeTyVar}
 $$
 
+* A type variable $\alpha$ is one of the free type variables in itself
+
 ---
 ## Free type variables: inference rules
 
@@ -733,6 +795,10 @@ $$
 \label{}\tag{FreeTyConApp1}
 $$
 
+* If a type variable $\alpha$ is free in a type $\tau_i$,
+  it's free in a type constructor application where $\tau_i$
+  is a type argument
+
 ---
 ## Free type variables: inference rules
 
@@ -749,6 +815,30 @@ $$
 $$
 \label{}\tag{FreeTyConApp2}
 $$
+
+* If a type variable $\alpha$ is free in a type $\tau$,
+  it's free in a type constructor application where $\tau$
+  is a type constructor
+
+---
+## Free type variables: inference rules
+
+$$
+\\
+$$
+
+$$
+\frac
+{\alpha \in \text{ftv}(\tau)}
+{\alpha \in \text{ftv}(\tau(\tau_1,\ldots,\tau_n))}
+$$
+
+$$
+\label{}\tag{FreeTyConApp2}
+$$
+
+* (This won't happen in practice because our type constructors
+  can't contain type variables)
 
 ---
 ## Free type variables: inference rules
@@ -773,6 +863,8 @@ $$
 \label{}\tag{FreeTyFun2}
 $$
 
+* These rules should be fairly obvious
+
 ---
 ## Free type variables: inference rules
 
@@ -787,6 +879,15 @@ $$
 \label{}\tag{FreeTyForall1}
 $$
 
+* If a type variable $\alpha_i$ is free in type $\tau$
+  but is one of the bound variables in
+  the universally quantified type
+  $\forall \alpha_1,\ldots,\alpha_n \\>.\\> \tau$,<br/>
+  then it's bound (not free) in that type
+
+---
+## Free type variables: inference rules
+
 $$
 \frac
 {\alpha \in \text{ftv}(\tau)\quad \alpha \neq \alpha_i \quad 1 \leq i \leq n}
@@ -796,6 +897,11 @@ $$
 $$
 \label{}\tag{FreeTyForall2}
 $$
+
+* If a type variable $\alpha$ is free in type $\tau$
+  but is *not* one of the bound variables $\alpha_i$,
+  it's still free in the universally quantified type
+  $\forall \alpha_1,\ldots,\alpha_n \\>.\\> \tau$
 
 ---
 ## Renaming and substitution
@@ -914,7 +1020,9 @@ $$
 \label{}\tag{SubTyVarSame}
 $$
 
-* Substitute a type variable with itself
+* Substituting a type variable $\alpha$ for a type $\tau$
+  into a type which is only that type variable $\alpha$
+  gives the type $\tau$
 
 ---
 ## Substitution rules
@@ -931,7 +1039,9 @@ $$
 \label{}\tag{SubTyVarDiff}
 $$
 
-* Don't substitute into a different type variable
+* Substituting a type variable $\alpha$
+  into a different type variable (here, $\alpha'$)
+  leaves the type unchanged
 
 ---
 ## Substitution rules
@@ -948,17 +1058,13 @@ $$
 \label{}\tag{SubTyCon}
 $$
 
-* Don't substitute into a type constructor
+* Substituting a type variable $\alpha$
+  into a type constructor $\mu$ does nothing
 
 ---
 ## Substitution rules
 
-* Type constructor applications and function types
-
----
-## Substitution rules
-
-* Type constructor applications and function types
+* Type constructor applications:
 
 $$
 \frac
@@ -975,13 +1081,15 @@ $$
 \label{}\tag{SubTyConApp}
 $$
 
-* Substitute a type into a type constructor
+* Substitute a type into a type constructor application
+  is done by substituting the type into
+  both the type constructor
   and the type constructor's arguments
 
 ---
 ## Substitution rules
 
-* Type constructor applications and function types
+* Function types:
 
 $$
 \frac
@@ -1000,15 +1108,15 @@ $$
 \label{}\tag{SubTyFun}
 $$
 
-* Substitute a type into a function type
-  and the function type's arguments
+* Substituting a type into a function type
+  is done by substituting into
+  both the function type's arguments
+  and the function type's return type
 
 ---
 ## Substitution rules
 
-* Substitution into a quantified type is for *free variables only*,
-  and it may not capture a free type variable of $\tau$
-  (the type being substituted):
+* Universally-quantified types:
 
 $$
 \frac
@@ -1040,6 +1148,87 @@ $$
 \label{}\tag{SubTyForall}
 $$
 
+* Substitution into a quantified type is for *free variables only*,
+  and it may not capture a free type variable of $\tau$
+  (the type being substituted)
+
+---
+## Substitution rules
+
+* Universally-quantified types:
+
+$$
+\frac
+{
+\alpha\notin\{\alpha_1,\ldots,\alpha_n\}
+\quad
+\text{ftv}(\tau)
+\cap
+\{\alpha_1,\ldots,\alpha_n\}
+= \emptyset
+}
+{
+(
+\forall
+\alpha_1,\ldots,\alpha_n
+\\,.\\,
+\tau'
+)
+[\alpha\mapsto\tau]
+\equiv
+\forall
+\alpha_1,\ldots,\alpha_n
+\\,.\\,
+(\tau'[\alpha\mapsto\tau])
+}
+$$
+
+$$
+\label{}\tag{SubTyForall}
+$$
+
+* The type $\tau$ (the type being substituted for $\alpha$)
+  can't have any *free* variables which are *bound* variables
+  inside the type $\tau'$ that is being substituted into
+
+---
+## Substitution rules
+
+* Universally-quantified types:
+
+$$
+\frac
+{
+\alpha\notin\{\alpha_1,\ldots,\alpha_n\}
+\quad
+\text{ftv}(\tau)
+\cap
+\{\alpha_1,\ldots,\alpha_n\}
+= \emptyset
+}
+{
+(
+\forall
+\alpha_1,\ldots,\alpha_n
+\\,.\\,
+\tau'
+)
+[\alpha\mapsto\tau]
+\equiv
+\forall
+\alpha_1,\ldots,\alpha_n
+\\,.\\,
+(\tau'[\alpha\mapsto\tau])
+}
+$$
+
+$$
+\label{}\tag{SubTyForall}
+$$
+
+* (If it did, this would cause variable capture and the meaning of the type
+  would change)
+
 ---
 ## Substitution rules
 
@@ -1063,9 +1252,164 @@ $$
 \label{}\tag{TySubEquiv}
 $$
 
-* For instance, if $\alpha$ is a free variable in $\tau'$,
-  rename $\alpha$ in $\tau'$ to something else to get $\tau''$,
-  then do the substitution
+* For instance,
+  if $\tau'$ is a universally-quantified type of the form
+  $\forall \alpha_1,\ldots,\alpha_n \\,.\\, \tau^*$...
+
+---
+## Substitution rules
+
+* If you want to substitute,
+  but substitution would lead to variable capture,
+  you can avoid capture by substituting into an equivalent type:
+
+$$
+\frac
+{\tau'\equiv\tau''}
+{
+\tau'
+[\alpha\mapsto\tau]
+\equiv
+\tau''
+[\alpha\mapsto\tau]
+}
+$$
+
+$$
+\label{}\tag{TySubEquiv}
+$$
+
+* ...and you are substituting a type $\tau$ for a free variable
+  $\alpha$ of $\tau^*$...
+
+---
+## Substitution rules
+
+* If you want to substitute,
+  but substitution would lead to variable capture,
+  you can avoid capture by substituting into an equivalent type:
+
+$$
+\frac
+{\tau'\equiv\tau''}
+{
+\tau'
+[\alpha\mapsto\tau]
+\equiv
+\tau''
+[\alpha\mapsto\tau]
+}
+$$
+
+$$
+\label{}\tag{TySubEquiv}
+$$
+
+* ...but $\tau$ has a free variable $\alpha_i$ which is one of the
+  bound type variables in 
+  $\forall \alpha_1,\ldots,\alpha_n \\,.\\, \tau^*$...
+
+---
+## Substitution rules
+
+* If you want to substitute,
+  but substitution would lead to variable capture,
+  you can avoid capture by substituting into an equivalent type:
+
+$$
+\frac
+{\tau'\equiv\tau''}
+{
+\tau'
+[\alpha\mapsto\tau]
+\equiv
+\tau''
+[\alpha\mapsto\tau]
+}
+$$
+
+$$
+\label{}\tag{TySubEquiv}
+$$
+
+* (which would cause variable capture if the substitution were carried out)
+
+---
+## Substitution rules
+
+* If you want to substitute,
+  but substitution would lead to variable capture,
+  you can avoid capture by substituting into an equivalent type:
+
+$$
+\frac
+{\tau'\equiv\tau''}
+{
+\tau'
+[\alpha\mapsto\tau]
+\equiv
+\tau''
+[\alpha\mapsto\tau]
+}
+$$
+
+$$
+\label{}\tag{TySubEquiv}
+$$
+
+* just rename $\tau'$ to an equivalent type which
+  renames $\alpha_i$ to a type variable which is not free in $\tau$,
+  and then do the substitution
+
+---
+## Substitution rules
+
+* If you want to substitute,
+  but substitution would lead to variable capture,
+  you can avoid capture by substituting into an equivalent type:
+
+$$
+\frac
+{\tau'\equiv\tau''}
+{
+\tau'
+[\alpha\mapsto\tau]
+\equiv
+\tau''
+[\alpha\mapsto\tau]
+}
+$$
+
+$$
+\label{}\tag{TySubEquiv}
+$$
+
+* (then variable capture won't happen)
+
+---
+## Substitution rules
+
+* If you want to substitute,
+  but substitution would lead to variable capture,
+  you can avoid capture by substituting into an equivalent type:
+
+$$
+\frac
+{\tau'\equiv\tau''}
+{
+\tau'
+[\alpha\mapsto\tau]
+\equiv
+\tau''
+[\alpha\mapsto\tau]
+}
+$$
+
+$$
+\label{}\tag{TySubEquiv}
+$$
+
+* This rule is the basic way to avoid variable capture
 
 ---
 ## Assignment 5
