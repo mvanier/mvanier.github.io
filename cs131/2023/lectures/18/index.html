@@ -1252,162 +1252,30 @@ $$
 \label{}\tag{TySubEquiv}
 $$
 
+---
+## Substitution rules
+
 * For instance,
   if $\tau'$ is a universally-quantified type of the form
-  $\forall \alpha_1,\ldots,\alpha_n \\,.\\, \tau^*$...
+  $\forall \alpha_1,\ldots,\alpha_n \\,.\\, \tau^*$
+
+  * and you are substituting a type $\tau$ for a free variable
+    $\alpha$ of $\tau^*$
+
+  * but $\tau$ has a free variable $\alpha_i$ which is one of the
+    bound type variables in 
+    $\forall \alpha_1,\ldots,\alpha_n \\,.\\, \tau^*$
+
+  * (which would cause variable capture if the substitution were carried out)
 
 ---
 ## Substitution rules
 
-* If you want to substitute,
-  but substitution would lead to variable capture,
-  you can avoid capture by substituting into an equivalent type:
-
-$$
-\frac
-{\tau'\equiv\tau''}
-{
-\tau'
-[\alpha\mapsto\tau]
-\equiv
-\tau''
-[\alpha\mapsto\tau]
-}
-$$
-
-$$
-\label{}\tag{TySubEquiv}
-$$
-
-* ...and you are substituting a type $\tau$ for a free variable
-  $\alpha$ of $\tau^*$...
-
----
-## Substitution rules
-
-* If you want to substitute,
-  but substitution would lead to variable capture,
-  you can avoid capture by substituting into an equivalent type:
-
-$$
-\frac
-{\tau'\equiv\tau''}
-{
-\tau'
-[\alpha\mapsto\tau]
-\equiv
-\tau''
-[\alpha\mapsto\tau]
-}
-$$
-
-$$
-\label{}\tag{TySubEquiv}
-$$
-
-* ...but $\tau$ has a free variable $\alpha_i$ which is one of the
-  bound type variables in 
-  $\forall \alpha_1,\ldots,\alpha_n \\,.\\, \tau^*$...
-
----
-## Substitution rules
-
-* If you want to substitute,
-  but substitution would lead to variable capture,
-  you can avoid capture by substituting into an equivalent type:
-
-$$
-\frac
-{\tau'\equiv\tau''}
-{
-\tau'
-[\alpha\mapsto\tau]
-\equiv
-\tau''
-[\alpha\mapsto\tau]
-}
-$$
-
-$$
-\label{}\tag{TySubEquiv}
-$$
-
-* (which would cause variable capture if the substitution were carried out)
-
----
-## Substitution rules
-
-* If you want to substitute,
-  but substitution would lead to variable capture,
-  you can avoid capture by substituting into an equivalent type:
-
-$$
-\frac
-{\tau'\equiv\tau''}
-{
-\tau'
-[\alpha\mapsto\tau]
-\equiv
-\tau''
-[\alpha\mapsto\tau]
-}
-$$
-
-$$
-\label{}\tag{TySubEquiv}
-$$
-
-* just rename $\tau'$ to an equivalent type which
+* Then just rename $\tau'$ to an equivalent type $\tau''$ which
   renames $\alpha_i$ to a type variable which is not free in $\tau$,
   and then do the substitution
 
----
-## Substitution rules
-
-* If you want to substitute,
-  but substitution would lead to variable capture,
-  you can avoid capture by substituting into an equivalent type:
-
-$$
-\frac
-{\tau'\equiv\tau''}
-{
-\tau'
-[\alpha\mapsto\tau]
-\equiv
-\tau''
-[\alpha\mapsto\tau]
-}
-$$
-
-$$
-\label{}\tag{TySubEquiv}
-$$
-
-* (then variable capture won't happen)
-
----
-## Substitution rules
-
-* If you want to substitute,
-  but substitution would lead to variable capture,
-  you can avoid capture by substituting into an equivalent type:
-
-$$
-\frac
-{\tau'\equiv\tau''}
-{
-\tau'
-[\alpha\mapsto\tau]
-\equiv
-\tau''
-[\alpha\mapsto\tau]
-}
-$$
-
-$$
-\label{}\tag{TySubEquiv}
-$$
+  * Then variable capture won't happen!
 
 * This rule is the basic way to avoid variable capture
 
