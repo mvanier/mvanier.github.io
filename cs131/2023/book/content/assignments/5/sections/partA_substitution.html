@@ -206,9 +206,10 @@ binding between identifiers and types. However, this is <em>not</em> the
 usual type environment <span class="math notranslate nohighlight">\({\Gamma}\)</span> that is in all the type checking
 equations. It’s not really an “environment” at all; it’s just a
 mapping between identifiers (in this case, type variables) and the
-types that should be substituted for those type variables. All this
-means is that you are substituting multiple types for multiple type
-variables simultaneously in a particular type, yielding a new type.</p>
+types that should be substituted for those type variables.
+All this means is that you are substituting multiple types
+for multiple type variables simultaneously in a particular type,
+yielding a new type.</p>
 <p>In lecture 18, we listed the specification for substituting a
 <em>single</em> type for a <em>single</em> type variable while avoiding variable
 capture; in your code you will need to generalize this to handle
@@ -284,25 +285,28 @@ type.</p>
 <ol class="arabic simple">
 <li><p>Compute all the free type variables in the <code class="docutils literal notranslate"><span class="pre">ForAll</span></code> type. (By
 definition, these do <em>not</em> include any of the quantified variables.)</p></li>
-<li><p>Collect all the types in the type map that the free type variables
-map to. These types can potentially cause variable captures. If a
-free type variable isn’t mapped to a type in the type map, include it
-too (as a <code class="docutils literal notranslate"><span class="pre">TyVar</span></code> type).</p></li>
+<li><p>Collect all the types in the type map that the free type variables map to.
+These types can potentially cause variable captures.
+If a free type variable isn’t mapped to a type in the type map,
+include it too.
+(Wrap it in a <code class="docutils literal notranslate"><span class="pre">TyVar</span></code> constructor,
+since a type variable name by itself isn’t a type).</p></li>
 <li><p>Collect all the free type variables in all of these types (including
 the unmapped free type variables). Call these “potential captures”.</p></li>
 <li><p>Check to see if any of the free type variables are also in the alphas
 list.</p>
 <ol class="loweralpha simple">
-<li><p>If not, then we are in luck! No variable capture can occur. Remove
-all the type variables in the alphas list from the type map
-(because the alphas list prevents them from being substituted) and
-substitute the remaining type map into the body of the <code class="docutils literal notranslate"><span class="pre">ForAll</span></code>
-type.</p></li>
+<li><p>If not, then we are in luck! No variable capture can occur.
+Remove all the type variables in the alphas list from the type map
+(because the alphas list prevents them from being substituted)
+and substitute the remaining type map
+into the body of the <code class="docutils literal notranslate"><span class="pre">ForAll</span></code> type.
+(This will involve a recursive call to <code class="docutils literal notranslate"><span class="pre">subst</span></code>.)</p></li>
 <li><p>Otherwise, we have a variable capture situation. Rename all the
 quantified values (the alphas list) in the <code class="docutils literal notranslate"><span class="pre">ForAll</span></code> type so that
 they don’t conflict with any of the potential captures. You’ll do
 this by calling the <code class="docutils literal notranslate"><span class="pre">rename_for_all_avoiding</span></code> function described
-in the next section.</p></li>
+in the next section.  Once this is done, then do the substitution.</p></li>
 </ol>
 </li>
 </ol>

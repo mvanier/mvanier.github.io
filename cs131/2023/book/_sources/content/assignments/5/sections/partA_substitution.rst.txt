@@ -114,9 +114,10 @@ We need to say a few more things about these functions.
    usual type environment |Gamma| that is in all the type checking
    equations. It’s not really an "environment" at all; it’s just a
    mapping between identifiers (in this case, type variables) and the
-   types that should be substituted for those type variables. All this
-   means is that you are substituting multiple types for multiple type
-   variables simultaneously in a particular type, yielding a new type.
+   types that should be substituted for those type variables.
+   All this means is that you are substituting multiple types
+   for multiple type variables simultaneously in a particular type,
+   yielding a new type.
 
    In lecture 18, we listed the specification for substituting a
    *single* type for a *single* type variable while avoiding variable
@@ -199,10 +200,12 @@ type.
 #. Compute all the free type variables in the ``ForAll`` type. (By
    definition, these do *not* include any of the quantified variables.)
 
-#. Collect all the types in the type map that the free type variables
-   map to. These types can potentially cause variable captures. If a
-   free type variable isn’t mapped to a type in the type map, include it
-   too (as a ``TyVar`` type).
+#. Collect all the types in the type map that the free type variables map to.
+   These types can potentially cause variable captures.
+   If a free type variable isn’t mapped to a type in the type map,
+   include it too.
+   (Wrap it in a ``TyVar`` constructor,
+   since a type variable name by itself isn't a type).
 
 #. Collect all the free type variables in all of these types (including
    the unmapped free type variables). Call these "potential captures".
@@ -210,17 +213,18 @@ type.
 #. Check to see if any of the free type variables are also in the alphas
    list.
 
-   a. If not, then we are in luck! No variable capture can occur. Remove
-      all the type variables in the alphas list from the type map
-      (because the alphas list prevents them from being substituted) and
-      substitute the remaining type map into the body of the ``ForAll``
-      type.
+   a. If not, then we are in luck! No variable capture can occur.
+      Remove all the type variables in the alphas list from the type map
+      (because the alphas list prevents them from being substituted)
+      and substitute the remaining type map
+      into the body of the ``ForAll`` type.
+      (This will involve a recursive call to ``subst``.)
 
    b. Otherwise, we have a variable capture situation. Rename all the
       quantified values (the alphas list) in the ``ForAll`` type so that
       they don’t conflict with any of the potential captures. You’ll do
       this by calling the ``rename_for_all_avoiding`` function described
-      in the next section.
+      in the next section.  Once this is done, then do the substitution.
 
 This is not particularly hard code to write, but small mistakes can lead
 to extremely subtle bugs that are hard to track down. The algorithm we
