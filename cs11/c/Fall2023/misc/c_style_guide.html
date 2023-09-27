@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.17">
+<title>CS 11 C track: coding style guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment the following line when using as a custom stylesheet */
+/* @import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"; */
+html{font-family:sans-serif;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+b,strong{font-weight:bold}
+abbr{font-size:.9em}
+abbr[title]{cursor:help;border-bottom:1px dotted #dddddf;text-decoration:none}
+dfn{font-style:italic}
+hr{height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type=checkbox],input[type=radio]{padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,::before,::after{box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;line-height:1;position:relative;cursor:auto;-moz-tab-size:4;-o-tab-size:4;tab-size:4;word-wrap:anywhere;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
+ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
+ul.square{list-style-type:square}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:1px solid #dedede;word-wrap:normal}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre).nobreak{word-wrap:normal}
+:not(pre).nowrap{white-space:nowrap}
+:not(pre).pre-wrap{white-space:pre-wrap}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre>code{display:block}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;border-radius:3px;box-shadow:0 1px 0 rgba(0,0,0,.2),inset 0 0 0 .1em #fff;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin:0 auto;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border:1px solid #e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:none;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:hsla(0,0%,100%,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details{margin-left:1.25rem}
+details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;outline:none;-webkit-tap-highlight-color:transparent}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"";border:solid transparent;border-left:solid;border-width:.3em 0 .3em .5em;position:absolute;top:.5em;left:-1.25rem;transform:translateX(15%)}
+details[open]>summary::before{border:solid transparent;border-top:solid;border-width:.5em .3em 0;transform:translateY(15%)}
+details>summary::after{content:"";width:1.25rem;height:1em;position:absolute;top:.3em;left:-1.25rem}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class=paragraph]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
+.exampleblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child{margin-bottom:0}
+.sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
+.sidebarblock>:first-child{margin-top:0}
+.sidebarblock>:last-child{margin-bottom:0}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class=highlight],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos,pre.pygments .linenos{border-right:1px solid;opacity:.35;padding-right:.5em;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+pre.pygments span.linenos{display:inline-block;margin-right:.75em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans-serif;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;font-size:.85rem;text-align:left;margin-right:0}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content{margin-bottom:1.25em;word-wrap:anywhere}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>*>tr>*{border-width:1px}
+table.grid-cols>*>tr>*{border-width:0 1px}
+table.grid-rows>*>tr>*{border-width:1px 0}
+table.frame-all{border-width:1px}
+table.frame-ends{border-width:1px 0}
+table.frame-sides{border-width:0 1px}
+table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-child>*{border-top-width:0}
+table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
+table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
+table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
+table.stripes-all>*>tr,table.stripes-odd>*>tr:nth-of-type(odd),table.stripes-even>*>tr:nth-of-type(even),table.stripes-hover>*>tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+li>p:empty:only-child::before{content:"";display:inline-block}
+ul.checklist>li>p:first-child{margin-left:-1em}
+ul.checklist>li>p:first-child>.fa-square-o:first-child,ul.checklist>li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist>li>p:first-child>input[type=checkbox]:first-child{margin-right:.25em}
+ul.inline{display:flex;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+td.hdlist2{word-wrap:anywhere}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:4px solid #fff;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);border-radius:50%;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,span.alt,summary{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]{border-bottom:1px dotted}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#header,#content,#footnotes,#footer{max-width:none}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media amzn-kf8,print{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+pre.pygments .hll { background-color: #ffffcc }
+pre.pygments { background: #f8f8f8; }
+pre.pygments .tok-c { color: #408080; font-style: italic } /* Comment */
+pre.pygments .tok-err { border: 1px solid #FF0000 } /* Error */
+pre.pygments .tok-k { color: #008000; font-weight: bold } /* Keyword */
+pre.pygments .tok-o { color: #666666 } /* Operator */
+pre.pygments .tok-ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+pre.pygments .tok-cm { color: #408080; font-style: italic } /* Comment.Multiline */
+pre.pygments .tok-cp { color: #BC7A00 } /* Comment.Preproc */
+pre.pygments .tok-cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+pre.pygments .tok-c1 { color: #408080; font-style: italic } /* Comment.Single */
+pre.pygments .tok-cs { color: #408080; font-style: italic } /* Comment.Special */
+pre.pygments .tok-gd { color: #A00000 } /* Generic.Deleted */
+pre.pygments .tok-ge { font-style: italic } /* Generic.Emph */
+pre.pygments .tok-gr { color: #FF0000 } /* Generic.Error */
+pre.pygments .tok-gh { color: #000080; font-weight: bold } /* Generic.Heading */
+pre.pygments .tok-gi { color: #00A000 } /* Generic.Inserted */
+pre.pygments .tok-go { color: #888888 } /* Generic.Output */
+pre.pygments .tok-gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+pre.pygments .tok-gs { font-weight: bold } /* Generic.Strong */
+pre.pygments .tok-gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+pre.pygments .tok-gt { color: #0044DD } /* Generic.Traceback */
+pre.pygments .tok-kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+pre.pygments .tok-kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+pre.pygments .tok-kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+pre.pygments .tok-kp { color: #008000 } /* Keyword.Pseudo */
+pre.pygments .tok-kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+pre.pygments .tok-kt { color: #B00040 } /* Keyword.Type */
+pre.pygments .tok-m { color: #666666 } /* Literal.Number */
+pre.pygments .tok-s { color: #BA2121 } /* Literal.String */
+pre.pygments .tok-na { color: #7D9029 } /* Name.Attribute */
+pre.pygments .tok-nb { color: #008000 } /* Name.Builtin */
+pre.pygments .tok-nc { color: #0000FF; font-weight: bold } /* Name.Class */
+pre.pygments .tok-no { color: #880000 } /* Name.Constant */
+pre.pygments .tok-nd { color: #AA22FF } /* Name.Decorator */
+pre.pygments .tok-ni { color: #999999; font-weight: bold } /* Name.Entity */
+pre.pygments .tok-ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+pre.pygments .tok-nf { color: #0000FF } /* Name.Function */
+pre.pygments .tok-nl { color: #A0A000 } /* Name.Label */
+pre.pygments .tok-nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+pre.pygments .tok-nt { color: #008000; font-weight: bold } /* Name.Tag */
+pre.pygments .tok-nv { color: #19177C } /* Name.Variable */
+pre.pygments .tok-ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+pre.pygments .tok-w { color: #bbbbbb } /* Text.Whitespace */
+pre.pygments .tok-mb { color: #666666 } /* Literal.Number.Bin */
+pre.pygments .tok-mf { color: #666666 } /* Literal.Number.Float */
+pre.pygments .tok-mh { color: #666666 } /* Literal.Number.Hex */
+pre.pygments .tok-mi { color: #666666 } /* Literal.Number.Integer */
+pre.pygments .tok-mo { color: #666666 } /* Literal.Number.Oct */
+pre.pygments .tok-sa { color: #BA2121 } /* Literal.String.Affix */
+pre.pygments .tok-sb { color: #BA2121 } /* Literal.String.Backtick */
+pre.pygments .tok-sc { color: #BA2121 } /* Literal.String.Char */
+pre.pygments .tok-dl { color: #BA2121 } /* Literal.String.Delimiter */
+pre.pygments .tok-sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+pre.pygments .tok-s2 { color: #BA2121 } /* Literal.String.Double */
+pre.pygments .tok-se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+pre.pygments .tok-sh { color: #BA2121 } /* Literal.String.Heredoc */
+pre.pygments .tok-si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+pre.pygments .tok-sx { color: #008000 } /* Literal.String.Other */
+pre.pygments .tok-sr { color: #BB6688 } /* Literal.String.Regex */
+pre.pygments .tok-s1 { color: #BA2121 } /* Literal.String.Single */
+pre.pygments .tok-ss { color: #19177C } /* Literal.String.Symbol */
+pre.pygments .tok-bp { color: #008000 } /* Name.Builtin.Pseudo */
+pre.pygments .tok-fm { color: #0000FF } /* Name.Function.Magic */
+pre.pygments .tok-vc { color: #19177C } /* Name.Variable.Class */
+pre.pygments .tok-vg { color: #19177C } /* Name.Variable.Global */
+pre.pygments .tok-vi { color: #19177C } /* Name.Variable.Instance */
+pre.pygments .tok-vm { color: #19177C } /* Name.Variable.Magic */
+pre.pygments .tok-il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+<style>
+:root{
+  --codebg: #f4f4f4;
+/*  --titlecolor: #006080; */
+}
+
+/*
+h1, h2, h3, h4, h5, h6 {
+  color: var(--titlecolor);
+}
+*/
+
+.tablehighlight code {
+  // margin-left: 10px !important;
+  padding: 10px !important;
+  border-radius: 0px !important;
+  border-left: 5px solid #0088aa;
+  /*
+  border-right: 1px solid gray;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+  */
+}
+
+code {
+  font-family: Menlo, "DejaVu Sans Mono", monospace;
+  color: #02b;
+  background: var(--codebg) !important;
+}
+
+pre {
+  color: #02b;
+  background: var(--codebg) !important;
+}
+
+hr.short {
+  height: 1px;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+h5, h6 {
+  font-style: italic;
+  font-size: 130%;
+}
+
+.admonitionblock td.icon .icon-warning::before{
+  color: #d00000 !important;
+}
+.admonitionblock td.content {
+  font-size: 96%;
+  color: rgba(0,0,0,0.8) !important;
+}
+
+.quoteblock {
+  /* font: 22px normal helvetica, sans-serif; */
+  font-family: normal helvetica, sans-serif;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 50px;
+  padding-left: 15px;
+  border-left: 4px solid #ccc;
+}
+.quoteblock blockquote::before {
+  content: none;
+}
+</style>
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1>CS 11 C track: coding style guide</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">Introduction</a></li>
+<li><a href="#_how_to_get_the_style_checker_working">How to get the style checker working</a>
+<ul class="sectlevel2">
+<li><a href="#_requirements">Requirements</a></li>
+<li><a href="#_instructions">Instructions</a></li>
+</ul>
+</li>
+<li><a href="#_the_most_common_style_mistakes">The most common style mistakes</a></li>
+<li><a href="#_catalog_of_style_mistakes">Catalog of style mistakes</a>
+<ul class="sectlevel2">
+<li><a href="#_general">General</a></li>
+<li><a href="#_comments">Comments</a></li>
+<li><a href="#_functions">Functions</a></li>
+</ul>
+</li>
+<li><a href="#_finally">Finally&#8230;&#8203;</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_introduction">Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The C programming language offers a number of ways to format code.  Many
+programmers abuse this freedom and write unreadable (and thus incomprehensible
+and unmaintainable) code.  While there is more than one way to properly format
+code, here is a set of guidelines which have been found useful in practice.
+Note that marks <em>will</em> be taken off for poor formatting (more marks deducted as
+the term goes on).  Some of these guidelines may seem amazingly anal, but they
+really make a difference when reading code.  Remember: you are writing code not
+just for the compiler, but for other people to read as well.  The other person
+reading your code will most likely be <em>you</em> six months from now, so making sure
+that your code is readable is extremely important.</p>
+</div>
+<div class="paragraph">
+<p>In the following, each item has a code associated with it to the left of the
+description of the item.  This code will be used to specify the problem when
+correcting your code.  It is up to you to match the code with the item.
+Hopefully this will encourage you to read this style guide :-) As a general
+rule, the earlier items in a section are more important than the later ones
+and/or represent more common errors.</p>
+</div>
+<div class="paragraph">
+<p>In order to make life easier on you, we are supplying you with an
+<a href="c_style_check">automatic C code style checker</a>.  It won&#8217;t catch all of
+these errors by any means, but it will catch a lot of them.  You will be asked
+to run your code through the style checker before you submit it; if it fails,
+you will lose marks.  The C style checker is written in Python, which should be
+available on any modern computer (or which is easily installed if not).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_get_the_style_checker_working">How to get the style checker working</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_requirements">Requirements</h3>
+<div class="paragraph">
+<p>The style checker is an executable Python script which is intended to be run
+from a Unix-style terminal.  Examples of Unix-style terminals are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The MacOS X <code>terminal</code> applications (and also improved versions of this such
+as <a href="https://iterm2.com/">iTerm2</a>)</p>
+</li>
+<li>
+<p>Any Linux terminal program.</p>
+</li>
+<li>
+<p>Any Windows terminal which is running
+<a href="https://learn.microsoft.com/en-us/windows/wsl/install">WSL</a> (Windows Subsystem
+for Linux), which has to be installed first.  A good terminal for Windows is
+<a href="https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701?hl=en-us&amp;gl=us">Windows
+Terminal</a>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Also, you can run a terminal inside the <a href="https://code.visualstudio.com/">Visual
+Studio Code</a> (VS Code) editor.  If you are on Windows and have WSL installed,
+you can use WSL as one of your terminal options inside VS Code.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_instructions">Instructions</h3>
+<div class="sect3">
+<h4 id="_getting_the_style_checker">Getting the style checker</h4>
+<div class="paragraph">
+<p>Download the style checker from <a href="c_style_check">this file</a> onto your
+computer.  The way to do this is to select the "Save Page As" option in the
+"File" menu (this works for Firefox; other browsers have similar commands).  It
+will suggest you save the file under the name <code>c_style_check</code> and you should
+agree.  This will put the style checker program into one of your directories
+(probably your home directory).  <strong>DO NOT CUT AND PASTE THE CODE INTO A FILE;
+THAT WILL NOT WORK!</strong>  Alternatively, you can right-click on the link to the
+file and select "Save Link As", which is simpler.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_installing_the_style_checker">Installing the style checker</h4>
+<div class="paragraph">
+<p>Start up a terminal program and use the <code>cd</code> (change directory) command to the
+directory containing the style checker you just downloaded.  Make it into an
+executable program by typing:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ chmod +x ./c_style_check</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>(where <code>$</code> is the terminal prompt; yours may be different).</p>
+</div>
+<div class="paragraph">
+<p>Make a subdirectory of your home directory called <code>bin</code>
+(which just means a location for programs; the name really doesn&#8217;t matter but
+it&#8217;s traditional).  You can do this by typing</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ mkdir ~/bin</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>at the prompt (the tilde (<code>~</code>) character is shorthand for your home directory).
+<strong>Note:</strong> if you already have a <code>~/bin</code> directory, obviously you don&#8217;t have to do
+this step.</p>
+</div>
+<div class="paragraph">
+<p>Move the style checker into the newly-created <code>bin</code> directory:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ mv c_style_check ~/bin</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_setting_up_your_path">Setting up your path</h4>
+<div class="paragraph">
+<p>Now comes the tricky part.  You have to adjust your <em>path</em> so
+that it includes your <code>bin</code> directory.  The path is just a list of directories
+that contain programs; it&#8217;s the way the computer knows where to find programs.
+There is a default path set up for you when you start your computer, but it may
+not include the <code>bin</code> directory (because most users don&#8217;t have one).</p>
+</div>
+<div class="paragraph">
+<p>To adjust your path you have to do these steps.</p>
+</div>
+<div class="paragraph">
+<p>First check to see if you already have the <code>bin</code> directory in your path. Type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ echo $PATH</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>at the prompt and if the result includes <code>/home/&lt;your-login-name&gt;/bin</code> then
+you&#8217;re all set and you can skip the rest of the steps in this section.</p>
+</div>
+<div class="paragraph">
+<p>Otherwise, you need to adjust the path in your terminal initialization file.
+There are two kinds of "shells" (command interpreter programs) that are
+used in Unix-style terminals: one is called <code>bash</code> and the other is called
+<code>zsh</code>.  On Windows or Linux, you will probably be running <code>bash</code>, whereas on
+a Mac you will probably be running <code>zsh</code>.  To find out which one you are using,
+you can type this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ which bash
+$ which zsh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If one of these gives a "not found" error message, you are using the other one.
+If both give a "not found" error message, you need to talk to a TA.
+The initialization file for <code>bash</code> is called <code>.bashrc</code>;
+the one for <code>zsh</code> is called <code>.zshrc</code>.  We&#8217;ll assume you are using <code>bash</code>
+in what follows; the changes for <code>zsh</code> are analogous.
+Check if you have a file called <code>.bashrc</code> in your home
+directory directory:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ ls ~/.bashrc</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If this file doesn&#8217;t exist, you might try this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ ls /etc/bash.bashrc</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>(or <code>/etc/zshrc</code> for <code>zsh</code>.)
+If this exists, copy it to your home directory:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ cp /etc/bash.bashrc ~</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If that file isn&#8217;t there, you need to see the TAs.  Otherwise, continue.</p>
+</div>
+<div class="paragraph">
+<p>Open up the <code>.bashrc</code> file in a text editor.
+Go to the end of the file and add this line:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>export PATH=$PATH:$HOME/bin</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Save the file, get out of the text editor and do this at the prompt:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ source ~/.bashrc
+$ hash -r</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now you&#8217;re all set.  You will be able to use the style checker from any
+directory you&#8217;re in, and you&#8217;ll never have to download it again or do any of
+these steps again.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_using_the_style_checker">Using the style checker</h4>
+<div class="paragraph">
+<p>To style check a file called <em>e.g.</em> <code>foo.c</code>, do:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ c_style_check foo.c</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also style check multiple files all at once:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ c_style_check foo.c bar.c baz.c</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Don&#8217;t be alarmed if there are a lot of errors reported; just go through the
+file and fix them.  Some lines will probably have multiple style violations;
+you should fix all of them.  You&#8217;ll probably be very annoyed with the style
+checker at first, but your code will become much more readable as a result.  If
+you think you&#8217;ve found a bug in it, let us know at once; this is a (permanent)
+work in progress.  Note that the style checker will sometimes be too stupid to
+know when it&#8217;s in the middle of a comment or a literal string, so it may report
+errors that aren&#8217;t really errors in those cases.  If so, just disregard them.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_most_common_style_mistakes">The most common style mistakes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>These mistakes occur so often that they&#8217;re almost universal.  Therefore, please
+pay particular attention to avoiding them.  Follow the links to get to the
+descriptions below.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#TABS">[TABS]</a> Using tab characters in your code.</p>
+</li>
+<li>
+<p><a href="#OPERATOR_SPACE">[OPERATOR_SPACE]</a> Not putting spaces between operators.</p>
+</li>
+<li>
+<p><a href="#COMMA_SPACE">[COMMA_SPACE]</a> Not putting a space after a comma.</p>
+</li>
+<li>
+<p><a href="#LINE_LENGTH">[LINE_LENGTH]</a> Writing lines longer than 80 characters.</p>
+</li>
+<li>
+<p><a href="#USAGE_STMT">[USAGE_STMT]</a> Missing or inadequate usage statement.</p>
+</li>
+<li>
+<p><a href="#EMPTY_LINES">[EMPTY_LINES]</a>  Using too many or too few empty (blank) lines in functions.</p>
+</li>
+<li>
+<p><a href="#COMMENTS_FULL_SENTENCES">[COMMENTS_FULL_SENTENCES]</a> Writing comments that are not full sentences.</p>
+</li>
+<li>
+<p><a href="#COMMENTS_GRAMMATICAL">[COMMENTS_GRAMMATICAL]</a> Writing comments that are not grammatically correct
+or are misspelled.</p>
+</li>
+<li>
+<p><a href="#COMMENT_SPACE">[COMMENT_SPACE]</a> Not putting a space after the open-comment
+symbol <code>/*</code> and/or before the close-comment symbol <code>*/</code>.</p>
+</li>
+<li>
+<p><a href="#COMMENT_HEADER">[COMMENT_HEADER]</a> Not writing a proper comment at the head
+of a function.</p>
+</li>
+<li>
+<p><a href="#FUNCTION_PROTOTYPES">[FUNCTION_PROTOTYPES]</a> Not writing prototypes for all
+the functions defined in a file.</p>
+</li>
+<li>
+<p><a href="#FUNCTION_BLANK_LINES">[FUNCTION_BLANK_LINES]</a> Not separating function definitions by blank lines.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_catalog_of_style_mistakes">Catalog of style mistakes</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_general">General</h3>
+<div class="sect3">
+<h4 id="TABS">[TABS]</h4>
+<div class="paragraph">
+<p>Never, ever, ever use the tab character (ASCII 0x9)!  Different people use
+different tab settings in their editors, and code that looks just fine with a
+tab width of 2 becomes unreadable with a tab width of 8.  Unfortunately, many
+text editing programs will stick in tab characters without making it obvious
+that they&#8217;re doing it.</p>
+</div>
+<div class="paragraph">
+<p>Almost all text editors allow you to force tabs to actually print spaces.  Some
+examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If you use <code>emacs</code> for text editing put the following lines in your <code>.emacs</code>
+or <code>init.el</code> startup file:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>(setq c-mode-hook
+  &#39;(lambda ()
+     (progn
+        (set-variable &#39;indent-tabs-mode nil)
+        ;; other customizations, if any, go here
+        )))</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is actually Emacs Lisp code, but don&#8217;t worry about that.  Then exit and
+restart <code>emacs</code>.  Now when you hit the tab key while editing C code, <code>emacs</code>
+won&#8217;t actually put any tab characters in your code, but instead will just put
+in spaces.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If you&#8217;re using the <code>vim</code> or <code>neovim</code> editors instead of <code>emacs</code>
+<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup>, you can see all the tab characters by
+typing:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>:set list</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>into the editor while in command mode.  This will make all tab characters look
+like <code>^I</code> (a circumflex accent followed by a capital <code>I</code>).  This makes it easy
+to go through a file and replace all tabs by <em>e.g.</em> four spaces.  Better still,
+you can put this into your <code>~/.vimrc</code> file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>set expandtab</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and when you hit the tab key, spaces will be printed instead.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>With other editors (Atom, Sublime Text, Visual Studio Code) look in the
+preferences; there will almost always be an option to replace tabs with spaces.
+If your editor doesn&#8217;t do that, use a different editor!</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If you don&#8217;t like removing tabs from your code manually, here&#8217;s a trick
+that will help. Let&#8217;s say you have a file called <code>foo.c</code> and
+you&#8217;ve run the style checker on it, and every other line has tabs in it.
+Just do this from the unix prompt (<code>$</code> in this example):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ sed -e &#39;s/\t/    /g&#39; &lt; foo.c &gt; foo.c.notabs
+$ mv foo.c.notabs foo.c</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and your file will no longer have any tabs.  On the other hand, this can mess
+up the indentation, so you should go over it afterwards to make sure it looks
+presentable and add spaces if necessary.  If you don&#8217;t, and the result is
+unreadable, you will probably have to redo it.</p>
+</div>
+<div class="paragraph">
+<p>The <code>sed</code> in the command line is a program called <code>sed</code> (which means "stream
+editor").  It does simple editing on files on a line-by-line basis.
+<sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnotedef_2" title="View footnote.">2</a>]</sup>  So when you type</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>sed -e &#39;s/\t/    /g&#39; &lt; foo.c &gt; foo.c.notabs
+             ^^^^ 4 space characters here</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>it executes a command called
+<code style="white-space: pre">s/\t/    /g</code>
+on each line of the file <code>foo.c</code>, putting the results into a new file called
+<code>foo.c.notabs</code>.  The line
+<code style="white-space: pre">s/\t/    /g</code>
+means "substitute (<code>s</code>) for every tab (<code>\t</code>) character, four space characters
+(which is what&#8217;s between the
+<code style="white-space: pre">/    /</code>
+characters), and do it for every tab in the line (<code>g</code>, which means global)".
+Note that you have to type this in <em>exactly</em> as described or it won&#8217;t work.</p>
+</div>
+<div class="paragraph">
+<p>If you want, you can use more or less than four space characters per
+tab. Most editors use eight space characters for a tab by default, so that
+might be a good alternative.  That would look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>sed -e 's/\t/        /g' &lt; foo.c &gt; foo.c.notabs
+             ^^^^^^^^ 8 space characters here</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="OPERATOR_SPACE">[OPERATOR_SPACE]</h4>
+<div class="paragraph">
+<p>Use a single space to separate variable names from operators, <em>i.e.</em>
+write</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>a = b + c * d;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>instead of</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>a=b+c*d;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The only exception to this rule is for array subscripts <em>e.g.</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>b = a[i-1]  /* not a[i - 1] */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>but you can put the spaces in here too if you want.  Unfortunately the
+style checker currently complains if you don&#8217;t put the spaces in.  Don&#8217;t
+worry about the warning in this case.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="COMMA_SPACE">[COMMA_SPACE]</h4>
+<div class="paragraph">
+<p>Always put a space after a comma.  There are no exceptions to this rule.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="PAREN_CURLY_SPACE">[PAREN_CURLY_SPACE]</h4>
+<div class="paragraph">
+<p>If you are using a formatting style where the opening curly brace of a block is
+on the same line as an <code>if</code>, <code>while</code>, or <code>for</code> statement (which we discourage;
+it&#8217;s better to put the curly brace on a separate line), make sure that there is
+a space between the close paren on the line and the open curly brace, <em>e.g.</em> do</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>for (i = 0; i &lt; n; i++) {
+    /* code goes here */
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>instead of:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>for (i = 0; i &lt; n; i++){
+    /* code goes here */
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>because the latter is hard to read.  Similarly, leave a space between an <code>else</code>
+keyword and an opening curly brace if they&#8217;re on the same line.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="LINE_LENGTH">[LINE_LENGTH]</h4>
+<div class="paragraph">
+<p>Don&#8217;t write lines that are longer than 80 characters long.  Long lines tend to
+be wrapped, or worse, to be truncated when printing out the source.  Printing
+out source code is a valuable way to review your code.  It is almost never
+necessary to have long lines, even for long strings; you can always break up a
+string like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>printf(&quot;this is a really, really, really, really, really, really, &quot;
+       &quot;really, really, really, really, really, really long string.\n&quot;);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and the two strings will be concatenated together.  This will work for any
+number of consecutive strings.  Note that this trick only works for literal
+strings, not for variables which contain (point to) strings.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="ANSI_VIOLATION">[ANSI_VIOLATION]</h4>
+<div class="paragraph">
+<p>For portability, you should restrict yourself to pure ANSI-compliant C code
+exclusively.  Note that <code>gcc</code> will not do this for you.  If you want to be safe
+you need to use several compiler flags:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>gcc -Wall -Wstrict-prototypes -ansi -pedantic</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and make sure that your program doesn&#8217;t generate any warnings. (Code which
+generates warnings will be severely penalized.)</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="MAGIC_NUMBER">[MAGIC_NUMBER]</h4>
+<div class="paragraph">
+<p>Avoid putting a large number into a file which has no obvious relevance to the
+surrounding code.  This is known as a "magic number" and is often found when
+setting the size of arrays, <em>e.g.</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>int my_array[4096];  /* 4096 is a magic number */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The reason for avoiding this is twofold:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>It&#8217;s not usually clear from the context what the significance of the
+number is.</p>
+</li>
+<li>
+<p>The same number tends to occur several times in the file, which causes
+problems when you want to change the value.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The right thing to do is this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>#define BUFSIZE 4096  /* size of buffer */
+
+...
+
+int my_array[BUFSIZE];</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, it&#8217;s perfectly valid to declare a constant:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>const int BUFSIZE = 4096;  /* size of buffer */
+
+...
+
+int my_array[BUFSIZE];</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="USELESS_CODE">[USELESS_CODE]</h4>
+<div class="paragraph">
+<p>Don&#8217;t put in code that has no function or no effect.  If it&#8217;s code that&#8217;s was
+only used for debugging purposes, it should be removed before you submit your
+assignment.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="USAGE_STMT">[USAGE_STMT]</h4>
+<div class="paragraph">
+<p>If a program is called with incorrect arguments, it should detect that and
+print a usage statement to the terminal.  The usage statement should include
+the program name.  The easiest way to do that is to use <code>argv[0]</code> <em>i.e.</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>char usage[] = &quot;usage: %s input_filename output_filename\n&quot;;
+
+if (argc != 2)
+{
+   fprintf(stderr, usage, argv[0]);
+   exit(1);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that the arguments have mnemonic names.  Don&#8217;t write the usage
+message multiple times.  If necessary, you can define a usage function:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>void usage(char *progname)
+{
+    fprintf(stderr, &quot;usage: %s input_filename output_filename\n&quot;, progname);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and then call it like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>int main(int argc, char **argv)
+{
+    /* code omitted */
+    if (/* arguments are incorrect */)
+    {
+        usage(argv[0]);
+        return 1;
+    }
+
+    /* more code omitted */
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, you could put a call to the <code>exit()</code> function in
+the <code>usage()</code> function:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>void usage(char *progname)
+{
+    fprintf(stderr, &quot;usage: %s input_filename output_filename\n&quot;, progname);
+    exit(1);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and then call it like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>#include &lt;stdlib.h&gt;   /* declaration of exit() function */
+
+int main(int argc, char **argv)
+{
+    /* code omitted */
+    if (/* arguments are incorrect */)
+    {
+        usage(argv[0]);  /* no return needed */
+    }
+
+    /* more code omitted */
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, the <code>return 1;</code> line wasn&#8217;t needed because when <code>exit(1)</code> is
+called from the <code>usage()</code> function the program will exit with a return value of
+<code>1</code>.</p>
+</div>
+<div class="paragraph">
+<p>Also, make sure that you use <code>fprintf</code> and print to <code>stderr</code> (the error output
+stream) instead of using <code>printf</code>, which prints to <code>stdout</code> (the normal output
+stream).</p>
+</div>
+<div class="paragraph">
+<p>As a general rule, <strong>any</strong> error that involves the user supplying invalid
+command-line arguments should give rise to a usage statement like the ones
+described above.  You should try to make your usage statements comprehensive
+enough so that one statement will work for all such errors.</p>
+</div>
+<div class="paragraph">
+<p>For more on the correct format of usage statements, see
+<a href="cmdline_args.html">this page</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="STMTS_ON_LINE">[STMTS_ON_LINE]</h4>
+<div class="paragraph">
+<p>Never put more than one statement on a line.  It makes for unreadable code.
+The only exception is in the <code>for</code> line of a <code>for</code> loop, which typically has
+three statements.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="PRECEDENCE">[PRECEDENCE]</h4>
+<div class="paragraph">
+<p>Use parentheses to show operator precedence in all cases except that of
+multiplication/division over addition/subtraction and assignment statements.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="EMPTY_LINES">[EMPTY_LINES]</h4>
+<div class="paragraph">
+<p>Do not put large numbers of empty lines (&gt; 2) between code sections unless
+there is a clear need to distinguish different sections of the code.
+Conversely, <em>do</em> put an empty line between logical sections in a single
+function.  An example of this is between the type declarations and the first
+line of actual code.  Another example is at the end of a block in curly braces
+(though this is a judgment call).  Long functions that have no blank lines in
+them are really hard to read.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="BLOCK_CURLY_BRACES">[BLOCK_CURLY_BRACES]</h4>
+<div class="paragraph">
+<p>Use curly braces for the body of all <code>if</code> statements, even if the body is only
+a single statement.  Do the same for <code>else</code>, <code>else if</code>, <code>for</code>, and <code>while</code>
+statements.  The reason for this is twofold: first, it makes the code more
+readable, and second, it makes it easier to add <code>printf</code> statements for
+debugging in the body of the expression (which you will frequently have to do).</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="MATCH_CURLY_BRACES">[MATCH_CURLY_BRACES]</h4>
+<div class="paragraph">
+<p>If you are using a formatting style where the curly braces of a block are on a
+separate line (which we encourage), make sure that the column of the curly
+braces match <em>e.g.</em> do this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>for (i = 0; i &lt; n; i++)
+{
+    /* code goes here */
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>instead of:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>for (i = 0; i &lt; n; i++)
+  {
+    /* code goes here */
+}  /* braces don&#39;t line up */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="CODE_ON_CURLY_BRACE_LINE">[CODE_ON_CURLY_BRACE_LINE]</h4>
+<div class="paragraph">
+<p>Don&#8217;t put code on the same line as an open curly brace.  For instance, this is
+bad:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>if (a != 0)
+{  a = b + c;  /* ugly */
+   printf(&quot;a is now: %d\n&quot;);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Keep the curly braces on their own lines; this makes the code easier to read.
+Unfortunately, you often see code written like that in books about programming;
+the reason is that they have to cram as much code as possible onto a single
+page.  <em>You</em> don&#8217;t.  Instead, write this as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>if (a != 0)
+{
+   a = b + c;
+   printf(&quot;a is now: %d\n&quot;);
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="IF_FOR_WHILE_DO_SPACE">[IF_FOR_WHILE_DO_SPACE]</h4>
+<div class="paragraph">
+<p>Put a single space between the keywords <code>if</code>, <code>for</code>, <code>while</code>, or <code>do</code> and the
+opening parenthesis on the same line <em>e.g.</em> do</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>for (i = 0; i &lt; n; i++)
+{
+/* code goes here */
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and not</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>for(i = 0; i &lt; n; i++)
+{
+/* code goes here */
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The logic is that keywords are not function calls and should not look like
+them.  Similarly, leave a space after <code>return</code> keyword which is followed by an
+expression.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="BLOCK_ON_SINGLE_LINE">[BLOCK_ON_SINGLE_LINE]</h4>
+<div class="paragraph">
+<p>Do not put an entire block on a single line, and most especially do not put it
+on the same lines as an <strong>if</strong>, <strong>while</strong>, <strong>for</strong> <em>etc.</em> For instance, change</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>if (i &lt; 10) { break; }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>to</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>if (i &lt; 10)
+{
+    break;
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="INADEQUATE_INDENTING">[INADEQUATE_INDENTING]</h4>
+<div class="paragraph">
+<p>Lines within a block should be indented relative to lines outside a block.
+Also, don&#8217;t indent one space; two spaces is the bare minimum.  Four spaces
+looks nice.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="INCONSISTENT_INDENTING">[INCONSISTENT_INDENTING]</h4>
+<div class="paragraph">
+<p>Lines at the same level of a block should start at the same column.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="FOR_LOOP_COMPUTATIONS">[FOR_LOOP_COMPUTATIONS]</h4>
+<div class="paragraph">
+<p>Do not try to do complex calculations in the testing or increment parts of
+<code>for</code> loops.  Don&#8217;t try to impress everyone with how clever you are; clever
+code is a maintenance disaster.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="VARIABLE_NAMES">[VARIABLE_NAMES]</h4>
+<div class="paragraph">
+<p>Make variable names descriptive as much as possible; avoid one or two character
+names unless it&#8217;s for something trivial like a loop index.  It&#8217;s perfectly OK
+(and usually desirable) to have longer descriptive names for variables.  When
+you do this with names that are actually multiple words, use one of two
+conventions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the underscore convention: <code>long_variable_name</code></p>
+</li>
+<li>
+<p>the capwords convention: <code>longVariableName</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Either convention is OK as long as you&#8217;re consistent.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="IMPLICIT_CONVERSIONS">[IMPLICIT_CONVERSIONS]</h4>
+<div class="paragraph">
+<p>Avoid using implicit <code>int</code> to <code>float</code> or <code>int</code> to <code>double</code> conversions (or
+vice-versa) as much as possible.  It&#8217;s hard to keep track of the types of the
+results otherwise, and C compilers tend not to be very strict about this, which
+often leads to unexpectedly wrong results.  Instead, use explicit type casts
+when you want to convert an <code>int</code> to a <code>double</code> <em>etc.</em>  For instance, this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>int a = 10;
+double b;
+
+b = a;  /* implicit conversion */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>should be written as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>int a = 10;
+double b;
+
+b = (double) a;  /* explicit conversion */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Yes, it&#8217;s a bit more verbose, but it&#8217;s absolutely unambiguous.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_comments">Comments</h3>
+<div class="sect3">
+<h4 id="COMMENTS_FULL_SENTENCES">[COMMENTS_FULL_SENTENCES]</h4>
+<div class="paragraph">
+<p>This is the <strong>single most common style mistake</strong>.  If a comment is a full
+sentence, its first word should be capitalized, unless it is an identifier that
+begins with a lower case letter (never alter the case of identifiers!), and it
+should end in a period.  We prefer comments that are complete sentences.  You
+should use two spaces after a sentence-ending period.</p>
+</div>
+<div class="paragraph">
+<p>Bad:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>/* go through the loop and make sure that all the array elements
+ * have been set to zero */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Good:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>/*
+ * Go through the loop and make sure that all the array elements
+ * have been set to zero.
+ */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That wasn&#8217;t so hard, was it?</p>
+</div>
+<div class="paragraph">
+<p>When you need to refer to identifiers in the code, put them inside backticks
+<em>e.g.</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>/* The variable `nitems` represents the number of items in the stack. */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>(This is a convention borrowed from a format called "markdown"; it looks a bit
+weird but it&#8217;s better than the alternatives.)</p>
+</div>
+<div class="paragraph">
+<p>If a comment is very short, it doesn&#8217;t have to be a full sentence or end in a
+period <em>e.g.</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>i = 1;  /* loop index */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is called an "inline comment". Use these only when describing something
+<em>i.e.</em> in the above code snippet you&#8217;re saying "The variable <code>i</code> represents a
+loop index."  (Actually, this comment should probably be omitted altogether,
+since it should be obvious what the loop index is.)</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="COMMENT_GRAMMATICAL">[COMMENT_GRAMMATICAL]</h4>
+<div class="paragraph">
+<p>Comments should be grammatically correct.  In particular, incorrect spelling is
+unacceptable.  We hate to sound like your high school English teacher, but it&#8217;s
+a pain to read code with tons of spelling mistakes.  Use a spell checker if you
+have to.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="COMMENT_SPACE">[COMMENT_SPACE]</h4>
+<div class="paragraph">
+<p>Put a space after the open-comment symbol and before the close-comment symbol
+<em>i.e.</em> do this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>/* This is a comment that is easy to read. */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and not this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>/*This is a comment that is harder to read.*/</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="COMMENT_C++">[COMMENT_C++]</h4>
+<div class="paragraph">
+<p>Do not use C++ style comments <em>i.e.</em> comments that start with <code>//</code> and go to the
+end of the line.  It is true that most C compilers (including <code>gcc</code>) accept
+them, and they are part of the C99 standard.  But for this track, don&#8217;t use
+them.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="COMMENT_MULTI_LINE">[COMMENT_MULTI_LINE]</h4>
+<div class="paragraph">
+<p>Use this style for multi-line comments:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>/*
+ * This is a multi-line comment.
+ * Spiffy, isn&#39;t it?
+ */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Most especially, do <strong>not</strong> use this style:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>/* This is a bad way to write multi-line comments. */
+/* You comment out every line individually. */
+/* Ugly, isn&#39;t it? */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>People who write comments this way may not be aware of the fact that comments
+can span more than one line.  Well, they can, so take advantage of it.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="COMMENT_BLOCK">[COMMENT_BLOCK]</h4>
+<div class="paragraph">
+<p>Block comments generally apply to some (or all) code that follows them, and are
+indented to the same level as that code. Each line of a block comment starts
+with a <code>*</code> and a single space (unless it is indented text inside the comment).
+Paragraphs inside a block comment are separated by a line containing a single
+<code>*</code>. Block comments are best surrounded by a blank line above and below them
+(or two lines above and a single line below for a block comment at the start of
+a a new section or function definition).  We prefer to start and end block
+comments with a line containing a single <code>*</code>. In other words, a block comment
+looks like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>/*
+ * The first line comes after an empty line.
+ *
+ * Separate paragraphs are also separated by an empty line,
+ * and there&#39;s an empty line at the end.
+ *
+ */</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="COMMENT_NON_OBVIOUS">[COMMENT_NON_OBVIOUS]</h4>
+<div class="paragraph">
+<p>Write comments for anything that isn&#8217;t completely obvious from the context.  In
+particular, write comments for any tricky algorithm or code you are using.
+When in doubt, comment more rather than less.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="COMMENT_REDUNDANT">[COMMENT_REDUNDANT]</h4>
+<div class="paragraph">
+<p>Conversely, don&#8217;t make completely redundant comments, <em>e.g.</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>i = 1;  /* Set i to 1. */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>What constitutes redundancy is often a judgment call.  If in doubt, comment
+more rather than less.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="COMMENT_MEANINGLESS">[COMMENT_MEANINGLESS]</h4>
+<div class="paragraph">
+<p>Don&#8217;t make meaningless comments <em>e.g.</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>/* i */
+i = 1;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Don&#8217;t laugh; we&#8217;ve actually seen this sort of thing.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="COMMENT_HEADER">[COMMENT_HEADER]</h4>
+<div class="paragraph">
+<p>You should almost always put a comment at the beginning of each function
+describing what it does.  The only exception is when you have a series of very
+similar functions which are written out one after another, and where the first
+comment applies (suitably modified) to all of them.  This kind of "header
+comment" (not to be confused with header files) is by far the most important
+kind of comments, because even if the person reading your code has no idea how
+a given function works, the header comment will at least tell them what it does
+and how to use it.  You should state what each of the arguments represents and
+what the function returns.  You may also want to describe the algorithm used,
+its efficiency, and any other relevant facts.  Here&#8217;s an example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>/*
+ * bubble_sort:
+ *    This function takes an array and sorts it in-place using the bubble
+ *    sort algorithm.  This algorithm has a time complexity of O(n^2)
+ *    where `n` is the size of the array, which is not very efficient.
+ *    Therefore, for large arrays use a more efficient algorithm such as
+ *    quicksort.
+ *
+ *    Arguments:
+ *    - arr:  the array to be sorted
+ *    - size: the length of the array to be sorted
+ *
+ *    Return value: none.
+ */
+
+void bubble_sort(int arr[], int size)
+{
+    /* code */
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="COMMENTS_CONSISTENT_WITH_CODE">[COMMENTS_CONSISTENT_WITH_CODE]</h4>
+<div class="paragraph">
+<p>Comments that contradict the code are worse than no comments. <strong>Always make a
+priority of keeping the comments up-to-date when the code changes!</strong></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="COMMENT_INDENT">[COMMENT_INDENT]</h4>
+<div class="paragraph">
+<p>Always indent your comments to the same degree as the surrounding code.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="COMMENT_ALIGN_INLINE">[COMMENT_ALIGN_INLINE]</h4>
+<div class="paragraph">
+<p>Try to line up inline comments where convenient. In other words, don&#8217;t do
+this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>x = x + 1       /* some cool comment about x */
+y = y + 1   /* some even cooler comment about y */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Instead, do this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>x = x + 1   /* some cool comment about x */
+y = y + 1   /* some even cooler comment about y */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Some people like to line up the close-comment token as well.  Use your own
+judgment.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="COMMENT_PRECEDING">[COMMENT_PRECEDING]</h4>
+<div class="paragraph">
+<p>Do not write comments that apply to the preceding code if you can possibly
+avoid it.  Try to write comments that refer to the current line of code or to
+the lines of code which immediately follow.  For instance, this is bad:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>int res;
+/*
+ * &#39;res&#39; contains the result of the program.  It will normally be 0,
+ * unless an error occurs, in which case it will be 1.
+ */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and this is good:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>/*
+ * &#39;res&#39; contains the result of the program.  It will normally be 0,
+ * unless an error occurs, in which case it will be 1.
+ */
+int res;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is really bad:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>int res;  /* &#39;res&#39; contains the result of the program.
+           * It will normally be 0, unless an error occurs,
+           * in which case it will be 1.
+           */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We hope this is obvious, but we see it in students' submissions all the time.
+It&#8217;s OK to put a comment on the same line as the code, but only if the entire
+comment will fit on that line <em>e.g.</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>int res;  /* &#39;res&#39; contains the result of the program. */</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If what you have to say won&#8217;t fit on the line, put the comment on the lines
+above the line of code.  (Don&#8217;t use a very long line to try to fit the comment
+on one line, of course; see <a href="#LINE_LENGTH">[LINE_LENGTH]</a> above).</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_functions">Functions</h3>
+<div class="sect3">
+<h4 id="FUNCTION_PROTOTYPES">[FUNCTION_PROTOTYPES]</h4>
+<div class="paragraph">
+<p>Always write function prototypes at the top of a file for every function whose
+definition is in that file.  This is not only good documentation, it enables
+you to use these functions anywhere in the file without having to worry about
+putting them in strict definition order.  In case you don&#8217;t know already, this
+is a function prototype:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>int foo(double bar,  char * baz);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It&#8217;s just a function without a body.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="FUNCTION_BLANK_LINES">[FUNCTION_BLANK_LINES]</h4>
+<div class="paragraph">
+<p>Please separate your function definitions by at least two blank lines.
+Otherwise it&#8217;s hard to find where a function definition begins.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="FUNCTION_STARTING_COLUMN">[FUNCTION_STARTING_COLUMN]</h4>
+<div class="paragraph">
+<p>Start the line that begins a function in column 0 (the leftmost column).</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_finally">Finally&#8230;&#8203;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Don&#8217;t worry if you can&#8217;t remember all of these rules; we don&#8217;t expect you to.
+At this point it&#8217;s more important that you develop an intuition for what is
+good and what is bad style, and if you aren&#8217;t sure, you can refer back to this
+page later.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. you have good taste! :)
+</div>
+<div class="footnote" id="_footnotedef_2">
+<a href="#_footnoteref_2">2</a>. Actually, it has been proved that <code>sed</code> is a Turing-complete programming language, but that&#8217;s a long, weird story.
+</div>
+</div>
+</body>
+</html>

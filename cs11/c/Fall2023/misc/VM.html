@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.17">
+<title>CS 11 C track: Setting up a Linux Virtual Machine (VM)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment the following line when using as a custom stylesheet */
+/* @import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"; */
+html{font-family:sans-serif;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+b,strong{font-weight:bold}
+abbr{font-size:.9em}
+abbr[title]{cursor:help;border-bottom:1px dotted #dddddf;text-decoration:none}
+dfn{font-style:italic}
+hr{height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type=checkbox],input[type=radio]{padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,::before,::after{box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;line-height:1;position:relative;cursor:auto;-moz-tab-size:4;-o-tab-size:4;tab-size:4;word-wrap:anywhere;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
+ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
+ul.square{list-style-type:square}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:1px solid #dedede;word-wrap:normal}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre).nobreak{word-wrap:normal}
+:not(pre).nowrap{white-space:nowrap}
+:not(pre).pre-wrap{white-space:pre-wrap}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre>code{display:block}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;border-radius:3px;box-shadow:0 1px 0 rgba(0,0,0,.2),inset 0 0 0 .1em #fff;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin:0 auto;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border:1px solid #e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:none;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:hsla(0,0%,100%,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details{margin-left:1.25rem}
+details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;outline:none;-webkit-tap-highlight-color:transparent}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"";border:solid transparent;border-left:solid;border-width:.3em 0 .3em .5em;position:absolute;top:.5em;left:-1.25rem;transform:translateX(15%)}
+details[open]>summary::before{border:solid transparent;border-top:solid;border-width:.5em .3em 0;transform:translateY(15%)}
+details>summary::after{content:"";width:1.25rem;height:1em;position:absolute;top:.3em;left:-1.25rem}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class=paragraph]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
+.exampleblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child{margin-bottom:0}
+.sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
+.sidebarblock>:first-child{margin-top:0}
+.sidebarblock>:last-child{margin-bottom:0}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class=highlight],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos,pre.pygments .linenos{border-right:1px solid;opacity:.35;padding-right:.5em;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+pre.pygments span.linenos{display:inline-block;margin-right:.75em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans-serif;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;font-size:.85rem;text-align:left;margin-right:0}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content{margin-bottom:1.25em;word-wrap:anywhere}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>*>tr>*{border-width:1px}
+table.grid-cols>*>tr>*{border-width:0 1px}
+table.grid-rows>*>tr>*{border-width:1px 0}
+table.frame-all{border-width:1px}
+table.frame-ends{border-width:1px 0}
+table.frame-sides{border-width:0 1px}
+table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-child>*{border-top-width:0}
+table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
+table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
+table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
+table.stripes-all>*>tr,table.stripes-odd>*>tr:nth-of-type(odd),table.stripes-even>*>tr:nth-of-type(even),table.stripes-hover>*>tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+li>p:empty:only-child::before{content:"";display:inline-block}
+ul.checklist>li>p:first-child{margin-left:-1em}
+ul.checklist>li>p:first-child>.fa-square-o:first-child,ul.checklist>li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist>li>p:first-child>input[type=checkbox]:first-child{margin-right:.25em}
+ul.inline{display:flex;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+td.hdlist2{word-wrap:anywhere}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:4px solid #fff;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);border-radius:50%;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,span.alt,summary{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]{border-bottom:1px dotted}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#header,#content,#footnotes,#footer{max-width:none}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media amzn-kf8,print{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+pre.pygments .hll { background-color: #ffffcc }
+pre.pygments { background: #f8f8f8; }
+pre.pygments .tok-c { color: #408080; font-style: italic } /* Comment */
+pre.pygments .tok-err { border: 1px solid #FF0000 } /* Error */
+pre.pygments .tok-k { color: #008000; font-weight: bold } /* Keyword */
+pre.pygments .tok-o { color: #666666 } /* Operator */
+pre.pygments .tok-ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+pre.pygments .tok-cm { color: #408080; font-style: italic } /* Comment.Multiline */
+pre.pygments .tok-cp { color: #BC7A00 } /* Comment.Preproc */
+pre.pygments .tok-cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+pre.pygments .tok-c1 { color: #408080; font-style: italic } /* Comment.Single */
+pre.pygments .tok-cs { color: #408080; font-style: italic } /* Comment.Special */
+pre.pygments .tok-gd { color: #A00000 } /* Generic.Deleted */
+pre.pygments .tok-ge { font-style: italic } /* Generic.Emph */
+pre.pygments .tok-gr { color: #FF0000 } /* Generic.Error */
+pre.pygments .tok-gh { color: #000080; font-weight: bold } /* Generic.Heading */
+pre.pygments .tok-gi { color: #00A000 } /* Generic.Inserted */
+pre.pygments .tok-go { color: #888888 } /* Generic.Output */
+pre.pygments .tok-gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+pre.pygments .tok-gs { font-weight: bold } /* Generic.Strong */
+pre.pygments .tok-gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+pre.pygments .tok-gt { color: #0044DD } /* Generic.Traceback */
+pre.pygments .tok-kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+pre.pygments .tok-kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+pre.pygments .tok-kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+pre.pygments .tok-kp { color: #008000 } /* Keyword.Pseudo */
+pre.pygments .tok-kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+pre.pygments .tok-kt { color: #B00040 } /* Keyword.Type */
+pre.pygments .tok-m { color: #666666 } /* Literal.Number */
+pre.pygments .tok-s { color: #BA2121 } /* Literal.String */
+pre.pygments .tok-na { color: #7D9029 } /* Name.Attribute */
+pre.pygments .tok-nb { color: #008000 } /* Name.Builtin */
+pre.pygments .tok-nc { color: #0000FF; font-weight: bold } /* Name.Class */
+pre.pygments .tok-no { color: #880000 } /* Name.Constant */
+pre.pygments .tok-nd { color: #AA22FF } /* Name.Decorator */
+pre.pygments .tok-ni { color: #999999; font-weight: bold } /* Name.Entity */
+pre.pygments .tok-ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+pre.pygments .tok-nf { color: #0000FF } /* Name.Function */
+pre.pygments .tok-nl { color: #A0A000 } /* Name.Label */
+pre.pygments .tok-nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+pre.pygments .tok-nt { color: #008000; font-weight: bold } /* Name.Tag */
+pre.pygments .tok-nv { color: #19177C } /* Name.Variable */
+pre.pygments .tok-ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+pre.pygments .tok-w { color: #bbbbbb } /* Text.Whitespace */
+pre.pygments .tok-mb { color: #666666 } /* Literal.Number.Bin */
+pre.pygments .tok-mf { color: #666666 } /* Literal.Number.Float */
+pre.pygments .tok-mh { color: #666666 } /* Literal.Number.Hex */
+pre.pygments .tok-mi { color: #666666 } /* Literal.Number.Integer */
+pre.pygments .tok-mo { color: #666666 } /* Literal.Number.Oct */
+pre.pygments .tok-sa { color: #BA2121 } /* Literal.String.Affix */
+pre.pygments .tok-sb { color: #BA2121 } /* Literal.String.Backtick */
+pre.pygments .tok-sc { color: #BA2121 } /* Literal.String.Char */
+pre.pygments .tok-dl { color: #BA2121 } /* Literal.String.Delimiter */
+pre.pygments .tok-sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+pre.pygments .tok-s2 { color: #BA2121 } /* Literal.String.Double */
+pre.pygments .tok-se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+pre.pygments .tok-sh { color: #BA2121 } /* Literal.String.Heredoc */
+pre.pygments .tok-si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+pre.pygments .tok-sx { color: #008000 } /* Literal.String.Other */
+pre.pygments .tok-sr { color: #BB6688 } /* Literal.String.Regex */
+pre.pygments .tok-s1 { color: #BA2121 } /* Literal.String.Single */
+pre.pygments .tok-ss { color: #19177C } /* Literal.String.Symbol */
+pre.pygments .tok-bp { color: #008000 } /* Name.Builtin.Pseudo */
+pre.pygments .tok-fm { color: #0000FF } /* Name.Function.Magic */
+pre.pygments .tok-vc { color: #19177C } /* Name.Variable.Class */
+pre.pygments .tok-vg { color: #19177C } /* Name.Variable.Global */
+pre.pygments .tok-vi { color: #19177C } /* Name.Variable.Instance */
+pre.pygments .tok-vm { color: #19177C } /* Name.Variable.Magic */
+pre.pygments .tok-il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+<style>
+:root{
+  --codebg: #f4f4f4;
+/*  --titlecolor: #006080; */
+}
+
+/*
+h1, h2, h3, h4, h5, h6 {
+  color: var(--titlecolor);
+}
+*/
+
+.tablehighlight code {
+  // margin-left: 10px !important;
+  padding: 10px !important;
+  border-radius: 0px !important;
+  border-left: 5px solid #0088aa;
+  /*
+  border-right: 1px solid gray;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+  */
+}
+
+code {
+  font-family: Menlo, "DejaVu Sans Mono", monospace;
+  color: #02b;
+  background: var(--codebg) !important;
+}
+
+pre {
+  color: #02b;
+  background: var(--codebg) !important;
+}
+
+hr.short {
+  height: 1px;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+h5, h6 {
+  font-style: italic;
+  font-size: 130%;
+}
+
+.admonitionblock td.icon .icon-warning::before{
+  color: #d00000 !important;
+}
+.admonitionblock td.content {
+  font-size: 96%;
+  color: rgba(0,0,0,0.8) !important;
+}
+
+.quoteblock {
+  /* font: 22px normal helvetica, sans-serif; */
+  font-family: normal helvetica, sans-serif;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 50px;
+  padding-left: 15px;
+  border-left: 4px solid #ccc;
+}
+.quoteblock blockquote::before {
+  content: none;
+}
+</style>
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1>CS 11 C track: Setting up a Linux Virtual Machine (VM)</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_some_notes_and_caveats">Some notes and caveats</a></li>
+<li><a href="#_hardware_requirements">Hardware requirements</a></li>
+<li><a href="#_downloading_and_installing_virtualbox">Downloading and installing VirtualBox</a></li>
+<li><a href="#_downloading_ubuntu_linux_mate">Downloading Ubuntu Linux MATE</a></li>
+<li><a href="#_installing_ubuntu_linux_mate">Installing Ubuntu Linux MATE</a>
+<ul class="sectlevel2">
+<li><a href="#_preparing_the_virtual_disk">Preparing the virtual disk</a></li>
+<li><a href="#_configuring_the_vm_settings">Configuring the VM settings</a></li>
+<li><a href="#_installing_the_operating_system">Installing the operating system</a></li>
+<li><a href="#_updating_your_system">Updating your system</a></li>
+<li><a href="#_installing_the_virtualbox_guest_utilities">Installing the VirtualBox guest utilities</a></li>
+</ul>
+</li>
+<li><a href="#_customizing_your_vm">Customizing your VM</a>
+<ul class="sectlevel2">
+<li><a href="#_text_editors">Text editors</a></li>
+</ul>
+</li>
+<li><a href="#_troubleshooting">Troubleshooting</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section will show you how to set up a virtual machine (VM) running Ubuntu
+Linux (technically, it&#8217;s running the <a href="https://ubuntu-mate.org">Ubuntu MATE</a> flavor of Ubuntu, which is a
+lightweight distribution).</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Setting up a virtual machine is not hard, but it does take a long time, is
+pretty tedious, and it&#8217;s easy to make small mistakes that will require you to
+start over.  Please don&#8217;t do this the night an assignment is due!</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>These instructions <strong>will only work</strong> if you are running a computer with an
+Intel-based processor (x86-64).  If you are running an Apple M1 chip, you can&#8217;t
+use VirtualBox.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_some_notes_and_caveats">Some notes and caveats</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>You are <em>not</em> required to do this!  If you can figure out how to install the
+course software directly on your computer, and it all works, go for it.  This
+information is mainly for those of you for whom that is not a viable option.
+Note that the VM you set up here can be used and reused in multiple courses.</p>
+</li>
+<li>
+<p>If your computer is a Windows machine, you might consider installing the
+<a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">Windows Subsystem
+for Linux</a>, which effectively gives you an Ubuntu Linux machine running inside
+of Windows.  Depending on your experience with Windows, this may or may not be
+easier than following the instructions here.  Alternatively, you can set up
+<a href="https://www.cygwin.com/">Cygwin</a>, which gives you Linux software (actually Unix
+software, but the difference isn&#8217;t significant) running on Windows.</p>
+</li>
+<li>
+<p>Similarly, if your computer is a Mac, you might consider installing
+<a href="https://brew.sh/">HomeBrew</a> and then using that to install the course software.
+Again, this may or may not be easier than following these instructions,
+depending on how knowledgeable you are.  Note, though, that getting the <code>gdb</code>
+debugger working on MacOS is non-trivial.</p>
+</li>
+<li>
+<p>You might wonder why we aren&#8217;t supplying you with a VM with all the course
+software pre-installed on it.  While we have done this in previous years, we
+have found that there are too many subtle problems that come up when trying to
+use a VM on a different computer from the one it was created on.  The
+instructions here require more time but you will get a better VM, and (most
+importantly) one that is very likely to work correctly.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hardware_requirements">Hardware requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order for this to work, you should have a laptop (or desktop) computer
+running either Microsoft Windows, Mac OS X, or some version of the Linux
+operating system.  Ideally your computer and its operating system are not too
+old (say, not more than 2 years old) and the computer has at least 4 gigabytes
+of RAM (random access memory).  You should also have at least 20 gigabytes of
+free space on your computer&#8217;s hard disk.  Note that Chromebooks (at least, most
+Chromebooks) are not viable for installing virtual machines.  If you don&#8217;t know
+whether your laptop&#8217;s specs are good enough, you need to find out&#8201;&#8212;&#8201;all
+programmers should know what operating system they are running and how much RAM
+and disk space they have on their computers.  If your computer&#8217;s specs aren&#8217;t
+good enough to install the VM, you need to get a better laptop!</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_downloading_and_installing_virtualbox">Downloading and installing VirtualBox</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You will be setting up a virtual machine (VM), and in order to do this you will
+need software that manages and runs virtual machines.  A virtual machine (at
+least in this context) is an operating system that runs in software (hence
+"virtual") inside another operating system.  The outer ("host") operating system
+(which is the operating system of your computer, running directly on the
+computer&#8217;s hardware) effectively simulates the hardware that the inner ("guest")
+operating system (running in software) sees.  In fact, the guest operating
+system is not aware that it is being run as a virtual machine, though it will
+probably run a bit more slowly than it would if it were running on bare
+hardware.</p>
+</div>
+<div class="paragraph">
+<p>The software we will use to run our VM is called <strong>VirtualBox</strong>.  You should go to
+<a href="https://www.virtualbox.org/wiki/Downloads">this page</a> and download and install
+whichever version of VirtualBox runs on your operating system (just the
+"platform packages" download).  For instance, if your laptop runs Microsoft
+Windows, you should download the version for Windows hosts.  If your laptop runs
+Mac OS X, download the version for OS X hosts.  If your laptop runs Linux, you
+should install VirtualBox using the package manager of your distribution;
+install the <code>virtualbox</code> packages but not the <code>virtualbox-guest</code> packages.  Ask
+the TAs if you&#8217;re not sure how to do this, but if you&#8217;re already a Linux user,
+you probably already know how to do this.</p>
+</div>
+<div class="paragraph">
+<p>Once you&#8217;ve downloaded the installer for your operating system, just click on
+it to install VirtualBox (unless your host operating system is Linux; see
+above).  Both Windows and OS X will generally give you some grief about
+installing software from an untrusted source, and you may need to change some
+settings to allow this.  Ask the TAs if you need help doing this.  Other than
+that, the installation should go smoothly.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_downloading_ubuntu_linux_mate">Downloading Ubuntu Linux MATE</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to create a VM running Linux, you will need the Linux software.  There
+are literally dozens of Linux versions (also known as Linux distributions or
+"flavors") that can be installed.  We are choosing one called Ubuntu MATE
+(pronounced "mah-tay" after the caffeinated South American beverage) for a
+number of reasons.  It&#8217;s stable, highly configurable, light on resources and
+uses the Ubuntu Linux software repositories, which are among the largest and
+best-maintained repositories of any Linux distribution.  In addtion, Ubuntu MATE
+is easy for beginning Linux users to pick up, but it&#8217;s also suitable for more
+advanced users.</p>
+</div>
+<div class="paragraph">
+<p>You may be tempted to use another version of Ubuntu Linux, or another version of
+Linux entirely.  <em>Please do not do so.</em>  There are a number of different "spins"
+(variants) of Ubuntu Linux, but some of them (including standard "stock" Ubuntu
+as well as Kubuntu) are not suitable for use in a VM because they are too
+demanding in terms of 3D graphics acceleration support.  Put simply, if you do
+this, your VM may not be responsive and this will make you angry and frustrated.
+Other spins, like Xubuntu and Lubuntu, are quite suitable for VMs, but some of
+the instructions below would need to be modified for those spins, so if you use
+these don&#8217;t expect the TAs to be able to help you in case something goes wrong.
+The same considerations apply for non-Ubuntu flavors of Linux; they probably
+work fine, but we don&#8217;t have the same level of expertise with them, so if a
+problem comes up, you are on your own.  Also, the questions below assume you
+will be using the specific version of Ubuntu MATE that we recommend; if you use
+anything else, you are on your own.</p>
+</div>
+<div class="paragraph">
+<p>You need to download a "disk image" of the most current version of Ubuntu MATE.
+It can be downloaded from <a href="https://ubuntu-mate.org/download">this page</a>.  First
+click on the "64 bit" box, then the "21.04 (Hirsute Hippo)" box, then the box
+which says "Direct Download".  Your download should start.  <strong>IMPORTANT: This
+file is quite large (more than 2 gigabytes), so make sure that your computer is
+plugged in to an AC adapter when downloading!</strong> Also, we <strong>strongly</strong> recommend
+that if possible you use a wired Ethernet connector to do the download if at all
+possible, or else use the fastest wireless network you can find.  If all else
+fails, you can use a flash drive to copy the disk image file from a friend who
+has downloaded it successfully.  Once downloaded, the file (for 64-bit
+computers) should be called <code>ubuntu-mate-21.04-desktop-amd64.iso</code>.
+<strong>If the file is not downloaded completely, nothing else in this section will
+work and you will have to start over.</strong>  Finally, remember what directory you
+downloaded the file to, because you will need this information for the next
+step.  Most operating systems put a <code>Downloads</code> directory under each user&#8217;s home
+directory where downloaded files go by default.</p>
+</div>
+<div class="paragraph">
+<p>The download is probably going to take a while, so don&#8217;t get impatient.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installing_ubuntu_linux_mate">Installing Ubuntu Linux MATE</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>OK, now we get to the interesting part: creating a new virtual machine which
+runs Linux!</p>
+</div>
+<div class="sect2">
+<h3 id="_preparing_the_virtual_disk">Preparing the virtual disk</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>First, start up VirtualBox.  (You should be able to find it in the program
+menus, or you can use the terminal command line if you&#8217;re using Linux (the
+program name is <code>virtualbox</code>.)  A smallish window should pop up.}</p>
+</li>
+<li>
+<p>Click on the <code>New</code> button at the top left to create a new virtual machine.  A
+new window called <code>Name and operating system</code> will pop up with information you
+need to fill in.  Under the <code>Name</code> entry enter <code>Ubuntu MATE 21.04</code>.
+VirtualBox will automatically select <code>Linux</code> in the <code>Type</code> entry and <code>Ubuntu (64
+bit)</code> in the <code>Version</code> entry.  Click <code>Next</code>, or <code>Continue</code> if you are installing
+this on a Mac.  (We&#8217;ll say "click <code>Next</code>" where appropriate from now on; again
+click <code>Continue</code> each time if you are installing on a Mac.)</p>
+</li>
+<li>
+<p>The window title changes to <code>Memory size</code>.  Select <code>2048</code> (megabytes, or 2
+gigabytes).  This amount of memory will allow things to work reasonably
+smoothly.  If you have the memory, you can choose <code>4096</code> (4 megabytes).  Click
+<code>Next</code>.</p>
+</li>
+<li>
+<p>The window title changes to <code>Hard drive</code>.  Select <code>Create a virtual hard
+drive now</code>.  Click <code>Create</code>.</p>
+</li>
+<li>
+<p>The window title changes to <code>Hard drive file type</code>.  Select <code>VDI (VirtualBox
+Disk Image)</code>.  Click <code>Next</code>.</p>
+</li>
+<li>
+<p>The window title changes to <code>Storage on physical hard drive</code>.  Select
+<code>Dynamically allocated</code>.  Click <code>Next</code>.</p>
+</li>
+<li>
+<p>The window title changes to <code>File location and size</code>.  Leave the upper entry
+alone; it should say <code>Ubuntu MATE 21.04</code>.  For the size enter <code>20.00
+GB</code> and click <code>Create</code>.  This should be more than enough disk space for
+everything you are going to do in this course.  If you have a lot of disk space
+and intend to use this VM for other courses as well, you can make it larger, but
+you won&#8217;t be able to change it later.  Because it&#8217;s dynamically allocated, it
+won&#8217;t use up the 20 gigabytes right away; 20 gigabytes is simply the maximum
+size the disk can grow to.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>At this point, the window you&#8217;ve been entering information into should go
+away, and there should be a new VM entry displayed in the main VirtualBox window
+that says <code>Ubuntu MATE 21.04</code> and below that <code>Powered Off</code>.</p>
+</div>
+<div class="paragraph">
+<p>Congratulations!  You&#8217;ve just finished the first part of installing the Linux
+VM!  Unfortunately, although you&#8217;ve created storage for your VM (the 20 gigabyte
+virtual hard disk you just created), there isn&#8217;t anything in it yet, so we have
+to install Linux onto it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuring_the_vm_settings">Configuring the VM settings</h3>
+<div class="paragraph">
+<p>If you&#8217;ve done everything correctly so far, now you will be looking at the
+main VirtualBox window, but it will now have a new entry on the left for your
+new VM.  At this point we need to adjust some settings.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Select the entry for your new VM by clicking on it.</p>
+</li>
+<li>
+<p>Click the <code>Settings</code> button at the top left of the window.  A new window will
+pop up with menu entries at the left (Windows, Linux) or on top (Mac).  Each one
+selects a particular set of options.</p>
+</li>
+<li>
+<p>Click on the <code>System</code> entry.  Under <code>Motherboard</code>, you will see an entry
+called <code>Boot Order</code>.  Uncheck the <code>Floppy</code> option.  To be extra safe, you can
+use the arrow keys to the right of the boot order list to move the <code>Floppy</code>
+option down as low as it can go.  (I have no idea why this option even exists.)
+At this point, the topmost entry in <code>Boot Order</code> should be <code>CD/DVD</code> (or
+<code>Optical</code> if installing on a Mac) and it should be checked.  Don&#8217;t click <code>OK</code>
+yet! (If you do you&#8217;ll have to click the <code>Settings</code> button again to finish
+configuring the settings.)</p>
+</li>
+<li>
+<p>Click on the <code>Display</code> entry.  Change <code>Video Memory</code> to the maximum value
+(128 megabytes).<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup></p>
+</li>
+<li>
+<p>Click on the <code>Storage</code> entry.  Under <code>Storage Devices</code> you will see an icon
+that looks like a disk and that says <code>Empty</code>.  Click on it.  This is the
+virtual CD/DVD drive.  We are going to be loading it with the contents of the
+Linux file we downloaded earlier (the one whose name ended in <code>.iso</code>).  To the
+right there is an empty checkbox titled <code>Live CD/DVD</code>.  Check it.  Then at the
+right edge there is another disk icon.  Click on it and select <code>Choose a disk
+file</code>.  This will bring up a file browser window.  You will need to navigate to
+the directory on your computer in which the Linux <code>.iso</code> file is located and
+select it.  Remember, it will be called
+<code>ubuntu-mate-21.04-desktop-amd64.iso</code>.  Once you&#8217;ve selected it,
+click <code>Open</code>.  Then click <code>OK</code> in the previous window.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>That&#8217;s the end of the second phase of installation.  We&#8217;re now ready to
+actually load Linux onto our virtual disk drive and create a working system.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_installing_the_operating_system">Installing the operating system</h3>
+<div class="paragraph">
+<p>At this point, VirtualBox knows where the Linux software you downloaded is
+located and can start up a working Linux system.  Click on the <code>Start</code> button
+on top.  This will bring up a new window which will eventually contain the
+entire virtual Linux desktop.  (The window is small, but we&#8217;ll make it bigger
+later.) If there is a pop-up that says "Please select a virtual optical disk
+file&#8230;&#8203;" followed by a lot of text, select the
+<code>ubuntu-mate-21.04-desktop-amd64.iso</code> file you previously selected
+from the drop-down menu and click <code>Start</code> again.  You will see some unimportant
+graphics as the system loads.  Eventually the installer will start.  It will
+ask you if you want to try Ubuntu MATE or install it.</p>
+</div>
+<div class="paragraph">
+<p>Now would be a good time to mention one annoying thing about VirtualBox.  It
+has a tendency to "capture" the mouse, which means that when you click on the
+mouse inside a VM window, the mouse pointer won&#8217;t exit it (or it will but you&#8217;ll
+still see a duplicate pointer inside the window).  There is a key you can press
+that will "release" the mouse and let you use applications outside of the VM.
+This is called the "Host key".  On the Mac the Host key is the left Command key,
+and on Windows and Linux it&#8217;s the right Control key (you can change the key
+binding if you really hate it).  It&#8217;s also listed in the lower-right corner of
+the window the VM is in.  You should practice tapping the Host key in order to
+get out of the VM (ask a TA if you are having problems with this).  Note that
+you may not need to do this on some systems; clicking outside the window may be
+sufficient.  Clicking inside the VM window will put you in the VM again.</p>
+</div>
+<div class="paragraph">
+<p>Select <code>Install Ubuntu MATE</code>.  This will start the installation process.
+What this involves is mainly copying a lot of software from the file you
+downloaded (the <code>.iso</code> file) onto the virtual disk.  You&#8217;ll also have to answer
+a few questions.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The system may ask you what language you want to use.  Select "English"
+unless you have a very good reason not to.</p>
+</li>
+<li>
+<p>The system will ask you for your preferred keyboard layout, and preselect
+"English (US)".  Click <code>Next</code> (<code>Continue</code> if you&#8217;re on a Mac).</p>
+</li>
+<li>
+<p>The installation window title changes to <code>Updates and other software</code>.
+Check the box labeled <code>Normal installation</code>.  Also check the box labeled
+<code>Download updates while installing Ubuntu MATE</code>.  If you like, you can also
+check the box labeled <code>Install third-party software for graphics ...</code>  This
+will install proprietary software that is necessary for doing certain things
+(like watching videos in certain formats).  However, it shouldn&#8217;t be necessary
+to install this if you don&#8217;t want to.  Then click <code>Next</code>.  There may be a delay
+before the window changes; be patient!</p>
+</li>
+<li>
+<p>The window title becomes <code>Installation type</code>.  Select <code>Erase disk and
+install Ubuntu MATE</code>.  <strong>Don&#8217;t panic!</strong>  This will <strong>not</strong> erase <strong>anything</strong> on your
+computer&#8217;s hard drive!  The "disk" it will be erasing is the virtual disk you
+created in a previous step (which is actually already empty).  As you see, there
+are other options too, but none of them are important for us.  Click <code>Install
+Now</code>.  A pop-up will come up, asking you if you want to write the changes to
+disk.  Click <code>Next</code>.</p>
+</li>
+<li>
+<p>The system will then ask you where you are, and preselect "Los Angeles".
+Click <code>Next</code>.</p>
+</li>
+<li>
+<p>The window title becomes <code>Who are you?</code>.  Enter your name, a name for your
+computer, a username, and a password.  Choose whatever you like.  Type in your
+password a second time where indicated.  <strong>Make sure that you don&#8217;t forget your
+password!</strong>  Click <code>Require my password to log in</code> and then click <code>Next</code>.</p>
+</li>
+<li>
+<p>At this point, the system will show you a slide show about all the cool
+things included in Ubuntu MATE while it copies files to your system.  Be
+patient; this step takes a while (a <em>long</em> while if you have a very slow
+internet connection).  The progress bar at the bottom will let you know how far
+along you are.  Now would be a good time to go get a coffee.  Whatever you do,
+make sure you allow the installation to proceed to completion.  Also, don&#8217;t
+take the time remaining estimates seriously; they&#8217;re worthless.</p>
+</li>
+<li>
+<p>Once this is done, the virtual machine will tell you that it needs to restart
+to complete the installation, and ask you if it can.  <strong>Do not accept!</strong>  If you
+do, you&#8217;ll get the same screen you started with (the one asking if you want to
+install Ubuntu or just try it.).  The problem is that the boot order you
+selected above will cause the system to boot from the CD/DVD drive if possible,
+and here it is possible because you&#8217;ve loaded the virtual CD/DVD drive with the
+Linux installation CD (actually the <code>.iso</code> file, but the system can&#8217;t tell the
+difference).  Instead, you have to power down the machine by clicking on the
+close button of the VM window itself (the one whose title says <code>Ubuntu MATE
+21.04 [Running]</code>); this button will either be in the upper left or
+upper right corner, depending on your operating system.  VirtualBox will give
+you some shutdown options, and you should select <code>Power down the machine</code>.
+Click <code>OK</code> and the VM will exit, closing the VM window in the process.  Note
+that the small VirtualBox main window is still open.</p>
+</li>
+<li>
+<p>Now you have to adjust a couple of settings for the VM.  In the VirtualBox
+main window, click the <code>Settings</code> button and select the <code>System</code> menu entry.
+Under <code>Motherboard</code> and <code>Boot Order</code>, uncheck the <code>CD/DVD</code> option (<code>Optical</code> if
+you are on a Mac) and move it down below <code>Hard Disk</code>; make sure <code>Hard Disk</code> is
+checked.  Then click the <code>Storage</code> menu entry and click on the disk icon marked
+<code>ubuntu-mate-21.04-desktop-amd64.iso</code>.  Uncheck the <code>Live CD/DVD</code>
+checkbox and click on the disk icon above it and to its right.  This will bring
+up a pull-down menu.  Scroll down to the bottom and select <code>Remove disk from
+virtual drive</code>.  Click <code>OK</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Now your Linux system is ready to use without needing the installation
+<code>.iso</code> file.  Start it up again and we&#8217;ll continue setting up.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_updating_your_system">Updating your system</h3>
+<div class="paragraph">
+<p>When you start the VM, you should now see a login window with your name
+preselected.  Enter your password and hit return to log in to the VM.  Now you
+have a virtual Linux computer running Ubuntu MATE at your disposal!  There may
+also be a <code>"Welcome to Ubuntu MATE"</code> window up which you should close.</p>
+</div>
+<div class="paragraph">
+<p>Now you need to bring up a terminal.  Typing Control-Alt-t (hold down both the
+Control and Alt/Option keys and also hit the <code>t</code> key at the same time) will
+bring up a terminal.  If for some reason this doesn&#8217;t work, use the menu called
+<code>Menu</code> at the top and select <code>System Tools/MATE Terminal</code>.</p>
+</div>
+<div class="paragraph">
+<p>You can exit from the terminal by entering <code>exit</code> at the prompt or hitting
+Control-d.</p>
+</div>
+<div class="paragraph">
+<p>At this point, you might think you&#8217;re done, but there are still a few steps to
+go.  First, you need to update your system.  Most Linux distributions, including
+Ubuntu, are continually being updated, and it&#8217;s important to make sure your
+system is up-to-date, because updates contain bug fixes and fix security holes.
+There are actually a few different ways to update your system.  When you log in,
+if you need updates (and in this case you do), a graphical program called
+<code>Software Updater</code> wlll already be running and will tell you that you need to
+update your system.  (The window may be minimized; if so, click on the entry in
+the task bar at the bottom to bring it up.)  Click on <code>Install now</code> to update
+the system.  (A window may pop up asking you for your password.  If so, you
+should enter it and then hit the <code>Authenticate</code> button, and then the system
+will start updating.)  <strong>Warning: this will take a while!</strong></p>
+</div>
+<div class="paragraph">
+<p>Once you&#8217;re done, you need to restart the VM.  A window will come up asking
+if you want to restart now or later; press <code>Restart Now</code> and the system will
+restart.  After the system restarts, enter your password to log back in.</p>
+</div>
+<div class="paragraph">
+<p>The graphical installer doesn&#8217;t always update everything, so you should also
+learn how to update the system from the terminal command line.  This is actually
+just as easy and very powerful once you know what you&#8217;re doing.  To do this,
+first start up a terminal as described above.  Then enter the following commands
+(the <code>$</code> is the terminal prompt; don&#8217;t enter that):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ sudo apt update
+[enter your password]
+$ sudo apt upgrade</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should only have to enter your password once.  After <code>sudo apt update</code>,
+a bunch of stuff will be printed in the terminal, none of which you need to pay
+attention to.  After <code>sudo apt upgrade</code>, the system will list all the packages
+that can be upgraded and offer you a yes/no choice as to whether to proceed or
+not.  Hit the return key (which selects yes) to start updating.  Also note that
+the terminal prompt is more complicated than just <code>$</code>; by default it also
+contains your username, the computer&#8217;s name and the current directory.  We will
+always use <code>$</code> in our examples, but never type the <code>$</code> into the terminal!
+It&#8217;s possible to change the prompt to whatever you like; see any Linux tutorial
+for more on this.</p>
+</div>
+<div class="paragraph">
+<p>Note that you shouldn&#8217;t try to simultaneously update using the graphical
+updater and the terminal updater, as whichever one is invoked first will prevent
+the other one from running.  Once you&#8217;re comfortable with updating via the
+terminal, there&#8217;s really no need to use the graphical updater anyway.  Ideally
+you should update your computer about once a week to make sure everything is
+current.</p>
+</div>
+<div class="paragraph">
+<p>Once this is complete, you have an up-to-date Linux system running on your
+VM.  But wait, there&#8217;s more!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_installing_the_virtualbox_guest_utilities">Installing the VirtualBox guest utilities</h3>
+<div class="paragraph">
+<p>One annoying thing about running a Linux VM is that by default the VM window
+is much smaller than the computer&#8217;s monitor.  It would be nice if the VM took
+over the entire monitor display, so it really looked like you were running a
+different operating system.  You can do this by installing the "VirtualBox
+guest utilities".  These are a set of programs that give the system a number of
+new abilities, one of which is to use the full screen.  There is more than one
+way to install the guest utilities, but we&#8217;ll do it from the terminal command
+line.  Bring up a terminal, and then type the following commands:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ sudo apt install build-essential dkms m4
+$ sudo apt install virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You may be asked to enter your password; if so, do so.  Then the system will
+ask if you really want to install all those packages; hit return to accept.  The
+packages will be installed.</p>
+</div>
+<div class="paragraph">
+<p>At this point, you need to restart the VM for the changes to take effect.
+Use the button on the upper-right corner of the VM screen that looks like a
+gear to do this and select "Shut Down" from the pull-down menu, and then
+"Restart".  Once it restarts, press Host+f (press the Host key and the <code>f</code> key
+simultaneously) and the window should go to full screen.  You should do this
+when you reach the login screen but before entering your password.  The VM may
+pop up a window telling you that you have just hit the Host+f key (duh!); you
+should check the checkbox telling it not to show that window again.</p>
+</div>
+<div class="paragraph">
+<p>Note that the full screen capability may not kick in until you have logged
+in, but once it does you&#8217;ll be able to log out and log back in, and it should
+stay full screen.  This is much nicer to work with.  Also, when you are in
+full-screen mode, you can still get out of the VM by hitting the Host key and
+then doing Alt-tab (Command-tab on Mac OS X) to select a different program.
+Then just Alt-tab back to the VM window to get back into it.</p>
+</div>
+<div class="paragraph">
+<p>Sometimes, the steps above won&#8217;t work properly.  This usually means that
+your version of VirtualBox is very new and the Ubuntu repositories haven&#8217;t
+caught up with it yet.  In that case, you will need to manually install the
+guest utilities.  The way to do this is to log in to the VM, and then in the
+"Devices" menu of the "VirtualBox VM" program (this is the host program, not a
+Linux VM program), click on the "Insert Guest Additions CD Image" menu item.
+When the (virtual) CD image has been loaded into the computer&#8217;s (virtual) CDrom
+drive, you should automatically be prompted to see if you want to install the
+guest additions.  Click "Run" and the guest additions will be installed.  You
+will need to input your password and type "yes" when it asks you if you want to
+continue.  Once it&#8217;s done, restart and fullscreen support should work.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_customizing_your_vm">Customizing your VM</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now you have a fully-functional and up-to-date Linux system installed as a
+virtual machine.  You will see a panel on the top of the screen with a few panel
+"applets" on it to control things like volume, to show the date, to bring up the
+shutdown/restart window, <em>etc.</em>; these are on the right-hand side.  On the
+left-hand side there are menus that allow you to select programs, as well as a
+launcher that will bring up the Firefox web browser.</p>
+</div>
+<div class="paragraph">
+<p>Under the <code>System</code> menu there is an entry called <code>Control Center</code> which you
+should bring up.  This is where most of the configuration of the system happens.
+Click on that and look around.  It&#8217;s similar to analogous programs on Mac OS X
+and Windows.  One thing to do now is to click on <code>Appearance</code> and then
+<code>Background</code> if you want to change the desktop background.  There are a number
+of nice wallpaper images to choose from, or you can choose a simple color (my
+preference is black) or a color gradient.  Another thing to try is <code>MATE Tweak</code>
+which will allow you to change still other settings.  I like to hide the <code>Home</code>
+icon on the desktop, which you can do here.  There are other options here too;
+feel free to experiment.  Another customization you can do from the Control
+Center is to swap the Control and Caps Lock keys, which I find very helpful.  To
+do this, click on the <code>Keyboard</code> settings, then <code>Layouts</code> and <code>Options</code> (at the
+bottom of the window).  This brings up a window with a bunch of options.
+Select <code>Ctrl position</code> and scroll down until you see <code>Swap Ctrl and Caps Lock</code>
+which you should check if you want that behavior.  One other thing that is
+worth doing is to change the screen saver behavior.  By default, the screen
+saver starts up after 30 minutes of inactivity.  Select the Control Center
+Screensaver entry to change this to whatever you prefer.</p>
+</div>
+<div class="paragraph">
+<p>This is all we&#8217;ll be doing with the Control Center for now, but feel free to
+change any other settings to your taste.</p>
+</div>
+<div class="paragraph">
+<p>You will be working mainly in the terminal, so you need to be able to launch
+terminals quickly.  You can always use the Control-Alt-t key sequence, but some
+people prefer having a launcher on the top bar similar to what is there for the
+Firefox web browser.  To create such a launcher, find the terminal menu entry
+under the menu at the top left under <code>System Tools/MATE Terminal</code>.  If you just
+select this option, a terminal will come up.  Instead of selecting it, drag the
+terminal icon with the mouse onto the top panel.  This will create a new
+launcher icon.  Whenever you click on this, a new terminal will be created.
+Also, every time you log in from now on, that terminal launcher will be there.</p>
+</div>
+<div class="paragraph">
+<p>Since you&#8217;ll be working in the terminal so much, it is worth spending a
+couple of minutes configuring the terminal to be as comfortable as possible.
+You may want to change the terminal&#8217;s background color, the text color, or the
+font used for the text to suit your preferences.  To do this, launch a terminal,
+click on the <code>Edit</code> menu and then select the <code>Profile Preferences</code> option.
+This will bring up a window in which you can select a number of preferences.  To
+change the font, uncheck the option <code>Use the system fixed width font</code> and then
+click on the <code>Font</code> pulldown menu immediately below it.  You can choose between
+a number of fonts, each at a number of different sizes.  Pick whatever you find
+most comfortable, then click <code>OK</code>.  If you&#8217;ve changed the font, you will see
+the change.  If you want to change the background or text colors, click on the
+<code>Colors</code> menu option at the top of the window and uncheck <code>Use colors from
+system theme</code>.  Then you can click on <code>Text color</code> and <code>Background color</code> to
+set those colors to be whatever you like.  I like an off-white text color on a
+dark green background, but that&#8217;s just me; use whatever you feel most
+comfortable with.</p>
+</div>
+<div class="paragraph">
+<p>Also, note that the terminal program can create multiple terminals or
+multiple tabs in a single terminal.  Tabs are very useful when doing multiple
+distinct things.  Create a new tab by typing Control+Shift+t.  Create a new
+terminal window by typing Control+Shift+n.  (These actions can also be done from
+the terminal&#8217;s menu.)  Type Control+d in a terminal window to close it, or just
+type <code>exit</code>.</p>
+</div>
+<div class="paragraph">
+<p>There are other terminal configurations you can do, but this is enough for
+now.</p>
+</div>
+<div class="sect2">
+<h3 id="_text_editors">Text editors</h3>
+<div class="paragraph">
+<p>You are free to use whatever text editor you like to edit your code as long
+as it outputs <em>plain text</em> and not <em>e.g.</em> Rich Text Documents, PDFs or Word
+documents.  Ubuntu MATE by default includes <code>nano</code> (a very simple
+terminal-based text editor) and <code>pluma</code> (a nicer graphical text editor).  There
+are many others you can install.  Two popular ones are <code>vim</code> and <code>emacs</code>.
+Both are extremely powerful and have a very steep learning curve, but they are
+very popular with hard-core programmers.  Install them by typing this into a
+terminal:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ sudo apt install vim-gtk3
+$ sudo apt install emacs</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Teaching you to use <code>vim</code> or <code>emacs</code> is beyond the scope of the class, but
+there are lots of online resources and both programs include tutorials.</p>
+</div>
+<div class="paragraph">
+<p>A reasonably simple but user-friendly editor is <code>geany</code> (pronounced
+"genie").  It can be installed simply by typing this into a terminal:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>$ sudo apt install geany</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Other text editors you might consider include Atom, Sublime Text, and Visual
+Studio Code. Do a google search for how to install them if you&#8217;re interested.
+(Many Caltech courses now use Visual Studio Code, so this is a solid choice, if
+a bit complicated.)</p>
+</div>
+<div class="paragraph">
+<p>Our advice is to try some of these text editors and pick whichever one you
+like.  However, don&#8217;t spend too much time on this at this time; you can always
+use a simple editor like <code>pluma</code> or <code>geany</code> for this course and learn <code>vim</code>
+or <code>emacs</code> later when you have more time.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_troubleshooting">Troubleshooting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sometimes, things go wrong when starting virtual machines on certain
+computers.  Here are some common problems and what to do about them.</p>
+</div>
+<div class="paragraph">
+<p>When you launch the VM, it should come up in fullscreen mode.  If it doesn&#8217;t,
+try hitting the Control-F key combination (Windows; use Command-F on Mac).  If
+it still doesn&#8217;t come up in fullscreen mode, let us know.  (Basically, in that
+case you have to reinstall the Virtualbox "guest additions" by clicking on the
+"Insert Guest Additions CD Image&#8230;&#8203;" in the "Devices" menu of the VM while it&#8217;s
+running.)</p>
+</div>
+<div class="paragraph">
+<p>Many students who are running virtual machines on some versions of Microsoft
+Windows (usually Windows 10) have reported that Windows gives cryptic errors
+about hypervisors and refuses to run the VM.  There is a Windows option that you
+can set that will fix this; let us know if you encounter this problem.</p>
+</div>
+<div class="paragraph">
+<p>We have seen situations when the VM display in fullscreen mode goes black after
+logging in.  If this is the case, try hitting the Host+f key combination to
+reduce the VM display to a small window, then hit Host+f again to go back to
+fullscreen.  Usually this will fix the problem.  This is an annoying problem,
+because you may have to do this every time you log in to the VM, but once you
+are logged in it should work.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+A different approach to the black screen problem is to set the Graphics
+Controller (under Settings/Display) from VMSVGA to VBoxVGA (<em>not</em> VBoxSVGA).
+Even though VirtualBox will complain about invalid settings, do it anyway.
+This seems to fix the black screen problem.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. You can also select <code>Enable 3D Acceleration</code> but we recommend against it at this point.  We&#8217;ve seen too many cases where 3D acceleration on VMs screws up the VM boot process completely.  After you&#8217;ve ensured that the VM works correctly you can try selecting it later.
+</div>
+</div>
+</body>
+</html>
