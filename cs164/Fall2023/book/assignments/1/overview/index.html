@@ -1019,53 +1019,61 @@ Learning Racket is <em>not</em> a requirement for this course,
 but you should be able to pick up enough of it to understand
 most of the code examples in the book.</p>
 <h2 id="starting-code-base">Starting code base</h2>
-<p>The starting code base is the zip file <code>src.zip</code>,
-which is posted on the course Canvas site.
+<p>The starting code base is in two zip files:</p>
+<ul>
+<li><code>src.zip</code></li>
+<li><code>ch2.zip</code></li>
+</ul>
+<p>which are posted on the course Canvas site in the "Assignment code" module.</p>
+<p><code>src.zip</code> is the starting code base for the entire course.
 You should unzip this file in your Github repo.
-It will create a directory called <code>src</code>
-which will eventually contain all of your compiler code for the entire course.
-Inside this directory will be two subdirectories:</p>
-<ol>
+When unzipped, it will create a <code>src/</code> directory
+which will eventually contain all of your compiler code for the course.
+Initially, it just contains the file <code>dune-project</code>
+(which has to be at the base of any OCaml project
+that uses the <code>dune</code> compilation manager, as we will do),
+the <code>.gitignore</code> file
+(which tells <code>git</code> which files don't need to be under version control),
+and the <code>support/</code> directory.
+This directory contains a variety of modules
+which contain useful functions and data structures.
+We'll give you suggestions on which functions you should consider using,
+but you can use any of them at any time.</p>
+<p><code>ch2.zip</code> is the code base for assignment 1 (the <em>Var</em> language compiler).
+You should move it into the <code>src/</code> directory
+and unzip it in that directory.
+This will create the <code>ch2/</code> directory.
+Inside this directory will be the <code>.ml</code> and <code>.mli</code> files of the compiler,
+a few other files (<code>Makefile</code>, <code>dune</code>, <code>utop_init</code>, <em>etc.</em>)
+whose purposes will be described below,
+and three subdirectories:</p>
+<ul>
 <li>
-<p><code>ch2</code> -- this will be the code for this week's assignment
-    (the <em>Var</em> language compiler),
-    as well as test code in the <code>tests/</code> subdirectory,
-    and output from the instructor's version of the compiler
-    in the <code>reference/</code> subdirectory.
-    There are also a few other files
-    (<code>Makefile</code>, <code>dune</code>, <code>utop_init</code>, <em>etc.</em>)
-    whose purposes will be described below.</p>
+<p><code>tests/</code> &mdash; this contains all the test code
+  in the source language of the compiler
+  <em>e.g.</em> <code>var_test_1.src</code>;</p>
+</li>
+<li>
+<p><code>scripts/</code> &mdash; this contains the Python test scripts
+  that you will use to test your compiler;</p>
+</li>
+<li>
+<p><code>reference/</code> &mdash; this contains the output of the reference
+  compiler (the instructor's compiler) for each test file
+  and each pass; this is used for testing
+  as described later in the assignment.</p>
+</li>
+</ul>
 <p>The name <code>ch2</code> refers to the fact that this code corresponds
 to the language in chapter 2 of the textbook.</p>
-</li>
-<li>
-<p><code>support</code> -- this contains a variety of modules which contain
-    useful functions and data structures.  We'll give you suggestions
-    on which functions you should consider using, but you can use
-    any of them at any time.</p>
-</li>
-</ol>
 <p>In future assignments, we will be giving you a zip file containing only
 the code which is specific to the new compiler, in a directory called
 <em>e.g.</em> <code>ch3</code>, <code>ch4</code>, etc.  The <code>support</code> library should not change,
-unless there are bugs which need to be fixed.</p>
-<p>In addition, there are two other files included in the zip file at the
-root of the <code>src/</code> directory:</p>
-<ol>
-<li>
-<p><code>dune-project</code>.  This file sets the base of the repository from the
-   perspective of the <code>dune</code> compilation manager.  Just leave it where it is.</p>
-</li>
-<li>
-<p><code>.gitignore</code>.  This file tells <code>git</code> which files to ignore.
-   Again, just leave it alone.  Each directory may have additional
-   <code>.gitignore</code> files; in general, you shouldn't have to edit them.</p>
-</li>
-</ol>
+(unless there are bugs which need to be fixed).</p>
 <p>You should check in the entire <code>src</code> directory and all of its subdirectories,
 including the <code>.gitignore</code> files.
-However, don't check in the zip file!
-(You should probably remove it once you don't need it anymore.)</p>
+However, don't check in the zip files!
+(You should probably remove them once you don't need them anymore.)</p>
 <h3 id="sanity-checking-the-code-base">Sanity checking the code base</h3>
 <p>If you've installed the code base correctly,
 you should be able to do the following:</p>
