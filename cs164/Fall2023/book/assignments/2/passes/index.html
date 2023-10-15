@@ -11,13 +11,17 @@
         <link rel="canonical" href="https://example.com/assignments/2/passes/">
       
       
+        <link rel="prev" href="../overview/">
+      
+      
+        <link rel="next" href="../testing/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.17">
     
     
       
-        <title>Assignment 2: Compiler passes - The CS 164 book (Fall 2023)</title>
+        <title>Compiler passes - The CS 164 book (Fall 2023)</title>
       
     
     
@@ -106,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Assignment 2: Compiler passes
+              Compiler passes
             
           </span>
         </div>
@@ -590,14 +594,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
       
       
       
@@ -606,7 +612,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_5">
           <span class="md-nav__icon md-icon"></span>
           Assignments
@@ -689,6 +695,187 @@
   
     <li class="md-nav__item">
       <a href="../../1/testing/" class="md-nav__link">
+        Testing
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+          Assignment 2: Register allocation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Assignment 2: Register allocation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Compiler passes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Compiler passes
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#passes-that-are-unchanged-from-assignment-1" class="md-nav__link">
+    Passes that are unchanged from assignment 1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-select-instructions-select_instructionsml" class="md-nav__link">
+    1. Select instructions (select_instructions.ml)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-uncover-live-uncover_liveml" class="md-nav__link">
+    2. Uncover live (uncover_live.ml)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-build-interference-graph-build_interferenceml" class="md-nav__link">
+    3. Build interference graph (build_interference.ml)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-graph-coloring-graph_coloringml" class="md-nav__link">
+    4. Graph coloring (graph_coloring.ml)
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Graph coloring (graph_coloring.ml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-the-graph-coloring-algorithm" class="md-nav__link">
+    Testing the graph coloring algorithm
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-allocate-registers-allocate_registersml" class="md-nav__link">
+    5. Allocate registers (allocate_registers.ml)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-patch-instructions-patch_instructionsml" class="md-nav__link">
+    6. Patch instructions (patch_instructions.ml)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-prelude-and-conclusion-prelude_conclusionml" class="md-nav__link">
+    7. Prelude and conclusion (prelude_conclusion.ml)
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
         Testing
       </a>
     </li>
@@ -825,12 +1012,16 @@ but here they are again for completeness.  We will only include
 passes that you have to implement.
 As before, the only files you should modify are the <code>.ml</code> files
 corresponding to these compiler passes.</p>
-<p>In addition, when we provide a function stub in an <code>.ml</code> file that you need
-to complete, that means that we expect that you will use that function (with
-those arguments and types (if supplied)) as written (filling in the <code>TODO</code>
-parts, of course).  In particular, you're not allowed to change the number of
-arguments to the function, or their types (if supplied).  If a function is
-completely implemented (no <code>TODO</code>s), you should leave it as-is.
+<p>In addition,
+when we provide a function stub in an <code>.ml</code> file that you need to complete,
+that means (unless otherwise specified)
+that we expect that you will use that function
+(with those arguments and types (if supplied)) as written
+(filling in the <code>TODO</code> parts, of course).
+In particular, you're not allowed to change
+the number of arguments to the function, or their types (if supplied).
+If a function is completely implemented (no <code>TODO</code>s),
+you should leave it as-is.
 On the other hand, you can write as many extra functions as you like.
 (If we don't like your choices, we'll let you know during code reviews!)</p>
 <div class="admonition note">
@@ -855,16 +1046,19 @@ do not have to be modified from assignment 1
 </ul>
 <p>Note that you are free to edit your old code,
 in case you think you have a better way of doing things
-than what you wrote previously.</p>
+than what you wrote previously,
+or in case you found bugs in those passes that you need to fix.</p>
 <h2 id="1-select-instructions-select_instructionsml">1. Select instructions (<code>select_instructions.ml</code>)</h2>
 <p>The "select instructions" pass has no fundamental changes, but there are some
 trivial changes because the <code>X86Program</code> type in <code>x86_var.ml[i]</code> has
 changed. The new version has different info types for the program and also has
 block info types.  For this pass, the block info is a placeholder type
-(containing no information) called <code>binfo1</code>.  Some of the type annotations
-will need to be changed slightly, and the blocks will all contain a <code>Binfo1</code>
-constructor. The type checker should point out exactly where your old code
-needs to be changed.</p>
+(containing no information) called <code>binfo1</code>.
+(This will change in later passes.)
+Some of the type annotations will need to be changed slightly,
+and the blocks will all contain a <code>Binfo1</code> constructor.
+The type checker should point out
+exactly where your old code needs to be changed.</p>
 <h2 id="2-uncover-live-uncover_liveml">2. Uncover live (<code>uncover_live.ml</code>)</h2>
 <p>The "uncover live" pass has to implement the function
 <code>uncover_live</code> with this signature:</p>
@@ -894,7 +1088,7 @@ The <code>binfo2</code> type has this definition:</p>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>type binfo2 = Binfo2 of live
 </span></code></pre></div>
 <p>The liveness data is represented as a list of sets of locations,
-where a location is a variable, a register, or a stack location.
+where a "location" is a variable, a register, or a stack location.
 Sets of locations are represented by the type <code>LocSet.t</code>.
 Since liveness sets apply between instructions,
 we use the <code>initial</code> field to represent the initial set of live locations,
@@ -938,17 +1132,14 @@ these arguments are (in order)
 We recommend that you write a helper function
 to determine the change in the liveness set just for <code>callq</code> instructions,
 incorporating all of this information.</p>
-<!--
-
-This might need further explanation.
-Basically, for a `callq` instruction,
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Basically, for a <code>callq</code> instruction,
 all the caller-saved registers get added to the write set,
 and the arg-passing registers needed
-(but _only_ those that are needed)
-get added to the read set.
-
--->
-
+(but <em>only</em> those that are needed)
+get added to the read set.</p>
+</div>
 <p>The algorithm for computing liveness sets is described in detail
 in section 3.2 of the textbook and in the lectures.</p>
 <h2 id="3-build-interference-graph-build_interferenceml">3. Build interference graph (<code>build_interference.ml</code>)</h2>
@@ -1009,7 +1200,15 @@ caller-save registers, where they would have to be saved and restored
 before and after the call.  Thus, they will normally be put into
 callee-save registers, unless there are none available, in which case
 they will be placed onto the stack.  The register allocation
-algorithms handle all of this automatically!</p>
+algorithm handles all of this automatically!</p>
+<p>You might wonder if instead of spilling a call-live
+variable to the stack, it might be better to just put it in
+a caller-save register (assuming there is one)
+and pay the price of saving and restoring.
+This is a fine question, and one that preoccupies people
+writing optimizing compilers, but our goals are less lofty.
+We just want to generate reasonably good code,
+not the most optimal possible code.</p>
 </div>
 <h2 id="4-graph-coloring-graph_coloringml">4. Graph coloring (<code>graph_coloring.ml</code>)</h2>
 <p>This module is not technically a compiler pass, but it's an integral part of
@@ -1022,19 +1221,22 @@ lectures.</p>
 <p>The <code>GraphColor</code> functor is parameterized on several modules:</p>
 <ul>
 <li>
-<p>the graph element type (which will be locations in <code>allocate_registers.ml</code>)</p>
+<p>a module defining the graph element type
+  (which will be locations in <code>allocate_registers.ml</code>)</p>
 </li>
 <li>
-<p>the element map type (made from the <code>MapS</code> functor,
-  which is just an extension of the normal OCaml <code>Map</code> functor;
-  note that <code>MapS</code> is defined in <code>support/functors.ml[i]</code>)</p>
+<p>a module defining the element map type
+  (made from the <code>MapS</code> functor specialized on element keys);
+  <code>MapS</code> is just an extension of the normal OCaml <code>Map</code> functor
+  and is defined in <code>support/functors.ml[i]</code></p>
 </li>
 <li>
 <p>a priority queue module
-  (we use the priority queue defined in <code>support/priority_queue.ml[i]</code>)</p>
+  (defined in <code>support/priority_queue.ml[i]</code>)</p>
 </li>
 <li>
-<p>an undirected graph module (the interference graph)</p>
+<p>an undirected graph module (the interference graph;
+  defined in <code>support/ugraph.ml[i]</code>)</p>
 </li>
 </ul>
 <p>The functor is instantiated in <code>allocate_registers.ml</code>, so you don't have to
@@ -1075,7 +1277,8 @@ You may choose to simply implement all the helper functions in
 <code>graph_coloring.ml</code>.
 Or, if you would prefer to implement the <code>color</code> function from scratch,
 you are free to delete any or all of our helper functions and
-rewrite the <code>color</code> function accordingly.</p>
+rewrite the <code>color</code> function accordingly.
+(Don't change its type, though!)</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The only restriction we'll insist on is that your code for this module
@@ -1099,13 +1302,15 @@ More importantly, since this is done interactively,
 you can inspect the results of graph coloring to see how they
 differed from the expected results.
 The example given is the same one given in the book and in the lectures.</p>
-<!--
-
-Note that in future,
-we plan to have more comprehensive tests of this algorithm.
-
--->
-
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In future,
+we plan to have much more comprehensive tests of this algorithm.
+If you are looking for a topic for a CS 81 project,
+this course is a gold mine!
+In addition to more tests,
+there are lots of features we want to add.</p>
+</div>
 <h2 id="5-allocate-registers-allocate_registersml">5. Allocate registers (<code>allocate_registers.ml</code>)</h2>
 <p>Once you've implemented the graph coloring algorithm, the "allocate registers"
 pass is simple.  You need to do these things:</p>
@@ -1181,7 +1386,7 @@ must be a multiple of 16 bytes, so it can be even bigger!</p>
 <code>Utils</code> module of the <code>support</code> directory.  This will take a
 non-negative integer and round it up to the nearest multiple of 16.
 So the total stack space required is actually (in pseudocode):</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>stack_space = align_16(8 * (num_spilled * size(used_callees)))
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>stack_space = align_16(8 * (num_spilled + size(used_callees)))
 </span></code></pre></div>
 <p>However, it's still a bit more complicated than this.
 We will be saving the callee-save registers by pushing them to the stack
@@ -1274,6 +1479,42 @@ This pass is really just a little bit of (somewhat annoying) bookkeeping.</p>
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../overview/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../testing/" class="md-footer__link md-footer__link--next" aria-label="Next: Testing" rel="next">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Testing
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">

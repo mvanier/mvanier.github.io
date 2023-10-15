@@ -11,13 +11,15 @@
         <link rel="canonical" href="https://example.com/assignments/2/testing/">
       
       
+        <link rel="prev" href="../passes/">
+      
       
       <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.17">
     
     
       
-        <title>Assignment 2: Testing the compiler - The CS 164 book (Fall 2023)</title>
+        <title>Testing - The CS 164 book (Fall 2023)</title>
       
     
     
@@ -106,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Assignment 2: Testing the compiler
+              Testing
             
           </span>
         </div>
@@ -590,14 +592,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
       
       
       
@@ -606,7 +610,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_5">
           <span class="md-nav__icon md-icon"></span>
           Assignments
@@ -703,6 +707,139 @@
 
             
           
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+          Assignment 2: Register allocation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Assignment 2: Register allocation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../passes/" class="md-nav__link">
+        Compiler passes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Testing
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Testing
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#compiling-the-compile-program" class="md-nav__link">
+    Compiling the compile program
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-compile-program" class="md-nav__link">
+    Running the compile program
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-your-compiler-the-test-scripts" class="md-nav__link">
+    Testing your compiler: the test scripts
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -784,17 +921,19 @@ these warnings will go away).</p>
 with the path of a file to compile and (optionally) some command-line options.
 Most of this is the same as it was in the last assignment.</p>
 <p>Typing <code>./compile --help</code> (or just <code>./compile</code> with no arguments)
-will display this usage message (wrapped for readability):</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>usage: compile &lt;filename&gt; [-pass &lt;pass&gt;] [-only] [-eval] [-sexp-width n]
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                          [-sexp-indent n] [-regs reg1,reg2,...] [-help]
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  -pass Last compiler pass (one of: lvar un rc ec si ul bi ar pi pc pa)
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  -only Only do one compiler pass
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  -eval Evaluate after compiling
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  -sexp-width S-expression maximum line width
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  -sexp-indent S-expression indent
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  -regs Registers to use
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  -help  Display this list of options
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  --help  Display this list of options
+will display this usage message:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>usage: compile &lt;filename&gt; [-pass &lt;pass&gt;] [-only] [-eval] [-no-fix-label]
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                          [-sexp-width n] [-sexp-indent n]
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>                          [-regs reg1,reg2,...] [-help]
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  -pass Last compiler pass (one of: lvar un rc ec si ul bi ar pi pc pa)
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  -only Only do one compiler pass
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  -eval Evaluate after compiling
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  -no-fix-label disable `fix_label`
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  -sexp-width S-expression maximum line width
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  -sexp-indent S-expression indent
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  -regs Registers to use
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  -help  Display this list of options
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  --help  Display this list of options
 </span></code></pre></div>
 <p>This is the same as the <code>compile</code> usage message
 from the previous assignment,
@@ -807,7 +946,7 @@ except that there is a new command-line option:</p>
   It allows you to select which registers can be used for register allocation.
   If this option is not used, all registers (other than the reserved ones)
   can be used.
-  This is extremely useful for checking for whether variables get spilled
+  This is extremely useful for checking whether variables get spilled
   to the stack correctly once there are no more registers available,
   and for whether callee-saved registers are handled correctly
   in the preludes and conclusions of functions.</p>
@@ -818,11 +957,25 @@ except that there is a new command-line option:</p>
 <li><code>-regs rbx</code> -- only use the <code>%rbx</code> register (callee-saved)</li>
 <li><code>-regs rcx,rbx</code> -- only use the <code>%rcx</code> and <code>%rbx</code> registers</li>
 </ul>
+<p>For instance, if the only register you use is <code>%rbx</code>
+  (a callee-saved register),
+  then if you don't save and restore callee-saved registers properly,
+  you'll get an error.</p>
+<!-- TODO
+
+It might be worthwhile to extend the test scripts to use
+_two_ callee-saved registers to make sure they are saved and restored
+in the right order.  I think some of the tests do that anyway.
+
+-->
+
 <h2 id="testing-your-compiler-the-test-scripts">Testing your compiler: the test scripts</h2>
 <p>The test scripts are the same
 as those described in the previous assignment,
 except that the test scripts will also use the
-<code>-regs</code> command-line option as described above.</p>
+<code>-regs</code> command-line option as described above.
+As a result, there will be many more reference files generated
+for passes that use registers.</p>
 
 
 
@@ -844,6 +997,27 @@ except that the test scripts will also use the
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../passes/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Compiler passes" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Compiler passes
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
