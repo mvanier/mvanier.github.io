@@ -1253,11 +1253,11 @@ If you run it with no arguments, you get a usage message:</p>
 <p>The required arguments are one or more filenames.
 These files should be in the <code>reference/</code> subdirectory.
 The files in that directory have file extensions corresponding to
-the last compiler pass that was used to generate them, so (for instance)
-<code>var_test_11.ec</code> is what the compiler output when compiling the file
+the <strong>last</strong> compiler pass that was used to generate them, so (for instance)
+<code>var_test_11.ec</code> is what the compiler outputs when compiling the file
 <code>var_test_11.src</code> up to the <code>ec</code> (explicate control) pass.
 If you want to test your <code>var_test_11.ec</code> against the reference version,
-you should start with the output of the previous pass,
+you should start with the output of the <strong>previous</strong> pass,
 which in this case is <code>var_test_11.rc</code>
 (the <code>rc</code> or "remove complex operands" pass).
 Since this file is also in the <code>reference/</code> subdirectory,
@@ -1277,7 +1277,34 @@ you can use it as the compiler input.  So if you type:</p>
   side-by-side so you can compare them visually.</p>
 </li>
 </ul>
-<p>It will look like this:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This behavior is <strong>extremely counterintuitive</strong> for a lot of people.
+It's natural to assume that if you want to compare the result
+of the "explicate control" (<code>ec</code>) pass, for instance,
+you should pass the <code>compare.py</code> script as its input
+a file with the <code>.ec</code> extension.
+However, this isn't the way it works.
+Files with the <code>.ec</code> extension have <em>already</em> been processed
+by the "explicate control" pass.
+Put differently, the file extension refers to the
+last pass the code went through before the file was output.
+The <code>compare.py</code> script needs (in this case)
+the output of the pass <strong>before</strong> "explicate control",
+so it can run just that specific pass on the file.
+The pass before "explicate control" is "remove complex operands",
+with the file extension <code>.rc</code>.
+Therefore, if you want to compare the results of the
+"explicate control" pass,
+you need to invoke the <code>compare.py</code> script
+on a file with the file extension <code>.rc</code>, <em>not</em> <code>.ec</code>.</p>
+<p>Put simply, the files you need for the <code>compare.py</code> script
+are the <strong>input</strong> files for the pass you are testing,
+so their file extension is the extension for the
+<strong>previous</strong> pass,
+not the file extension for the pass that you are testing.</p>
+</div>
+<p>The output will look like this:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>$ python scripts/compare.py reference/var_test_11.rc
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>--------------
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>input: reference/var_test_11.rc
