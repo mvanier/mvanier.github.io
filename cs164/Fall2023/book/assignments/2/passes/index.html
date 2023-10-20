@@ -890,6 +890,68 @@
 
             
           
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+          Assignment 3: Conditionals
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5_4">
+          <span class="md-nav__icon md-icon"></span>
+          Assignment 3: Conditionals
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/overview/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/passes/" class="md-nav__link">
+        Compiler passes
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -1210,6 +1272,24 @@ writing optimizing compilers, but our goals are less lofty.
 We just want to generate reasonably good code,
 not the most optimal possible code.</p>
 </div>
+<p>Please review section 3.3 of the textbook before attempting this pass,
+since it has detailed rules for which instructions give rise to
+which edges in the interference graph.
+Also, recall that the way we are building the interference graph
+is to focus on writes,
+because the writes performed by an instruction
+must not overwrite something in a live location.
+As the book says:</p>
+<blockquote>
+<p>So for each instruction,
+we create an edge between the locations being written to
+and the live locations.
+(However, a location never interferes with itself.)</p>
+</blockquote>
+<p>One consequence of this is that instructions
+that <em>don't</em> write to a live location
+don't change the interference graph.
+There are a number of these instructions.</p>
 <h2 id="4-graph-coloring-graph_coloringml">4. Graph coloring (<code>graph_coloring.ml</code>)</h2>
 <p>This module is not technically a compiler pass, but it's an integral part of
 the "allocate registers" pass.  However, the algorithm is more general, and the
@@ -1325,6 +1405,19 @@ pass is simple.  You need to do these things:</p>
    Your implementation of <code>varmap_of_colormap</code>
    should use the helper function <code>location_of_color</code>,
    which you also need to fill in.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code>location_of_color</code> function should make use of the
+<code>last_register_color</code> variable.
+This gives the index of the last register that can be used
+for register allocation.
+It's set in the <code>set_register_color_list</code> function,
+and will correctly track the <code>-regs</code> argument of the compiler.
+Don't use the size of <code>register_color_list</code>
+or of the maps computed by it,
+since they also contain the reserved registers
+(with negative color numbers).</p>
+</div>
 </li>
 <li>
 <p>Use the mapping between variable bindings and locations
