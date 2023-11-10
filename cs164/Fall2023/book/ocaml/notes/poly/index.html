@@ -8,20 +8,20 @@
       
       
       
-        <link rel="canonical" href="https://example.com/ocaml/notes/types/">
+        <link rel="canonical" href="https://example.com/ocaml/notes/poly/">
       
       
-        <link rel="prev" href="../functional/">
+        <link rel="prev" href="../types/">
       
       
-        <link rel="next" href="../poly/">
+        <link rel="next" href="../new_features/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.17">
     
     
       
-        <title>Type annotations - The CS 164 book (Fall 2023)</title>
+        <title>Polymorphic variants - The CS 164 book (Fall 2023)</title>
       
     
     
@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#type-annotations" class="md-skip">
+        <a href="#polymorphic-variants" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Type annotations
+              Polymorphic variants
             
           </span>
         </div>
@@ -527,6 +527,20 @@
               
   
   
+  
+    <li class="md-nav__item">
+      <a href="../types/" class="md-nav__link">
+        Type annotations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
     
   
   
@@ -539,23 +553,9 @@
       
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Type annotations
-      </a>
-      
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../poly/" class="md-nav__link">
         Polymorphic variants
       </a>
+      
     </li>
   
 
@@ -1016,46 +1016,57 @@
                   
 
 
-<h1 id="type-annotations">Type annotations</h1>
-<p>We <em>strongly</em> recommend that you add type annotations
-to all functions that are internal to a module.
-It will save you a lot of grief.
-Just because OCaml can do type inference
-doesn't mean that you have to rely on it!
-When you specify the types manually,
-you will usually get better error messages.</p>
-<p>For example, instead of writing this code:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">let</span> <span class="k">rec</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">lst</span> <span class="o">=</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="n">x</span><span class="o">]</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>      <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">h</span> <span class="k">then</span> <span class="n">x</span> <span class="o">::</span> <span class="n">lst</span> <span class="k">else</span> <span class="n">h</span> <span class="o">::</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">t</span>
+<h1 id="polymorphic-variants">Polymorphic variants</h1>
+<p>Pattern matching polymorphic variants
+has some extra capabilities that you should be aware of.
+This occurs in the compilers starting from assignment 3
+when operators are defined in terms of different polymorphic variant types:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">type</span> <span class="n">base_op</span> <span class="o">=</span> <span class="o">[</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  <span class="o">|</span> <span class="o">`</span><span class="nc">Read</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  <span class="o">|</span> <span class="o">`</span><span class="nc">Add</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  <span class="o">|</span> <span class="o">`</span><span class="nc">Sub</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  <span class="o">|</span> <span class="o">`</span><span class="nc">Negate</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  <span class="o">|</span> <span class="o">`</span><span class="nc">Not</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="o">]</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">type</span> <span class="n">cmp_op</span> <span class="o">=</span> <span class="o">[</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  <span class="o">|</span> <span class="o">`</span><span class="nc">Eq</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  <span class="o">|</span> <span class="o">`</span><span class="nc">Lt</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  <span class="o">|</span> <span class="o">`</span><span class="nc">Le</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  <span class="o">|</span> <span class="o">`</span><span class="nc">Gt</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>  <span class="o">|</span> <span class="o">`</span><span class="nc">Ge</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="o">]</span> 
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="k">type</span> <span class="n">core_op</span> <span class="o">=</span> <span class="o">[</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>  <span class="o">|</span> <span class="n">base_op</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>  <span class="o">|</span> <span class="n">cmp_op</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="o">]</span>
 </span></code></pre></div>
-<p>we recomment that you write it like this:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">let</span> <span class="k">rec</span> <span class="n">insert</span> <span class="o">(</span><span class="n">x</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">(</span><span class="n">lst</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span><span class="o">)</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span> <span class="o">=</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="n">x</span><span class="o">]</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>      <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">h</span> <span class="k">then</span> <span class="n">x</span> <span class="o">::</span> <span class="n">lst</span> <span class="k">else</span> <span class="n">h</span> <span class="o">::</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">t</span>
+<p>As you can see, you can define <code>core_op</code> as the union
+of two other polymorphic variant types
+<em>without</em> defining a new constructor.
+(This is something you can't do with regular algebraic datatypes.)
+But when you are pattern-matching on <code>core_op</code> values
+(which can have any of the constructors of <code>base_op</code> or <code>cmp_op</code>)
+you may need to split them back into the two classes.
+This is done rather easily:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">match</span> <span class="o">(</span><span class="n">op</span> <span class="o">:</span> <span class="n">core_op</span><span class="o">)</span> <span class="k">with</span>  <span class="c">(* type annotation is optional *)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  <span class="o">|</span> <span class="o">#</span><span class="n">base_op</span> <span class="k">as</span> <span class="n">b_op</span> <span class="o">-&gt;</span>    <span class="c">(* your code with (b_op : base_op) *)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  <span class="o">|</span> <span class="o">#</span><span class="n">cmp_op</span> <span class="k">as</span> <span class="n">c_op</span> <span class="o">-&gt;</span>     <span class="c">(* your code with (c_op : cmp_op) *)</span>
 </span></code></pre></div>
-<p>(Actually, you'd probably rewrite it to be tail recursive, but that's
-another topic.)</p>
-<p>In many cases, you could substitute a more specific type for <code>'a</code>
-(say, <code>int</code>),
-which would be beneficial
-in the event that the type that was actually passed to <code>insert</code>
-was something other than a list of <code>int</code>s.</p>
-<p>Also, don't remove the type annotations once the code is working
-"because it looks prettier"; leave them in.
-It's good documentation and it will be really important
-if you ever have to modify the code.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>We didn't have this guideline in CS 4,
-primarily because the code base was so much smaller.<br />
-The more complicated the code gets,
-the more helpful explicit type annotations are.</p>
-</div>
+<p>The new syntax <code>#base_op as b_op</code> (or <code>#cmp_op as c_op</code>)
+will match any of the <code>base_op</code> (or  <code>cmp_op</code>) constructors,
+and you can then do whatever you want with those.</p>
+<p>This is described (somewhat briefly) in
+<a href="https://v2.ocaml.org/releases/5.1/htmlman/polyvariant.html">the OCaml manual</a>:</p>
+<blockquote>
+<p>To make this even more comfortable,
+you may use type definitions as abbreviations for or-patterns.
+That is, if you have defined
+<code>type myvariant = [`Tag1 of int | `Tag2 of bool]</code>,
+then the pattern <code>#myvariant</code> is equivalent to writing
+<code>(`Tag1(_ : int) | `Tag2(_ : bool))</code>.</p>
+</blockquote>
 
 
 
@@ -1082,7 +1093,7 @@ the more helpful explicit type annotations are.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../functional/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Functional programming" rel="prev">
+          <a href="../types/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Type annotations" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
@@ -1091,20 +1102,20 @@ the more helpful explicit type annotations are.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Functional programming
+                Type annotations
               </div>
             </div>
           </a>
         
         
           
-          <a href="../poly/" class="md-footer__link md-footer__link--next" aria-label="Next: Polymorphic variants" rel="next">
+          <a href="../new_features/" class="md-footer__link md-footer__link--next" aria-label="Next: New features" rel="next">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Polymorphic variants
+                New features
               </div>
             </div>
             <div class="md-footer__button md-icon">
