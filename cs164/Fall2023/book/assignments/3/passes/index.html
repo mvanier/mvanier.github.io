@@ -1809,7 +1809,9 @@ to the "patch instructions" pass to handle the new assembly instructions.</p>
 must be a byte register, or it's an error.</p>
 <h4 id="xorq"><code>xorq</code></h4>
 <p>As with other operators, only one of the two operands of <code>xorq</code>
-can be a stack location (<em>i.e.</em> a memory reference).</p>
+can be a stack location (<em>i.e.</em> a memory reference).
+Therefore, if you encounter that, you should patch the instruction
+as is done for other instructions.</p>
 <h4 id="movzbq"><code>movzbq</code></h4>
 <p>The first argument to <code>movzbq</code> should be a byte register. <sup id="fnref:6"><a class="footnote-ref" href="#fn:6">6</a></sup>
 It should already be a byte register, so if it isn't, that's an error.</p>
@@ -1819,7 +1821,9 @@ and then add a <code>movq</code> instruction to put the contents of <code>%rax</
 into the second argument.</p>
 <h4 id="cmpq"><code>cmpq</code></h4>
 <p>As with other operators, only one of the two operands of <code>cmpq</code>
-can be a stack location.</p>
+can be a stack location.
+Again, if you encounter that, you should patch the instruction
+as is done for other instructions.</p>
 <p>In addition, the second argument of <code>cmpq</code> can't be an immediate value,
 so if it is, move it to <code>%rax</code> and use <code>%rax</code> instead.</p>
 <h3 id="13-prelude-and-conclusion-prelude_conclusionml">13. Prelude and conclusion (<code>prelude_conclusion.ml</code>)</h3>
