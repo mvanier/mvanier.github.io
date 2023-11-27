@@ -1500,6 +1500,8 @@ it does nothing but print <code>"no moves to undo!"</code>.</p>
 you either have to store the board state after each move,
 or store the moves themselves.
 It's much more efficient to store the moves, so please do that.</p>
+<p>When you undo moves, make sure to decrement the move count by 1,
+unless there are no moves to undo.</p>
 </li>
 <li>
 <p><code>hint</code></p>
@@ -1704,7 +1706,9 @@ but <strong>don't copy that method to this class</strong>.
 <li>
 <p>The <code>h</code> (hint) command will make the hint move
   if one is returned from the <code>hint</code> method.
-  If there is no hint move, it will print <code>"Sorry, no hints available."</code>.</p>
+  It will also print out the move made.
+  If there is no hint move, it will print <code>"Sorry, no hints available."</code>.
+  It should print the board only if a hint move is made.</p>
 </li>
 <li>
 <p>The <code>q</code> command doesn't need to print the board.</p>
