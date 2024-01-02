@@ -1,0 +1,30 @@
+# TODO for OCaml cheat sheet
+
+- Functional records and the `with` syntax.
+
+- Mention implicit sequence expressions;
+  a bunch of expressions separated by semicolons but
+  NOT surrounded by begin/end or parentheses.
+
+- Some very obscure stuff that can be left off:
+
+  type ('a, 'b) pair = Pair of 'a * 'b;;  (* two-argument constructor *)
+  let e = Pair (1, 2);;
+  match e with Pair p -> p;;  (* type error *)
+
+  type ('a, 'b) pair = Pair of ('a * 'b);;  (* one-argument constructor *)
+  let e = Pair (1, 2);;
+  match e with Pair p -> p;;  (* ok *)
+
+- Something about the [@tailcall] annotations.
+  Also that try/with can defeat TCO.
+
+# TODO for new readings
+
+## OCaml tips
+
+* Don't use List.hd or List.tl.  Use pattern matching.
+
+* Don't use List.length in a recursive function.
+  It can turn an O(N) function into O(N^2).
+
