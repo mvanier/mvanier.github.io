@@ -1112,7 +1112,16 @@ Be sure to install the correct version!
 This term, we are using OCaml version 5.1.1.</p>
 </div>
 <h3 id="macos">MacOS</h3>
-<p>The instructions for MacOS refer to the
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you have never installed the MacOS command-line tools,
+you need to do that first.  In a terminal, type:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$ xcode-select –-install
+</span></code></pre></div>
+<p>See <a href="https://mac.install.guide/commandlinetools/4.html">this page</a>
+for more information on this.</p>
+</div>
+<p>The OCaml installation instructions for MacOS refer to the
 <a href="https://brew.sh">Homebrew</a> package manager,
 which needs to be installed first.</p>
 <div class="admonition note">
@@ -1133,8 +1142,8 @@ using your system's package manager.
 If your Linux is an Ubuntu variant (the most common kind),
 you should install OCaml using the Ubuntu package manager <code>apt</code>.
 The commands are:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$ sudo apt update
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>$ sudo apt install opam
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$ sudo apt update
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>$ sudo apt install opam
 </span></code></pre></div>
 <p>The <code>sudo</code> is so you don't have to install the software as the root user.
 You may be asked to enter your password, which you should do.</p>
@@ -1181,7 +1190,7 @@ you have to initialize <code>opam</code> differently by disabling sandboxing.
 This theoretically can cause some problems
 if a package does something really stupid, but it probably won't.
 The fix is to use this command instead of just <code>opam init</code>:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$ opam init --disable-sandboxing
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$ opam init --disable-sandboxing
 </span></code></pre></div>
 </div>
 </li>
@@ -1202,8 +1211,8 @@ The fix is to use this command instead of just <code>opam init</code>:</p>
 </li>
 <li>
 <p>In your terminal, type:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$ opam update
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>$ opam upgrade
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$ opam update
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>$ opam upgrade
 </span></code></pre></div>
 <p>to make sure the package repository is up to date
 and all OCaml packages have been upgraded to the most recent versions.</p>
@@ -1213,14 +1222,14 @@ and all OCaml packages have been upgraded to the most recent versions.</p>
   If it's the desired version (which is 5.1.1 this term),
   you are done with this part.
   Otherwise do</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$ opam switch create 5.1.1
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$ opam switch create 5.1.1
 </span></code></pre></div>
 <p>and wait for the new version to be installed.
 (This will take a while.)</p>
 </li>
 <li>
 <p>Install some libraries and programs:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$ opam install utop dune ocamlformat
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$ opam install utop dune ocamlformat
 </span></code></pre></div>
 <p>This will install the <code>utop</code>, <code>dune</code>, and <code>ocamlformat</code> programs,
 as well as a number of other OCaml libraries
@@ -1249,7 +1258,7 @@ and you want to make sure everything is formatted neatly.<sup id="fnref:2"><a cl
 <p>There are only a few things you need to know in order to use OCaml effectively.</p>
 <h3 id="starting-ocaml">Starting OCaml</h3>
 <p>Open a terminal and type:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$ utop
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$ utop
 </span></code></pre></div>
 <p>at the terminal prompt.
 (The <code>$</code> is the terminal prompt; don't type that.)
@@ -1269,12 +1278,12 @@ unless <code>utop</code> isn't working for some reason.</p>
 <p><code>utop</code> makes it possible to easily recall and edit
 previously-input lines of text by using the up and down arrow keys.
 To see what it can do, start up <code>utop</code>:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$ utop
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$ utop
 </span></code></pre></div>
 <p>and type the following commands
 (one per line, hitting the return key at the end of each line):</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="o">#</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;hello</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">;;</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="o">#</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;goodbye</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">;;</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="o">#</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;hello</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">;;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="o">#</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;goodbye</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">;;</span>
 </span></code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1285,10 +1294,10 @@ print the words <code>"hello"</code> and <code>"goodbye"</code> respectively.
 Once you've done this,
 you should be able to recall either line by using the up arrow key.
 For instance, you can hit the up arrow key once to get the line:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;goodbye</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">;;</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;goodbye</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">;;</span>
 </span></code></pre></div>
 <p>and edit it so that it says:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;hasta la vista</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">;;</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;hasta la vista</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">;;</span>
 </span></code></pre></div>
 <p>When you hit return,
 it should print out <code>"hasta la vista"</code> on a separate line.
@@ -1300,7 +1309,7 @@ control-l (lower-case L) clears the terminal and puts the cursor
 at the top of the terminal window.</p>
 <p>By the way, in addition to printing out the messages you wanted,
 you'll also see the line:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
 </span></code></pre></div>
 <p>printed out after hitting return.
 This is OCaml telling you the type of the result.
@@ -1308,15 +1317,15 @@ In this case it's the <code>unit</code> type, which is what <code>printf</code> 
 We will talk about this in class.</p>
 <p>Exit the interpreter by typing control-d (this is just like Python).
 You can also type <code>#quit;;</code> at the prompt:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="o">#</span> <span class="o">#</span><span class="n">quit</span><span class="o">;;</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="o">#</span> <span class="o">#</span><span class="n">quit</span><span class="o">;;</span>
 </span></code></pre></div>
 <p>and that will also work.</p>
 <h3 id="configuring-utop">Configuring <code>utop</code></h3>
 <p>One annoying thing about <code>utop</code>
 is that it tends to go overboard on command completion.
 You can disable this by typing this inside <code>utop</code>:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="o">#</span> <span class="o">#</span><span class="n">utop_prompt_dummy</span><span class="o">;;</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="o">#</span> <span class="nn">UTop</span><span class="p">.</span><span class="n">set_show_box</span> <span class="bp">false</span><span class="o">;;</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="o">#</span> <span class="o">#</span><span class="n">utop_prompt_dummy</span><span class="o">;;</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="o">#</span> <span class="nn">UTop</span><span class="p">.</span><span class="n">set_show_box</span> <span class="bp">false</span><span class="o">;;</span>
 </span></code></pre></div>
 <p>It's annoying to type this every time you start <code>utop</code>,
 so what I do is make a <code>utop</code> initialization file called <code>init.ml</code>
@@ -1363,21 +1372,21 @@ The simplest one is the <code>#use</code> command,
 which loads up some OCaml source code from a file, compiles it, and runs it.
 For instance, open up your text editor
 and type the following into a file called <code>test.ml</code>:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">5</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">5</span>
 </span></code></pre></div>
 <p>(Note, by the way, that we didn't use the double semicolons,
 since this is OCaml code in a file!)
 Save the file, then start a terminal and navigate
 to the directory containing that file.
 Then start up <code>utop</code>:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>$ utop
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>$ utop
 </span></code></pre></div>
 <p>Inside the interpreter, type the following command:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="o">#</span> <span class="o">#</span><span class="n">use</span> <span class="s2">&quot;test.ml&quot;</span><span class="o">;;</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="o">#</span> <span class="o">#</span><span class="n">use</span> <span class="s2">&quot;test.ml&quot;</span><span class="o">;;</span>
 </span></code></pre></div>
 <p>The first <code>#</code> is just the OCaml prompt and shouldn't be typed.
 If you've done this right, OCaml should respond with:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">val</span> <span class="n">f</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">val</span> <span class="n">f</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <p>What this means is that
 OCaml has compiled the code in the file <code>test.ml</code>
@@ -1385,10 +1394,10 @@ and is printing out the type signature
 of all functions it has found there
 (in this case, there is only one, <code>f</code>).
 Test that it works by typing the following:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="o">#</span> <span class="n">f</span> <span class="mi">10</span> <span class="o">;;</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="o">#</span> <span class="n">f</span> <span class="mi">10</span> <span class="o">;;</span>
 </span></code></pre></div>
 <p>OCaml should reply with:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">345</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">345</span>
 </span></code></pre></div>
 <p>By the way,
 the <code>-</code> to the left of the colon
@@ -1414,7 +1423,7 @@ In order to use it, you need to do the following steps:</p>
 <ul>
 <li>
 <p>Install the OCaml Language Server Protocol by typing this into a terminal:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>$ opam install ocaml-lsp-server
+<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>$ opam install ocaml-lsp-server
 </span></code></pre></div>
 <p>A "language server protocol"
 provides a way for editors to query languages
