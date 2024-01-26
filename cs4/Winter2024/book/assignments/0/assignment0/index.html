@@ -1665,25 +1665,33 @@ create a file called <code>dune-project</code> with these contents:</p>
 </span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>  (dev  
 </span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>    (flags (:standard -warn-error -A))))
 </span></code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This last file will need to be modified
+<p>Once this is done, exit restart VS Code
+and type this in your terminal:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>$ dune build
+</span></code></pre></div>
+<p>Then restart VS Code,
+and you should get completion
+even on functions from the included libraries.</p>
+<p>For later assignments,
+you will be able to re-use the <code>dune-project</code> file unchanged.
+However, the <code>dune</code> file will need to be modified
 depending on the name of your code file(s)
 and the library/libraries you are using.
 Here, we are assuming that the code is <code>lab2.ml</code>,
-which becomes one of the "modules" listed,
+which becomes one of the "modules" listed (without the <code>.ml</code> suffix),
 and we are using the <code>num</code> library,
 which becomes one of the "libraries" listed.
-You can specify multiple modules and multiple libraries.</p>
-</div>
-<p>Once this is done, restart VS Code
-and you should get completion even on functions
-from the included libraries.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If this doesn't work right away,
-run <code>dune build</code> in the terminal and try again.</p>
-</div>
+You can specify multiple modules and multiple libraries.
+If you aren't using any libraries,
+you can leave out the <code>(libraries ...)</code> line.</p>
+<p>Also,
+if you are developing each assignment in a separate directory
+(which you should be),
+then you can just put the <code>dune-project</code> in the parent directory
+of all the assignment directories
+and it will work (you won't need to copy that file).
+On the other hand,
+each assignment directory will need its own <code>dune</code> file.</p>
 <div class="footnote">
 <hr />
 <ol>
