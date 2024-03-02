@@ -1,0 +1,2641 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs4/Winter2024/book/assignments/7/partB_search/">
+      
+      
+        <link rel="prev" href="../partA_klotski_board/">
+      
+      
+        <link rel="next" href="../../../readings/ocaml_cheat_sheet/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+    
+    
+      
+        <title>Part B: the Search functor - The CS 4 book (Winter 2024)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.50c56a3b.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-b-the-search-functor-30-points" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The CS 4 book (Winter 2024)" class="md-header__button md-logo" aria-label="The CS 4 book (Winter 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 4 book (Winter 2024)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part B: the Search functor
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The CS 4 book (Winter 2024)" class="md-nav__button md-logo" aria-label="The CS 4 book (Winter 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    The CS 4 book (Winter 2024)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/welcome/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome to CS 4!
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/motivation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Motivation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/history/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    History
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Administrative
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Administrative
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Syllabus
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/collab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Collaboration policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignments
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Assignments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../0/assignment0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Assignment 0: Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 1: Evaluation and recursion
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 1: Evaluation and recursion
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/assignment1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/ocaml_notes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OCaml notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partA_exercises/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part A: Exercises
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partB_evaluation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part B: Evaluation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partC_recursion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part C: Recursion
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 2: Complexity and HOFs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 2: Complexity and HOFs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/assignment2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/ocaml_notes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OCaml notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/partA_orders_of_growth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part A: Orders of growth
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/partB_evaluation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part B: Evaluation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/partC_higher_order_functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part C: Higher-order functions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/partD_additional_problems/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part D: Additional problems
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 3: Lists
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 3: Lists
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/assignment3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/ocaml_notes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OCaml notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/partA_lists/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part A: Working with lists
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/partB_structural_generative_recursion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part B: Structural and Generative Recursion
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/partC_more_lists/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part C: Some harder problems with lists
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 4: Data abstraction
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 4: Data abstraction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/assignment4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/ocaml_notes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OCaml notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/partA_abstraction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part A: Abstraction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/partB_more_abstraction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part B: More abstraction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/partC_algebra/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part C: Algebraic expressions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Midterm exam
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Midterm exam
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../midterm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../midterm/ocaml_notes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OCaml notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../midterm/partA_complexity/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part A: Complexity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../midterm/partB_lists_hofs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part B: Lists and HOFs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../midterm/partC_data_structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part C: Data structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 5: Tags and objects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 5: Tags and objects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../5/assignment5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../5/ocaml_notes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OCaml notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../5/partA_imperative/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part A: Imperative programming
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../5/partB_tagged_data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part B: Tagged data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../5/partC_objects/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part C: Objects
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 6: Environmentally-friendly
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 6: Environmentally-friendly
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/assignment6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/ocaml_notes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OCaml notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/partA_environment_model/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part A: Environment model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/partB_imperative_objects/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part B: Imperative objects and classes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/partC_modules_functors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part C: Modules and functors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/partD_special_topics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part D: Special topics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 7: Final exam preparation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 7: Final exam preparation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assignment7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ocaml_notes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OCaml notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../klotski_game/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    The "Klotski" sliding-block puzzle game
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partA_klotski_board/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part A: the Klotski module
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Part B: the Search functor
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Part B: the Search functor
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#breadth-first-and-depth-first-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Breadth-first and depth-first search
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-storage-module-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Storage module type
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-to-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code to write
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-search-functor-is-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      How the Search functor is used
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-board-solver" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running the board solver
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#efficiency-of-the-board-solver" class="md-nav__link">
+    <span class="md-ellipsis">
+      Efficiency of the board solver
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Readings
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Readings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../readings/ocaml_cheat_sheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OCaml Cheat Sheet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../readings/subst/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    The Substitution Model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#breadth-first-and-depth-first-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Breadth-first and depth-first search
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-storage-module-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Storage module type
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-to-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code to write
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-search-functor-is-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      How the Search functor is used
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-board-solver" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running the board solver
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#efficiency-of-the-board-solver" class="md-nav__link">
+    <span class="md-ellipsis">
+      Efficiency of the board solver
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="part-b-the-search-functor-30-points">Part B: The <code>Search</code> functor (30 points)</h1>
+<p>The code for this file will be written in the file <code>gsearch.ml</code>.
+You only have to write one function in this section,
+and it can be written in less than 25 lines (including helper functions).
+The goal of this module
+is to allow you to start with a Klotski board
+and find a solution to the board.
+The solution will be a list of all the boards
+leading up to the final one
+(which has the 2x2 piece in the target location).
+In fact, the solution will be in reverse order,
+with the last board at the front of the list.</p>
+<h2 id="breadth-first-and-depth-first-search">Breadth-first and depth-first search</h2>
+<p>The code for this section is not hard to write,
+but first you have to understand
+the breadth-first and depth-first search algorithms.</p>
+<p>References:
+<a href="https://en.wikipedia.org/wiki/Breadth-first_search">here</a>
+for breadth-first search;
+<a href="https://en.wikipedia.org/wiki/Depth-first_search">here</a>
+for depth-first search.</p>
+<p>Finding an optimal solution to a puzzle game like Klotski
+is an example of a <em>tree search</em> problem.
+Trees come up all the time in computer science.
+We can consider the starting board of a Klotski puzzle
+as the root node of a tree.
+The moves that can be made on the starting board
+can be applied to that board to generate new boards
+which are the "children" of the root node,
+and each of them can then generate more boards which are their children,
+and so on.
+A tree representing a Klotski puzzle is actually of infinite depth,
+because you can move the same piece back and forth as often as you want.
+However, it's useful when solving to stipulate
+that you can't have two boards (nodes) in the tree which are identical;
+this makes the tree finite
+and thus makes it feasible to search for a particular board configuration
+(like one in which the 2x2 piece
+is in the bottom two rows and the middle two columns).</p>
+<p>The two most basic algorithms for doing a tree search are known as
+"depth-first search" (also known as DFS)
+and "breadth-first search" (also known as BFS).
+Let's see how they work.</p>
+<p>The idea in depth-first search is to start at the root node,
+then (if that node isn't a solution to the problem),
+generate all its child nodes,
+pick one of the child nodes,
+inspect it to see if it solves the problem,
+then (if not) generate <em>its</em> child nodes,
+pick one of its child nodes (grandchild of the root node),
+inspect it, and so on
+until you eventually reach a node that has no children
+(perhaps because all of its actual children have already been visited,
+and so are ineligible for searching).
+At that point, you back up to the parent node of the current node,
+pick a different child node, and continue.
+In this way, you will eventually visit all the nodes in the tree.
+Basically, you search as far as possible down one branch of the tree
+before you back up and search a different branch.
+The Wikipedia article
+<a href="https://en.wikipedia.org/wiki/Depth-first_search">here</a>
+has a picture which illustrates the order in which nodes are visited in DFS.</p>
+<p>In contrast, in breadth-first search,
+you search the entire tree level by level.
+First, you check the root node, then you check each of its children,
+and only then each of the children's children, and so on.
+Again, you should eliminate any nodes
+that are the same as nodes already seen
+in order to speed up the search.
+The Wikipedia article
+<a href="https://en.wikipedia.org/wiki/Breadth-first_search">here</a>
+has a picture which illustrates the order in which nodes are visited in BFS.</p>
+<p>For the Klotski problem,
+BFS has a tremendous advantage over DFS:
+the first solution found using BFS
+is guaranteed to be the optimal solution of a board
+(in the sense of requiring the fewest number of moves).
+That's because the number of moves it takes
+to get to a particular board node from the root board node
+is equal to the depth of the tree at that point;
+put differently, each new level of the tree
+corresponds to another move in the solution.
+So if there were a better solution in the tree
+by the time you find one solution,
+you would already have seen it,
+so the first solution found is the optimal one.
+In contrast, DFS will usually not find an optimal solution,
+as you will see below.</p>
+<p>A really amazing fact is that
+BFS and DFS can both be implemented in terms of simple data structures
+which can have exactly the same interface.
+DFS is naturally implemented in terms of a <em>stack</em>, which is a data structure
+where you push values into the stack and pop them off the stack,
+and the first value popped off the stack
+is the last value pushed onto the stack.
+This is called a LIFO data structure, for "Last In, First Out".
+From the perspective of a tree search, using a stack works like this:</p>
+<ul>
+<li>
+<p>Start with the root node (original board). Push it onto the stack.</p>
+</li>
+<li>
+<p>Repeat the following steps:</p>
+<ul>
+<li>
+<p>Pop the first node off the stack. Check to see if it solves the
+   problem. If so, you win!</p>
+</li>
+<li>
+<p>Otherwise, generate all its child nodes and push them onto the
+   stack <em>as long as none of them have ever been pushed onto the
+   stack before</em>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>If the stack empties out before a solution is found, there is no
+  solution.</p>
+</li>
+</ul>
+<p>For BFS, the process is exactly the same
+except that you use a <em>queue</em> instead of a stack to store the nodes.
+A queue is like a stack except that instead of "Last In, First Out",
+a queue is "First In, First Out" or FIFO
+(like a line for movie tickets).
+That is literally the only difference,
+but it means that pushing a node onto the queue
+puts it at the back of the queue, not the front,
+so all the other child nodes that were generated earlier
+will be inspected before the pushed node.
+In contrast, popping a node off the queue pops off the front of the queue
+(which is the same as for a stack).
+This difference is enough to change DFS into BFS. Pretty cool!</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Don't confuse this kind of queue with the priority queues
+we looked at in assignment 6.
+Despite the fact that both data structures use the word "queue",
+they are entirely different.
+These are "plain queues" or "FIFO queues".</p>
+</div>
+<p>There are two additional wrinkles to the tree searching process.</p>
+<p>The first is that (as mentioned)
+we take care to not push nodes onto the stack/queue
+if they have already been inspected before.</p>
+<p>The second is that we don't just want to find a solution board;
+we want to find the entire <em>history</em> of the solution
+(the sequence of boards leading to the solution).
+The way we will do this is a bit clever.
+Instead of storing individual boards on the stack or queue,
+we will store <em>lists</em> of boards,
+where a particular list represents
+the history of boards leading to the current board.
+For convenience, we store it in reverse order,
+so that the first board in the list is the last board in the history
+(and thus, it's the current board after the last move was made).</p>
+<p>So if a board list is <code>[board3; board2; board1]</code>,
+this represents a history where the original board was <code>board1</code>,
+then <code>board2</code> is a child of <code>board1</code>
+(generated by making one move on <code>board1</code>)
+and <code>board3</code> (the current board) is a child of <code>board2</code>.
+We generate new histories by taking the head of the list,
+generating a list of child boards,
+and for each child board,
+putting it at the front of the list.
+So if <code>board3</code> has three children:
+<code>board4a</code>, <code>board4b</code>, and <code>board4c</code>
+(representing three possible moves on <code>board3</code>),
+the new histories will be:</p>
+<ul>
+<li><code>[board4a; board3; board2; board1]</code></li>
+<li><code>[board4b; board3; board2; board1]</code></li>
+<li><code>[board4c; board3; board2; board1]</code></li>
+</ul>
+<p>Each of these will get pushed onto the stack/queue.</p>
+<p>When we pop a history off the stack/queue,
+we will look at the head of the list
+(the most recent board in the history)
+to see if it solves the problem;
+if not (and if it hasn't been seen before),
+we generate new histories,
+push them back onto the stack/queue, and continue.
+Once we find a board which is a solution,
+we will also have all the boards that led to that solution,
+so it's easy to print out the solution.</p>
+<h2 id="the-storage-module-type">The <code>Storage</code> module type</h2>
+<p>The file <code>gsearch.ml</code> defines a module type called <code>Storage</code>
+which represents the data structure that will store the board histories.
+It will be either a stack or a queue. Here is the definition:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">module</span> <span class="k">type</span> <span class="nc">Storage</span> <span class="o">=</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  <span class="k">sig</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="k">exception</span> <span class="nc">Empty</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="k">val</span> <span class="n">create</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">val</span> <span class="n">push</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="kt">unit</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="k">val</span> <span class="n">pop</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="k">val</span> <span class="n">is_empty</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="kt">bool</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  <span class="k">end</span>
+</span></code></pre></div>
+<p>This means that any module that has this module type
+defines a type <code>t</code> which is polymorphic
+(<em>i.e.</em> you can store any kind of data in the type <code>t</code>).
+You create a new data structure of type <code>t</code>
+by calling the <code>create</code> function with a unit argument:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">let</span> <span class="n">storage</span> <span class="o">=</span> <span class="n">create</span> <span class="bp">()</span> <span class="k">in</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>You push a new value onto the data structure using the <code>push</code> function:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">push</span> <span class="n">new_history</span> <span class="n">storage</span>
+</span></code></pre></div>
+<p><em>Note</em>: These data structures can't overflow.</p>
+<p>You pop a value off the data structure using the <code>pop</code> function:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">let</span> <span class="n">next_history</span> <span class="o">=</span> <span class="n">pop</span> <span class="n">storage</span> <span class="k">in</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>You can check if the storage is empty using the <code>is_empty</code> function.
+If you pop an empty data structure, the <code>Empty</code> exception will be raised.</p>
+<p>Remarkably, the <code>Stack</code> and <code>Queue</code> modules
+(which are part of the OCaml standard library)
+both implement the <code>Storage</code> module type.
+We'll see how to use this below.</p>
+<p>Note that the <code>Storage</code> module type
+defines an <em>imperative</em> storage data structure.
+That's why <code>push</code> and <code>pop</code> don't return an updated value of type <code>'a t</code>;
+instead, they mutate the input value of that type.
+Both the OCaml <code>Stack</code> and <code>Queue</code> modules
+implement imperative data structures.
+This is the only use of imperative programming in this assignment.</p>
+<h2 id="code-to-write">Code to write</h2>
+<p>[<strong>30 points</strong>]</p>
+<p>Write the <code>search</code> function in the <code>Search</code> functor.</p>
+<p>The <code>Search</code> functor looks like this:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">module</span> <span class="nc">Search</span> <span class="o">(</span><span class="nc">S</span> <span class="o">:</span> <span class="nc">Storage</span><span class="o">)</span> <span class="o">(</span><span class="nc">D</span> <span class="o">:</span> <span class="nc">Domain</span><span class="o">)</span> <span class="o">=</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  <span class="k">struct</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="k">module</span> <span class="nc">DS</span> <span class="o">=</span> <span class="nn">Set</span><span class="p">.</span><span class="nc">Make</span><span class="o">(</span><span class="nc">D</span><span class="o">)</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="k">let</span> <span class="n">search</span> <span class="n">init</span> <span class="o">=</span> <span class="o">...</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="k">let</span> <span class="n">show_history</span> <span class="n">hist</span> <span class="o">=</span> <span class="c">(* code supplied for you *)</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  <span class="k">end</span>
+</span></code></pre></div>
+<p>and you have to fill in the code marked <code>...</code>.
+The <code>Storage</code> (<code>S</code>) argument will either be
+the OCaml <code>Stack</code> or <code>Queue</code> module
+(depending on whether you want DFS or BFS searching);
+you specify this when you call the functor.
+The <code>Domain</code> (<code>D</code>) argument
+will be the <code>Klotski</code> module you defined in part A
+in the file <code>klotski.ml</code>.
+(See below for how this code will actually be used.)
+The <code>DS</code> module will be a set of Klotski boards
+which represent the boards already seen;
+these will be used to make sure
+we don't push a board history onto the stack or queue
+whose most recent board has already been seen.
+Note that the <code>compare</code> function in the <code>Klotski</code> module
+that you wrote in part A is incredibly important here!
+Without it, you couldn't create a set of boards
+because the <code>Klotski</code> module
+wouldn't implement the <code>Ordered_type</code> module type.
+If you don't implement it correctly
+(the way we described above)
+you could still create a set of boards
+but the tree search may be incredibly slow
+(because there are too many "distinct" boards
+that aren't really distinct).</p>
+<p>The <code>search</code> function takes one argument,
+which is the starting board.
+It will perform a tree search starting from that board.
+If it finds a solution,
+it will return a board history
+(a list of boards in reverse order,
+with the final board at the head of the list).
+If it doesn't find a solution,
+it will raise the <code>Not_found</code> exception.</p>
+<p>Here's an outline of the algorithm to use:</p>
+<ul>
+<li>
+<p>Create a new <code>Storage</code> structure (using <code>S.create</code>).</p>
+</li>
+<li>
+<p>Create a history which is just a list containing the initial board.
+  Push it onto the storage structure.</p>
+</li>
+<li>
+<p>Create an empty set of visited boards (using <code>DS.empty</code>).</p>
+</li>
+<li>
+<p>Repeat the following steps:</p>
+<ul>
+<li>
+<p>If the storage structure is empty,
+  the search has failed,
+  so raise the <code>Not_found</code> exception.</p>
+</li>
+<li>
+<p>Otherwise, pop a history off the storage structure. Then:</p>
+<ul>
+<li>
+<p>Check the most recent board in the history.
+  If it has already been seen
+  (use the set of visited boards to check for this),
+  throw the history away and go to the next one.</p>
+</li>
+<li>
+<p>Otherwise, check to see if the board solves the problem.
+  If so, return the history and you're done!</p>
+</li>
+<li>
+<p>Otherwise, add the board to the set of visited boards,
+  find the children of the current board
+  (using the <code>D.next</code> function,
+  which will actually be the <code>next</code> function you wrote in part A),
+  generate the new histories,
+  and push them back onto the storage structure.
+  Then continue.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Remember that in this function
+you need to use the correct module prefix
+to use functions from the <code>S</code> module (of module type <code>Storage</code>)
+and the <code>D</code> module (of module type <code>Domain</code>),
+so instead of <code>create</code>, <code>push</code>, <code>pop</code> <em>etc.</em> from module <code>S</code>,
+it's <code>S.create</code>, <code>S.push</code>, <code>S.pop</code> <em>etc.</em>
+and instead of <code>is_solved</code>, <code>compare</code>, <code>next</code> from module <code>D</code>,
+it's <code>D.is_solved</code>, <code>D.compare</code>, and <code>D.next</code>.</p>
+<p>As usual, it's OK to write helper functions.
+You may find the <code>List.iter</code> function useful.</p>
+<h2 id="how-the-search-functor-is-used">How the <code>Search</code> functor is used</h2>
+<p>Even if you've implemented the <code>Search</code> functor correctly,
+you may be confused as to how it is actually used.
+For that, look at the <code>klotski_solve.ml</code> file. It has this code:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">open</span> <span class="nc">Klotski</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">open</span> <span class="nc">Search</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">module</span> <span class="nc">DFS</span> <span class="o">=</span> <span class="nc">Search</span><span class="o">(</span><span class="nc">Stack</span><span class="o">)</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">module</span> <span class="nc">BFS</span> <span class="o">=</span> <span class="nc">Search</span><span class="o">(</span><span class="nc">Queue</span><span class="o">)</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">module</span> <span class="nc">K_DFS</span> <span class="o">=</span> <span class="nc">DFS</span><span class="o">(</span><span class="nc">Klotski</span><span class="o">)</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="k">module</span> <span class="nc">K_BFS</span> <span class="o">=</span> <span class="nc">BFS</span><span class="o">(</span><span class="nc">Klotski</span><span class="o">)</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="k">let</span> <span class="n">search_and_print</span> <span class="n">search</span> <span class="n">show</span> <span class="n">b</span> <span class="o">=</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  <span class="k">let</span> <span class="n">h</span> <span class="o">=</span> <span class="n">search</span> <span class="n">b</span> <span class="k">in</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="k">begin</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>      <span class="n">print_newline</span> <span class="bp">()</span><span class="o">;</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>      <span class="n">print_string</span> <span class="o">(</span><span class="n">show</span> <span class="n">h</span><span class="o">);</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>      <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;Solution in %d moves.</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">(</span><span class="nn">List</span><span class="p">.</span><span class="n">length</span> <span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>    <span class="k">end</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="c">(* ... using depth-first search with initial board b ... *)</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>   <span class="n">search_and_print</span> <span class="nn">K_DFS</span><span class="p">.</span><span class="n">search</span> <span class="nn">K_DFS</span><span class="p">.</span><span class="n">show_history</span> <span class="n">b</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="c">(* ... using breadth-first search with initial board b ... *)</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>   <span class="n">search_and_print</span> <span class="nn">K_BFS</span><span class="p">.</span><span class="n">search</span> <span class="nn">K_BFS</span><span class="p">.</span><span class="n">show_history</span> <span class="n">b</span>
+</span></code></pre></div>
+<p>We create two functors called <code>DFS</code> and <code>BFS</code>
+by partially instantiating the <code>Search</code> functor
+(OCaml lets you do this!),
+giving it a <code>Stack</code> or a <code>Queue</code> module argument, respectively
+(these modules are part of OCaml's standard library).
+Then we use those (single-argument) functors
+to generate the <code>K_DFS</code> and <code>K_BFS</code> modules,
+which provide the code needed to solve the Klotski problem
+using depth-first search or breadth-first search, respectively.
+Alternatively, we could have created <code>K_DFS</code> and <code>K_BFS</code>
+directly like this:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">module</span> <span class="nc">K_DFS</span> <span class="o">=</span> <span class="nc">Search</span><span class="o">(</span><span class="nc">Stack</span><span class="o">)(</span><span class="nc">Klotski</span><span class="o">)</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">module</span> <span class="nc">K_BFS</span> <span class="o">=</span> <span class="nc">Search</span><span class="o">(</span><span class="nc">Queue</span><span class="o">)(</span><span class="nc">Klotski</span><span class="o">)</span>
+</span></code></pre></div>
+<p>Then we use <code>K_DFS.search</code> to search for the solution using DFS
+or <code>K_BFS.search</code> to search using BFS.
+We use <code>K_DFS.show_history</code> or <code>K_BFS.show_history</code> to display the solution
+(these are actually the same).</p>
+<p>This is a nice illustration of how using functors
+can decompose code along natural boundaries.
+If we had a new problem that could be solved using a tree search,
+we could use the exact same <code>DFS</code> and <code>BFS</code> modules
+as those given above to solve it.
+We would simply have to create a new <code>Domain</code> module
+representing the problem like we did for the Klotski problem in part A,
+and pass it to the <code>DFS</code> or <code>BFS</code> functor
+to generate a module that could do the searching and display the solution.</p>
+<p>The <code>show_history</code> function defined in the <code>Search</code> module
+will be used as the <code>show</code> argument in the <code>search_and_print</code> function.</p>
+<h2 id="running-the-board-solver">Running the board solver</h2>
+<p>We saw above how to run the interactive Klotski program.
+However, for some of the boards (<em>e.g.</em> boards 5-7),
+the minimum number of moves to solve the board is so large
+that it's not really reasonable to expect a human to be able to do it.
+Therefore, let's use computers! <img alt="😄" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/1f604.svg" title=":smile:" /></p>
+<p>Once all the code above has been written,
+type <code>make</code> to compile the <code>klotski_solve</code> program.
+You can run it like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$ ./klotski_solve 0
+</span></code></pre></div>
+<p>and it will solve board 0 and print out the solution, like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>$ ./klotski_solve 0
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>aabb
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>.cc.
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>ddee
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>ffgh
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>ffij
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>----
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>aabb
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>cc..
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>ddee
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>ffgh
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>ffij
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>----
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>aabb
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>ccee
+</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>dd..
+</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>ffgh
+</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>ffij
+</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>
+</span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>----
+</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>
+</span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>aabb
+</span><span id="__span-8-28"><a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>ccee
+</span><span id="__span-8-29"><a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>ddg.
+</span><span id="__span-8-30"><a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a>ff.h
+</span><span id="__span-8-31"><a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a>ffij
+</span><span id="__span-8-32"><a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a>
+</span><span id="__span-8-33"><a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a>----
+</span><span id="__span-8-34"><a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a>
+</span><span id="__span-8-35"><a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a>aabb
+</span><span id="__span-8-36"><a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a>ccee
+</span><span id="__span-8-37"><a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a>dd.g
+</span><span id="__span-8-38"><a id="__codelineno-8-38" name="__codelineno-8-38" href="#__codelineno-8-38"></a>ff.h
+</span><span id="__span-8-39"><a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a>ffij
+</span><span id="__span-8-40"><a id="__codelineno-8-40" name="__codelineno-8-40" href="#__codelineno-8-40"></a>
+</span><span id="__span-8-41"><a id="__codelineno-8-41" name="__codelineno-8-41" href="#__codelineno-8-41"></a>----
+</span><span id="__span-8-42"><a id="__codelineno-8-42" name="__codelineno-8-42" href="#__codelineno-8-42"></a>
+</span><span id="__span-8-43"><a id="__codelineno-8-43" name="__codelineno-8-43" href="#__codelineno-8-43"></a>aabb
+</span><span id="__span-8-44"><a id="__codelineno-8-44" name="__codelineno-8-44" href="#__codelineno-8-44"></a>ccee
+</span><span id="__span-8-45"><a id="__codelineno-8-45" name="__codelineno-8-45" href="#__codelineno-8-45"></a>ddig
+</span><span id="__span-8-46"><a id="__codelineno-8-46" name="__codelineno-8-46" href="#__codelineno-8-46"></a>ff.h
+</span><span id="__span-8-47"><a id="__codelineno-8-47" name="__codelineno-8-47" href="#__codelineno-8-47"></a>ff.j
+</span><span id="__span-8-48"><a id="__codelineno-8-48" name="__codelineno-8-48" href="#__codelineno-8-48"></a>
+</span><span id="__span-8-49"><a id="__codelineno-8-49" name="__codelineno-8-49" href="#__codelineno-8-49"></a>----
+</span><span id="__span-8-50"><a id="__codelineno-8-50" name="__codelineno-8-50" href="#__codelineno-8-50"></a>
+</span><span id="__span-8-51"><a id="__codelineno-8-51" name="__codelineno-8-51" href="#__codelineno-8-51"></a>aabb
+</span><span id="__span-8-52"><a id="__codelineno-8-52" name="__codelineno-8-52" href="#__codelineno-8-52"></a>ccee
+</span><span id="__span-8-53"><a id="__codelineno-8-53" name="__codelineno-8-53" href="#__codelineno-8-53"></a>ddig
+</span><span id="__span-8-54"><a id="__codelineno-8-54" name="__codelineno-8-54" href="#__codelineno-8-54"></a>.ffh
+</span><span id="__span-8-55"><a id="__codelineno-8-55" name="__codelineno-8-55" href="#__codelineno-8-55"></a>.ffj
+</span><span id="__span-8-56"><a id="__codelineno-8-56" name="__codelineno-8-56" href="#__codelineno-8-56"></a>
+</span><span id="__span-8-57"><a id="__codelineno-8-57" name="__codelineno-8-57" href="#__codelineno-8-57"></a>Solution in 6 moves.
+</span></code></pre></div>
+<p>At the end, the program prints out how many moves the solution took.
+You can run the solver on any board from 0 to 7.</p>
+<p>To time the solver, you can run the program like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>$ /usr/bin/time ./klotski_solve 7
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>[... solution omitted ...]
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>Solution in 150 moves.
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>        5.31 real         5.28 user         0.03 sys
+</span></code></pre></div>
+<p>This means that the solver took just over 5 seconds to find the solution.</p>
+<p>By default, the board solver uses a breadth-first search algorithm
+to find the optimal solution
+(<em>i.e.</em> the one requiring the fewest moves).
+You can alternatively use depth-first search
+by adding the <code>-dfs</code> command-line argument,
+but don't expect a good result!
+For instance:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>$ ./klotski_solve -dfs 0
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>[... solution omitted ...]
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>Solution in 1334 moves.
+</span></code></pre></div>
+<p>It sure looks like breadth-first search is the way to go for this problem.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Don't worry if your program
+doesn't give the exact same number of DFS moves as reported here.
+DFS is not guaranteed to give the minimum number of moves
+(as you can see),
+and the exact number of moves
+depends on the details of how the search is set up
+(notably, the ordering of the boards
+when generating the next boards from a particular board).</p>
+</div>
+<h2 id="efficiency-of-the-board-solver">Efficiency of the board solver</h2>
+<p>For full marks, the board solver should be "reasonably efficient".
+This means that none of the boards should take more than (say)
+30 seconds to solve.
+(If you've written the code well
+and are running it on a reasonably fast computer,
+it's likely that it will take considerably less time than that.)</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../partA_klotski_board/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part A: the Klotski module">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Part A: the Klotski module
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../readings/ocaml_cheat_sheet/" class="md-footer__link md-footer__link--next" aria-label="Next: OCaml Cheat Sheet">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                OCaml Cheat Sheet
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
