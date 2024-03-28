@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 """
 Generate a random string of letters in [a-z0-9] of length 5.
 This is used to tag old course books so that students can't access them
