@@ -1,0 +1,284 @@
+TODO list for this assignment
+-----------------------------
+
+== PROBLEM IDEAS:
+
+*** Implement a simple monad for parsing (like a micro-parsec!)
+
+*** Monad laws (1)
+
+Consider this incredibly stupid datatype:
+
+  data Dumb a = Dumb  -- this actually compiles!
+
+Try to make it a monad:
+
+  instance Monad Dumb where
+    return _ = Dumb
+    mx >>= _ = Dumb
+
+Prove that this is, in fact, a monad by demonstrating that it satisfies all
+three monad laws:
+
+  mx >>= return == mx
+  Dumb >>= return == Dumb  -- check
+
+  return x >>= f == f x
+  return x >>= f == Dumb >>= f == Dumb
+  f :: a -> Dumb b == \x -> Dumb
+  f x == Dumb  -- check
+
+  TODO: Third law:
+  (mx >>= f) >>= g  ==  mx >>= (\x -> f x >>= g)
+
+  (Dumb >>= f) >>= g
+  --> Dumb >>= g
+  --> Dumb
+
+  mx >>= (\x -> f x >>= g)
+  --> Dumb >>= (\x -> f x >>= g)
+  --> Dumb
+
+*** Monad laws (2)
+
+-- Here is the identity monad:
+
+data Identity a = Identity a  -- could be a newtype
+
+instance Functor Identity where
+  fmap f (Identity x) = Identity (f x)
+
+instance Monad Identity where
+  Identity x >>= f = f x
+  return x = Identity x
+
+-- Prove Monad, Functor laws.  See code/solution_code/Identity.hs.
+
+*** Monad laws (3)
+
+Prove the monad laws (at least 1 and 2) for the Reader monad given in this
+assignment.  
+
+Code:
+
+----------------------------------------------------------------------
+data Reader r b = Reader (r -> b)
+
+runReader :: Reader r a -> r -> a
+runReader (Reader f) = f
+
+instance Monad (Reader r) where
+  return x = Reader (\r -> x)
+
+  mx >>= f = 
+    Reader (\r -> 
+      let x = runReader mx r in
+        runReader (f x) r)
+----------------------------------------------------------------------
+
+1) return x >>= f    <-->  f x
+
+  return x >>= f
+    = Reader (\r ->
+        let x = runReader (return x) r in
+          runReader (f x) r)
+    = Reader (\r ->
+        let x = runReader (Reader (\r -> x)) r in
+          runReader (f x) r)
+    = Reader (\r ->
+        let x = (\r -> x) r in
+          runReader (f x) r)
+    = Reader (\r ->
+        let x = x in
+          runReader (f x) r)
+    = Reader (\r -> runReader (f x) r)
+    = Reader (runReader (f x))
+    = f x   -- QED
+ 
+2) mx >>= return     <-->  mx
+
+  mx >>= return
+    = Reader (\r -> 
+        let x = runReader mx r in
+          runReader (return x) r)
+    = Reader (\r -> 
+        let x = runReader mx r in
+          runReader (Reader (\r -> x)) r)
+    = Reader (\r -> 
+        let x = runReader mx r in
+          (\r -> x) r)
+    = Reader (\r -> 
+        let x = runReader mx r in x
+    = Reader (\r -> runReader mx r)
+    = Reader (runReader mx)
+    = mx  -- QED
+
+3) (mx >>= f) >>= g  <-->  mx >>= (\x -> f x >>= g)
+
+  (mx >>= f) >>= g
+    = Reader (\r -> 
+        let x = runReader (mx >>= f) r in
+          runReader (g x) r)
+    = Reader (\r -> 
+        let x = runReader 
+                  (Reader (\r -> 
+                    let x = runReader mx r in
+                      runReader (f x) r)) r 
+        in
+          runReader (g x) r)
+    = Reader (\r -> 
+        let x = runReader 
+                  (Reader (\r' -> 
+                    let x' = runReader mx r' in
+                      runReader (f x') r')) r 
+        in
+          runReader (g x) r)
+    = Reader (\r -> 
+        let x = (\r' -> 
+                   let x' = runReader mx r' in
+                     runReader (f x') r') r 
+        in
+          runReader (g x) r)
+    = Reader (\r -> 
+        let x = 
+          let x' = runReader mx r in runReader (f x') r)
+        in
+          runReader (g x) r)
+    = Reader (\r -> 
+        let x = runReader mx r in runReader (f (runReader mx r)) r) in
+          runReader (g x) r)
+    = Reader (\r -> runReader (g (runReader (f (runReader mx r)) r)) r)
+    = Reader (runReader (g (runReader (f (runReader mx r)) r)))
+
+  mx >>= (\x -> f x >>= g)
+    = Reader (\r -> 
+        let x = runReader mx r in
+          runReader ((\x -> f x >>= g) x) r)
+    = Reader (\r -> 
+        let x = runReader mx r in
+          runReader ((\x' -> f x' >>= g) x) r)
+    = Reader (\r -> 
+        let x = runReader mx r in
+          runReader (f x >>= g) r)
+    = Reader (\r -> 
+        let x = runReader mx r in
+          runReader 
+            (Reader (\r' -> 
+              let x' = runReader (f x) r' in
+                runReader (g x') r'))
+            r)
+    = Reader (\r -> 
+        let x = runReader mx r in
+          (\r' -> 
+            let x' = runReader (f x) r' in
+              runReader (g x') r')
+          r)
+    = Reader (\r -> 
+        let x = runReader mx r in
+          (let x' = runReader (f x) r in
+              runReader (g x') r)) 
+    = Reader (\r -> 
+        let x = runReader mx r in
+          runReader (g (runReader (f x) r)) r) 
+    = Reader (\r -> 
+        runReader (g (runReader (f (runReader mx r)) r)) r) 
+    = Reader (runReader (g (runReader (f (runReader mx r)) r))) 
+    -- The two sides are equal, so QED!
+
+*** Parsing: minimal JSON parser
+
+Reference:
+http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf
+
+One possible modification: don't require arrays.  Although I think arrays
+wouldn't be that hard to implement.
+
+*** Monad transformers
+
+Prove that if m is a monad, MaybeT m is a monad too!
+
+Here is the relevant code (slightly simplified from GHC version):
+
+  newtype MaybeT m a = MaybeT (m (Maybe a))
+
+  runMaybeT (MaybeT t) = t
+
+  instance (Monad m) => Monad (MaybeT m) where
+      -- LHS return is for (MaybeT m), RHS is for m
+      return x = MaybeT $ return (Just x)
+
+      (MaybeT x) >>= f = MaybeT $ do  -- in m monad
+        v <- x
+        case v of
+          Nothing -> return Nothing
+          Just y  -> runMaybeT (f y)
+
+Monad laws:
+
+1) return x >>= f    <-->  f x
+
+   MaybeT (return (Just x)) >>= f
+     = MaybeT $ do
+         v <- return (Just x)
+         case v of
+           Nothing -> return Nothing
+           Just y  -> runMaybeT (f y)
+     = MaybeT $ 
+         return (Just x) >>= \v ->
+           case v of
+             Nothing -> return Nothing
+             Just y  -> runMaybeT (f y)
+     = MaybeT $ 
+         return (Just x) >>= (\v ->
+           case v of
+             Nothing -> return Nothing
+             Just y  -> runMaybeT (f y))
+     -- m is a monad, so use monad law 1 to rewrite as:
+     = MaybeT $ 
+         (\v ->
+           case v of
+             Nothing -> return Nothing
+             Just y  -> runMaybeT (f y)) (Just x)
+     = MaybeT $ runMaybeT (f x)
+     = f x  -- QED!
+
+2) mx >>= return     <-->  mx
+
+   mx >>= return
+     = (MaybeT mx') >>= return
+     = (MaybeT mx') >>= return::MaybeT  -- annotate "return" with monad type
+     = MaybeT $ do
+         v <- mx'
+         case v of
+           Nothing -> return::m Nothing
+           Just y  -> runMaybeT (return::MaybeT y)
+     -- rewrite return::MaybeT in terms of return:m
+     = MaybeT $ do
+         v <- mx'
+         case v of
+           Nothing -> return Nothing
+           Just y  -> runMaybeT (MaybeT (return (Just y))
+     = MaybeT $ do
+         v <- mx'
+         case v of
+           Nothing -> return Nothing
+           Just y  -> return (Just y)
+     = MaybeT $ do
+         v <- mx'
+         return $ case v of
+           Nothing -> Nothing
+           Just y  -> Just y
+     = MaybeT $ do
+         v <- mx'
+         return v
+     = MaybeT $ mx' >>= \v -> return v
+     = MaybeT $ mx' >>= return
+     -- m is a monad, so use monad law 2 to rewrite as:
+     = MaybeT mx'
+     = mx  -- QED!
+
+3) (mx >>= f) >>= g  <-->  mx >>= (\x -> f x >>= g)
+
+-- TODO!
+
+

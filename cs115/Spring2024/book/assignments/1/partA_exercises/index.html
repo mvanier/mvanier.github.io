@@ -1,0 +1,1515 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs115/Spring2024/book/assignments/1/partA_exercises/">
+      
+      
+        <link rel="prev" href="../assignment1/">
+      
+      
+        <link rel="next" href="../partB_pitfalls/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+    
+    
+      
+        <title>Part A: Exercises - The CS 115 book (Spring 2024)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.50c56a3b.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-a-exercises-points" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The CS 115 book (Spring 2024)" class="md-header__button md-logo" aria-label="The CS 115 book (Spring 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 115 book (Spring 2024)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part A: Exercises
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The CS 115 book (Spring 2024)" class="md-nav__button md-logo" aria-label="The CS 115 book (Spring 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    The CS 115 book (Spring 2024)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/welcome/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome to CS 115!
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/software/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installing the course software
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/books/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Books and resources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Administrative
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Administrative
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Syllabus
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/collab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Collaboration policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignments
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Assignments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 1: Evaluation and recursion
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 1: Evaluation and recursion
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assignment1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Part A: Exercises
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Part A: Exercises
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-defining-new-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Defining new operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Defining new operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-sum-of-squares" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. +* (sum of squares)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-exclusive-or" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. ^|| (exclusive-or)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-rangeproduct" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. rangeProduct
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-prod" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. prod
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-map-and-variations" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. map and variations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. map and variations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-map2" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. map2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-map3" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. map3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-dot-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Dot product
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-fun-with-list-comprehensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Fun with list comprehensions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-sum-of-primes" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Sum of primes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-balanced-parentheses" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Balanced parentheses
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Balanced parentheses">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-balancedparentheses" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. balancedParentheses
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-balancedparentheses2" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. balancedParentheses2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-balancedparentheses3" class="md-nav__link">
+    <span class="md-ellipsis">
+      c. balancedParentheses3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partB_pitfalls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part B: Pitfalls
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partC_evaluation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part C: Evaluation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-defining-new-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Defining new operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Defining new operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-sum-of-squares" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. +* (sum of squares)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-exclusive-or" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. ^|| (exclusive-or)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-rangeproduct" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. rangeProduct
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-prod" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. prod
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-map-and-variations" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. map and variations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. map and variations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-map2" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. map2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-map3" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. map3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-dot-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Dot product
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-fun-with-list-comprehensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Fun with list comprehensions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-sum-of-primes" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Sum of primes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-balanced-parentheses" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Balanced parentheses
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Balanced parentheses">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-balancedparentheses" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. balancedParentheses
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-balancedparentheses2" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. balancedParentheses2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-balancedparentheses3" class="md-nav__link">
+    <span class="md-ellipsis">
+      c. balancedParentheses3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="part-a-exercises-points">Part A: Exercises (?? points)</h1>
+<h2 id="1-defining-new-operators">1. Defining new operators</h2>
+<p>[<strong>?? points</strong>]</p>
+<p>Haskell lets you define your own operators.
+Here are a couple of simple examples.
+(See lecture 2 for how to define new operators.)</p>
+<h3 id="a-sum-of-squares">a. <code>+*</code> (sum of squares)</h3>
+<p>Write a definition for an operator called <code>+*</code>
+that computes the sum of the squares of its arguments.
+Assume both arguments are <code>Double</code>s.
+Make it left-associative and give it a precedence of 7.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Define this operator directly &mdash;
+don't just define a function
+and make the operator another name for the function.
+This applies for the next problem as well.</p>
+</div>
+<h3 id="b-exclusive-or">b. <code>^||</code> (exclusive-or)</h3>
+<p>Write a definition for an operator called <code>^||</code>
+that computes the exclusive-OR of its two (boolean) arguments.
+Make it right-associative with a precedence of 3.
+Your definition should be only two (very simple) lines
+(not counting the type declaration) and shouldn't use <code>if</code>.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Use pattern matching; if the first argument is <code>False</code>,
+what must the answer be?</p>
+</div>
+<h2 id="2-rangeproduct">2. <code>rangeProduct</code></h2>
+<p>[<strong>?? points</strong>]</p>
+<p>Write a recursive function called <code>rangeProduct</code> that takes two <code>Integers</code>
+and computes the product of all the integers
+in the range from one integer to the other (inclusive).
+For instance:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">rangeProduct</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="mi">20</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cm">{-</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="cm">--&gt; 10 * 11 * 12 * 13 * 14 * 15 * 16 * 17 * 18 * 19 * 20</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="cm">--&gt; 6704425728000</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="cm">-}</span>
+</span></code></pre></div>
+<p>If the first argument is greater than the second argument,
+signal an error using the <code>error</code> function.
+If the two arguments are the same,
+return the argument value (so <code>rangeProduct 42 42</code> is just <code>42</code>).
+Use pattern guards instead of explicit <code>if</code> expressions to test the cases.
+Make sure all cases are exhaustive!</p>
+<h2 id="3-prod">3. <code>prod</code></h2>
+<p>[<strong>?? points</strong>]</p>
+<p>Use <code>foldr</code> to define a one-line point-free function called <code>prod</code>
+that returns the product of all the numbers in a list of <code>Integer</code>s
+(or <code>1</code> if the list is empty).
+Use this function to define a one-line
+(not including the type signature)
+<strong>non-recursive</strong> definition for <code>rangeProduct</code>,
+which you should call <code>rangeProduct2</code>.
+(This will be a two-line definition
+if you also include the line containing <code>error</code>.)</p>
+<h2 id="4-map-and-variations">4. <code>map</code> and variations</h2>
+<p>[<strong>?? points</strong>]</p>
+<p>You learned about the <code>map</code> higher-order function in class.
+Here you will write some variations on <code>map</code>.</p>
+<h3 id="a-map2">a. <code>map2</code></h3>
+<p>First, write a function <code>map2</code>
+which maps a two-argument function over two lists.
+Write it as a recursive function
+(there is a trivial definition using <code>zipWith</code> which you shouldn't use).
+It could be used like this:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nf">ghci</span><span class="o">&gt;</span><span class="w"> </span><span class="n">map2</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">]</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">18</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Your solution should have a completely polymorphic type signature
+(<em>i.e.</em> the most general type signature).
+Extra elements in either list should be ignored.</p>
+<h3 id="b-map3">b. <code>map3</code></h3>
+<p>Now, write a <code>map3</code> function that will work for functions of 3 arguments.
+For instance:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nf">ghci</span><span class="o">&gt;</span><span class="w"> </span><span class="n">map3</span><span class="w"> </span><span class="p">(</span><span class="nf">\</span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">]</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">[</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">18</span><span class="p">]</span>
+</span></code></pre></div>
+<h2 id="5-dot-product">5. Dot product</h2>
+<p>[<strong>?? points</strong>]</p>
+<p>It's easy to use <code>map2</code> along with the <code>sum</code> function
+to define a function to compute the dot product of two lists of integers,
+as follows:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nf">dot</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Integer</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nf">dot</span><span class="w"> </span><span class="n">lst1</span><span class="w"> </span><span class="n">lst2</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="p">(</span><span class="n">map2</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">lst1</span><span class="w"> </span><span class="n">lst2</span><span class="p">)</span>
+</span></code></pre></div>
+<p>or we can save some parentheses by writing it as:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nf">dot</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Integer</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nf">dot</span><span class="w"> </span><span class="n">lst1</span><span class="w"> </span><span class="n">lst2</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">$</span><span class="w"> </span><span class="n">map2</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">lst1</span><span class="w"> </span><span class="n">lst2</span>
+</span></code></pre></div>
+<p>You might think that you can write this as a point-free version using
+the <code>(.)</code> function composition operator as follows:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nf">dot</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Integer</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nf">dot</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="n">map2</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+</span></code></pre></div>
+<p>However, this does not type check! The correct point-free version is:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nf">dot</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">[</span><span class="kt">Integer</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Integer</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nf">dot</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="p">(</span><span class="n">sum</span><span class="w"> </span><span class="o">.</span><span class="p">)</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="n">map2</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Write out a short (less than 10 lines) evaluation
+showing that <code>dot lst1 lst2</code> using the point-free definition
+is equivalent to the explicit (point-wise) definition given above.
+Note that <code>(sum .)</code> is an operator section equivalent to <code>\x -&gt; sum . x</code>.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Don't forget about currying!</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Fun fact: there's an obscure Haskell library called <code>Data.Composition</code>
+that contains a composition operator called <code>.:</code>
+which can compose a unary function with a binary one.
+Using this operator, <code>dot</code> can be written as:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nf">dot</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">.:</span><span class="w"> </span><span class="n">map2</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+</span></code></pre></div>
+<p>The definition is simply:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">(</span><span class="o">.:</span><span class="p">)</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">d</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="o">.:</span><span class="w"> </span><span class="n">g</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="p">(</span><span class="n">g</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span>
+</span></code></pre></div>
+<p>The moral of the story is:
+if you think Haskell's <code>.</code> composition operator
+isn't good enough for a particular task,
+you can always define a new composition operator!</p>
+</div>
+<h2 id="6-fun-with-list-comprehensions">6. Fun with list comprehensions</h2>
+<p>[<strong>?? points</strong>]</p>
+<p>Using a list comprehension,
+write a one-line expression which computes
+the sum of the natural numbers below one thousand
+which are multiples of 3 or 5.
+Write the result in a comment.
+You may use the Haskell <code>sum</code> function to do the actual sum.</p>
+<h2 id="7-sum-of-primes">7. Sum of primes</h2>
+<p>[<strong>?? points</strong>]</p>
+<p>Calculate the sum of all the prime numbers below 10000.</p>
+<p>Do this as follows:</p>
+<ol>
+<li>
+<p>First, generate an infinite list of prime numbers
+using the "Sieve of Eratosthenes" algorithm.
+This consists of generating all positive integers
+and removing all multiples of successive prime numbers.
+Write a function called <code>sieve</code>
+which takes a list of integers, retains the first one,
+removes all multiples of the first one from the rest,
+and then sieves the rest.
+Name the infinite list of primes <code>primes</code>.
+Note that <code>sieve</code> is a two-line definition
+(not including type declaration)
+and <code>primes</code> is trivial given <code>sieve</code>.
+<strong>Make sure your code doesn't generate any compiler warnings.</strong></p>
+</li>
+<li>
+<p>Then, use the <code>takeWhile</code> function on the primes list
+to take the appropriate prime numbers and compute their sum.</p>
+</li>
+<li>
+<p>Write the answer as a Haskell comment.</p>
+</li>
+</ol>
+<h2 id="8-balanced-parentheses">8. Balanced parentheses</h2>
+<p>[<strong>?? points</strong>]</p>
+<p>For this problem we are going to write functions
+that take in a string and return a boolean value.
+This returned value will be <code>True</code>
+if the parentheses in the string are "balanced"
+and <code>False</code> otherwise.
+By "balanced" we mean:</p>
+<ul>
+<li>
+<p>there are an equal number of open and close parentheses
+(they pair up),</p>
+</li>
+<li>
+<p>and a close parenthesis never occurs
+before its matching open parenthesis.</p>
+</li>
+</ul>
+<p>Here are some strings that have balanced parentheses:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="s">&quot;&quot;</span><span class="p">,</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="s">&quot;foo&quot;</span><span class="p">,</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="s">&quot;()&quot;</span><span class="p">,</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="s">&quot;(foo)&quot;</span><span class="p">,</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="s">&quot;()()()&quot;</span><span class="p">,</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="s">&quot;(()())&quot;</span><span class="p">,</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="s">&quot;(((())))&quot;</span><span class="p">,</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="s">&quot;(((()())()))&quot;</span>
+</span></code></pre></div>
+<p>Here are some strings with unbalanced parentheses:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="s">&quot;(&quot;</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="s">&quot;)&quot;</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="s">&quot;)(&quot;</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="s">&quot;)a(&quot;</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="s">&quot;()()(&quot;</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="s">&quot;(()))(()&quot;</span>
+</span></code></pre></div>
+<p>Note that characters other than <code>'('</code> or <code>')'</code> are irrelevant to
+determining if parentheses are balanced or not.</p>
+<p>You have to write three different functions
+to determine if a string has balanced parentheses.
+We will use this to contrast writing a function
+using explicit recursion <em>vs.</em> using higher-order functions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Remember that strings in Haskell are (by default)
+just lists of characters <em>i.e.</em> lists of <code>Char</code> values.
+So you can use list functions on strings as you would on any list.</p>
+</div>
+<h3 id="a-balancedparentheses">a. <code>balancedParentheses</code></h3>
+<p>Write a function called <code>balancedParentheses</code>
+that takes a <code>String</code> and returns a <code>Bool</code>
+which is <code>True</code> if the string has balanced parentheses
+or <code>False</code> otherwise.
+<strong>Use a recursive helper function</strong>
+which traverses the string one character at a time
+and keeps a running count of the "parenthesis imbalance".
+This can be done by starting the count at zero,
+adding 1 every time a left parenthesis is encountered,
+and subtracting 1 every time a right parenthesis is encountered.
+At the end of the string,
+the imbalance count will be 0 if the string has balanced parentheses.
+In addition, the count should never go negative;
+if it does, the string doesn't have balanced parentheses
+(there are too many close parentheses at that point in the string),
+so <code>False</code> should immediately be returned.</p>
+<p>Put the helper function in a <code>where</code> clause
+of the <code>balancedParentheses</code> function.</p>
+<h3 id="b-balancedparentheses2">b. <code>balancedParentheses2</code></h3>
+<p>In general, Haskell programmers prefer to use higher-order functions
+instead of writing explicitly recursive functions.
+Rewrite <code>balancedParentheses</code>
+into a new version called <code>balancedParentheses2</code>
+which is <em>not</em> recursive
+but which uses the <code>foldl</code> (left fold) higher-order function.
+(Don't use <code>foldr</code>, even though you could make it work that way.)
+The function being folded has the type <code>Int -&gt; Char -&gt; Int</code>.
+It takes the existing imbalance count
+at some location in the string and the current character in the string,
+and returns the new count
+(1 higher if the character is a <code>'('</code>, 1 lower if it's a <code>')'</code>,
+or the same otherwise).
+The fold as a whole will return
+the final imbalance count of the string;
+if it's 0, the string has balanced parentheses.</p>
+<p>Some hints and advice:</p>
+<ol>
+<li>
+<p>This function should be shorter than <code>balancedParentheses</code>.</p>
+</li>
+<li>
+<p>If the imbalance count ever goes negative,
+it should stay negative through the entire fold.
+Basically, once the count is negative,
+then the string has unbalanced parentheses,
+and you can just propagate the negative value
+through to the end of the fold.
+This can be done simply
+by writing the folded function a particular way.
+If the fold returns a negative number,
+you know that the string has unbalanced parentheses.</p>
+</li>
+<li>
+<p>We've seen in class that some functions in Haskell
+can lead to large expressions being generated
+because of Haskell's lazy evaluation rule.
+Careless use of <code>foldl</code> can easily do this,
+and this function is no exception.
+To avoid a "space leak"
+(where a function that should run in constant space
+instead runs in <em>e.g.</em> O(N) space),
+use <code>foldl'</code> (called "fold-ell-prime") instead of <code>foldl</code>,
+which makes the function being folded evaluate strictly.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>
+Other than the single <code>'</code> character,
+<code>foldl'</code> is used the exact same way as <code>foldl</code>.</p>
+</li>
+<li>
+<p>In order to use <code>foldl'</code>,
+you will need to import the <code>Data.List</code> library.
+Put this line at the top of your code (after the <code>module Lab1 where</code> line):</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kr">import</span><span class="w"> </span><span class="nn">Data.List</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Even using <code>foldl'</code> may not be enough to guarantee strict evaluation.
+There are more tricks for ensuring strict evaluation
+that we will teach you later in the course,
+but don't worry too much about this for now.</p>
+</div>
+</li>
+</ol>
+<h3 id="c-balancedparentheses3">c. <code>balancedParentheses3</code></h3>
+<p>One problem with <code>balancedParentheses2</code>
+is that using <code>foldl'</code> doesn't exit early
+if the imbalance count goes negative.
+This means that <code>balancedParentheses2</code>
+is less efficient than <code>balancedParentheses</code>.
+It seems a shame that converting from a crude recursive definition
+to an elegant definition using higher-order functions
+costs us in efficiency.
+It would be nice to have the best of both worlds.</p>
+<p>Write a function called <code>balancedParentheses3</code>
+which solves the balanced parentheses problem using this algorithm:</p>
+<ol>
+<li>
+<p>Write a function called <code>ctoi</code>
+which converts <code>Char</code> values (characters) to <code>Int</code> values.
+This should return <code>1</code> if the input character is <code>'('</code>,
+<code>-1</code> if it's <code>')'</code>, and <code>0</code> otherwise.</p>
+</li>
+<li>
+<p>Use <code>map</code> to convert each character in the string
+to an <code>Int</code> using <code>ctoi</code>.
+This will return a list of <code>Int</code>s.</p>
+</li>
+<li>
+<p>The sum of all the <code>Int</code> values will be <code>0</code>
+for a string with balanced parentheses.
+However, we also want to make sure that for each prefix of the string
+(<em>i.e.</em> each string that starts on the first character
+of the original string
+and ends before the last character),
+the imbalance count isn't negative
+(which would imply unbalanced parentheses for the entire string).
+For this, we can use the <code>scanl</code> function.
+<code>scanl</code> works a lot like <code>foldl</code>
+but collects up the results
+for all prefixes of the list (string) argument.
+For instance:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nf">foldl</span><span class="w"> </span><span class="p">(</span><span class="o">+</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="mi">15</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nf">scanl</span><span class="w"> </span><span class="p">(</span><span class="o">+</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="mi">5</span><span class="p">]</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="o">--&gt;</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">5</span><span class="p">]</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="o">--&gt;</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Using <code>scanl</code> on the results of the <code>map</code>
+gives us the list of partial imbalance counts of the string.
+(To avoid problems with laziness,
+use the strict version <code>scanl'</code> instead of just <code>scanl</code> itself.)</p>
+</li>
+<li>
+<p>Now that we have a list of the imbalance counts at each character,
+we can test if this corresponds to a string with balanced parentheses.
+If so, either the list is empty (corresponding to an empty string),
+or its last element is <code>0</code> and none of its elements are negative.
+Write a function called <code>test</code> that takes a list of <code>Int</code>s
+and returns a <code>Bool</code> which is <code>True</code> if the list has the desired properties.
+(The <code>all</code> and <code>last</code> functions will probably be useful to you;
+look them up in <a href="https://hoogle.haskell.org/">Hoogle</a>.)
+You can write this as a recursive function if you must, but try not to.
+Also, the function <code>null</code> returns <code>True</code> if its argument is an empty list.</p>
+</li>
+<li>
+<p>Assemble the <code>test</code>, <code>scanl'</code>, and <code>map</code> functions
+in a (short!) single line to write the <code>balancedParentheses3</code> function.
+Put the <code>test</code> and <code>ctoi</code> functions
+as helper functions in a <code>where</code> clause.
+(They can be more than one line long.)</p>
+</li>
+</ol>
+<p>If you do this right,
+you will have an elegant function to compute balanced parentheses
+which will quit at the first character
+which guarantees unbalanced parentheses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Haskell's lazy evaluation
+is key to understanding why this function will exit
+when the imbalance count first goes negative.
+Basically, the <code>scanl'</code> call
+will generate one prefix count at a time,
+and the <code>test</code> function will look at each of these
+and return <code>False</code> immediately if a negative count is ever seen.</p>
+<p>Also, the fact that you use <code>scanl'</code> instead of <code>scanl</code>
+<em>doesn't</em> mean that the entire list of partial counts
+will be generated strictly
+(this would ruin the efficiency of the function).
+It just means that the function which is being folded over the list
+is applied strictly, which is what you want.</p>
+<p>If this seems like a lot of mental effort to write a simple function,
+be aware that this is the nature of Haskell:
+you write much less code,
+but you think more about the code you do write.
+(Some people like this trade off, and some don't.)
+The good news is that the more you do it,
+the less thinking it will require.</p>
+</div>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Technically, it makes it evaluate <em>more</em> strictly,
+as we will see later in the course.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../assignment1/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../partB_pitfalls/" class="md-footer__link md-footer__link--next" aria-label="Next: Part B: Pitfalls">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Part B: Pitfalls
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
