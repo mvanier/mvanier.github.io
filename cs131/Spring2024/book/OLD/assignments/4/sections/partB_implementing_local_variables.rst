@@ -1,0 +1,162 @@
+Part B: Implementing local variables
+====================================
+
+Having arrays in our language is nice, but having to write functions
+without local variables is no fun. In this section, you’ll implement
+typed local variables. You’ll do this by extending the ``define``
+syntax. Currently, ``define`` has the following syntax:
+
+.. code-block:: text
+
+   (define <return-type> <function-name> ([<arg1> : <arg-type1>] ...) <body>)
+
+You will extend this by adding an *optional* ``locals`` form which comes
+immediately after the argument list, as follows:
+
+.. code-block:: text
+
+   (define <return-type> <function-name> ([<arg1> : <arg-type1>] ...)
+     (locals [<local1> : <type1>] ...)
+     <body>)
+
+The square brackets for arguments can be replaced with parentheses, of
+course. In my opinion, square brackets are somewhat more readable.
+
+Note that we provide a type for each local variable but no initial
+value. How to initialize locals will be discussed below. Also note that
+there can’t be duplicated names in the list of local variables of a
+function (like there can’t be duplicated names in function arguments).
+However, it is legal to have the same name used as both a function
+argument name and a local variable name; in this case, the local
+variable takes precedence and shadows the function argument, which thus
+becomes useless.
+
+As with implementing arrays, implementing locals naturally divides into
+a number of steps, which we describe below.
+
+
+1. Adding syntactic support for local variables
+-----------------------------------------------
+
+Files to edit:
+
+* ``ast.ml``
+* ``ast.mli``
+
+Modify the ``function_decl`` type to have an additional field:
+``locals : (id * imp_type) list;``. This represents a list of local
+variable names, along with their types. Also, add the name ``"locals"``
+to the keyword list.
+
+When using local variables in *Typed Imp* code, you need to specify the
+locals right after the argument list but before the body of the
+function. Here’s an example taken from the ``lab4.timp`` test script:
+
+.. code-block:: text
+
+   (define bool is-sorted ([arr : (array int)])
+     (locals
+       [i : int]
+       [len : int]
+       [result : bool])
+     (begin
+       (set i 1)
+       (set len (array-size arr))
+       (set result #t)
+       (while (< i len)
+         (begin
+           (if (< (array-at arr i) (array-at arr (- i 1)))
+               (set result #f)
+               result)
+           (set i (+ i 1))))
+       result))
+
+Note that the ``locals`` form comes before the body of the function.
+This is the only place it can be in the function, so any other use of
+``locals`` is a syntax error.
+
+In the function ``parse_def``, add another case for parsing ``define``
+expressions with locals. The non-locals form is still valid and there
+isn’t any need to alter that code except to add an empty ``locals``
+list. For the case with locals, make sure you check that the variable
+names in a particular locals list are unique (just like you check that
+formal parameter names are unique in a function).
+
+It’s not a problem if you duplicate some of the code between the two
+cases of ``define`` (with and without locals).
+
+
+2. Modifying the function type to support local variables
+---------------------------------------------------------
+
+Files to edit:
+
+* ``value.ml``
+* ``value.mli``
+
+Modify the ``UserFunction`` constructor of the ``func`` type to be:
+
+.. code-block:: ocaml
+
+   | UserFunction of Ast.id list * (Ast.id * value) list * Ast.exp
+
+The ``(Ast.id * value) list`` part contains the local variable information
+(name and initial value).
+
+
+3. Adding type checking code for local variables
+------------------------------------------------
+
+File to edit:
+
+* ``typecheck.ml``
+
+The changes you need to make in order to incorporate local variables
+into the typechecker are surprisingly small. First, you need to change
+one of the arguments to ``typecheck_define`` (the ``function_decl``
+argument) so that it includes the ``locals`` field. Second, when you are
+creating the local variable environment using ``Env.bind_locals``, you
+have to bind both the formal variables as well as the declared local
+variables. Make sure you do this in the right order! Remember that a
+variable name in the locals list shadows the same name in the formal
+parameter list.
+
+.. note::
+
+   The ``Env.bind_locals`` function creates the local variable environment
+   starting from an empty environment;
+   it doesn't add bindings to the previous local variable environment.
+   This will affect the way you write this code.
+
+
+4. Adding evaluator code for local variables
+--------------------------------------------
+
+File to edit:
+
+* ``eval.ml``
+
+Most of the changes here involve modifying the ``Value.UserFunction``
+values so that they contain the local variable information. Some of
+these modifications are trivial. Make sure that you add the local
+variable bindings at the same time you add the formal parameter
+bindings. The only tricky thing is how to set the initial values of
+local variables. To do this, define a function at the top level called
+``default_value_for_type`` which takes a *Typed Imp* type as its only
+argument. It will compute an appropriate initial value for any type.
+This is trivial for scalar types: for ``int``, use ``0``, for ``bool``,
+use ``#f``, and for ``unit``, you can only use ``#u``. For array types,
+create an array with 0 elements. You will still have to create a default
+value for the array elements in order to be able to create a zero-length
+array (sometimes, static typing can be a nuisance).  [1]_
+
+Once this feature has been implemented, all of the test scripts should
+work except the ``lab4.timp`` script, which you will need to complete in
+the next section.
+
+----
+
+.. rubric:: Footnotes
+
+.. [1] Actually, there is a clever way to do this that doesn’t require
+   creating a default value. See if you can find it.
