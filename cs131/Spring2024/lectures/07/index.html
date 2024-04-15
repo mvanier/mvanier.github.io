@@ -659,7 +659,7 @@ as a value
   match def with
     ...
     (* `Define` is removed in the AST to IR conversion *)
-    | <em>Exp (l, e)</em> -&gt; eval_def env (Val (l, "_", e))
+    (* `Exp` is removed in the AST to IR conversion *)
     | <em>Use (l, filename)</em> -&gt; ...
     | <em>CheckExpect (l, _, _)</em>
     | <em>CheckError  (l, _)</em> -&gt; Error.unit_test_err l
