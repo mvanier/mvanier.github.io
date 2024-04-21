@@ -1,0 +1,1480 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs115/Spring2024/book/assignments/2/partA_red_black_trees/">
+      
+      
+        <link rel="prev" href="../background/">
+      
+      
+        <link rel="next" href="../partB_sets/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+    
+    
+      
+        <title>Part A: Red-black trees - The CS 115 book (Spring 2024)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.50c56a3b.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-a-red-black-trees-75-points" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The CS 115 book (Spring 2024)" class="md-header__button md-logo" aria-label="The CS 115 book (Spring 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 115 book (Spring 2024)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part A: Red-black trees
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The CS 115 book (Spring 2024)" class="md-nav__button md-logo" aria-label="The CS 115 book (Spring 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    The CS 115 book (Spring 2024)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/welcome/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome to CS 115!
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/software/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installing the course software
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/books/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Books and resources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/papers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interesting papers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Administrative
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Administrative
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Syllabus
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/collab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Collaboration policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignments
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Assignments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 1: Evaluation and recursion
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 1: Evaluation and recursion
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/assignment1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partA_exercises/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part A: Exercises
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partB_pitfalls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part B: Pitfalls
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partC_evaluation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part C: Evaluation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 2: Algebraic datatypes
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 2: Algebraic datatypes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assignment2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../background/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Background information
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Part A: Red-black trees
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Part A: Red-black trees
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-member" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. member
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-tolist" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. toList
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-insert" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. insert
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-fromlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. fromList
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-mindepth-and-maxdepth" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. minDepth and maxDepth
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-testinvariant1" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. testInvariant1
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-testinvariant2" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. testInvariant2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-testinvariant3" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. testInvariant3
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partB_sets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part B: Sets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-member" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. member
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-tolist" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. toList
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-insert" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. insert
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-fromlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. fromList
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-mindepth-and-maxdepth" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. minDepth and maxDepth
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-testinvariant1" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. testInvariant1
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-testinvariant2" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. testInvariant2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-testinvariant3" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. testInvariant3
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="part-a-red-black-trees-75-points">Part A: Red-black trees (75 points)</h1>
+<p>In this section,
+you will implement the red-black tree datatype,
+along with its associated functions.</p>
+<p>As mentioned previously,
+the file <code>RedBlackTree.hs</code> should start with this module declaration:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kr">module</span><span class="w"> </span><span class="nn">RedBlackTree</span><span class="w"> </span><span class="kr">where</span>
+</span></code></pre></div>
+<p>The <code>where</code> is not a mistake;
+it's part of the syntax of module declarations
+and implies that the entirety of the rest of the file is part of the module.</p>
+<p>After this, put the definition of the datatypes into your file:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- A color is either red or black.</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kr">data</span><span class="w"> </span><span class="kt">Color</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Red</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">Black</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="kr">deriving</span><span class="w"> </span><span class="kt">Show</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1">-- A red-black tree is either a leaf or a tree node with a color,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1">-- two branches, both of which are trees, and a value of type a.</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="kr">data</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Leaf</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">Node</span><span class="w"> </span><span class="kt">Color</span><span class="w"> </span><span class="p">(</span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="p">)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="kr">deriving</span><span class="w"> </span><span class="kt">Show</span>
+</span></code></pre></div>
+<p>In the <code>Node</code> constructor,
+the first <code>(Tree a)</code> argument is the left subtree
+and the second is the right subtree.</p>
+<p>Then implement the functions described below.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You are not allowed
+to convert any red-black tree function arguments into lists of elements
+(or any other collection type of elements <em>e.g.</em> arrays of elements)
+in any of these functions except where specifically indicated.
+If you do, you will get a zero on the problem.</p>
+<ul>
+<li>
+<p>You may assume in all the functions
+that arguments that represent red-black trees
+represent <em>valid</em> red-black trees
+<em>i.e.</em> trees that obey all three tree invariants described previously,
+unless we explicitly tell you not to assume this.
+This will greatly influence the way you write your functions.
+Failure to take advantage of this where it's advantageous
+will result in lost marks.
+We'll provide hints for the less obvious cases.</p>
+</li>
+<li>
+<p>You can't add anything to the type definitions given above;
+for instance, you can't make <code>Color</code> an instance of <code>Eq</code>,
+because you don't need to compare colors for equality.
+(Don't do this indirectly either
+<em>e.g.</em> by defining an <code>eqColor</code> helper function.)
+Pattern matching on the datatypes can do everything you need.</p>
+</li>
+</ul>
+</div>
+<p>Here are the descriptions of the functions you need to implement.</p>
+<h2 id="1-member">1. <code>member</code></h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Write the <code>member</code> function, which has this type signature:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nf">member</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Ord</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Bool</span>
+</span></code></pre></div>
+<p>This function takes an element and a red-black tree as its arguments
+and returns <code>True</code> if the element is in the tree.
+<em>Note</em>: the color of nodes is not used in this function.
+(Unused arguments in patterns should use the <code>_</code> notation
+so as not to trigger compiler warnings.)
+Assume that the input tree is ordered;
+use the ordering property to only search the parts of the tree
+that can possibly contain the element.</p>
+<h2 id="2-tolist">2. <code>toList</code></h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Write the <code>toList</code> function, which has this type signature:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nf">toList</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+</span></code></pre></div>
+<p>It takes as its argument a red-black tree
+and returns a list of all the tree elements
+given by an in-order traversal.
+This means that for a node, you collect all the left subtree values first,
+then the node value, then the right subtree values.
+This function can be written in two lines.</p>
+<p>Clearly, here it's OK to convert the tree to a list,
+because that's the whole point of the function! <img alt="😄" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/1f604.svg" title=":smile:" /></p>
+<h2 id="3-insert">3. <code>insert</code></h2>
+<p>[<strong>25 points</strong>]</p>
+<p>Write the <code>insert</code> function, which has this type signature:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nf">insert</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Ord</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span>
+</span></code></pre></div>
+<p>This is the hardest (and most interesting) function in the assignment.
+The reason it's tricky is because
+you can't just naively add a node to the tree;
+you also have to make sure that the tree is balanced when you are finished.
+This is why we need the colors on the nodes.
+We'll walk you through this function in some detail.</p>
+<p>First of all, since Haskell is a functional language,
+although we say we are "inserting" an element into a tree,
+what we are really doing is creating a new tree with one extra element.
+The original tree is not altered in any way.
+The new tree will share a lot of structure with the original tree,
+so we won't modify any part of the old tree
+that doesn't need to be changed in the new tree.</p>
+<p>If it weren't for the balancing constraints
+(the red and black invariants), this would be an easy function to write:</p>
+<ul>
+<li>
+<p>If a tree being inserted into is just a leaf,
+return a node whose branches are leaves.</p>
+</li>
+<li>
+<p>If the new element is the same
+as the element in the root node of the tree,
+return the tree unchanged.</p>
+</li>
+<li>
+<p>Otherwise,
+determine whether the new element needs to be added
+to the left or right branch
+depending on whether it's smaller or larger than
+the element in the root node,
+add the element to the correct branch,
+and reconstruct the final tree.</p>
+</li>
+</ul>
+<p>The only problem is that when you do the last step,
+you might be causing the tree to violate
+the red or black invariants and thus become unbalanced.
+Also, what color should the node containing the new element be?
+If you think about it, you'll realize
+that the new node will be put at the base of the tree,
+right above the leaves.
+Since the leaves are black,
+the new node should be colored red so as not to violate the black invariant.
+However, when you do this,
+there is a chance that the parent node of the new node will also be red,
+which violates the red invariant
+(no red node can have a red parent node).
+So there has to be a way to re-balance the tree
+<em>after</em> adding a node to preserve both the red and black invariants.
+And that's the tricky part.</p>
+<p>Here's a template version of the code you should write, with some parts
+filled in:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nf">insert</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Ord</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nf">insert</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">makeBlack</span><span class="w"> </span><span class="p">(</span><span class="n">ins</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="n">t</span><span class="p">)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="kr">where</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="c1">-- Insert an element into a tree.</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="n">ins</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Ord</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="n">ins</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="kt">Leaf</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Node</span><span class="w"> </span><span class="kt">Red</span><span class="w"> </span><span class="kt">Leaf</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="kt">Leaf</span><span class="w">  </span><span class="c1">-- new nodes are colored red</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="n">ins</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="n">t</span><span class="o">@</span><span class="p">(</span><span class="kt">Node</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="n">elem&#39;</span><span class="w"> </span><span class="n">right</span><span class="p">)</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">elem&#39;</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">balance</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="p">(</span><span class="n">ins</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="n">left</span><span class="p">)</span><span class="w"> </span><span class="n">elem&#39;</span><span class="w"> </span><span class="n">right</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">elem&#39;</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="cm">{- TODO: by analogy with the previous case -}</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">otherwise</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">t</span><span class="w">  </span><span class="c1">-- element already in the tree; no insertion required</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span><span class="c1">-- Make the root of the tree black.</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span><span class="n">makeBlack</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span><span class="n">makeBlack</span><span class="w"> </span><span class="kt">Leaf</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Leaf</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">    </span><span class="n">makeBlack</span><span class="w"> </span><span class="p">(</span><span class="kt">Node</span><span class="w"> </span><span class="kr">_</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Node</span><span class="w"> </span><span class="kt">Black</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="n">right</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">    </span><span class="c1">-- Balance a red-black tree under construction which may not satisfy</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">    </span><span class="c1">-- the red and black invariants.</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="w">    </span><span class="n">balance</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Ord</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="kt">Color</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="w">    </span><span class="n">balance</span><span class="w"> </span><span class="kt">Black</span><span class="w"> </span><span class="p">(</span><span class="kt">Node</span><span class="w"> </span><span class="kt">Red</span><span class="w"> </span><span class="p">(</span><span class="kt">Node</span><span class="w"> </span><span class="kt">Red</span><span class="w"> </span><span class="n">l1</span><span class="w"> </span><span class="n">e1</span><span class="w"> </span><span class="n">r1</span><span class="p">)</span><span class="w"> </span><span class="n">e2</span><span class="w"> </span><span class="n">r2</span><span class="p">)</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="ow">=</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">      </span><span class="kt">Node</span><span class="w"> </span><span class="kt">Red</span><span class="w"> </span><span class="p">(</span><span class="kt">Node</span><span class="w"> </span><span class="kt">Black</span><span class="w"> </span><span class="n">l1</span><span class="w"> </span><span class="n">e1</span><span class="w"> </span><span class="n">r1</span><span class="p">)</span><span class="w"> </span><span class="n">e2</span><span class="w"> </span><span class="p">(</span><span class="kt">Node</span><span class="w"> </span><span class="kt">Black</span><span class="w"> </span><span class="n">r2</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="n">t</span><span class="p">)</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">    </span><span class="n">balance</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="cm">{- TODO: 3 more cases omitted -}</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">    </span><span class="n">balance</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Node</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="n">r</span><span class="w">  </span><span class="c1">-- no balancing needed</span>
+</span></code></pre></div>
+<p>The basic insertion code is in the <code>ins</code> helper function.
+If we didn't care about balancing or colors, the line:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">elem&#39;</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">balance</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="p">(</span><span class="n">ins</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="n">left</span><span class="p">)</span><span class="w"> </span><span class="n">elem&#39;</span><span class="w"> </span><span class="n">right</span>
+</span></code></pre></div>
+<p>would be just:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">elem&#39;</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Node</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="p">(</span><span class="n">ins</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="n">left</span><span class="p">)</span><span class="w"> </span><span class="n">elem&#39;</span><span class="w"> </span><span class="n">right</span>
+</span></code></pre></div>
+<p>and similarly for the <code>elem &gt; elem'</code> case.
+However, adding the new element <code>elem</code> creates a new red node,
+and this can make the tree violate the red invariant.
+Therefore, we call the <code>balance</code> function
+with the same arguments as the <code>Node</code> constructor would have gotten.
+Its job is to create a new tree which is guaranteed to be balanced <em>i.e.</em>
+which doesn't violate any of the invariants.
+(The order invariant won't be violated, so we don't have to worry about that.)
+Since we are adding the new element to the left subtree (in this case),
+only the left subtree could possibly violate the red invariant
+by having a red node with a red parent.
+Nevertheless, we will need both subtrees in order to re-balance the tree.
+It turns out that there are only four different cases
+that need to be rebalanced.</p>
+<p>Here is case 1:</p>
+<p><img alt="Balance case #1" src="../images/diagram1.png" /></p>
+<p>Look at the tree on the left of the arrow.
+In this case, the left subtree is the node labelled <code>y</code>,
+the right subtree is labelled <code>d</code>,
+and the root node of the new tree is labelled <code>z</code>.
+(The gray triangle nodes (<code>a</code> to <code>d</code>) represent balanced subtrees.)
+You can see that the left subtree violates the red invariant
+because node <code>y</code> is red and has a child node <code>x</code> which is also red.</p>
+<p>What you do is convert the tree on the left of the arrow
+to the tree on the right.
+This tree is still correctly ordered (because <code>x &lt; y &lt; z</code>)
+but now node <code>y</code> is the root of the tree
+and node <code>x</code> has changed color from red to black.
+This new tree doesn't violate any of the invariants;
+ordering is preserved, no red node has a red parent,
+and both branches have one black node
+in addition to the black nodes along the paths
+starting from <code>a</code>, <code>b</code>, <code>c</code>, and <code>d</code>,
+which all have the same number of black nodes.
+This corresponds to the following line from the <code>balance</code> function:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nf">balance</span><span class="w"> </span><span class="kt">Black</span><span class="w"> </span><span class="p">(</span><span class="kt">Node</span><span class="w"> </span><span class="kt">Red</span><span class="w"> </span><span class="p">(</span><span class="kt">Node</span><span class="w"> </span><span class="kt">Red</span><span class="w"> </span><span class="n">l1</span><span class="w"> </span><span class="n">e1</span><span class="w"> </span><span class="n">r1</span><span class="p">)</span><span class="w"> </span><span class="n">e2</span><span class="w"> </span><span class="n">r2</span><span class="p">)</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="ow">=</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="kt">Node</span><span class="w"> </span><span class="kt">Red</span><span class="w"> </span><span class="p">(</span><span class="kt">Node</span><span class="w"> </span><span class="kt">Black</span><span class="w"> </span><span class="n">l1</span><span class="w"> </span><span class="n">e1</span><span class="w"> </span><span class="n">r1</span><span class="p">)</span><span class="w"> </span><span class="n">e2</span><span class="w"> </span><span class="p">(</span><span class="kt">Node</span><span class="w"> </span><span class="kt">Black</span><span class="w"> </span><span class="n">r2</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="n">t</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Note that <code>balance</code> doesn't get an entire tree as its arguments;
+it gets the pieces of a tree as separate arguments
+(color, left subtree, element, right subtree).
+Nevertheless, the idea is the same.
+You can see that the root's color is <code>Black</code>,
+the left subtree (corresponding to nodes <code>y</code> and <code>x</code> in the diagram)
+is <code>Node Red (Node Red l1 e1 r1) e2 r2</code>,
+the node element is <code>e</code>,
+and the right subtree (corresponding to label <code>d</code> in the diagram) is <code>t</code>.
+The label <code>a</code> in the diagram is <code>l1</code>, <code>b</code> is <code>r1</code>, and <code>c</code> is <code>r2</code>.
+The output of the function is just the tree to the right of the arrow.</p>
+<p>These kinds of tree manipulations are referred to as "tree rotations"
+for obvious reasons.</p>
+<p>Notice how Haskell's algebraic datatypes
+have made a fairly complicated transformation very simple to write!
+This is a key advantage of algebraic datatypes
+when working with sophisticated data structures.</p>
+<p>Make sure you understand this case!
+If you do,
+filling in the rest of the cases of the <code>balance</code> function
+will be straightforward.</p>
+<p>Here is the second case:</p>
+<p><img alt="Balance case #2" src="../images/diagram2.png" /></p>
+<p>The output tree is the same as before,
+but the inputs will be different.
+You have to fill in the code for this case.</p>
+<p>Here are the last two cases:</p>
+<p><img alt="Balance case #3" src="../images/diagram3.png" /></p>
+<p><img alt="Balance case #4" src="../images/diagram4.png" /></p>
+<p>You need to fill in the code for these cases as well.
+Any other case does not need to be balanced, so the default line:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nf">balance</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Node</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="n">r</span><span class="w">  </span><span class="c1">-- no balancing needed</span>
+</span></code></pre></div>
+<p>is in effect.</p>
+<p>You might be wondering what this helper function is for:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1">-- Make the root of the tree black.</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nf">makeBlack</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nf">makeBlack</span><span class="w"> </span><span class="kt">Leaf</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Leaf</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="nf">makeBlack</span><span class="w"> </span><span class="p">(</span><span class="kt">Node</span><span class="w"> </span><span class="kr">_</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Node</span><span class="w"> </span><span class="kt">Black</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="n">right</span>
+</span></code></pre></div>
+<p>It turns out that when inserting into a red-black tree,
+you may end up with a red node at the root with a red child node
+(violating the red invariant), but with all other invariants satisfied.
+In this case we can simply recolor the root node to black
+to make the black invariant hold.
+This won't affect the order invariant (obviously)
+and it won't change the fact that all paths from the root to the leaves
+have the same number of black nodes
+(although that number will be one greater than before).
+You won't need to use <code>makeBlack</code> in any of the code you need to fill in.</p>
+<p>If you think that this code is complicated, you'd be right!
+Tree balancing code is often quite complex,
+and there are some kinds of trees
+whose balancing code is even worse than this.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>
+The nice thing about red-black trees
+is that they are very efficient in practice,
+so once we get through writing the code,
+we have a very useful data structure.</p>
+<h2 id="4-fromlist">4. <code>fromList</code></h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Write the <code>fromList</code> function, which has this type signature:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nf">fromList</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Ord</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span>
+</span></code></pre></div>
+<p>This function takes a list as its argument
+and returns the red-black tree obtained by inserting
+all the list elements into an empty tree.
+This can be written in one line using <code>foldr</code>.
+(This is not a requirement,
+but try to find the <code>foldr</code> definition; it's very simple.)</p>
+<h2 id="5-mindepth-and-maxdepth">5. <code>minDepth</code> and <code>maxDepth</code></h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Write the <code>minDepth</code> and <code>maxDepth</code> functions,
+which have these type signatures:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nf">minDepth</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Int</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nf">maxDepth</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Int</span>
+</span></code></pre></div>
+<p>These functions return the minimum and maximum depths of the tree,
+respectively.
+That is, <code>minDepth</code> is the smallest distance
+from the root node to a leaf,
+while <code>maxDepth</code> is the largest such distance.
+A tree which is just a <code>Leaf</code> (<em>i.e.</em> an empty tree) has depth 0.
+Recall that by "distance" to a leaf
+we mean the number of times you can go
+from a node to one of its branch nodes before you hit a leaf.</p>
+<h2 id="6-testinvariant1">6. <code>testInvariant1</code></h2>
+<p>[<strong>10 points</strong>]</p>
+<p>Write the <code>testInvariant1</code> function, which has this type signature:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nf">testInvariant1</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Ord</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Bool</span>
+</span></code></pre></div>
+<p>This function tests the order invariant.
+This invariant requires all nodes to have values
+that are strictly larger than all node values in the node's left subtree
+and strictly smaller than all node values in the node's right subtree.
+This function returns <code>True</code> if the tree obeys the invariant.</p>
+<p>Obviously, in this function the node colors are irrelevant.
+You probably want to write some helper functions to make this function
+easier to write.</p>
+<p>Your code should not be gratuitously inefficient.
+For instance, don't compare a node value
+against every single value in its left/right subtree,
+because that isn't necessary.
+Marks will be taken off for inefficient solutions.
+Doing it right isn't hard or tricky.</p>
+<h2 id="7-testinvariant2">7. <code>testInvariant2</code></h2>
+<p>[<strong>10 points</strong>]</p>
+<p>Write the <code>testInvariant2</code> function, which has this type signature:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nf">testInvariant2</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Bool</span>
+</span></code></pre></div>
+<p>This function tests the red invariant,
+which is that no red node has a red parent.
+Don't forget to use <code>_</code>
+for unused components of the <code>Node</code> constructor, as usual.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Nested pattern matches are extremely helpful here!
+With them, you can write this function in a few short lines of code.
+If you think you need to use a <code>case</code> statement, think again.</p>
+<p>You do <em>not</em> have to compare colors using the <code>==</code> or <code>/=</code> operators,
+so don't make <code>Color</code> an instance of the <code>Eq</code> type class
+or define a color comparison function.</p>
+</div>
+<h2 id="8-testinvariant3">8. <code>testInvariant3</code></h2>
+<p>[<strong>10 points</strong>]</p>
+<p>Write the <code>testInvariant3</code> function, which has this type signature:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nf">testInvariant3</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Bool</span>
+</span></code></pre></div>
+<p>This function tests the black invariant,
+which is that all paths from the root of the tree
+down through a sequence of nodes to any leaf
+have the same number of black nodes.</p>
+<p>Note that the color of the root node is irrelevant
+(because it's present in all sequences)
+and the "color" of the leaf nodes are also irrelevant
+(because they are all the same).</p>
+<p>This function is a bit tricky, so here is a template for you to fill in:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nf">testInvariant3</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Bool</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="nf">testInvariant3</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">allEqual</span><span class="w"> </span><span class="p">(</span><span class="n">leafCounts</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span><span class="kr">where</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">    </span><span class="c1">-- Given a tree, return a list of the count of black nodes on every path</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">    </span><span class="c1">-- from the root of the tree to a leaf.</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">    </span><span class="n">leafCounts</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Tree</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">[</span><span class="kt">Int</span><span class="p">]</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">    </span><span class="n">leafCounts</span><span class="w"> </span><span class="kt">Leaf</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">    </span><span class="n">leafCounts</span><span class="w"> </span><span class="p">(</span><span class="kt">Node</span><span class="w"> </span><span class="kt">Black</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="kr">_</span><span class="w"> </span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="cm">{- TODO -}</span>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="w">    </span><span class="n">leafCounts</span><span class="w"> </span><span class="p">(</span><span class="kt">Node</span><span class="w"> </span><span class="kt">Red</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="kr">_</span><span class="w"> </span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="cm">{- TODO -}</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="w">    </span><span class="c1">-- Return True if all the elements of a list are equal.</span>
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="w">    </span><span class="n">allEqual</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Ord</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Bool</span>
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="w">    </span><span class="n">allEqual</span><span class="w"> </span><span class="kt">[]</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">True</span>
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="w">    </span><span class="n">allEqual</span><span class="w"> </span><span class="p">[</span><span class="kr">_</span><span class="p">]</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">True</span>
+</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="w">    </span><span class="n">allEqual</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="kt">:</span><span class="n">r</span><span class="o">@</span><span class="p">(</span><span class="n">y</span><span class="kt">:</span><span class="kr">_</span><span class="p">))</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">allEqual</span><span class="w"> </span><span class="n">r</span>
+</span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="w">                         </span><span class="o">|</span><span class="w"> </span><span class="n">otherwise</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">False</span>
+</span></code></pre></div>
+<p>The code marked <code>{- TODO -</code>} is for you to fill in;
+please remove the <code>{- TODO -}</code> comments!
+The amount of code you need to add is quite small
+(one short line in each case).</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>You may have encountered this phenomenon in a CS 4 midterm exam.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../background/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Background information">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Background information
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../partB_sets/" class="md-footer__link md-footer__link--next" aria-label="Next: Part B: Sets">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Part B: Sets
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
