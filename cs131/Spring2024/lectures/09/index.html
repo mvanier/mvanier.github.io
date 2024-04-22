@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- <section data-background-color="#ffffd0"> -->
+          <section data-markdown>
+            <textarea data-template>
+# CS 131:<br/>Programming Languages
+## _Lecture 9_:<br/>The _$\mu$Scheme+_ Language: Operational semantics
+
+---
+## Today
+
+* The _$\mu$Scheme+_ language: operational semantics
+
+---
+## Overview
+
+* The _$\mu$Scheme+_ language is _$\mu$Scheme_ extended with "control operators"
+  * `break` and `continue`
+  * `throw` and `try-catch`
+  * `return`
+
+---
+## Overview
+
+* Last time, we saw that adding control operators requires us to change our
+  evaluator to use a stack of "contexts"
+
+* Each "context" represents a partially-evaluated expression
+
+---
+## Overview
+
+* This also requires us to change the operational semantics from a "big-step"
+  semantics to a more granular "small-step" semantics
+
+* In this lecture, we will present and discuss the small-step semantics for the
+  _$\mu$Scheme+_ language
+
+---
+## Structure of the semantics
+
+* In the big-step semantics, each semantics "judgment" has the form<br/>
+  $\langle e, \rho, \sigma \rangle \Downarrow \langle v, \sigma' \rangle$
+
+* A judgment is the conclusion of a "rule" (below the line)
+
+* This says: the expression $e$ evaluates (after one or more steps) to a value
+  $v$, possibly modifying the store $\sigma$ to $\sigma'$, but not modifying the
+  environment $\rho$
+
+---
+## Structure of the semantics
+
+* In small-step semantics, semantic judgments look quite different:
+  $\langle e/v, \rho, \sigma, S \rangle \rightarrow
+   \langle e'/v', \rho', \sigma', S' \rangle$
+
+* Notice that the "reduction arrow" ($\Downarrow$) has been replaced with the
+  "step arrow" ($\rightarrow$)
+
+* Meaning: you aren't reducing a form to its ultimate result; you're just
+  performing _one_ step of the evaluation
+
+---
+## Structure of the semantics
+
+$$
+\langle e/v, \rho, \sigma, S \rangle
+\rightarrow
+\langle e'/v', \rho', \sigma', S' \rangle
+$$
+
+* Notice also that instead of $e$ on the left and $v$ on the right, we have
+  $e/v$ and $e'/v'$
+
+* Sometimes, steps involve expressions, and sometimes they involve values
+
+---
+## Structure of the semantics
+
+$$
+\langle e/v, \rho, \sigma, S \rangle
+\rightarrow
+\langle e'/v', \rho', \sigma', S' \rangle
+$$
+
+* Notice that the store ($\sigma$) and the environment<br/>($\rho$)
+  can _both_ change as the result of a step
+
+---
+## Structure of the semantics
+
+$$
+\langle e/v, \rho, \sigma, S \rangle
+\rightarrow
+\langle e'/v', \rho', \sigma', S' \rangle
+$$
+
+* In big-step semantics, only the store could change
+  when evaluating an expression
+
+* However, a partially-evaluated `let` expression (among others)
+  could certainly alter the environment
+  * (even though it would eventually go back to what it was before)
+
+---
+## Structure of the semantics
+
+$$
+\langle e/v, \rho, \sigma, S \rangle
+\rightarrow
+\langle e'/v', \rho', \sigma', S' \rangle
+$$
+
+* Finally, notice the extra $S$ argument
+
+* This is the context stack, which can change as the result of evaluating a
+step
+
+---
+## Semantics: typical cases
+
+* Before we show you the actual rules of the semantics,
+  it's worth focusing in on typical classes of cases
+  that show up in multiple rules
+
+---
+## Semantics: typical cases
+
+$$
+\langle e, \rho, \sigma, S \rangle
+\rightarrow
+\langle e', \rho, \sigma, F :: S \rangle
+$$
+
+* In this case, $e'$ is a subexpression of $e$
+
+* The rest of $e$ is contained in the context $F$ which is pushed onto the
+stack $S$
+  * The $::$ operator represents "pushing onto the stack"
+
+---
+## Semantics: typical cases
+
+$$
+\langle e, \rho, \sigma, S \rangle
+\rightarrow
+\langle e', \rho, \sigma, F :: S \rangle
+$$
+
+* Conceptually, $F$ is just $e$ where the $e'$ subexpression has been replaced
+  with a "hole" where its value will eventually go
+
+* $F$ stands for "frame" _i.e._ a particular kind of context
+
+---
+## Semantics: typical cases
+
+$$
+\langle v, \rho, \sigma, F :: S \rangle
+\rightarrow
+\langle e, \rho, \sigma, S \rangle
+$$
+
+* Here, $e$ is the result of plugging $v$ into a "hole" in frame $F$, which gets
+popped off the stack
+
+---
+## Semantics: typical cases
+
+$$
+\langle e, \rho, \sigma, F :: S \rangle
+\rightarrow
+\langle e, \rho, \sigma, S \rangle
+$$
+
+* Here, $e$ is a control operator (like `break`) which simply pops the context
+stack and continues looking for the place where it will terminate
+
+---
+## Semantics: typical cases
+
+$$
+\langle e, \rho, \sigma, [] \rangle
+\rightarrow^{*}
+\langle v, \rho, \sigma', [] \rangle
+$$
+
+* Here, $e$ is a top-level expression or part of a definition
+
+* It evaluates to a value $v$, possibly changing the store
+  * The $\rightarrow^{*}$ means "one or more steps"
+
+---
+## Semantics: typical cases
+
+$$
+\langle e, \rho, \sigma, [] \rangle
+\rightarrow^{*}
+\langle v, \rho, \sigma', [] \rangle
+$$
+
+* $[]$ represents an empty stack
+
+* Once the stack is empty,
+  and the right-hand side of $\rightarrow^{*}$ is a value,
+  we have finished evaluating the form $e$
+
+---
+## Semantics walkthrough
+
+* OK, now we will begin going through the actual operational semantics rules
+
+* There are a lot of them (more than in any other language in this course), so
+strap yourself in!
+
+---
+## Small-step semantics: literals
+
+<img src="images/literal.png" alt="literal.png" />
+
+* The upper rule is the big-step rule; the lower rule is the small-step rule
+---
+## Small-step semantics: literals
+
+<img src="images/literal.png" alt="literal.png" />
+
+* Other than the presence of the stack $S$ (which doesn't change), there is no
+difference: literals evaluate to themselves
+
+---
+## Small-step semantics: variables
+
+<img src="images/var.png" alt="var.png" />
+
+* Variables are also basically the same; just look them up in the environment
+
+---
+## Small-step semantics: `lambda`
+
+<img src="images/lambda.png" alt="lambda.png" />
+
+* `lambda` forms are also the same: just make a closure
+
+---
+## Small-step semantics: `set`
+
+* The simplest example of using the stack is the rule for assignment (`set`)
+
+* An assignment is composed of two parts:
+  * Evaluate an expression to get a value
+  * Assign the value to a name
+
+---
+## Small-step semantics: `set`
+
+* The big-step rule does this all in one rule:
+
+<img src="images/big_step_set.png" alt="big_step_set.png" />
+
+---
+## Small-step semantics: `set`
+
+* The small-step rule divides this into two rules
+
+* First, do the evaluation of the expression $e$:
+
+<img src="images/small_step_set_1.png" alt="small_step_set_1.png" />
+
+* This rule pushes the `set` expression (with a hole where the value goes) onto
+the stack
+
+* Then the expression $e$ is evaluated according to one of the other rules
+
+---
+## Small-step semantics: `set`
+
+* Once the expression $e$ has been evaluated to the value $v$,
+we can pop the stack and finish the assignment:
+
+<img src="images/small_step_set_2.png" alt="small_step_set_2.png" />
+
+* Notice how the store $\sigma$ gets updated in this rule
+
+---
+## Small-step semantics: `if`
+
+<img src="images/if_1.png" alt="if_1.png" />
+
+* In an `if` form, we start by evaluating the test expression $e_1$
+
+---
+## Small-step semantics: `if`
+
+<img src="images/if_1.png" alt="if_1.png" />
+
+* The rest of the expression (the `if` with a hole where the result of
+evaluating $e_1$ goes) gets pushed onto the stack
+
+* Then $e_1$ gets evaluated according to the other rules
+
+---
+## Small-step semantics: `if`
+
+<img src="images/if_2.png" alt="if_2.png" />
+
+* These two rules show how we resolve the `if` once the test expression $e_1$
+has been evaluated to the value $v$
+
+---
+## Small-step semantics: `if`
+
+<img src="images/if_2.png" alt="if_2.png" />
+
+* Notice how the _IF_ frame gets popped off the stack in both cases
+
+---
+## Small-step semantics: Function application
+
+* Function application requires six (6) rules to specify completely
+
+* (Actually, the last rule is a family of rules, one for each primitive
+function)
+
+* Take a deep breath...
+
+---
+## Small-step semantics: Function application
+
+<img src="images/function_1.png" alt="function_1.png" />
+
+* To apply a function, first evaluate the expression in "function position",
+which is $e$
+
+* The rest of the expression is pushed onto the stack, with a hole where the
+function will go
+
+---
+## Small-step semantics: Function application
+
+<img src="images/function_2.png" alt="function_2.png" />
+
+* Once the function position expression has been evaluated to a value $v$,
+evaluate the expression in the first argument position $e_1$
+
+---
+## Small-step semantics: Function application
+
+<img src="images/function_2.png" alt="function_2.png" />
+
+* Push the rest of the expression (evaluated and unevaluated parts)
+  back onto the stack:
+  * The function value $v$ (evaluated)
+  * The other arguments $e_2$, $e_3$, ... $e_n$<br/>(not evaluated)
+
+---
+## Small-step semantics: Function application
+
+<img src="images/function_3.png" alt="function_3.png" />
+
+* When you are in the middle of evaluating the function's argument expressions,
+some of them have been evaluated to values and some haven't
+
+---
+## Small-step semantics: Function application
+
+<img src="images/function_3.png" alt="function_3.png" />
+
+* Take the first unevaluated expression $e_{i+1}$ and evaluate that, putting the
+previously-evaluated argument value $v$ back onto the stack along with the
+rest of the expression (evaluated and unevaluated parts)
+
+---
+## Small-step semantics: Function application
+
+<img src="images/function_3.png" alt="function_3.png" />
+
+* (This represents a left-to-right evaluation order)
+
+---
+## Small-step semantics: Function application
+
+<img src="images/function_4.png" alt="function_4.png" />
+
+* Once you've evaluated the last argument<br/>
+  (to the value $v_n$), things get more complicated
+
+---
+## Small-step semantics: Function application
+
+<img src="images/function_4.png" alt="function_4.png" />
+
+* We evaluate the function body expression ($e_c$)
+  in a new environment which extends the original environment $\rho_c$
+  by binding the formal argument names $x_i$ to their values $v_i$
+  (via $\sigma_n$ and $\ell_i$)
+
+---
+## Small-step semantics: Function application
+
+<img src="images/function_4.png" alt="function_4.png" />
+
+* The store is used as an intermediary between the names and the values,
+  as usual
+
+---
+## Small-step semantics: Function application
+
+<img src="images/function_4.png" alt="function_4.png" />
+
+* Also, we have to be able to restore the old environment $\rho$
+  when we finish evaluating the body of the function
+
+---
+## Small-step semantics: Function application
+
+<img src="images/function_4.png" alt="function_4.png" />
+
+* We do this by pushing a _CALLENV_ frame onto the stack
+  which contains the old environment $\rho$
+
+---
+## Small-step semantics: Function application
+
+<img src="images/function_5.png" alt="function_5.png" />
+
+* Once the body of the function has been evaluated to a value $v$,
+  we don't need the new environment anymore, so we restore the old one
+  by popping off the _CALLENV_ frame
+
+---
+## Small-step semantics: Function application
+
+<img src="images/function_6.png" alt="function_6.png" />
+
+* The previous discussion assumed that the function being applied
+  was a user-defined function (a closure)
+
+---
+## Small-step semantics: Function application
+
+<img src="images/function_6.png" alt="function_6.png" />
+
+* However, it could also be a primitive (like `+`)
+
+* In this case, once the last argument is evaluated, just apply the function to
+the evaluated arguments to get the result value
+
+---
+## Small-step semantics: `let`
+
+* Evaluating `let` expressions was quite complicated in the big-step semantics
+
+* The small-step semantics is complicated too, but the complexity is divided up
+between multiple rules (like it is for function application)
+
+---
+## Small-step semantics: `let`
+
+<img src="images/let_1.png" alt="let_1.png" />
+
+* To start with, evaluate the first expression $e_1$ in the first binding
+
+---
+## Small-step semantics: `let`
+
+<img src="images/let_2.png" alt="let_2.png" />
+
+* Continue evaluating the binding expressions, adjusting the stack frame
+accordingly
+
+---
+## Small-step semantics: `let`
+
+<img src="images/let_3.png" alt="let_3.png" />
+
+* After evaluating the last binding expression:
+  * Create new environment $\rho$ and store $\sigma$
+    with all the $x_i \mapsto \ell_i$ and $\ell_i \mapsto v_i$ bindings
+  * Push a _LETENV_ frame containing the old environment onto the stack
+  * Evaluate the body $e$
+
+---
+## Small-step semantics: `let`
+
+<img src="images/let_4.png" alt="let_4.png" />
+
+* Once the let body is evaluated to a value $v$,
+  restore the original environment
+
+---
+## Small-step semantics: `let*`
+
+<img src="images/Small-Step-LetStar.png" alt="Small-Step-LetStar.png" width="900" />
+
+* The circled values are not holes;
+  they just indicate which subexpression is being evaluated
+
+---
+## Small-step semantics: `let*`
+
+<img src="images/Small-Step-LetStar.png" alt="Small-Step-LetStar.png" width="900" />
+
+* The rule which restores the original environment (pops _LETENV_ off stack)
+  is the same as the corresponding rule for `let`
+
+---
+## Small-step semantics: `let*`
+
+<img src="images/Small-Step-LetStar.png" alt="Small-Step-LetStar.png" width="900" />
+
+* `let*` doesn't need to store any values on the stack when
+  evaluating bindings, since they are always put into the environment
+  immediately
+
+---
+## Small-step semantics: `let*`
+
+<img src="images/Small-Step-LetStar.png" alt="Small-Step-LetStar.png" width="900" />
+
+* (This is why we don't use holes to represent
+  the expression being evaluated)
+
+---
+## Small-step semantics: `letrec`
+
+<img src="images/Small-Step-Letrec.png" alt="Small-Step-Letrec.png" width="900" />
+
+<img src="images/Small-Step-Next-Letrec-Exp.png" alt="Small-Step-Next-Letrec-Exp.png" width="900" />
+
+* This is basically `let` with "unspecified" bound to all $x_i$ before the start
+
+---
+## Small-step semantics: `begin`
+
+<img src="images/Small-Step-Begin-1.png" alt="Small-Step-Begin-1.png" width="900" />
+
+<img src="images/Small-Step-Begin-2.png" alt="Small-Step-Begin-2.png" width="900" />
+
+* We put `#u` instead of `#f` in second rule
+  (only relevant for empty `begin`)
+
+---
+## Small-step semantics: `while`
+
+<img src="images/Small-Step-While-1.png" alt="Small-Step-While-1.png" width="900" />
+
+<img src="images/Small-Step-While-2.png" alt="Small-Step-While-2.png" width="900" />
+
+* Note that _WHILE_ and _WHILE_RUNNING_BODY_ frames contain both $e_1$ and $e_2$
+
+---
+## Small-step semantics: `while`
+
+<img src="images/Small-Step-While-1.png" alt="Small-Step-While-1.png" width="900" />
+
+<img src="images/Small-Step-While-2.png" alt="Small-Step-While-2.png" width="900" />
+
+* (May need to evaluate entire expression again!)
+
+---
+## Small-step semantics: `while`
+
+<img src="images/Small-Step-While-1.png" alt="Small-Step-While-1.png" width="900" />
+
+<img src="images/Small-Step-While-2.png" alt="Small-Step-While-2.png" width="900" />
+
+* Again, we make `while` return `#u`, not `#f`
+
+---
+## Small-step semantics: `break`
+
+* `break` is pretty simple in the small-step semantics:
+
+<img src="images/Small-Step-Break-Unwind.png" alt="Small-Step-Break-Unwind.png" width="900" />
+
+<img src="images/Small-Step-Break-Transfer.png" alt="Small-Step-Break-Transfer.png" width="900" />
+
+* Again, `break`ing out of a `while` loop returns `#u`, not `#f`
+
+---
+## Small-step semantics: `break`
+
+* `break` is pretty simple in the small-step semantics:
+
+<img src="images/Small-Step-Break-Unwind.png" alt="Small-Step-Break-Unwind.png" width="900" />
+
+<img src="images/Small-Step-Break-Transfer.png" alt="Small-Step-Break-Transfer.png" width="900" />
+
+* Note that we can't unwind the stack past a function call boundary
+  (_CALLENV_ on the stack)
+
+---
+## Small-step semantics: `break`
+
+* `break` is pretty simple in the small-step semantics:
+
+<img src="images/Small-Step-Break-Unwind.png" alt="Small-Step-Break-Unwind.png" width="900" />
+
+<img src="images/Small-Step-Break-Transfer.png" alt="Small-Step-Break-Transfer.png" width="900" />
+
+* Note omission: _LETENV_ frame must change environment
+  when popped from `break`
+
+---
+## Small-step semantics: `continue`
+
+<img src="images/Small-Step-Continue-Unwind.png" alt="Small-Step-Continue-Unwind.png" />
+
+<img src="images/Small-Step-Continue-Transfer.png" alt="Small-Step-Continue-Transfer.png" />
+
+* The transfer rule is the only difference
+  between `break`'s and `continue`'s semantics
+  * `break` exits the `while`; `continue` restarts it
+
+---
+## Small-step semantics: `continue`
+
+<img src="images/Small-Step-Continue-Unwind.png" alt="Small-Step-Continue-Unwind.png" />
+
+<img src="images/Small-Step-Continue-Transfer.png" alt="Small-Step-Continue-Transfer.png" />
+
+* Note omission: _LETENV_ frame must change environment
+  when popped from `break`
+
+---
+## Small-step semantics: `return`
+
+<img src="images/Small-Step-Return.png" alt="Small-Step-Return.png" />
+
+<img src="images/Small-Step-Return-2.png" alt="Small-Step-Return-2.png" />
+
+* This is pretty obvious when you think about it
+* No need to worry about _LETENV_ on stack (why?)
+
+---
+## Small-step semantics: exception handling
+
+<img src="images/Small-Step-Throw-1.png" alt="Small-Step-Throw-1.png" />
+
+<img src="images/Small-Step-Throw-2.png" alt="Small-Step-Throw-2.png" />
+
+---
+## Small-step semantics: exception handling
+
+<img src="images/Small-Step-Try-Catch-1.png" alt="Small-Step-Try-Catch-1.png" />
+
+<img src="images/Small-Step-Try-Catch-2.png" alt="Small-Step-Try-Catch-2.png" />
+
+<img src="images/Small-Step-Try-Catch-3.png" alt="Small-Step-Try-Catch-3.png" />
+
+---
+## Small-step semantics: exception handling
+
+* There is a _lot_ of subtle stuff going on with the `throw` and
+`try`/`catch` rules!
+
+---
+## Small-step semantics: exception handling
+
+* Let's start with the simple stuff:
+
+<img src="images/Small-Step-Throw-1.png" alt="Small-Step-Throw-1.png" />
+
+* In order to evaluate a `throw` expression, first evaluate its
+subexpression
+* The `throw` (with a hole for the value to throw) goes on the context stack
+
+---
+## Small-step semantics: exception handling
+
+<img src="images/Small-Step-Try-Catch-1.png" alt="Small-Step-Try-Catch-1.png" />
+
+* Before installing an exception handler ($e_h$), you have to evaluate it to get
+a function
+
+* The body of the `try`/`catch` ($e_b$) goes on the context stack
+
+---
+## Small-step semantics: exception handling
+
+<img src="images/Small-Step-Try-Catch-2.png" alt="Small-Step-Try-Catch-2.png" />
+
+* If the exception handler evaluates to a function, install it as an exception
+handler on the context stack
+
+* Then start evaluating the body of the `try`/`catch`
+
+---
+## Small-step semantics: exception handling
+
+<img src="images/Small-Step-Try-Catch-2.png" alt="Small-Step-Try-Catch-2.png" />
+
+* The _LETENV_ form goes on the stack in case there are more forms to evaluate
+  after the `try`/`catch` (like in a `begin` form)
+  * In that case, need to make sure that we restore the correct environment (subtle!)
+
+---
+## Small-step semantics: exception handling
+
+<img src="images/Small-Step-Try-Catch-2.png" alt="Small-Step-Try-Catch-2.png" />
+
+* If the exception handler _doesn't_ evaluate to a function, it's an error, and
+  the operational semantics has nothing further to say about it
+  * evaluation "gets stuck" as usual on errors
+
+---
+## Small-step semantics: exception handling
+
+<img src="images/Small-Step-Throw-2.png" alt="Small-Step-Throw-2.png" />
+
+* In the case of a `throw`, unwind the context stack until we hit a
+  `try`/`catch` frame
+
+* We don't care about function call boundaries
+
+---
+## Small-step semantics: exception handling
+
+<img src="images/Small-Step-Throw-2.png" alt="Small-Step-Throw-2.png" />
+
+* In the case of a `throw`, unwind the context stack until we hit a
+  `try`/`catch` frame
+
+* We don't adjust the environment when popping a _LETENV_ or _CALLENV_ frame
+either (why?)
+
+---
+## Small-step semantics: exception handling
+
+<img src="images/Small-Step-Throw-2.png" alt="Small-Step-Throw-2.png" />
+
+* In the case of a `throw`, unwind the context stack until we hit a
+  `try`/`catch` frame
+
+* Once we get to a `try`/`catch` frame, apply the exception handler to the value
+thrown
+
+
+---
+## Small-step semantics: definitions
+
+* Definitions are not really any different from the big-step versions except for
+  an empty stack component
+
+---
+## Small-step semantics: definitions
+
+<img src="images/Small-Step-Define-Global.png" alt="Small-Step-Define-Global.png" />
+
+* Note in top rule: $\rho$ can't actually change while evaluating expression
+
+---
+## Small-step semantics: definitions
+
+<img src="images/Small-Step-Define-Global.png" alt="Small-Step-Define-Global.png" />
+
+* Note in second rule: we don't return value $v$ set when evaluating $SET$
+  (just `#u`)
+
+---
+## Summing up
+
+* There are so many rules because
+
+  * The control operators have complicated semantics
+
+  * Small-step semantics are fine-grained,
+    and need a lot of detail to explain them
+
+* Kind of grungy, but you need this much detail to write the evaluator!
+
+---
+## Next time
+
+* Walkthrough of the _$\mu$Scheme+_ code base
+
+            </textarea>
+          </section>
+      </div>
+    </div>
+    <script src="plugin/math/math.js"></script>
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <!-- Uncomment if you want syntax highlighting. -->
+    <!--
+    <link rel="stylesheet" href="plugin/highlight/arduino-light.css">
+    -->
+    <style>
+/* MCV: My new reveal.js styles. */
+
+.reveal {
+  font-family: "Arial", sans-serif;
+  font-size: 28pt;
+  font-weight: normal;
+  color: #000; 
+}
+
+.reveal .slide-number {
+  background: white;
+  /* border: 1px solid black; */
+}
+
+.reveal .slide-number-a {
+  background: white;
+  color: black;
+  font-size: 24px;
+}
+
+.reveal .slides h1 {
+  text-align: center;
+  text-transform: none;
+  padding: 150px 0 20px 0;
+  font-size: 64pt;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif;
+  font-weight: normal;
+  color: #4f271c;
+  background: #d0d0f0;
+  margin-bottom: 0.5em;
+}
+
+.reveal h2 { 
+  text-transform: none;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif !important;
+  /* text-shadow: 2px 2px 3px #a0a0a0; */
+  color: #4f271c !important;
+  font-size: 60pt !important;
+  font-weight: normal !important;
+  /* background: #d0d0d0; */
+  width: 80% !important;
+  margin-left: 10%;
+}
+
+/* First level bullet color. */
+.reveal .slides ul li::marker {
+  color: #3891a7;
+}
+
+/* Second level bullet spacing. */
+.reveal .slides ul li ul {
+  margin-top: 0px;
+}
+
+.reveal .slides li {
+  margin-top: 10px;
+}
+
+/* Second level bullet color. */
+.reveal .slides ul li ul li::marker {
+  color: #3891a7;
+}
+
+.reveal li {
+  font-size: 36pt !important;
+}
+
+.reveal .smaller li {
+  font-size: 32pt !important;
+}
+
+.reveal li ul li {
+  font-size: 32pt !important;
+}
+
+.reveal li .smaller ul li {
+  font-size: 28pt !important;
+}
+
+.reveal ul {
+  width: 80% !important;
+  text-align: left !important;
+}
+
+.reveal code em {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal em code {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal code .comment {
+  color: #cc44cc !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+.reveal blockquote {
+  text-align: left !important;
+  color: #668888 !important;
+}
+
+.katex-display > .katex {
+  color: #0040b0 !important;
+}
+
+.katex-display > .katex > .katex-html > .tag {
+  color: #808080 !important;
+  margin-right: 100px !important;
+}
+
+.katex > .katex-html {
+  color: #0040b0 !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.katex {
+  font-size: 1.1em !important;
+}
+
+.reveal pre {
+  margin-left: 200px !important;
+  width: 75% !important;
+  font-size: 24pt !important;
+}
+
+.reveal pre.smaller {
+  font-size: 20pt !important;
+}
+
+.reveal code {
+  color: #0040b0 !important;
+  font-size: 90%;
+}
+
+.reveal pre code {
+  /* max vertical size of code block */
+  max-height: 700px !important;
+}
+
+.reveal li ul li code {
+  font-size: 80%;
+}
+
+    </style>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        katex: {
+          version: 'latest',
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            "\\eqref": "\\href{###1}{(\\text{#1})}",
+            "\\ref": "\\href{###1}{\\text{#1}}",
+            "\\label": "\\htmlId{#1}{}",
+          },
+        },
+        plugins: [ 
+          RevealMarkdown,
+          // RevealHighlight,
+          RevealMath.KaTeX,
+        ],
+        center: false,
+        controls: false,
+        disableLayout: false,  // set to true to use custom CSS for layout
+        showSlideNumber: 'all',
+        slideNumber: true,
+        transition: 'none',
+        width: 1280,
+        height: 800,
+      });
+    </script>
+  </body>
+</html>
