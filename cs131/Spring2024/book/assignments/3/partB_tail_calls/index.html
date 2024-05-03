@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#part-b-implementing-tail-call-optimization" class="md-skip">
+        <a href="#part-b-implementing-tail-call-optimization-25-points" class="md-skip">
           Skip to content
         </a>
       
@@ -965,7 +965,7 @@
                   
 
 
-<h1 id="part-b-implementing-tail-call-optimization">Part B: Implementing tail call optimization</h1>
+<h1 id="part-b-implementing-tail-call-optimization-25-points">Part B: Implementing tail call optimization (25 points)</h1>
 <p>Tail call optimization is a way of making sure
 that the context stack doesn't grow unnecessarily.
 For instance, consider the following functions:</p>
@@ -1024,6 +1024,7 @@ TCO will get rid of this problem.</p>
 <p>The good news is that implementing TCO is quite easy!
 There are two changes you need to make.</p>
 <h2 id="1-push_env_frame">1. <code>push_env_frame</code></h2>
+<p>[<strong>20 points</strong>]</p>
 <p>First, you need to edit the <code>push_env_frame</code> function in <code>eval.ml</code>.
 This function is only used to push either
 <code>LetEnvFrame</code> or <code>CallEnvFrame</code> frames,
@@ -1069,6 +1070,7 @@ The part you should edit consists of this line:</p>
 </span></code></pre></div>
 <p>Of course, this line will need to be replaced by more than one line.</p>
 <h2 id="2-taking-account-of-begin">2. Taking account of <code>begin</code></h2>
+<p>[<strong>5 points</strong>]</p>
 <p>The last expression in a <code>begin</code> expression
 is considered to be "in tail position"
 if the <code>begin</code> expression itself is.
