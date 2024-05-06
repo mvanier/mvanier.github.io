@@ -1,0 +1,2231 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- <section data-background-color="#ffffd0"> -->
+          <section data-markdown>
+            <textarea data-template>
+# CS 131:<br/>Programming Languages
+## _Lecture 14_:<br/>The _Typed Imp_ Language:<br/>the code
+
+---
+## Previously
+
+* We described the forms of the _Typed Imp_ language
+  * Essentially, exactly like the _Imp_ language,
+    but with type annotations on function arguments and function return types
+
+* We described the operational semantics of the _Typed Imp_ type system
+
+---
+## Today
+
+* We'll go through the _Typed Imp_ code base
+
+* Mostly, we'll be looking at the type checker code
+
+---
+## Caveat
+
+* We will be leaving out all the code relating to arrays
+
+* (Part of assignment 4 will involve you implementing arrays)
+
+---
+## Abstract syntax
+
+* To start with, let's look at the abstract syntax of the language
+
+---
+## Abstract syntax: literals
+
+* We have three different kinds of literal values:
+  * unit values (`#u`)
+  * boolean values (`#f` and `#t`)
+  * integers
+
+---
+## Abstract syntax: literals
+
+* We use the `lit` type for these:
+
+<pre><code>type lit =
+  | UnitLit
+  | BoolLit of bool
+  | IntLit  of int
+</code></pre>
+
+* Advantage: makes it easy to add new literals (_e.g._ floats)
+
+---
+## Abstract syntax: expressions
+
+* Expressions are fairly conventional:
+
+<pre><code>type id = string
+type exp =
+  | Literal of loc * lit
+  | Var     of loc * id
+  | Set     of loc * id * exp
+  | If      of loc * exp * exp * exp
+  | While   of loc * exp * exp
+  | Begin   of loc * exp list
+  | Call    of loc * id * exp list
+  | Print   of loc * exp
+  | Println of loc * exp
+  | Eq      of loc * exp * exp
+  | Neq     of loc * exp * exp
+</code></pre>
+
+---
+## Abstract syntax: expressions
+
+* Identifiers are just strings
+
+<pre><code><em>type id = string</em>
+type exp =
+  | Literal of loc * lit
+  | Var     of loc * id
+  | Set     of loc * id * exp
+  | If      of loc * exp * exp * exp
+  | While   of loc * exp * exp
+  | Begin   of loc * exp list
+  | Call    of loc * id * exp list
+  | Print   of loc * exp
+  | Println of loc * exp
+  | Eq      of loc * exp * exp
+  | Neq     of loc * exp * exp
+</code></pre>
+
+---
+## Abstract syntax: expressions
+
+* We include location information with all constructors:
+
+<pre><code>type exp =
+  | Literal of <em>loc</em> * lit
+  | Var     of <em>loc</em> * id
+  | Set     of <em>loc</em> * id * exp
+  | If      of <em>loc</em> * exp * exp * exp
+  | While   of <em>loc</em> * exp * exp
+  | Begin   of <em>loc</em> * exp list
+  | Call    of <em>loc</em> * id * exp list
+  | Print   of <em>loc</em> * exp
+  | Println of <em>loc</em> * exp
+  | Eq      of <em>loc</em> * exp * exp
+  | Neq     of <em>loc</em> * exp * exp
+</code></pre>
+
+---
+## Abstract syntax: expressions
+
+* These are familiar:
+
+<pre><code>type exp =
+  | <em>Literal</em> of loc * <em>lit</em>
+  | <em>Var</em>     of loc * <em>id</em>
+  | <em>Set</em>     of loc * <em>id * exp</em>
+  | <em>If</em>      of loc * <em>exp * exp * exp</em>
+  | <em>While</em>   of loc * <em>exp * exp</em>
+  | <em>Begin</em>   of loc * <em>exp list</em>
+  | Call    of loc * id * exp list
+  | Print   of loc * exp
+  | Println of loc * exp
+  | Eq      of loc * exp * exp
+  | Neq     of loc * exp * exp
+</code></pre>
+
+---
+## Abstract syntax: expressions
+
+* Function calls:
+
+<pre><code>type exp =
+  | Literal of loc * lit
+  | Var     of loc * id
+  | Set     of loc * id * exp
+  | If      of loc * exp * exp * exp
+  | While   of loc * exp * exp
+  | Begin   of loc * exp list
+  | <em>Call    of loc * id * exp list</em>
+  | Print   of loc * exp
+  | Println of loc * exp
+  | Eq      of loc * exp * exp
+  | Neq     of loc * exp * exp
+</code></pre>
+
+---
+## Abstract syntax: expressions
+
+* Printing:
+
+<pre><code>type exp =
+  | Literal of loc * lit
+  | Var     of loc * id
+  | Set     of loc * id * exp
+  | If      of loc * exp * exp * exp
+  | While   of loc * exp * exp
+  | Begin   of loc * exp list
+  | Call    of loc * id * exp list
+  | <em>Print   of loc * exp</em>
+  | <em>Println of loc * exp</em>
+  | Eq      of loc * exp * exp
+  | Neq     of loc * exp * exp
+</code></pre>
+
+---
+## Abstract syntax: expressions
+
+* Important point: `print` and `println` can't be functions
+  * (Not even built-in functions)
+
+* They have polymorphic types: `'a -> unit`
+
+* _Typed Imp_ only supports monomorphic types,
+  so print expressions must be hard-coded into the language
+
+---
+## Abstract syntax: expressions
+
+* Equality comparisons:
+
+<pre><code>type exp =
+  | Literal of loc * lit
+  | Var     of loc * id
+  | Set     of loc * id * exp
+  | If      of loc * exp * exp * exp
+  | While   of loc * exp * exp
+  | Begin   of loc * exp list
+  | Call    of loc * id * exp list
+  | Print   of loc * exp
+  | Println of loc * exp
+  | <em>Eq      of loc * exp * exp</em>
+  | <em>Neq     of loc * exp * exp</em>
+</code></pre>
+
+---
+## Abstract syntax: expressions
+
+* `=` and `!=` also have polymorphic types<br/>(`'a 'a -> bool`)
+  so they also have to be hard-wired into the language
+
+* In contrast, `<` and `>` have _monomorphic_ types,
+  so they can be regular built-in functions &ndash; why?
+
+---
+## Abstract syntax: types
+
+* _Typed Imp_ supports type annotations,
+  so the syntax has to have a way to represent types
+
+* Value types are simple:
+
+<pre><code>type imp_type =
+  | UnitType
+  | BoolType
+  | IntType
+  <span class="comment">(* TODO: Extend to array types *)</span>
+</code></pre>
+
+---
+## Abstract syntax: types
+
+* Function types come in two flavors
+
+---
+## Abstract syntax: types
+
+* Function _declarations_ represent
+  the entire syntactic form of a function definition:
+
+<pre><code>type function_decl = {
+    ret     : imp_type;
+    <em>name    : id</em>;
+    formals : (<em>id</em> * imp_type) list;
+    <em>body    : exp</em>
+}
+</code></pre>
+
+* Note the presence of the function's name and the names of the arguments
+* Also contains the function body
+
+---
+## Abstract syntax: types
+
+* Function types _per se_ don't contain the names:
+
+<pre><code>type function_type = {
+    params : imp_type list;
+    ret    : imp_type
+}
+</code></pre>
+
+* This is the form that is actually stored
+  in the function part of type environments
+
+---
+## Abstract syntax: top-level forms
+
+* Here are the top-level forms:
+
+<pre><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+---
+## Abstract syntax: top-level forms
+
+* Again, all top-level forms contain location information:
+
+<pre><code>type def =
+  | Val            of <em>loc</em> * id * exp
+  | Exp            of <em>loc</em> * exp
+  | Define         of <em>loc</em> * function_decl
+  | Use            of <em>loc</em> * string
+  | CheckExpect    of <em>loc</em> * exp * exp
+  | CheckError     of <em>loc</em> * exp
+  | CheckType      of <em>loc</em> * exp * imp_type
+  | CheckTypeError of <em>loc</em> * exp
+  | CheckFunType   of <em>loc</em> * id * function_type
+</code></pre>
+
+---
+## Abstract syntax: top-level forms
+
+* `Val` (global variable definitions)
+  and `Exp` (top-level expressions) don't have explicit type annotations:
+
+<pre><code>type def =
+  | <em>Val            of loc * id * exp</em>
+  | <em>Exp            of loc * exp</em>
+  | Define         of loc * function_decl
+  | ...
+</code></pre>
+
+---
+## Abstract syntax: top-level forms
+
+* `Define` forms _do_ have explicit type annotations
+  (in the `function_decl` record):
+
+<pre><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | <em>Define         of loc * function_decl</em>
+  | ...
+</code></pre>
+
+* These are the only required type annotations
+
+---
+## Abstract syntax: top-level forms
+
+* These are familiar from previously-implemented languages:
+
+<pre><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | <em>Use            of loc * string</em>
+  | <em>CheckExpect    of loc * exp * exp</em>
+  | <em>CheckError     of loc * exp</em>
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+---
+## Abstract syntax: top-level forms
+
+* These are new "check" forms, involving types:
+
+<pre><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | <em>CheckType      of loc * exp * imp_type</em>
+  | <em>CheckTypeError of loc * exp</em>
+  | <em>CheckFunType   of loc * id * function_type</em>
+</code></pre>
+
+* We'll say more about this later
+
+---
+## Types: syntax
+
+* Syntactically, types are found primarily in `define` statements
+
+* Types are used to annotate function arguments and function return types
+
+* The three base types are `unit`, `bool`, and `int`
+
+---
+## Types: syntax
+
+* In most languages, the syntactic representation of types
+  is not the same as the internal one
+
+* _Typed Imp_'s type system is so simple
+  it just uses the syntactic representation
+  for the internal representation
+
+---
+## Type environments
+
+* We mentioned previously that type checking is a kind of evaluation
+
+* This evaluation uses "type environments" in place of "value environments"
+
+---
+## Type environments
+
+* Recall that environments have three components:
+  * global variables
+  * global functions
+  * local variables/function arguments
+
+* This is true for both type and value environments
+
+---
+## Type environments
+
+* To avoid duplicating code, we define a parameterized environment type:
+
+<pre><code><span class="comment">(* in env.ml *)</span>
+module StringMap = Map.Make(String)
+
+type ('a, 'b) t =  <span class="comment">(* the environment type *)</span>
+  {
+    locals    : 'a StringMap.t;
+    globals   : 'a StringMap.t;
+    functions : 'b StringMap.t
+  }
+</code></pre>
+
+---
+## Type environments
+
+<pre><code><span class="comment">(* in env.ml *)</span>
+module StringMap = Map.Make(String)
+
+type (<em>'a</em>, <em>'b</em>) t =  <span class="comment">(* the environment type *)</span>
+  {
+    locals    : <em>'a</em> StringMap.t;
+    globals   : <em>'a</em> StringMap.t;
+    functions : <em>'b</em> StringMap.t
+  }
+</code></pre>
+
+<div class="smaller">
+
+* Local and global variables map strings (identifiers) to one type `'a`
+* Functions map strings to a different type `'b`
+
+</div>
+
+---
+## Type environments
+
+* The specific type environment type is defined as follows:
+
+<pre><code><span class="comment">(* in typecheck.ml *)</span>
+type imp_type = Ast.imp_type
+type function_type = Ast.function_type
+type <em>env</em> = (imp_type, function_type) Env.t
+</code></pre>
+
+* The value environment type (in `value.ml`)
+  uses `value` in place of `imp_type`
+  and `func` (function value) in place of `function_type`
+
+---
+## Some useful utilities
+
+<pre><code><span class="comment">(* in typecheck.mli *)</span>
+<span class="comment">(* Checking type equivalence. *)</span>
+val ty_eq : imp_type -&gt; imp_type -&gt; bool
+
+<span class="comment">(* Checking function-type equivalence. *)</span>
+val fun_ty_eq : function_type -&gt; function_type -&gt; bool
+
+<span class="comment">(* in typecheck.ml *)</span>
+<span class="comment">(* Assert that two types are equal *)</span>
+let assert_ty_eq l t1 t2 =
+  if not (ty_eq t1 t2) then
+    Error.type_err l
+      ~expected: (string_of_type t1)
+      ~found:    (string_of_type t2)
+  else ()
+</code></pre>
+
+---
+## Typechecking expressions
+
+* Expressions are typechecked using the function `typecheck_expr`
+  which has this structure:
+
+<pre><code>let rec <em>typecheck_expr</em> env exp =
+  let get_var_ty = Env.lookup_var env in
+  let typecheck = typecheck_expr env in
+  match exp with
+    | Literal ...
+    | Var ...
+    | Set ...
+    ...
+</code></pre>
+
+* Note that `env` is a _type_ environment
+
+---
+## Typechecking expressions
+
+* `get_var_ty` and `typecheck` are just local functions
+  that embed the type environment `env`
+
+<pre><code>let rec typecheck_expr env exp =
+  <em>let get_var_ty = Env.lookup_var env in</em>
+  <em>let typecheck = typecheck_expr env in</em>
+  match exp with
+    | Literal ...
+    | Var ...
+    | Set ...
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: literals
+
+* Literals are trivial to typecheck:
+
+<pre><code>  ...
+  match exp with
+    | <em>Literal (_, UnitLit)   -&gt; UnitType</em>
+    | <em>Literal (_, BoolLit _) -&gt; BoolType</em>
+    | <em>Literal (_, IntLit _)  -&gt; IntType</em>
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: variables
+
+* Variables' types are looked up in the type environment:
+
+<pre><code>let rec typecheck_expr env exp =
+  <em>let get_var_ty = Env.lookup_var env in</em>
+  let typecheck = typecheck_expr env in
+  match exp with
+    ...
+    | <em>Var (l, s) -&gt; get_var_ty l s</em>
+    ...
+</code></pre>
+
+* This works for both local and global variables
+  due to the way `Env.lookup_var` works
+
+---
+## Typechecking expressions: `set`
+
+* For `set` expressions...
+
+<pre><code>  ...
+  match exp with
+    ...
+    | <em>Set (l, s, e)</em> -&gt;
+      let expr_ty = typecheck e in
+      let var_ty = get_var_ty l s in
+        begin
+          assert_ty_eq l var_ty expr_ty;
+          UnitType
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `set`
+
+* Typecheck the expression part:
+
+<pre><code>  ...
+  match exp with
+    ...
+    | Set (l, s, e) -&gt;
+      <em>let expr_ty = typecheck e</em> in
+      let var_ty = get_var_ty l s in
+        begin
+          assert_ty_eq l var_ty expr_ty;
+          UnitType
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `set`
+
+* Look up the type of the name to be set in the type environment:
+
+<pre><code>  ...
+  match exp with
+    ...
+    | Set (l, s, e) -&gt;
+      let expr_ty = typecheck e in
+      <em>let var_ty = get_var_ty l s</em> in
+        begin
+          assert_ty_eq l var_ty expr_ty;
+          UnitType
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `set`
+
+* Make sure the two types are the same:
+
+<pre><code>  ...
+  match exp with
+    ...
+    | Set (l, s, e) -&gt;
+      let expr_ty = typecheck e in
+      let var_ty = get_var_ty l s in
+        begin
+          <em>assert_ty_eq l var_ty expr_ty</em>;
+          UnitType
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `set`
+
+* The expression returns a `unit` type
+
+<pre><code>  ...
+  match exp with
+    ...
+    | Set (l, s, e) -&gt;
+      let expr_ty = typecheck e in
+      let var_ty = get_var_ty l s in
+        begin
+          assert_ty_eq l var_ty expr_ty;
+          <em>UnitType</em>
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `if`
+
+* For `if` expressions...
+
+<pre><code>    ...
+    | <em>If (l, test, t, e)</em> -&gt;
+      let testl = loc_of_exp test in
+      let test_ty = typecheck test in
+        begin
+          assert_ty_eq testl BoolType test_ty;
+          let t_ty = typecheck t in
+          let e_ty = typecheck e in
+            if not (ty_eq t_ty e_ty) then
+                err l t_ty e_ty
+            else
+                t_ty
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `if`
+
+* Typecheck the test subexpression
+
+<pre><code>    ...
+    | If (l, test, t, e) -&gt;
+      let testl = loc_of_exp test in
+      <em>let test_ty = typecheck test</em> in
+        begin
+          assert_ty_eq testl BoolType test_ty;
+          let t_ty = typecheck t in
+          let e_ty = typecheck e in
+            if not (ty_eq t_ty e_ty) then
+                err l t_ty e_ty
+            else
+                t_ty
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `if`
+
+* Make sure it has type `bool`
+
+<pre><code>    ...
+    | If (l, test, t, e) -&gt;
+      let testl = loc_of_exp test in
+      let test_ty = typecheck test in
+        begin
+          <em>assert_ty_eq testl BoolType test_ty</em>;
+          let t_ty = typecheck t in
+          let e_ty = typecheck e in
+            if not (ty_eq t_ty e_ty) then
+                err l t_ty e_ty
+            else
+                t_ty
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `if`
+
+* Typecheck the "then" and "else" subexpressions
+
+<pre><code>    ...
+    | If (l, test, t, e) -&gt;
+      let testl = loc_of_exp test in
+      let test_ty = typecheck test in
+        begin
+          assert_ty_eq testl BoolType test_ty;
+          <em>let t_ty = typecheck t</em> in
+          <em>let e_ty = typecheck e</em> in
+            if not (ty_eq t_ty e_ty) then
+                err l t_ty e_ty
+            else
+                t_ty
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `if`
+
+* Make sure they have the same type
+
+<pre><code>    ...
+    | If (l, test, t, e) -&gt;
+      let testl = loc_of_exp test in
+      let test_ty = typecheck test in
+        begin
+          assert_ty_eq testl BoolType test_ty;
+          let t_ty = typecheck t in
+          let e_ty = typecheck e in
+            <em>if not (ty_eq t_ty e_ty) then</em>
+                <em>err l t_ty e_ty</em>
+            else
+                t_ty
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `if`
+
+* Which is the type of the entire expression
+
+<pre><code>    ...
+    | If (l, test, t, e) -&gt;
+      let testl = loc_of_exp test in
+      let test_ty = typecheck test in
+        begin
+          assert_ty_eq testl BoolType test_ty;
+          let t_ty = typecheck t in
+          let e_ty = typecheck e in
+            if not (ty_eq t_ty e_ty) then
+                err l t_ty e_ty
+            else
+                <em>t_ty</em>
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `while`
+
+* For `while` expressions...
+
+<pre><code>    ...
+    | <em>While (l, test, body)</em> -&gt;
+      let testl = loc_of_exp test in
+      let test_ty = typecheck test in
+        begin
+          assert_ty_eq testl BoolType test_ty;
+          ignore (typecheck body);
+          UnitType
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `while`
+
+* Typecheck the test subexpression
+
+<pre><code>    ...
+    | While (l, test, body) -&gt;
+      let testl = loc_of_exp test in
+      <em>let test_ty = typecheck test</em> in
+        begin
+          assert_ty_eq testl BoolType test_ty;
+          ignore (typecheck body);
+          UnitType
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `while`
+
+* Make sure it has type `bool`
+
+<pre><code>    ...
+    | While (l, test, body) -&gt;
+      let testl = loc_of_exp test in
+      let test_ty = typecheck test in
+        begin
+          <em>assert_ty_eq testl BoolType test_ty</em>;
+          ignore (typecheck body);
+          UnitType
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `while`
+
+* Typecheck the body subexpression
+
+<pre><code>    ...
+    | While (l, test, body) -&gt;
+      let testl = loc_of_exp test in
+      let test_ty = typecheck test in
+        begin
+          assert_ty_eq testl BoolType test_ty;
+          ignore (<em>typecheck body</em>);
+          UnitType
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `while`
+
+* Ignore the body's type and give the entire expression the type `unit`
+
+<pre><code>    ...
+    | While (l, test, body) -&gt;
+      let testl = loc_of_exp test in
+      let test_ty = typecheck test in
+        begin
+          assert_ty_eq testl BoolType test_ty;
+          ignore (typecheck body);
+          <em>UnitType</em>
+        end
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `begin`
+
+* For `begin` expressions...
+
+<pre><code>    ...
+    | <em>Begin (_, [])</em> -&gt; UnitType
+    | <em>Begin (_, es)</em> -&gt;
+      List.hd (List.rev_map typecheck es)
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `begin`
+
+* Empty `begin`s have `unit` type:
+
+<pre><code>    ...
+    | <em>Begin (_, []) -&gt; UnitType</em>
+    | Begin (_, es) -&gt;
+      List.hd (List.rev_map typecheck es)
+    ...
+</code></pre>
+
+---
+## Typechecking expressions: `begin`
+
+* Otherwise, typecheck all subexpressions and return the type of the last one
+
+<pre><code>    ...
+    | Begin (_, []) -&gt; UnitType
+    | <em>Begin (_, es) -&gt;</em>
+      <em>List.hd (List.rev_map typecheck es)</em>
+    ...
+</code></pre>
+
+* `List.rev_map` maps a function and reverses the resulting list
+---
+## Typechecking expressions: `begin`
+
+* Otherwise, typecheck all subexpressions and return the type of the last one
+
+<pre><code>    ...
+    | Begin (_, []) -&gt; UnitType
+    | <em>Begin (_, es) -&gt;</em>
+      <em>List.hd (List.rev_map typecheck es)</em>
+    ...
+</code></pre>
+
+* So we take the first element of the reversed list
+
+---
+## Typechecking expressions: Function calls
+
+* Typechecking function calls is the most complex case
+
+<pre class="smaller"><code>    | <em>Call (l, fn, args)</em> -&gt;
+      let {params; ret} = Env.lookup_fun env l fn in
+      let actuals = List.map typecheck args in
+      let n_actuals = List.length actuals in
+      let n_formals = List.length params in
+      if n_actuals &lt;&#8203;&gt; n_formals then
+        Error.call_err l ~expected:n_formals ~found:n_actuals
+      else ...
+</code></pre>
+
+---
+## Typechecking expressions: Function calls
+
+* First, look up the function type:
+
+<pre class="smaller"><code>    | Call (l, fn, args) -&gt;
+      <em>let {params; ret} = Env.lookup_fun env l fn</em> in
+      let actuals = List.map typecheck args in
+      let n_actuals = List.length actuals in
+      let n_formals = List.length params in
+      if n_actuals &lt;&#8203;&gt; n_formals then
+        Error.call_err l ~expected:n_formals ~found:n_actuals
+      else ...
+</code></pre>
+
+---
+## Typechecking expressions: Function calls
+
+* Then typecheck all arguments:
+
+<pre class="smaller"><code>    | Call (l, fn, args) -&gt;
+      let {params; ret} = Env.lookup_fun env l fn in
+      <em>let actuals = List.map typecheck args</em> in
+      let n_actuals = List.length actuals in
+      let n_formals = List.length params in
+      if n_actuals &lt;&#8203;&gt; n_formals then
+        Error.call_err l ~expected:n_formals ~found:n_actuals
+      else ...
+</code></pre>
+
+---
+## Typechecking expressions: Function calls
+
+* Check that the actual argument list
+  is the same length as the formal argument list
+
+<pre class="smaller"><code>    | Call (l, fn, args) -&gt;
+      let {params; ret} = Env.lookup_fun env l fn in
+      let actuals = List.map typecheck args in
+      <em>let n_actuals = List.length actuals in</em>
+      <em>let n_formals = List.length params in</em>
+      <em>if n_actuals &lt;&#8203;&gt; n_formals then</em>
+        <em>Error.call_err l ~expected:n_formals ~found:n_actuals</em>
+      else ...
+</code></pre>
+
+---
+## Typechecking expressions: Function calls
+
+* Check that each argument type is the same as each formal argument type
+
+<pre class="smaller"><code>    | Call (l, fn, args) -&gt;
+      ...
+        <em>let rec iter forms acts args =</em>
+          <em>...</em>
+        <em>in</em>
+          <em>iter params actuals args</em>
+</code></pre>
+
+---
+## Typechecking expressions: Function calls
+
+* Check that each argument type is the same as each formal argument type
+
+<pre class="smaller"><code>        let rec iter forms acts args =
+          match (forms, acts, args) with
+            | ([], [], []) -&gt; ret
+            | (f::_fs, a::_as, r::_rs) -&gt;
+              <em>if not (ty_eq f a) then</em>
+                <em>let rl = loc_of_exp r in</em>
+                  <em>Error.type_err rl</em>
+                    <em>~expected: (string_of_type f)</em>
+                    <em>~found:    (string_of_type a)</em>
+              else
+                iter _fs _as _rs
+            | _ -&gt; failwith "this can't happen"
+</code></pre>
+
+---
+## Typechecking expressions: Function calls
+
+* If everything checks out, return the function's return type `ret`
+
+<pre class="smaller"><code>        let rec iter forms acts args =
+          match (forms, acts, args) with
+            | <em>([], [], []) -&gt; ret</em>
+            | (f::_fs, a::_as, r::_rs) -&gt;
+              if not (ty_eq f a) then
+                let rl = loc_of_exp r in
+                  Error.type_err rl
+                    ~expected: (string_of_type f)
+                    ~found:    (string_of_type a)
+              else
+                iter _fs _as _rs
+            | _ -&gt; failwith "this can't happen"
+</code></pre>
+
+---
+## Typechecking expressions: `print`/`println`
+
+* Typechecking `print` or `println` expressions
+  just requires us to typecheck the arguments:
+
+<pre class="smaller"><code>let rec typecheck_expr env exp =
+  let get_var_ty = Env.lookup_var env in
+  let typecheck = typecheck_expr env in
+  match exp with
+    ...
+    | <em>Print   (l, e) -&gt; let _ = typecheck e in UnitType</em>
+    | <em>Println (l, e) -&gt; let _ = typecheck e in UnitType</em>
+</code></pre>
+
+* They return the `unit` type
+
+---
+## Typechecking expressions: `=`
+
+* Typechecking `=` (and `!=`) expressions
+  require us to typecheck the arguments
+  and make sure they have the same type
+
+<pre class="smaller"><code>let rec typecheck_expr env exp =
+  let get_var_ty = Env.lookup_var env in
+  let typecheck = typecheck_expr env in
+  match exp with
+    ...
+    | <em>Eq  (l, e1, e2)</em>
+    | <em>Neq (l, e1, e2)</em> -&gt;
+        ...
+</code></pre>
+
+---
+## Typechecking expressions: `=`
+
+<pre class="smaller"><code>    ...
+    | Eq  (l, e1, e2)
+    | Neq (l, e1, e2) -&gt;
+      <em>let ty1 = typecheck e1</em> in 
+      <em>let ty2 = typecheck e2</em> in 
+        ...
+</code></pre>
+
+* Typecheck the arguments...
+
+---
+## Typechecking expressions: `=`
+
+<pre class="smaller"><code>    ...
+    | Eq  (l, e1, e2)
+    | Neq (l, e1, e2) -&gt;
+      let ty1 = typecheck e1 in 
+      let ty2 = typecheck e2 in 
+        <em>if ty1 &lt;&#8203;&gt; ty2 then</em>
+          <em>Error.type_err l</em>
+            <em>~expected: "same types"</em>
+            <em>~found:</em>
+              <em>(Printf.sprintf "type 1: %s; type 2: %s"</em>
+                 <em>(string_of_type ty1)</em>
+                 <em>(string_of_type ty2))</em>
+        else 
+          BoolType
+</code></pre>
+
+* Make sure the arguments have the same type...
+
+---
+## Typechecking expressions: `=`
+
+<pre class="smaller"><code>    ...
+    | Eq  (l, e1, e2)
+    | Neq (l, e1, e2) -&gt;
+      let ty1 = typecheck e1 in 
+      let ty2 = typecheck e2 in 
+        if ty1 &lt;&#8203;&gt; ty2 then
+          Error.type_err l
+            ~expected: "same types"
+            ~found:
+              (Printf.sprintf "type 1: %s; type 2: %s"
+                 (string_of_type ty1)
+                 (string_of_type ty2))
+        else 
+          <em>BoolType</em>
+</code></pre>
+
+* Return the `bool` type
+
+---
+## Top-level forms
+
+* Now we'll walk through the type checking code for _Typed Imp_ top-level forms
+  * (primarily definitions)
+
+---
+## Abstract syntax: top-level forms
+
+* Recall abstract syntax for top-level forms:
+
+<pre class="smaller"><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+---
+## Abstract syntax: top-level forms
+
+<pre class="smaller"><code>type def =
+  | Val            of <em>loc</em> * id * exp
+  | Exp            of <em>loc</em> * exp
+  | Define         of <em>loc</em> * function_decl
+  | Use            of <em>loc</em> * string
+  | CheckExpect    of <em>loc</em> * exp * exp
+  | CheckError     of <em>loc</em> * exp
+  | CheckType      of <em>loc</em> * exp * imp_type
+  | CheckTypeError of <em>loc</em> * exp
+  | CheckFunType   of <em>loc</em> * id * function_type
+</code></pre>
+
+* Again, all top-level forms contain location information
+
+---
+## Abstract syntax: top-level forms
+
+<pre class="smaller"><code>type def =
+  | <em>Val            of loc * id * exp</em>
+  | <em>Exp            of loc * exp</em>
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+* `Val` (global variable definitions)<br/>
+  and `Exp` (top-level expressions)<br/>
+  don't have explicit type annotations
+
+---
+## Abstract syntax: top-level forms
+
+<pre class="smaller"><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | <em>Define         of loc * function_decl</em>
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+* `Define` forms _do_ have explicit type annotations
+  (in the `function_decl` record)
+
+* These are the _only_ required type annotations
+
+---
+## Abstract syntax: top-level forms
+
+<pre class="smaller"><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | <em>Use            of loc * string</em>
+  | <em>CheckExpect    of loc * exp * exp</em>
+  | <em>CheckError     of loc * exp</em>
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+* These forms are familiar from previously-implemented languages
+
+---
+## Abstract syntax: top-level forms
+
+<pre class="smaller"><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | <em>CheckType      of loc * exp * imp_type</em>
+  | <em>CheckTypeError of loc * exp</em>
+  | <em>CheckFunType   of loc * id * function_type</em>
+</code></pre>
+
+* These are new "check" forms, involving types
+
+---
+## Typechecking top-level forms
+
+* First, we need to decide which parts of which forms need to be type-checked
+
+<pre class="smaller"><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+---
+## Typechecking top-level forms
+
+<pre class="smaller"><code>type def =
+  | <em>Val            of loc * id * exp</em>
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+* The expression in a `val` form needs to be typechecked
+
+---
+## Typechecking top-level forms
+
+<pre class="smaller"><code>type def =
+  | <em>Val            of loc * id * exp</em>
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+* Once the expression is typechecked,
+  the identifier gets that type in the global variable environment
+
+---
+## Typechecking top-level forms
+
+<pre class="smaller"><code>type def =
+  | <em>Val            of loc * id * exp</em>
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+* (Unless the variable was already defined,
+  in which case its type can't have changed)
+
+---
+## Typechecking top-level forms
+
+<pre class="smaller"><code>type def =
+  | Val            of loc * id * exp
+  | <em>Exp            of loc * exp</em>
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+* Top-level expressions get typechecked, though nothing uses that information
+
+---
+## Typechecking top-level forms
+
+<pre class="smaller"><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | <em>Define         of loc * function_decl</em>
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+* `define` forms need to be typechecked<br/>(the hardest case)
+
+---
+## Typechecking top-level forms
+
+<pre class="smaller"><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | <em>Use            of loc * string</em>
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+* `use` forms don't need to be typechecked
+
+  * (When the external file is loaded,<br/>it will be typechecked)
+
+---
+## Typechecking top-level forms
+
+<pre class="smaller"><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | <em>CheckExpect    of loc * exp * exp</em>
+  | CheckError     of loc * exp
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+* `check-expect` forms need both expressions typechecked
+
+---
+## Typechecking top-level forms
+
+<pre class="smaller"><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | <em>CheckError     of loc * exp</em>
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+* `check-error` forms need their expression typechecked
+
+---
+## Typechecking top-level forms
+
+<pre class="smaller"><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | <em>CheckType      of loc * exp * imp_type</em>
+  | CheckTypeError of loc * exp
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+* `check-type` forms need their expression typechecked
+  to see if its type matches the expected type
+
+---
+## Typechecking top-level forms
+
+<pre class="smaller"><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | CheckType      of loc * exp * imp_type
+  | <em>CheckTypeError of loc * exp</em>
+  | CheckFunType   of loc * id * function_type
+</code></pre>
+
+* `check-type-error` forms need their expression typechecked,
+  although type checking is expected to fail
+
+---
+## Typechecking top-level forms
+
+<pre class="smaller"><code>type def =
+  | Val            of loc * id * exp
+  | Exp            of loc * exp
+  | Define         of loc * function_decl
+  | Use            of loc * string
+  | CheckExpect    of loc * exp * exp
+  | CheckError     of loc * exp
+  | CheckType      of loc * exp * imp_type
+  | CheckTypeError of loc * exp
+  | <em>CheckFunType   of loc * id * function_type</em>
+</code></pre>
+
+* `check-function-type` forms don't need to be typechecked as such
+
+* At run-time, the type of the `id` is looked up
+  and compared to the supplied `function_type`
+
+---
+## Typechecking top-level forms
+
+* Basically, there are only three kinds of typechecking:
+  * Typechecking expressions
+  * Typechecking `val` top-level forms
+  * Typechecking `define` top-level forms
+
+---
+## Typechecking top-level forms
+
+* All the rest are `check-` forms which either
+  * Typecheck one or more expressions
+  * Look up a type in the type environment and check that it's correct
+
+* (or both)
+
+---
+## Typechecking top-level forms
+
+* Therefore, we only need to define two more typechecking functions:
+  * `typecheck_val`, to typecheck `val` forms
+  * `typecheck_define`, to typecheck `define` forms
+
+---
+## Typechecking `val` forms
+
+* We typecheck `val` forms using the `typecheck_val` function:
+
+<pre><code>let <em>typecheck_val</em> env l name e =
+  let ty = typecheck_expr env e in
+    try
+      let old_ty = Env.lookup_var env l name in
+        if not (ty_eq ty old_ty) then
+          err (loc_of_exp e) old_ty ty
+        else
+          (env, ty)
+    with
+      Error.Imp_err (_, NameError _) -&gt;
+        (Env.bind_global env name ty, ty)
+</code></pre>
+
+---
+## Typechecking `val` forms
+
+<pre><code>let typecheck_val <em>env</em> l name e =
+  let ty = typecheck_expr env e in
+    try
+      let old_ty = Env.lookup_var env l name in
+        if not (ty_eq ty old_ty) then
+          err (loc_of_exp e) old_ty ty
+        else
+          (env, ty)
+    with
+      Error.Imp_err (_, NameError _) -&gt;
+        (Env.bind_global env name ty, ty)
+</code></pre>
+
+* `env` is the type environment
+
+---
+## Typechecking `val` forms
+
+<pre><code>let typecheck_val env <em>l</em> name e =
+  let ty = typecheck_expr env e in
+    try
+      let old_ty = Env.lookup_var env l name in
+        if not (ty_eq ty old_ty) then
+          err (loc_of_exp e) old_ty ty
+        else
+          (env, ty)
+    with
+      Error.Imp_err (_, NameError _) -&gt;
+        (Env.bind_global env name ty, ty)
+</code></pre>
+
+* `l` is the source code location
+
+---
+## Typechecking `val` forms
+
+<pre><code>let typecheck_val env l <em>name</em> e =
+  let ty = typecheck_expr env e in
+    try
+      let old_ty = Env.lookup_var env l name in
+        if not (ty_eq ty old_ty) then
+          err (loc_of_exp e) old_ty ty
+        else
+          (env, ty)
+    with
+      Error.Imp_err (_, NameError _) -&gt;
+        (Env.bind_global env name ty, ty)
+</code></pre>
+
+* `name` is the variable name being defined
+
+---
+## Typechecking `val` forms
+
+<pre><code>let typecheck_val env l name <em>e</em> =
+  let ty = typecheck_expr env e in
+    try
+      let old_ty = Env.lookup_var env l name in
+        if not (ty_eq ty old_ty) then
+          err (loc_of_exp e) old_ty ty
+        else
+          (env, ty)
+    with
+      Error.Imp_err (_, NameError _) -&gt;
+        (Env.bind_global env name ty, ty)
+</code></pre>
+
+* `e` is the expression whose value the variable is set to
+
+---
+## Typechecking `val` forms
+
+<pre><code>let typecheck_val env l name e =
+  let ty = <em>typecheck_expr env e</em> in
+    try
+      let old_ty = Env.lookup_var env l name in
+        if not (ty_eq ty old_ty) then
+          err (loc_of_exp e) old_ty ty
+        else
+          (env, ty)
+    with
+      Error.Imp_err (_, NameError _) -&gt;
+        (Env.bind_global env name ty, ty)
+</code></pre>
+
+* First typecheck the expression `e`
+
+---
+## Typechecking `val` forms
+
+<pre><code>let typecheck_val env l name e =
+  let ty = typecheck_expr env e in
+    try
+      let old_ty = <em>Env.lookup_var env l name</em> in
+        if not (ty_eq ty old_ty) then
+          err (loc_of_exp e) old_ty ty
+        else
+          (env, ty)
+    with
+      Error.Imp_err (_, NameError _) -&gt;
+        (Env.bind_global env name ty, ty)
+</code></pre>
+
+* See if the variable name `name`
+  is already in the global variable environment
+
+---
+## Typechecking `val` forms
+
+<pre><code>let typecheck_val env l name e =
+  let ty = typecheck_expr env e in
+    try
+      let old_ty = Env.lookup_var env l name in
+        if not (ty_eq ty old_ty) then
+          err (loc_of_exp e) old_ty ty
+        else
+          (env, ty)
+    with
+      <em>Error.Imp_err (_, NameError _)</em> -&gt;
+        (Env.bind_global env name ty, ty)
+</code></pre>
+
+* If not...
+
+---
+## Typechecking `val` forms
+
+<pre><code>let typecheck_val env l name e =
+  let ty = typecheck_expr env e in
+    try
+      let old_ty = Env.lookup_var env l name in
+        if not (ty_eq ty old_ty) then
+          err (loc_of_exp e) old_ty ty
+        else
+          (env, ty)
+    with
+      Error.Imp_err (_, NameError _) -&gt;
+        (<em>Env.bind_global env name ty</em>, ty)
+</code></pre>
+
+* Bind the name to the type in the type environment...
+
+---
+## Typechecking `val` forms
+
+<pre><code>let typecheck_val env l name e =
+  let ty = typecheck_expr env e in
+    try
+      let old_ty = Env.lookup_var env l name in
+        if not (ty_eq ty old_ty) then
+          err (loc_of_exp e) old_ty ty
+        else
+          (env, ty)
+    with
+      Error.Imp_err (_, NameError _) -&gt;
+        <em>(Env.bind_global env name ty, ty)</em>
+</code></pre>
+
+* And return the new environment and the type
+  (_e.g._ so the REPL can print it out)
+
+---
+## Typechecking `val` forms
+
+<pre><code>let typecheck_val env l name e =
+  let ty = typecheck_expr env e in
+    try
+      let <em>old_ty</em> = Env.lookup_var env l name in
+        if not (ty_eq ty old_ty) then
+          err (loc_of_exp e) old_ty ty
+        else
+          (env, ty)
+    with
+      Error.Imp_err (_, NameError _) -&gt;
+        (Env.bind_global env name ty, ty)
+</code></pre>
+
+* If the variable had been previously-defined...
+
+---
+## Typechecking `val` forms
+
+<pre><code>let typecheck_val env l name e =
+  let ty = typecheck_expr env e in
+    try
+      let old_ty = Env.lookup_var env l name in
+        <em>if not (ty_eq ty old_ty) then</em>
+          <em>err (loc_of_exp e) old_ty ty</em>
+        else
+          (env, ty)
+    with
+      Error.Imp_err (_, NameError _) -&gt;
+        (Env.bind_global env name ty, ty)
+</code></pre>
+
+* Make sure the types haven't changed
+  * Here, `err` just raises a `TypeError` exception
+
+---
+## Typechecking `val` forms
+
+<pre><code>let typecheck_val env l name e =
+  let ty = typecheck_expr env e in
+    try
+      let old_ty = Env.lookup_var env l name in
+        if not (ty_eq ty old_ty) then
+          err (loc_of_exp e) old_ty ty
+        else
+          <em>(env, ty)</em>
+    with
+      Error.Imp_err (_, NameError _) -&gt;
+        (Env.bind_global env name ty, ty)
+</code></pre>
+
+* Then return the old type environment and the type
+
+---
+## Typechecking `define` forms
+
+* Typechecking `define` forms uses the `typecheck_define` function:
+
+<pre><code>let <em>typecheck_define</em> env l {ret; name; formals; body} =
+  ...
+</code></pre>
+
+---
+## Typechecking `define` forms
+
+<pre><code>let typecheck_define <em>env</em> l {ret; name; formals; body} =
+  ...
+</code></pre>
+
+* `env` is the type environment
+
+---
+## Typechecking `define` forms
+
+<pre><code>let typecheck_define env <em>l</em> {ret; name; formals; body} =
+  ...
+</code></pre>
+
+* `l` is the source code location
+
+---
+## Typechecking `define` forms
+
+<pre><code>let typecheck_define env l <em>{ret; name; formals; body}</em> =
+  ...
+</code></pre>
+
+* These are part of a `function_decl` record
+
+---
+## Typechecking `define` forms
+
+<pre><code>let typecheck_define env l {<em>ret</em>; name; formals; body} =
+  ...
+</code></pre>
+
+* `ret` is the return type
+
+---
+## Typechecking `define` forms
+
+<pre><code>let typecheck_define env l {ret; <em>name</em>; formals; body} =
+  ...
+</code></pre>
+
+* `name` is the function name
+
+---
+## Typechecking `define` forms
+
+<pre><code>let typecheck_define env l {ret; name; <em>formals</em>; body} =
+  ...
+</code></pre>
+
+* `formals` are the formal arguments
+  * a (name, type) list
+
+---
+## Typechecking `define` forms
+
+<pre><code>let typecheck_define env l {ret; name; formals; <em>body</em>} =
+  ...
+</code></pre>
+
+* And `body` is the function body
+
+---
+## Typechecking `define` forms
+
+<pre class="smaller"><code>let typecheck_define env l {ret; name; formals; body} =
+  <em>let params = List.map snd formals</em> in
+  <em>let fun_ty = {params; ret}</em> in
+    ...
+</code></pre>
+
+* First, we generate the function type
+  * `params` are the types of the arguments
+  * `fun_ty` has type `function_type`
+
+---
+## Typechecking `define` forms
+
+<pre class="smaller"><code>let typecheck_define env l {ret; name; formals; body} =
+  let params = List.map snd formals in
+  let fun_ty = {params; ret} in
+  let <em>typecheck_body</em> env =
+    let env' = Env.bind_locals env formals in
+    let body_ty = typecheck_expr env' body in
+      if not (ty_eq body_ty ret) then
+        err l ret body_ty
+      else
+        ()
+  in
+    ...
+</code></pre>
+
+* We define a helper function `typecheck_body`
+  to typecheck the body
+
+---
+## Typechecking `define` forms
+
+<pre class="smaller"><code>let typecheck_define env l {ret; name; formals; body} =
+  let params = List.map snd formals in
+  let fun_ty = {params; ret} in
+  let typecheck_body env =
+    <em>let env' = Env.bind_locals env formals</em> in
+    let body_ty = typecheck_expr env' body in
+      if not (ty_eq body_ty ret) then
+        err l ret body_ty
+      else
+        ()
+  in
+    ...
+</code></pre>
+
+* Extend the local variable type environment with the formal arguments
+
+---
+## Typechecking `define` forms
+
+<pre class="smaller"><code>let typecheck_define env l {ret; name; formals; body} =
+  let params = List.map snd formals in
+  let fun_ty = {params; ret} in
+  let typecheck_body env =
+    let env' = Env.bind_locals env formals in
+    <em>let body_ty = typecheck_expr env' body</em> in
+      if not (ty_eq body_ty ret) then
+        err l ret body_ty
+      else
+        ()
+  in
+    ...
+</code></pre>
+
+* Typecheck the body in the new locals environment...
+
+---
+## Typechecking `define` forms
+
+<pre class="smaller"><code>let typecheck_define env l {ret; name; formals; body} =
+  let params = List.map snd formals in
+  let fun_ty = {params; ret} in
+  let typecheck_body env =
+    let env' = Env.bind_locals env formals in
+    let body_ty = typecheck_expr env' body in
+      <em>if not (ty_eq body_ty ret) then</em>
+        <em>err l ret body_ty</em>
+      <em>else</em>
+        <em>()</em>
+  in
+    ...
+</code></pre>
+
+* ...and check that it has the same type as the function return type
+
+---
+## Typechecking `define` forms
+
+<pre class="smaller"><code>let typecheck_define env l {ret; name; formals; body} =
+  ...
+  let <em>env'</em> =
+    begin
+      try
+        <em>let old_fun_ty = Env.lookup_fun env l name</em> in
+          if not (fun_ty_eq fun_ty old_fun_ty) then
+            ferr l old_fun_ty fun_ty
+          else
+            env
+      with
+        Error.Imp_err (_, NameError _) -&gt;
+          Env.bind_fun env name fun_ty
+    end
+  in ...
+</code></pre>
+
+* See if the function already exists in the type environment
+
+---
+## Typechecking `define` forms
+
+<pre class="smaller"><code>let typecheck_define env l {ret; name; formals; body} =
+  ...
+  let <em>env'</em> =
+    begin
+      try
+        let old_fun_ty = Env.lookup_fun env l name in
+          if not (fun_ty_eq fun_ty old_fun_ty) then
+            ferr l old_fun_ty fun_ty
+          else
+            env
+      with
+        <em>Error.Imp_err (_, NameError _)</em> -&gt;
+          Env.bind_fun env name fun_ty
+    end
+  in ...
+</code></pre>
+
+* If not...
+
+---
+## Typechecking `define` forms
+
+<pre class="smaller"><code>let typecheck_define env l {ret; name; formals; body} =
+  ...
+  let <em>env'</em> =
+    begin
+      try
+        let old_fun_ty = Env.lookup_fun env l name in
+          if not (fun_ty_eq fun_ty old_fun_ty) then
+            ferr l old_fun_ty fun_ty
+          else
+            env
+      with
+        Error.Imp_err (_, NameError _) -&gt;
+          <em>Env.bind_fun env name fun_ty</em>
+    end
+  in ...
+</code></pre>
+
+* ...add it to the function type environment
+
+---
+## Typechecking `define` forms
+
+<pre class="smaller"><code>let typecheck_define env l {ret; name; formals; body} =
+  ...
+  let <em>env'</em> =
+    begin
+      try
+        let <em>old_fun_ty</em> = Env.lookup_fun env l name in
+          if not (fun_ty_eq fun_ty old_fun_ty) then
+            ferr l old_fun_ty fun_ty
+          else
+            env
+      with
+        Error.Imp_err (_, NameError _) -&gt;
+          Env.bind_fun env name fun_ty
+    end
+  in ...
+</code></pre>
+
+* If it was already in the type environment...
+
+---
+## Typechecking `define` forms
+
+<pre class="smaller"><code>let typecheck_define env l {ret; name; formals; body} =
+  ...
+  let <em>env'</em> =
+    begin
+      try
+        let old_fun_ty = Env.lookup_fun env l name in
+          <em>if not (fun_ty_eq fun_ty old_fun_ty) then</em>
+            <em>ferr l old_fun_ty fun_ty</em>
+          <em>else</em>
+            <em>env</em>
+      with
+        Error.Imp_err (_, NameError _) -&gt;
+          Env.bind_fun env name fun_ty
+    end
+  in ...
+</code></pre>
+
+* ...make sure the function's type hasn't changed
+
+---
+## Typechecking `define` forms
+
+<pre class="smaller"><code>let typecheck_define env l {ret; name; formals; body} =
+  ...
+  let env' =
+    begin
+      try
+        let old_fun_ty = Env.lookup_fun env l name in
+          if not (fun_ty_eq fun_ty old_fun_ty) then
+            <em>ferr l old_fun_ty fun_ty</em>
+          else
+            env
+      with
+        Error.Imp_err (_, NameError _) -&gt;
+          Env.bind_fun env name fun_ty
+    end
+  in ...
+</code></pre>
+
+* `ferr` raises a `TypeError`
+
+---
+## Typechecking `define` forms
+
+<pre class="smaller"><code>let typecheck_define env l {ret; name; formals; body} =
+  let params = List.map snd formals in
+  let fun_ty = {params; ret} in
+  let typecheck_body env = <em>...</em> in
+  let env' = <em>...</em> in
+    begin
+      typecheck_body env';
+      (env', fun_ty)
+    end
+</code></pre>
+
+* Now we need to put the pieces together
+
+---
+## Typechecking `define` forms
+
+<pre class="smaller"><code>let typecheck_define env l {ret; name; formals; body} =
+  let params = List.map snd formals in
+  let fun_ty = {params; ret} in
+  let typecheck_body env = ... in
+  let env' = ... in
+    begin
+      <em>typecheck_body env'</em>;
+      (env', fun_ty)
+    end
+</code></pre>
+
+* Typecheck the body
+
+---
+## Typechecking `define` forms
+
+<pre class="smaller"><code>let typecheck_define env l {ret; name; formals; body} =
+  let params = List.map snd formals in
+  let fun_ty = {params; ret} in
+  let typecheck_body env = ... in
+  let env' = ... in
+    begin
+      typecheck_body env';
+      <em>(env', fun_ty)</em>
+    end
+</code></pre>
+
+* If that works,
+  return the new type environment and the function type
+  (for printing in the REPL)
+
+* And that's it!
+
+---
+## Next time
+
+* We'll start discussing our next language:<br/>_Typed $\mu$Scheme_
+
+            </textarea>
+          </section>
+      </div>
+    </div>
+    <script src="plugin/math/math.js"></script>
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <!-- Uncomment if you want syntax highlighting. -->
+    <!--
+    <link rel="stylesheet" href="plugin/highlight/arduino-light.css">
+    -->
+    <style>
+/* MCV: My new reveal.js styles. */
+
+.reveal {
+  font-family: "Arial", sans-serif;
+  font-size: 28pt;
+  font-weight: normal;
+  color: #000; 
+}
+
+.reveal .slide-number {
+  background: white;
+  /* border: 1px solid black; */
+}
+
+.reveal .slide-number-a {
+  background: white;
+  color: black;
+  font-size: 24px;
+}
+
+.reveal .slides h1 {
+  text-align: center;
+  text-transform: none;
+  padding: 150px 0 20px 0;
+  font-size: 64pt;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif;
+  font-weight: normal;
+  color: #4f271c;
+  background: #d0d0f0;
+  margin-bottom: 0.5em;
+}
+
+.reveal h2 { 
+  text-transform: none;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif !important;
+  /* text-shadow: 2px 2px 3px #a0a0a0; */
+  color: #4f271c !important;
+  font-size: 60pt !important;
+  font-weight: normal !important;
+  /* background: #d0d0d0; */
+  width: 80% !important;
+  margin-left: 10%;
+}
+
+/* First level bullet color. */
+.reveal .slides ul li::marker {
+  color: #3891a7;
+}
+
+/* Second level bullet spacing. */
+.reveal .slides ul li ul {
+  margin-top: 0px;
+}
+
+.reveal .slides li {
+  margin-top: 10px;
+}
+
+/* Second level bullet color. */
+.reveal .slides ul li ul li::marker {
+  color: #3891a7;
+}
+
+.reveal li {
+  font-size: 36pt !important;
+}
+
+.reveal .smaller li {
+  font-size: 32pt !important;
+}
+
+.reveal li ul li {
+  font-size: 32pt !important;
+}
+
+.reveal li .smaller ul li {
+  font-size: 28pt !important;
+}
+
+.reveal ul {
+  width: 80% !important;
+  text-align: left !important;
+}
+
+.reveal code em {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal em code {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal code .comment {
+  color: #cc44cc !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+.reveal blockquote {
+  text-align: left !important;
+  color: #668888 !important;
+}
+
+.katex-display > .katex {
+  color: #0040b0 !important;
+}
+
+.katex-display > .katex > .katex-html > .tag {
+  color: #808080 !important;
+  margin-right: 100px !important;
+}
+
+.katex > .katex-html {
+  color: #0040b0 !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.katex {
+  font-size: 1.1em !important;
+}
+
+.reveal pre {
+  margin-left: 200px !important;
+  width: 75% !important;
+  font-size: 24pt !important;
+}
+
+.reveal pre.smaller {
+  font-size: 20pt !important;
+}
+
+.reveal code {
+  color: #0040b0 !important;
+  font-size: 90%;
+}
+
+.reveal pre code {
+  /* max vertical size of code block */
+  max-height: 700px !important;
+}
+
+.reveal li ul li code {
+  font-size: 80%;
+}
+
+    </style>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        katex: {
+          version: 'latest',
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            "\\eqref": "\\href{###1}{(\\text{#1})}",
+            "\\ref": "\\href{###1}{\\text{#1}}",
+            "\\label": "\\htmlId{#1}{}",
+          },
+        },
+        plugins: [ 
+          RevealMarkdown,
+          // RevealHighlight,
+          RevealMath.KaTeX,
+        ],
+        center: false,
+        controls: false,
+        disableLayout: false,  // set to true to use custom CSS for layout
+        showSlideNumber: 'all',
+        slideNumber: true,
+        transition: 'none',
+        width: 1280,
+        height: 800,
+      });
+    </script>
+  </body>
+</html>
