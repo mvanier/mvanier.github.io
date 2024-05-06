@@ -463,15 +463,28 @@ val ty_eq : imp_type -&gt; imp_type -&gt; bool
 
 <span class="comment">(* Checking function-type equivalence. *)</span>
 val fun_ty_eq : function_type -&gt; function_type -&gt; bool
+</code></pre>
 
-<span class="comment">(* in typecheck.ml *)</span>
+---
+## Some useful utilities
+
+<pre><code><span class="comment">(* in typecheck.ml *)</span>
+let err l ty1 ty2 = 
+  Error.type_err l 
+    ~expected: (string_of_type ty1) 
+    ~found:    (string_of_type ty2)
+
+let ferr l ty1 ty2 = 
+  Error.type_err l 
+    ~expected: (string_of_function_type ty1) 
+    ~found:    (string_of_function_type ty2)
+
 <span class="comment">(* Assert that two types are equal *)</span>
-let assert_ty_eq l t1 t2 =
-  if not (ty_eq t1 t2) then
-    Error.type_err l
-      ~expected: (string_of_type t1)
-      ~found:    (string_of_type t2)
-  else ()
+let assert_ty_eq l ty1 ty2 =
+  if not (ty_eq ty1 ty2) then
+    err l ty1 ty2
+  else
+    ()
 </code></pre>
 
 ---
