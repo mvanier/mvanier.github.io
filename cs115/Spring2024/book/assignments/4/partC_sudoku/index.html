@@ -1083,6 +1083,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#compiling-the-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compiling the program
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#sample-input-boards-and-running-the-program" class="md-nav__link">
     <span class="md-ellipsis">
       Sample input boards and running the program
@@ -1172,6 +1181,15 @@
   <a href="#template-file" class="md-nav__link">
     <span class="md-ellipsis">
       Template file
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compiling-the-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compiling the program
     </span>
   </a>
   
@@ -1346,6 +1364,10 @@ is the representation of the Sudoku board
 </span></code></pre></div>
 <p>Since this problem is an exercise in doing imperative programming in Haskell,
 we want you to solve this program using the <code>IO</code> monad and <code>IOArray</code>s.</p>
+<h2 id="compiling-the-program">Compiling the program</h2>
+<p>Compile the program by typing this line:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$ ghc -W -o sudoku Sudoku.hs -package base -package array
+</span></code></pre></div>
 <h2 id="sample-input-boards-and-running-the-program">Sample input boards and running the program</h2>
 <p>In the <code>lab4.zip</code> file,
 we are including a directory called <code>boards</code> containing ten input boards.
@@ -1353,20 +1375,7 @@ You should use these board files to test your program.
 None of them should take your program more than 30 seconds to solve,
 and most should take much less time than that.</p>
 <p>Test a particular board by running it like this:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$ ./sudoku boards/board1
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>412985763
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>753416892
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>986327145
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>271568934
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>549173628
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>368249517
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>634751289
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>195832476
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>827694351
-</span></code></pre></div>
-<p>If you want to time it, this should work on any Unix-like system
-(Linux, MacOS, Windows using WSL):</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$ /usr/bin/time ./sudoku boards/board1
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$ ./sudoku boards/board1
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>412985763
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>753416892
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>986327145
@@ -1376,7 +1385,20 @@ and most should take much less time than that.</p>
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>634751289
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>195832476
 </span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>827694351
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>        4.74 real         4.68 user         0.04 sys
+</span></code></pre></div>
+<p>If you want to time it, this should work on any Unix-like system
+(Linux, MacOS, Windows using WSL):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$ /usr/bin/time ./sudoku boards/board1
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>412985763
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>753416892
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>986327145
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>271568934
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>549173628
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>368249517
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>634751289
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>195832476
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>827694351
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>        4.74 real         4.68 user         0.04 sys
 </span></code></pre></div>
 <p>The <code>user</code> time gives the actual elapsed time for the run in seconds.</p>
 
