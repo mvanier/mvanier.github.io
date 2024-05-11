@@ -8,26 +8,26 @@
       
       
       
-        <link rel="canonical" href="https://mvanier.github.io/cs131/Spring2024/book/">
+        <link rel="canonical" href="https://mvanier.github.io/cs131/Spring2024/book/assignments/4/partC_functions_with_arrays_and_locals/">
+      
+      
+        <link rel="prev" href="../partB_implementing_local_variables/">
       
       
       
-        <link rel="next" href="intro/welcome/">
-      
-      
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
     
     
       
-        <title>The CS 131 book (Spring 2024)</title>
+        <title>Part C: Writing functions with arrays and locals - The CS 131 book (Spring 2024)</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.50c56a3b.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,9 +46,9 @@
       
     
     
-      <link rel="stylesheet" href="css/extra.css">
+      <link rel="stylesheet" href="../../../css/extra.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#the-cs-131-book-winter-2024" class="md-skip">
+        <a href="#part-c-writing-functions-using-arrays-and-locals-10-points" class="md-skip">
           Skip to content
         </a>
       
@@ -90,7 +90,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="The CS 131 book (Spring 2024)" class="md-header__button md-logo" aria-label="The CS 131 book (Spring 2024)" data-md-component="logo">
+    <a href="../../.." title="The CS 131 book (Spring 2024)" class="md-header__button md-logo" aria-label="The CS 131 book (Spring 2024)" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Part C: Writing functions with arrays and locals
             
           </span>
         </div>
@@ -221,7 +221,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="The CS 131 book (Spring 2024)" class="md-nav__button md-logo" aria-label="The CS 131 book (Spring 2024)" data-md-component="logo">
+    <a href="../../.." title="The CS 131 book (Spring 2024)" class="md-nav__button md-logo" aria-label="The CS 131 book (Spring 2024)" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -236,19 +236,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -257,7 +248,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -306,7 +296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="intro/welcome/" class="md-nav__link">
+      <a href="../../../intro/welcome/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -327,7 +317,7 @@
   
   
     <li class="md-nav__item">
-      <a href="intro/software/" class="md-nav__link">
+      <a href="../../../intro/software/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -355,7 +345,7 @@
   
   
     <li class="md-nav__item">
-      <a href="lectures/" class="md-nav__link">
+      <a href="../../../lectures/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -412,7 +402,7 @@
   
   
     <li class="md-nav__item">
-      <a href="admin/syllabus/" class="md-nav__link">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -433,7 +423,7 @@
   
   
     <li class="md-nav__item">
-      <a href="admin/collab/" class="md-nav__link">
+      <a href="../../../admin/collab/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -498,7 +488,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/1/assignment1/" class="md-nav__link">
+      <a href="../../1/assignment1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -519,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/1/partA/" class="md-nav__link">
+      <a href="../../1/partA/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -540,7 +530,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/1/partB/" class="md-nav__link">
+      <a href="../../1/partB/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -561,7 +551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/1/partC/" class="md-nav__link">
+      <a href="../../1/partC/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -626,7 +616,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/2/assignment2/" class="md-nav__link">
+      <a href="../../2/assignment2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -647,7 +637,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/2/debugging/" class="md-nav__link">
+      <a href="../../2/debugging/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -668,7 +658,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/2/partA_extending1/" class="md-nav__link">
+      <a href="../../2/partA_extending1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -689,7 +679,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/2/partB_extending2/" class="md-nav__link">
+      <a href="../../2/partB_extending2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -710,7 +700,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/2/partC_programming/" class="md-nav__link">
+      <a href="../../2/partC_programming/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -775,7 +765,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/3/assignment3/" class="md-nav__link">
+      <a href="../../3/assignment3/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -796,7 +786,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/3/partA_control_operators/" class="md-nav__link">
+      <a href="../../3/partA_control_operators/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -817,7 +807,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/3/partB_tail_calls/" class="md-nav__link">
+      <a href="../../3/partB_tail_calls/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -842,19 +832,21 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
         
           
           <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
@@ -868,7 +860,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             Assignment 4: The Typed Imp language
@@ -882,7 +874,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/4/assignment4/" class="md-nav__link">
+      <a href="../assignment4/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -903,7 +895,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/4/partA_implementing_arrays/" class="md-nav__link">
+      <a href="../partA_implementing_arrays/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -924,7 +916,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/4/partB_implementing_local_variables/" class="md-nav__link">
+      <a href="../partB_implementing_local_variables/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -942,10 +934,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="assignments/4/partC_functions_with_arrays_and_locals/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Part C: Writing functions with arrays and locals
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -954,6 +966,53 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-minimum-element-sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Minimum element sort
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-bubble-sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Bubble sort
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-advice" class="md-nav__link">
+    <span class="md-ellipsis">
+      General advice
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -986,6 +1045,41 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-minimum-element-sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Minimum element sort
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-bubble-sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Bubble sort
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-advice" class="md-nav__link">
+    <span class="md-ellipsis">
+      General advice
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -999,13 +1093,78 @@
                   
 
 
-<h1 id="the-cs-131-book-winter-2024">The CS 131 book: Winter 2024</h1>
-<p>This book is the official document repository
-for the Caltech CS 131 course <br/> (Programming Languages)
-for the Spring 2024 term.</p>
-<p>The course instructor is <a href="mailto:mvanier@cms.caltech.edu">Mike Vanier</a>.
-See the <a href="admin/syllabus/">syllabus</a> for administrative information.</p>
-<p>Please read <a href="intro/welcome/">this page</a> for an overview of the course.</p>
+<h1 id="part-c-writing-functions-using-arrays-and-locals-10-points">Part C: Writing functions using arrays and locals (10 points)</h1>
+<p>A well-known typed<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> imperative language
+with arrays and local variables is C,
+so the functions you are going to write for this section
+are taken from the CS 11 C track, assignment 3.
+You will write your implementations of two functions
+in the (incomplete) test script called <code>lab4.timp</code>.
+You can refer to the CS 11 description of the algorithm
+to help you write your code.
+(You don't need to do the assertion stuff, though.)</p>
+<p>You will write two functions, each of which implements
+an imperative in-place sorting algorithm on arrays.
+Each function will return a unit value (<code>#u</code>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The most recent version of assignment 3
+in the CS 11 C track is located
+<a href="http://users.cms.caltech.edu/~mvanier/CS11_C/labs/3/lab3.html">here</a>.</p>
+</div>
+<h2 id="1-minimum-element-sort">1. Minimum element sort</h2>
+<p>[<strong>5 points</strong>]</p>
+<p>A minimum element sort starts with a nominal "minimum value"
+(the first element of the array)
+and then successively compares it
+with each other element in the array.
+When it finds a smaller element,
+it makes that the smallest element and notes its index.
+Once the entire array has been traversed,
+the index of the smallest element in the array is known.
+That value is swapped with the value at the first index.
+Then the process is repeated,
+starting from the next (second) element of the array,
+and so on until the array is totally sorted.</p>
+<h2 id="2-bubble-sort">2. Bubble sort</h2>
+<p>[<strong>5 points</strong>]</p>
+<p>In the bubble sort algorithm,
+you compare adjacent values in an array,
+swapping them if they are out-of-order.
+You move from one pair to the next adjacent pair
+(so the first pair is indices 0 and 1, the next is indices 1 and 2, <em>etc.</em>),
+swapping as needed until you get to the end of the array.
+At this point, the <em>last</em> element in the array should be the largest.
+Repeat the process until the array is sorted.
+There are different ways to tell if the array is sorted,
+but perhaps the simplest
+is to set a boolean variable to <code>#t</code> at the beginning of an iteration
+and setting it to <code>#f</code> if a swap is ever made.
+If the entire array is traversed without a swap,
+the array is sorted and you can stop!</p>
+<p>There are possible optimizations to this algorithm <em>e.g.</em>
+not checking locations that are known to have the correct values in them,
+but they aren't required for this problem.</p>
+<h2 id="general-advice">General advice</h2>
+<p>Even though you might think these are trivial functions to write,
+be aware that having to do them
+in the very limited <em>Typed Imp</em> language will require care.
+All <code>if</code> expressions must have "else" clauses,
+and the "then" and "else" clauses have to have the same type.
+Sometimes adding a judicious <code>#u</code> can be very helpful.
+Almost all <code>while</code> expressions have a <code>begin</code> expression in the body,
+and don't forget to update the loop counter!
+Make sure the sorting functions return <code>#u</code>;
+they are sorting in-place, after all.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Calling C "typed" is using the term very loosely.
+The type system of C is famously weak.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
@@ -1040,22 +1199,22 @@ See the <a href="admin/syllabus/">syllabus</a> for administrative information.</
       
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
-        
           
-          <a href="intro/welcome/" class="md-footer__link md-footer__link--next" aria-label="Next: Welcome to CS 131!">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Welcome to CS 131!
-              </div>
-            </div>
+          <a href="../partB_implementing_local_variables/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part B: Implementing local variables">
             <div class="md-footer__button md-icon">
               
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Part B: Implementing local variables
+              </div>
             </div>
           </a>
+        
         
       </nav>
     
@@ -1082,12 +1241,12 @@ See the <a href="admin/syllabus/">syllabus</a> for administrative information.</
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
       
-        <script src="js/mathjax.js"></script>
+        <script src="../../../js/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
