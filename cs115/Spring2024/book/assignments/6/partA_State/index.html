@@ -8,26 +8,28 @@
       
       
       
-        <link rel="canonical" href="https://mvanier.github.io/cs115/Spring2024/book/">
+        <link rel="canonical" href="https://mvanier.github.io/cs115/Spring2024/book/assignments/6/partA_State/">
       
       
+        <link rel="prev" href="../assignment6/">
       
-        <link rel="next" href="intro/welcome/">
+      
+        <link rel="next" href="../partB_Reader/">
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
     
     
       
-        <title>The CS 115 book (Spring 2024)</title>
+        <title>Part A: IORefs and state monads - The CS 115 book (Spring 2024)</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.50c56a3b.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,9 +48,9 @@
       
     
     
-      <link rel="stylesheet" href="css/extra.css">
+      <link rel="stylesheet" href="../../../css/extra.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -74,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#the-cs-115-book-winter-2024" class="md-skip">
+        <a href="#part-a-iorefs-and-state-monads-20-points" class="md-skip">
           Skip to content
         </a>
       
@@ -90,7 +92,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="The CS 115 book (Spring 2024)" class="md-header__button md-logo" aria-label="The CS 115 book (Spring 2024)" data-md-component="logo">
+    <a href="../../.." title="The CS 115 book (Spring 2024)" class="md-header__button md-logo" aria-label="The CS 115 book (Spring 2024)" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -110,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Part A: IORefs and state monads
             
           </span>
         </div>
@@ -221,7 +223,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="The CS 115 book (Spring 2024)" class="md-nav__button md-logo" aria-label="The CS 115 book (Spring 2024)" data-md-component="logo">
+    <a href="../../.." title="The CS 115 book (Spring 2024)" class="md-nav__button md-logo" aria-label="The CS 115 book (Spring 2024)" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -236,19 +238,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -257,7 +250,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -306,7 +298,7 @@
   
   
     <li class="md-nav__item">
-      <a href="intro/welcome/" class="md-nav__link">
+      <a href="../../../intro/welcome/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -327,7 +319,7 @@
   
   
     <li class="md-nav__item">
-      <a href="intro/software/" class="md-nav__link">
+      <a href="../../../intro/software/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -348,7 +340,7 @@
   
   
     <li class="md-nav__item">
-      <a href="intro/books/" class="md-nav__link">
+      <a href="../../../intro/books/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -369,7 +361,7 @@
   
   
     <li class="md-nav__item">
-      <a href="intro/papers/" class="md-nav__link">
+      <a href="../../../intro/papers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -434,7 +426,7 @@
   
   
     <li class="md-nav__item">
-      <a href="admin/syllabus/" class="md-nav__link">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -455,7 +447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="admin/collab/" class="md-nav__link">
+      <a href="../../../admin/collab/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -480,19 +472,21 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
@@ -506,7 +500,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             Assignments
@@ -557,7 +551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/1/assignment1/" class="md-nav__link">
+      <a href="../../1/assignment1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -578,7 +572,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/1/partA_exercises/" class="md-nav__link">
+      <a href="../../1/partA_exercises/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -599,7 +593,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/1/partB_pitfalls/" class="md-nav__link">
+      <a href="../../1/partB_pitfalls/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -620,7 +614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/1/partC_evaluation/" class="md-nav__link">
+      <a href="../../1/partC_evaluation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -686,7 +680,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/2/assignment2/" class="md-nav__link">
+      <a href="../../2/assignment2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -707,7 +701,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/2/background/" class="md-nav__link">
+      <a href="../../2/background/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -728,7 +722,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/2/partA_red_black_trees/" class="md-nav__link">
+      <a href="../../2/partA_red_black_trees/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -749,7 +743,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/2/partB_sets/" class="md-nav__link">
+      <a href="../../2/partB_sets/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -815,7 +809,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/3/assignment3/" class="md-nav__link">
+      <a href="../../3/assignment3/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -836,7 +830,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/3/partA_exercises/" class="md-nav__link">
+      <a href="../../3/partA_exercises/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -857,7 +851,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/3/partB_operators/" class="md-nav__link">
+      <a href="../../3/partB_operators/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -878,7 +872,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/3/partC_sparse_matrices/" class="md-nav__link">
+      <a href="../../3/partC_sparse_matrices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -944,7 +938,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/4/assignment4/" class="md-nav__link">
+      <a href="../../4/assignment4/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -965,7 +959,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/4/partA_exercises/" class="md-nav__link">
+      <a href="../../4/partA_exercises/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -986,7 +980,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/4/partB_standalone/" class="md-nav__link">
+      <a href="../../4/partB_standalone/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1007,7 +1001,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/4/partC_sudoku/" class="md-nav__link">
+      <a href="../../4/partC_sudoku/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1073,7 +1067,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/5/assignment5/" class="md-nav__link">
+      <a href="../../5/assignment5/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1094,7 +1088,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/5/partA_list_monad/" class="md-nav__link">
+      <a href="../../5/partA_list_monad/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1115,7 +1109,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/5/partB_puzzles/" class="md-nav__link">
+      <a href="../../5/partB_puzzles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1141,19 +1135,21 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
         
           
           <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
@@ -1167,7 +1163,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             Assignment 6: Fun with parsing
@@ -1181,7 +1177,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/6/assignment6/" class="md-nav__link">
+      <a href="../assignment6/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1199,10 +1195,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="assignments/6/partA_State/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Part A: IORefs and state monads
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1211,6 +1227,62 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-factio" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. factIO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-factstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. factState
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-fibio" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. fibIO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-fibstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. fibState
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1223,7 +1295,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/6/partB_Reader/" class="md-nav__link">
+      <a href="../partB_Reader/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1244,7 +1316,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/6/partC_Sexpr/" class="md-nav__link">
+      <a href="../partC_Sexpr/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1265,7 +1337,7 @@
   
   
     <li class="md-nav__item">
-      <a href="assignments/6/partD_XML/" class="md-nav__link">
+      <a href="../partD_XML/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1314,6 +1386,50 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-factio" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. factIO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-factstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. factState
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-fibio" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. fibIO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-fibstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. fibState
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1327,13 +1443,125 @@
                   
 
 
-<h1 id="the-cs-115-book-winter-2024">The CS 115 book: Winter 2024</h1>
-<p>This book is the official document repository
-for the Caltech CS 115 course <br/> (Functional Programming)
-for the Spring 2024 term.</p>
-<p>The course instructor is <a href="mailto:mvanier@cms.caltech.edu">Mike Vanier</a>.
-See the <a href="admin/syllabus/">syllabus</a> for administrative information.</p>
-<p>Please read <a href="intro/welcome/">this page</a> for an overview of the course.</p>
+<h1 id="part-a-iorefs-and-state-monads-20-points">Part A: <code>IORef</code>s and state monads (20 points)</h1>
+<p>In this section, you will be writing functions in a stateful style
+using either the <code>IO</code> monad or a state monad.
+Here are the definitions of while loops for each monad,
+which you should include in your assignment submission:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- While loop in the IO monad.</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nf">whileIO</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">IO</span><span class="w"> </span><span class="kt">Bool</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">IO</span><span class="w"> </span><span class="nb">()</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">IO</span><span class="w"> </span><span class="nb">()</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nf">whileIO</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="ow">=</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="kr">do</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="ow">&lt;-</span><span class="w"> </span><span class="n">test</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">     </span><span class="n">when</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">(</span><span class="kr">do</span><span class="w"> </span><span class="n">block</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">                </span><span class="n">whileIO</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="n">block</span><span class="p">)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1">-- While loop in a state monad.</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nf">whileState</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Bool</span><span class="p">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">State</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="nb">()</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">State</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="nb">()</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="nf">whileState</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="n">body</span><span class="w"> </span><span class="ow">=</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="kr">do</span><span class="w"> </span><span class="n">s0</span><span class="w"> </span><span class="ow">&lt;-</span><span class="w"> </span><span class="n">get</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">     </span><span class="n">when</span><span class="w"> </span><span class="p">(</span><span class="n">test</span><span class="w"> </span><span class="n">s0</span><span class="p">)</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">          </span><span class="p">(</span><span class="kr">do</span><span class="w"> </span><span class="n">body</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">              </span><span class="n">whileState</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="n">body</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Note that somewhere in your code
+you will need to import the modules
+<code>Control.Monad</code>, <code>Control.Monad.State</code>, and <code>Data.IORef</code>
+for this code to work.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As mentioned previously, if you want to test your code in <code>ghci</code>,
+you have to type this line before loading in your code:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ghci&gt; :set -package mtl
+</span></code></pre></div>
+<p>Otherwise,
+<code>ghci</code> won't be able to find the <code>Control.Monad.State</code> module.</p>
+</div>
+<p>You should use either <code>whileIO</code> or <code>whileState</code>
+in all of the functions in this section. Do not use recursion!
+(If you do, you will get no credit.)
+Obviously, use <code>whileIO</code> for the functions using the <code>IO</code> monad
+and <code>whileState</code> for the functions using the <code>State</code> monad.</p>
+<h2 id="1-factio">1. <code>factIO</code></h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Write a function called <code>factIO</code> which computes factorials
+and works in the <code>IO</code> monad.</p>
+<p>The type signature of this function will be:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nf">factIO</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Integer</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">IO</span><span class="w"> </span><span class="kt">Integer</span>
+</span></code></pre></div>
+<p>Use <code>IORef</code>s to store all the local variables of the function.
+There should be two local variables,
+one representing a counter and the other the running total.
+The counter is initialized with the input to <code>factIO</code>
+and is decremented by 1 at each iteration until it hits zero.
+The running total is initialized with 1
+and is multiplied by the counter value at each iteration.
+At the end, the running total will have the desired factorial.
+This is returned (using the <code>return</code> method of the <code>IO</code> monad)
+as the result.</p>
+<p>Signal an error if the input is invalid (<em>i.e.</em> less than zero).
+This applies to all of the functions in this section.</p>
+<h2 id="2-factstate">2. <code>factState</code></h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Write a function called <code>factState</code> that computes factorials
+and uses a state monad.</p>
+<p>The type signature of the function will be:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nf">factState</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Integer</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Integer</span>
+</span></code></pre></div>
+<p>The state type will be <code>(Integer, Integer)</code>;
+the first <code>Integer</code> will represent the counter
+and the second the running total.
+This function is actually shorter (less than 10 lines)
+and easier to write than the <code>factIO</code> function.
+(It also has a better type signature.)</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>You will need to define a state transformer "helper value"
+(with type <code>State (Integer, Integer) Integer</code>)
+which will actually embody the computation.</p>
+</div>
+<h2 id="3-fibio">3. <code>fibIO</code></h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Write a function called <code>fibIO</code> that computes fibonacci numbers
+and uses the <code>IO</code> monad.
+This fibonacci function should have
+<code>fib(0) == 0</code> and <code>fib(1) == 1</code>
+and so on.</p>
+<p>The type signature of the function will be:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nf">fibIO</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Integer</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">IO</span><span class="w"> </span><span class="kt">Integer</span>
+</span></code></pre></div>
+<p>Again, use <code>IORef</code>s to hold all the local variables for the function.
+This time, there are three local variables:
+one represents the count,
+and two represent the last two fibonacci numbers computed.
+Initialize the count with the input to the <code>fibIO</code> function
+and decrement it by 1 at each iteration;
+when it hits zero, the desired fibonacci number
+is in the smaller of the other two variables.
+The non-counter variables get increased on each iteration
+according to the usual fibonacci rule.
+Don't forget to check the input for errors.</p>
+<h2 id="4-fibstate">4. <code>fibState</code></h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Write a function called <code>fibState</code>
+that computes fibonacci numbers and uses a state monad.
+The fibonacci function is as described above.</p>
+<p>The type signature of the function will be:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nf">fibState</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Integer</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Integer</span>
+</span></code></pre></div>
+<p>The state type will be <code>(Integer, Integer, Integer)</code>;
+the first two <code>Integer</code>s represent the last two fibonacci numbers counted
+and the final <code>Integer</code> represents a counter
+which starts equal to the input to <code>fibState</code>
+and is decremented by 1 at each iteration until it hits zero.
+The desired fibonacci number
+will then be in the smaller of the other two <code>Integer</code> values in the state.
+Again, this function is quite short (less than 10 lines).</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Again, you will need to define a state transformer "helper value"
+(this time, with type <code>State (Integer, Integer, Integer) Integer</code>)
+which will actually embody the computation.</p>
+</div>
 
 
 
@@ -1368,15 +1596,31 @@ See the <a href="admin/syllabus/">syllabus</a> for administrative information.</
       
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
+          
+          <a href="../assignment6/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Overview
+              </div>
+            </div>
+          </a>
+        
         
           
-          <a href="intro/welcome/" class="md-footer__link md-footer__link--next" aria-label="Next: Welcome to CS 115!">
+          <a href="../partB_Reader/" class="md-footer__link md-footer__link--next" aria-label="Next: Part B: Deriving the reader monad">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Welcome to CS 115!
+                Part B: Deriving the reader monad
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1410,12 +1654,12 @@ See the <a href="admin/syllabus/">syllabus</a> for administrative information.</
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
       
-        <script src="js/mathjax.js"></script>
+        <script src="../../../js/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
