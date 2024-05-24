@@ -8,13 +8,11 @@
       
       
       
-        <link rel="canonical" href="https://mvanier.github.io/cs131/Spring2024/book/assignments/1/partA/">
+        <link rel="canonical" href="https://mvanier.github.io/cs131/Spring2024/book/assignments/5/partB_type_checking/">
       
       
-        <link rel="prev" href="../assignment1/">
+        <link rel="prev" href="../partA_substitution/">
       
-      
-        <link rel="next" href="../partB/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -22,7 +20,7 @@
     
     
       
-        <title>Part A: Programming in Imp - The CS 131 book (Spring 2024)</title>
+        <title>Part B: Implementing the type checker - The CS 131 book (Spring 2024)</title>
       
     
     
@@ -76,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#part-a-programming-in-imp-15-points" class="md-skip">
+        <a href="#part-b-implementing-the-type-checker-50-points" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Part A: Programming in Imp
+              Part B: Implementing the type checker
             
           </span>
         </div>
@@ -450,21 +448,19 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
@@ -478,7 +474,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Assignment 1: The Imp language
@@ -492,7 +488,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../assignment1/" class="md-nav__link">
+      <a href="../../1/assignment1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -510,30 +506,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Part A: Programming in Imp
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../1/partA/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -542,71 +518,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-sigma" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. sigma
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-exp-and-log" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. exp and log
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-fact" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. fact
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-fib" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. fib
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-binary" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. binary
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -619,7 +530,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../partB/" class="md-nav__link">
+      <a href="../../1/partB/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -640,7 +551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../partC/" class="md-nav__link">
+      <a href="../../1/partC/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1049,19 +960,21 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
           <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
@@ -1075,7 +988,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             Assignment 5: The Typed uScheme language
@@ -1089,7 +1002,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../5/assignment5/" class="md-nav__link">
+      <a href="../assignment5/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1110,7 +1023,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../5/partA_substitution/" class="md-nav__link">
+      <a href="../partA_substitution/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1128,10 +1041,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../5/partB_type_checking/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Part B: Implementing the type checker
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1140,6 +1073,86 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-typecheck_expr" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. typecheck_expr
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. typecheck_expr">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lambda" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lambda
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typeapply" class="md-nav__link">
+    <span class="md-ellipsis">
+      TypeApply
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typelambda" class="md-nav__link">
+    <span class="md-ellipsis">
+      TypeLambda
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-appears_unprotected_in" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. appears_unprotected_in
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-typecheck_valrec" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. typecheck_valrec
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1179,45 +1192,60 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-sigma" class="md-nav__link">
+  <a href="#1-typecheck_expr" class="md-nav__link">
     <span class="md-ellipsis">
-      1. sigma
+      1. typecheck_expr
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. typecheck_expr">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lambda" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lambda
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typeapply" class="md-nav__link">
+    <span class="md-ellipsis">
+      TypeApply
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typelambda" class="md-nav__link">
+    <span class="md-ellipsis">
+      TypeLambda
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-appears_unprotected_in" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. appears_unprotected_in
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-exp-and-log" class="md-nav__link">
+  <a href="#3-typecheck_valrec" class="md-nav__link">
     <span class="md-ellipsis">
-      2. exp and log
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-fact" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. fact
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-fib" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. fib
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-binary" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. binary
+      3. typecheck_valrec
     </span>
   </a>
   
@@ -1238,81 +1266,152 @@
                   
 
 
-<h1 id="part-a-programming-in-imp-15-points">Part A: Programming in <em>Imp</em> (15 points)</h1>
-<p>In this section
-you will write a few functions in the base <em>Imp</em> language
-(the version we provide to you, with no alterations)
-to familiarize yourself with how it works.
-This code will go into the file <code>lab1a.imp</code>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>You are allowed to write helper functions
-in addition to the functions described.</p>
-<p>Since <em>Imp</em> doesn't (yet) have local variables
-other than function arguments
-(you'll implement this in part B),
-if you need them you can either</p>
+<h1 id="part-b-implementing-the-type-checker-50-points">Part B: Implementing the type checker (50 points)</h1>
+<p>The code you will write for this section is in the <code>Typecheck</code> module,
+which consists of the files <code>typecheck.ml</code> and <code>typecheck.mli</code>. You
+will only have to modify the <code>typecheck.ml</code> file. In that file you are
+provided with a partial implementation of the type checker. You have to
+complete the definition of the following functions:</p>
 <ul>
 <li>
-<p>define a global variable instead</p>
+<p><code>typecheck_expr</code></p>
 </li>
 <li>
-<p>write a helper function with extra arguments
-which you use as local variables</p>
+<p><code>appears_unprotected_in</code></p>
+</li>
+<li>
+<p><code>typecheck_valrec</code></p>
 </li>
 </ul>
-<p>The second strategy should be familiar from CS 4.
-Note that you can change the values of function arguments
-using the <code>set</code> form.</p>
+<p>We describe these three functions below.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Makes sure that you read through the code that is provided for you!
+There are lots of useful helper functions defined that will make your
+code much more concise and understandable if you use them. In
+particular, the <code>assert_types_equal</code> function is extremely useful.</p>
 </div>
-<h2 id="1-sigma">1. <code>sigma</code></h2>
-<p>[<strong>3 points</strong>]</p>
-<p>Define a function <code>sigma</code> satisfying
-<code>(sigma m n) = m + (m+1) + ... + n</code>.
-When <code>m &gt; n</code>, the behavior of <code>sigma</code> is unspecified;
-your implementation may do anything you like.
-Write two versions of this function.
-<code>sigma1</code> will work recursively
-while <code>sigma2</code> will work imperatively using a <code>while</code> loop.</p>
-<h2 id="2-exp-and-log">2. <code>exp</code> and <code>log</code></h2>
-<p>[<strong>3 points</strong>]</p>
-<p>Define the functions <code>exp</code> and <code>log</code>.
-When base <code>b</code> and exponent <code>n</code> are nonnegative, <code>(exp b n) = b^n</code>,
-and when <code>b &gt; 1</code> and <code>m &gt; 0</code>,
-<code>(log b m)</code> is the smallest integer <code>n</code> such that <code>b^(n + 1) &gt; m</code>.
-(We're using the <code>^</code> symbol to mean "to the power of" here.)
-On inputs that don't satisfy the preconditions,
-your implementation may do anything you like
-&mdash; even fail to terminate.</p>
-<h2 id="3-fact">3. <code>fact</code></h2>
-<p>[<strong>3 points</strong>]</p>
-<p>Define a function <code>fact</code> such that <code>(fact n)</code> is the factorial of <code>n</code>.
-Define two versions of this function.
-The first (<code>fact1</code>) will be a simply-recursive function
-that is familiar from the definition of factorials.
-The second (<code>fact2</code>) will be an imperative function using a <code>while</code> loop.</p>
-<h2 id="4-fib">4. <code>fib</code></h2>
-<p>[<strong>3 points</strong>]</p>
-<p>Define a function <code>fib</code> such that <code>(fib n)</code> is the <code>n</code>th Fibonacci number.
-The Fibonacci numbers are a sequence of numbers defined by these laws:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>fib 0 = 0
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>fib 1 = 1
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>fib n = fib (n - 1) + fib (n - 2)  when n &gt; 1
+<h2 id="1-typecheck_expr">1. <code>typecheck_expr</code></h2>
+<p>[<strong>20 points</strong>]</p>
+<p>This is the main type checking function. It takes in three arguments:</p>
+<ol>
+<li>
+<p>a kind environment mapping type names to their kinds (also known as
+   <span class="arithmatex">\(\Delta\)</span>)</p>
+</li>
+<li>
+<p>a type environment mapping variable names to their types (also known
+   as <span class="arithmatex">\(\Gamma\)</span>)</p>
+</li>
+<li>
+<p>an expression to be type checked</p>
+</li>
+</ol>
+<p>and returns the type of the expression. If there is a type error, a
+suitable exception is raised.</p>
+<p>Most of the cases are just translations into code of the operational
+semantics of type checking described in lecture 17. There are a few
+cases that are a bit more subtle, so we discuss them here.</p>
+<h3 id="lambda"><code>Lambda</code></h3>
+<p>Remember that all the formal argument types are required to have the
+kind <code>*</code>.</p>
+<h3 id="typeapply"><code>TypeApply</code></h3>
+<p>This case can (and should) be written in a single line by taking
+advantage of the <code>Subst</code> module.</p>
+<h3 id="typelambda"><code>TypeLambda</code></h3>
+<p>This is the only slightly tricky case. The operational semantics for
+<code>TypeLambda</code> given in lecture 17 talks about picking new type
+variables if any of the type variables exist in the type environment
+<span class="arithmatex">\(\Gamma\)</span>. That makes sense in an operational semantics, because we are
+describing how to derive a proof of the type-correctness of a
+<code>type-lambda</code> expression given the correctness of its parts. Here we
+are working in the opposite direction; we are given a particular
+<code>type-lambda</code> and want to know what its type is. Instead of trying to
+rename it to be compatible with the type environment, we choose a
+simpler solution and simply don't allow <code>type-lambda</code> expressions
+whose type variables are present in <span class="arithmatex">\(\Gamma\)</span>.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> If any of the
+<code>type-lambda</code> type variables are present in <span class="arithmatex">\(\Gamma\)</span>, simply raise a
+type error exception with the error message
+<code>"type-lambda type variables are free in type environment"</code>. Then the
+programmer can manually rename the type variables as necessary so that
+everything type checks.</p>
+<p>You'll find that the <code>free_tyvars_gamma</code> function from the <code>Subst</code>
+module is useful here.</p>
+<p>The other subtle issue here is that when checking the body of a
+<code>type-lambda</code> expression, the kind environment <span class="arithmatex">\(\Delta\)</span> must be
+extended with the type variable names, each of which must have the kind
+<code>*</code>. (This kind is represented in the code as <code>Type</code>.) The body is
+then typechecked in this new kind environment, and then the type of the
+entire <code>type-lambda</code> expression is returned as a <code>ForAll</code> type.</p>
+<h2 id="2-appears_unprotected_in">2. <code>appears_unprotected_in</code></h2>
+<p>[<strong>15 points</strong>]</p>
+<p>We know that the <code>val-rec</code> definition form is almost always used to
+define a recursive function, where the function being defined is
+referenced inside the body of the definition. However, nothing actually
+requires us to do that. We could use <code>val-rec</code> to define simple
+variables, for instance:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">(</span><span class="k">val</span><span class="o">-</span><span class="k">rec</span> <span class="kt">int</span> <span class="n">x</span> <span class="mi">10</span><span class="o">)</span>
 </span></code></pre></div>
-<p>Write two versions of this function.
-<code>fib1</code> will be the usual tree-recursive function
-that corresponds to the definition,
-but it will be extremely slow for large input values.
-<code>fib2</code> will be an imperative function using a <code>while</code> loop
-and will be fast.</p>
-<h2 id="5-binary">5. <code>binary</code></h2>
-<p>[<strong>3 points</strong>]</p>
-<p>Define a function <code>binary</code>
-such that <code>(binary m)</code> is the number whose decimal representation
-looks like the binary representation of <code>m</code>.
-For example <code>(binary 12) = 1100</code>,
-since <code>1100</code><sub><code>2</code></sub> = <code>12</code><sub><code>10</code></sub>.
-You can assume that the input number <code>m</code> is non-negative.</p>
+<p>and there's nothing wrong with that. However, we should disallow uses of
+the name being defined (here, <code>x</code>) if they are used outside of a
+<code>lambda</code> expression, since then you have a self-referential definition
+which can never terminate when evaluated. That would be something like
+this:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">(</span><span class="k">val</span><span class="o">-</span><span class="k">rec</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">(+</span> <span class="n">x</span> <span class="mi">1</span><span class="o">))</span>
+</span></code></pre></div>
+<p>We refer to errors of this sort as the defined name (here, <code>x</code>)
+appearing "unprotected" in the body of the definition (here,
+<code>(+ x 1)</code>). The "unprotected" means "not occurring inside a <code>lambda</code>
+expression" since a <code>lambda</code> expression delays evaluation of the
+name.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></p>
+<p>We define the function <code>appears_unprotected_in</code> which takes two
+arguments: a variable name and a (value) expression. It returns <code>true</code>
+if the name appears unprotected in the expression, and otherwise returns
+<code>false</code>. The basic rules for this are:</p>
+<ol>
+<li>
+<p>any name inside a <code>lambda</code> expression is protected</p>
+</li>
+<li>
+<p>any literal has no unprotected names inside it</p>
+</li>
+<li>
+<p>a name is unprotected in a variable if the variable name is the same
+   as the name</p>
+</li>
+<li>
+<p>a name is unprotected in any other expression with subexpressions if
+   it's unprotected in <em>any</em> of the subexpressions</p>
+</li>
+</ol>
+<p>This code is a straightforward case analysis on the structure of value
+expressions. There is an extensive test suite to make sure that you
+don't miss any cases. This function is (obviously) going to be used in
+the <code>val-rec</code> type checking code, which we now turn to.</p>
+<h2 id="3-typecheck_valrec">3. <code>typecheck_valrec</code></h2>
+<p>[<strong>15 points</strong>]</p>
+<p>This function type checks <code>val-rec</code> expressions. It's a simple code
+translation of the operational semantics of <code>val-rec</code> given in lecture
+17. A partial implementation is provided.</p>
+<p>[End of assignment]</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>You might wonder how "real" languages handle this problem.
+You should keep on wondering, since almost no "real" language
+I know of actually has a <code>type-lambda</code> expression
+(except Scala, and Scala is pretty complicated even without type lambdas).
+Instead, real languages use <em>type inference</em>
+to get rid of the need for <code>type-lambda</code> expressions.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>Note that this doesn't rule out definitions of functions
+which never terminate,
+but it does rule out some obviously incorrect cases.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
@@ -1348,7 +1447,7 @@ You can assume that the input number <code>m</code> is non-negative.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../assignment1/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
+          <a href="../partA_substitution/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part A: Implementing capture-avoiding substitution">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1358,27 +1457,11 @@ You can assume that the input number <code>m</code> is non-negative.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Overview
+                Part A: Implementing capture-avoiding substitution
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../partB/" class="md-footer__link md-footer__link--next" aria-label="Next: Part B: Extending Imp">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Part B: Extending Imp
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
