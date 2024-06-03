@@ -64,7 +64,7 @@
 ---
 ## Laziness: the good
 
-* Lazy evaluation us to use infinite lists when appropriate
+* Lazy evaluation allows us to use infinite lists when appropriate
   * Haskell lists are called "streams" in most other languages 
 
 ---
@@ -100,7 +100,7 @@ iter n r = iter (n - 1) (n * r)
 </code></pre>
 
 * Recall: a "strict" argument x is one in which <br/> `f $\bot$ = $\bot$`  
-  * where $\bot$ is "bottom" (a diverging value)
+  * where $\bot$ is "bottom" (an infinite loop)
 
 * Intuitively: a strict argument must be evaluated
   for the evaluation of the function as a whole to proceed
@@ -672,7 +672,7 @@ ghci&gt; let lst' = force lst in head lst'
 </code></pre>
 
 * _This_ works, because:
-  * `head lst` forces evaluation of `lst'`,
+  * `head lst'` forces evaluation of `lst'`,
   * which will then force evaluation of the entire list to NF via `force`,
   * and the `undefined` value at the end of the list
     caused an exception to be signalled
