@@ -1370,20 +1370,61 @@ if the name appears unprotected in the expression, and otherwise returns
 <code>false</code>. The basic rules for this are:</p>
 <ol>
 <li>
-<p>any name inside a <code>lambda</code> expression is protected</p>
+<p>Any name inside a <code>lambda</code> expression is protected.</p>
 </li>
 <li>
-<p>any literal has no unprotected names inside it</p>
+<p>Any literal has no unprotected names inside it.</p>
 </li>
 <li>
-<p>a name is unprotected in a variable if the variable name is the same
-   as the name</p>
+<p>A <code>let</code> or <code>let*</code> expression's bound variables are not unprotected
+   inside the scope of the bound variables.</p>
+<p>For example, in this expression:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>(val-rec int x (let ([x 0]) x))
+</span></code></pre></div>
+<p>the <code>x</code> in the <code>(let ([x 0]) x)</code> is not the same
+ as the first <code>x</code> (the name of the function),
+ since it is bound in the <code>let</code> expression
+ (<em>i.e.</em> it's inside the scope of the <code>let</code>).
+ This function is equivalent to</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>(val-rec int x 0)
+</span></code></pre></div>
+<p>which shows that the <code>x</code> function doesn't refer to itself
+ outside of a <code>lambda</code> expression.</p>
 </li>
 <li>
-<p>a name is unprotected in any other expression with subexpressions if
-   it's unprotected in <em>any</em> of the subexpressions</p>
+<p>A name is unprotected in a variable
+   if the variable name is the same as the name.</p>
+</li>
+<li>
+<p>A name is unprotected in any other expression with subexpressions
+   if it's unprotected in <em>any</em> of the subexpressions.</p>
 </li>
 </ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some care is required when handling <code>let</code> and <code>let*</code> expressions.
+For <code>let</code>, the algorithm goes like this:</p>
+<ol>
+<li>
+<p>If the name is unprotected in any of the binding expressions,
+it's unprotected in the entire <code>let</code>.</p>
+</li>
+<li>
+<p>Otherwise,
+if the name is the same as one of the binding names of the <code>let</code>, 
+it's <em>not</em> unprotected in the entire <code>let</code>
+(because the <code>let</code>-binding shadows the name).</p>
+</li>
+<li>
+<p>Otherwise, check the body of the <code>let</code>.</p>
+</li>
+</ol>
+<p>For <code>let*</code>, treat the first binding like a one-binding <code>let</code>,
+and for the body, create a new <code>let*</code> expression
+containing all but the first binding and recursively check that.
+(This is equivalent to desugaring the <code>let*</code> expression
+to a sequence of nested <code>let</code> expressions.)</p>
+</div>
 <p>This code is a straightforward case analysis on the structure of value
 expressions. There is an extensive test suite to make sure that you
 don't miss any cases. This function is (obviously) going to be used in
