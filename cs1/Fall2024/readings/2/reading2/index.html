@@ -1,0 +1,1266 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs1/Fall2024/book/2/reading2/">
+      
+      
+        <link rel="prev" href="../../1/reading1/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>Introduction to Python, part 2 - The CS 1 book (Fall 2024)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reading-2-introduction-to-python-part-2" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="The CS 1 book (Fall 2024)" class="md-header__button md-logo" aria-label="The CS 1 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 1 book (Fall 2024)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Introduction to Python, part 2
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="The CS 1 book (Fall 2024)" class="md-nav__button md-logo" aria-label="The CS 1 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    The CS 1 book (Fall 2024)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Readings
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Readings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/reading1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to Python, part 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Introduction to Python, part 2
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to Python, part 2
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variables-and-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variables and assignment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Variables and assignment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-name-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variable name rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assignments-and-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assignments and expressions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#calling-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calling functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defining-new-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Defining new functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#local-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local variables
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#global-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Global variables
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comments
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variables-and-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variables and assignment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Variables and assignment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-name-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variable name rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assignments-and-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assignments and expressions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#calling-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calling functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defining-new-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Defining new functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#local-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local variables
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#global-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Global variables
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comments
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="reading-2-introduction-to-python-part-2">Reading 2: Introduction to Python, part 2</h1>
+<blockquote>
+<p><em>Science is what we understand well enough to explain to a computer.<br/>
+Art is everything else we do.</em><br/>
+- Donald Knuth</p>
+</blockquote>
+<h2 id="topics">Topics</h2>
+<p>This reading continues our crash course
+on the most basic aspects of Python
+started in the last reading.</p>
+<h2 id="variables-and-assignment">Variables and assignment</h2>
+<p>Using Python as a calculator is useful but very limited.
+Often we want to give names to interesting values,
+especially when we want to use them more than once.
+Sometimes we also want to change those values.
+In Python (and in most programming languages)
+we do this using <strong>variables</strong> and <strong>assignment statements</strong>.
+A variable is a name that stands for a value (like a variable in algebra).
+An assignment statement is how we associate a value with a name.
+For instance:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">width</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">width</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="go">10</span>
+</span></code></pre></div>
+<p>Here, <code>width</code> is a variable and <code>10</code> is the value that it stands for.
+When you type <code>width</code> in the interpreter, you get <code>10</code> back.
+The <code>=</code> sign is the <strong>assignment operator</strong> that does the actual assignment.</p>
+<p>Notice that when you type an assignment statement
+into the Python interpreter, nothing is printed.
+When you type a variable name (or any expression),
+it evaluates it (looks up its value),
+and prints it to the terminal.</p>
+<div class="admonition note">
+<p class="admonition-title">Assignment (<code>=</code>) vs. equality (<code>==</code>)</p>
+<p>The statement <code>width = 10</code> is an assignment, not an equality comparison!
+If you want to compare <code>width</code> with <code>10</code>
+to see if <code>width</code> currently equals <code>10</code>,
+you would have to type <code>width == 10</code>.
+You'd probably also want to use an <code>if</code> statement.
+We'll get to all of this in a few readings.</p>
+</div>
+<p>If you assign to a variable again, it changes the value.</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">width</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">width</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="go">10</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">width</span> <span class="o">=</span> <span class="mi">42</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">width</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="go">42</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">width</span> <span class="o">=</span> <span class="s1">&#39;hi there!&#39;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">width</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="go">&#39;hi there!&#39;</span>
+</span></code></pre></div>
+<p>Variable names don't have to be declared before assigning to them,
+and they don't have to only store data of a single type
+(unlike many other programming languages).
+Here, we see the variable <code>width</code> which contains the integer <code>10</code>,
+then <code>42</code>, then the string <code>'hi there!'</code>.
+(We'll learn more about strings in the next reading.)
+Of course, <code>'hi there!'</code> doesn't make sense as a width,
+but Python doesn't care if your names make sense.
+(In general, though,
+assigning a different kind of data to a variable is usually a bad idea.)</p>
+<p>Once you've defined a variable, you can use it in expressions:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">pi</span> <span class="o">=</span> <span class="mf">3.1415926</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">pi</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="go">3.1415926</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="mi">4</span> <span class="o">*</span> <span class="n">pi</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="go">12.5663704</span>
+</span></code></pre></div>
+<h3 id="variable-name-rules">Variable name rules</h3>
+<p>Not all names can be used as variable names:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">b1</span> <span class="o">=</span> <span class="mi">20</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">this_is_a_name</span> <span class="o">=</span> <span class="mi">30</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="o">&amp;*%</span><span class="err">$</span><span class="mi">2</span><span class="n">foo</span><span class="err">?</span> <span class="o">=</span> <span class="mi">40</span>   <span class="c1"># WRONG</span>
+</span></code></pre></div>
+<p>The first three names are valid variable names, but the last isn't.</p>
+<p>Here are the rules for variable names (also known as <strong>identifiers</strong>):</p>
+<ul>
+<li>
+<p>Variable names can only consist
+of the letters <code>a</code>-<code>z</code>, <code>A</code>-<code>Z</code>, the digits <code>0</code>-<code>9</code>,
+and the underscore (<code>_</code>).</p>
+</li>
+<li>
+<p>A variable name needs to have one or more characters.</p>
+</li>
+<li>
+<p>Variable names can't start with a digit
+(this avoids confusion with numbers).</p>
+</li>
+<li>
+<p>Variable names can't contain spaces.
+(Beginning programmers often find this an annoying restriction.
+<em>Tip</em>: if you want a space in a variable name,
+use the underscore (<code>_</code>) character instead.)</p>
+</li>
+<li>
+<p>The case of letters is significant:
+<code>Foo</code> is a different identifier than <code>foo</code>.</p>
+</li>
+</ul>
+<h3 id="assignments-and-expressions">Assignments and expressions</h3>
+<p>The rule for evaluating an assignment statement is:</p>
+<ul>
+<li>Evaluate the expression on the right hand side of the <code>=</code> sign.</li>
+<li>Assign that result to the variable name
+on the left hand side of the <code>=</code> sign.</li>
+</ul>
+<p>Here, an <strong>expression</strong> can be a plain number, another variable,
+an arithmetic expression, or some combination of these.
+An expression can also be a function call (see below)
+and there are other kinds of expressions we'll meet later.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Basically, some piece of Python code that has a value is an "expression".
+If it <em>does</em> something (like an assignment),
+it's usually not an expression but a <strong>statement</strong>.
+Don't worry if this seems fuzzy to you now;
+it will get clearer as we go along
+and you learn about different kinds of expressions and statements.
+There are also some ambiguous cases:
+a <code>print</code> function call is technically an expression,
+but it also does something (printing).</p>
+</div>
+<p>So if you have an assignment statement
+with an arithmetic expression on the right-hand side,
+you evaluate the expression before doing the assignment:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="go"># Evaluate 2 + 3 to get 5, then assign 5 to the variable &quot;a&quot;.</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="go">5</span>
+</span></code></pre></div>
+<p>You can use the results of previous assignments in subsequent ones:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">5</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="go">60</span>
+</span></code></pre></div>
+<p>You can even use the result of a previous assignment
+when reassigning the same variable:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">100</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="go">110</span>
+</span></code></pre></div>
+<p>You might find statements like <code>a = a + 100</code> to be nonsensical,
+but remember that the <code>=</code> operator doesn't compare for equality,
+it assigns the result of evaluating the right-hand side
+to the variable on the left hand side.
+So <code>a = a + 100</code> means "take the old value of <code>a</code>,
+add <code>100</code> to it and make that the new value of <code>a</code>".</p>
+<h2 id="types">Types</h2>
+<p>Data in programming languages is subdivided into different "types":</p>
+<ul>
+<li>integers: <code>0</code>, <code>-43</code>,<code>1001</code></li>
+<li>floating-point numbers:  <code>3.1415</code>, <code>2.718</code>, <code>1.234e-5</code></li>
+<li>boolean values: <code>True</code> <code>False</code></li>
+<li>strings:  <code>'foobar'</code> <code>'Hello, world!'</code></li>
+<li>and many others</li>
+</ul>
+<p>Roughly speaking,
+a <strong>type</strong> is a kind of data that is represented
+a particular way inside the computer.
+All integers are represented in pretty much the same way as other integers,
+and all strings are represented in the same way as other strings,
+but integers and strings are represented differently.
+(Don't worry if this seems vague to you now.)</p>
+<p>Types are important because many operations/functions
+can only work on specific types.
+For instance, you can multiply two numbers together
+but you can't multiply two strings.</p>
+<p>Python has these abbreviated names for types:</p>
+<table>
+<thead>
+<tr>
+<th>English name</th>
+<th>Python name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>integers</td>
+<td><code>int</code></td>
+</tr>
+<tr>
+<td>floating-point numbers</td>
+<td><code>float</code></td>
+</tr>
+<tr>
+<td>boolean values</td>
+<td><code>bool</code></td>
+</tr>
+<tr>
+<td>strings</td>
+<td><code>str</code></td>
+</tr>
+</tbody>
+</table>
+<p>(as well as many others).</p>
+<p>Python variables can hold data of any type.
+Unlike many computer languages,
+you don't have to declare the type a variable can hold.
+As we saw above, the same variable
+can even hold values of different types at different times
+(though this is usually bad practice).</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">bird</span> <span class="o">=</span> <span class="s1">&#39;parrot&#39;</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">weight</span> <span class="o">=</span> <span class="mf">10.3245</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">income</span> <span class="o">=</span> <span class="mi">65000</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">is_ready</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">bird</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="go">&#39;parrot&#39;</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">bird</span> <span class="o">=</span> <span class="mi">42</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">bird</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="go">42</span>
+</span></code></pre></div>
+<p>There is much more to say about types,
+and we will meet many more types as we go along.</p>
+<h2 id="functions">Functions</h2>
+<p>Computer programs are primarily made up of <strong>functions</strong>.
+A function (like the math equivalent for which it's named)
+is something that takes in argument values
+and computes and returns a result.
+Unlike in math,
+a function in a programming language can also do other things:
+print to the terminal, send an email,
+create and display an image, and so on.</p>
+<p>Functions have to be <strong>defined</strong> and then <strong>called</strong>
+with appropriate arguments.</p>
+<h3 id="calling-functions">Calling functions</h3>
+<p>Some functions are built-in to Python.
+For instance, <code>abs</code> is a function
+that computes absolute values of numbers,
+<code>min</code> computes the minimum of two numbers,
+<code>max</code> the maximum, and so on.</p>
+<p>You call a function using this syntax:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="nb">abs</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="go">5</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="nb">min</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="go">3</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="nb">max</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="go">5</span>
+</span></code></pre></div>
+<p><strong>Syntax</strong> means the rules by which
+expressions and statements in the programming language are written.
+Every programming language has its own unique syntax,
+though there are lots of similarities between languages.</p>
+<p>In Python, the syntax for calling functions
+is the same as the usual math notation:
+the name of the function, followed by the argument list in parentheses.
+Multiple arguments in the argument list are separated by commas.</p>
+<p>Arguments can be either literal values (like numbers or strings),
+variables, or other expressions.
+For instance:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="nb">max</span><span class="p">(</span><span class="mi">5</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span> <span class="err">–</span> <span class="mi">6</span><span class="p">)</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="go">8</span>
+</span></code></pre></div>
+<p>The way this works is that Python
+has the following <strong>evaluation rule</strong> for function calls:</p>
+<ul>
+<li>
+<p>First, evaluate all the arguments to the function.</p>
+<ul>
+<li>If the argument is a number, it's already evaluated.</li>
+<li>If the argument is a variable, look up the variable's value.</li>
+<li>If the argument is an expression,
+evaluate the expression to get its value.</li>
+</ul>
+</li>
+<li>
+<p>Then call the function with the argument values as the function's arguments.</p>
+</li>
+</ul>
+<p>Here, the function is the <code>max</code> (maximum) function.
+The first argument is the expression <code>5 + 3</code>
+which obviously evaluates to <code>8</code>.
+The second argument is the expression <code>8 - 6</code>
+which obviously evaluates to <code>2</code>.
+So the result is <code>max(8, 2)</code> or just <code>8</code>.</p>
+<p>You can use function calls in expressions:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mi">5</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span> <span class="err">–</span> <span class="mi">6</span><span class="p">)</span> <span class="o">-</span> <span class="mi">4</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="go">12</span>
+</span></code></pre></div>
+<p>You can even have function calls inside other function calls:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="go">6</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="nb">min</span><span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="nb">max</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="go">7</span>
+</span></code></pre></div>
+<p>In this case,
+remember that the inner function calls get evaluated
+before the outer one.
+(This is the same evaluation rule,
+since a function call is also an expression.)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Don't think that you need to memorize these evaluation rules.
+For the most part, they should be intuitive;
+Python pretty much does what you would expect it to most of the time.
+We're being very explicit about these rules mainly for completeness.</p>
+</div>
+<h3 id="defining-new-functions">Defining new functions</h3>
+<p>A <strong>function call</strong> is done
+when you want to compute a particular value using that function.
+If the function doesn't exist yet, you have to <strong>define</strong> it.
+Unlike function calls,
+Python's syntax for function definitions is nothing like math notation.
+Instead, it uses a special <strong>keyword</strong> (reserved word)
+called <strong><code>def</code></strong> (short for "define"):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+</span></code></pre></div>
+<p>This code defines a function called <code>double</code>
+which takes one argument (called <code>x</code>),
+doubles it and returns it to where it was called.
+The argument <code>x</code> is called a <strong>formal argument</strong>
+or <strong>formal parameter</strong> of the function;
+it's a name that will acquire the value
+of whatever actual argument the <code>double</code> function is called with.
+The formal parameter(s)
+are enclosed in parentheses and separated by commas,
+just like arguments in function calls.
+At the end of the <code>def</code> line,
+you <em>have</em> to put a colon character (<code>:</code>)
+or it's a <strong>syntax error</strong>.
+(The placement of a colon here is just a peculiarity of Python's syntax.)</p>
+<p>Here's an example of calling this function:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">double</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="go">84</span>
+</span></code></pre></div>
+<p>In this case,
+the actual argument of the call to the <code>double</code> function
+is the number <code>42</code>.
+The definition states that the formal parameter <code>x</code>
+will be given the value <code>42</code> for this function call
+and then the "body" of the function will use that value for <code>x</code>
+when computing the <strong>return value</strong>.</p>
+<p>The body of the <code>double</code> function is just one line:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+</span></code></pre></div>
+<p><strong><code>return</code></strong> is another Python keyword.
+What this line means is that the expression <code>x * 2</code>
+is computed and returned from the function.
+So, for instance, if some other code calls the <code>double</code> function:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">n</span> <span class="o">=</span> <span class="n">double</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</span></code></pre></div>
+<p>then the <code>double</code> function:</p>
+<ul>
+<li>will receive the number <code>42</code> as its only argument,</li>
+<li>will set its formal parameter <code>x</code> to <code>42</code>,</li>
+<li>will compute <code>x * 2</code> <em>i.e.</em> <code>84</code>,</li>
+<li>will return <code>84</code>,</li>
+</ul>
+<p>and then <code>n</code> will be assigned to the return value of <code>84</code>.
+After this, using the variable <code>n</code>
+will be like using the number <code>84</code>
+(at least until <code>n</code> is set to some other value).</p>
+<div class="admonition keywords">
+<p class="admonition-title">Keywords</p>
+<p>A <strong>keyword</strong> is a reserved word in Python's grammar.
+Even if it technically obeys the rules for variables,
+you can't use it as a variable name.
+Python, like most programming languages,
+has a number of keywords;
+the full list is
+<a href="https://docs.python.org/3/reference/lexical_analysis.html#keywords">here</a>.
+You definitely should <em>not</em> bother memorizing these at this time.</p>
+</div>
+<p>Note that you can enter function definitions interactively
+in the Python interpreter:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="gp">...</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">double</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="go">84</span>
+</span></code></pre></div>
+<p>When you do this,
+Python recognizes after the first line
+that you are inside a function definition
+and changes the prompt to its <em>secondary prompt</em>
+which is <code>...</code> (three periods).
+Once the function is done,
+Python returns to the primary prompt (<code>&gt;&gt;&gt;</code>).</p>
+<p>In general, though,
+you should be writing functions in files,
+loading them into Python,
+and then using/testing them interactively.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>
+(We'll describe how to do this in a later reading and in the assignments.)
+Writing functions in the interpreter is a bad idea,
+because once the interpreter exits, the function definitions disappear
+(they aren't reloaded the next time you start Python).</p>
+<p>In Python, the body of a function can be one line or multiple lines long.
+Either way,
+you have to indent the body of the function relative to the <code>def</code> line.
+If there are multiple lines, you have to indent them all the same amount:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">def</span> <span class="nf">sum_of_squares</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="k">return</span> <span class="n">z</span>
+</span></code></pre></div>
+<p>In Python, it's conventional
+to indent the bodies of functions exactly four spaces,
+although this isn't a requirement.</p>
+<h3 id="local-variables">Local variables</h3>
+<p>We sneakily introduced an important new feature of Python
+in the last example: <strong>local variables</strong>.
+Let's see that function again:</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1">1</a></span>
+<span class="normal"><a href="#__codelineno-18-2">2</a></span>
+<span class="normal"><a href="#__codelineno-18-3">3</a></span>
+<span class="normal"><a href="#__codelineno-18-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="k">def</span> <span class="nf">sum_of_squares</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2"></a>    <span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3"></a>    <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4"></a>    <span class="k">return</span> <span class="n">z</span>
+</span></code></pre></div></td></tr></table></div>
+<p>(We've added line numbers to make it easier to talk about the code.)</p>
+<p>The body of the function consists of lines 2 to 4.
+They are evaluated in order.
+Line 2 defines a local variable called <code>z</code>
+which we set to be equal to <code>x * x</code> <em>i.e.</em> <code>x</code> squared.
+Then line 3 adds <code>y * y</code> to <code>z</code>,
+so that <code>z</code> contains the sum of squares of <code>x</code> and <code>y</code>.
+Then <code>z</code> is returned from the function in line 4.
+By default, Python executes code in this one-line-after-another manner.
+However, there are ways of changing the flow of the program
+which we will describe in later readings.</p>
+<p>A local variable is a variable which exists
+only while the function is executing.
+It springs into existence when the function is called
+and disappears when the function returns.
+The next time the <code>double</code> function is called,
+it won't "remember" its previous <code>z</code> value either; it starts from scratch.
+If you define this function
+and try to access the variable <code>z</code> after it returns,
+Python will tell you that <code>z</code> isn't defined.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>
+Variables that aren't local are <strong>global variables</strong>.<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>
+Most variables in a Python program will be local variables.</p>
+<p>Let's say we call this function from the interpreter:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">sum_of_squares</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="go">25</span>
+</span></code></pre></div>
+<p>So far, so good.  Now if we do:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">z</span>
+</span></code></pre></div>
+<p>we get this error:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="gt">Traceback (most recent call last):</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="gr">NameError</span>: <span class="n">name &#39;z&#39; is not defined</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Tracebacks</p>
+<p>A <strong>traceback</strong> is a representation of exactly where in the code
+Python was when an error occurred,
+along with an indication of what kind of error occurred.
+Tracebacks will be explained in detail in a later reading.
+For now, all you need to know is that it indicates that something went wrong,
+and there is usually an error message telling you what that was.</p>
+</div>
+<p>Here, you can see that there is no value
+associated with the local variable <code>z</code>
+when <code>sum_of_squares(3, 4)</code> returns.
+Interestingly, this is also true of the formal parameters <code>x</code> and <code>y</code>;
+they behave like local variables as well.</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">sum_of_squares</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="go">25</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="gt">Traceback (most recent call last):</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="gr">NameError</span>: <span class="n">name &#39;x&#39; is not defined</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="gt">Traceback (most recent call last):</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="gr">NameError</span>: <span class="n">name &#39;y&#39; is not defined</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The fact that the names <code>x</code> and <code>y</code> are not defined
+after <code>sum_of_squares</code> returns is a good thing!
+You want your local variables to <em>stay</em> local,
+so they can't interfere with anything outside the function,
+and can't be interfered with by anything outside the function.</p>
+</div>
+<h2 id="global-variables">Global variables</h2>
+<p>Any variable defined at the top level of the program
+(which means not inside a function) is a <strong>global variable</strong>.<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup></p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># Global variable representing the current year.</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">year</span> <span class="o">=</span> <span class="mi">2024</span>
+</span></code></pre></div>
+<p>A global variable can be used inside any function.
+In general, though, try not to use global variables if you can help it;
+local variables are just easier to reason about.
+Global variables are OK if you don't change them in the program;
+then they are effectively global constants.</p>
+<h2 id="comments">Comments</h2>
+<p>One very important thing that all programming languages allow you to do
+is to write <strong>comments</strong> in the code.
+These are "notes to yourself"
+which explain things about the code to anyone reading it.
+They aren't executed; the computer simply ignores them.</p>
+<p>Python comment syntax is very simple:
+a comment starts with the <code>#</code> character
+and goes until the end of the line it's on.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># This is a comment.</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># This is a comment that doesn&#39;t span an entire line.</span>
+</span></code></pre></div>
+<p>Comments are one useful way to document your code.
+There are other ways which we'll see as we go along.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>You may also be using a <strong>debugger</strong>,
+which is a tool that can run code inside of a code editor
+and help you walk through the code to find bugs.
+And you may also be running pre-written tests
+from the terminal command line.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>Unless a different non-local variable named <code>z</code>
+was defined previously,
+which we are assuming isn't the case here.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>We're oversimplifying here.
+There are other kinds of variables, and we'll get to them in due time.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>Names defined inside a <strong>class</strong> are also not global variables,
+but we're keeping things simple for now.&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../1/reading1/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Introduction to Python, part 1">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Introduction to Python, part 1
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+        <script src="../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
