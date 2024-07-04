@@ -1,0 +1,597 @@
+= CS 1 Reading 9: Loops (part 1)
+:nofooter:
+:toc: left
+:source-highlighter: pygments
+:ie: pass:quotes[_i.e._]
+:eg: pass:quotes[_e.g._]
+:etc: pass:quotes[_etc._]
+:icons: font
+:docinfo: shared
+:dots: \...
+:smiley: icon:smile-o[]
+
+We've learned a lot of Python in the readings so far, but there are still a few
+fundamental programming constructs we haven't seen yet.  In this reading we
+will start exploring loops, and next reading we will cover conditionals.  We
+will complete our discussion of loops in two readings.
+
+== What a loop is
+
+One of the basic things that programs have to be able to do is to repeat a
+chunk of code over and over.  Sometimes there is something that changes every
+time we execute the chunk of code, and sometimes there isn't.  For instance, we
+might want to print a greeting ten times.  In that case, we would be executing
+the exact same code (print the greeting) ten times.  Or we might want to print
+the numbers from 1 to 20, one per line.  In that case, something would change
+each time (the number to print).  Sometimes more than one thing changes each
+time.
+
+In order to allow us to execute chunks of code over and over, programming
+languages like Python contain _loop_ statements and syntax.  Nearly every
+programming language has loop statements with special syntax, but unfortunately
+every language seems to choose different syntax for what is basically the same
+construct.  Fortunately, Python's loop syntax is simple and easy to pick up.
+
+== Python's loop statements
+
+Python has two kinds of loop statements: `for` loops and `while` loops.  These
+are named after the keywords `for` and `while`.  In this reading we'll teach
+you about `for` loops, because they are the most common kind of loop in Python
+programs.  We'll teach you about `while` loops in a couple of readings.
+footnote:[If you know other programming languages like C, C++ or Java, be aware
+that Python's `for` loop is quite different from the `for` loop construct in
+those languages.]
+
+== Loops and lists
+
+We postponed discussing loops until we learned about lists for a good reason:
+loops are incredibly useful when used with lists.  One common code pattern of a
+loop used with a list looks like this:
+
+* _for each_ element in a list{dots}
+* ..._do_ the following with the element,
+* and _repeat_ until all the elements in the list have been processed.
+
+[NOTE]
+====
+
+What we've just written is an example of what is called _pseudocode_.  It's
+like code, but written for the benefit of humans, not computers.  It describes
+a computation in English with enough detail that it could in principle be
+converted to a programming language like Python.  Writing pseudocode can be a
+powerful design technique for working out a solution to a programming problem
+before you start the actual coding.
+
+====
+
+An example of this might be the following: _for each_ element of the following
+list, print the element.
+
+[source, python]
+----
+title_words = ['Monty', 'Python', 'and', 'the', 'Holy', 'Grail']
+for word in title_words:
+    print(word)
+----
+
+When run, this will print out:
+
+----
+Monty
+Python
+and
+the
+Holy
+Grail
+----
+
+one word per line.
+
+== `for` loop syntax
+
+The syntax of the `for` loop is basically the following:
+
+[source, python]
+----
+for <item> in <list>:
+    <chunk of code>
+----
+
+Both `for` and `in` are keywords (reserved words).  The `<item>` is a variable
+that will refer to a particular element in the list `<list>`. The `<list>` can
+be either an actual list, a variable which refers to a list, or an expression
+which evaluates to a list.
+
+The colon character (`:`) at the end of the `for` line is required, much like
+at the end of a `def` line in a function definition.
+
+The `<chunk of code>` part is called a _block_; it consists of one or more
+lines of Python code, all indented the same.  footnote:[Blocks are found in
+many other places in Python besides loops.  The body of a function, for
+instance, is a block.]
+
+The way the loop works is as follows.  
+
+. The first element of the list `<list>` is assigned to the `<item>` variable.
+. The body of the loop is evaluated.
+. Then the next element of the list is assigned to the `<item>` variable
+  and the body is evaluated again.
+. This continues until there are no more elements in the list.
+. After the `for` loop has completed evaluating, Python goes on to the next
+line after the loop.
+
+[NOTE]
+====
+
+The thing that goes in the `<list>` place in 
+
+[source, python]
+----
+for <item> in <list>:
+    <chunk of code>
+----
+
+doesn't actually have to be a list.  There are many other things that can go
+there, including strings and other data structures like tuples and dictionaries
+we haven't seen yet.  Any Python value that is an _iterable_ can go in that
+place.  An _iterable_ basically means "something that can be looped over in a
+`for` loop".  We'll explain this in more detail in later readings, and we'll
+show you how to use `for` loops with strings below.
+
+====
+
+== A simple example
+
+Let's revisit the simple example above:
+
+[source, python]
+----
+title_words = ['Monty', 'Python', 'and', 'the', 'Holy', 'Grail']
+for word in title_words:
+    print(word)
+----
+
+We know that this will print out the words in the list, one per line.  But how
+does it actually work?
+
+When the loop starts, the first element of the list, which is `'Monty'`, gets
+assigned to the variable `word`.  Then the body prints that word.  Then the
+second element of the list (`'Python'`) gets assigned to `word`, the word gets
+printed, and so on until all the words in the list have been printed.  Once
+there are no more words in the list to bind to `word`, the `for` loop has
+finished executing.
+
+So what Python ends up doing when it evaluates the loop is basically the
+following:
+
+[source, python]
+----
+word = 'Monty'
+print(word)
+word = 'Python'
+print(word)
+word = 'and'
+print(word)
+...
+----
+
+but it's much easier and more concise to express this with the `for` loop.
+
+The list `title_words` isn't altered in the `for` loop; Python simply fetches
+its elements one at a time in order and assigns then to the `word` variable.
+There is no significance to the variable name `word` either; we could call it
+`w` or `xxx` if we wanted, but it's a good idea to use meaningful variable
+names where possible.
+
+== Multiline blocks
+
+A `for` loop block can consist of multiple lines, all indented the same.  Let's
+extend our simple example:
+
+[source, python]
+----
+title_words = ['Monty', 'Python', 'and', 'the', 'Holy', 'Grail']
+for word in title_words:
+    print(word)
+    print('----')
+----
+
+This will print:
+
+[subs="macros"]
+----
+Monty
+pass:[----]
+Python
+pass:[----]
+and
+pass:[----]
+the
+pass:[----]
+Holy
+pass:[----]
+Grail
+pass:[----]
+----
+
+After the block, the indentation has to go back to the previous level so Python
+knows that the block is finished:
+
+[source, python]
+----
+title_words = ['Monty', 'Python', 'and', 'the', 'Holy', 'Grail']
+for word in title_words:
+    print(word)
+    print('----')
+print('All done!')
+----
+
+== Loop syntax errors
+
+=== Forgetting the colon
+
+A really, really common error is to forget to put the colon character at the
+end of the `for` line: footnote:[I've been programming in Python for years and
+I still make this mistake from time to time.]
+
+[source, python]
+----
+title_words = ['Monty', 'Python', 'and', 'the', 'Holy', 'Grail']
+for word in title_words
+    print(word)
+----
+
+Here's what will happen:
+
+----
+for word in title_words
+                      ^
+SyntaxError: invalid syntax
+----
+
+Like it or not, you have to put that colon in!
+
+=== Bad indentation
+
+If the `for` loop block has more than one line, the lines have to be indented
+exactly the same.  Failure to do this gives you one of three syntax errors.
+
+Too much indentation:
+
+[source, python]
+----
+title_words = ['Monty', 'Python', 'and', 'the', 'Holy', 'Grail']
+for word in title_words:
+    print(word)
+     print('----')
+----
+
+gives:
+
+----
+    print('----')
+    ^
+IndentationError: unexpected indent
+----
+
+Too little indentation:
+
+[source, python]
+----
+title_words = ['Monty', 'Python', 'and', 'the', 'Holy', 'Grail']
+for word in title_words:
+    print(word)
+   print('----')
+----
+
+gives:
+
+----
+    print('----')
+                ^
+IndentationError: unindent does not match any outer indentation level
+----
+
+Python knows that you are indenting less than the previous line, but this is
+only legal when there is some other code with that indent level (like the `for`
+line); here, there isn't one.
+
+These two syntax errors are pretty obvious.  But there is one more which can be
+extremely hard to detect.  Sometimes when you're writing code in a text editor,
+the editor will use tab characters to indent code.  Other times it might use
+spaces, or a combination of the two.  If different lines in a block are
+indented using tabs on some lines and spaces on other lines, you can get syntax
+errors _even if it looks like they're indented exactly the same_!
+
+It's hard to show you what this would look like, but let's imagine that in your
+editor, tab characters look like four space characters.  We'll write a tab
+character like this: `<tab>` so you can see them.  Consider this code:
+
+[source, python]
+----
+title_words = ['Monty', 'Python', 'and', 'the', 'Holy', 'Grail']
+for word in title_words:
+    print(word)
+<tab>print('----')
+----
+
+The code will _look_ perfectly indented.  But Python will give you a syntax
+error:
+
+----
+    print('----')
+                ^
+TabError: inconsistent use of tabs and spaces in indentation
+----
+
+This is one reason why every Python style guide says not to use tab characters
+for indentation.  footnote:[Any decent text editor will allow you to configure
+it so that when you hit the tab key, four spaces are inserted.  We strongly
+recommend that you figure out how to do this, and do it.  It will save you a
+lot of time chasing down dumb syntax errors.  If you're using Visual Studio
+Code, don't worry: it converts tabs to spaces automatically when editing Python
+code (assuming you installed the
+https://marketplace.visualstudio.com/items?itemName=ms-python.python[ms-python
+Python extension]).]
+
+See https://www.youtube.com/watch?v=SsoOG6ZeyUI[this video] to get more insight
+about the tabs vs. spaces controversy.
+
+== Application: writing the `sum` function
+
+We've already seen the built-in `sum` function:
+
+[source, python]
+----
+temps = [59.6, 72.4, 68.5, 79.0, 66.4, 77.1, -126.0]
+avg_temp = sum(temps) / 7
+print(avg_temp)
+----
+
+This prints:
+
+----
+42.42857142857143
+----
+
+Now that we know how to write loops, we can write `sum` ourselves.  Here's the
+first attempt.
+
+[source, python]
+----
+def sum(nums):
+   """Sum the elements of a list of numbers."""
+   sum_nums = 0
+   for n in nums:
+       sum_nums = sum_nums + n
+   return sum_nums
+----
+
+[NOTE]
+====
+
+Built-in functions like `sum` are not keywords.  You can redefine them, or even
+use the name `sum` for something completely unrelated.  This can lead to some
+very hard-to-find bugs, though, so we recommend that you don't do this.  Here,
+we are deliberately replacing the built-in `sum` function with a function which
+does the same thing, so it's OK.
+
+====
+
+Let's test it:
+
+[source, python]
+----
+temps = [59.6, 72.4, 68.5, 79.0, 66.4, 77.1, -126.0]
+avg_temp = sum(temps) / 7
+print(avg_temp)
+----
+
+This prints:
+
+----
+42.42857142857143
+----
+
+so we're good.
+
+== Aside: the `+=` operator and friends
+
+Look at the `sum` function we wrote above, and in particular this line:
+
+[source, python]
+----
+       sum_nums = sum_nums + n
+----
+
+Lines of the form `x = x + y` are extremely common in programming.  The meaning
+of this line is "add `y` to the number ``x``".  Since this is so common, there
+is a shortcut operator that does the same thing, but more concisely.  The
+operator is called `+=` and looks like this:
+
+
+[source, python]
+----
+       sum_nums += n
+----
+
+Similarly, there are other `<op>=` operators such as `-=`, `*=`, `/=` and so on
+which work the same way.  So `x -= y` is the same as `x = x - y`; `x *= y` is
+the same as `x = x * y` {etc}
+
+We recommend that you use these operators instead of the longer forms for two
+reasons:
+
+. It's shorter.
+. It's easier to read once you get used to it.
+
+== `sum` again
+
+Let's update our `sum` function with this spiffy new operator:
+
+[source, python]
+----
+def sum(nums):
+   """Sum the elements of a list of numbers."""
+   sum_nums = 0
+   for n in nums:
+       sum_nums += n
+   return sum_nums
+----
+
+And that's all we'll say about this function!
+
+== Loop terminology
+
+At this time, it's appropriate to define some terms that are commonly used with
+loops:
+
+loop body:: The block of code that is executed multiple times in a loop.
+
+iteration:: A single pass through the loop body.
+
+iterate over:: Go through a data structure ({eg} a list) element-by-element,
+executing the loop body on each element.
+
+iterable:: A Python data structure (such as a list) that can be iterated over in
+a loop.
+
+Don't worry if these definitions don't seem crystal clear to you at this point.
+As we learn more about what kinds of data can be used in a `for` loop it will
+all become clear.
+
+== Loop pitfalls
+
+In a `for` loop body, it's not a good idea to change either the loop variable
+or the list being iterated over.  The main reason is that what this does is
+hard to predict unless you really understand Python well.  Python is changing
+the loop variable for you on every iteration of the loop body, so you shouldn't
+need to change it yourself.  And if you change the list being iterated over,
+the loop may finish earlier or later than you expected, or behave in other
+non-intuitive ways.
+
+There will be problems on the assignments exploring these pitfalls.
+
+== Loops and strings
+
+We mentioned above that in the `for` loop syntax, which we wrote as:
+
+[source, python]
+----
+for <item> in <list>:
+    <chunk of code>
+----
+
+the `<list>` part could actually be things other than lists.  One such thing is
+a string.  If you loop over a string in a `for` loop, you are iterating over
+the characters.
+
+[source, python]
+----
+for char in 'Python':
+    print(char)
+----
+
+This will print:
+
+----
+P
+y
+t
+h
+o
+n
+----
+
+In each iteration of the `for` loop, the next character of the string `Python`
+is assigned to the variable `char`.
+
+We already know that both lists and strings are what Python calls _sequences_,
+so you might think that any Python sequence can be looped over in a `for` loop.
+And that is in fact the case.  (We will see soon that even some non-sequences
+can be looped over in a `for` loop.)
+
+== Nested loops
+
+You are allowed to put one `for` loop inside another.  This is called a "nested
+loop" and is actually quite common.  Here's a simple example:
+
+[source, python, linenums]
+----
+title = ['Monty', 'Python']
+for word in title:
+    for char in word:
+        print(char)
+----
+
+The first `for` loop starts on line 2.  Its loop body consists of lines 3 and
+4, which is also a `for` loop.  We say that the `for` loop starting from line 2
+is the "outer" `for` loop and the one starting from line 3 is the "inner" `for`
+loop.  Notice that the loop body of the inner `for` loop (line 4) is indented
+twice: once because it's in the loop body of the outer `for` loop and once
+because it's also in the loop body of the inner `for` loop.
+
+In the first iteration of the outer `for` loop, the variable `word` is
+`'Monty'`.  Then in the inner `for` loop, the variable `char` is `'M'`, then
+`'o'`, {etc}  Once all the characters in `'Monty'` have been processed, the
+variable `word` in the outer `for` loop becomes `'Python'`, and then in the
+inner `for` loop the variable `char` becomes `'P'`, `'y'`, {etc}
+
+Running this code gives this result:
+
+[source, python]
+----
+M
+o
+n
+t
+y
+P
+y
+t
+h
+o
+n
+----
+
+We can write code that is inside the first loop but which comes after the
+nested loop.  That code is executed once the nested loop is finished executing.
+
+[source, python, linenums]
+----
+title = ['Monty', 'Python']
+for word in title:
+    for char in word:
+        print(char)
+    print('---')  # executed after nested loop finishes
+----
+
+Running this code gives this result:
+
+[source, python]
+----
+M
+o
+n
+t
+y
+---
+P
+y
+t
+h
+o
+n
+---
+----
+
+== Coming up
+
+We have more to say about loops, and in particular, Python's other loop
+construct, the `while` loop.  We'll get to that shortly, but in the next
+reading we will talk about conditionals (`if` statements), another fundamental
+building block of computer programs.
+
+
+'''
+{blank}[End of reading]
