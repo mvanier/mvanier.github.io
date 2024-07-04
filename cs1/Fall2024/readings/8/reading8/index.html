@@ -1,0 +1,1594 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs1/Fall2024/book/8/reading8/">
+      
+      
+        <link rel="prev" href="../../7/reading7/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>Lists - The CS 1 book (Fall 2024)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reading-8-lists" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="The CS 1 book (Fall 2024)" class="md-header__button md-logo" aria-label="The CS 1 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 1 book (Fall 2024)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lists
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="The CS 1 book (Fall 2024)" class="md-nav__button md-logo" aria-label="The CS 1 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    The CS 1 book (Fall 2024)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Readings
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Readings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/reading1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to Python, part 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/reading2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to Python, part 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/reading3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strings, part 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/reading4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strings, part 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../5/reading5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Objects and methods
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/reading6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7/reading7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Documenting your code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Lists
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Lists
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-simple-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      A simple example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating lists
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#empty-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Empty list
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-list-elements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessing list elements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Accessing list elements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#index-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Index errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative-indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative indices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modifying-list-elements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modifying list elements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-operators-and" class="md-nav__link">
+    <span class="md-ellipsis">
+      List operators: + and *
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      List functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="List functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#len" class="md-nav__link">
+    <span class="md-ellipsis">
+      len
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list" class="md-nav__link">
+    <span class="md-ellipsis">
+      list
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      List methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="List methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#append" class="md-nav__link">
+    <span class="md-ellipsis">
+      append
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pop" class="md-nav__link">
+    <span class="md-ellipsis">
+      pop
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index" class="md-nav__link">
+    <span class="md-ellipsis">
+      index
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove" class="md-nav__link">
+    <span class="md-ellipsis">
+      remove
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#count" class="md-nav__link">
+    <span class="md-ellipsis">
+      count
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort-and-reverse" class="md-nav__link">
+    <span class="md-ellipsis">
+      sort and reverse
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pitfall-aliasing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pitfall: aliasing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nested-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nested lists
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-puzzles" class="md-nav__link">
+    <span class="md-ellipsis">
+      List puzzles
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-simple-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      A simple example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating lists
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#empty-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Empty list
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-list-elements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessing list elements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Accessing list elements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#index-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Index errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative-indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative indices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modifying-list-elements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modifying list elements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-operators-and" class="md-nav__link">
+    <span class="md-ellipsis">
+      List operators: + and *
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      List functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="List functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#len" class="md-nav__link">
+    <span class="md-ellipsis">
+      len
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list" class="md-nav__link">
+    <span class="md-ellipsis">
+      list
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      List methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="List methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#append" class="md-nav__link">
+    <span class="md-ellipsis">
+      append
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pop" class="md-nav__link">
+    <span class="md-ellipsis">
+      pop
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index" class="md-nav__link">
+    <span class="md-ellipsis">
+      index
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove" class="md-nav__link">
+    <span class="md-ellipsis">
+      remove
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#count" class="md-nav__link">
+    <span class="md-ellipsis">
+      count
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort-and-reverse" class="md-nav__link">
+    <span class="md-ellipsis">
+      sort and reverse
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pitfall-aliasing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pitfall: aliasing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nested-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nested lists
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-puzzles" class="md-nav__link">
+    <span class="md-ellipsis">
+      List puzzles
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="reading-8-lists">Reading 8: Lists</h1>
+<p>In this reading, we're going to talk about Python's <strong>lists</strong>.
+As is typical for programming jargon,
+the word "list" means something very different in programming
+than it does in everyday life.
+In everyday life, a "list" is something we use
+to write down an ordered sequence of entries.
+(For instance, on a "to-do list"
+we might write down all the things we have to do this week.)
+So you might write down this to-do list:</p>
+<ol>
+<li>Work on CS 1 homework.</li>
+<li>Work on Math homework.</li>
+<li>Work on Phys homework.</li>
+<li>Work on Chem homework.</li>
+<li>Binge watch Netflix for 10 hours.</li>
+</ol>
+<p>In a programming language,
+a <em>list</em> is a kind of data object that can store
+a group of other data objects in a sequence.
+The data objects that are stored inside the list
+are called the <em>elements</em> of the list,
+or alternatively the list <em>items</em>.
+Here's an example of a Python list:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">courses</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CS 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Ma 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Ph 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Chem 1&#39;</span><span class="p">]</span>
+</span></code></pre></div>
+<p>The list is the collection of items inside the square brackets,
+separated by commas.</p>
+<p>The items in the list can be retrieved
+if you know their position in the list,
+and you can change the item at a particular position.
+You can also make a list bigger by adding more items to the end.</p>
+<p>Many programming languages restrict lists
+so that any particular list can only hold
+one kind of data object (for instance, a "list of integers").
+Python is more flexible:
+you can have a list containing many different kinds of data
+(including other lists).
+Nevertheless, most of the time,
+Python lists only contain a single kind of data.</p>
+<p>Often we will be using a list as a single Python object.
+Python objects that contain other Python objects, like lists,
+are referred to as <em>data structures</em>.
+There are a number of other data structures that we'll meet soon,
+including tuples, dictionaries, and sets.
+One nice thing about Python is that
+working with these data structures is much more convenient
+than in many other languages,
+which makes programming easier.</p>
+<h2 id="a-simple-example">A simple example</h2>
+<p>It's very common when programming to have many related values
+that you'd like to store in a single object.
+For instance, you might be doing weather research
+and need to store the average temperature for each day of the week.
+You could define variables for each day...</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">temp_sunday</span>    <span class="o">=</span> <span class="mf">59.6</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">temp_monday</span>    <span class="o">=</span> <span class="mf">72.4</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">temp_tuesday</span>   <span class="o">=</span> <span class="mf">68.5</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">temp_wednesday</span> <span class="o">=</span> <span class="mf">79.0</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">temp_thursday</span>  <span class="o">=</span> <span class="mf">66.4</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">temp_friday</span>    <span class="o">=</span> <span class="mf">77.1</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">temp_saturday</span>  <span class="o">=</span> <span class="o">-</span><span class="mf">126.0</span>  <span class="c1"># Whoa, what happened here?</span>
+</span></code></pre></div>
+<p>...but this would quickly become tedious.
+Even something as simple as finding the average temperature
+for these days would be difficult:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">avg_temp</span> <span class="o">=</span> <span class="p">(</span><span class="n">temp_sunday</span> <span class="o">+</span> <span class="n">temp_monday</span> <span class="o">+</span> <span class="n">temp_tuesday</span> <span class="o">+</span> <span class="n">temp_wednesday</span> <span class="o">+</span> \
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>            <span class="n">temp_thursday</span> <span class="o">+</span> <span class="n">temp_friday</span> <span class="o">+</span> <span class="n">temp_saturday</span><span class="p">)</span> <span class="o">/</span> <span class="mi">7</span>
+</span></code></pre></div>
+<p>A better way would be to collect all the temperatures
+in a single data structure (a list):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">59.6</span><span class="p">,</span> <span class="mf">72.4</span><span class="p">,</span> <span class="mf">68.5</span><span class="p">,</span> <span class="mf">79.0</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">77.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">126.0</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Now, finding the average is easy:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">avg_temp</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">temps</span><span class="p">)</span> <span class="o">/</span> <span class="mi">7</span>
+</span></code></pre></div>
+<p>(We cheated a bit by using the built-in <code>sum</code> function.
+Once we learn about loops we'll be able to write <code>sum</code> ourselves.)</p>
+<p>The point of lists is to make it as easy to work with groups of values
+as it is to work with single values.
+Lists are used everywhere in Python code,
+and there are lots of predefined functions and methods
+for working with them, some of which we'll learn about below.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<h2 id="creating-lists">Creating lists</h2>
+<p>A <em>literal list</em> is a list that you write directly
+by giving the values of all the elements.
+The <code>temps</code> list we defined above is an example of a literal list.
+A literal list is surrounded by square brackets,
+and the list elements are separated by commas.</p>
+<p>You don't have to have literal values in a list, however.
+You can make a list of any kind of Python expressions,
+which will be evaluated when the list is created.
+Examples:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">temp_sunday</span>    <span class="o">=</span> <span class="mf">59.6</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">temp_monday</span>    <span class="o">=</span> <span class="mf">72.4</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">temp_tuesday</span>   <span class="o">=</span> <span class="mf">68.5</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">temp_wednesday</span> <span class="o">=</span> <span class="mf">79.0</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">temp_thursday</span>  <span class="o">=</span> <span class="mf">66.4</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">temp_friday</span>    <span class="o">=</span> <span class="mf">77.1</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="n">temp_saturday</span>  <span class="o">=</span> <span class="o">-</span><span class="mf">126.0</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># Make a list from variables.</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="n">temp_sunday</span><span class="p">,</span> <span class="n">temp_monday</span><span class="p">,</span> <span class="n">temp_tuesday</span><span class="p">,</span> <span class="n">temp_wednesday</span><span class="p">,</span> \
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>         <span class="n">temp_thursday</span><span class="p">,</span> <span class="n">temp_friday</span><span class="p">,</span> <span class="n">temp_saturday</span><span class="p">]</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="c1"># Make a list of powers of a number.</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="n">x</span> <span class="o">=</span> <span class="mf">42.8</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="n">x_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">5</span><span class="p">]</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="c1"># Make a list of trigonometric functions applied to pi.</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">tan</span><span class="p">,</span> <span class="n">pi</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">sin</span><span class="p">(</span><span class="n">pi</span><span class="p">),</span> <span class="n">cos</span><span class="p">(</span><span class="n">pi</span><span class="p">),</span> <span class="n">tan</span><span class="p">(</span><span class="n">pi</span><span class="p">)]</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="c1"># Make a list from other lists.</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="n">lol</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="n">nested_lists</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]]]</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="c1"># Make a list with different types of data.</span>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="n">hlist</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;foobar&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]</span>
+</span></code></pre></div>
+<p>There are other ways to create lists, which we'll see below.</p>
+<h2 id="empty-list">Empty list</h2>
+<p>An empty list is written as open/close square brackets:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">empty</span> <span class="o">=</span> <span class="p">[]</span>
+</span></code></pre></div>
+<p>We'll see uses for this shortly.</p>
+<h2 id="accessing-list-elements">Accessing list elements</h2>
+<p>Once you've created a list,
+you need to be able to extract (access) the elements of the list.
+Python also uses square brackets with a particular syntax
+to get the list elements:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">59.6</span><span class="p">,</span> <span class="mf">72.4</span><span class="p">,</span> <span class="mf">68.5</span><span class="p">,</span> <span class="mf">79.0</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">77.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">126.0</span><span class="p">]</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">t0</span> <span class="o">=</span> <span class="n">temps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>   <span class="c1"># 59.6</span>
+</span></code></pre></div>
+<p>The syntax to access a list element is:</p>
+<ul>
+<li>the name of the list (here, <code>temps</code>)</li>
+<li>the location (or <em>index</em>) of the element,
+  as an integer in square brackets (here, <code>[0]</code>)</li>
+</ul>
+<p>One peculiarity of list indexing is that the first element is "element 0".
+In computer programming, unlike in math,
+we almost always start counting from 0, not 1.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></p>
+<p>The index doesn't have to be a literal integer;
+it can also be a Python expression which evaluates to an integer.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">59.6</span><span class="p">,</span> <span class="mf">72.4</span><span class="p">,</span> <span class="mf">68.5</span><span class="p">,</span> <span class="mf">79.0</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">77.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">126.0</span><span class="p">]</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">t3</span> <span class="o">=</span> <span class="n">temps</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># 79.0</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">t3a</span> <span class="o">=</span> <span class="n">temps</span><span class="p">[</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># same</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">t3b</span> <span class="o">=</span> <span class="n">temps</span><span class="p">[</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">8</span> <span class="o">-</span> <span class="mi">253</span><span class="p">]</span>  <span class="c1"># same</span>
+</span></code></pre></div>
+<p>In this case,
+Python evaluates the index expression to an integer
+before doing the list access.</p>
+<h3 id="index-errors">Index errors</h3>
+<p>If a list index is too large, Python signals an error:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">59.6</span><span class="p">,</span> <span class="mf">72.4</span><span class="p">,</span> <span class="mf">68.5</span><span class="p">,</span> <span class="mf">79.0</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">77.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">126.0</span><span class="p">]</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="go">-126.0</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="gt">Traceback (most recent call last):</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="gr">IndexError</span>: <span class="n">list index out of range</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Most errors in Python give rise to <em>exceptions</em>.
+We will discuss exceptions and exception handling in detail
+later in the course.
+When an error situation arises which leads to an exception,
+we say that Python "raises an exception".
+We'll use that terminology from now on.
+The <code>IndexError</code> in the error message
+is an example of a Python exception that is raised
+when you try to access a value off the end of a list.
+The <code>Traceback</code> stuff is also related to exception handling;
+for now, you can ignore it.</p>
+<p>Note, though, that not all exceptions represent errors.
+We'll see examples of this in later readings too.
+And, of course, not all errors end up raising exceptions.<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup></p>
+</div>
+<h3 id="negative-indices">Negative indices</h3>
+<p>Python has a neat feature not found in most programming languages:
+you can use negative numbers as list indices.
+If you do, Python will access elements starting from the <em>end</em> of the list.
+So an index of <code>-1</code> means the last element of the list,
+an index of <code>-2</code> means the second-last, <em>etc.</em></p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">59.6</span><span class="p">,</span> <span class="mf">72.4</span><span class="p">,</span> <span class="mf">68.5</span><span class="p">,</span> <span class="mf">79.0</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">77.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">126.0</span><span class="p">]</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">tlast</span> <span class="o">=</span> <span class="n">temps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>   <span class="c1"># -126.0</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">t2last</span> <span class="o">=</span> <span class="n">temps</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># 77.1</span>
+</span></code></pre></div>
+<p>Note, though, that you can't go too far back,
+or Python raises an <code>IndexError</code> exception:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">59.6</span><span class="p">,</span> <span class="mf">72.4</span><span class="p">,</span> <span class="mf">68.5</span><span class="p">,</span> <span class="mf">79.0</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">77.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">126.0</span><span class="p">]</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="go">59.6</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span><span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">]</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="go">59.6</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span><span class="p">[</span><span class="o">-</span><span class="mi">8</span><span class="p">]</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="gt">Traceback (most recent call last):</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="gr">IndexError</span>: <span class="n">list index out of range</span>
+</span></code></pre></div>
+<p>Python will not "wrap around" negative list indices
+if they go past the first element.</p>
+<h2 id="modifying-list-elements">Modifying list elements</h2>
+<p>When we talked about strings,
+we pointed out that in Python strings are <em>immutable</em>:
+you can't change the characters inside a string once it's been created.
+In contrast, lists are always <em>mutable</em>:
+you can change (modify) a list element at any time.
+To modify a list element, just put the list element
+on the left-hand side of an assignment:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">59.6</span><span class="p">,</span> <span class="mf">72.4</span><span class="p">,</span> <span class="mf">68.5</span><span class="p">,</span> <span class="mf">79.0</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">77.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">126.0</span><span class="p">]</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="go">59.6</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">75.0</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="go">75.0</span>
+</span></code></pre></div>
+<p>You can even change a list element to an element of a different type:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">59.6</span><span class="p">,</span> <span class="mf">72.4</span><span class="p">,</span> <span class="mf">68.5</span><span class="p">,</span> <span class="mf">79.0</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">77.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">126.0</span><span class="p">]</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;really cold&#39;</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="go">[59.6, 72.4, 68.5, 79.0, 66.4, 77.1, &#39;really cold&#39;]</span>
+</span></code></pre></div>
+<p>This is very rarely a good idea.
+When it happens, it's usually because of a bug in your code.</p>
+<h2 id="list-operators-and">List operators: <code>+</code> and <code>*</code></h2>
+<p>Much like strings, lists have operators that you can use on them.
+Many of these operators behave like their string counterparts.
+For instance, you can concatenate lists using the <code>+</code> operator:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps1</span> <span class="o">=</span> <span class="p">[</span><span class="mf">59.6</span><span class="p">,</span> <span class="mf">72.4</span><span class="p">,</span> <span class="mf">68.5</span><span class="p">]</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps2</span> <span class="o">=</span> <span class="p">[</span><span class="mf">79.0</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">77.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">126.0</span><span class="p">]</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span> <span class="o">=</span> <span class="n">temps1</span> <span class="o">+</span> <span class="n">temps2</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="go">[59.6, 72.4, 68.5, 79.0, 66.4, 77.1, -126.0]</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">temps</span> <span class="o">+</span> <span class="p">[]</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="go">[59.6, 72.4, 68.5, 79.0, 66.4, 77.1, -126.0]</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="p">[]</span> <span class="o">+</span> <span class="n">temps</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="go">[59.6, 72.4, 68.5, 79.0, 66.4, 77.1, -126.0]</span>
+</span></code></pre></div>
+<p>You can use the <code>*</code> operator with an integer on either side
+to create multiples of a list, all concatenated together:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="go">[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="mi">5</span> <span class="o">*</span> <span class="p">[</span><span class="mi">42</span><span class="p">]</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="go">[42, 42, 42, 42, 42]</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="mi">0</span> <span class="o">*</span> <span class="p">[</span><span class="mi">100</span><span class="p">]</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="go">[]</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="mi">100</span> <span class="o">*</span> <span class="p">[]</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="go">[]</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="go">[1, 2, 3, 1, 2, 3, 1, 2, 3]</span>
+</span></code></pre></div>
+<p>Notice that both the <code>+</code> and <code>*</code> operators
+do the same kind of thing for both strings and lists.
+That's because strings and lists are both Python <em>sequences</em>,
+and Python tries hard to make sequences behave
+in similar ways as much as possible.</p>
+<p>There is another important list operator called <code>in</code>
+that we will meet in a later reading.</p>
+<h2 id="list-functions">List functions</h2>
+<h3 id="len"><code>len</code></h3>
+<p>The <code>len</code> function applied to a list argument returns the length of the list:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="go">5</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">([])</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="go">0</span>
+</span></code></pre></div>
+<h3 id="list"><code>list</code></h3>
+<p>The <code>list</code> function converts other kinds of sequences to lists.
+The only other sequence type we know about is strings;
+let's see what <code>list</code> does to a string:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;Monty Python&#39;</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="go">[&#39;M&#39;, &#39;o&#39;, &#39;n&#39;, &#39;t&#39;, &#39;y&#39;, &#39; &#39;, &#39;P&#39;, &#39;y&#39;, &#39;t&#39;, &#39;h&#39;, &#39;o&#39;, &#39;n&#39;]</span>
+</span></code></pre></div>
+<p>This is the easiest way to split a string into letters.
+It's also useful for something else:
+a string is immutable but a list is mutable.
+So if you really want to change a letter in a string,
+you can convert it to a list, change the list,
+and then convert the list back to a string
+using the <code>join</code> method on strings.<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup>
+That might look like this:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;Monty Python&#39;</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="go">[&#39;M&#39;, &#39;o&#39;, &#39;n&#39;, &#39;t&#39;, &#39;y&#39;, &#39; &#39;, &#39;P&#39;, &#39;y&#39;, &#39;t&#39;, &#39;h&#39;, &#39;o&#39;, &#39;n&#39;]</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;B&#39;</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="go">[&#39;M&#39;, &#39;o&#39;, &#39;n&#39;, &#39;t&#39;, &#39;y&#39;, &#39; &#39;, &#39;B&#39;, &#39;y&#39;, &#39;t&#39;, &#39;h&#39;, &#39;o&#39;, &#39;n&#39;]</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>  <span class="c1"># trust us, this works</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="go">&#39;Monty Bython&#39;</span>
+</span></code></pre></div>
+<h2 id="list-methods">List methods</h2>
+<p>Lists are Python objects,
+so they can have methods like any other object.
+There are a lot of list methods;
+some of the most useful ones are briefly described here.
+(We won't describe every aspect of these methods;
+see the official Python documentation for that.)</p>
+<h3 id="append"><code>append</code></h3>
+<p>To add an element to the end of a list, use the <code>append</code> method:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="go">[1]</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="go">[1, 2]</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="go">[1, 2, 3]</span>
+</span></code></pre></div>
+<p>This is probably the most-used list method.
+It's very common to use it the way we've used it above:
+start with an empty list and add elements to it
+until you end up with the desired list.
+Notice that the <code>append</code> method doesn't return anything;
+it just changes the list.</p>
+<h3 id="pop"><code>pop</code></h3>
+<p>To remove elements from the end of a list, use the <code>pop</code> method:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="go">3</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="go">[1, 2]</span>
+</span></code></pre></div>
+<p>The <code>pop</code> method is unusual in that it returns a value
+(the element "popped" off the end of the list)
+and also changes the list itself (by removing the last element).<sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup></p>
+<h3 id="index"><code>index</code></h3>
+<p>To find an element's location (also called its <em>index</em>) in a list,
+use the <code>index</code> method:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;Monty Python&#39;</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="go">[&#39;M&#39;, &#39;o&#39;, &#39;n&#39;, &#39;t&#39;, &#39;y&#39;, &#39; &#39;, &#39;P&#39;, &#39;y&#39;, &#39;t&#39;, &#39;h&#39;, &#39;o&#39;, &#39;n&#39;]</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="go">4</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="gt">Traceback (most recent call last):</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="gr">ValueError</span>: <span class="n">&#39;z&#39; is not in list</span>
+</span></code></pre></div>
+<p>The first call to <code>lst.index</code> returns 4
+because the first <code>'y'</code> character is at index 4
+(recall that the first element <code>'M'</code> is at index 0).
+If there are more than one of a particular element in the list,
+<code>index</code> returns the index of the first one,
+which is why it returns 4, not 7.
+Since there are no <code>'z'</code> characters in the list <code>lst</code>,
+<code>lst.index('z')</code> raises an exception.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A <code>ValueError</code> exception is usually raised
+when a function gets an argument that is of the correct type
+but isn't valid for some other reason.</p>
+</div>
+<h3 id="remove"><code>remove</code></h3>
+<p>To remove a value from a list, use the <code>remove</code> method.
+It only removes the <em>first</em> occurrence of the value from the list.
+It doesn't return anything, but changes the list in place.
+If the value doesn't exist in the list, a <code>ValueError</code> exception is raised.</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="go">[1, 3, 1, 2, 3]</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="go">[1, 3, 1, 3]</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="gt">Traceback (most recent call last):</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="gr">ValueError</span>: <span class="n">list.remove(x): x not in list</span>
+</span></code></pre></div>
+<h3 id="count"><code>count</code></h3>
+<p>The <code>count</code> method returns the number of times a value is found in a list.
+The list is not altered.</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="go">3</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="go">3</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="go">1</span>
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="go">0</span>
+</span></code></pre></div>
+<h3 id="sort-and-reverse"><code>sort</code> and <code>reverse</code></h3>
+<p>These two methods change the list in place; they don't return anything.
+The <code>sort</code> method sorts the list into ascending order.<sup id="fnref:6"><a class="footnote-ref" href="#fn:6">6</a></sup>
+The <code>reverse</code> method reverses the list.</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="go">[1, 1, 2, 2, 3, 4, 5, 5, 6]</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span>
+</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="go">[6, 5, 5, 4, 3, 2, 2, 1, 1]</span>
+</span></code></pre></div>
+<h2 id="pitfall-aliasing">Pitfall: aliasing</h2>
+<p>When you assign a variable containing a list to another variable,
+it looks like you might be copying it.
+In fact, you aren't &mdash;
+all you're doing is giving another name to the same list.
+<strong>This can be a shock if you aren't expecting it!</strong></p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1503</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">nums2</span> <span class="o">=</span> <span class="n">nums</span>  <span class="c1"># copy of nums?</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">nums2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">nums2</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="go">[0, 6, 1503, 2, -3]</span>
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">nums</span>
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="go">[0, 6, 1503, 2, -3]   # !!!</span>
+</span></code></pre></div>
+<p>When we assign the list <code>nums</code> to <code>nums2</code>,
+we are <em>not</em> making a copy of <code>nums</code>.
+We are just giving another name to the same list.
+So when we change a value in the list using one of the names,
+the other variable sees the change.
+This kind of phenomenon is called <strong>aliasing</strong> and it's a real pain!
+The best way to avoid it
+is to make sure you understand what Python assignment really means,
+and copy a list if you really need two independent lists.</p>
+<p>We will show you how to copy lists in a few readings.<sup id="fnref:7"><a class="footnote-ref" href="#fn:7">7</a></sup></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>One reason this may confuse you is that
+you might think that a Python variable
+is a "location in memory" where you can copy a value.
+In fact, this isn't true at all!
+(In some languages, like C, it is true, but not in Python.)
+In Python, assigning a value to a variable doesn't copy anything;
+it just creates a name which refers to the value.
+If you understand this, aliasing will be much less of a problem for you.</p>
+<p>To avoid confusion in the future,
+we won't say that a variable "contains" a value;
+instead we'll say that a variable "is bound to" a value
+or "refers to" a value.</p>
+</div>
+<h2 id="nested-lists">Nested lists</h2>
+<p>You can have lists within lists; these are called "nested lists".
+To get values from one of the inner lists,
+you have to double-up on the square bracket syntax.</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="go">1</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="go">2</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="go">3</span>
+</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+</span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="go">4</span>
+</span></code></pre></div>
+<p>When you read syntax like <code>lst[0][0]</code>, read it like this: <code>(lst[0])[0]</code>.<br />
+In other words, the <code>lst[0]</code> picks out the sublist <code>[1, 2]</code>,
+and the final <code>[0]</code> picks out the number <code>1</code> from the sublist.</p>
+<p>You can use the same syntax on the left-hand side of an assignment
+statement to change a value in an inner list.</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="go">[[100, 2], [3, 4]]</span>
+</span></code></pre></div>
+<h2 id="list-puzzles">List puzzles</h2>
+<p>Because of aliasing, strange things can happen with nested lists.
+Can you explain why the following code
+entered into the Python interpreter behaves the way it does?
+(Feel free to ask a TA or the instructors if you're not sure.)</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst2</span> <span class="o">=</span> <span class="p">[</span><span class="n">lst1</span><span class="p">,</span> <span class="n">lst1</span><span class="p">]</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst2</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="go">[[1, 2, 3], [1, 2, 3]]</span>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">42</span>
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst1</span>
+</span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="go">[42, 2, 3]</span>
+</span></code></pre></div>
+<p>Nothing odd so far.  Let's continue the same interpreter session.</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst2</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="go">[[42, 2, 3], [42, 2, 3]]  # ?!?</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst2</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst2</span>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="go">[[1, 2, 3], [1, 2, 3]]    # ?!?</span>
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst1</span>
+</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="go">[1, 2, 3]                 # ?!?</span>
+</span></code></pre></div>
+<p>Here's another puzzle.</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst2</span> <span class="o">=</span> <span class="n">lst1</span> <span class="o">*</span> <span class="mi">3</span>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst2</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="go">[1, 2, 3, 1, 2, 3, 1, 2, 3]</span>
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst3</span> <span class="o">=</span> <span class="p">[</span><span class="n">lst1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
+</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst3</span>
+</span><span id="__span-30-7"><a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="go">[[1, 2, 3], [1, 2, 3], [1, 2, 3]]</span>
+</span><span id="__span-30-8"><a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">42</span>
+</span><span id="__span-30-9"><a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst1</span>
+</span><span id="__span-30-10"><a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="go">[42, 2, 3]</span>
+</span><span id="__span-30-11"><a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst2</span>
+</span><span id="__span-30-12"><a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a><span class="go">[1, 2, 3, 1, 2, 3, 1, 2, 3]</span>
+</span><span id="__span-30-13"><a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">lst3</span>
+</span><span id="__span-30-14"><a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a><span class="go">[[42, 2, 3], [42, 2, 3], [42, 2, 3]]</span>
+</span></code></pre></div>
+<p>Why do all the <code>1</code>s in <code>lst3</code> change to <code>42</code> but the <code>1</code>s in <code>lst2</code> don't?</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>If you've programmed in other languages,
+be aware that what Python calls a "list"
+is pretty much the same as what other languages call an "array".
+The main difference is that Python lists can easily be expanded,
+which is not always true for arrays in other languages.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>If you learn the C language, you will find out why this is.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>That's kind of a shame.
+If errors always ended up raising exceptions,
+we would know that our programs were correct
+as long as there are no exceptions raised when we run them!
+Alas, it's not that simple.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>We haven't talked about the <code>join</code> method yet,
+but you can look it up in the Python online documentation.&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:5">
+<p>The word "pop" comes from the <em>stack</em> data structure,
+which you'll learn about in CS 2.
+Python lists can be used as stacks.&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:6">
+<p>There are other ways to sort using this method.
+See the Python documentation for details.&#160;<a class="footnote-backref" href="#fnref:6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn:7">
+<p>There are actually two distinct ways to copy lists.
+The easy way works for most lists, and the harder way works for all lists.
+We'll see both of them.&#160;<a class="footnote-backref" href="#fnref:7" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../7/reading7/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Documenting your code">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Documenting your code
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.footer", "navigation.top", "navigation.expand"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+        <script src="../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
