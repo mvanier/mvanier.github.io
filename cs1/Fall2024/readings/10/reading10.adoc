@@ -1,0 +1,607 @@
+= CS 1 Reading 10: Conditionals
+:nofooter:
+:toc: left
+:source-highlighter: pygments
+:ie: pass:quotes[_i.e._]
+:eg: pass:quotes[_e.g._]
+:etc: pass:quotes[_etc._]
+:icons: font
+:docinfo: shared
+:dots: \...
+:smiley: icon:smile-o[]
+
+== What a conditional is
+
+One fundamental thing a computer program needs to be able to do is to make
+decisions about what to do given the data available.  If certain conditions are
+met, the program does one thing, and if different conditions exist, it does
+another thing.  Programming languages do this by means of _conditionals_, which
+in most languages (including Python) are called `if` statements.
+
+== A simple example
+
+We'll return to a problem we've discussed before: analyzing temperatures
+collected at noon on every day of the week.  How do we figure out how many of
+the temperatures are above 72 degrees?  We can't solve this with what we know
+so far.
+
+This problem naturally divides into two subproblems:
+
+* How do we test to see whether or not a particular temperature is greater
+than 72 degrees?
+
+* How do we use that information to control our program?
+
+== Relational operators
+
+To compare a number with another number, we need a _relational operator_.  The
+standard relational operators in Python are:
+
+[cols="^20s,^80"]
+|===
+|Operator |What it means
+
+| `==` | equal to
+| `!=` | not equal to
+| `<` | less than
+| `\<=` | less than or equal
+| `>` | greater than
+| `>=` | greater than or equal
+
+|===
+
+These operators should be familiar from math, although in math we often use
+nicer operator symbols like &leq; and &geq;. (When we write programs, we're
+limited by what we can type on our keyboards.)  Relational operators take two
+numbers as arguments and return either `True` or `False`.
+
+----
+>>> a = 10
+>>> b = 20
+>>> a > b
+False
+>>> a < b
+True
+>>> a == a
+True
+>>> a == b
+False
+>>> a != b
+True
+>>> a <= a
+True
+>>> b >= a
+True
+>>> 42 >= 42
+True
+----
+
+These are pretty intuitive, but be careful with the `==` operator.  Remember
+that the `=` operator is used for assignment and _only_ for assignment.  What
+this means is that you can't write (say) `x = y` when you mean `x == y`,
+because only the latter expression will return a boolean (`True`/`False`)
+value.  footnote:[Fortunately, if you make a mistake with this, Python will
+usually catch it right away and label it as a syntax error.]
+
+For this problem, we want to check to see if a temperature is greater than 72
+degrees.
+
+----
+>>> temp = 85
+>>> temp > 72
+True
+----
+
+OK, this solves our first problem: how to test whether the temperature is
+greater than 72 degrees.  What about the second problem?
+
+== The `if` statement
+
+The second problem is: how do we use that information to control our program?
+In Python, we use the `if` statement:
+
+[source, python]
+----
+temp = 85
+if temp > 72:
+    print('Hot!')
+----
+
+which will of course print out:
+
+----
+Hot!
+----
+
+The general structure of an `if` statement is:
+
+----
+if <boolean expression>:
+    <block of code>
+----
+
+The `<boolean expression>` part is just a Python expression which evaluates to
+a `True` or `False` value.
+
+== Truthiness and falsiness
+
+The word "boolean" in `<boolean expression>` just means "true or false".
+Python does have the boolean values called `True` and `False`.  However, Python
+is pretty lenient about what it considers to be "true" or "false" in an `if`
+statement's boolean expression; it doesn't have to evaluate to the `True` or
+`False` value.  As far as Python is concerned, "false" can be any one of the
+following things:
+
+* the `False` value
+* the integer `0`
+* the empty string `''`
+* the empty list `[]`
+
+and a few other things we haven't seen yet.  We say that these values are
+"falsy".  Anything else is considered to be "true" ("truthy") in a boolean
+expression. footnote:[This may seem sloppy to you, and it is.  But being sloppy
+about what is "false" allows you to write some kinds of code in a more natural
+way, as we'll see.  There are trade-offs for everything.]  From now on, when we
+say that a boolean expression is "false", we mean that it evaluates to a
+"falsy" value, and when we say it's "true", we mean that it evaluates to a
+"truthy" value.
+
+If you want to test if a particular value is "truthy" or "falsy", you can pass
+it as the argument of the `bool` function.  If it's "truthy", then `bool` will
+return `True`, and if it's "falsy", `bool` will return `False`.
+
+----
+>>> bool(True)
+True
+>>> bool(False)
+False
+>>> bool(0)
+False
+>>> bool([])
+False
+>>> bool('')
+False
+>>> bool(1)
+True
+>>> bool(abs)  # Even a function is truthy!
+True
+----
+
+== Evaluating an `if` statement.
+
+The way an `if` statement evaluates is simple: if the `<boolean expression>`
+evaluates to a true value, evaluate the `<block of code>`.  Otherwise, don't.
+Then continue with the code following the `if` statement.  (We'll extend this
+below when we talk about the ``if``/``else`` statement.)
+
+== Syntax notes
+
+* Don't forget to put the colon character (`:`) after the `<boolean
+expression>`, or it'll be a syntax error!  Python requires the colon for all of
+its statements with blocks, so at least it's consistent.
+
+* The `<block of code>` in an `if` statement is like the body of a `for` loop:
+all the lines should be indented to the same extent.
+
+== Back to the example
+
+We have a list of temperatures, one for each day this week.
+
+[source, python]
+----
+temps = [67, 75, 59, 73, 81, 80, 71]
+----
+
+We want to compute how many of these are above 72.  How do we do this in our
+program?
+
+We already know how to compare a particular temperature with 72 using a
+relational operator.  We will also need an `if` statement to do something only
+if the temperature is above 72.  But we have a whole list of temperatures, not
+just one.  Therefore, it makes sense that we will also need a `for` loop to
+iterate over the list.
+
+We can write a "skeleton" of the code we need like this:
+
+[source, python]
+----
+temps = [67, 75, 59, 73, 81, 80, 71]
+for temp in temps:
+    if temp > 72:
+        <do something>
+----
+
+We still have to fill in the `<do something>` part.
+
+A couple of notes about this code:
+
+* An `if` statement inside of a `for` loop is a very common "code pattern".  As
+you write more programs, you will start to see more code patterns, and knowing
+these patterns will make it much easier for you to solve programming problems.
+footnote:[It's similar to the way knowing idioms or expressions in a human
+language helps you speak the language more fluently.]
+
+* Writing a "skeleton" of code with pieces left out is sometimes called
+_pseudocode_.  Sometimes (like in this case) pseudocode is very close to real
+code.  Other times it's just an English description of how to solve a problem.
+Either way, writing pseudocode can help you get started writing a program even
+if you don't know exactly how to write everything yet.
+
+For this problem, we need to figure out how many values in the list are above
+72.  That suggests that we need to have a variable that contains the count of
+these values.  We'll call this variable `temps_above_72`.  Before the loop,
+this variable should start off at `0`.  Then, every time we encounter a
+temperature above 72, we add 1 to the variable.
+
+[source, python]
+----
+temps = [67, 75, 59, 73, 81, 80, 71]
+temps_above_72 = 0
+for temp in temps:
+    if temp > 72:
+        temps_above_72 += 1
+----
+
+At the end of the loop, the value of the `temps_above_72` variable is the count
+of all the temperatures in the list which are above 72.
+
+Notice that we used the `+=` operator.  We could have written `temps_above_72 =
+temps_above_72 + 1`, but using the `+=` operator is much more concise.
+footnote:[If you've programmed in C or Java, you might wonder if you could
+write this line as `temps_above_72\++`.  The answer is: no you can't.  Python
+doesn't have the `++` or `--` operators.  Sorry.]
+
+To complete this example, let's add a `print` statement after the loop:
+
+[source, python]
+----
+temps = [67, 75, 59, 73, 81, 80, 71]
+temps_above_72 = 0
+for temp in temps:
+    if temp > 72:
+        temps_above_72 += 1
+print('{} days above 72'.format(temps_above_72))
+----
+
+When this is run it prints out:
+
+----
+4 days above 72
+----
+
+This is a trivial example; you could easily have done it in your head.
+However, it becomes much less trivial if you have one million temperatures, or
+one billion, or even more.  It's important to realize that computers aren't
+only useful for doing _difficult_ computations; they are also useful for doing
+large numbers of _simple_ computations.
+
+== The `if`/`else` statement
+
+An `if` statement allows you to either
+
+* do something (execute a block of code) if a condition is true, or
+* do nothing if it isn't true
+
+More generally, we might want to
+
+* do something (execute a block of code) if a condition is true, or
+
+* do something different (execute a different block of code) if the condition
+_isn't_ true
+
+To deal with the second case, an `if` statement can optionally include a second
+part called the "``else`` clause".  The structure of such a statement is:
+
+[source, python]
+----
+if <boolean expression>:
+    <block of code>
+else:
+    <different block of code>
+----
+
+The word `else` is a keyword, of course.  The `if` and `else` keywords have to
+be indented the same amount.  There has to be a colon (`:`) after the `else`
+keyword.  If the `<boolean expression>` is true then only the `if` block is
+evaluated; if it's false then only the `else` block is evaluated.
+
+[NOTE]
+====
+
+Terminology: in an `if`/`else` statement, the `if` part (including the block)
+is referred to as the "``if`` clause" and the `else` part (including the block)
+is referred to as the "``else`` clause".
+
+====
+
+Here's an example:
+
+[source, python]
+----
+temp = 69
+if temp > 72:
+    print('greater than 72!')
+else:
+    print('less than or equal to 72!')
+----
+
+Predictably, this will print:
+
+----
+less than or equal to 72!
+----
+
+== Multi-way tests 
+
+In the previous example we had two situations: when the temperature was less
+than 72 and when it wasn't.  More generally, there may be many different
+mutually-exclusive situations, and you might want to do something different for
+each of them.  We call this a _multi-way test_.
+
+Let's imagine a very simple generalization of our previous example.  We will go
+though a list of temperatures and keep records of
+
+* the number of temperatures that are _less than_ 72 degrees
+* the number of temperatures that are _exactly_ 72 degrees
+* the number of temperatures that are _greater than_ 72 degrees
+
+We'll assume (as we have been doing) that all the temperatures are integers.
+How do we write this code?
+
+It turns out that there are several different ways to write it, but only one
+"nice" way.  Whichever way we choose, we are going to need some variables:
+
+[source, python]
+----
+temps_below_72 = 0
+temps_at_72 = 0
+temps_above_72 = 0
+----
+
+=== The bad way
+
+One way to write this code is as follows:
+
+[source, python]
+----
+if t < 72:
+    temps_below_72 += 1
+if t == 72:
+    temps_at_72 += 1
+if t > 72:
+    temps_above_72 += 1
+----
+
+This will work, but it's bad code.  Why?  Think about this for a minute and
+then click on "Answer" for the answer.
+
+.Answer
+[%collapsible]
+====
+
+The problem with this approach is that you may do unnecessary tests.  It's
+clear that the three cases (temperature less than 72, equal to 72, or greater
+than 72) are mutually exclusive, but the way the code is written, you could end
+up checking all three conditions even if you don't have to.
+
+For example, let's say that the temperature is less than 72.  Let's follow the
+execution of the code.  First, we execute the first `if` statement, which
+causes `temps_below_72` to be incremented by 1.
+
+[source, python, linenums, highlight=1-2]
+----
+if t < 72:
+    temps_below_72 += 1
+if t == 72:
+    temps_at_72 += 1
+if t > 72:
+    temps_above_72 += 1
+----
+
+Then, we execute the second `if` statement.  Nothing happens, because `t` isn't
+equal to `72`.
+
+[source, python, linenums, highlight=3-4]
+----
+if t < 72:
+    temps_below_72 += 1
+if t == 72:
+    temps_at_72 += 1
+if t > 72:
+    temps_above_72 += 1
+----
+
+Finally, we execute the third `if` statement.  Again nothing happens, because
+`t` isn't greater than `72`.
+
+[source, python, linenums, highlight=5-6]
+----
+if t < 72:
+    temps_below_72 += 1
+if t == 72:
+    temps_at_72 += 1
+if t > 72:
+    temps_above_72 += 1
+----
+
+It should be clear that the last two tests are completely unnecessary.  Once we
+know that `t` is less than `72`, we shouldn't have to test if it's equal to
+`72` or greater than `72`.
+
+Of course, in this case the tests are not computationally expensive: you are
+just comparing two integers.  But what if the tests involved calls to functions
+that _were_ computationally expensive?  That would slow the code down a lot,
+especially since in many cases you wouldn't even need the answer!
+
+This kind of bad code pattern is often called an _antipattern_, which just
+means that it's a common bad way of doing something.
+
+====
+
+=== A better way
+
+To avoid doing unnecessary tests, we can rewrite the code using `else`
+statements.
+
+[source, python]
+----
+if t < 72:
+    temps_below_72 += 1
+else:
+    if t == 72:
+        temps_at_72 += 1
+    else:  # t > 72
+        temps_above_72 += 1
+----
+
+This code is correct and doesn't do any unnecessary tests.  One curious thing
+is that we don't have to explicitly test for `t > 72`, because if we get to the
+second `else` clause, we know that `t` _must_ be greater than `72`.  We write
+this fact in a comment to alert anyone reading the code that this will be the
+case.
+
+Even though this code works and doesn't do unnecessary tests, it's still ugly.
+Nested `if`/`else` statements such as this are hard to read (and even more so
+if the comment was left out).  Also, what if you had 5, or 10, or more
+mutually-exclusive cases to test for?  Then you would have a great number of
+nested `if`/`else` statements, and the code would be _really_ hard to read.
+
+[source, python]
+----
+temps_below_60 = 0
+temps_between_60_and_65 = 0
+temps_between_65_and_70 = 0
+temps_between_70_and_75 = 0
+if t < 60:
+    temps_below_60 += 1
+else:
+    if t < 65:
+        temps_between_60_and_65 += 1
+    else:
+        if t < 70:
+            temps_between_65_and_70 += 1
+        else:
+            if t < 75:
+                temps_between_70_and_75 += 1
+            else:
+                ...
+----
+
+You get the idea.  This kind of situation is surprisingly common in code, and
+Python has the tools to deal with it.
+
+=== The best way: the `if`/`elif`/`else` statement
+
+Let's think about how we would say this in pseudo-English.  "_If_ the temperature is
+less than 72 degress, do (one thing), _else if_ it's exactly 72, do (another
+thing), _else_ do (a third thing)."
+
+To write this code in Python, we introduce the `elif` keyword.  `elif` is short
+for `else if`.  footnote:[You might be wondering why Python chose an
+unintuitive keyword like `elif` instead of just using `else if` (like C and
+Java do).  It turns out that using `elif` made it easier to write the Python
+parser.]  An `elif` clause contains a test (like the `if` line) and also has a
+block of code (like both the `if` and `else` clauses).
+
+Here's what the code above looks like when using `elif`:
+
+[source, python, linenums, highlight=3-3]
+----
+if t < 72:
+    temps_below_72 += 1
+elif t == 72:
+    temps_at_72 += 1
+else:  # t > 72
+    temps_above_72 += 1
+----
+
+This is both efficient and readable, and it will also scale to as many cases as
+we like.  Therefore, when doing multi-way tests, use the `if`/`elif`/`else`
+form.
+
+== Syntax notes
+
+* All conditional forms start with the `if` keyword; you can't have an `else`
+clause or an `elif` clause without an `if` clause.
+
+* There can be any number of `elif` clauses, including zero.  Each one has to
+have its own test.
+
+* The `else` clause is always optional, even after an `elif` clause.  If
+the `else` clause is omitted, that means to do nothing if the other cases don't
+apply.
+
+== A pitfall
+
+Even though in many cases of multi-way tests, using an `if`/`elif`/`else`
+statement with one or more ``elif``s is the right approach, it's dangerous to
+rely on this too much.  Sometimes you can write the code to avoid conditionals
+altogether, and in these cases, you usually shouldn't use conditionals.
+
+Here's an example.  Try to figure out what is wrong with this code, and how you
+would rewrite it.  (Assume that the function will only receive valid inputs.)
+
+[source, python]
+----
+def scale_value(lst, scale, index):
+    """
+    Return a list value multiplied by a value which depends on the position in
+    the list.
+
+    Arguments:
+      lst, scale: lists of integers of length 4
+      index: an integer between 0 and 3
+
+    Return value: an integer
+    """
+
+    if index == 0:
+        result =  lst[0] * scale[0]
+    elif index == 1:
+        result =  lst[1] * scale[1]
+    elif index == 2:
+        result =  lst[2] * scale[2]
+    elif index == 3:
+        result =  lst[3] * scale[3]
+    # no `else` clause
+    return result
+----
+
+.Answer
+[%collapsible]
+====
+
+This function can be simplified almost to the point of non-existence.  Here's
+the corrected version:
+
+[source, python]
+----
+def scale_value(lst, scale, index):
+    """
+    Return a list value multiplied by a value which depends on the position in
+    the list.
+
+    Arguments:
+      lst, scale: lists of integers of length 4
+      index: an integer between 0 and 3
+
+    Return value: an integer
+    """
+
+    return lst[index] * scale[index]
+----
+
+In fact, though, the function is so simple that we probably wouldn't even
+define it.  Instead, everywhere we would want to use it we'd just write
+`lst[index] * scale[index]` (with variable names changed as needed).
+
+Even though the original function was correct, using an `if`/`elif`/`else`
+statement is clearly wrong because it's unnecessary.  When you can rewrite the
+code to be much more concise, as in this case, you generally should.
+
+====
+
+
+
+'''
+{blank}[End of reading]
