@@ -1,0 +1,686 @@
+= CS 1 Reading 12: Files
+:nofooter:
+:toc: left
+:source-highlighter: pygments
+:ie: pass:quotes[_i.e._]
+:eg: pass:quotes[_e.g._]
+:etc: pass:quotes[_etc._]
+:icons: font
+:docinfo: shared
+:dots: \...
+:smiley: icon:smile-o[]
+
+== Overview
+
+In this reading we'll talk about _files_, which are the most basic way to store
+data permanently.
+
+== Topics
+
+* Files
+* Binary and text files
+* Opening and closing files
+* Reading from text files
+
+== Why files?
+
+Data that computer programs act on can be either temporary or permanent. Values
+of program variables are temporary (they disappear when a program exits).  But
+we often want to work with more permanent data.  For example, if we are
+analyzing some data, we probably want the raw data to be available in some
+permanent form so that we can analyze it in multiple ways, or so that we can
+add more data as it comes in.  The most basic way to store data in a permanent
+way on a computer is to use a _file_.  footnote:[It's not the only way, though.
+For instance, really large and highly-structured data sets are often stored in
+_relational databases_, and there is a significant amount of theory involved in
+how to do this well.]
+
+The word "file" is borrowed from its more traditional use as a folder in a
+"file cabinet", where paper records have been stored since at least the
+mid-1800s.  footnote:[This is yet another example of a common word which has a
+completely different, but analogous, meaning in computer programming.]  In the
+context of computers, a "file" is a data structure that is stored on some
+permanent medium (such as a hard disk, a solid state disk, flash memory, or
+even magnetic tapes).  The important things about a file are that 
+
+* they contain data
+
+* the data they contain does not go away when a program exits or when a
+  the computer they are stored on is switched off
+
+We say that data stored in files is "persistent" for this reason; it "persists"
+even when you turn your computer off.
+
+We've already been working with files, of course.  Every time you write a
+program (say, a CS 1 assignment), you are creating a file.  Program source code
+is traditionally stored in files, but files are used for much more than this:
+
+* scientific data
+* media of all types (books, PDFs, audio files, video files)
+* executable (binary) versions of computer programs
+* configuration information
+* personal information
+
+and much more.  Without files, most of what we do with computers would not be
+possible.
+
+== Binary and text files
+
+We can distinguish two primary types of files based on the way the data is
+formatted: _binary_ files and _text_ files.  The word _binary_ just means that
+it is made up of raw ``0``s and ``1``s (binary numbers) stored on a computer
+disk.  footnote:[If you don't know much about binary numbers, don't worry: we
+will be going over them in a few readings.]  Of course, computer disks don't
+store _actual_ ``0``s and ``1``s (whatever that would be); they store a
+physical representation of them in terms of some physical property that can
+have one of two states (for instance, the magnetization state of a tiny area of
+a metal disk).
+
+.Data: it's all just bits.
+image::bits.jpeg[]
+
+.If you're curious... (click to expand)
+[%collapsible]
+====
+
+.Ternary computers
+****
+
+There is no fundamental reason why data has to be stored as bits (base 2
+numbers).  From an engineering standpoint, though, it makes sense: it's a lot
+easier to make a computer (and thus, the data that a computer uses) if you only
+have to distinguish between two physical states than if you had to distinguish
+between more than two states.  Some computers made in the Soviet Union in the
+late 1950s to the early 1970s used base-3 (_ternary_) numbers, which actually
+have some theoretical advantages; it's possible that base-3 computers may
+become popular again.  For more information on these unusual computers see
+https://en.wikipedia.org/wiki/Ternary_computer[this Wikipedia article].
+
+****
+
+====
+
+When we speak of a binary file, we just mean a "raw" file that can be anything.
+In fact, _all_ files on a computer are binary files.  But some files store
+their bits in particular ways that make sense for a particular kind of data.
+We refer to these "ways of storing bits in a file" as a file's _encoding_.  One
+very common kind of file encoding is as a _text file_.
+
+A text file is a file where each consecutive sequence of 8 bits (called a
+_byte_) represents a single character.  footnote:[We're oversimplifying here.
+Some kinds of text encodings are more complicated, especially if you need to
+encode Asian languages with large numbers of characters ({eg} Chinese).  These
+require more than 8 bits per character.] These files are easy to read because a
+program can read a single byte and immediately convert it into the appropriate
+character; they are easy to write for similar reasons.  In this course, when we
+say "file" we will almost always mean "text file".  Nevertheless, non-text
+files are very important; if your program reads or writes images, or audio, or
+video, it will need to use non-text file encodings.
+
+== An example
+
+Let's assume there is a text file called `temps.txt` containing temperature
+data taken once per day at noon.  This file could be large (more than 1000
+entries).  We will assume that the text file has exactly one temperature number
+per line.  We want to read numbers from this file and compute values from them.
+
+Since `temps.txt` is a text file, it contains a sequence of characters.  These
+characters can be interpreted as numbers.  For instance, the file might look
+like this:
+
+[source, python]
+----
+78.2
+68.3
+59.0
+88.1
+49.5
+99.0
+----
+
+Of course, a real file of temperature data would probably be much larger.
+We'll work with this file for the rest of the reading.
+
+== Opening a file
+
+Files in Python are represented as _file objects_ {ie} objects which represent
+a file on a hard drive (or some other storage medium). These are _not_ the same
+thing as the file itself; instead, they provide a convenient way to interact
+with the file from Python.
+
+Before we work with a file, we have to create a file object in Python that is
+linked to the real file. After that, file operations are just methods of the
+file object. File objects are created using the `open` function.
+
+----
+>>> temps = open('temps.txt', 'r')
+>>> temps
+<_io.TextIOWrapper name='temps.txt' mode='r' encoding='UTF-8'>
+----
+
+You don't need to understand everything that is printed out when you enter
+`temps`, but it's Python's way of telling you that `temps` is an object of the
+class `_io.TextIOWrapper` with the name `temps.txt`, the mode `r` and the
+encoding `UTF-8`.  (We haven't learned about classes yet, but we will.)  You
+might expect it to say `file` somewhere; actually, `_io.TextIOWrapper` is a
+more general version of a file.  The `UTF-8` encoding is one of the standard
+encodings for text files. footnote:[Another one you will hear about is the
+ASCII encoding, which is an older encoding that can only encode standard
+typewriter characters.]
+
+What's important here is that the `temps` object is a Python object that is
+able to do operations on the actual file `temps.txt` by calling its methods.
+Before we get to that, let's look at the `open` function in more detail.
+
+The `open` function is used to create file objects given a file name.  A call
+to `open` looks schematically like this:
+
+[source, python]
+----
+open(<name of file>, <mode>)
+----
+
+This function returns a Python file object.  The `<name of file>` argument is
+the file's name as a string.  The `<mode>` argument is one or more characters
+that describe how the file can be used.  We won't go through all the possible
+mode values; a full list is
+https://docs.python.org/3/library/functions.html#open[here] if you're
+interested.  For our purposes, you should know these three modes:
+
+* `'r'` -- the file is opened read-only
+
+* `'w'` -- the file is opened write-only; if the file already existed before
+the `open` call, it will be wiped out and overwritten
+
+* `'a'` -- the file is opened write-only; if the file already existed before
+the `open` call, writing to the file will append the new text to the end of the
+file
+
+For the `'r'` and `'a'` modes, if the file doesn't exist, a `FileNotFoundError`
+exception is raised.
+
+In this case, we are reading from an existing file called `temps.txt` and we
+are not going to write back into that file, so the `'r'` mode is appropriate.
+
+If you leave off the `<mode>` argument, then `'r'` is assumed (this is called a
+_default argument_ and we'll learn more about it later in the course).  For
+instance:
+
+----
+>>> open('foo.txt')
+----
+
+is the same as:
+
+----
+>>> open('foo.txt', 'r')
+----
+
+== File paths and the file system
+
+When you open a file, you have to specify the name of the file, but it's more
+involved than that.  The string you provide is called a _file path_ and it
+represents a file's "location" in the _file system_.  You don't need to
+understand the file system other than to understand that it's a series of
+nested _directories_ which are places where files can be located.
+
+The topmost directory in the file system is called the _root_ directory; on
+many computers (notably MacOS and Linux) the root directory is identified by a
+single forward slash (`/`); on Windows it's a backwards slash (`\`) (usually
+called a "backslash").  The topmost directory where you can store your files is
+called your _home_ directory.  You can create subdirectories whenever you want,
+and it's a good idea to do so in order to organize your files.
+
+Most programs that run on your computer (for instance, terminal programs and
+text editors) keep track of a _current directory_ which they are able to access
+directly.  The Python interpreter also keeps track of the current directory.
+Unless you do something unusual, this will be the directory in which you
+started Python.  You can access this from the Python interpreter by importing
+the `os` module and calling the `getcwd` (*get* **c**urrent **w**orking
+**d**irectory) function:
+
+----
+>>> import os
+>>> os.getcwd()
+'/Users/student'
+----
+
+A file path always ends with the name of the file.  If that's all there is,
+then the file is assumed to be in the current directory.  If you want to open a
+file that isn't in the current directory, you have these choices:
+
+* You can specify an _absolute path_.  This is a list of all the directories
+starting from the root directory and ending in the current directory, plus the
+file name, separated by slashes (forward slashes for MacOS/Linux, backslashes
+for Windows).  For instance:
++
+----
+>>> open('/Users/student/cs1/assignments/1/lab1.data', 'r')
+----
++
+(This assumes that a file named `lab1.data` exists in the directory
+`/Users/student/cs1/assignments/1`.) footnote:[The suffix `.data` implies that
+the file contains data, but there is no requirement that it be formatted in any
+particular way.  The filesystem doesn't care.]
+
+* You can specify a _relative path_. This is like an absolute path, but it
+starts from the current directory instead of the root directory.  This is
+indicated by dropping the initial slash character.  For instance, if you are in
+the `'/Users/student/cs1'` directory, you might type:
++
+----
+>>> open('assignments/1/lab1.data', 'r')
+----
++
+to open the same file as before.
+
+There are two more things you may find in a file path:
+
+. The `.` character by itself means the current directory.
+
+. The `..` characters means the _parent_ of the current directory, which is
+"one up" in the directory tree.
+
+You can use these to create arbitrarily complicated paths.  For example, if
+the current directory is `/Users/student/cs2/assignments/2` and you wanted to
+open `/Users/student/cs1/assignments/1/lab1.data` you could type:
+
+----
+>>> open('../1/lab1.data', 'r')
+----
+
+instead of the much longer
+
+----
+>>> open('/Users/student/cs1/assignments/1/lab1.data', 'r')
+----
+
+That's enough about file paths for now.  You'll soon get used to them.
+
+== Closing a file
+
+Before we get to the interesting stuff (which is how to read information from a
+file), we need to talk briefly about closing files.  Once we are done working
+with a file, we should _close_ it, which means to make it so that no further
+actions (reads or writes) can be done to the file.  In Python, we do this by
+calling the `close` method on a file object.  For instance:
+
+[source, python]
+----
+file = open('temps.txt', 'r')
+# ... read data from the file object ...
+file.close()  # close the file
+----
+
+After closing a file, any attempt to read from (or write to) the file will
+result in an error.
+
+If a file isn't closed, it will eventually be closed anyway once the program
+exits.  However, it is bad practice to have large numbers of open files in a
+program which are no longer being used.  Most operating systems have a limit on
+the number of files that can be open at the same time, and if you are
+collecting data from a lot of files, you might exceed that limit.  It's better
+to close a file as soon as you no longer need it.
+
+== Reading from text files
+
+Probably the most common thing to do with text files is to read lines from
+them.  Of course, text files are actually just linear sequences of characters
+(like strings stored on a disk drive).  We can think of them as sequences of
+lines, where a "line" is a sequence of characters ending in a newline character
+(the `'\n'` character).  footnote:[Note, though, that they are not Python
+sequences in the sense that a string or a list is a sequence.  For instance,
+you can't use the square bracket syntax on file objects to get a particular
+line.]
+
+Python has two methods for reading lines from text files, which we now
+describe.
+
+=== The `readlines` method on files
+
+We'll start with the `readlines` method, because it's conceptually simpler.
+What this method does is to return all the lines in a file as a list of
+strings.  This method is very easy to use.  Typically, you have some code like
+this:
+
+[source, python]
+----
+file = open('temps.txt', 'r')
+lines = file.readlines()
+file.close()
+----
+
+and then you can use the `lines` list however you want.  If you look at the
+`lines` list you'll see that is in fact a list of strings, where each string
+ends in a newline character: footnote:[It is possible for a text file to end in
+a character which isn't a newline.  That would make our example more
+complicated, so we'll assume that all our text files do end in newlines.]
+
+----
+>>> lines
+['78.2\n', '68.3\n', '59.0\n', '88.1\n', '49.5\n', '99.0\n']
+----
+
+Note that this is _not_ a list of ``float``s, even though that's really what we
+want.  We would have to convert each string to a float in order to get the list
+we want.  Here's one (bad) way to do it:
+
+[source, python]
+----
+file = open('temps.txt', 'r')
+lines = file.readlines()
+file.close()
+for line in lines:
+    line = float(line)
+----
+
+At the end of this, `lines` will now be a list of ``float``s, each representing
+a temperature.  Although this works, it's bad because the name `line` suggests
+a string, and what we want are numbers.  footnote:[When writing code, it's not
+enough that the code work; you also want it to make sense to someone reading
+it.]  For this, you would be better off creating a new list of numbers.  That
+code might look like this:
+
+
+[source, python]
+----
+file = open('temps.txt', 'r')
+lines = file.readlines()
+file.close()
+nums = []
+for line in lines:
+    nums.append(float(line))
+----
+
+Then we could use the `nums` list for whatever we wanted.  On the other hand,
+this second version has a problem too: if the file is very long, you are
+creating two big lists in memory where previously you were creating only one.
+It would be better if we could go through the file line by line, convert each
+line to a `float`, and append it to the `nums` list without ever having to save
+the `lines` list.  But since we used the `readlines` method, we've already
+created the `lines` list, so this won't work.  We have to try a different
+approach.
+
+=== A pitfall
+
+We'll get back to the example shortly, but we want to alert you to something
+that can be confusing for new programmers.  Once you have read one or more
+lines of text from a text file into a list, the strings in the list are
+completely independent of the lines in the file they came from.  So if you
+change any of the lines in the list, the file will _not_ change as a result.
+*Files are not lists and can't be altered like lists.*  (There _are_ ways to
+change the contents of files, and we will see one of them below, but it's not
+this simple.)
+
+For instance, this code:
+
+[source, python]
+----
+file = open('temps.txt', 'r')
+lines = file.readlines()
+file.close()
+lines[0] = '0.0\n'
+----
+
+will not change the first number in the file to `0.0`.  In fact, the file can't
+be changed, since you opened it in read-only mode.
+
+=== The `readline` method on files
+
+Getting back to our problem, what we have seen is that there are many
+situations where you would like to be able to read the lines in a file one at a
+time without storing the lines in a list.  In fact, this is the usual
+situation.  Once you read a line, you may convert it into some other kind of
+data, you may save that data in some way or use it to compute something else,
+and once you've done this, you no longer need the original line.
+
+For this kind of case, Python provides the `readline` method.  It reads a
+_single_ line from a file and returns it (including the newline character at
+the end of the line).  The file object also keeps track of where in the file
+the line was read from, so that the next time the method is called, it will
+read the _next_ line in the file, and so on.  If there are no more lines in the
+file, the `readline` method returns the empty string.  footnote:[If the last
+line doesn't end in a newline, and the `readline` method is reading that line,
+it returns a string containing all the characters up to the end of the file.]
+
+.Question
+****
+
+What is the difference between what happens when 
+
+* you use the `readline` method to read a blank line from a file, or
+
+* you use it to try to read a line from a file when all the lines in the file
+have already been read?  
+
+Think about this before clicking to reveal the answer.
+
+.Answer
+[%collapsible]
+====
+
+This is one reason Python keeps the newline character in the string that is
+returned from the `readline` method.  Reading a blank line from a file using
+the `readline` method will _not_ return an empty string; it will return a
+string containing a single newline character {ie} `'\n'`.  Trying to read a
+line from a file when all lines have been read returns the empty string {ie}
+`''`.  So if `readline` ever returns the empty string, you know that there are
+no more lines in the file to read.
+
+====
+
+****
+
+Let's say we wanted to compute the average of all the temperatures in our
+`temps.txt` file.  We _could_ read our file using a series of calls to the
+`readline` method: footnote:[We call our summation variable `sum_nums` instead
+of `sum` because `sum` is a built-in function in Python.  We _could_ have
+called it `sum`, but if we did we wouldn't be able to use the `sum` built-in
+function in that module after the `sum` variable was defined.]
+
+[source, python]
+----
+file = open('temps.txt', 'r')
+sum_nums = 0.0
+n = 0  # number of lines
+
+line = file.readline()
+sum_nums += float(line)
+n += 1
+
+line = file.readline()
+sum_nums += float(line)
+n += 1
+
+line = file.readline()
+sum_nums += float(line)
+n += 1
+
+line = file.readline()
+sum_nums += float(line)
+n += 1
+
+# ... etc. until there are no more lines ...
+
+file.close()
+avg = sum_nums / n
+----
+
+This is not an effective strategy, though.  We have no way of knowing exactly
+how many lines there are in the file, so we don't know how many times to call
+the `readline` method.  Even worse, we are repeating the same code over and
+over, so this is an egregious violation of the D.R.Y. principle.
+
+We hope that at this point, your brain is screaming "USE A LOOP!" because
+that's exactly what we'll do.  Since we don't know how many times we'll have to
+go through the loop, we'll use a `while` loop.
+
+We've mentioned before that _pseudocode_ is an English-language description of
+code that can easily be converted into real code.  footnote:[This is
+particularly nice in Python, since Python is already so readable.  In fact,
+Python has been called "executable pseudocode".] Here's a pseudocode version of
+the code we'll write:
+
+----
+open the file
+initialize sum_nums and n to zero
+read a line
+while the line is not empty (we're not at the end of the file):
+    convert the line to a float
+    add the float to sum_nums
+    add 1 to n
+divide sum_nums by n to get the average
+print the average
+close the file
+----
+
+Translating this to Python is easy:
+
+[source, python]
+----
+file = open('temps.txt', 'r')
+sum_nums = 0
+n = 0
+line = file.readline()
+while line != '':
+    num = float(line)
+    sum_nums += num
+    n += 1
+    line = file.readline()
+avg = sum_nums / n
+print('Average temperature: {}'.format(avg))
+file.close()
+----
+
+This code will repeatedly call the `readline` method on the file object until
+it returns the empty string ({ie} until there are no more lines).  Each time
+the `readline` method returns a line, the `float` function converts it into a
+floating-point number which is added to the `sum_nums` variable.  We also keep
+track of the line count with the `n` variable.  At the end, we divide the sum
+by the number of lines to get the average temperature, and we print it out to
+the terminal.
+
+What's nice about this code is that we never have to store a list of all the
+lines, or, for that matter, a list of all the numbers.  We go through the file
+line-by-line, updating the `sum_nums` and the `n` variables, and then at the
+end of the loop we have the information we need to compute the average.  No
+matter how big the file is, this code will still work and we won't run out of
+memory storing big lists.
+
+However, this code is a bit clunky. footnote:[_Clunky_ means inelegant and
+possibly too repetitive or too verbose.]  The `num` variable doesn't have to be
+there; we only use it to hold the temperature value before adding it to
+`sum_nums`.  We can get rid of it and tighten up the code a bit:
+
+[source, python]
+----
+file = open('temps.txt', 'r')
+sum_nums = 0
+n = 0
+line = file.readline()
+while line != '':
+    sum_nums += float(line)
+    n += 1
+    line = file.readline()
+avg = sum_nums / n
+print('Average temperature: {}'.format(avg))
+file.close()
+----
+
+Unfortunately, that's not all that's wrong with this code.  The line `line =
+file.readline()` is repeated twice, which violates the D.R.Y. principle.  There
+should be a better way to write this.
+
+=== The D.R.Y. principle again
+
+We've seen before that repeated code in a loop often means that the test for
+whether to get out of a loop shouldn't come at the beginning of the loop but
+somewhere inside the loop.  Would that trick work here too?  Let's try it:
+
+[source, python]
+----
+file = open('temps.txt', 'r')
+sum_nums = 0
+n = 0
+while True:
+    line = file.readline()
+    if line == '':  # no more lines
+        break       # exit the loop
+    sum_nums += float(line)
+    n += 1
+avg = sum_nums / n
+print('Average temperature: {}'.format(avg))
+file.close()
+----
+
+It works!  And the repetition is gone; the code is very D.R.Y.
+
+Notice that the `while True:` line just means "repeat".  In pseudocode, what
+the loop means is:
+
+----
+repeat:
+   read a line from the file
+   if the line is empty (end of file), exit the loop
+   otherwise, convert the line to a float and add to sum_nums
+   add 1 to n
+----
+
+We can make one more readability improvement.  Remember that when we talked
+about `if` we said that Python treats a few values as "false" even if they
+aren't the actual `False` value?  We called these values "falsy" values.  Falsy
+values include the integer `0`, the empty string, and the empty list.  Since
+the empty string is considered to be "falsy", and the `readline` method returns
+the empty string if it can't read a line, we can rewrite this code like this:
+
+[source, python, highlight="6"]
+----
+file = open('temps.txt', 'r')
+sum_nums = 0
+n = 0
+while True:
+    line = file.readline()
+    if not line:
+        break
+    sum_nums += float(line)
+    n += 1
+avg = sum_nums / n
+print('Average temperature: {}'.format(avg))
+file.close()
+----
+
+We've only changed one line: `if line == '':` became `if not line:`.  The `not`
+keyword is an operator that flips boolean values: `not True` is `False` and
+`not False` is `True`.  footnote:[It may look like a function, but you don't
+need to put its argument in parentheses.  We say it's a _prefix operator_.]  So
+if `line` is the empty string `''`, then `line` is "falsy" and `not line` is
+"truthy".  In fact, if we try this in Python:
+
+----
+>>> not ''
+True
+----
+
+we see that `not line` will be `True` if there are no more lines to read.  So
+`if not line:` reads like English, which is something that Python programmers
+appreciate.
+
+Now our code works, is D.R.Y., and reads well, so we are happy with it.
+
+== Looking forward
+
+We have more to say about files, but this reading is long enough!  We want to
+let you know about some of the related topics we will discuss in future
+readings:
+
+* There is an even more concise way to write the averaging code that uses a
+`for` loop instead of a `while` loop.
+
+* We will see how to write to text files.
+
+* It's a pain to have to remember to call the `close` method on files.  There
+is a keyword called `with` that can be used to automatically close files after
+they are no longer needed.
+
+'''
+{blank}[End of reading]
