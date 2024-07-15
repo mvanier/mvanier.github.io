@@ -1,0 +1,1335 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs1/Fall2024/book/14/reading14/">
+      
+      
+        <link rel="prev" href="../../13/reading13/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>14. Binary numbers - The CS 1 book (Fall 2024)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reading-14-binary-and-hexadecimal-numbers" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="The CS 1 book (Fall 2024)" class="md-header__button md-logo" aria-label="The CS 1 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 1 book (Fall 2024)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              14. Binary numbers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="The CS 1 book (Fall 2024)" class="md-nav__button md-logo" aria-label="The CS 1 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    The CS 1 book (Fall 2024)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Readings
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Readings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/reading1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Introduction, part 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/reading2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. Introduction, part 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/reading3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. Strings, part 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/reading4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. Strings, part 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../5/reading5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5. Objects and methods
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/reading6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7/reading7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7. Documenting your code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../8/reading8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8. Lists
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../9/reading9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9. Loops
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../10/reading10/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10. Conditionals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11/reading11/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11. Loops, part 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../12/reading12/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12. Files
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../13/reading13/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13. Odds and ends
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    14. Binary numbers
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    14. Binary numbers
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#number-representations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Number representations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Number representations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#writing-numbers-in-different-bases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Writing numbers in different bases
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#binary-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binary numbers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Binary numbers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#converting-from-binary-to-decimal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Converting from binary to decimal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#literal-binary-numbers-in-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Literal binary numbers in Python
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#converting-from-decimal-to-binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Converting from decimal to binary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roundoff-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      Roundoff error
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hexadecimal-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hexadecimal numbers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hexadecimal numbers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#literal-hexadecimal-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Literal hexadecimal numbers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#an-example-from-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      An example from Python
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#number-representations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Number representations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Number representations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#writing-numbers-in-different-bases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Writing numbers in different bases
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#binary-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binary numbers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Binary numbers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#converting-from-binary-to-decimal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Converting from binary to decimal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#literal-binary-numbers-in-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Literal binary numbers in Python
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#converting-from-decimal-to-binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Converting from decimal to binary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roundoff-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      Roundoff error
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hexadecimal-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hexadecimal numbers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hexadecimal numbers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#literal-hexadecimal-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Literal hexadecimal numbers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#an-example-from-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      An example from Python
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="reading-14-binary-and-hexadecimal-numbers">Reading 14: Binary and hexadecimal numbers</h1>
+<blockquote>
+<p><em>Unity can only be manifested by the Binary.<br/>
+Unity itself and the idea of Unity are already two.</em><br/>
+- Buddha</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>When you first learned to count, you learned decimal (base 10) numbers.
+Decimal numbers are convenient because they are pretty compact
+and because we have ten fingers.
+But computers almost never use decimal numbers internally.
+Instead, they use <strong>binary</strong> (base 2) numbers,
+and sometimes <strong>hexadecimal</strong> (base 16) numbers.
+In this reading we'll review these kinds of numbers.</p>
+<h2 id="topics">Topics</h2>
+<ul>
+<li>Binary numbers</li>
+<li>Hexadecimal numbers</li>
+</ul>
+<h2 id="number-representations">Number representations</h2>
+<p>We normally compute using <em>decimal</em> numbers
+<em>i.e.</em> numbers composed of ten digits:
+0, 1, 2, 3, 4, 5, 6, 7, 8, and 9.
+This is only one of many ways to represent numbers.
+Other ways include:</p>
+<ul>
+<li>Roman numerals: MMXX (2020)</li>
+<li>Unary numbers (sequence of 1s): 1111111111 (10)</li>
+</ul>
+<p>There are actually an infinite number of possible number representations.
+Therefore, a single number
+has an infinite number of ways of being represented.
+But all number representations are not equally useful.
+In particular, two such representations
+are particularly convenient to use when representing numbers in a computer:
+<em>binary</em> (base 2) numbers and <em>hexadecimal</em> (base 16) numbers.</p>
+<h3 id="writing-numbers-in-different-bases">Writing numbers in different bases</h3>
+<p>Traditionally, when we write a number that isn't base 10,
+we specify the base of the number in a subscript coming after the number.
+If there is no subscript, we assume that it's decimal.
+Numbers with integer bases less than 10 (and greater than 0)
+use digits from 0 up to but not including the base itself.  So:</p>
+<ul>
+<li>
+<p>1234 is decimal: one thousand, two hundred and thirty-four.</p>
+</li>
+<li>
+<p>1234<sub>10</sub> is the same number, with an explicit subscript.</p>
+</li>
+<li>
+<p>10010<sub>2</sub> is a binary (base 2) number (18 in decimal).</p>
+</li>
+<li>
+<p>1020210<sub>3</sub> is a <em>ternary</em> (base 3) number; this number is 912 in decimal.</p>
+</li>
+<li>
+<p>475660<sub>8</sub> is an <em>octal</em> (base 8) number; this number is 162736 in decimal.</p>
+</li>
+</ul>
+<p>Hexadecimal numbers are a little more complicated; we'll discuss them below.</p>
+<p>We can't write subscripts in computer code, so there has to be another way to
+write literal numbers in different bases.  We already know how to write decimal
+numbers; we'll see how to write binary and hexadecimal numbers below.  These
+are the only number bases we will care about in this course.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<!--
+MAYBE-TODO: Show how to use the `int` function
+to parse numbers in different bases.
+-->
+
+<h2 id="binary-numbers">Binary numbers</h2>
+<p>A <em>binary</em> number is a number representation that uses only two digits,
+conventionally called 0 and 1.
+This representation is very convenient
+when building digital electronic circuits,
+because you only have to be able to distinguish
+between two physical quantities
+(<em>e.g.</em> "low voltage" and "high voltage").
+Since all physical quantities have noise associated with them,
+it's easier to have robust circuits
+the fewer the number of distinguishable quantities there are,
+and two distinguishable quantities
+is the smallest practical number you can use.
+Modern computers are generally built out of electronic circuits,
+so they too use binary numbers.</p>
+<p>We are more familiar with <em>decimal</em> (base 10) numbers,
+because that is the usual way to represent numbers.
+But it's important to realize
+that all actual computations on a computer happen using binary numbers.
+The computer has to be able to convert decimal numbers we enter
+(<em>e.g.</em> in source code) into the binary numbers that it uses.
+Then, when a (binary) numeric result is obtained,
+the computer has to convert it back to a decimal representation
+so we can see it the way we expect to see it.</p>
+<h3 id="converting-from-binary-to-decimal">Converting from binary to decimal</h3>
+<p>To gain familiarity with binary numbers,
+let's see how to convert a binary number to a decimal number.
+We will convert 11010<sub>2</sub> to decimal.
+What do we have to do?</p>
+<p>First of all, let's recall what a decimal number actually means.
+The number 1234<sub>10</sub> actually means:</p>
+<div class="admonition note">
+<p>1234<sub>10</sub><br/>
+= <strong>1</strong> &times; 10<sup>3</sup> + <strong>2</strong> &times; 10<sup>2</sup> + <strong>3</strong> &times; 10<sup>1</sup> + <strong>4</strong> &times; 10<sup>0</sup><br/>
+= 1 &times; 1000 + 2 &times; 100 + 3 &times; 10 + 4 &times; 1<br/>
+= 1000 + 200 + 30 + 4<br/>
+= 1234
+</pre></p>
+</div>
+<p>Note that 1000, 100, 10, and 1 are all powers of 10 (1 = 10<sup>0</sup>).</p>
+<p>In contrast, binary numbers use base 2, not base 10.
+Thus, the number 11010<sub>2</sub> means:</p>
+<div class="admonition note">
+<p>11010<sub>2</sub><br/>
+= <strong>1</strong> &times; 2<sup>5</sup> + <strong>1</strong> &times; 2<sup>4</sup> + <strong>0</strong> &times; 2<sup>2</sup> + <strong>1</strong> &times; 2<sup>1</sup> + <strong>0</strong> &times; 2<sup>0</sup><br/>
+= 1 &times; 16 + 1 &times; 8 + 0 &times; 4 + 1 &times; 2 + 0 &times; 1<br/>
+= 16 + 8 + 0 + 2 + 0<br/>
+= 26<br/></p>
+</div>
+<p>Note that 16, 8, 4, 2, and 1 are all powers of 2 (1 = 2<sup>0</sup>).
+So if we add up (in decimal) the powers of 2 corresponding to
+the digit locations that are 1 in the binary number (here, 16, 8, and 2),
+we get the decimal version of the number!</p>
+<p>Be aware that a single "number" like 11010
+can mean something very different in different number bases:
+26 in base 2 and 11010 (eleven thousand and ten) in base 10.
+To be explicit about this, you should use the subscript.</p>
+<h3 id="literal-binary-numbers-in-python">Literal binary numbers in Python</h3>
+<p>Python allows you to write literal binary numbers using just 0s and 1s
+as long as you add the <code>0b</code> prefix:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="mi">11010</span>    <span class="c1"># not a binary number</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="go">11010</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="mb">0b11010</span>  <span class="c1"># a literal binary number because of the 0b prefix</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="go">26</span>
+</span></code></pre></div>
+<p>This is rarely needed, but it's nice to have available.</p>
+<h3 id="converting-from-decimal-to-binary">Converting from decimal to binary</h3>
+<p>Converting numbers from binary to decimal is pretty straightforward.
+Converting from decimal to binary is a lot harder,
+and we're not going to do it here
+(though it may show up as an assignment problem).</p>
+<h3 id="roundoff-error">Roundoff error</h3>
+<p>Python tries as hard as it can
+to disguise the fact that internal computations are done in binary,
+not in decimal,
+but occasionally you will see something weird
+that is a result of the conversions from decimal to binary and back.
+For instance:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="mf">4.1</span> <span class="o">/</span> <span class="mi">100</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="go">0.040999999999999995</span>
+</span></code></pre></div>
+<p>This seems like a pretty weird result.
+It should be the same as <code>41 / 1000</code>, right?</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="mi">41</span> <span class="o">/</span> <span class="mi">1000</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="go">0.041</span>
+</span></code></pre></div>
+<p>The <code>41 / 1000</code> result is correct; what's up with the other one?
+Well, you can see that it's very, very close to the "correct" answer,
+differing by only a small amount:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gp">&gt;&gt;&gt; </span> <span class="mi">41</span> <span class="o">/</span> <span class="mi">1000</span> <span class="o">-</span> <span class="mf">4.1</span> <span class="o">/</span> <span class="mi">100</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="go">6.938893903907228e-18</span>
+</span></code></pre></div>
+<p>The number <code>6.938893903907228e-18</code> uses exponential notation;
+this is really 6.938893903907228 &times; 10<sup>-18</sup>.
+That's a very small error.
+We call this <strong>roundoff error</strong>.
+It happens because in order to compute <code>4.1 / 100</code>,
+the computer first has to</p>
+<ul>
+<li>
+<p>convert <code>4.1</code> and <code>100</code> to their binary number equivalents</p>
+</li>
+<li>
+<p>do the division using binary numbers</p>
+</li>
+<li>
+<p>convert the result back into decimal numbers</p>
+</li>
+</ul>
+<p>Integers like <code>41</code> and <code>1000</code> have exact binary number representations.
+Floating-point numbers like <code>4.1</code> usually don't,
+so the computer has to approximate their values,
+which leads to a loss of numeric precision.
+Unless you are doing very exacting numerical calculations,
+this is unlikely to be a problem for you,
+and you shouldn't worry about it,
+but at least you know what's going on.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></p>
+<h2 id="hexadecimal-numbers">Hexadecimal numbers</h2>
+<p>Binary numbers are great for computers,
+but they aren't great for humans to read,
+because they have a <em>lot</em> more digits than decimal numbers do.
+For instance:</p>
+<ul>
+<li>1000 (decimal) is 1111101000 (binary)</li>
+<li>1000000 (decimal) is 11110100001001000000 (binary)</li>
+</ul>
+<p>Despite this, binary numbers are actually used
+to represent things that programmers can see.
+For instance, locations in memory are naturally expressed
+in terms of binary numbers.
+But nobody wants to read a large binary number with a zillion digits.
+There's a need for a more compact way to represent binary numbers.</p>
+<p>To do this, we can use a little numerical trick:
+we can represent binary numbers as <strong>hexadecimal numbers</strong>,
+which means base 16 numbers.
+A hexadecimal number is a number
+that has the usual decimal digits <code>0</code> through <code>9</code>,
+but which also has six new "digits": <code>a</code>, <code>b</code>, <code>c</code>, <code>d</code>, <code>e</code>, and <code>f</code>.
+Here, these "digits" do not represent the letters found in text,
+but have a specific meaning:</p>
+<ul>
+<li><code>a</code> means 10</li>
+<li><code>b</code> means 11</li>
+<li><code>c</code> means 12</li>
+<li><code>d</code> means 13</li>
+<li><code>e</code> means 14</li>
+<li><code>f</code> means 15</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some people use uppercase letters instead of lowercase letters.
+It really doesn't matter.</p>
+</div>
+<p>A number in hexadecimal is represented as a sum of powers of 16.
+For example:</p>
+<div class="admonition note">
+<p>1a2e<sub>16</sub></br>
+= <strong>1</strong> &times; 16<sup>3</sup> + <strong>a</strong> &times; 16<sup>2</sup> + <strong>2</strong> &times; 16<sup>1</sup> + <strong>e</strong> &times; 16<sup>0</sup></br>
+= 1 &times; 4096 + 10 &times; 256 + 2 &times; 16 + 14 &times; 1</br>
+= 4096 + 2560 + 32 + 14</br>
+= 6702</p>
+</div>
+<p>OK, fine.  But what has this got to do with binary numbers?</p>
+<p>The trick is that you can "chunk together"
+any adjacent group of four binary numbers
+to get a single hexadecimal number.
+The equivalence chart is as follows:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a># binary -&gt; hex
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>0000 -&gt; 0
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>0001 -&gt; 1
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>0010 -&gt; 2
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>0011 -&gt; 3
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>0100 -&gt; 4
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>0101 -&gt; 5
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>0110 -&gt; 6
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>0111 -&gt; 7
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>1000 -&gt; 8
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>1001 -&gt; 9
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>1010 -&gt; a (10)
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>1011 -&gt; b (11)
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>1100 -&gt; c (12)
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>1101 -&gt; d (13)
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>1110 -&gt; e (14)
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>1111 -&gt; f (15)
+</span></code></pre></div>
+<p>Here's an example of a conversion:</p>
+<div class="admonition note">
+<p><pre>
+11110100001001000000<sub>2</sub>           (1000000 in binary)
+= 1111  0100  0010  0100  0000  (chunking into groups of 4 digits)
+=    f     4     2     4     0  (convert to hexadecimal equivalents)
+f4240<sub>16</sub>
+</pre></p>
+</div>
+<p>So 11110100001001000000<sub>2</sub> in hexadecimal is f4240<sub>16</sub>,
+which is obviously much more compact.
+The only thing you have to be careful of
+is that you need to build the 4-binary-digit chunks
+from the right to the left,
+adding zeros at the end of the leftmost chunk
+to pad it out to exactly four digits if necessary.
+When you do this,
+you can convert any binary number to a hexadecimal number just by
+replacing the chunks with the corresponding digits.</p>
+<h3 id="literal-hexadecimal-numbers">Literal hexadecimal numbers</h3>
+<p>Python also allows you to write literal hexadecimal numbers
+if you use the <code>0x</code> prefix:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="mh">0xf4240</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">1000000</span>
+</span></code></pre></div>
+<h3 id="an-example-from-python">An example from Python</h3>
+<p>Even though you may not need to use hexadecimal numbers yourself,
+you will still see them from time to time.
+For example:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="gp">...</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">double</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="go">84</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">double</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="go">&lt;function double at 0x104495af0&gt;</span>
+</span></code></pre></div>
+<p>Look at the mysterious number <code>0x104495af0</code> in the last line.
+(If you type this in yourself,
+you will almost certainly get a different number.)
+This number indicates where in the computer's memory
+the <code>double</code> function is located.
+Locations in computer memory (usually called <em>addresses</em>)
+are normally identified using hexadecimal numbers.
+They <em>could</em> be identified using decimal (or even binary) numbers,
+but it's more natural to use hexadecimal numbers.</p>
+<p>That's all that you will need to know
+about binary and hexadecimal numbers for this course.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>And, very probably,
+the only number bases you will encounter in your career.
+Octal numbers used to be used a lot, but they are very rarely used now.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>There are computations
+where even small amounts of roundoff error
+can totally ruin the computation.
+Scientists who do a lot of numerical simulations
+have to learn special techniques to avoid these kinds of problems.
+These techniques are beyond the scope of this course.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../13/reading13/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 13. Odds and ends">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                13. Odds and ends
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.footer", "navigation.top", "navigation.expand"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+        <script src="../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
