@@ -1,0 +1,1892 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs1/Fall2024/book/15/reading15/">
+      
+      
+        <link rel="prev" href="../../14/reading14/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>15. Dictionaries - The CS 1 book (Fall 2024)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reading-15-dictionaries" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="The CS 1 book (Fall 2024)" class="md-header__button md-logo" aria-label="The CS 1 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 1 book (Fall 2024)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              15. Dictionaries
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="The CS 1 book (Fall 2024)" class="md-nav__button md-logo" aria-label="The CS 1 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    The CS 1 book (Fall 2024)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Readings
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Readings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/reading1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Introduction, part 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/reading2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. Introduction, part 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/reading3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. Strings, part 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/reading4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. Strings, part 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../5/reading5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5. Objects and methods
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/reading6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7/reading7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7. Documenting your code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../8/reading8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8. Lists
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../9/reading9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9. Loops
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../10/reading10/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10. Conditionals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11/reading11/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11. Loops, part 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../12/reading12/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12. Files
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../13/reading13/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13. Odds and ends
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../14/reading14/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    14. Binary numbers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    15. Dictionaries
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    15. Dictionaries
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-problem-phone-number-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example problem: phone number database
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example problem: phone number database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-a-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using a list
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-a-list-of-tuples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using a list of tuples
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-a-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using a dictionary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keys-and-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Keys and values
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dictionary-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dictionary syntax
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dictionary syntax">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#empty-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Empty dictionary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-empty-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-empty dictionary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dictionary-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dictionary types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-a-value-given-a-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting a value given a key
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#changing-a-value-at-a-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changing a value at a key
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-a-new-keyvalue-pair" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding a new key/value pair
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-a-nonexistent-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessing a nonexistent key
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deleting-a-keyvalue-pair-the-del-statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deleting a key/value pair: the del statement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#back-to-the-example-tuples-as-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Back to the example: tuples as keys
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dictionaries-and-for-loops" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dictionaries and for loops
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dictionary-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dictionary methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dictionary methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get" class="md-nav__link">
+    <span class="md-ellipsis">
+      get
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clear" class="md-nav__link">
+    <span class="md-ellipsis">
+      clear
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keys-and-values_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      keys and values
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#items" class="md-nav__link">
+    <span class="md-ellipsis">
+      items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update" class="md-nav__link">
+    <span class="md-ellipsis">
+      update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-about-append" class="md-nav__link">
+    <span class="md-ellipsis">
+      What about append?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-in-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      The in operator
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-creating-a-frequency-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: creating a frequency table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-problem-phone-number-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example problem: phone number database
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example problem: phone number database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-a-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using a list
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-a-list-of-tuples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using a list of tuples
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-a-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using a dictionary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keys-and-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Keys and values
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dictionary-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dictionary syntax
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dictionary syntax">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#empty-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Empty dictionary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-empty-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-empty dictionary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dictionary-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dictionary types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-a-value-given-a-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting a value given a key
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#changing-a-value-at-a-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changing a value at a key
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-a-new-keyvalue-pair" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding a new key/value pair
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-a-nonexistent-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessing a nonexistent key
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deleting-a-keyvalue-pair-the-del-statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deleting a key/value pair: the del statement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#back-to-the-example-tuples-as-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Back to the example: tuples as keys
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dictionaries-and-for-loops" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dictionaries and for loops
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dictionary-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dictionary methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dictionary methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get" class="md-nav__link">
+    <span class="md-ellipsis">
+      get
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clear" class="md-nav__link">
+    <span class="md-ellipsis">
+      clear
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keys-and-values_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      keys and values
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#items" class="md-nav__link">
+    <span class="md-ellipsis">
+      items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update" class="md-nav__link">
+    <span class="md-ellipsis">
+      update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-about-append" class="md-nav__link">
+    <span class="md-ellipsis">
+      What about append?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-in-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      The in operator
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-creating-a-frequency-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: creating a frequency table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="reading-15-dictionaries">Reading 15: Dictionaries</h1>
+<blockquote>
+<p><em>I was reading the dictionary. I thought it was a poem about everything.</em><br/>
+- Steven Wright</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>A <strong>dictionary</strong> is a new kind of Python data type.
+Dictionaries are fantastically useful
+and are found in nearly all Python programs.
+Once you learn what dictionaries are and how they work,
+you won't want to program without them.</p>
+<p>Before we describe what dictionaries are,
+let's describe a problem they can solve.</p>
+<h2 id="example-problem-phone-number-database">Example problem: phone number database</h2>
+<p>You want to keep track of your friends' phone numbers.
+But since you have so many friends, this is a difficult job!
+How can the computer help?</p>
+<p>For each friend, you need to store:</p>
+<ul>
+<li>the name of the friend</li>
+<li>their phone number</li>
+</ul>
+<p>Also, you want to be able to retrieve the phone number for a given friend.
+Given what you know now, how can you do this?</p>
+<h3 id="using-a-list">Using a list</h3>
+<p>You could create a list of names and phone numbers...</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">phone_numbers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Joe&#39;</span><span class="p">,</span> <span class="s1">&#39;567-8901&#39;</span><span class="p">,</span> <span class="s1">&#39;Jane&#39;</span><span class="p">,</span> <span class="s1">&#39;123-4567&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+</span></code></pre></div>
+<p>...but it would not be easy to find the number
+corresponding to a different name.
+It would be better if a name and the corresponding phone number
+were associated in some way.</p>
+<h3 id="using-a-list-of-tuples">Using a list of tuples</h3>
+<p>You could have a list of <code>(&lt;name&gt;, &lt;phone number&gt;)</code> tuples:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">phone_numbers</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;Joe&#39;</span><span class="p">,</span> <span class="s1">&#39;567-8901&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Jane&#39;</span><span class="p">,</span> <span class="s1">&#39;123-4567&#39;</span><span class="p">),</span> <span class="o">...</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Let's see what we would need to do
+in order to find the phone number
+corresponding to a particular name <em>e.g.</em> <code>'Ethan'</code>.</p>
+<p>We could write the code like this:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span> <span class="ow">in</span> <span class="n">friends</span><span class="p">:</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;Ethan&#39;</span><span class="p">:</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Phone number: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+</span></code></pre></div>
+<p>This is not too bad, but:</p>
+<ul>
+<li>
+<p>We can't modify the phone number! (Tuples are immutable.)
+We might use lists instead of tuples,
+but this isn't the only problem.</p>
+</li>
+<li>
+<p>We have to look through the entire list
+in the worst case to find one number, which is inefficient.</p>
+</li>
+</ul>
+<h3 id="using-a-dictionary">Using a dictionary</h3>
+<p>The Right Thing<sup>TM</sup> to do in cases like this is to use a <strong>dictionary</strong>.
+So let's talk about dictionaries and what makes them so awesome.</p>
+<h2 id="keys-and-values">Keys and values</h2>
+<p>A <strong>dictionary</strong> (sometimes called a <em>dict</em> for short)
+is a Python data structure that associates <strong>keys</strong> with <strong>values</strong>.
+Each key is associated with exactly one value.
+(Sometimes this is called a <em>mapping</em> between keys and values.)
+Dictionaries allow you to do these things:</p>
+<ul>
+<li>find the value corresponding to a particular key</li>
+<li>change the value associated with a key</li>
+<li>add new key/value pairs</li>
+<li>delete key/value pairs</li>
+</ul>
+<p>and they're fast! (Much faster than a list of tuples, for instance.)<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<p>Because we can add key/value pairs to a dictionary
+and delete key/value pairs from a dictionary,
+dictionaries, like lists, are <em>not</em> immutable.</p>
+<p>There are two rules for keys and values:</p>
+<ol>
+<li>The values in a dictionary can be any Python value.</li>
+<li>The keys in a dictionary can be any kind of <em>immutable</em> Python value.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></li>
+</ol>
+<p>Since strings are immutable, we can use strings as dictionary keys.
+You can also use numbers, tuples,
+and other kinds of values we haven't seen yet.<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>
+In the example above, we can use names as keys and phone numbers as values.</p>
+<h2 id="dictionary-syntax">Dictionary syntax</h2>
+<p>We want to create a dictionary from our friends' names and phone numbers.
+First, we have to know the syntax of dictionaries.</p>
+<h3 id="empty-dictionary">Empty dictionary</h3>
+<p>Dictionaries use curly braces, and the simplest dictionary is the empty one,
+which looks like this:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{}</span>
+</span></code></pre></div>
+<p>It's a dictionary with no key/value pairs.  Pretty exciting! <img alt="😄" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f604.svg" title=":smile:" /></p>
+<p>Actually, though, empty dictionaries, like empty lists, are very useful.
+Often you start with an empty dictionary
+and then fill it up element-by-element in a loop,
+adding a new key/value pair for every iteration of the loop.</p>
+<h3 id="non-empty-dictionary">Non-empty dictionary</h3>
+<p>Alternatively, you can create a dictionary
+by writing out the key/value pairs inside of curly braces,
+separated in two ways:</p>
+<ul>
+<li>
+<p>different key/value pairs are separated by commas</p>
+</li>
+<li>
+<p>the key and the value in a single key/value pair
+are separated by a colon (<code>:</code>)<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup></p>
+</li>
+</ul>
+<p>For our example, here is the dictionary we can create:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">phone_numbers</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Joe&#39;</span> <span class="p">:</span> <span class="s1">&#39;567-8901&#39;</span><span class="p">,</span> <span class="s1">&#39;Jane&#39;</span> <span class="p">:</span> <span class="s1">&#39;123-4567&#39;</span> <span class="p">}</span>
+</span></code></pre></div>
+<p>If there are more key/value pairs, we can add them too.
+You can see that the first key/value pair is <code>'Joe' : '567-8901'</code>
+and the second is <code>'Jane' : '123-4567'</code>.
+The keys are <code>'Joe'</code> and <code>'Jane'</code>
+and the values are <code>'567-8901'</code> and <code>'123-4567'</code>.
+The spaces in the dictionary are not required
+but they help to keep it readable.</p>
+<p>Most of the time,
+when we write out a dictionary like this (called a <em>literal</em> dictionary),
+the keys and values are Python values,
+but they can also be Python expressions.
+Here's a contrived example.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">phone_numbers</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;J&#39;</span> <span class="o">+</span> <span class="s1">&#39;oe&#39;</span> <span class="p">:</span> <span class="s1">&#39;567&#39;</span> <span class="o">+</span> <span class="s1">&#39;-8901&#39;</span><span class="p">,</span> <span class="s1">&#39;Ja&#39;</span> <span class="o">+</span> <span class="s1">&#39;ne&#39;</span> <span class="p">:</span> <span class="s1">&#39;123-&#39;</span> <span class="o">+</span> <span class="s1">&#39;4567&#39;</span> <span class="p">}</span>
+</span></code></pre></div>
+<p>This would give the same dictionary as the previous code.</p>
+<p>In cases like this (which are very rare),
+the key expressions and the value expressions
+are evaluated before the dictionary is created.
+(It's not <em>that</em> rare to have computed values,
+but computed keys are extremely unusual.)</p>
+<h2 id="dictionary-types">Dictionary types</h2>
+<p>The only restriction on the types of keys or values
+in a dictionary is that the key must be immutable
+<em>i.e.</em> its type must be the type of an immutable Python object.
+Other than that, a dictionary can have any type of key or value.
+In particular, a single dictionary
+can have different types of (immutable) keys,
+and different types of values.
+This is a bit unusual, but sometimes it's quite useful.
+So this is legal:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">mydict</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span> <span class="p">:</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;baz&#39;</span><span class="p">,</span> <span class="s1">&#39;boom&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="mf">3.14159</span> <span class="p">}</span>
+</span></code></pre></div>
+<p>The <code>mydict</code> dictionary has three different (immutable) key types,
+and three different value types
+(not all immutable, but it doesn't matter for values).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may have heard of the
+<a href="https://www.json.org/json-en.html">JSON</a> data format,
+which is a way of formatting structured data
+which is used a lot by internet applications.
+A JSON object is almost identical to a Python dictionary
+with string keys and different types of values.
+Python, like most programming languages, has a
+<a href="https://docs.python.org/3/library/json.html">JSON library</a>
+(actually more than one).</p>
+</div>
+<h2 id="getting-a-value-given-a-key">Getting a value given a key</h2>
+<p>The most common thing to do with a dictionary
+is to look up the value that corresponds to a particular key.
+We'll assume this dictionary again:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">phone_numbers</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Joe&#39;</span> <span class="p">:</span> <span class="s1">&#39;567-8901&#39;</span><span class="p">,</span> <span class="s1">&#39;Jane&#39;</span> <span class="p">:</span> <span class="s1">&#39;123-4567&#39;</span> <span class="p">}</span>
+</span></code></pre></div>
+<p>To get Joe's phone number, all we have to write is this:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">phone_numbers</span><span class="p">[</span><span class="s1">&#39;Joe&#39;</span><span class="p">]</span>
+</span></code></pre></div>
+<p>which will evaluate to <code>'567-8901'</code>.</p>
+<p>Notice that <code>phone_numbers['Joe']</code>
+looks like accessing a list with a value of <code>'Joe'</code>.
+Python is overloading the meaning of the square brackets!
+Before this, the value inside the brackets could only be an integer.
+But with a dictionary, it can be any key value
+(which means any immutable Python value).
+Python <em>really</em> likes to re-use its syntax for distinct but similar things!</p>
+<h2 id="changing-a-value-at-a-key">Changing a value at a key</h2>
+<p>Another thing you commonly want to do with a dictionary
+is to change the value associated with a particular key.
+For instance, let's say that Joe's phone number changes.
+We can change the dictionary value too:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">phone_numbers</span><span class="p">[</span><span class="s1">&#39;Joe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;314-1592&#39;</span>   <span class="c1"># cool new phone number!</span>
+</span></code></pre></div>
+<p>This is just like the syntax for changing a list value,
+except that the "index" is a string, not a number.
+Here's the new dictionary:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="go">{&#39;Joe&#39;: &#39;314-1592&#39;, &#39;Jane&#39;: &#39;123-4567&#39;}</span>
+</span></code></pre></div>
+<h2 id="adding-a-new-keyvalue-pair">Adding a new key/value pair</h2>
+<p>Another very common thing to do with dictionaries
+is to add new key/value pairs.
+The syntax for this is identical to the syntax
+for changing the values at existing keys,
+except that the keys are not in the dictionary until after you add them.
+For instance, let's say that you just made a new friend named Bob,
+and you wanted to add his phone number.
+No problem!</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">phone_numbers</span><span class="p">[</span><span class="s1">&#39;Bob&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;000-0000&#39;</span>
+</span></code></pre></div>
+<p>Now when you look at the entire dictionary, you see this:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="go">{&#39;Joe&#39;: &#39;314-1592&#39;, &#39;Jane&#39;: &#39;123-4567&#39;, &#39;Bob&#39;: &#39;000-0000&#39;}</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Even though it looks like the key/value pairs
+are stored in the order they were added,
+you shouldn't depend on this.
+<em>Python dictionaries are not sequences.</em>
+The current implementation does keep keys in "insertion order",
+but earlier versions of Python dictionaries didn't,
+and this might change again in the future.</p>
+</div>
+<!--
+MAYBE-TODO: Might mention OrderedDict
+-->
+
+<h2 id="accessing-a-nonexistent-key">Accessing a nonexistent key</h2>
+<p>What happens when you try to access a nonexistent key in a dictionary?</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span><span class="p">[</span><span class="s1">&#39;Mike&#39;</span><span class="p">]</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="gt">Traceback (most recent call last):</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="gr">KeyError</span>: <span class="n">&#39;Mike&#39;</span>
+</span></code></pre></div>
+<p>Python raises a <code>KeyError</code> exception.  This is the right thing to do.<sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup></p>
+<h2 id="deleting-a-keyvalue-pair-the-del-statement">Deleting a key/value pair: the <code>del</code> statement</h2>
+<p>It's not that common, but sometimes we want to delete a key/value pair.
+Let's say you had a falling out with your new friend Bob,
+and you decide you don't ever want to talk to him again.
+You might want to delete his phone number
+from your <code>phone_number</code> dictionary.
+Here's how to do it:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="go">{&#39;Joe&#39;: &#39;314-1592&#39;, &#39;Jane&#39;: &#39;123-4567&#39;, &#39;Bob&#39;: &#39;000-0000&#39;}</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">phone_numbers</span><span class="p">[</span><span class="s1">&#39;Bob&#39;</span><span class="p">]</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="go">{&#39;Joe&#39;: &#39;314-1592&#39;, &#39;Jane&#39;: &#39;123-4567&#39;}</span>
+</span></code></pre></div>
+<p>The new keyword <code>del</code> is short for "delete".
+Given a key, it removes the key/value pair
+that the key is part of from the dictionary.
+This is not a function or method call!
+<code>del</code> is actually a special Python statement.
+Because it isn't a function call,
+you don't have to put parentheses around its argument (and you shouldn't).</p>
+<p><code>del</code> can remove elements from things other than dictionaries
+(<em>e.g.</em> lists) but it's more useful with dictionaries than with lists.
+We will meet <code>del</code> again in future readings.</p>
+<h2 id="back-to-the-example-tuples-as-keys">Back to the example: tuples as keys</h2>
+<p>Let's improve the example by using a tuple of first and last names as keys:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">phone_numbers</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>  <span class="p">(</span><span class="s1">&#39;Joe&#39;</span><span class="p">,</span> <span class="s1">&#39;Smith&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="s1">&#39;567-8910&#39;</span><span class="p">,</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>  <span class="p">(</span><span class="s1">&#39;Jane&#39;</span><span class="p">,</span> <span class="s1">&#39;Doe&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="s1">&#39;123-4567&#39;</span><span class="p">,</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>  <span class="p">(</span><span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="s1">&#39;Blank&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="s1">&#39;000-0000&#39;</span><span class="p">,</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>  <span class="p">(</span><span class="s1">&#39;Mike&#39;</span><span class="p">,</span> <span class="s1">&#39;Vanier&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="s1">&#39;111-1111&#39;</span><span class="p">,</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>(<em>Fun fact</em>: we don't have to use the <code>\&lt;return&gt;</code>
+line continuation characters at the ends of the lines
+when writing out a dictionary like this.)</p>
+<p>It's OK to use a tuple of strings as a dictionary key,
+because both tuples and strings are immutable,
+so a tuple of strings is immutable too.
+If we had <em>e.g.</em> a tuple of lists, that would <em>not</em> be immutable,
+so you couldn't use it as a key.
+Similarly, a list of strings is not an acceptable dictionary key.
+Let's try it anyway:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="s1">&#39;Joe&#39;</span><span class="p">,</span> <span class="s1">&#39;Smith&#39;</span><span class="p">]</span> <span class="p">:</span> <span class="s1">&#39;567-8910&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Jane&#39;</span><span class="p">,</span> <span class="s1">&#39;Doe&#39;</span><span class="p">]</span> <span class="p">:</span> <span class="s1">&#39;123-4567&#39;</span> <span class="p">}</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="gt">Traceback (most recent call last):</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="gr">TypeError</span>: <span class="n">unhashable type: &#39;list&#39;</span>
+</span></code></pre></div>
+<p>The error message <code>unhashable type: 'list'</code>
+means that since lists are mutable,
+they can't be used as dictionary keys.<sup id="fnref:6"><a class="footnote-ref" href="#fn:6">6</a></sup></p>
+<p>OK, so we'll use tuples.
+Once we've done this, we can access a value corresponding to a tuple:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span><span class="p">[(</span><span class="s1">&#39;Joe&#39;</span><span class="p">,</span> <span class="s1">&#39;Smith&#39;</span><span class="p">)]</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="go">&#39;567-8910&#39;</span>
+</span></code></pre></div>
+<p>We have to use the <em>entire</em> tuple; either the first or last name doesn't work:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span><span class="p">[</span><span class="s1">&#39;Joe&#39;</span><span class="p">]</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="gt">Traceback (most recent call last):</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="gr">KeyError</span>: <span class="n">&#39;Joe&#39;</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span><span class="p">[</span><span class="s1">&#39;Smith&#39;</span><span class="p">]</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="gt">Traceback (most recent call last):</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="gr">KeyError</span>: <span class="n">&#39;Smith&#39;</span>
+</span></code></pre></div>
+<h2 id="dictionaries-and-for-loops">Dictionaries and <code>for</code> loops</h2>
+<p>We've seen many things that can be looped over using <code>for</code> loops:</p>
+<ul>
+<li>lists</li>
+<li>strings</li>
+<li>files</li>
+</ul>
+<p>So it shouldn't surprise you to learn that dictionaries
+can also be looped over in a <code>for</code> loop.
+When you have a dictionary in a <code>for</code> loop following the <code>in</code> keyword,
+you loop over the <em>keys</em> of the dictionary.
+For instance, we could write this loop:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">phone_numbers</span><span class="p">:</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;key: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">, value: </span><span class="si">{</span><span class="n">phone_numbers</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>which would print:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="go">key: (&#39;Joe&#39;, &#39;Smith&#39;), value: 567-8910</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="go">key: (&#39;Jane&#39;, &#39;Doe&#39;), value: 123-4567</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="go">key: (&#39;Adam&#39;, &#39;Blank&#39;), value: 000-0000</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="go">key: (&#39;Mike&#39;, &#39;Vanier&#39;), value: 111-1111</span>
+</span></code></pre></div>
+<p>We could use this to print out the phone numbers of
+every person in the dictionary whose first name is <code>'Joe'</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">phone_numbers</span><span class="p">:</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>    <span class="p">(</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">)</span> <span class="o">=</span> <span class="n">key</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    <span class="k">if</span> <span class="n">first_name</span> <span class="o">==</span> <span class="s1">&#39;Joe&#39;</span><span class="p">:</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;name: </span><span class="si">{</span><span class="n">first_name</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">last_name</span><span class="si">}</span><span class="s1">, number: </span><span class="si">{</span><span class="n">phone_numbers</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Since there is only one <code>'Joe'</code> in the dictionary, this will print:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>name: Joe Smith, number: 567-8910
+</span></code></pre></div>
+<h2 id="dictionary-methods">Dictionary methods</h2>
+<p>Dictionaries are objects in Python (like lists, and strings, and files)
+Therefore, they have methods.
+In this section, we'll discuss a few of the most important ones.
+For a full list of dictionary methods, consult the
+<a href="https://docs.python.org/3/library/stdtypes.html#typesmapping">Python documentation</a>.</p>
+<h3 id="get"><code>get</code></h3>
+<p>If you try to get the value in a dictionary
+corresponding to a key which isn't in the dictionary,
+it results in a <code>KeyError</code> exception
+if you use the square bracket syntax:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span><span class="p">[(</span><span class="s1">&#39;William&#39;</span><span class="p">,</span> <span class="s1">&#39;Shakespeare&#39;</span><span class="p">)]</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="gt">Traceback (most recent call last):</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="gr">KeyError</span>: <span class="n">(&#39;William&#39;, &#39;Shakespeare&#39;)</span>
+</span></code></pre></div>
+<p>Instead of this,
+you can use the <code>get</code> method if you would rather return a default value:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="s1">&#39;William&#39;</span><span class="p">,</span> <span class="s1">&#39;Shakespeare&#39;</span><span class="p">),</span> <span class="s1">&#39;unknown&#39;</span><span class="p">)</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="go"># &#39;unknown&#39; is the default value returned if the key isn&#39;t in the dictionary</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="go">&#39;unknown&#39;</span>
+</span></code></pre></div>
+<p>The default value is the extra argument (here, <code>'unknown'</code>).</p>
+<p>This is usually <em>not</em> what you want to do,
+but we'll see an example below where this method will be useful.</p>
+<h3 id="clear"><code>clear</code></h3>
+<p>If you want to empty out an existing dictionary,
+you can do that with the <code>clear</code> method:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="go">{(&#39;Joe&#39;, &#39;Smith&#39;): &#39;567-8910&#39;, (&#39;Jane&#39;, &#39;Doe&#39;): &#39;123-4567&#39;, (&#39;Adam&#39;, &#39;Blank&#39;): &#39;000-0000&#39;, (&#39;Mike&#39;, &#39;Vanier&#39;): &#39;111-1111&#39;}</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="go">{}</span>
+</span></code></pre></div>
+<p>This is rarely needed; it's actually easier to just do this:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span> <span class="o">=</span> <span class="p">{}</span>
+</span></code></pre></div>
+<p>On the other hand,
+if the dictionary was passed in as an argument to a function
+or was part of a larger data structure,
+you might need to use the <code>clear</code> method if you need to empty it out.</p>
+<h3 id="keys-and-values_1"><code>keys</code> and <code>values</code></h3>
+<p>If you need the dictionary's keys or values as a separate thing,
+you can use the <code>keys</code> or <code>values</code> methods.
+These return (respectively) a <code>dict_keys</code> or a <code>dict_values</code> object.
+These are basically like iterators, and they can easily be converted to lists:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="go">phone_numbers = {</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="go">  (&#39;Joe&#39;, &#39;Smith&#39;) : &#39;567-8910&#39;,</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="go">  (&#39;Jane&#39;, &#39;Doe&#39;) : &#39;123-4567&#39;,</span>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="go">  (&#39;Adam&#39;, &#39;Blank&#39;) : &#39;000-0000&#39;,</span>
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="go">  (&#39;Mike&#39;, &#39;Vanier&#39;) : &#39;111-1111&#39;,</span>
+</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="go">}</span>
+</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</span><span id="__span-27-8"><a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="go">dict_keys([(&#39;Joe&#39;, &#39;Smith&#39;), (&#39;Jane&#39;, &#39;Doe&#39;), (&#39;Adam&#39;, &#39;Blank&#39;), (&#39;Mike&#39;, &#39;Vanier&#39;)])</span>
+</span><span id="__span-27-9"><a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">phone_numbers</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</span><span id="__span-27-10"><a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="go">[(&#39;Joe&#39;, &#39;Smith&#39;), (&#39;Jane&#39;, &#39;Doe&#39;), (&#39;Adam&#39;, &#39;Blank&#39;), (&#39;Mike&#39;, &#39;Vanier&#39;)]</span>
+</span><span id="__span-27-11"><a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+</span><span id="__span-27-12"><a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a><span class="go">dict_values([&#39;567-8910&#39;, &#39;123-4567&#39;, &#39;000-0000&#39;, &#39;111-1111&#39;])</span>
+</span><span id="__span-27-13"><a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">phone_numbers</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+</span><span id="__span-27-14"><a id="__codelineno-27-14" name="__codelineno-27-14" href="#__codelineno-27-14"></a><span class="go">[&#39;567-8910&#39;, &#39;123-4567&#39;, &#39;000-0000&#39;, &#39;111-1111&#39;]</span>
+</span></code></pre></div>
+<p>It's rare that you actually need these methods.</p>
+<h3 id="items"><code>items</code></h3>
+<p>The <code>items</code> method is like the <code>keys</code> and <code>values</code> methods combined:
+it returns a <code>dict_items</code> object
+which can be converted to a list of key/value pairs:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="go">dict_items([((&#39;Joe&#39;, &#39;Smith&#39;), &#39;567-8910&#39;), ((&#39;Jane&#39;, &#39;Doe&#39;), &#39;123-4567&#39;), ((&#39;Adam&#39;, &#39;Blank&#39;), &#39;000-0000&#39;), ((&#39;Mike&#39;, &#39;Vanier&#39;), &#39;111-1111&#39;)])</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">phone_numbers</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="go">[((&#39;Joe&#39;, &#39;Smith&#39;), &#39;567-8910&#39;), ((&#39;Jane&#39;, &#39;Doe&#39;), &#39;123-4567&#39;), ((&#39;Adam&#39;, &#39;Blank&#39;), &#39;000-0000&#39;), ((&#39;Mike&#39;, &#39;Vanier&#39;), &#39;111-1111&#39;)]</span>
+</span></code></pre></div>
+<p>Sometimes the <code>items</code> method can be used to good effect in a <code>for</code> loop
+(kind of like the dictionary equivalent of the <code>enumerate</code> function):</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">phone_numbers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="gp">...</span>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="go">(&#39;Joe&#39;, &#39;Smith&#39;) 567-8910</span>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="go">(&#39;Jane&#39;, &#39;Doe&#39;) 123-4567</span>
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="go">(&#39;Adam&#39;, &#39;Blank&#39;) 000-0000</span>
+</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="go">(&#39;Mike&#39;, &#39;Vanier&#39;) 111-1111</span>
+</span></code></pre></div>
+<p>You usually don't need to convert the <code>items</code> return value into a list,
+and you usually shouldn't.
+(In this respect, the <code>items</code> method is similar to the <code>range</code> function.)</p>
+<h3 id="update"><code>update</code></h3>
+<p>The <code>update</code> method adds the key/value pairs from another dictionary
+into a dictionary, overwriting old values
+if the other dictionary has the same keys with different values.</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">phone_numbers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="gp">...</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="go">(&#39;Joe&#39;, &#39;Smith&#39;) 567-8910</span>
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="go">(&#39;Jane&#39;, &#39;Doe&#39;) 123-4567</span>
+</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="go">(&#39;Adam&#39;, &#39;Blank&#39;) 000-0000</span>
+</span><span id="__span-30-7"><a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="go">(&#39;Mike&#39;, &#39;Vanier&#39;) 111-1111</span>
+</span><span id="__span-30-8"><a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">new_phone_numbers</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-30-9"><a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Johnson&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="s1">&#39;543-9876&#39;</span><span class="p">,</span>
+</span><span id="__span-30-10"><a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;Jane&#39;</span><span class="p">,</span> <span class="s1">&#39;Doe&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="s1">&#39;7654-321&#39;</span>
+</span><span id="__span-30-11"><a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a><span class="gp">... </span><span class="p">}</span>
+</span><span id="__span-30-12"><a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span>
+</span><span id="__span-30-13"><a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a><span class="go">{(&#39;Joe&#39;, &#39;Smith&#39;): &#39;567-8910&#39;, (&#39;Jane&#39;, &#39;Doe&#39;): &#39;123-4567&#39;, (&#39;Adam&#39;, &#39;Blank&#39;): &#39;000-0000&#39;, (&#39;Mike&#39;, &#39;Vanier&#39;): &#39;111-1111&#39;}</span>
+</span><span id="__span-30-14"><a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_phone_numbers</span><span class="p">)</span>
+</span><span id="__span-30-15"><a id="__codelineno-30-15" name="__codelineno-30-15" href="#__codelineno-30-15"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span>
+</span><span id="__span-30-16"><a id="__codelineno-30-16" name="__codelineno-30-16" href="#__codelineno-30-16"></a><span class="go">{(&#39;Joe&#39;, &#39;Smith&#39;): &#39;567-8910&#39;, (&#39;Jane&#39;, &#39;Doe&#39;): &#39;7654-321&#39;, (&#39;Adam&#39;, &#39;Blank&#39;): &#39;000-0000&#39;, (&#39;Mike&#39;, &#39;Vanier&#39;): &#39;111-1111&#39;, (&#39;Bob&#39;, &#39;Johnson&#39;): &#39;543-9876&#39;}</span>
+</span><span id="__span-30-17"><a id="__codelineno-30-17" name="__codelineno-30-17" href="#__codelineno-30-17"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">phone_numbers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-30-18"><a id="__codelineno-30-18" name="__codelineno-30-18" href="#__codelineno-30-18"></a><span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</span><span id="__span-30-19"><a id="__codelineno-30-19" name="__codelineno-30-19" href="#__codelineno-30-19"></a><span class="gp">...</span>
+</span><span id="__span-30-20"><a id="__codelineno-30-20" name="__codelineno-30-20" href="#__codelineno-30-20"></a><span class="go">(&#39;Joe&#39;, &#39;Smith&#39;) 567-8910</span>
+</span><span id="__span-30-21"><a id="__codelineno-30-21" name="__codelineno-30-21" href="#__codelineno-30-21"></a><span class="go">(&#39;Jane&#39;, &#39;Doe&#39;) 7654-321</span>
+</span><span id="__span-30-22"><a id="__codelineno-30-22" name="__codelineno-30-22" href="#__codelineno-30-22"></a><span class="go">(&#39;Adam&#39;, &#39;Blank&#39;) 000-0000</span>
+</span><span id="__span-30-23"><a id="__codelineno-30-23" name="__codelineno-30-23" href="#__codelineno-30-23"></a><span class="go">(&#39;Mike&#39;, &#39;Vanier&#39;) 111-1111</span>
+</span><span id="__span-30-24"><a id="__codelineno-30-24" name="__codelineno-30-24" href="#__codelineno-30-24"></a><span class="go">(&#39;Bob&#39;, &#39;Johnson&#39;) 543-9876</span>
+</span></code></pre></div>
+<p>We see that updating the <code>phone_numbers</code> dictionary with <code>new_phone_numbers</code>
+has provided a new phone number for Bob Johnson
+and has overwritten the old phone number for Jane Doe.</p>
+<!--
+MAYBE-TODO: Introduce Python 3.9 dictionary operators e.g. |= and | for union.
+-->
+
+<h3 id="what-about-append">What about <code>append</code>?</h3>
+<p>There is no <code>append</code> method for dictionaries, because it's not needed!
+To add a new key/value pair, just use normal assignment syntax:</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">phone_numbers</span><span class="p">[(</span><span class="s1">&#39;Don&#39;</span><span class="p">,</span> <span class="s1">&#39;Knuth&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;271-8281&#39;</span>
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">phone_numbers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="gp">...</span>
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="go">(&#39;Joe&#39;, &#39;Smith&#39;) 567-8910</span>
+</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="go">(&#39;Jane&#39;, &#39;Doe&#39;) 7654-321</span>
+</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="go">(&#39;Adam&#39;, &#39;Blank&#39;) 000-0000</span>
+</span><span id="__span-31-8"><a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="go">(&#39;Mike&#39;, &#39;Vanier&#39;) 111-1111</span>
+</span><span id="__span-31-9"><a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a><span class="go">(&#39;Bob&#39;, &#39;Johnson&#39;) 543-9876</span>
+</span><span id="__span-31-10"><a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a><span class="go">(&#39;Don&#39;, &#39;Knuth&#39;) 271-8281</span>
+</span></code></pre></div>
+<h2 id="the-in-operator">The <code>in</code> operator</h2>
+<p>Previously we've seen the <code>in</code> operator for sequences.
+We can also use <code>in</code> with dictionaries.
+<code>&lt;key&gt; in &lt;dictionary&gt;</code> means:
+is the key <code>&lt;key&gt;</code> one of the keys in the dictionary <code>&lt;dictionary&gt;</code>?</p>
+<div class="language-pycon highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="s1">&#39;Don&#39;</span><span class="p">,</span> <span class="s1">&#39;Knuth&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">phone_numbers</span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="go">True</span>
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="s1">&#39;Bill&#39;</span><span class="p">,</span> <span class="s1">&#39;Gates&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">phone_numbers</span>
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="go">False</span>
+</span></code></pre></div>
+<h2 id="example-creating-a-frequency-table">Example: creating a frequency table</h2>
+<p>OK, let's do something useful!</p>
+<p>We have a list of words.
+We want to create a <em>frequency table</em> for each word,
+which means that for each word,
+we want to record the number of times it occurs in the word list.</p>
+<p>We will solve this by creating a dictionary:</p>
+<ul>
+<li>key: a word in the list</li>
+<li>value: the count of that word</li>
+</ul>
+<p>Let's write the code, and also print out the resulting table at the end.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="s1">&#39;be&#39;</span><span class="p">,</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="s1">&#39;be&#39;</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;question&#39;</span><span class="p">]</span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="n">freqs</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>    <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">freqs</span><span class="p">:</span>
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>        <span class="n">freqs</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>    <span class="k">else</span><span class="p">:</span>  <span class="c1"># first time we&#39;ve seen that word</span>
+</span><span id="__span-33-7"><a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>        <span class="n">freqs</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="__span-33-8"><a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a><span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">freqs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-33-9"><a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Word: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> occurs: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1"> times&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>This prints:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>Word: to occurs: 2 times
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>Word: be occurs: 2 times
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>Word: or occurs: 1 times
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>Word: not occurs: 1 times
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>Word: that occurs: 1 times
+</span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a>Word: is occurs: 1 times
+</span><span id="__span-34-7"><a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a>Word: the occurs: 1 times
+</span><span id="__span-34-8"><a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a>Word: question occurs: 1 times
+</span></code></pre></div>
+<p>See how easy that was?
+Dictionaries can make many programming tasks much easier to accomplish.</p>
+<p>Of course, it's pretty rare to find any code that can't be improved
+<em>somewhere</em>... <img alt="😄" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f604.svg" title=":smile:" /> What can we do here?</p>
+<p>Remember the <code>get</code> method we described above?
+The idea there was that if the key wasn't in the dictionary,
+we would supply a default value to return.
+Here, we have a similar situation,
+except that we are setting the values in a dictionary.
+But if you look closely, you'll see that the line</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="n">freqs</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></code></pre></div>
+<p>is equivalent to:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="n">freqs</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+</span></code></pre></div>
+<p>which means that this line is both
+getting a value from a dictionary at a particular key
+and setting the value at the same key.</p>
+<p>The trick to making this code simpler
+is to realize that when the key isn't in the dictionary,
+we can use the <code>get</code> method to just return a count of <code>0</code>.
+Then the code simplifies to this:</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-37-1">1</a></span>
+<span class="normal"><a href="#__codelineno-37-2">2</a></span>
+<span class="normal"><a href="#__codelineno-37-3">3</a></span>
+<span class="normal"><a href="#__codelineno-37-4">4</a></span>
+<span class="normal"><a href="#__codelineno-37-5">5</a></span>
+<span class="normal"><a href="#__codelineno-37-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1"></a><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span>  <span class="c1"># as before</span>
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2"></a><span class="n">freqs</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3"></a><span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4"></a>    <span class="n">freqs</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="n">freqs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5"></a><span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">freqs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Word </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> occurs </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1"> times&#39;</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+<p>We aren't using the <code>+=</code> operator any more, so line 4 is longer,
+but we've eliminated the <code>if</code> statement entirely.
+This counts as a win.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>You may think that this is just another reading,
+but if you continue programming in Python
+we guarantee you that dictionaries will be
+one of the most useful things you will ever learn.
+They are used everywhere, and learning to use them effectively
+will take you a long way towards becoming a good Python programmer.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Dictionaries allow you
+to look up the value corresponding to a key in <em>constant time</em>,
+which means that the time to retrieve a value given the key
+doesn't depend on how many key/value pairs are stored in the dictionary.
+In contrast, searching for a key/value pair in a list of tuples
+takes <em>linear time</em> <em>i.e.</em> time proportional to the size of the list.
+You'll learn much more about constant time and linear time in CS 2.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>The reasons for this are technical,
+having to do with the way that dictionaries are implemented.
+Internally, they use what are called <em>hash tables</em>,
+and for a hash table to work correctly,
+the <em>hash value</em> of a dictionary key shouldn't change,
+which means that the key itself shouldn't change.
+You will meet hash tables again if you take any CS courses beyond CS 1.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>Like immutable sets of values.
+Don't worry, we'll get there.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>Yes, here it is, yet another meaning for the colon character.&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:5">
+<p>Some languages (*cough* *Javascript*)
+return a special "undefined" value,
+which creates problems because
+programmers rarely check for "undefined"
+after doing every dictionary access.&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:6">
+<p>If you read the previous footnotes,
+you won't be surprised to see the word "unhashable",
+which relates to <em>hash tables</em>,
+which is the data structure used to implement dictionaries.&#160;<a class="footnote-backref" href="#fnref:6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../14/reading14/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 14. Binary numbers">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                14. Binary numbers
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.footer", "navigation.top", "navigation.expand"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+        <script src="../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
