@@ -1,0 +1,2470 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs1/Fall2024/book/16/reading16/">
+      
+      
+        <link rel="prev" href="../../15/reading15/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>16. Graphics, part 1 - The CS 1 book (Fall 2024)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reading-16-computer-graphics-part-1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="The CS 1 book (Fall 2024)" class="md-header__button md-logo" aria-label="The CS 1 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 1 book (Fall 2024)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              16. Graphics, part 1
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="The CS 1 book (Fall 2024)" class="md-nav__button md-logo" aria-label="The CS 1 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    The CS 1 book (Fall 2024)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Core readings
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Core readings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/reading1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Introduction, part 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/reading2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. Introduction, part 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/reading3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. Strings, part 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/reading4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. Strings, part 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../5/reading5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5. Objects and methods
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/reading6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7/reading7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7. Documenting your code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../8/reading8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8. Lists
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../9/reading9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9. Loops, part 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../10/reading10/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10. Conditionals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11/reading11/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11. Loops, part 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../12/reading12/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12. Files
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../13/reading13/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13. Odds and ends
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../14/reading14/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    14. Binary numbers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../15/reading15/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    15. Dictionaries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Optional readings
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Optional readings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    16. Graphics, part 1
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    16. Graphics, part 1
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#about-graphics" class="md-nav__link">
+    <span class="md-ellipsis">
+      About graphics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#about-user-interfaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      About user interfaces
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="About user interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#text-based-interfaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Text-based interfaces
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graphical-user-interfaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graphical user interfaces
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2d-and-3d-graphics" class="md-nav__link">
+    <span class="md-ellipsis">
+      2D and 3D graphics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-and-the-tkinter-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python and the tkinter library
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Python and the tkinter library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#origins-of-tkinter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Origins of tkinter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-tkinter-and-not-some-other-graphics-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why tkinter and not some other graphics library?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-tkinter-provides" class="md-nav__link">
+    <span class="md-ellipsis">
+      What tkinter provides
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pixel-coordinates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pixel coordinates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pixel coordinates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#representation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Representation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relative-and-absolute-coordinates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relative and absolute coordinates
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-loops" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event loops
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#program-1-tkinter1py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 1 (tkinter1.py)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-more-stuff-to-the-canvas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding more stuff to the canvas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding more stuff to the canvas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#program-2-tkinter2py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 2 (tkinter2.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-3-tkinter3py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 3 (tkinter3.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-4-tkinter4py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 4 (tkinter4.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-5-tkinter5py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 5 (tkinter5.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-6-tkinter6py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 6 (tkinter6.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-7-tkinter7py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 7 (tkinter7.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-8-tkinter8py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 8 (tkinter8.py)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event handling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Event handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#our-first-event-q-to-quit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Our first event: q to quit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-bind-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      The bind method
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#functions-as-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functions as objects
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#try-this-at-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      Try this at home
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#towards-a-better-event-handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      Towards a better event handler
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tkinter-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      tkinter documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#about-graphics" class="md-nav__link">
+    <span class="md-ellipsis">
+      About graphics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#about-user-interfaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      About user interfaces
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="About user interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#text-based-interfaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Text-based interfaces
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graphical-user-interfaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graphical user interfaces
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2d-and-3d-graphics" class="md-nav__link">
+    <span class="md-ellipsis">
+      2D and 3D graphics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-and-the-tkinter-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python and the tkinter library
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Python and the tkinter library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#origins-of-tkinter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Origins of tkinter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-tkinter-and-not-some-other-graphics-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why tkinter and not some other graphics library?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-tkinter-provides" class="md-nav__link">
+    <span class="md-ellipsis">
+      What tkinter provides
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pixel-coordinates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pixel coordinates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pixel coordinates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#representation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Representation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relative-and-absolute-coordinates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relative and absolute coordinates
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-loops" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event loops
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#program-1-tkinter1py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 1 (tkinter1.py)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-more-stuff-to-the-canvas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding more stuff to the canvas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding more stuff to the canvas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#program-2-tkinter2py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 2 (tkinter2.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-3-tkinter3py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 3 (tkinter3.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-4-tkinter4py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 4 (tkinter4.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-5-tkinter5py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 5 (tkinter5.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-6-tkinter6py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 6 (tkinter6.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-7-tkinter7py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 7 (tkinter7.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-8-tkinter8py" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 8 (tkinter8.py)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event handling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Event handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#our-first-event-q-to-quit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Our first event: q to quit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-bind-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      The bind method
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#functions-as-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functions as objects
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#try-this-at-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      Try this at home
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#towards-a-better-event-handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      Towards a better event handler
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tkinter-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      tkinter documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="reading-16-computer-graphics-part-1">Reading 16: Computer graphics, part 1</h1>
+<blockquote>
+<p><em>What is it about animation, graphics, illustrations, that create meaning?<br/>
+And this is an important question to ask and answer<br/>
+because the more we understand how the brain creates meaning,<br/>
+the better we can communicate, and, I also think,<br/>
+the better we can think and collaborate together.</em><br/>
+- Tom Wujec</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>In this reading, we'll be discussing the basics of computer graphics,
+and then we'll introduce Python's <code>tkinter</code> graphics library,
+which will provide us with the tools we need
+to write graphics code and simple graphical interfaces.</p>
+<h2 id="topics">Topics</h2>
+<ul>
+<li>
+<p>Computer graphics</p>
+</li>
+<li>
+<p>Graphics programming with <code>tkinter</code></p>
+</li>
+</ul>
+<h2 id="about-graphics">About graphics</h2>
+<p>You probably have a pretty good idea of what "computer graphics" is.
+Computer graphics is all around us.
+Every time we interact with a computer,
+we are using a graphical user interface (also known as a "GUI").<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>
+Every time we play video games, we are interacting with a graphics engine.
+And many movies are largely or even entirely created using "CGI"
+(<strong>C</strong>omputer <strong>G</strong>enerated <strong>I</strong>magery), especially animated movies.</p>
+<p>Loosely speaking, when we talk about "computer graphics"
+we are talking about the process by which
+images are created and manipulated on computer monitors.
+These images can be static (unchanging) or dynamic (changing);
+in the latter case we refer to the images as an "animation".
+Computer graphics also involves the process by which
+humans interact with images on a computer screen.</p>
+<h2 id="about-user-interfaces">About user interfaces</h2>
+<p>A <strong>user interface</strong> is the way that the user(s) of a program
+interact with the program.
+The two main categories of interface are text-based interfaces
+and graphical interfaces.</p>
+<h3 id="text-based-interfaces">Text-based interfaces</h3>
+<p>So far, all of our programs have been <em>text-based</em>,
+which just means that they can be run from a terminal
+and they only input and output text
+(sometimes coming from or going to a file,
+sometimes coming from or going to the terminal directly).
+Broadly speaking, there are two types of text-based interfaces:</p>
+<ol>
+<li><em>batch-mode</em> interfaces</li>
+<li><em>interactive</em> interfaces</li>
+</ol>
+<p>A <strong>batch-mode</strong> interface is the simplest kind of interface.
+This is a program that runs without any user involvement.
+One example might be a program
+which generates the value of <span class="arithmatex">\(\pi\)</span> to 1000 digits.
+While the program is running, the user doesn't have to do anything,
+and the program prints out the result at the end.
+Another example might be a data analysis program
+which reads in a list of temperatures from a file,
+computes their average, and prints the result out.
+Again, the user doesn't do anything while the program is running.</p>
+<p>An <strong>interactive</strong> interface is where the user and the program interact
+while the program is running.
+A chess program is a good example of an interactive interface.
+The user and the program "take turns" so that at certain times,
+the program is computing something, while at other times,
+the user is figuring out their move
+and the program is waiting for them to enter the move.
+(Of course, most chess programs are not text-based,
+but they could be.)
+Another example of a program with an interactive text-based interface
+is a text editor (like <a href="https://neovim.io/">Neovim</a>)
+that runs entirely inside a terminal.
+And another one is the Python interpreter
+when you run it from a terminal without a file argument.</p>
+<h3 id="graphical-user-interfaces">Graphical user interfaces</h3>
+<p>The most common kind of interactive interface
+is a <strong>graphical user interface</strong> which users will interact with directly
+while the program is running.
+The program provides various visual entities (called <em>widgets</em>)
+that users can interact with.
+These include:</p>
+<ul>
+<li>windows</li>
+<li>buttons</li>
+<li>scrollbars</li>
+<li>menus</li>
+<li>sliders</li>
+<li>drawing areas</li>
+<li>labels</li>
+<li>drop-down lists</li>
+</ul>
+<p>and so on.
+In addition to this, the program also displays output visually.
+This can include images, animations, or both.</p>
+<p>Graphical interfaces are designed to make it feel "natural"
+for users to interact with programs.
+They often use "visual metaphors" such as windows and trash cans
+to make the interface feel more comfortable.
+On the other hand, programming a GUI can be extremely complex
+due to the need to anticipate and react
+to everything a user can reasonably do.</p>
+<p>We won't spend much time discussing how to create GUIs in these readings.
+(If you're interested, we will have references
+to the <code>tkinter</code> documentation below
+that will describe the GUI elements of <code>tkinter</code> in detail.)</p>
+<p>On the other hand,
+we will spend a considerable amount of time
+on graphics programming in general.
+This isn't just because we really like graphics (though we do)
+but mainly because graphics programming leads us naturally
+into a large number of interesting and useful programming topics,
+which is our real focus.</p>
+<h3 id="2d-and-3d-graphics">2D and 3D graphics</h3>
+<p>Another way to categorize graphics programming
+is in terms of the images produced.
+<em>2D</em> (two-dimensional) graphics creates
+two-dimensional (flat) images or animations.
+<em>3D</em> (three-dimensional) graphics creates
+the illusion of three-dimensional images or animations.
+Of course, since computer monitors are two-dimensional,
+3D images are simulated instead of being
+"real" three-dimensional images.
+On the other hand, our retinas are also basically flat,
+so it isn't hard to trick a user into thinking that an image is realistic.
+To get even more realistic,
+you can wear a binocular (both eyes) virtual reality headset,
+which presents different images to each eye in a way
+that closely simulates what a person would see
+if they were actually seeing a 3D scene in real life.
+This can create an extremely realistic and immersive experience
+where you feel like you really are in the virtual world being simulated.</p>
+<p>Video games provide great examples of all kinds of graphics.
+Here's a famous 2D video game:</p>
+<p><img alt="" src="../images/pacman.jpg" width="600" /></p>
+<p>Here are images from two famous (and related) 3D video games:</p>
+<p><img alt="" src="../images/Portal1.jpg" width="600" />
+<img alt="" src="../images/Portal2.jpg" width="600" /></p>
+<p>3D graphics is a fascinating and highly mathematical field.
+In these readings,
+we will restrict ourselves to 2D graphics (including animation)
+along with some user interface features.</p>
+<h2 id="python-and-the-tkinter-library">Python and the <code>tkinter</code> library</h2>
+<p>Python, from its inception,
+was designed as a language that could be extended
+by linking to libraries written in the C language.
+A lot of graphics libraries either are written in C
+or expose a C language interface,
+and therefore there are a lot of ways to do graphics in Python.
+In these readings, we choose the simplest approach,
+which is to use the <code>tkinter</code> library.</p>
+<h3 id="origins-of-tkinter">Origins of <code>tkinter</code></h3>
+<p>The <code>tkinter</code> library has an unusual history.
+In the mid-1990s, a computer scientist named John Osterhout
+designed one of the first scripting languages,
+which he called <em>Tcl</em>
+(pronounced "tickle"; it stands for <strong>T</strong>ool <strong>c</strong>ommand <strong>l</strong>anguage).
+This language (which is still around) is quite weak compared to Python,
+but it did have one very useful feature: a graphics library called <em>Tk</em>
+(which stands simply for a graphics <strong>T</strong>ool<strong>k</strong>it).
+With Tk, you could write a graphical interface
+in a very small number of lines of code,
+and it was very usable (and easy to extend and maintain).
+Before Tk, writing even a simple GUI was an arduous task
+sometimes requiring more than 100 lines just to put a window on the screen!
+So even programmers who weren't particularly fond of Tcl
+would use it just so they could write a GUI in Tk.
+When Python became popular, a programmer named Fredrik Lundh
+had the brilliant idea of providing a way to use
+the Tk graphics toolkit from inside Python.
+The code that does this is called <code>tkinter</code>,
+which is short for "<em>Tk</em> <strong>Inter</strong>face".
+This library is unusual: <code>tkinter</code> is Python code
+which invokes Tk code which invokes Tcl code
+which ultimately uses graphics libraries written in C.
+Somehow it all works.</p>
+<h3 id="why-tkinter-and-not-some-other-graphics-library">Why <code>tkinter</code> and not some other graphics library?</h3>
+<p>As mentioned above,
+Python has numerous graphics libraries that can be used
+to write GUIs and graphical programs.
+In addition to <code>tkinter</code>, some other ones include:</p>
+<ul>
+<li>
+<p><a href="https://riverbankcomputing.com/software/pyqt/intro">PyQT</a>,
+a Python binding to the "QT" graphics system</p>
+</li>
+<li>
+<p><a href="https://wxpython.org">WxPython</a>,
+a Python binding to the "WxWindows" graphics system</p>
+</li>
+<li>
+<p><a href="https://kivy.org/#home">Kivy</a>,
+a cross-platform Python library for touch-based interfaces</p>
+</li>
+</ul>
+<p>All of these have more features than <code>tkinter</code>,
+which is very crude by comparison.
+So why are we using it?</p>
+<p>The main reasons are:</p>
+<ol>
+<li>
+<p>It's easier to install.
+Installing any of the other libraries can be very challenging,
+and we would prefer not to put you through this.
+In contrast, most installations of Python include <code>tkinter</code> by default,
+although not all of them do.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may be running a Python installation
+which does not have <code>tkinter</code> installed.
+To find out, start the Python interpreter and type:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>import tkinter
+</span></code></pre></div>
+<p>If this gives you an error, <code>tkinter</code> is not installed.
+If so, you can ask the TAs or the instructors
+to help you install it.
+The process is very dependent on the details of the installation
+and your operating system (Windows, MacOS, or Linux).</p>
+</div>
+</li>
+<li>
+<p>It's simpler.
+Some graphics libraries require
+a deep knowledge of object-oriented programming before you can do anything.
+Although one goal of CS 1 is to give you this knowledge,
+a nice feature of <code>tkinter</code> is that you can use it
+even without knowing object-oriented programming.</p>
+</li>
+<li>
+<p>It's good enough for what we want to do.</p>
+</li>
+<li>
+<p>We can extend it in interesting ways,
+and learn a lot about Python programming in the process.</p>
+</li>
+</ol>
+<p>However, if after taking CS 1
+you decide you want to write a program in Python
+with a sophisticated graphical interface,
+we strongly recommend you check out the alternatives listed above
+before deciding to use <code>tkinter</code>.</p>
+<h3 id="what-tkinter-provides">What <code>tkinter</code> provides</h3>
+<p><code>tkinter</code> provides a number of tools for writing programs that use graphics:</p>
+<ul>
+<li>
+<p>GUI "widgets"</p>
+<ul>
+<li>buttons, menus, scrollbars, <em>etc.</em></li>
+</ul>
+</li>
+<li>
+<p>a "canvas" widget upon which arbitrary drawings can be created</p>
+<ul>
+<li>using lines, circles, ovals, rectangles, images, text, <em>etc.</em></li>
+</ul>
+</li>
+<li>
+<p>various ways to capture user interactions</p>
+<ul>
+<li>key presses, mouse clicks, <em>etc.</em></li>
+</ul>
+</li>
+</ul>
+<p>For now, we will concentrate on the canvas widget
+and on drawing simple 2D pictures.
+We'll also show how to get a program to respond to actions
+(<em>e.g.</em> key presses on the keyboard).</p>
+<h2 id="pixel-coordinates">Pixel coordinates</h2>
+<p>We're almost ready to start writing code, but before we do,
+we have to have a way to represent locations on the screen.
+The way we will use is called <strong>pixel coordinates</strong>.
+A <em>pixel</em> (short for "picture element")
+is a very tiny roughly square-shaped segment of a computer monitor
+which can have any of a large number of colors.
+(Most computers now allow 24-bit colors for each pixel,
+which works out to over 16 million different possible colors.)
+The monitor display itself is made up of millions of these tiny pixels,
+arranged in a rectangular grid.
+Even though the size of a pixel is not standardized,
+we often use pixel numbers when specifying how large/wide/high
+we want some graphical entity to be.
+We identify any particular pixel in the grid by its pixel coordinates.</p>
+<h3 id="representation">Representation</h3>
+<p>Pixel coordinates are represented
+by a tuple of two non-negative integers (0 or greater):
+the X-coordinate (horizontal coordinate)
+and the Y-coordinate (vertical coordinate).
+The way a pixel's pixel coordinates are determined is as follows:</p>
+<ul>
+<li>
+<p>The upper-left corner of the display (the "origin")
+has the coordinates <code>(0, 0)</code>.</p>
+</li>
+<li>
+<p>The X-coordinate increases as we move to the right.</p>
+</li>
+<li>
+<p>The Y-coordinate increases as we move downwards.</p>
+</li>
+</ul>
+<p>So, for instance, if you start at (0, 0)
+and increase the X-coordinate to (100, 0) (say),
+you move 100 pixels to the right.
+If you start at (0, 0) and increase the Y-coordinate to (0, 100),
+you move 100 pixels down.</p>
+<p>Here's a picture which gives you the general idea:</p>
+<p><img alt="" src="../images/pixels.png" width="600" /></p>
+<p>The pixel at <code>(2, 1)</code> has X-coordinate <code>2</code> and Y-coordinate <code>1</code>,
+and the pixel at <code>(3, 5)</code> has X-coordinate <code>3</code> and Y-coordinate <code>5</code>.</p>
+<p>This is a bit like the
+<a href="https://en.wikipedia.org/wiki/Cartesian_coordinate_system">Cartesian coordinate system</a>
+that you're probably familiar with from math courses,
+where it's used to draw graphs of functions.
+However, there are important differences:</p>
+<ul>
+<li>
+<p>Pixel coordinates are always integers.</p>
+</li>
+<li>
+<p>Pixel coordinates are never negative.</p>
+</li>
+<li>
+<p>The Y-coordinate in pixel coordinates increases downwards instead of up.</p>
+</li>
+</ul>
+<h3 id="relative-and-absolute-coordinates">Relative and absolute coordinates</h3>
+<p>Most computers run multiple programs at the same time,
+placing the graphics for each program in a separate rectangular "window".
+Pixel coordinates can thus be either</p>
+<ul>
+<li><em>absolute</em>, meaning that they represent a position on the entire monitor, or</li>
+<li><em>relative</em> to the window in which a program is running</li>
+</ul>
+<p>In absolute coordinates,
+the upper left-hand corner of the monitor is location (0, 0).
+In relative coordinates, the upper left-hand corner
+of the <em>application window</em>
+(the window in which the program executes) is location (0, 0).
+We will only be working with relative coordinates.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></p>
+<h2 id="event-loops">Event loops</h2>
+<p>When a graphical program with a GUI is running,
+typically it will wait until the user activates one of its widgets.
+For instance, the user can click on a button,
+select an item in a drop-down list,
+move the mouse cursor over a drawing area, <em>etc.</em>
+These user actions are referred to as <strong>events</strong>.
+When the program detects an event,
+it will do something in response,
+then go back to waiting (often called "listening") for events.
+This process is called an <strong>event loop</strong>.
+Event loops are very commonly used when running a graphical interface.</p>
+<p>However, it's rarely that simple.
+Often the program needs to be doing things
+even while waiting for new events from the user.
+For instance, a video game may have things happening
+in the video game "world" between user events,
+and those have to be simulated whether or not the user is doing anything.
+So an event loop is not going to be
+the only thing that is happening in the program in that case.</p>
+<p>Python programs that use <code>tkinter</code> are oriented around an event loop.
+We will be able to use the event loop
+both for purely event-driven programs
+and also for programs that need to do things between user events.</p>
+<h2 id="program-1-tkinter1py">Program 1 (<code>tkinter1.py</code>)</h2>
+<p>Finally we get to look at some code! <img alt="😄" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f604.svg" title=":smile:" /></p>
+<p>Here's a minimal <code>tkinter</code> program called <code>tkinter1.py</code>:</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">3</a></span>
+<span class="normal"><a href="#__codelineno-1-4">4</a></span>
+<span class="normal"><a href="#__codelineno-1-5">5</a></span>
+<span class="normal"><a href="#__codelineno-1-6">6</a></span>
+<span class="normal"><a href="#__codelineno-1-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x600&#39;</span><span class="p">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="n">c</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Press &lt;return&gt; to quit&quot;</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+<p>There's a lot going on here, so we'll break it down line-by-line.
+But first, let's see what this program actually does.
+When we run it, we will see a window come up that looks like this:</p>
+<p><img alt="" src="../images/tkinter1.jpg" width="600" /></p>
+<p>Meanwhile, the terminal will display the message <code>Press &lt;return&gt; to quit</code>.
+Once the user presses the return key,
+the window will disappear and the program will exit.</p>
+<p>This is actually pretty cool!
+In seven lines of code we brought up a window
+and drew a red square in one corner of the window.
+Let's see what these lines mean.</p>
+<ul>
+<li>
+<p><code>from tkinter import *</code></p>
+<p>This line (obviously) imports the <code>tkinter</code> library.
+Because we will be using a lot of things from this library,
+we import everything using the wildcard (<code>*</code>).
+(Normally we don't like to do this, but it won't cause problems here.)</p>
+</li>
+<li>
+<p><code>root = Tk()</code></p>
+<p>This line creates the <strong>root window</strong> of the application,
+which we call <code>root</code>.
+It does this by called the <code>Tk</code> function.<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>
+This line by itself will bring up a new blank window,
+which by default will have the dimensions
+200 pixels wide by 200 pixels high.</p>
+</li>
+<li>
+<p><code>root.geometry('800x600')</code></p>
+<p>We want our program to have a bigger window than 200x200 pixels,
+so we specify the desired dimensions using the <code>geometry</code> method.
+Here, the dimensions we want
+are 800 pixels in the X dimension
+by 600 pixels in the Y dimension.
+(The root window is an object, so it can have methods.)</p>
+</li>
+<li>
+<p><code>c = Canvas(root, width=800, height=600)</code></p>
+<p>The root window is great and all,
+but we want to draw geometrical shapes, and for that,
+we will need a drawing surface.
+This is provided by the <code>tkinter</code> <code>Canvas</code> "widget"
+(which for our purposes is just a Python object).
+This line creates a new <code>Canvas</code>
+whose <em>parent</em> is the root window
+(this means that it will be located inside the root window)
+and since its dimensions are the same as those of the root window,
+it will completely cover it.
+The Canvas object is given the name <code>c</code>
+so we can call methods on it.</p>
+<p>Note that we are specifying the dimensions
+in a different way than we did for the <code>root.geometry</code> method.
+This way uses what are called <strong>arguments</strong>,
+which we'll describe below.
+(These are basically just function arguments with names.)</p>
+<p>After this line executes,
+the Canvas will exist but you can't yet draw on it,
+because it hasn't been positioned on the screen.</p>
+</li>
+<li>
+<p><code>c.pack()</code></p>
+<p>The canvas <code>pack</code> method sets the position of the canvas
+relative to its parent object (the root window).
+Once this is done (and not before)
+anything drawn on the canvas will be visible.
+The <code>pack</code> method is one of a number of methods
+whose purpose is to position graphical objects
+relative to their parent object.
+This method is particularly easy to use,
+because it does the positioning automatically
+so as to fit everything into the available space.
+Since the canvas and the root window are the same size, this is easy:
+the canvas just completely covers the root window.</p>
+</li>
+<li>
+<p><code>r = c.create_rectangle(0, 0, 50, 50, fill='red', outline='red')</code></p>
+<p>This line does some actual drawing.
+As the name indicates, <code>create_rectangle</code>
+draws a rectangle on the canvas (named <code>c</code>).
+The first two arguments (here, both are <code>0</code>)
+are the X and Y pixel coordinates
+of the upper left-hand corner of the rectangle.
+The second two arguments (here, both are <code>50</code>),
+are the X and Y pixel coordinates
+of the lower-right corner of the rectangle.
+The <code>fill</code> keyword argument
+sets the color inside the rectangle to red,
+and the <code>outline</code> keyword argument
+does the same for the rectangle's outline.
+(If the <code>outline</code> keyword argument were omitted,
+the outline would be black.)</p>
+<p>The return value of this method is assigned to the name <code>r</code>.
+<code>r</code> is actually a <strong>handle</strong> to the rectangle.
+We'll explain what handles are and what you can do with them
+in an upcoming reading.</p>
+</li>
+<li>
+<p><code>input("Press &lt;return&gt; to quit")</code></p>
+<p>This line serves an important purpose.
+It is there to keep the program from exiting!
+If it was removed, running the program would, at best,
+flash the window up for a very short period of time and then exit.
+But as long as the <code>input</code> function is waiting
+for the user to enter something in the terminal,
+the graphics canvas will remain visible.
+Once you hit the return key, the program will be done,
+the window will close and the program will exit.</p>
+<p>This is not, by any means, the best way to run a graphics program.
+We will shortly see better ways of doing this.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you try running this program inside an IDE
+(<strong>I</strong>ntegrated <strong>D</strong>eveloment <strong>E</strong>nvironment;
+an example for Python would be
+<a href="https://www.jetbrains.com/pycharm">PyCharm</a>),
+it may not work the way we've described
+because the last line won't cause the program to pause.
+This won't be an issue
+once we've shown you how to use the event loop in <code>tkinter</code>,
+which should work anywhere.
+However, for the time being
+you can always run the programs from the terminal,
+which should also work.</p>
+</div>
+<h2 id="adding-more-stuff-to-the-canvas">Adding more stuff to the canvas</h2>
+<p>We are going to quickly show you some <code>tkinter</code> programs
+along with their graphical output.
+We won't say too much about them because there isn't much new to say.
+Some will use different methods on the canvas object,
+but you should be able to figure out what they are doing.
+If you need to, you can read the <code>tkinter</code> documentation linked to below
+to get more information.</p>
+<h3 id="program-2-tkinter2py">Program 2 (<code>tkinter2.py</code>)</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;800x600&quot;</span><span class="p">)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">c</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="n">r2</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="n">r3</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="n">r4</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span><span class="p">)</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Press &lt;return&gt; to quit.&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p><img alt="" src="../images/tkinter2.png" width="600" /></p>
+<h3 id="program-3-tkinter3py">Program 3 (<code>tkinter3.py</code>)</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;800x600&quot;</span><span class="p">)</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">c</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">dim</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># side length of squares in pixels</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a colored square.&quot;&quot;&quot;</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="n">c</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">dim</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="n">dim</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">dim</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">dim</span><span class="p">,</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>                       <span class="n">fill</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="k">def</span> <span class="nf">big_square</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a big square made out of little squares.&quot;&quot;&quot;</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>    <span class="n">row</span> <span class="o">*=</span> <span class="mi">2</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>    <span class="n">col</span> <span class="o">*=</span> <span class="mi">2</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>    <span class="n">square</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>    <span class="n">square</span><span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>    <span class="n">square</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">)</span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>    <span class="n">square</span><span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">)</span>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="k">def</span> <span class="nf">draw</span><span class="p">():</span>
+</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw the entire drawing.&quot;&quot;&quot;</span>
+</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>            <span class="n">big_square</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>
+</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>
+</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="n">draw</span><span class="p">()</span>
+</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Press &lt;return&gt; to quit.&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p><img alt="" src="../images/tkinter3.png" width="600" /></p>
+<h3 id="program-4-tkinter4py">Program 4 (<code>tkinter4.py</code>)</h3>
+<p>This program introduces the canvas <code>create_line</code> method.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x600&#39;</span><span class="p">)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">c</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">line1</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="n">line2</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_line</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Press &lt;return&gt; to quit.&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p><img alt="" src="../images/tkinter4.png" width="600" /></p>
+<h3 id="program-5-tkinter5py">Program 5 (<code>tkinter5.py</code>)</h3>
+<p>The <code>create_line</code> method can include the coordinates of multiple points,
+which are joined end-to-end to create multiple lines.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x600&#39;</span><span class="p">)</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">c</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="n">line1</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_line</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> 
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>          <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Press &lt;return&gt; to quit.&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p><img alt="" src="../images/tkinter5.png" width="600" /></p>
+<h3 id="program-6-tkinter6py">Program 6 (<code>tkinter6.py</code>)</h3>
+<p>The canvas <code>create_oval</code> method is like <code>create_rectangle</code>
+but creates ellipses (ovals) instead of rectangles.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x600&#39;</span><span class="p">)</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">c</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="n">oval</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_oval</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Press &lt;return&gt; to quit.&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p><img alt="" src="../images/tkinter6.png" width="600" /></p>
+<h3 id="program-7-tkinter7py">Program 7 (<code>tkinter7.py</code>)</h3>
+<p>This program shows the relationship
+between <code>create_oval</code> and <code>create_rectangle</code>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x600&#39;</span><span class="p">)</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n">c</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="n">oval</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_oval</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="n">rect</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Press &lt;return&gt; to quit.&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p><img alt="" src="../images/tkinter7.png" width="600" /></p>
+<h3 id="program-8-tkinter8py">Program 8 (<code>tkinter8.py</code>)</h3>
+<p>You can easily create a bullseye pattern using <code>create_oval</code> and a loop.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x800&#39;</span><span class="p">)</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">800</span><span class="p">)</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="n">c</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="n">ovals</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">50</span><span class="p">):</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="n">x1</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">+</span> <span class="n">i</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    <span class="n">y1</span> <span class="o">=</span> <span class="n">x1</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>    <span class="n">x2</span> <span class="o">=</span> <span class="mi">700</span> <span class="o">-</span> <span class="n">i</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>    <span class="n">y2</span> <span class="o">=</span> <span class="n">x2</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>    <span class="n">oval</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_oval</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Press &lt;return&gt; to quit.&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p><img alt="" src="../images/tkinter8.png" width="600" /></p>
+<h2 id="event-handling">Event handling</h2>
+<p>OK, we've seen that there are several different shapes
+(rectangles, ovals, lines) you can draw on a <code>tkinter</code> canvas,
+and you can control various features of them (size, color, position)
+depending on the arguments you pass to the methods that create the shapes.
+But these images are completely <em>static</em>; they are generated and that's it.
+We'd like to be able to interact with these shapes in various ways:</p>
+<ul>
+<li>create them in response to user input</li>
+<li>move them around</li>
+<li>change their color</li>
+<li>delete them</li>
+</ul>
+<p><em>etc.</em>  While we're at it, we would also love to get rid of the</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Press &lt;return&gt; to quit.&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>line we've had to include at the end of all our programs.
+In this section we'll show you how to do this.</p>
+<p>Earlier in this reading we mentioned that
+<code>tkinter</code> is structured around an event loop.
+But our <code>tkinter</code> programs so far
+haven't had anything that looks like an event loop!
+What's going on?</p>
+<p>Basically, they didn't have an event loop
+because we didn't ask them to create one.
+To do this, we have to call a special method on the <code>root</code> object:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</span></code></pre></div>
+<p>(We'll use this in place of the <code>input</code> line above.)
+This is a very unusual method: it never exits!
+It starts an "infinite loop" which listens for user events
+(key presses, mouse clicks or movements, <em>etc.</em>)
+and does something in response to certain events.</p>
+<p>As we've seen before when we discussed infinite loops,
+there usually is a way to break out of an infinite loop.
+In a <code>while True:</code> loop, for instance,
+we could use <code>break</code> to get out of the loop.
+Similarly, we will be able to use certain events
+to signal that we want to exit the loop.
+Normally, when we leave the event loop, we exit the program.
+So the program really consists of these parts:</p>
+<ol>
+<li>
+<p>Set up the program.</p>
+</li>
+<li>
+<p>Specify which events the program will respond to,
+and how it will respond to them.</p>
+</li>
+<li>
+<p>Start the event loop.</p>
+</li>
+<li>
+<p>When the event loop is done, exit the program.</p>
+</li>
+</ol>
+<p>But if we just replace the</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Press &lt;return&gt; to quit.&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>line with</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</span></code></pre></div>
+<p>we haven't done steps 2 and 4.
+So after we've created our canvas and whatever is on it,
+the event loop will start and the window will stay up.
+However, it's not obvious how to exit the program!
+We can always manually close the root window
+and use control-C in the terminal to force Python to exit,
+but this isn't any better than what we had.
+We need a convenient way to exit our program.
+To do this, we will define an event and the code that handles that event.</p>
+<h3 id="our-first-event-q-to-quit">Our first event: <code>q</code> to quit</h3>
+<p>We'll modify our original <code>tkinter</code> program to use <code>mainloop</code>.
+This gives us this program (<code>tkinter9.py</code>):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x600&#39;</span><span class="p">)</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="n">c</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="n">a</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>  <span class="c1"># &lt;-- changed</span>
+</span></code></pre></div>
+<p>We want to have some way to quit the program
+that is under the control of the user.
+We'll use this very simple system:
+when the user types the letter <code>q</code> on the keyboard,
+the program will interpret that as an order to "<strong>q</strong>uit" the program,
+and the program will exit.
+So the event our event loop will need to respond to is
+"typing the <code>q</code> key".
+This leads to two questions:</p>
+<ol>
+<li>
+<p>How do we tell <code>tkinter</code> that
+this is the event we want the event loop to listen for?</p>
+</li>
+<li>
+<p>How do we specify that when the <code>q</code> key is typed,
+the program should exit?</p>
+</li>
+</ol>
+<p>And there is also one more thing we need to specify:</p>
+<ol start="3">
+<li><p>Which graphical object will handle the event?</p></li>
+</ol>
+
+<p>It turns out that the <code>Canvas</code> object in <code>tkinter</code>
+isn't capable of handling <em>key press</em> events
+(which is what "typing a key" events are called),
+so the only graphical object left is the <code>root</code> (root window) object.
+Fortunately, this object <em>can</em> handle key press events.</p>
+<h3 id="the-bind-method">The <code>bind</code> method</h3>
+<p>We specify the event to be handled and how to handle it
+by calling the <code>bind</code> method on the <code>root</code> object.
+We only have to add one line of code:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">root</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;q&gt;&#39;</span><span class="p">,</span> <span class="n">quit</span><span class="p">)</span>
+</span></code></pre></div>
+<p>This line must come before the <code>mainloop</code> line,
+but after creating the root window.
+Now our program (called <code>tkinter10.py</code>) looks like this:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x600&#39;</span><span class="p">)</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="n">c</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="n">a</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="c1"># Bind the event &quot;type the q key&quot; to the `quit` function:</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="n">root</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;q&gt;&#39;</span><span class="p">,</span> <span class="n">quit</span><span class="p">)</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</span></code></pre></div>
+<p>The first argument to <code>root.bind</code> is the event to handle.
+Events are specified by strings
+with a particular syntax that makes sense to <code>tkinter</code>.
+The event "type the <code>q</code> key" (or more technically "press the <code>q</code> key")
+is specified with the string <code>'&lt;q&gt;'</code>.
+(Despite this, you don't have to type the angle brackets
+when you want to quit the program!
+Just type the <code>q</code> key to trigger this event.)
+The second argument is what to do when the event loop detects the event,
+and this is where things get interesting.</p>
+<p>You see that the second argument is <code>quit</code>,
+which reasonably implies that typing <code>q</code> should cause the program to quit.
+But what <em>is</em> <code>quit</code> here?
+It turns out that Python has a built-in function called <code>quit</code>.
+It's usually called with no arguments, like this:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">quit</span><span class="p">()</span>
+</span></code></pre></div>
+<p>When this line executes, the program will exit.
+However, the argument to <code>root.bind</code> was not <code>quit()</code> but <code>quit</code>
+(without the parentheses).
+What does that mean?</p>
+<h3 id="functions-as-objects">Functions as objects</h3>
+<p>Python has an interesting and very powerful feature
+that many computer languages don't have:
+<strong>functions can be treated as objects in their own right.</strong>
+When you call a function,
+you have to put the arguments to the function in parentheses,
+separated by commas.
+Even if the function has no arguments,
+you <em>still</em> have to use the parentheses to call the function.
+For instance:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">def</span> <span class="nf">say_hi</span><span class="p">():</span>   <span class="c1"># no arguments!</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hi!&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>To call this function, you would have to write:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>&gt;&gt;&gt; say_hi()
+</span></code></pre></div>
+<p>and not</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>&gt;&gt;&gt; say_hi
+</span></code></pre></div>
+<p>If you leave off the parentheses, it isn't a syntax error,
+but it won't call the function either.
+Instead, the function will be treated as an object.
+In this case, what will happen is that
+Python will print a representation of the function:<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>&gt;&gt;&gt; say_hi
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>&lt;function say_hi at 0x10180baf0&gt;
+</span></code></pre></div>
+<p>This isn't very interesting.
+But having function objects as arguments to other functions <em>is</em> interesting.
+For instance, the <code>quit</code> in the line:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">root</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;q&gt;&#39;</span><span class="p">,</span> <span class="n">quit</span><span class="p">)</span>
+</span></code></pre></div>
+<p>passes the <code>quit</code> function as an argument to the <code>root.bind</code> method.
+Why do we do this?
+The reason is so that the event loop can store this function for later,
+and when a press-the-<code>q</code>-key event occurs, it can retrieve the <code>quit</code>
+function and call it, thus making the program exit.</p>
+<p>Being able to use functions as objects is incredibly powerful.
+In fact, there is a whole style of programming
+that uses this as its primary tool: <strong>functional programming</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you take the CS 4 and CS 115 courses (both taught by Mike),
+you will learn all about functional programming
+using the computer languages
+<a href="https://ocaml.org/">OCaml</a> and <a href="https://www.haskell.org/">Haskell</a>.
+Python is not the best language for functional programming,
+but it does support it to some extent.
+We'll talk more about Python's functional programming features
+in later readings.</p>
+</div>
+<h3 id="try-this-at-home">Try this at home</h3>
+<p>Copy the version of the program with the <code>root.bind</code> and <code>root.mainloop</code>
+into a file called <code>tkinter_mainloop.py</code>.
+Run it from the terminal by typing</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>$ python tkinter_mainloop.py
+</span></code></pre></div>
+<p>See that the window stays up until you type the <code>q</code> key,
+at which point the program will exit.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Make sure that when you type the <code>q</code> key,
+the program window is selected (not covered up by any other window)
+and the cursor is inside the window.
+If this isn't the case, typing the <code>q</code> key may not do anything.</p>
+</div>
+<p>Once you do this successfully,
+look at the terminal where you ran the program.
+You should see something like this printed out:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>&lt;KeyPress event keysym=q keycode=786545 char=&#39;q&#39; delta=786545 x=-5 y=-27&gt;
+</span></code></pre></div>
+<p>What's this?</p>
+<p>It turns out that the <code>quit</code> function is normally called in one of two ways:</p>
+<ol>
+<li>with no arguments <em>i.e.</em> <code>quit()</code>, or</li>
+<li>with one integer argument <em>i.e.</em> <code>quit(0)</code> or <code>quit(1)</code>.</li>
+</ol>
+<p>The convention is that if you supply a <code>0</code> argument to <code>quit</code>,
+you are indicating that the program was "successful",
+and if you give a nonzero integer argument,
+you are indicating that some kind of an error occurred.<sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup>
+If <code>quit</code> is called with no arguments, it's equivalent to <code>quit(0)</code>.
+But if <code>quit</code> gets a non-integer argument,
+it doesn't know what to do with it,
+so it just prints it to the terminal and exits.
+That's what must have happened here.</p>
+<p>And apparently,
+the <code>quit</code> function was called with something that, when printed,
+yielded the string</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>&lt;KeyPress event keysym=q keycode=786545 char=&#39;q&#39; delta=786545 x=-5 y=-27&gt;
+</span></code></pre></div>
+<p>What this means is that <code>quit</code> was called with one argument,
+which was a <code>KeyPress event</code> object.
+This object is how <code>tkinter</code> represents the event corresponding to
+typing a key at the keyboard (in this case the <code>q</code> key).
+<code>tkinter</code> event objects often have useful information associated with them,
+as we will see.
+In this case, there isn't any information we need;
+we already know that this event
+could only have been created by typing the <code>q</code> key.
+Later, we will see cases
+where event objects have information that we absolutely need
+in order to allow us to do what we want to do in our program.</p>
+<p>To summarize:</p>
+<ol>
+<li>
+<p><code>root.bind('&lt;q&gt;', quit)</code> tells the root object
+to listen for the event where the <code>q</code> key is typed on the keyboard.</p>
+</li>
+<li>
+<p><code>root.mainloop()</code> starts the event loop.</p>
+</li>
+<li>
+<p>When the user types the <code>q</code> key,
+a <code>KeyPress</code> event object is created
+containing information about the event (like which key was pressed).</p>
+</li>
+<li>
+<p>The event loop code detects this event,
+looks up in some kind of internal table
+to see if this event has been associated with some action
+using the <code>bind</code> method.
+It finds out that it is supposed to call the <code>quit</code> function
+in response to this event.</p>
+</li>
+<li>
+<p>The event loop calls <code>quit</code>,
+passing it the <code>KeyPress</code> event object as its argument.
+In pseudocode, this is something like calling <code>quit(KeyPressEvent('q'))</code>.</p>
+</li>
+<li>
+<p>The <code>quit</code> function doesn't know what to do with key press event objects,
+so it just prints the object to the terminal and causes the program to exit.</p>
+</li>
+</ol>
+<h3 id="towards-a-better-event-handler">Towards a better event handler</h3>
+<p>The <code>quit</code> function which is the second argument to the <code>root.bind</code> call
+is known as an <strong>event handler</strong>.
+It "handles" the "event" where the <code>q</code> key is pressed.
+However, it isn't a <em>good</em> event handler,
+because it prints out an annoying line that we don't need.
+We would like to fix that.
+And we will, in the next reading!</p>
+<h2 id="tkinter-documentation"><code>tkinter</code> documentation</h2>
+<p>Here are some links to <code>tkinter</code> reference documentation:</p>
+<ul>
+<li>
+<p><a href="https://effbot.org/tkinterbook/">https://effbot.org/tkinterbook/</a></p>
+</li>
+<li>
+<p><a href="https://docs.python.org/3/library/tk.html">https://docs.python.org/3/library/tk.html</a></p>
+</li>
+<li>
+<p><a href="https://docs.python.org/3/library/tkinter.html">https://docs.python.org/3/library/tkinter.html</a></p>
+</li>
+</ul>
+<p>The first link is probably the best overall,
+having been written by the original author of <code>tkinter</code>.
+However, it's very old and may not be completely accurate.
+The last link has links to a large amount of material on <code>tkinter</code>.
+You can use these links
+(among other things <em>e.g.</em> doing a web search for the information you need)
+to look up information on graphical widgets
+we haven't described in these readings or in class.</p>
+<p>Here are a couple of <code>tkinter</code> tutorials:</p>
+<ul>
+<li>
+<p>a <a href="https://realpython.com/python-gui-tkinter/">tutorial</a></p>
+</li>
+<li>
+<p>a <a href="https://tkdocs.com/tutorial/">more detailed tutorial</a></p>
+</li>
+</ul>
+<p>Further documentation can be obtained by searching for
+"Python <code>tkinter</code> documentation" using any search engine.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>You can pronounce "GUI" as either "gooey" or "gee you eye".].&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>Very few programs need to care about absolute coordinates.
+One kind of program that does is a <em>window manager</em>,
+which is a program which is used to position application windows.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>Actually, it's not really a function but a "constructor method",
+which we will learn about in a few readings.
+It won't hurt to think about it as a function for now.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>The hexadecimal number <code>0x10180baf0</code>
+is where the function is located in memory.
+That's almost never important.&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:5">
+<p>This convention comes from the early days of Unix,
+and basically specifies the "return value" of the entire program.
+You can use these integer return values,
+but learning how to do this would take us beyond the scope of these readings.&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../15/reading15/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 15. Dictionaries">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                15. Dictionaries
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.footer", "navigation.top", "navigation.expand"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+        <script src="../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
