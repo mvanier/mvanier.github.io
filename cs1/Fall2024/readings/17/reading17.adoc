@@ -1,0 +1,750 @@
+= CS 1 Reading 17: Computer graphics and `tkinter`, part 2
+
+== Overview
+
+In this reading we continue our discussion of computer graphics using
+`tkinter`.
+
+== Topics
+
+* More on event handling (callbacks)
+
+* Graphical object "handles" in `tkinter`
+
+* Global variables
+
+== More on event handling
+
+=== Fixing the `q` callback function
+
+In the last reading, we ended up with the following code:
+
+[source, python]
+----
+from tkinter import *
+
+root = Tk()
+root.geometry('800x600')
+c = Canvas(root, width=800, height=600)
+c.pack()
+a = c.create_rectangle(0, 0, 50, 50, fill='red', outline='red')
+# Bind the event "type the q key" to the `quit` function:
+root.bind('<q>', quit)
+root.mainloop()
+----
+
+The idea here was to have a graphical program that we could quit
+by typing the `q` key.
+All the program does is put up a red square on a `tkinter` canvas.
+We use the `root.bind` method to bind an _event_ (typing the `q` key)
+to an _action_ (executing the built-in `quit` function).
+We saw that using the `quit` function as an argument to the method was unusual
+because `quit` is a function.
+We have to leave off the parentheses from the `quit` function we pass to
+`root.bind` or else it will get executed (and thus the program will exit)
+when the `root.bind` method is called,
+which is obviously not what we want.
+We don't want the program to exit when we _bind_ the `quit` function
+to the `q` key,
+we want the `quit` function to be _stored_ so that it can be called later when
+the `q` key is typed.
+When you leave off the parentheses,
+then `quit` is just a function object and is not called.
+
+In the last reading,
+we saw that when the `quit` function is finally called,
+it will print out some useless stuff to the terminal before the program exits.
+The reason is does this is that the `quit` function prints out its argument
+unless the argument is an integer.
+But in `tkinter`, every callback function receives exactly one argument,
+which is the event that triggered it.
+Since events in `tkinter` are not integers,
+the `quit` function will convert its event argument to a string
+and print it to the terminal, which we don't want.
+What we need is a callback function that we can use with the `q` key
+that won't print anything when the event occurs.
+The easiest way to achieve this is to write a simple wrapper function
+around the `quit` function that simply ignores the event argument.
+
+The resulting code looks like this:
+
+[source, python]
+----
+from tkinter import *
+
+def exit_python(event):
+    """Exit python when the event 'event' occurs."""
+    quit()  # no arguments to quit
+
+root = Tk()
+root.geometry('800x600')
+c = Canvas(root, width=800, height=600)
+c.pack()
+a = c.create_rectangle(0, 0, 50, 50, fill='red', outline='red')
+root.bind('<q>', exit_python)
+root.mainloop()
+----
+
+All we've done here is to replace the `quit` function
+in the call to `root.bind`
+with the `exit_python` callback function.
+The only interesting thing about the `exit_python` callback function
+is that it ignores its event argument
+and calls the `quit` function without any arguments.
+As a result, when the program is running and we type the `q` key,
+the program exits without typing anything to the terminal.
+Woo hoo! {smiley}
+
+=== Variations on binding
+
+It's easy to create variations on this program.
+All we have to do is change the event that causes the program to exit.
+For instance, by replacing the line:
+
+----
+root.bind('<q>', exit_python)
+----
+
+with:
+
+----
+root.bind('<Key>', exit_python)
+----
+
+then the program will quit when _any_ key on the keyboard is typed, not just
+the `q` key.
+
+If we change it again to:
+
+----
+root.bind('<Button-1>', exit_python)
+----
+
+then the program will exit when the left mouse button is clicked.
+(The left mouse button is referred to as `'<Button–1>'` in `tkinter`.)
+
+So far, we've been binding our event handlers to the root window object
+(`root`) only.
+But the root window object is not the only object that can handle events.
+The canvas object is also capable of handling events.
+What happens if we try to bind the `exit_python` event handler
+to the canvas object?
+Let's change the `bind` line to this:
+
+----
+c.bind('<q>', exit_python)   # `c` is the Canvas object
+----
+
+Now, when we run the program and type the `q` key, nothing happens!
+On the other hand, if we change the bind line to this:
+
+----
+c.bind('<Button-1>', exit_python)
+----
+
+then clicking the left mouse button _does_ quit the program.
+What's going on?
+
+Although the canvas object _can_ handle events,
+tt can only handle certain kinds of events.
+In particular, it can't handle key press events.
+When you think about it, this makes perfect sense --
+there's no particular reason why you should expect a canvas
+to be able to handle key press events,
+because a canvas is not normally used for text entry.
+However, it's pretty clear that a canvas _will_ have to be able to handle
+mouse button click events,
+since canvas objects are often used to write {eg} drawing programs.
+
+When a graphical object receives an event it doesn't know how to handle,
+it passes the event to its parent.
+So even though the canvas object will see key press events
+before the root window does,
+it won't be able to handle it.
+So it will pass it immediately to its parent, the root window object.
+If the root window object has a binding to that event,
+it will call the callback function bound to that event.
+If not, nothing will happen (the event will be ignored).
+
+On the other hand, if the canvas receives an event it _can_ handle,
+it will look up the event to see if it's bound to an event handler.
+If it is, then it will execute the event handler.
+Since the canvas can handle mouse button click events,
+the last example works.
+
+== Other callback functions
+
+Now we're going to work through some more graphics programs.
+Each will have the same overall structure,
+but the details will be different.
+There will be different callback functions,
+and different drawing functions to support them.
+
+=== Program 1: print mouse cursor location
+
+This program will
+
+* quit when `q` is pressed
+
+* print out the (x, y) coordinates of the mouse cursor
+(relative to the canvas window) when the left mouse button is clicked
+
+[source, python]
+----
+from tkinter import *
+
+def exit_python(event):
+    """Exit Python."""
+    quit()
+
+def button_handler(event):
+    """Handle left mouse button click events."""
+    print('x = {}, y = {}'.format(event.x, event.y))
+
+if __name__ == '__main__':
+    root = Tk()
+    root.geometry('800x600')
+    canvas = Canvas(root, width=800, height=600)
+    canvas.pack()
+
+    root.bind('<q>', exit_python)
+    canvas.bind('<Button-1>', button_handler)
+
+    root.mainloop()
+----
+
+From this we see that typing the `q` key exits Python as usual,
+and clicking the left mouse button calls the callback function
+`button_handler`,
+passing it an `event` object which contains all the information
+about that mouse click.
+
+The `button_handler` function is new.
+It takes an `event` argument as usual, but this time
+the event is a mouse button click.
+This event has two _attributes_ associated with it,
+`event.x` and `event.y`.
+These represent the (relative) X and Y coordinates of the mouse cursor
+at the moment the mouse button was clicked.
+
+.Event attributes and the dot syntax
+****
+
+Python refers to the contents of an object as its _attributes_.
+It uses the familiar dot syntax to access them and to change them.
+In the case of the event, `x` and `y` are two attributes,
+so to access them we write `event.x` and `event.y`.
+If we wanted to change them, we would write {eg} `event.x = 10`.
+
+So far, we've used the dot syntax mostly for calling methods on objects, and
+also for calling functions defined in a module.
+But the dot syntax is more general than this.
+What it really does is fetch
+(or change, if it's used on the left of an `=` sign)
+an attribute of an object.
+If that attribute happens to be a function or a method,
+and there is an argument list after the function or method,
+it calls the function/method.
+But many useful attributes are non-function data.
+For instance, the `x` and `y` attributes of an event
+are integers representing pixel coordinates.
+
+Some authors refer to these kinds of attributes
+(non-function attributes or data attributes)
+as _fields_ of an object,
+and sometimes we'll use that terminology too.
+
+****
+
+=== Program 2: draw random squares
+
+Now that we can capture the X and Y coordinates of the mouse cursor,
+there are lots of things that we can do with this information.
+This leads us to our next program.
+In this program, clicking on the mouse will draw a square
+centered at the (x, y) coordinate where the mouse cursor is.
+This square will have a random color and a random size
+(within a specified range).
+We only need to make a couple of changes to the previous program.
+
+[source, python]
+----
+from tkinter import *
+import random
+
+def draw_random_square(canvas, x, y, min_size, max_size):
+    # Code omitted (assignment problem).
+
+def exit_python(event):
+    """Exit Python."""
+    quit()
+
+def button_handler(event):
+    """Handle left mouse button click events."""
+    draw_random_square(canvas, event.x, event.y, 50, 150)
+
+if __name__ == '__main__':
+    root = Tk()
+    root.geometry('800x600')
+    canvas = Canvas(root, width=800, height=600)
+    canvas.pack()
+
+    # Bind events to handlers.
+    root.bind('<q>', exit_python)
+    canvas.bind('<Button-1>', button_handler)
+
+    # Start it up.
+    root.mainloop()
+----
+
+The only thing new here is that instead of printing out the X and Y coordinates
+when the mouse is clicked, the `draw_random_square` function is called instead.
+
+[NOTE]
+====
+
+We are omitting the code for that function because you have to write it
+yourself for one of the assignments.
+
+====
+
+The `draw_random_square` function takes as its arguments:
+
+* the canvas object
+* the X and Y coordinates where the mouse cursor was when the mouse button was
+  clicked
+* the minimum and maximum allowed sizes of the square, in pixel coordinates
+
+It draws a square on the canvas with a random color and a random size
+(within the specified bounds)
+centered on the given X and Y coordinates.
+It doesn't return anything (at least, not in this version of the program).
+
+We consider the "size" of a square to be the length
+of one of the sides of the square in pixels.
+So we will be drawing squares whose sizes are randomly set to a number
+between `min_size` and `max_size` pixels long.
+
+.Color representation
+****
+
+The way that colors are represented on most computer monitors is with separate
+values for the red, green, and blue components of the color (so called "RGB"
+colors).  Typically, 8 bits are assigned to each color, so each color can have
+a value going from 0 (which means the color is absent) to 255 (`2**8 - 1` or
+`0b11111111` in binary).  To represent a color in `tkinter`, you just have to
+have a 6-digit hexadecimal number with a leading `\#` character.  Such a color
+uses 2 hexadecimal digits for each color. Recall that a hexadecimal digit
+represents 4 bits, so two can represent 8 bits.  Generating random hexadecimal
+digits is not hard, and collecting 6 of them and putting a `#` character before
+them gives you a string which represents a random color as far as `tkinter` is
+concerned.
+
+Some examples:
+
+* white is `#ffffff`
+* black is `#000000`
+* red is `#ff0000`
+* green is `#00ff00`
+* blue is `#0000ff`
+* yellow is `#ffff00`  (red + green)
+
+Of course, if you replace `ff` by something else, you get less of that color.
+
+****
+
+In addition to this, we had to change the `button_handler` callback function
+so that it calls `draw_random_square`:
+
+[source, python]
+----
+def button_handler(event):
+    """Handle left mouse button click events."""
+    draw_random_square(canvas, event.x, event.y, 50, 150)
+----
+
+`draw_random_square` is called with the (global) `canvas` object,
+the `x` and `y` attributes of the `event`,
+and the bounds of the size of the square (50 and 150).
+When this program is run, clicking on the left mouse button
+will draw squares of random size and color,
+centered on where the mouse cursor was when the left mouse button was clicked.
+
+== Global variables
+
+We just mentioned that the `canvas` object is a global object.  Let's look into
+that a bit more.
+
+Anything defined at the "top level" of a program ({ie} not inside a function or
+a class) is a _global variable_.  This applies even to the last part of the
+program:
+
+[source, python]
+----
+if __name__ == '__main__':
+    root = Tk()
+    root.geometry('800x600')
+    canvas = Canvas(root, width=800, height=600)
+    canvas.pack()
+
+    # Bind events to handlers.
+    root.bind('<q>', exit_python)
+    canvas.bind('<Button-1>', button_handler)
+
+    # Start it up.
+    root.mainloop()
+----
+
+Since this `if` statement isn't inside a function or a class footnote:[We'll
+learn about classes in the next reading.] then any variables defined inside it
+are global variables.  Here, there are two of them: `root` and `canvas`.
+
+A global variable can be used anywhere in the entire program, inside any
+function or outside a function.  When we say "used" we mean that the value of a
+global variable can be accessed anywhere.  However, it's not possible to
+_change_ the value of a global variable everywhere unless you use a special
+command, which we'll get to shortly.
+
+[NOTE]
+It might strike you as odd that the definition of the `button_handler` function
+uses the `canvas` variable before that variable has even been defined.
+This looks like it should be an error, but it isn't.
+The reason is that Python doesn't actually execute any of the `button_handler`
+code while it is being defined; it just saves it for later.
+What's important is that the `button_handler` function isn't _called_
+until `canvas` is defined,
+and the way that we have set things up, it won't be.
+
+In general, you should *avoid using global variables*.
+Global variables cause problems because they can be changed
+inside any function,
+and if a global variable gets the wrong value,
+it can be hard to find out where that wrong value came from.
+So global variables make debugging harder.
+In contrast, local variables can only be changed
+inside the function in which they were defined,
+so if a local variable has the wrong value,
+you usually don't have to look at much code to figure out why.
+
+Having said all of this, why are we using a global variable here?
+Why can't we just pass `canvas` as an extra argument to the
+`button_handler` callback function?
+The reason is that `tkinter` callback functions are only allowed
+to have a _single_ argument: the event that triggers them.
+When the event occurs, the callback will be called
+with that event as the only argument.
+So there is no easy way to supply the extra argument.
+Instead, since the `canvas` object is already a global variable,
+we just use it directly.
+
+In general, if we need any data in a callback function other than the event,
+we have to access it as a global variable
+(at least, given what we know now).
+
+[NOTE]
+====
+
+There is a "nice" solution to this problem which does not require global
+variables.
+It will involve Python _classes_ (user defined object types).
+Classes are one of the central concepts in object-oriented programming,
+and we will learn about them starting with the next reading.
+For now, we'll stick to using global variables (and hold our noses).
+
+There is _another_ nice solution to this problem
+which does not require global variables _or_ classes,
+and it is even simpler than classes!
+It involves creating an _anonymous function_
+(called a "lambda expression" in Python).
+We will discuss this later in the course.
+It's a classic example of _functional programming_,
+which is covered in much more detail in CS 4 and CS 115.
+It's important to understand that the same problem
+can often be solved in different ways using either
+object-oriented programming or functional programming.
+Python gives you a lot of flexibility to choose the way you prefer.
+
+====
+
+== Graphical object "handles" in `tkinter`
+
+So far we've seen how to create graphical objects
+
+* directly as part of the program
+* through user interaction with callback functions
+
+However, once we've created an object, we haven't done anything with it.
+It would be useful to be able to manipulate an object after it's created:
+to move it, change it in some way, delete it, {etc}
+
+`tkinter` has had this ability all along -- we just haven't been using it!
+`tkinter` canvas commands to create graphical objects all return a value.
+This value is called a _handle_ to the graphical object.
+The handle is not the graphical object itself!
+In `tkinter`, handles are just integers starting from `1` which indicate
+the order in which graphical objects on a canvas were created.
+So the handle `1` means
+"the first graphical object to be created on this canvas",
+the handle `7` means
+"the seventh graphical object to be created on this canvas",
+{etc}
+You can use handles as a way to identify specific graphical objects
+on a canvas, and that's exactly what `tkinter` does.
+
+[NOTE]
+Don't confuse _event handlers_
+(functions which are called when certain events happen)
+with canvas graphical object _handles_.
+There is no relationship whatsoever between the two concepts;
+they just both happen to use the word "handle".
+
+Canvas objects don't let you _directly_ manipulate the objects they contain;
+you have to do it indirectly by calling `tkinter` functions and methods
+that require handles as arguments.
+In other words, graphical objects on canvasses
+(like rectangles, ovals, lines, {etc})
+are not exposed as Python objects.
+footnote:[This is kind of ugly, but we will do something about it soon.]
+
+=== Example: deleting graphical objects from a canvas
+
+Our programs have created a bunch of graphical objects (squares) on a canvas.
+After a while, a canvas can get very cluttered.
+We might want to delete some or all of the existing squares.
+We can do this easily using handles!
+
+We will extend our program so that pressing the `c` key
+(`c` for "clear") will remove all the squares from the canvas.
+
+Above we mentioned this function:
+
+----
+def draw_random_square(canvas, x, y, min_size, max_size):
+    # ... code omitted ...
+----
+
+Somewhere in this function there would need to be a call to
+
+----
+    canvas.create_rectangle(...)
+----
+
+Whatever this method returns is ignored,
+and `draw_random_square` doesn't return anything.
+We will change this line to:
+
+----
+    square = canvas.create_rectangle(...)
+----
+
+And we will make `draw_random_square` return this value
+(a handle, which is just a Python `int`).
+Properties of the square (its position, color {etc}) are stored inside
+the canvas object.
+
+OK, so `draw_random_square` returns a handle to a square on a particular
+canvas.
+We want to store this handle so we can delete the square later on.
+We will create a (global) list of square handles
+and add every new square handle to the list.
+
+At the end of the program, we add one line:
+
+[source, highlight=6]
+----
+if __name__ == '__main__':
+    root = Tk()
+    root.geometry('800x600')
+    canvas = Canvas(root, width=800, height=600)
+    canvas.pack()
+    squares = []   # new
+    # rest of code as before
+----
+
+Now we can store all handles to squares in the (global) list called `squares`.
+
+We will also modify the `button_handler` callback function:
+
+[source, python]
+----
+def button_handler(event):
+    """Handle left mouse button click events."""
+    square = draw_random_square(canvas, event.x, event.y, 50, 150)
+    squares.append(square)
+----
+
+All newly-created handles to squares get appended to the global `squares` list.
+
+Next, we change the callback function for key presses:
+
+[source, python]
+----
+def key_handler(event):
+    """Handle key press events."""
+    key = event.keysym
+    if key == 'q':
+        quit()
+    elif key == 'c':
+        for square in squares:
+            canvas.delete(square)
+
+# Later in the code:
+root.bind('<Key>', key_handler)
+----
+
+The `key_handler` callback function will handle all key press events,
+although we are only interested in the `q` (for quit) 
+and `c` (for clear) keys.
+
+This function shows another event attribute that is found on key press events:
+`event.keysym`.  
+This is just the character on the key that was pressed:
+`'q'` for the `q` key, `'c'` for the `c` key, {etc}
+The `q` key quits Python as before.
+The `c` key deletes all the squares from the canvas
+using the `canvas.delete` method.
+This method takes a single argument, 
+which is the handle of the graphical object to delete.
+
+[NOTE]
+====
+
+As you can see, different events have different attributes.
+Key press events will have a `keysym` attribute
+but they won't have `x` and `y` attributes,
+because this doesn't mean anything when a key is pressed.
+Button click events will have `x` and `y` attributes,
+but they won't have a `keysym` attribute,
+because that has no meaning in the context of mouse button clicks.
+
+====
+
+The entire program (without the part that's in the assignment) looks like this:
+
+[source, python]
+----
+from tkinter import *
+import random
+
+def draw_random_square(canvas, x, y, min_size, max_size):
+    # ... code omitted ...
+
+def button_handler(event):
+    """Handle left mouse button click events."""
+    square = draw_random_square(canvas, event.x, event.y, 50, 150)
+    squares.append(square)
+
+def key_handler(event):
+    """Handle key press events."""
+    key = event.keysym
+    if key == 'q':
+        quit()
+    elif key == 'c':
+        # Clear all squares from the canvas.
+        for square in squares:
+            canvas.delete(square)
+
+if __name__ == '__main__':
+    root = Tk()
+    root.geometry('800x600')
+    canvas = Canvas(root, width=800, height=600)
+    canvas.pack()
+
+    squares = []
+
+    root.bind('<Key>', key_handler)
+    canvas.bind('<Button-1>', button_handler)
+
+    root.mainloop()
+----
+
+If we ran this program (after completing `draw_random_square`, of course)
+we would find that pressing the `c` key
+would indeed remove all the squares from the canvas.
+
+=== Globals again
+
+There's one problem with this approach:
+the squares in the `squares` list were deleted
+using the `canvas.delete` method.
+But the `squares` list itself wasn't emptied out.
+This means that we are storing handles to squares that no longer exist,
+which is unnecessary and might cause problems later.
+Let's try to fix that now.
+
+[source, python, linenums, highlight=10]
+----
+def key_handler(event):
+    """Handle key press events."""
+    key = event.keysym
+    if key == 'q':
+        quit()
+    elif key == 'c':
+        # Clear all squares from the canvas.
+        for square in squares:
+            canvas.delete(square)
+        squares = []
+----
+
+Here, in line 10, we're trying to change the global variables `squares`
+by assigning the empty list to it.
+Only one problem: it won't work!
+
+Python has no way of knowing that `squares` on line 10 
+is supposed to represent a global variable.
+It could just as well be a local variable that we decided to create 
+at that point in the function.
+When in doubt, Python assumes that a variable is a local variable,
+not a global variable.
+
+How do we tell it that `squares` is supposed to be a global variable,
+not a local variable?
+Simple: we _declare_ that it's a global variable with a `global` declaration:
+
+[source, python, linenums, highlight=3]
+----
+def key_handler(event):
+    """Handle key press events."""
+    global squares
+    key = event.keysym
+    if key == 'q':
+        quit()
+    elif key == 'c':
+        # Clear all squares from the canvas.
+        for square in squares:
+            canvas.delete(square)
+        squares = []
+----
+
+The `global` declaration in line 3 tells Python that `squares`
+refers only to a _global_ variable
+inside the `key_handler` function.
+Now, the global `squares` list will be cleared 
+every time the `c` key is pressed.
+
+[NOTE]
+====
+
+Without the `global` declaration, 
+a Python program can have the same name bound 
+to both a local and a global variable.
+When this happens, the local variable takes precedence 
+(it "shadows" the global variable).
+Try hard to avoid this situation even if the code works,
+since it's very confusing to anyone reading your code!
+
+====
+
+Some rules of thumb for global variables:
+
+* If you want to _access_ a global variable inside a function,
+  and there is no local variable with the same name,
+  just access it as usual.
+
+* If you want to _modify_ a global variable inside a function,
+you have to declare it as global using the `global` declaration.
+
+It's a pain to remember to do this,
+so avoid using global variables if possible.
+Classes (next reading) are a better alternative.
+

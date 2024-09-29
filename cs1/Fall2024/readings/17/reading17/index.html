@@ -1,0 +1,1871 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs1/Fall2024/book/17/reading17/">
+      
+      
+        <link rel="prev" href="../../16/reading16/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>17. Graphics, part 2 - The CS 1 book (Fall 2024)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reading-17-computer-graphics-part-2" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="The CS 1 book (Fall 2024)" class="md-header__button md-logo" aria-label="The CS 1 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 1 book (Fall 2024)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              17. Graphics, part 2
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="The CS 1 book (Fall 2024)" class="md-nav__button md-logo" aria-label="The CS 1 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    The CS 1 book (Fall 2024)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Core readings
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Core readings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/reading1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Introduction, part 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/reading2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. Introduction, part 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/reading3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. Strings, part 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/reading4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. Strings, part 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../5/reading5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5. Objects and methods
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/reading6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7/reading7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7. Documenting your code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../8/reading8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8. Lists
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../9/reading9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9. Loops, part 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../10/reading10/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10. Conditionals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11/reading11/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11. Loops, part 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../12/reading12/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12. Files
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../13/reading13/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13. Odds and ends
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../14/reading14/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    14. Binary numbers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../15/reading15/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    15. Dictionaries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Topic focus readings
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Topic focus readings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../focus/booleans/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Booleans
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Optional readings
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Optional readings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../16/reading16/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    16. Graphics, part 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    17. Graphics, part 2
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    17. Graphics, part 2
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#more-on-event-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      More on event handling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="More on event handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fixing-the-q-callback-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fixing the q callback function
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variations-on-binding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variations on binding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-callback-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other callback functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Other callback functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#program-1-print-mouse-cursor-location" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 1: print mouse cursor location
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-2-draw-random-squares" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 2: draw random squares
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#global-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Global variables
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graphical-object-handles-in-tkinter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graphical object "handles" in tkinter
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Graphical object "handles" in tkinter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-deleting-graphical-objects-from-a-canvas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: deleting graphical objects from a canvas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#globals-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      Globals again
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#more-on-event-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      More on event handling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="More on event handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fixing-the-q-callback-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fixing the q callback function
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variations-on-binding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variations on binding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-callback-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other callback functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Other callback functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#program-1-print-mouse-cursor-location" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 1: print mouse cursor location
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program-2-draw-random-squares" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program 2: draw random squares
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#global-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Global variables
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graphical-object-handles-in-tkinter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graphical object "handles" in tkinter
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Graphical object "handles" in tkinter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-deleting-graphical-objects-from-a-canvas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: deleting graphical objects from a canvas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#globals-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      Globals again
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="reading-17-computer-graphics-part-2">Reading 17: Computer graphics, part 2</h1>
+<blockquote>
+<p><em>I think by drawing, so I'll draw or diagram everything
+from a piece of furniture to a stage gesture.<br/>
+I understand things best when they're in graphics, not words.</em><br/>
+- Robert Wilson</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>In this reading we continue
+our discussion of computer graphics using <code>tkinter</code>.</p>
+<h2 id="topics">Topics</h2>
+<ul>
+<li>More on event handling (callbacks)</li>
+<li>Graphical object "handles" in <code>tkinter</code></li>
+<li>Global variables</li>
+</ul>
+<h2 id="more-on-event-handling">More on event handling</h2>
+<h3 id="fixing-the-q-callback-function">Fixing the <code>q</code> callback function</h3>
+<p>In the last reading, we ended up with the following code:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x600&#39;</span><span class="p">)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">c</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">a</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># Bind the event &quot;type the q key&quot; to the `quit` function:</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">root</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;q&gt;&#39;</span><span class="p">,</span> <span class="n">quit</span><span class="p">)</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</span></code></pre></div>
+<p>The idea here was to have a graphical program that we could quit
+by typing the <code>q</code> key.
+All the program does is put up a red square on a <code>tkinter</code> canvas.
+We use the <code>root.bind</code> method to bind an <em>event</em> (typing the <code>q</code> key)
+to an <em>action</em> (executing the built-in <code>quit</code> function).
+We saw that using the <code>quit</code> function as an argument to the method was unusual
+because <code>quit</code> is a function.
+We have to leave off the parentheses from the <code>quit</code> function
+we pass to <code>root.bind</code> or else it will get executed
+(and thus the program will exit)
+when the <code>root.bind</code> method is called,
+which is obviously not what we want.
+We don't want the program to exit
+when we <em>bind</em> the <code>quit</code> function to the <code>q</code> key,
+we want the <code>quit</code> function to be <em>stored</em>
+so that it can be called later when the <code>q</code> key is typed.
+When you leave off the parentheses,
+then <code>quit</code> is just a function object and is not called.</p>
+<p>In the last reading,
+we saw that when the <code>quit</code> function is finally called,
+it will print out some useless stuff to the terminal before the program exits.
+The reason is does this is that the <code>quit</code> function prints out its argument
+unless the argument is an integer.
+But in <code>tkinter</code>, every callback function receives exactly one argument,
+which is the event that triggered it.
+Since events in <code>tkinter</code> are not integers,
+the <code>quit</code> function will convert its event argument to a string
+and print it to the terminal, which we don't want.
+What we need is a callback function that we can use with the <code>q</code> key
+that won't print anything when the event occurs.
+The easiest way to achieve this is to write a simple wrapper function
+around the <code>quit</code> function that simply ignores the event argument.</p>
+<p>The resulting code looks like this:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">def</span> <span class="nf">exit_python</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Exit python when the event &#39;event&#39; occurs.&quot;&quot;&quot;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">quit</span><span class="p">()</span>  <span class="c1"># no arguments to quit</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x600&#39;</span><span class="p">)</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="n">c</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="n">a</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="n">root</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;q&gt;&#39;</span><span class="p">,</span> <span class="n">exit_python</span><span class="p">)</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</span></code></pre></div>
+<p>All we've done here is to replace the <code>quit</code> function
+in the call to <code>root.bind</code>
+with the <code>exit_python</code> callback function.
+The only interesting thing about the <code>exit_python</code> callback function
+is that it ignores its event argument
+and calls the <code>quit</code> function without any arguments.
+As a result, when the program is running and we type the <code>q</code> key,
+the program exits without typing anything to the terminal.
+Woo hoo! <img alt="😄" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f604.svg" title=":smile:" /></p>
+<h3 id="variations-on-binding">Variations on binding</h3>
+<p>It's easy to create variations on this program.
+All we have to do is change the event that causes the program to exit.
+For instance, by replacing the line:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">root</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;q&gt;&#39;</span><span class="p">,</span> <span class="n">exit_python</span><span class="p">)</span>
+</span></code></pre></div>
+<p>with:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">root</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Key&gt;&#39;</span><span class="p">,</span> <span class="n">exit_python</span><span class="p">)</span>
+</span></code></pre></div>
+<p>then the program will quit when <em>any</em> key on the keyboard is typed,
+not just the <code>q</code> key.</p>
+<p>If we change it again to:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">root</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Button-1&gt;&#39;</span><span class="p">,</span> <span class="n">exit_python</span><span class="p">)</span>
+</span></code></pre></div>
+<p>then the program will exit when the left mouse button is clicked.
+(The left mouse button is referred to as <code>'&lt;Button–1&gt;'</code> in <code>tkinter</code>.)</p>
+<p>So far, we've been binding our event handlers to the root window object
+(<code>root</code>) only.
+But the root window object is not the only object that can handle events.
+The canvas object is also capable of handling events.
+What happens if we try to bind the <code>exit_python</code> event handler
+to the canvas object?
+Let's change the <code>bind</code> line to this:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">c</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;q&gt;&#39;</span><span class="p">,</span> <span class="n">exit_python</span><span class="p">)</span>   <span class="c1"># `c` is the Canvas object</span>
+</span></code></pre></div>
+<p>Now, when we run the program and type the <code>q</code> key, nothing happens!
+On the other hand, if we change the bind line to this:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">c</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Button-1&gt;&#39;</span><span class="p">,</span> <span class="n">exit_python</span><span class="p">)</span>
+</span></code></pre></div>
+<p>then clicking the left mouse button <em>does</em> quit the program.
+What's going on?</p>
+<p>Although the canvas object <em>can</em> handle events,
+tt can only handle certain kinds of events.
+In particular, it can't handle key press events.
+When you think about it, this makes perfect sense &mdash;
+there's no particular reason why you should expect a canvas
+to be able to handle key press events,
+because a canvas is not normally used for text entry.
+However, it's pretty clear that a canvas <em>will</em> have to be able to handle
+mouse button click events,
+since canvas objects are often used to write <em>e.g.</em> drawing programs.</p>
+<p>When a graphical object receives an event it doesn't know how to handle,
+it passes the event to its parent.
+So even though the canvas object will see key press events
+before the root window does,
+it won't be able to handle it.
+So it will pass it immediately to its parent, the root window object.
+If the root window object has a binding to that event,
+it will call the callback function bound to that event.
+If not, nothing will happen (the event will be ignored).</p>
+<p>On the other hand, if the canvas receives an event it <em>can</em> handle,
+it will look up the event to see if it's bound to an event handler.
+If it is, then it will execute the event handler.
+Since the canvas can handle mouse button click events,
+the last example works.</p>
+<h2 id="other-callback-functions">Other callback functions</h2>
+<p>Now we're going to work through some more graphics programs.
+Each will have the same overall structure,
+but the details will be different.
+There will be different callback functions,
+and different drawing functions to support them.</p>
+<h3 id="program-1-print-mouse-cursor-location">Program 1: print mouse cursor location</h3>
+<p>This program will</p>
+<ul>
+<li>
+<p>quit when <code>q</code> is pressed</p>
+</li>
+<li>
+<p>print out the (x, y) coordinates of the mouse cursor
+(relative to the canvas window)
+when the left mouse button is clicked</p>
+</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">def</span> <span class="nf">exit_python</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Exit Python.&quot;&quot;&quot;</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">quit</span><span class="p">()</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="k">def</span> <span class="nf">button_handler</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle left mouse button click events.&quot;&quot;&quot;</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;x = </span><span class="si">{}</span><span class="s1">, y = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>    <span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>    <span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x600&#39;</span><span class="p">)</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>    <span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>    <span class="n">canvas</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    <span class="n">root</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;q&gt;&#39;</span><span class="p">,</span> <span class="n">exit_python</span><span class="p">)</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    <span class="n">canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Button-1&gt;&#39;</span><span class="p">,</span> <span class="n">button_handler</span><span class="p">)</span>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>    <span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</span></code></pre></div>
+<p>From this we see that typing the <code>q</code> key exits Python as usual,
+and clicking the left mouse button calls the callback function
+<code>button_handler</code>,
+passing it an <code>event</code> object which contains all the information
+about that mouse click.</p>
+<p>The <code>button_handler</code> function is new.
+It takes an <code>event</code> argument as usual,
+but this time the event is a mouse button click.
+This event has two <em>attributes</em> associated with it,
+<code>event.x</code> and <code>event.y</code>.
+These represent the (relative) X and Y coordinates of the mouse cursor
+at the moment the mouse button was clicked.</p>
+<div class="admonition note">
+<p class="admonition-title">Event attributes and the dot syntax</p>
+<p>Python refers to the contents of an object as its <em>attributes</em>.
+It uses the familiar dot syntax to access them and to change them.
+In the case of the event, <code>x</code> and <code>y</code> are two attributes,
+so to access them we write <code>event.x</code> and <code>event.y</code>.
+If we wanted to change them, we would write <em>e.g.</em> <code>event.x = 10</code>.</p>
+<p>So far, we've used the dot syntax mostly for calling methods on objects,
+and also for calling functions defined in a module.
+But the dot syntax is more general than this.
+What it really does is fetch
+(or change, if it's used on the left of an <code>=</code> sign)
+an attribute of an object.
+If that attribute happens to be a function or a method,
+and there is an argument list after the function or method,
+it calls the function/method.
+But many useful attributes are non-function data.
+For instance, the <code>x</code> and <code>y</code> attributes of an event
+are integers representing pixel coordinates.</p>
+<p>Some authors refer to these kinds of attributes
+(non-function attributes or data attributes)
+as <em>fields</em> of an object,
+and sometimes we'll use that terminology too.</p>
+</div>
+<h3 id="program-2-draw-random-squares">Program 2: draw random squares</h3>
+<p>DONE TO HERE</p>
+<p>Now that we can capture the X and Y coordinates of the mouse cursor,
+there are lots of things that we can do with this information.
+This leads us to our next program.
+In this program, clicking on the mouse will draw a square
+centered at the (x, y) coordinate where the mouse cursor is.
+This square will have a random color and a random size
+(within a specified range).
+We only need to make a couple of changes to the previous program.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">import</span> <span class="nn">random</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="k">def</span> <span class="nf">draw_random_square</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">min_size</span><span class="p">,</span> <span class="n">max_size</span><span class="p">):</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="c1"># Code omitted (assignment problem).</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="k">def</span> <span class="nf">exit_python</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Exit Python.&quot;&quot;&quot;</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="n">quit</span><span class="p">()</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="k">def</span> <span class="nf">button_handler</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle left mouse button click events.&quot;&quot;&quot;</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>    <span class="n">draw_random_square</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>    <span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>    <span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x600&#39;</span><span class="p">)</span>
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>    <span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>    <span class="n">canvas</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>
+</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>    <span class="c1"># Bind events to handlers.</span>
+</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>    <span class="n">root</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;q&gt;&#39;</span><span class="p">,</span> <span class="n">exit_python</span><span class="p">)</span>
+</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>    <span class="n">canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Button-1&gt;&#39;</span><span class="p">,</span> <span class="n">button_handler</span><span class="p">)</span>
+</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>
+</span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>    <span class="c1"># Start it up.</span>
+</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>    <span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</span></code></pre></div>
+<p>The only thing new here is that instead of printing out the X and Y coordinates
+when the mouse is clicked, the <code>draw_random_square</code> function is called instead.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>MAYBE CHANGE THIS?
+We are omitting the code for that function because you have to write it
+yourself for one of the assignments.</p>
+</div>
+<p>The <code>draw_random_square</code> function takes as its arguments:</p>
+<ul>
+<li>the canvas object</li>
+<li>the X and Y coordinates where the mouse cursor was when the mouse button was
+  clicked</li>
+<li>the minimum and maximum allowed sizes of the square, in pixel coordinates</li>
+</ul>
+<p>It draws a square on the canvas with a random color and a random size
+(within the specified bounds)
+centered on the given X and Y coordinates.
+It doesn't return anything (at least, not in this version of the program).</p>
+<p>We consider the "size" of a square to be the length
+of one of the sides of the square in pixels.
+So we will be drawing squares whose sizes are randomly set to a number
+between <code>min_size</code> and <code>max_size</code> pixels long.</p>
+<div class="admonition note">
+<p class="admonition-title">Color representation</p>
+<p>The way that colors are represented on most computer monitors is with separate
+values for the red, green, and blue components of the color (so called "RGB"
+colors).  Typically, 8 bits are assigned to each color, so each color can have
+a value going from 0 (which means the color is absent) to 255 (<span class="arithmatex">\(2^8-1\)</span>, or
+<code>0b11111111</code> in binary).  To represent a color in <code>tkinter</code>, you just have to
+have a 6-digit hexadecimal number with a leading <code>#</code> character.  Such a color
+uses 2 hexadecimal digits for each color. Recall that a hexadecimal digit
+represents 4 bits, so two can represent 8 bits.  Generating random hexadecimal
+digits is not hard, and collecting 6 of them and putting a <code>#</code> character before
+them gives you a string which represents a random color as far as <code>tkinter</code> is
+concerned.</p>
+<p>Some examples:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Color</th>
+<th>Hexadecimal code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>white</td>
+<td><span style="background:#ffffff;color:#ffffff">........</span></td>
+<td><code>#ffffff</code></td>
+</tr>
+<tr>
+<td>black</td>
+<td><span style="background:#000000;color:#000000">........</span></td>
+<td><code>#000000</code></td>
+</tr>
+<tr>
+<td>red</td>
+<td><span style="background:#ff0000;color:#ff0000">........</span></td>
+<td><code>#ff0000</code></td>
+</tr>
+<tr>
+<td>green</td>
+<td><span style="background:#00ff00;color:#00ff00">........</span></td>
+<td><code>#00ff00</code></td>
+</tr>
+<tr>
+<td>blue</td>
+<td><span style="background:#0000ff;color:#0000ff">........</span></td>
+<td><code>#0000ff</code></td>
+</tr>
+<tr>
+<td>yellow</td>
+<td><span style="background:#ffff00;color:#ffff00">........</span></td>
+<td><code>#ffff00</code></td>
+</tr>
+</tbody>
+</table>
+<p>Of course, if you replace <code>ff</code> by something else, you get less of that color.</p>
+</div>
+<p>In addition to this, we had to change the <code>button_handler</code> callback function
+so that it calls <code>draw_random_square</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">def</span> <span class="nf">button_handler</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle left mouse button click events.&quot;&quot;&quot;</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="n">draw_random_square</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+</span></code></pre></div>
+<p><code>draw_random_square</code> is called with the (global) <code>canvas</code> object,
+the <code>x</code> and <code>y</code> attributes of the <code>event</code>,
+and the bounds of the size of the square (50 and 150).
+When this program is run, clicking on the left mouse button
+will draw squares of random size and color,
+centered on where the mouse cursor was when the left mouse button was clicked.</p>
+<h2 id="global-variables">Global variables</h2>
+<p>We just mentioned that the <code>canvas</code> object is a global object.  Let's look into
+that a bit more.</p>
+<p>Anything defined at the "top level" of a program (<em>i.e.</em> not inside a function or
+a class) is a <strong>global variable</strong>.  This applies even to the last part of the
+program:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x600&#39;</span><span class="p">)</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">canvas</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    <span class="c1"># Bind events to handlers.</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    <span class="n">root</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;q&gt;&#39;</span><span class="p">,</span> <span class="n">exit_python</span><span class="p">)</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>    <span class="n">canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Button-1&gt;&#39;</span><span class="p">,</span> <span class="n">button_handler</span><span class="p">)</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>    <span class="c1"># Start it up.</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>    <span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</span></code></pre></div>
+<p>Since this <code>if</code> statement isn't inside a function or a class<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>,
+then any variables defined inside it are global variables.
+Here, there are two of them: <code>root</code> and <code>canvas</code>.</p>
+<p>A global variable can be used anywhere in the entire program, inside any
+function or outside a function.  When we say "used" we mean that the value of a
+global variable can be accessed anywhere.  However, it's not possible to
+<em>change</em> the value of a global variable everywhere unless you use a special
+command, which we'll get to shortly.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It might strike you as odd that the definition of the <code>button_handler</code> function
+uses the <code>canvas</code> variable before that variable has even been defined.
+This looks like it should be an error, but it isn't.
+The reason is that Python doesn't actually execute any of the <code>button_handler</code>
+code while it is being defined; it just saves it for later.
+What's important is that the <code>button_handler</code> function isn't <em>called</em>
+until <code>canvas</code> is defined,
+and the way that we have set things up, it won't be.</p>
+</div>
+<p>In general, you should <em>avoid using global variables</em>.
+Global variables cause problems because they can be changed
+inside any function,
+and if a global variable gets the wrong value,
+it can be hard to find out where that wrong value came from.
+So global variables make debugging harder.
+In contrast, local variables can only be changed
+inside the function in which they were defined,
+so if a local variable has the wrong value,
+you usually don't have to look at much code to figure out why.</p>
+<p>Having said all of this, why are we using a global variable here?
+Why can't we just pass <code>canvas</code> as an extra argument to the
+<code>button_handler</code> callback function?
+The reason is that <code>tkinter</code> callback functions are only allowed
+to have a <em>single</em> argument: the event that triggers them.
+When the event occurs, the callback will be called
+with that event as the only argument.
+So there is no easy way to supply the extra argument.
+Instead, since the <code>canvas</code> object is already a global variable,
+we just use it directly.</p>
+<p>In general, if we need any data in a callback function other than the event,
+we have to access it as a global variable
+(at least, given what we know now).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is a "nice" solution to this problem which does not require global
+variables.
+It will involve Python <em>classes</em> (user defined object types).
+Classes are one of the central concepts in object-oriented programming,
+and we will learn about them starting with the next reading.
+For now, we'll stick to using global variables (and hold our noses).</p>
+<p>There is <em>another</em> nice solution to this problem
+which does not require global variables <em>or</em> classes,
+and it is even simpler than classes!
+It involves creating an <em>anonymous function</em>
+(called a "lambda expression" in Python).
+We will discuss this later in the course.
+It's a classic example of <em>functional programming</em>,
+which is covered in much more detail in CS 4 and CS 115.
+It's important to understand that the same problem
+can often be solved in different ways using either
+object-oriented programming or functional programming.
+Python gives you a lot of flexibility to choose the way you prefer.</p>
+</div>
+<h2 id="graphical-object-handles-in-tkinter">Graphical object "handles" in <code>tkinter</code></h2>
+<p>So far we've seen how to create graphical objects</p>
+<ul>
+<li>directly as part of the program</li>
+<li>through user interaction with callback functions</li>
+</ul>
+<p>However, once we've created an object, we haven't done anything with it.
+It would be useful to be able to manipulate an object after it's created:
+to move it, change it in some way, delete it, <em>etc.</em></p>
+<p><code>tkinter</code> has had this ability all along &mdash; we just haven't been using it!
+<code>tkinter</code> canvas commands to create graphical objects all return a value.
+This value is called a <em>handle</em> to the graphical object.
+The handle is not the graphical object itself!
+In <code>tkinter</code>, handles are just integers starting from <code>1</code> which indicate
+the order in which graphical objects on a canvas were created.
+So the handle <code>1</code> means
+"the first graphical object to be created on this canvas",
+the handle <code>7</code> means
+"the seventh graphical object to be created on this canvas",
+<em>etc.</em>
+You can use handles as a way to identify specific graphical objects
+on a canvas, and that's exactly what <code>tkinter</code> does.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Don't confuse <em>event handlers</em>
+(functions which are called when certain events happen)
+with canvas graphical object <em>handles</em>.
+There is no relationship whatsoever between the two concepts;
+they just both happen to use the word "handle".</p>
+</div>
+<p>Canvas objects don't let you <em>directly</em> manipulate the objects they contain;
+you have to do it indirectly by calling <code>tkinter</code> functions and methods
+that require handles as arguments.
+In other words, graphical objects on canvasses
+(like rectangles, ovals, lines, <em>etc.</em>)
+are not exposed as Python objects.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></p>
+<h3 id="example-deleting-graphical-objects-from-a-canvas">Example: deleting graphical objects from a canvas</h3>
+<p>Our programs have created a bunch of graphical objects (squares) on a canvas.
+After a while, a canvas can get very cluttered.
+We might want to delete some or all of the existing squares.
+We can do this easily using handles!</p>
+<p>We will extend our program so that pressing the <code>c</code> key
+(<code>c</code> for "clear") will remove all the squares from the canvas.</p>
+<p>Above we mentioned this function:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">def</span> <span class="nf">draw_random_square</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">min_size</span><span class="p">,</span> <span class="n">max_size</span><span class="p">):</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="c1"># ... code omitted ...</span>
+</span></code></pre></div>
+<p>Somewhere in this function there would need to be a call to</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>    <span class="n">canvas</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Whatever this method returns is ignored,
+and <code>draw_random_square</code> doesn't return anything.
+We will change this line to:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>    <span class="n">square</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</span></code></pre></div>
+<p>And we will make <code>draw_random_square</code> return this value
+(a handle, which is just a Python <code>int</code>).
+Properties of the square (its position, color <em>etc.</em>) are stored inside
+the canvas object.</p>
+<p>OK, so <code>draw_random_square</code> returns a handle to a square on a particular
+canvas.
+We want to store this handle so we can delete the square later on.
+We will create a (global) list of square handles
+and add every new square handle to the list.</p>
+<p>At the end of the program, we add one line:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x600&#39;</span><span class="p">)</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="n">canvas</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="hll">    <span class="n">squares</span> <span class="o">=</span> <span class="p">[]</span>   <span class="c1"># new</span>
+</span></span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    <span class="c1"># rest of code as before</span>
+</span></code></pre></div>
+<p>Now we can store all handles to squares in the (global) list called <code>squares</code>.</p>
+<p>We will also modify the <code>button_handler</code> callback function:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">def</span> <span class="nf">button_handler</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle left mouse button click events.&quot;&quot;&quot;</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="n">square</span> <span class="o">=</span> <span class="n">draw_random_square</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">squares</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+</span></code></pre></div>
+<p>All newly-created handles to squares get appended to the global <code>squares</code> list.</p>
+<p>Next, we change the callback function for key presses:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">def</span> <span class="nf">key_handler</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle key press events.&quot;&quot;&quot;</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="n">key</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">keysym</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;q&#39;</span><span class="p">:</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>        <span class="n">quit</span><span class="p">()</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>        <span class="k">for</span> <span class="n">square</span> <span class="ow">in</span> <span class="n">squares</span><span class="p">:</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>            <span class="n">canvas</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="c1"># Later in the code:</span>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="n">root</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Key&gt;&#39;</span><span class="p">,</span> <span class="n">key_handler</span><span class="p">)</span>
+</span></code></pre></div>
+<p>The <code>key_handler</code> callback function will handle all key press events,
+although we are only interested in the <code>q</code> (for quit)
+and <code>c</code> (for clear) keys.</p>
+<p>This function shows another event attribute that is found on key press events:
+<code>event.keysym</code>.
+This is just the character on the key that was pressed:
+<code>'q'</code> for the <code>q</code> key, <code>'c'</code> for the <code>c</code> key, <em>etc.</em>
+The <code>q</code> key quits Python as before.
+The <code>c</code> key deletes all the squares from the canvas
+using the <code>canvas.delete</code> method.
+This method takes a single argument,
+which is the handle of the graphical object to delete.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As you can see, different events have different attributes.
+Key press events will have a <code>keysym</code> attribute
+but they won't have <code>x</code> and <code>y</code> attributes,
+because this doesn't mean anything when a key is pressed.
+Button click events will have <code>x</code> and <code>y</code> attributes,
+but they won't have a <code>keysym</code> attribute,
+because that has no meaning in the context of mouse button clicks.</p>
+</div>
+<p>The entire program (without the part that's in the assignment) looks like this:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="kn">import</span> <span class="nn">random</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="k">def</span> <span class="nf">draw_random_square</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">min_size</span><span class="p">,</span> <span class="n">max_size</span><span class="p">):</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="c1"># ... code omitted ...</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="k">def</span> <span class="nf">button_handler</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle left mouse button click events.&quot;&quot;&quot;</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>    <span class="n">square</span> <span class="o">=</span> <span class="n">draw_random_square</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>    <span class="n">squares</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="k">def</span> <span class="nf">key_handler</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle key press events.&quot;&quot;&quot;</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>    <span class="n">key</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">keysym</span>
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;q&#39;</span><span class="p">:</span>
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>        <span class="n">quit</span><span class="p">()</span>
+</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>    <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span>
+</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>        <span class="c1"># Clear all squares from the canvas.</span>
+</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>        <span class="k">for</span> <span class="n">square</span> <span class="ow">in</span> <span class="n">squares</span><span class="p">:</span>
+</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>            <span class="n">canvas</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+</span><span id="__span-17-21"><a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>
+</span><span id="__span-17-22"><a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span><span id="__span-17-23"><a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>    <span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span id="__span-17-24"><a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a>    <span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;800x600&#39;</span><span class="p">)</span>
+</span><span id="__span-17-25"><a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a>    <span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span><span id="__span-17-26"><a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a>    <span class="n">canvas</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span id="__span-17-27"><a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a>
+</span><span id="__span-17-28"><a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a>    <span class="n">squares</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-17-29"><a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a>
+</span><span id="__span-17-30"><a id="__codelineno-17-30" name="__codelineno-17-30" href="#__codelineno-17-30"></a>    <span class="n">root</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Key&gt;&#39;</span><span class="p">,</span> <span class="n">key_handler</span><span class="p">)</span>
+</span><span id="__span-17-31"><a id="__codelineno-17-31" name="__codelineno-17-31" href="#__codelineno-17-31"></a>    <span class="n">canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Button-1&gt;&#39;</span><span class="p">,</span> <span class="n">button_handler</span><span class="p">)</span>
+</span><span id="__span-17-32"><a id="__codelineno-17-32" name="__codelineno-17-32" href="#__codelineno-17-32"></a>
+</span><span id="__span-17-33"><a id="__codelineno-17-33" name="__codelineno-17-33" href="#__codelineno-17-33"></a>    <span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</span></code></pre></div>
+<p>If we ran this program (after completing <code>draw_random_square</code>, of course)
+we would find that pressing the <code>c</code> key
+would indeed remove all the squares from the canvas.</p>
+<h3 id="globals-again">Globals again</h3>
+<p>There's one problem with this approach:
+the squares in the <code>squares</code> list were deleted
+using the <code>canvas.delete</code> method.
+But the <code>squares</code> list itself wasn't emptied out.
+This means that we are storing handles to squares that no longer exist,
+which is unnecessary and might cause problems later.
+Let's try to fix that now.</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-18-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-18-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-18-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-18-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-18-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-18-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-18-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-18-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-18-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="k">def</span> <span class="nf">key_handler</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle key press events.&quot;&quot;&quot;</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3"></a>    <span class="n">key</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">keysym</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4"></a>    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;q&#39;</span><span class="p">:</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5"></a>        <span class="n">quit</span><span class="p">()</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6"></a>    <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7"></a>        <span class="c1"># Clear all squares from the canvas.</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8"></a>        <span class="k">for</span> <span class="n">square</span> <span class="ow">in</span> <span class="n">squares</span><span class="p">:</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9"></a>            <span class="n">canvas</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10"></a><span class="hll">        <span class="n">squares</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span></code></pre></div></td></tr></table></div>
+<p>Here, in line 10, we're trying to change the global variables <code>squares</code>
+by assigning the empty list to it.
+Only one problem: it won't work!</p>
+<p>Python has no way of knowing that <code>squares</code> on line 10
+is supposed to represent a global variable.
+It could just as well be a local variable that we decided to create
+at that point in the function.
+When in doubt, Python assumes that a variable is a local variable,
+not a global variable.</p>
+<p>How do we tell it that <code>squares</code> is supposed to be a global variable,
+not a local variable?
+Simple: we <em>declare</em> that it's a global variable with a <code>global</code> declaration:</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-19-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-19-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-19-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-19-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-19-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-19-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-19-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-19-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-19-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-19-10">10</a></span>
+<span class="normal"><a href="#__codelineno-19-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="k">def</span> <span class="nf">key_handler</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle key press events.&quot;&quot;&quot;</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3"></a><span class="hll">    <span class="k">global</span> <span class="n">squares</span>
+</span></span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4"></a>    <span class="n">key</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">keysym</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5"></a>    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;q&#39;</span><span class="p">:</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6"></a>        <span class="n">quit</span><span class="p">()</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7"></a>    <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8"></a>        <span class="c1"># Clear all squares from the canvas.</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9"></a>        <span class="k">for</span> <span class="n">square</span> <span class="ow">in</span> <span class="n">squares</span><span class="p">:</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10"></a>            <span class="n">canvas</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11"></a>        <span class="n">squares</span> <span class="o">=</span> <span class="p">[]</span>
+</span></code></pre></div></td></tr></table></div>
+<p>The <code>global</code> declaration in line 3 tells Python that <code>squares</code>
+refers only to a <em>global</em> variable
+inside the <code>key_handler</code> function.
+Now, the global <code>squares</code> list will be cleared
+every time the <code>c</code> key is pressed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Without the <code>global</code> declaration,
+a Python program can have the same name bound
+to both a local and a global variable.
+When this happens, the local variable takes precedence
+(it "shadows" the global variable).
+Try hard to avoid this situation even if the code works,
+since it's very confusing to anyone reading your code!</p>
+</div>
+<p>Some rules of thumb for global variables:</p>
+<ul>
+<li>
+<p>If you want to <em>access</em> a global variable inside a function,
+  and there is no local variable with the same name,
+  just access it as usual.</p>
+</li>
+<li>
+<p>If you want to <em>modify</em> a global variable inside a function,
+you have to declare it as global using the <code>global</code> declaration.</p>
+</li>
+</ul>
+<p>It's a pain to remember to do this,
+so avoid using global variables if possible.
+Classes (next reading) are a better alternative.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>We'll learn about classes in the next reading.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>This is kind of ugly, but we will do something about it soon.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../16/reading16/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 16. Graphics, part 1">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                16. Graphics, part 1
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.footer", "navigation.top", "navigation.expand"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+        <script src="../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
