@@ -1,0 +1,1520 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://example.com/assignments/2/passes/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
+    
+    
+      
+        <title>Assignment 2: Compiler passes - The CS 164 book (Fall 2024)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.35f28582.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#assignment-2-compiler-passes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The CS 164 book (Fall 2024)" class="md-header__button md-logo" aria-label="The CS 164 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 164 book (Fall 2024)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Assignment 2: Compiler passes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The CS 164 book (Fall 2024)" class="md-nav__button md-logo" aria-label="The CS 164 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The CS 164 book (Fall 2024)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/welcome/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome to CS 164!
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/language/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Implementation Language
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Administrative
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Administrative
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Syllabus
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/collab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Collaboration policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Groups
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    OCaml
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            OCaml
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/install/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installing OCaml
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/macos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Notes on MacOS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Coding notes
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Coding notes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/format/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Formatting your code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/basic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic tips
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/functional/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Functional programming
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/types/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Type annotations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/poly/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Polymorphic variants
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/new_features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    New features
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design tips
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/debug/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Debugging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/sexp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    S-expressions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignments
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Assignments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Assignment 0: Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#passes-that-are-unchanged-from-assignment-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Passes that are unchanged from assignment 1
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-select-instructions-select_instructionsml" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Select instructions (select_instructions.ml)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-uncover-live-uncover_liveml" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Uncover live (uncover_live.ml)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-build-interference-graph-build_interferenceml" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Build interference graph (build_interference.ml)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-graph-coloring-graph_coloringml" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Graph coloring (graph_coloring.ml)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Graph coloring (graph_coloring.ml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-the-graph-coloring-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing the graph coloring algorithm
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-allocate-registers-allocate_registersml" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Allocate registers (allocate_registers.ml)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-patch-instructions-patch_instructionsml" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Patch instructions (patch_instructions.ml)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-prelude-and-conclusion-prelude_conclusionml" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Prelude and conclusion (prelude_conclusion.ml)
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="assignment-2-compiler-passes">Assignment 2: Compiler passes</h1>
+<p>The compiler passes are described in chapter 3 of the textbook,
+but here they are again for completeness.  We will only include
+passes that you have to implement.
+As before, the only files you should modify are the <code>.ml</code> files
+corresponding to these compiler passes.</p>
+<p>In addition,
+when we provide a function stub in an <code>.ml</code> file that you need to complete,
+that means (unless otherwise specified)
+that we expect that you will use that function
+(with those arguments and types (if supplied)) as written
+(filling in the <code>TODO</code> parts, of course).
+In particular, you're not allowed to change
+the number of arguments to the function, or their types (if supplied).
+If a function is completely implemented (no <code>TODO</code>s),
+you should leave it as-is.
+On the other hand, you can write as many extra functions as you like.
+(If we don't like your choices, we'll let you know during code reviews!)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The one exception to this rule is in the <code>graph_coloring.ml</code> file.
+We provide function stubs with <code>TODO</code>s as usual,
+as well as an implementation of the <code>color</code> function that uses
+those functions, but if you don't like this,
+you are allowed to completely rewrite the entire module,
+as long as you end up with a <code>color</code> function
+with the correct type signature which works correctly.</p>
+</div>
+<h2 id="passes-that-are-unchanged-from-assignment-1">Passes that are unchanged from assignment 1</h2>
+<p>Since the focus of this assignment is on register allocation,
+those passes that come before register allocation
+do not have to be modified from assignment 1
+(in your <code>ch2/</code> directory).  This includes:</p>
+<ul>
+<li><code>uniquify.ml</code></li>
+<li><code>remove_complex.ml</code></li>
+<li><code>explicate_control.ml</code></li>
+</ul>
+<p>Note that you are free to edit your old code,
+in case you think you have a better way of doing things
+than what you wrote previously,
+or in case you found bugs in those passes that you need to fix.</p>
+<h2 id="1-select-instructions-select_instructionsml">1. Select instructions (<code>select_instructions.ml</code>)</h2>
+<p>The "select instructions" pass has no fundamental changes, but there are some
+trivial changes because the <code>X86Program</code> type in <code>x86_var.ml[i]</code> has
+changed. The new version has different info types for the program and also has
+block info types.  For this pass, the block info is a placeholder type
+(containing no information) called <code>binfo1</code>.
+(This will change in later passes.)
+Some of the type annotations will need to be changed slightly,
+and the blocks will all contain a <code>Binfo1</code> constructor.
+The type checker should point out
+exactly where your old code needs to be changed.</p>
+<h2 id="2-uncover-live-uncover_liveml">2. Uncover live (<code>uncover_live.ml</code>)</h2>
+<p>The "uncover live" pass has to implement the function
+<code>uncover_live</code> with this signature:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>val uncover_live :
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  (X86_var.info1, X86_var.binfo1) X86_var.program -&gt;
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  (X86_var.info1, X86_var.binfo2) X86_var.program
+</span></code></pre></div>
+<p>The <code>X86_var.program</code> type is parameterized
+on two kinds of "info" types:
+one for the program as a whole
+(with variants <code>info1</code>, <code>info2</code>, and <code>info3</code>),
+and one for blocks
+(with variants <code>binfo1</code> and <code>binfo2</code>).
+The <code>info1</code> and <code>binfo1</code> types are placeholder types,
+containing no data.
+All that this pass does is compute the <code>binfo2</code> value,
+which contains the liveness information described in
+the textbook (section 3.2) and in the lectures.
+The instructions are not changed.
+The <code>binfo2</code> type has this definition:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>type live =
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  {
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    initial : LocSet.t;       (* initial live variables/registers *)
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    afters  : LocSet.t list;  (* live vars/regs after each instruction *)
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  }
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>type binfo2 = Binfo2 of live
+</span></code></pre></div>
+<p>The liveness data is represented as a list of sets of locations,
+where a "location" is a variable, a register, or a stack location.
+Sets of locations are represented by the type <code>LocSet.t</code>.
+Since liveness sets apply between instructions,
+we use the <code>initial</code> field to represent the initial set of live locations,
+and the <code>afters</code> field represents, for each instruction,
+the set of live locations after that instruction.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In principle, we could have added the liveness data directly
+to the instructions, but we prefer to keep it separate,
+partly because it's only used in this pass.
+It's important to be aware that there is a one-to-one correspondence
+between the instructions in the program
+and the <code>after</code> sets of the <code>live</code> record:
+the Nth item in the <code>after</code> sets is the after set
+for the Nth instruction in the program.</p>
+</div>
+<p>We provide an implementation for the <code>uncover_live</code> function,
+which calls the function <code>uncover_live_in_block</code>
+to compute the liveness sets.  You have to implement that function.
+The inputs to that function are the list of instructions in the block,
+and <code>live_before_labels</code>, which is a map between block names
+and the live locations before that block executes.
+Here, there is only one such block: <code>conclusion</code>,
+with live locations (registers) <code>%rax</code> and <code>%rsp</code>.</p>
+<p>You can implement <code>uncover_live_in_block</code> as you like
+(as long as it's functional &mdash; don't use mutation!)
+but we recommend that you define a helper function
+to compute the liveness set for a single instruction
+given the instruction and its live-after set.</p>
+<p>Also, be aware that <code>callq</code> instructions require special handling.
+First, executing a <code>callq</code> instruction can result in
+any of the caller-saved registers being overwritten.
+There is a list of caller-saved registers in the <code>Types</code> module as
+<code>caller_saved_regs</code>; don't hard-code the caller-saved registers!
+Second, <code>callq</code> instructions with arity (number of arguments)
+greater than 0 have to read from registers for the first 6 arguments.
+These registers are given in the <code>Types</code> module as <code>arg_passing_regs</code>;
+these arguments are (in order)
+<code>%rdi</code>, <code>%rsi</code>, <code>%rdx</code>, <code>%rcx</code>, <code>%r8</code>, and <code>%r9</code>
+(all of which are caller-saved registers, which should make sense).
+We recommend that you write a helper function
+to determine the change in the liveness set just for <code>callq</code> instructions,
+incorporating all of this information.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Basically, for a <code>callq</code> instruction,
+all the caller-saved registers get added to the write set,
+and the arg-passing registers needed
+(but <em>only</em> those that are needed)
+get added to the read set.</p>
+</div>
+<p>The algorithm for computing liveness sets is described in detail
+in section 3.2 of the textbook and in the lectures.</p>
+<h2 id="3-build-interference-graph-build_interferenceml">3. Build interference graph (<code>build_interference.ml</code>)</h2>
+<p>The "build interference" pass has to implement the function
+<code>build_interference</code> with this signature:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>val build_interference :
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  (X86_var.info1, X86_var.binfo2) X86_var.program -&gt;
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  (X86_var.info2, X86_var.binfo1) X86_var.program
+</span></code></pre></div>
+<p>From this, we can see that the block info <code>binfo2</code> value
+(containing the liveness data)
+goes back to the placeholder <code>binfo1</code> type,
+but the program info <code>info1</code> value
+(containing nothing but the types of variables)
+gets extended into the <code>info2</code> type,
+which has this definition:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>type info2 = Info2 of
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  {
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    locals_types : (var * ty) list;
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    conflicts    : LocUgraph.t
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  }
+</span></code></pre></div>
+<p>What this does is add the interference graph information
+(as the <code>conflicts</code> field) to the program.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You might wonder why the liveness data is stored
+in a block info type while the interference graph
+is stored in a program info type.
+The liveness data is stored in a block-by-block manner,
+while there is only one interference graph per function.
+(Here, our programs are a single <code>main</code> function.)
+Note that most functions will have multiple blocks.
+Ours also do (the <code>start</code> block plus the prelude and conclusion)
+but we don't have to compute the liveness data for the
+prelude and conclusion because they are so simple.
+In later compilers, our programs will have many more blocks
+to handle conditionals, loops and user-defined functions.</p>
+</div>
+<p>We supplied an implementation of the <code>build_interference</code> function
+which calls the <code>make_graph</code> function to compute the interference graph.
+You need to implement <code>make_graph</code>, following the algorithm given in
+section 3.3 of the textbook and in the lectures.
+You'll almost certainly want to split this function up into
+multiple helper functions.
+Pay particular attention to <code>movq</code> and <code>callq</code> instructions;
+remember that for <code>callq</code> you need to create an edge
+between all the locations in the live-after set and all
+caller-save registers.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is unrelated to the handling of caller-save registers
+in liveness analysis, which normally does nothing but is included
+for completeness.  Here, creating the edges between call-live
+variables and caller-save registers is extremely important,
+because it prevents call-live variables from being placed into
+caller-save registers, where they would have to be saved and restored
+before and after the call.  Thus, they will normally be put into
+callee-save registers, unless there are none available, in which case
+they will be placed onto the stack.  The register allocation
+algorithm handles all of this automatically!</p>
+<p>You might wonder if instead of spilling a call-live
+variable to the stack, it might be better to just put it in
+a caller-save register (assuming there is one)
+and pay the price of saving and restoring.
+This is a fine question, and one that preoccupies people
+writing optimizing compilers, but our goals are less lofty.
+We just want to generate reasonably good code,
+not the most optimal possible code.</p>
+</div>
+<p>Please review section 3.3 of the textbook before attempting this pass,
+since it has detailed rules for which instructions give rise to
+which edges in the interference graph.
+Also, recall that the way we are building the interference graph
+is to focus on writes,
+because the writes performed by an instruction
+must not overwrite something in a live location.
+As the book says:</p>
+<blockquote>
+<p>So for each instruction,
+we create an edge between the locations being written to
+and the live locations.
+(However, a location never interferes with itself.)</p>
+</blockquote>
+<p>One consequence of this is that instructions
+that <em>don't</em> write to a live location
+don't change the interference graph.
+There are a number of these instructions.</p>
+<h2 id="4-graph-coloring-graph_coloringml">4. Graph coloring (<code>graph_coloring.ml</code>)</h2>
+<p>This module is not technically a compiler pass, but it's an integral part of
+the "allocate registers" pass.  However, the algorithm is more general, and the
+implementation is not specialized to locations (registers, variables and stack
+locations) until the <code>GraphColor</code> functor (defined in this module) is
+specialized to locations in <code>allocate_registers.ml</code>.  The algorithm is
+described in some detail in section 3.4 of the textbook as well as in the
+lectures.</p>
+<p>The <code>GraphColor</code> functor is parameterized on several modules:</p>
+<ul>
+<li>
+<p>a module defining the graph element type
+  (which will be locations in <code>allocate_registers.ml</code>)</p>
+</li>
+<li>
+<p>a module defining the element map type
+  (made from the <code>MapS</code> functor specialized on element keys);
+  <code>MapS</code> is just an extension of the normal OCaml <code>Map</code> functor
+  and is defined in <code>support/functors.ml[i]</code></p>
+</li>
+<li>
+<p>a priority queue module
+  (defined in <code>support/priority_queue.ml[i]</code>)</p>
+</li>
+<li>
+<p>an undirected graph module (the interference graph;
+  defined in <code>support/ugraph.ml[i]</code>)</p>
+</li>
+</ul>
+<p>The functor is instantiated in <code>allocate_registers.ml</code>, so you don't have to
+worry about how to do that.  Inside the functor, a type <code>node</code> is defined
+that contains information about the elements (locations) which isn't stored
+in the interference graph, and that changes as the algorithm progresses.
+The two components of a <code>node</code> are the color of the element
+(an <code>int option</code>, since the element is initially uncolored),
+and the saturation set
+(a set of integers, representing the colors that the element is not
+allowed to have).  As the algorithm progresses, the colors (which mostly
+start as <code>None</code>) get filled in, and the saturation sets increase in size,
+which constrains the color choices.</p>
+<p>We define a <code>nodemap</code> type which is a map between elements and <code>node</code>s.
+We also provide a debugging function called <code>_print_nodemap</code>
+which can print out the nodemap at any point in the algorithm
+to help debugging.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The name is <code>_print_nodemap</code> instead of <code>print_nodemap</code>
+because it isn't exported from the functor,
+and OCaml issues a warning about unused functions
+if their names don't start with an underscore.</p>
+</div>
+<p>The only function that needs to be implemented is the <code>color</code>
+function, which takes an interference graph and a map of
+precolored elements (an element-to-<code>int</code> map) as its arguments.
+Recall that the only precolored elements we are using are the
+reserved registers, which are <code>%rax</code> (color <code>-1</code>),
+and <code>%rsp</code> (color <code>-2</code>).  The return value of the function
+is the full element-to-<code>int</code> map, containing color assignments
+for all variables.</p>
+<p>Because this is a somewhat tricky algorithm,
+we've provided you with a starting point.
+We've given our version of the <code>color</code> function,
+which calls a number of helper functions.
+You may choose to simply implement all the helper functions in
+<code>graph_coloring.ml</code>.
+Or, if you would prefer to implement the <code>color</code> function from scratch,
+you are free to delete any or all of our helper functions and
+rewrite the <code>color</code> function accordingly.
+(Don't change its type, though!)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The only restriction we'll insist on is that your code for this module
+should be <em>purely functional</em>.
+Don't use <code>ref</code> cells or any other imperative features.
+In a real-world setting, you might choose to use imperative code
+for efficiency or convenience, but it's definitely not necessary.
+Also, functional code is easier to get right.</p>
+</div>
+<p>The total amount of code you need to write is less than 100 extra lines.</p>
+<h3 id="testing-the-graph-coloring-algorithm">Testing the graph coloring algorithm</h3>
+<p>There is a very trivial test script for the graph coloring algorithm only
+in the file <code>test_graph_coloring.ml</code>.
+You can run in in the interactive interpreter as follows:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$ make repl
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a># #use &quot;test_graph_coloring.ml&quot;;;
+</span></code></pre></div>
+<p>This will run the test and print <code>TEST PASSED!</code> if it passes
+or <code>TEST FAILED!</code> if not.
+More importantly, since this is done interactively,
+you can inspect the results of graph coloring to see how they
+differed from the expected results.
+The example given is the same one given in the book and in the lectures.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In future,
+we plan to have much more comprehensive tests of this algorithm.
+If you are looking for a topic for a CS 81 project,
+this course is a gold mine!
+In addition to more tests,
+there are lots of features we want to add.</p>
+</div>
+<h2 id="5-allocate-registers-allocate_registersml">5. Allocate registers (<code>allocate_registers.ml</code>)</h2>
+<p>Once you've implemented the graph coloring algorithm, the "allocate registers"
+pass is simple.  You need to do these things:</p>
+<ol>
+<li>
+<p>Run the graph coloring algorithm and assign registers
+   (or, if there are no available registers, stack locations)
+   to all variables.
+   This is done in the functions <code>get_variable_location_map</code>,
+   which is supplied to you, and <code>varmap_of_colormap</code>,
+   which you need to fill in.
+   Your implementation of <code>varmap_of_colormap</code>
+   should use the helper function <code>location_of_color</code>,
+   which you also need to fill in.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code>location_of_color</code> function should make use of the
+<code>last_register_color</code> variable.
+This gives the index of the last register that can be used
+for register allocation.
+It's set in the <code>set_register_color_list</code> function,
+and will correctly track the <code>-regs</code> argument of the compiler.
+Don't use the size of <code>register_color_list</code>
+or of the maps computed by it,
+since they also contain the reserved registers
+(with negative color numbers).</p>
+</div>
+</li>
+<li>
+<p>Use the mapping between variable bindings and locations
+   (registers or stack locations)
+   to determine the number of stack slots needed.
+   This is done in the function <code>get_num_spilled</code>,
+   which you need to fill in.
+   Be careful that you don't count a stack location more than once!</p>
+</li>
+<li>
+<p>Use the same mapping between variable bindings and locations
+   to collect a set of all the callee-save registers
+   used in the program.
+   This is done in the function <code>get_used_callee</code>,
+   which you need to fill in.</p>
+</li>
+<li>
+<p>Convert all the instructions that use variables
+   to use the corresponding registers or stack locations.
+   This is done in the function <code>convert_block</code>,
+   which you need to fill in.
+   You'll probably want to define some helper functions
+   in your implementation of this function.</p>
+</li>
+</ol>
+<p>All the other code for this pass has been supplied.
+In particular, code for selecting which registers are available
+(based ultimately on the command-line arguments
+to the <code>compile</code> program) is supplied and should not be altered.</p>
+<h2 id="6-patch-instructions-patch_instructionsml">6. Patch instructions (<code>patch_instructions.ml</code>)</h2>
+<p>Aside from trivial type changes, the only significant change in this pass
+is that instructions of the form <code>Movq (x, x)</code>
+(moving a value from a location to the same location) are removed.</p>
+<h2 id="7-prelude-and-conclusion-prelude_conclusionml">7. Prelude and conclusion (<code>prelude_conclusion.ml</code>)</h2>
+<p>This pass has a few changes from the corresponding pass in the last assignment.</p>
+<p>The <code>info</code> record type attached to the <code>program</code> type in <code>x86_int.mli</code>
+has these fields:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>locals_types : (var * ty) list;
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>num_spilled  : int;
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>used_callee  : RegSet.t
+</span></code></pre></div>
+<p>We won't be concerned with <code>locals_types</code>, but the other two are relevant
+to generating a correct prelude and conclusion.
+<code>num_spilled</code> is the number of stack slots needed for variables
+that were not placed in registers.
+<code>used_callee</code> are the names of the callee-save registers that are used
+in the program.</p>
+<p>Recall that the program is one big function (the <code>main</code> function),
+and so the values of any callee-saved variables that are used inside
+this function must be saved in the prelude and restored in the conclusion.
+They will be saved to the stack and restored from the stack.
+Therefore, the total number of stack slots needed can be more than
+<code>num_spilled</code>; it's actually <code>num_spilled</code> plus the number of
+callee-save registers used.
+And to make it even more confusing, the size of the stack frame
+(the total amount of stack space reserved for the function)
+must be a multiple of 16 bytes, so it can be even bigger!</p>
+<p>Fortunately, we have defined a function called <code>align_16</code> in the
+<code>Utils</code> module of the <code>support</code> directory.  This will take a
+non-negative integer and round it up to the nearest multiple of 16.
+So the total stack space required is actually (in pseudocode):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>stack_space = align_16(8 * (num_spilled + size(used_callees)))
+</span></code></pre></div>
+<p>However, it's still a bit more complicated than this.
+We will be saving the callee-save registers by pushing them to the stack
+with the <code>pushq</code> instruction,
+and restoring them with the <code>popq</code> instruction.
+The <code>pushq</code> instruction subtracts 8 bytes from the stack pointer,
+and the <code>popq</code> adds it back.
+The effect of this is that, after all the callee-save registers
+have been pushed to the stack using <code>pushq</code> instructions,
+we've already allocated a big chunk of the total stack space required.
+The additional stack space we need to allocate can be computed from these
+equations (in pseudocode):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>n_callees = size(used_callees)
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>extra_stack_space = align_16 (8 * (num_spilled + n_callees)) - 8 * n_callees
+</span></code></pre></div>
+<p>This is already computed for you in the <code>prelude_conclusion</code> function.</p>
+<p>From here, you have to do two things:</p>
+<ol>
+<li>
+<p>Compute the prelude and conclusion
+   (collectively called the "epilog" in the code because we place it
+   after the code in the <code>start</code> block).
+   This is done in the <code>epilog</code> function which takes the
+   set of callee-save registers and the amount of extra stack space needed
+   as arguments.</p>
+</li>
+<li>
+<p>Adjust all instructions in the <code>start</code> block that access stack locations,
+   because the callee-save registers on the stack use up space
+   at the beginning of the stack frame,
+   which means that any stack location access
+   which is relative to the base pointer in <code>%rbp</code>
+   has to be changed to account for this extra space.
+   This is done in the <code>asm_of_lb</code> function,
+   which takes a labelled block (the <code>start</code> block, in this case)
+   and the amount of space that stack locations need to be shifted by
+   (called <code>deref_adjust</code>)
+   as its arguments.  You'll probably want to define helper functions
+   to write this function, as (we hope) you did in the last assignment.</p>
+</li>
+</ol>
+<p>The <code>prelude_conclusion</code> function appends the epilog to the <code>start</code> block
+code to generate the final program.</p>
+<p>Here are a couple of notes about the functions you need to write.</p>
+<ol>
+<li>
+<p>For <code>asm_of_lb</code>, all you need to do is go through all instructions,
+   changing any stack location accesses
+   by subtracting the <code>deref_adjust</code> value.</p>
+</li>
+<li>
+<p>For <code>epilog</code>, after you've established the base pointer in the prelude,
+   you need to push the callee-save register values onto the stack, and then
+   adjust the stack pointer by subtracting the extra space needed for
+   the stack-resident variables before jumping to the <code>start</code> block.
+   (Recall that the stack grows downwards,
+   so subtracting from the stack pointer reserves stack space.)
+   In the conclusion, you have to add the extra space for the stack-resident
+   variables back to the stack (reclaiming the stack space),
+   and then pop the callee-save register values back to their registers
+   before resetting the base pointer and returning.
+   <strong>Make sure that you pop the callee-save registers in reverse order
+   to the order in which you pushed them!</strong>
+   (Remember, the stack is a last-in, first out (LIFO) data structure.)
+   Also, only push and pop the callee-save registers you actually used;
+   if your program didn't use any,
+   you don't have to do any pushing and popping.</p>
+</li>
+</ol>
+<p>This sounds much more complicated than it is!
+This pass is really just a little bit of (somewhat annoying) bookkeeping.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.56dfad97.min.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

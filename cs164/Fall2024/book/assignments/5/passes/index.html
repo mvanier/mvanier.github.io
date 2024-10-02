@@ -1,0 +1,1696 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://example.com/assignments/5/passes/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
+    
+    
+      
+        <title>Assignment 5: Compiler passes - The CS 164 book (Fall 2024)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.35f28582.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#assignment-5-compiler-passes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The CS 164 book (Fall 2024)" class="md-header__button md-logo" aria-label="The CS 164 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 164 book (Fall 2024)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Assignment 5: Compiler passes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The CS 164 book (Fall 2024)" class="md-nav__button md-logo" aria-label="The CS 164 book (Fall 2024)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The CS 164 book (Fall 2024)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/welcome/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome to CS 164!
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/language/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Implementation Language
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Administrative
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Administrative
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Syllabus
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/collab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Collaboration policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Groups
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    OCaml
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            OCaml
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/install/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installing OCaml
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/macos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Notes on MacOS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Coding notes
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Coding notes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/format/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Formatting your code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/basic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic tips
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/functional/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Functional programming
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/types/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Type annotations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/poly/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Polymorphic variants
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/new_features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    New features
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design tips
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/debug/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Debugging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ocaml/notes/sexp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    S-expressions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignments
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Assignments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Assignment 0: Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-passes-that-are-unchanged-from-the-previous-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      A. Passes that are unchanged from the previous assignment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b-passes-that-have-minimal-modifications-from-the-previous-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      B. Passes that have minimal modifications from the previous assignment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c-passes-that-are-new" class="md-nav__link">
+    <span class="md-ellipsis">
+      C. Passes that are new
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C. Passes that are new">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#expose-allocation-expose_allocationml" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expose allocation (expose_allocation.ml)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Expose allocation (expose_allocation.ml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-transformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      The transformation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coding-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coding notes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d-passes-with-significant-modifications-from-the-previous-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      D. Passes with significant modifications from the previous assignment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="D. Passes with significant modifications from the previous assignment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-remove-complex-operands-remove_complexml" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Remove complex operands (remove_complex.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-explicate-control-explicate_controlml" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Explicate control (explicate_control.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-select-instructions-select_instructionsml" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Select instructions (select_instructions.ml)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Select instructions (select_instructions.ml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#collect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Collect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allocate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Allocate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#globalval" class="md-nav__link">
+    <span class="md-ellipsis">
+      GlobalVal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vecref-vecset-and-veclen" class="md-nav__link">
+    <span class="md-ellipsis">
+      VecRef, VecSet and VecLen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-uncover-live-uncover_liveml" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Uncover live (uncover_live.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-build-interference-build_interferenceml" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Build interference (build_interference.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-allocate-registers-allocate_registersml" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Allocate registers (allocate_registers.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-patch-instructions-patch_instructionsml" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Patch instructions (patch_instructions.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-prelude-and-conclusion-prelude_conclusionml" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Prelude and conclusion (prelude_conclusion.ml)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="assignment-5-compiler-passes">Assignment 5: Compiler passes</h1>
+<p>The compiler passes are described in chapter 6 of the textbook
+and in the lectures,
+but here they are again for completeness.
+(You should still read the book and lectures for a more in-depth explanation!)
+We will only include passes that you have to implement.
+As before, the only files you should modify are the <code>.ml</code> files
+corresponding to these compiler passes.</p>
+<h2 id="a-passes-that-are-unchanged-from-the-previous-assignment">A. Passes that are unchanged from the previous assignment</h2>
+<p>These passes are identical except possibly for the names of imported
+modules (<code>e.g.</code> <code>Cloop</code> changing to <code>Ctup</code>).</p>
+<ul>
+<li>remove unused blocks</li>
+<li>graph coloring</li>
+<li>remove jumps</li>
+</ul>
+<h2 id="b-passes-that-have-minimal-modifications-from-the-previous-assignment">B. Passes that have minimal modifications from the previous assignment</h2>
+<p>These passes have to be extended to handle the new forms,
+but the extensions should be straightforward.</p>
+<ul>
+<li>shrink</li>
+<li>uniquify</li>
+<li>uncover get!</li>
+</ul>
+<h2 id="c-passes-that-are-new">C. Passes that are new</h2>
+<h3 id="expose-allocation-expose_allocationml">Expose allocation (<code>expose_allocation.ml</code>)</h3>
+<p>This pass is discussed in lecture 16 and in the textbook.
+The input language is <code>lfun_shrink</code>
+and the output language is <code>lalloc</code>.</p>
+<p>The goal of this pass is to replace the <code>vector</code> form
+(the vector constructor) with three lower-level forms:</p>
+<ol>
+<li><code>collect</code> which invokes the garbage collector</li>
+<li><code>allocate</code> which allocates memory on the heap</li>
+<li><code>global_value</code> which accesses global variables
+   which are used by the garbage collector.</li>
+</ol>
+<p>The transformation is done in the function <code>expose_allocation_exp</code>.
+The function recurses through all subexpressions of the program expression,
+converting <code>vector</code> forms as they are encountered.
+That's all it does.</p>
+<h4 id="the-transformation">The transformation</h4>
+<p>Here is the transformation, in pseudocode:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>(vector (e_0 ... e_{n-1}) (type &lt;type&gt;))
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>--&gt;
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>(let (x_0 e_0&#39;)
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>...
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>(let (x_{n–1} e_{n–1}&#39;)
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  (let (_
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>         (if (&lt; (+ (global-value free_ptr) &lt;nbytes&gt;)
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>                   (global-value fromspace_end))
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>             (void)
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>             (collect &lt;nbytes&gt;)))
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>     (let (v (allocate &lt;len&gt; &lt;type&gt;))
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>       (let (_ (vector-set! v 0 x_0))
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>            ;; or (vector-set! v 0 e_0) if e_0 is atomic
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>       ...
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>       (let (_ (vector-set! v (- n 1) x_{n–1}))
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>          v) )))))
+</span></code></pre></div>
+<p>where:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&lt;type&gt;: the type of the vector
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>&lt;len&gt;: the length of the vector
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>&lt;nbytes&gt;: the number of bytes needed for a vector of length `len`
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>x_0 ... x_{n-1}: fresh names
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>e_0&#39; ... e_{n-1}&#39;: (recursively) transformed versions
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  of non-atomic e_0 ... e{n-1}
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the OCaml code, <code>global_value</code> is <code>GlobalVal</code>,
+<code>collect</code> is <code>Collect</code>, and <code>allocate</code> is <code>Allocate</code>.</p>
+</div>
+<p>This transformation is quite complicated,
+so we're going to discuss it in some detail.</p>
+<p>The names <code>x_0</code> to <code>x_{n-1}</code> in the initial <code>let</code> expression are fresh names.
+The expressions <code>e_0'</code> to <code>e_{n-1}</code> are the arguments of the <code>vector</code> form,
+recursively transformed by the <code>expose_allocation_exp</code> function.
+You only need to <code>let</code>-bind a new fresh name
+for <em>non-atomic</em> subexpressions of the <code>vector</code> form,
+so for a vector of length <code>n</code>
+you generally will not have <code>n</code> nested <code>let</code> expressions,
+since some of the subexpressions will usually be atomic
+(variables or literals).
+We've supplied a function in the template code called <code>new_var</code>
+to generate fresh names for use here.</p>
+<p>In contrast,
+in the nested <code>let</code> expressions at the end with the <code>vector-set!</code> forms,
+there do need to be <code>n</code> such expressions,
+since these initialize the vector with its initial values
+for each of the <code>n</code> slots.
+If the original expression for a slot was complex,
+use the variable bound to (the transformed version of) that expression
+(one of the <code>x_i</code>s);
+if it was atomic, just use that expression directly.
+For these <code>let</code> expressions,
+bind a dummy name to the <code>vector-set!</code> expressions;
+these names will never be used.
+(We call them <code>_</code> here, but you should generate an actual fresh name.
+We used a function called <code>new_void_var</code> to do this,
+which we've supplied in the template code.)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You might wonder why we are using nested <code>let</code> expressions
+at the end instead of a <code>begin</code> expression.
+Both can work, but the nested <code>let</code>s, somewhat paradoxically,
+generate simpler code.</p>
+</div>
+<p>The number of bytes needed for a vector of length <code>n</code> is just
+<code>8 * (n + 1)</code> <em>i.e.</em> 8 bytes per slot plus 8 bytes for the vector tag.
+(Note that we aren't including the size of the <em>contents</em> of the vector
+in this calculation, just the size of the vector itself,
+since that is what we will need to allocate heap memory for.)</p>
+<h4 id="coding-notes">Coding notes</h4>
+<p>In our code,
+we defined a simple helper function called <code>is_atom</code>
+which returns <code>true</code> if an expression is atomic.
+We used this to separate out atomic expressions
+(which don't need to be <code>let</code>-bound to fresh names)
+from non-atomic expressions (which do).
+One useful trick is to convert (map) the expressions
+into polymorphic variants which are either</p>
+<ul>
+<li><code>`Atom exp</code> for atomic expressions</li>
+<li><code>`VarExp (fresh_name, exp)</code> for non-atomic expressions</li>
+</ul>
+<p>and then use the resulting list of expressions to generate
+the nested <code>let</code> expressions at the beginning of the form.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This kind of "temporary label" is a very common use case
+for polymorphic variants in real-world OCaml code.</p>
+</div>
+<h2 id="d-passes-with-significant-modifications-from-the-previous-assignment">D. Passes with significant modifications from the previous assignment</h2>
+<h3 id="1-remove-complex-operands-remove_complexml">1. Remove complex operands (<code>remove_complex.ml</code>)</h3>
+<p>In this pass, the input language is <code>lalloc_get</code>
+and the output language is <code>lalloc_mon</code>.
+The <code>Collect</code>, <code>Allocate</code>, and <code>GlobalVal</code> forms
+are all considered to be complex operands.
+Other than that, the code is similar to
+the code from the previous assignment.
+In <code>rco_atom</code>, bind <code>Collect</code> to the dummy name <code>$_</code>,
+since it returns <code>Void</code>.
+That's all there is for this pass!</p>
+<h3 id="2-explicate-control-explicate_controlml">2. Explicate control (<code>explicate_control.ml</code>)</h3>
+<p>In this pass, the input language is <code>lalloc_mon</code>
+and the output language is <code>ctup</code>.</p>
+<p>Note that <code>Collect</code> forms were bound to dummy variables
+of the form <code>$_</code> in the previous pass;
+therefore, <code>Collect</code> forms can be handled in
+<code>explicate_assign</code> as well as in <code>explicate_effect</code>.
+It should never be in tail position, for obvious reasons.
+The <code>Allocate</code> and <code>GlobalVal</code> forms
+are only handled in the <code>convert_exp</code> function.
+Neither form is ever done for effects alone.</p>
+<h3 id="3-select-instructions-select_instructionsml">3. Select instructions (<code>select_instructions.ml</code>)</h3>
+<p>In this pass, the input language is <code>ctup</code>
+and the output language is <code>x86_var_global</code>.</p>
+<p>Compared to the previous assignment's <code>x86_var_loop</code> language,
+the <code>x86_var_global</code> language has these additions:</p>
+<ul>
+<li>
+<p><code>arg</code> type: a new <code>GlobalArg</code> constructor
+  (called simply <code>Global</code> in the textbook)</p>
+</li>
+<li>
+<p><code>instr</code> type: new instructions for <code>Andq</code> (bitwise AND)
+  and <code>Sarq</code> (arithmetic shift right)</p>
+</li>
+<li>
+<p><code>info3</code> type: a new field <code>num_spilled_root</code> which contains
+  the number of root stack slots needed to store vector references</p>
+</li>
+</ul>
+<p>A number of new translations of expressions and statements
+need to be implemented, which we describe next.
+Please also refer to the textbook (section 6.6).</p>
+<h4 id="collect"><code>Collect</code></h4>
+<p><code>Collect</code> is a statement in <code>ctup</code>, not an expression.
+It has one argument, which is the number of bytes needed.
+It compiles to code to call the <code>collect</code> function of the garbage collector.
+This function (written in C in <code>runtime.c</code>)
+takes two arguments: a pointer to the "root stack"
+(the extra stack for storing vector pointers)
+and the number of bytes needed.
+The first is always stored in register <code>%r15</code>;
+the second is the contents of the <code>Collect</code> constructor.</p>
+<p>Recall that function arguments are placed in the registers
+<code>%rdi</code>, <code>%rsi</code>, <code>%rdx</code>, <code>%rcx</code>, <code>%r8</code>, <code>%r9</code>in order;
+any additional arguments are passed on the stack.
+For the <code>collect</code> function, we only need <code>%rdi</code> and <code>%rsi</code>.
+Use <code>movq</code> instructions to move the arguments to the required registers.
+We compile to a <code>callq</code> instruction (called <code>Callq</code> in <code>x86_var_global</code>),
+which takes a label and an arity (argument count; here, 2).
+The label is just <code>collect</code> (the name of the function),
+but you must call <code>fix_label</code> on it,
+since it's an externally visible label.</p>
+<h4 id="allocate"><code>Allocate</code></h4>
+<p><code>Allocate</code> is where vectors actually get allocated.
+In <code>ctup</code>, it's always an expression, not a statement.
+There are two forms of this instruction.
+One form allocates a vector and assigns the vector to a variable.
+The other returns an allocated vector.
+The second form is equivalent to assigning the vector to the <code>%rax</code> register,
+and is used when allocating a vector in tail position.
+We'll only describe the first form,
+since the second form is identical other than assigning to <code>%rax</code>
+instead of assigning to a variable.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The translations of <code>GlobalVal</code>, <code>VecLen</code>, <code>VecSet</code>, and <code>VecRef</code>
+also have two different forms that are handled in a similar way.
+One form assigns the expression to a variable,
+while the other is an expression in tail position, where the result
+is assigned to the <code>%rax</code> register.</p>
+</div>
+<p>The translation is (in effect):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&lt;lhs&gt; = (allocate &lt;len&gt; (Vector &lt;type&gt; ...));
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>--&gt;
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>movq free_ptr(%rip), %r11
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>addq 8(&lt;len&gt; + 1), free_ptr(%rip)
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>movq $&lt;tag&gt;, 0(%r11)
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>movq %r11, &lt;lhs&#39;&gt;
+</span></code></pre></div>
+<p>where:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&lt;lhs&gt;: the `ctup` variable being assigned to
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&lt;lhs&#39;&gt;: the `x86_var_global` variable being assigned to
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>        (the `arg` equivalent of the `ctup` `atm` form)
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>&lt;len&gt;: the length of the vector being allocated
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>(Vector &lt;type&gt; ...): the type of the vector
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>&lt;tag&gt;: the vector tag (AKA tuple tag)
+</span></code></pre></div>
+<p>To do this translation, we have to compute the vector tag
+corresponding to the vector type
+(given as <code>(Vector &lt;type&gt; ...)</code>).
+We recommend that you define a helper function called <code>make_tuple_tag</code>
+with this signature:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">let</span> <span class="n">make_tuple_tag</span> <span class="o">(</span><span class="n">len</span> <span class="o">:</span> <span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="n">vec</span> <span class="o">:</span> <span class="n">ty</span> <span class="kt">array</span><span class="o">)</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>This function should:</p>
+<ul>
+<li>check that the length <code>len</code> is between 0 and 50,
+  and raise an exception otherwise</li>
+<li>create a string representation of the binary number
+  corresponding to the tag
+  (OCaml literal binary numbers start with <code>0b</code>)</li>
+<li>convert the string to an integer using the function <code>int_of_string</code>;
+  this is the tuple tag</li>
+</ul>
+<p>The binary number itself contains (in order from left to right):</p>
+<ul>
+<li>some unused bits</li>
+<li>0/1 values corresponding to (up to) 50 slots in the vector;
+  if the type of that slot is itself a vector, use a 1,
+  else use a 0</li>
+<li>6 bits corresponding to the length of the vector</li>
+<li>1 bit which is always 1 (the forwarding bit)</li>
+</ul>
+<p>Note that the rightmost bits of the pointer bits
+correspond to the <em>lowest</em> indexed slots of the vector,
+so the absolute rightmost pointer bit corresponds to slot 0.
+Unused slots are 0s;
+you don't have to have them in the bit string
+since trailing 0s don't change an integer's value.
+See figure 6.8 in the textbook for a pictorial representation
+of tuple tags.</p>
+<p>One odd thing about the translation given above are the
+<code>free_ptr(%rip)</code> parts.
+What we really want is the address of <code>free_ptr</code>
+so we can dereference it, store into it, <em>etc.</em>
+But in x86-64 assembly language,
+we can't directly refer to the address of a global variable.
+Instead, we have to refer to it as an offset
+from the contents of the instruction pointer register <code>%rip</code>.
+As the textbook explains,
+when the assembler sees <code>free_ptr(%rip)</code>,
+it computes the difference <code>d</code> between the instruction pointer location
+and the address of the global variable <code>free_ptr</code>,
+and converts the instruction to <code>d(%rip)</code>,
+which accesses the memory <code>d</code> bytes away from the current location
+of the instruction pointer.
+This gives you the address of the <code>free_ptr</code> global variable,
+albeit in a somewhat indirect way.
+This addressing mode is called <em>instruction-pointer-relative addressing</em>.</p>
+<p>Don't forget to use <code>fix_label</code> on the <code>free_ptr</code> label,
+since it's the label of a globally visible value
+(in this case, a global variable).</p>
+<h4 id="globalval"><code>GlobalVal</code></h4>
+<p><code>GlobalVal</code> (in <code>ctup</code>) is converted to <code>GlobalArg</code> of a label.
+Again, don't forget to use <code>fix_label</code> on the label
+since the label is of a global variable.
+When used in an assignment, use <code>movq</code> to move the global variable contents
+to the destination variable;
+when used as an expression in a tail context, move it to the <code>%rax</code> register.</p>
+<h4 id="vecref-vecset-and-veclen"><code>VecRef</code>, <code>VecSet</code> and <code>VecLen</code></h4>
+<p>These are described well in the textbook (section 6.6).
+Note that <code>VecLen</code> needs to extract the length field from the vector tag;
+the <code>andq</code> and <code>sarq</code> instructions are used here to accomplish that.
+For all three forms, put the vector pointer into the reserved register <code>%r11</code>.
+The <code>%r11</code> register thus serves as temporary scratch space
+for vector pointers.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If your compare tests are failing on the place where you use
+<code>andq</code> and <code>sarq</code> instructions,
+you may need to reverse-engineer our algorithm for computing
+vector lengths from the tuple tag.
+Hint: we used one <code>andq</code> instruction
+followed by one <code>sarq</code> instruction.</p>
+</div>
+<p>Note that <code>VecSet</code> (the <code>ctup</code> expression)
+also exists as <code>VecSetS</code> (the <code>ctup</code> statement).
+<code>VecSet</code> always returns <code>Void</code>,
+which is just the immediate integer value 0 in assembly language.
+<code>VecSetS</code> doesn't return anything, but the translation is otherwise the same.</p>
+<h3 id="4-uncover-live-uncover_liveml">4. Uncover live (<code>uncover_live.ml</code>)</h3>
+<p>There are only two modifications you need to make to the "uncover live" pass.</p>
+<ol>
+<li>The <code>GlobalArg</code> constructor has to be handled.</li>
+<li>The new instructions <code>andq</code> and <code>sarq</code> have to be handled.</li>
+</ol>
+<p>The <code>GlobalArg</code> constructor doesn't actually do anything in this pass
+since its argument is a label.
+It should be handled where the other <code>arg</code> values are handled.</p>
+<p>The <code>andq</code> instruction is handled like <code>addq</code> and <code>subq</code>.</p>
+<p>The <code>sarq</code> has two arguments (source and destination).
+The way we use it, the source argument is always an immediate value,
+so you can ignore it in liveness analysis.
+The <code>sarq</code> instruction reads from and writes to the destination argument.</p>
+<h3 id="5-build-interference-build_interferenceml">5. Build interference (<code>build_interference.ml</code>)</h3>
+<p>This pass requires three changes/additions:</p>
+<ol>
+<li>
+<p>The main change in this pass is that the <code>make_graph</code> function
+has to deal with vector-valued variables,
+which are handled specially.
+This only affects the handling of <code>callq</code> instructions
+when calling the <code>collect</code> function (<code>"collect"</code> label).
+In addition to what was done previously,
+you need to add an edge between all callee-save registers
+and all locations in the after set that correspond to vector-valued variables.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Edges between <em>caller</em>-save registers and vector-valued variables
+will already be set up from the code from previous assignments.
+Given that we are not allowing pointers to vector-valued variables
+to be stored in <em>any</em> registers or in the regular stack,
+the only place they can be stored in is in the root stack,
+which we will deal with in the next section.</p>
+<!-- TODO
+I think this is an abuse of interference graphs.
+If you know that VVVs are never going to be assigned to registers,
+why put them in the interference graph at all?
+(Maybe for saturation set purposes?)
+Instead, you could just implement an "assign homes"-type system
+for VVVs like in the ch2 code.
+-->
+</div>
+</li>
+<li>
+<p>The <code>addq</code> and <code>sarq</code> instructions need to be processed.
+This can be done much like the other instructions.</p>
+</li>
+<li>
+<p>The destination of an instruction can now be a <code>GlobalArg</code> value.
+These values do not affect the interference graph,
+so they can be ignored (just return the graph unchanged).</p>
+</li>
+</ol>
+<h3 id="6-allocate-registers-allocate_registersml">6. Allocate registers (<code>allocate_registers.ml</code>)</h3>
+<p>This pass has a number of changes,
+some of them supplied to you in the template code.</p>
+<ol>
+<li>
+<p>Spilled stack locations on the regular stack are handled differently
+than previously.
+In addition, we need to manage the root stack,
+which is where vector-valued variables go.
+We have two counters for the two stacks,
+called <code>next_stack_index</code> and <code>next_root_stack_index</code>.
+These are both integer references.
+Before allocating registers,
+both of these counters are initialized to 1.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The reason for the 1-indexing is that
+two registers are used for the two stacks:
+<code>%rbp</code> for the regular stack and
+<code>%r15</code> for the root stack.</p>
+<p>In the regular stack,
+the caller's <code>%rbp</code> value is stored at <code>0(%rbp)</code>,
+so the first available slot is at <code>-8(%rbp)</code>
+(the regular stack grows downwards).</p>
+<p>In the root stack,
+the %r15 register contains the <em>top</em> of the root stack,
+and the root stack grows upwards.
+Despite this, we start assigning slots from <code>-8(%r15)</code>,
+since we don't keep a pointer to the base of the root stack
+in a register.
+(In a sense, we are assigning slots in the "wrong order",
+but it doesn't cause problems.)</p>
+</div>
+</li>
+<li>
+<p>We have a new hashtable called <code>spilled_location_dict</code>
+which is cleared before register allocation.
+In it, we map integers ("colors" assigned in graph coloring)
+to spilled locations (regular stack and root stack).</p>
+</li>
+<li>
+<p>The <code>location_of_color</code> function is the main thing
+that needs to be changed for this pass.</p>
+<ul>
+<li>
+<p>As before, if the color (represented as an integer)
+is in the color register map,
+return the register that the color maps to.
+Otherwise, the color represents a spilled variable.</p>
+</li>
+<li>
+<p>This function can spill variables to either the regular stack
+or to the root stack.
+The <code>vector_typed</code> argument is used to select the stack;
+if it's <code>true</code>, spill to the root stack.</p>
+</li>
+<li>
+<p>Check to see if the color is in the <code>spilled_location_dict</code>;
+if it is, return that location.  Otherwise, continue.</p>
+</li>
+<li>
+<p>Note that the colors of variables that represent vectors
+can be interleaved with the colors of variables that don't.
+Therefore, you can't just take the difference between the color
+and the last register color to determine where on the stack
+to spill the variable to.
+Instead, use the <code>next_stack_index</code> variable
+(for non-vector-typed variables)
+and <code>next_root_stack_index</code> variable
+(for vector-typed variables)
+to determine the stack slot for the respective slots.
+(Increment the index you pick after you use it,
+so the next variable will get a different slot.)
+The offset is (-8) times the index,
+and the base register is <code>Rbp</code> for the regular stack
+or <code>R15</code> for the root stack.
+This gives you the location you need.</p>
+</li>
+<li>
+<p>Once you've done this, add the color/location pair to the
+<code>spilled_location_dict</code> in case the location of the same color
+is requested later.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>The <code>varmap_of_colormap</code> function has to be modified
+to call <code>location_of_color</code> with the new <code>vector_typed</code> argument.
+It does this by seeing if a variable
+is in the <code>vvs</code> (vector-valued variables) set.</p>
+</li>
+<li>
+<p>The <code>get_variable_location_map</code> function (supplied to you)
+now re-initializes the stack index variables
+and the spilled location dictionary.</p>
+</li>
+<li>
+<p>The <code>convert_instr</code> function needs to be extended to handle
+the <code>andq</code> and <code>sarq</code> instructions.</p>
+</li>
+<li>
+<p>The <code>get_num_spilled</code> function is now supplied to you.
+This function is trivial because we can read off the number
+of spilled variables on both the regular and root stacks
+from the <code>next_stack_index</code> and <code>next_root_stack_index</code> variables.</p>
+</li>
+<li>
+<p>The new <code>vector_vars</code> function (supplied to you)
+returns a set of all the vector-valued variables.</p>
+</li>
+<li>
+<p>The <code>allocate_registers</code> function now computes both
+the number of variables spilled to the regular stack
+and the number of variables spilled to the root stack.</p>
+</li>
+</ol>
+<h3 id="7-patch-instructions-patch_instructionsml">7. Patch instructions (<code>patch_instructions.ml</code>)</h3>
+<p>Only a couple of modifications need to be made for this pass:</p>
+<ol>
+<li>
+<p>When patching instructions,
+many instructions can't have both arguments as stack locations.
+This also applies to global variable locations (<code>GlobalArg</code> arguments),
+as well as any combination of those and stack locations.</p>
+</li>
+<li>
+<p>The new <code>andq</code> and <code>sarq</code> instructions also need to be patched.</p>
+</li>
+</ol>
+<h3 id="8-prelude-and-conclusion-prelude_conclusionml">8. Prelude and conclusion (<code>prelude_conclusion.ml</code>)</h3>
+<p>There are a few additions needed in this pass.</p>
+<ul>
+<li>
+<p>When converting global labels (<code>GlobalArg</code> arguments),
+use instruction-pointer-relative addressing (discussed above),
+so <code>GlobalArg lbl</code> becomes <code>GlobalArg (Rip, lbl)</code>.</p>
+</li>
+<li>
+<p>Handle the new <code>andq</code> and <code>sarq</code> instructions.</p>
+</li>
+<li>
+<p>In the prelude, do the following extra tasks:</p>
+<ol>
+<li>
+<p>The garbage collector needs to be initialized
+by a call to the <code>initialize</code> function
+(don't forget to use <code>fix_label</code> on the function labels!).
+This function takes two arguments: the root stack size and the heap size.
+Set them both to be the value of the <code>init_heap_size</code> variable.
+Recall that the first two arguments to a function
+are passed in registers <code>%rdi</code> and <code>%rsi</code>,
+after which a <code>callq</code> to the function label should be added.</p>
+</li>
+<li>
+<p>In the prelude, the address of the <code>rootstack_begin</code> global variable
+(again, use <code>fix_label</code> for global variable labels)
+should be copied to register <code>%r15</code>.
+Use instructions-pointer-relative addressing.</p>
+</li>
+<li>
+<p>In the prelude, all the root stack slots should be initialized to 0.
+This should use the <code>%r15</code> register,
+which currently points to the beginning of the root stack.</p>
+</li>
+<li>
+<p>The address of the end of the root stack
+should now be copied into the <code>%r15</code> register.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>In the conclusion,
+reset the <code>%r15</code> register to the beginning of the root stack space.
+Do this by subtracting the root stack space used from <code>%r15</code>.</p>
+</li>
+</ul>
+<p>Figure 6.16 in the textbook
+gives you an idea of how this should look
+for a program which needs
+a single root stack slot and no regular stack slots.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.56dfad97.min.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
