@@ -1170,8 +1170,22 @@ teaching you to write functions using recursion instead of loops,
 and specifically using tail recursion.
 We use tail recursion because it has desirable space properties,
 so in general, when you write a recursive function,
-try hard to make it tail recursive.
-If you can't do this, be prepared to explain why during code reviews.</p>
+we generally try to make it tail recursive.
+In particular,
+any function that can operate on arbitrarily-sized data structures
+should really be tail-recursive
+so as not to use up excessive amounts of stack space.</p>
+<p>However, <strong>there is no need to be obsessive about this</strong>.
+Most of the code compiled by a compiler will be comparatively short
+(<em>e.g.</em> the size of a typical function),
+so if the input to a function is that code,
+optimizing for space efficiency may not buy you very much.
+So if it's significantly easier
+to write a particular recursive function in a non-tail-recursive style,
+it's OK to do that.
+But be prepared to defend this choice in code reviews.</p>
+<p>Also note that it's often desirable to use a fold (see below)
+instead of using recursion at all!</p>
 <h2 id="persistent-data-structures">Persistent data structures</h2>
 <p>Probably the hardest part of using functional programming effectively is
 getting used to persistent data structures (like lists) instead of mutable data
