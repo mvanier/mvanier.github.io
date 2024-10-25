@@ -1152,6 +1152,112 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 3: Conditionals
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 3: Conditionals
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../assignments/3/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../assignments/3/passes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Compiler passes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../assignments/3/testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1355,10 +1461,16 @@ function:</p>
 Be alert for this kind of situation --
 there's no benefit to using a functional language
 if you don't take advantage of what it offers.</p>
-<p>On the other hand, sometimes you are accumulating more than one thing in an
-iteration. You can still use <code>List.fold_left</code> in such cases by accumulating a
-tuple of all the things you're accumulating, but in my experience, it's often
-easier to just write an iterative helper function.</p>
+<p>On the other hand,
+sometimes you are accumulating more than one thing in an iteration,
+or you may be passing more than just the thing you are accumulating
+through each iteration of the computation.
+In these cases, you can still use <code>List.fold_left</code> 
+by creating a tuple of everything that needs to be passed
+from one iteration to another
+and using that as the accumulation value,
+but in my experience,
+it's often easier to just write an iterative helper function.</p>
 <h3 id="left-vs-right-folds">Left <em>vs.</em> right folds</h3>
 <p>95% of the time or more, if you want to use a fold in OCaml,
 you want to use a left fold (<code>List.fold_left</code>)
@@ -1369,7 +1481,10 @@ and thus not space efficient.</p>
 <p>On the other hand, there are cases where right folds are the right thing to
 use.  When you want to accumulate things in a list from the right going back
 to the left, a right fold is usually going to be simpler than a left fold,
-and you shouldn't feel bad about using one in that case.</p>
+and you shouldn't feel bad about using one in that case
+(unless you expect that the list could be very long,
+in which case you don't want to use a right fold
+because it would use up too much stack space).</p>
 <h2 id="nested-pattern-matching">Nested pattern matching</h2>
 <p>It's very common to want to write a pattern match inside another
 pattern match.  There are two cases to consider.</p>
