@@ -1556,6 +1556,10 @@ and the <code>rco_exp</code> function has to take the (name, expression) pairs
 and convert them into <code>let</code> expressions.
 (We wrote a helper function to do this;
 you will probably want to do the same.)</p>
+<p>Depending on how you write this pass,
+<code>rco_atom</code> may need to call <code>rco_exp</code>.
+If so, the two functions should be mutually recursive.
+(Mutually-recursive functions are common in compilers.)</p>
 <p>Note that the immediate subexpressions of a <code>let</code> expression (both of them)
 do <em>not</em> need to be atomic, so don't try to make them atomic!
 That means that you can have arbitrarily nested <code>let</code> expressions.
@@ -1597,8 +1601,19 @@ schematically, a <code>let</code> expression looks like this:</p>
 </span></code></pre></div>
 <p>In both <code>explicate_tail</code> and <code>explicate_assign</code>,
 the only (slightly) tricky case is the <code>let</code> case.
-Hint: <code>explicate_tail</code> has to call <code>explicate_assign</code>.
-The total code you need to write is considerably less than 100 lines.</p>
+Here are some hints for this case: </p>
+<ul>
+<li><code>explicate_tail</code> has to call <code>explicate_assign</code>.</li>
+<li>
+<p>In <code>explicate_assign</code>, the transformation is basically this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>(let (v (let (v&#39; e1) e2)) tl)
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>--&gt;
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>(let (v&#39; e1) (let v e2 tl))
+</span></code></pre></div>
+<p>The code for this is quite simple.</p>
+</li>
+</ul>
+<p>The total code you need to write is considerably less than 100 lines.</p>
 <h2 id="select-instructions">Select instructions</h2>
 <p>[File: <code>select_instructions.ml</code>]</p>
 <p>This is the first of several passes collectively called the "back end".
@@ -1784,11 +1799,11 @@ There are only three instructions in this compiler where this can happen:
 <code>addq</code>, <code>subq</code>, and <code>movq</code>.
 The <code>movq</code> case is the simplest.
 Change:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>movq -8(%rbp), -16(%rbp)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>movq -8(%rbp), -16(%rbp)
 </span></code></pre></div>
 <p>to two instructions:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>movq -8(%rbp), %rax
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>movq %rax, -16(%rbp)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>movq -8(%rbp), %rax
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>movq %rax, -16(%rbp)
 </span></code></pre></div>
 <p>This doesn't violate the restriction.  The <code>addq</code> and <code>subq</code> cases
 are similar but slightly trickier.</p>
@@ -1797,11 +1812,11 @@ determine if an instruction needs to be patched,
 and patch it in those cases.
 Don't match instructions that don't need to be patched!
 For instance, don't change:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>movq $42, -8(%rbp)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>movq $42, -8(%rbp)
 </span></code></pre></div>
 <p>into this:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>movq $42, %rax
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>movq %rax, -8(%rbp)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>movq $42, %rax
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>movq %rax, -8(%rbp)
 </span></code></pre></div>
 <p>because the instruction didn't need to be patched
 (since there was only one memory reference).</p>

@@ -702,6 +702,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#maps-are-your-friend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maps are your friend!
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#folds-are-your-friend" class="md-nav__link">
     <span class="md-ellipsis">
       Folds are your friend!
@@ -1319,6 +1328,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#maps-are-your-friend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maps are your friend!
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#folds-are-your-friend" class="md-nav__link">
     <span class="md-ellipsis">
       Folds are your friend!
@@ -1418,6 +1436,70 @@ or an iterative helper function
 it is <em>vastly</em> easier to write correct code
 in a functional style than in an imperative style.
 There is simply less that can go wrong.</p>
+<h2 id="maps-are-your-friend">Maps are your friend!</h2>
+<p>Consider this tail-recursive function:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">let</span> <span class="k">rec</span> <span class="n">convert_nums</span> <span class="o">(</span><span class="n">scale</span> <span class="o">:</span> <span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="n">ns</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span><span class="o">)</span> <span class="o">(</span><span class="n">acc</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span><span class="o">)</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  <span class="k">match</span> <span class="n">ns</span> <span class="k">with</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="n">acc</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="n">convert_nums</span> <span class="n">scale</span> <span class="n">t</span> <span class="o">(</span><span class="n">acc</span> <span class="o">@</span> <span class="o">[</span><span class="n">scale</span> <span class="o">*</span> <span class="n">h</span><span class="o">])</span>
+</span></code></pre></div>
+<p>This function would be called like this:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">#</span> <span class="n">convert_nums</span> <span class="mi">10</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span><span class="mi">2</span><span class="o">;</span><span class="mi">3</span><span class="o">;</span><span class="mi">4</span><span class="o">;</span><span class="mi">5</span><span class="o">]</span> <span class="bp">[]</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">10</span><span class="o">;</span> <span class="mi">20</span><span class="o">;</span> <span class="mi">30</span><span class="o">;</span> <span class="mi">40</span><span class="o">;</span> <span class="mi">50</span><span class="o">]</span>
+</span></code></pre></div>
+<p>When you look at what the function is actually doing,
+it becomes clear that it is simply multiplying each element of the list by 10.
+A much simpler way to achieve this would be to use a map:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a># List.map (fun n -&gt; 10 * n) [1;2;3;4;5]
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>- : int list = [10; 20; 30; 40; 50]
+</span></code></pre></div>
+<p>You should develop your intuition for where a recursive function
+can be replaced by a higher-order function,
+and <code>List.map</code> is a simple example of this.</p>
+<div class="admonition note">
+<p class="admonition-title">Note on efficiency</p>
+<p>The other thing wrong about this function is that it's
+gratuitously inefficient,
+because of the line</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>    convert_nums scale t (acc @ [scale * h])
+</span></code></pre></div>
+<p>The <code>acc @ [scale * h]</code> expression
+adds a new value <code>scale * h</code>
+to the <em>end</em> of a list,
+which is an <span class="arithmatex">\(O(n)\)</span> operation,
+giving the entire function an <span class="arithmatex">\(O(n^2)\)</span> time complexity.
+A better approach would be to add to the front of the list
+and reverse it at the end.</p>
+</div>
+<p>Now consider this (non tail-recursive) function:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>let rec spread_nums (ns : int list) : int list =
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  match ns with
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    | [] -&gt; []
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    | h :: t -&gt; [h - 1; h; h + 1] @ spread_nums t
+</span></code></pre></div>
+<p>It could be used like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a># spread_nums [1;2;3];;
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>- : int list = [0; 1; 2; 1; 2; 3; 2; 3; 4]
+</span></code></pre></div>
+<p>You might think you can't use a map here:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a># List.map (fun n -&gt; [n - 1; n; n + 1]) [1;2;3];;
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>- : int list list = [[0; 1; 2]; [1; 2; 3]; [2; 3; 4]]
+</span></code></pre></div>
+<p>However, you can combine the list of lists into a list
+using the <code>List.concat</code> function:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a># List.concat (List.map (fun n -&gt; [n - 1; n; n + 1]) [1;2;3]);;
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>- : int list list = [0; 1; 2; 1; 2; 3; 2; 3; 4]
+</span></code></pre></div>
+<p>This is so common that there is a function called <code>List.concat_map</code>
+which does both the mapping and the combining:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a># List.concat_map (fun n -&gt; [n - 1; n; n + 1]) [1;2;3];;
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>- : int list list = [0; 1; 2; 1; 2; 3; 2; 3; 4]
+</span></code></pre></div>
+<p>So again there is no need for a recursive function
+when all the function is doing is mapping a function over a list of values
+and flattening the resulting list of lists;
+this is just the same as using <code>List.concat_map</code>.</p>
 <h2 id="folds-are-your-friend">Folds are your friend!</h2>
 <p>Programmers new to functional programming are often frustrated by what they
 perceive as the difficulty of doing simple things.  A good example of this is
@@ -1425,36 +1507,36 @@ accumulation. You have a list and want to compute some value from the list
 elements. For instance, say you want to get the maximum value of the list (and
 assume that you only have a two-element <code>max</code> function to compute maximums).
 A Python programmer could immediately write this code:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="nf">max_list</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the maximum of a list of positive integers.&quot;&quot;&quot;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="k">return</span> <span class="mi">0</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">mx</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="n">mx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="k">return</span> <span class="n">mx</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">def</span> <span class="nf">max_list</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the maximum of a list of positive integers.&quot;&quot;&quot;</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>        <span class="k">return</span> <span class="mi">0</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">mx</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>        <span class="n">mx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>    <span class="k">return</span> <span class="n">mx</span>
 </span></code></pre></div>
 <p>In OCaml, we do this sort of thing using folds, specifically left folds.</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="o">(</span><span class="k">fun</span> <span class="n">mx</span> <span class="n">item</span> <span class="o">-&gt;</span> <span class="n">max</span> <span class="n">mx</span> <span class="n">item</span><span class="o">)</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="mi">0</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">lst</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="o">(</span><span class="k">fun</span> <span class="n">mx</span> <span class="n">item</span> <span class="o">-&gt;</span> <span class="n">max</span> <span class="n">mx</span> <span class="n">item</span><span class="o">)</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="mi">0</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">lst</span>
 </span></code></pre></div>
 <p>This can be simplified further:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="n">max</span> <span class="mi">0</span> <span class="n">lst</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="n">max</span> <span class="mi">0</span> <span class="n">lst</span>
 </span></code></pre></div>
 <p>Whenever you need to write code which accumulates something over a list,
 you generally want to use a fold.</p>
 <p>A common beginner's style error is to do this with an iterative helper
 function:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  <span class="k">let</span> <span class="k">rec</span> <span class="n">iter</span> <span class="n">rest</span> <span class="n">mx</span> <span class="o">=</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="k">match</span> <span class="n">rest</span> <span class="k">with</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>      <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="n">mx</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>      <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="n">iter</span> <span class="n">t</span> <span class="o">(</span><span class="n">max</span> <span class="n">h</span> <span class="n">mx</span><span class="o">)</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  <span class="k">in</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">iter</span> <span class="n">lst</span> <span class="mi">0</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">let</span> <span class="n">max_list</span> <span class="n">lst</span> <span class="o">=</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  <span class="k">let</span> <span class="k">rec</span> <span class="n">iter</span> <span class="n">rest</span> <span class="n">mx</span> <span class="o">=</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="k">match</span> <span class="n">rest</span> <span class="k">with</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>      <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="n">mx</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>      <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="n">iter</span> <span class="n">t</span> <span class="o">(</span><span class="n">max</span> <span class="n">h</span> <span class="n">mx</span><span class="o">)</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>  <span class="k">in</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    <span class="n">iter</span> <span class="n">lst</span> <span class="mi">0</span>
 </span></code></pre></div>
 <p>This is not so bad, but the iterative helper function can be replaced by
 <code>List.fold_left</code> and the entire function becomes a one-liner!
@@ -1491,21 +1573,21 @@ pattern match.  There are two cases to consider.</p>
 <ol>
 <li>
 <p>Where the two pattern matches can be combined.  Consider this code:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">let</span> <span class="n">f</span> <span class="o">(</span><span class="n">maybe_lst</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="n">option</span><span class="o">)</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">option</span> <span class="o">=</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  <span class="k">match</span> <span class="n">maybe_lst</span> <span class="k">with</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="o">|</span> <span class="nc">None</span> <span class="o">-&gt;</span> <span class="nc">None</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="o">|</span> <span class="nc">Some</span> <span class="n">lst</span> <span class="o">-&gt;</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>      <span class="k">begin</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>          <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">Some</span> <span class="n">h</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>          <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="nc">None</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>      <span class="k">end</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">let</span> <span class="n">f</span> <span class="o">(</span><span class="n">maybe_lst</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="n">option</span><span class="o">)</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">option</span> <span class="o">=</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>  <span class="k">match</span> <span class="n">maybe_lst</span> <span class="k">with</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="o">|</span> <span class="nc">None</span> <span class="o">-&gt;</span> <span class="nc">None</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="o">|</span> <span class="nc">Some</span> <span class="n">lst</span> <span class="o">-&gt;</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>      <span class="k">begin</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>        <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>          <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">Some</span> <span class="n">h</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>          <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="nc">None</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>      <span class="k">end</span>
 </span></code></pre></div>
 <p>You can merge both pattern matches as follows:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">let</span> <span class="n">f</span> <span class="o">(</span><span class="n">maybe_lst</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="n">option</span><span class="o">)</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">option</span> <span class="o">=</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  <span class="k">match</span> <span class="n">maybe_lst</span> <span class="k">with</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="o">|</span> <span class="nc">Some</span> <span class="o">(</span><span class="n">h</span> <span class="o">::</span> <span class="o">_)</span> <span class="o">-&gt;</span> <span class="nc">Some</span> <span class="n">h</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">None</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">let</span> <span class="n">f</span> <span class="o">(</span><span class="n">maybe_lst</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="n">option</span><span class="o">)</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">option</span> <span class="o">=</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>  <span class="k">match</span> <span class="n">maybe_lst</span> <span class="k">with</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="o">|</span> <span class="nc">Some</span> <span class="o">(</span><span class="n">h</span> <span class="o">::</span> <span class="o">_)</span> <span class="o">-&gt;</span> <span class="nc">Some</span> <span class="n">h</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">None</span>
 </span></code></pre></div>
 <p>Note how much shorter and clearer the code is.
 Also note the use of the wildcard (<code>_</code>) pattern
@@ -1519,15 +1601,15 @@ Unnecessary pattern matches are bad style and will be marked down
 <li>
 <p>Where the two pattern matches <em>can't</em> be combined.
    Consider this code:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">let</span> <span class="n">f</span> <span class="o">(</span><span class="n">lst</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span><span class="o">)</span> <span class="o">:</span> <span class="o">(</span><span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span><span class="o">)</span> <span class="n">option</span> <span class="o">=</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>      <span class="k">begin</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        <span class="k">match</span> <span class="nn">List</span><span class="p">.</span><span class="n">sort</span> <span class="n">compare</span> <span class="n">t</span> <span class="k">with</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>          <span class="o">|</span> <span class="n">h&#39;</span> <span class="o">::</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">Some</span> <span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">h&#39;</span><span class="o">)</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>          <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">None</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>      <span class="k">end</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">None</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">let</span> <span class="n">f</span> <span class="o">(</span><span class="n">lst</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span><span class="o">)</span> <span class="o">:</span> <span class="o">(</span><span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span><span class="o">)</span> <span class="n">option</span> <span class="o">=</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>  <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>      <span class="k">begin</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>        <span class="k">match</span> <span class="nn">List</span><span class="p">.</span><span class="n">sort</span> <span class="n">compare</span> <span class="n">t</span> <span class="k">with</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>          <span class="o">|</span> <span class="n">h&#39;</span> <span class="o">::</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">Some</span> <span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">h&#39;</span><span class="o">)</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>          <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">None</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>      <span class="k">end</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">None</span>
 </span></code></pre></div>
 <p>The inner match is matching on the result of the <code>List.sort</code>
 function applied to the tail of the list.
@@ -1539,24 +1621,24 @@ So you have nested <code>match</code> expressions.</p>
 <p>When you have nested <code>match</code> expressions, you <strong>must</strong> surround them
 by either <code>begin</code>/<code>end</code> delimiters (as we did above) or parentheses,
 which looks like this:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">let</span> <span class="n">f</span> <span class="o">(</span><span class="n">lst</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span><span class="o">)</span> <span class="o">:</span> <span class="o">(</span><span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span><span class="o">)</span> <span class="n">option</span> <span class="o">=</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>      <span class="o">(</span><span class="k">match</span> <span class="nn">List</span><span class="p">.</span><span class="n">sort</span> <span class="n">compare</span> <span class="n">t</span> <span class="k">with</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>         <span class="o">|</span> <span class="n">h&#39;</span> <span class="o">::</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">Some</span> <span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">h&#39;</span><span class="o">)</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>         <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">None</span><span class="o">)</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">None</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">let</span> <span class="n">f</span> <span class="o">(</span><span class="n">lst</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span><span class="o">)</span> <span class="o">:</span> <span class="o">(</span><span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span><span class="o">)</span> <span class="n">option</span> <span class="o">=</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>  <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>      <span class="o">(</span><span class="k">match</span> <span class="nn">List</span><span class="p">.</span><span class="n">sort</span> <span class="n">compare</span> <span class="n">t</span> <span class="k">with</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>         <span class="o">|</span> <span class="n">h&#39;</span> <span class="o">::</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">Some</span> <span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">h&#39;</span><span class="o">)</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>         <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">None</span><span class="o">)</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">None</span>
 </span></code></pre></div>
 <p>Using parentheses looks more concise, but it's easy to forget to close
 the open parenthesis, so we prefer to use <code>begin</code>/<code>end</code>.
 (It reads better, too.)  What you definitely do <em>not</em> want to do is this:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">let</span> <span class="n">f</span> <span class="o">(</span><span class="n">lst</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span><span class="o">)</span> <span class="o">:</span> <span class="o">(</span><span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span><span class="o">)</span> <span class="n">option</span> <span class="o">=</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>      <span class="k">match</span> <span class="nn">List</span><span class="p">.</span><span class="n">sort</span> <span class="n">compare</span> <span class="n">t</span> <span class="k">with</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>        <span class="o">|</span> <span class="n">h&#39;</span> <span class="o">::</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">Some</span> <span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">h&#39;</span><span class="o">)</span>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>        <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">None</span>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">None</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">let</span> <span class="n">f</span> <span class="o">(</span><span class="n">lst</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span><span class="o">)</span> <span class="o">:</span> <span class="o">(</span><span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span><span class="o">)</span> <span class="n">option</span> <span class="o">=</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>  <span class="k">match</span> <span class="n">lst</span> <span class="k">with</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="o">|</span> <span class="n">h</span> <span class="o">::</span> <span class="n">t</span> <span class="o">-&gt;</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>      <span class="k">match</span> <span class="nn">List</span><span class="p">.</span><span class="n">sort</span> <span class="n">compare</span> <span class="n">t</span> <span class="k">with</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>        <span class="o">|</span> <span class="n">h&#39;</span> <span class="o">::</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">Some</span> <span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">h&#39;</span><span class="o">)</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>        <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">None</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">None</span>
 </span></code></pre></div>
 <p>If you do this, you will get strange error messages because
 OCaml will consider the last line to be part of the inner pattern match.
