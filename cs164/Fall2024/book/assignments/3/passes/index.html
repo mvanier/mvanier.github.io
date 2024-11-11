@@ -1919,6 +1919,22 @@ The arguments are:</p>
 <p>The most straightforward case is where
 the test expression is an operator expression using a comparison operation.
 In that case, an <code>IfStmt</code> tail can be generated immediately.</p>
+<div class="admonition note">
+<p class="admonition-title">Pattern matching</p>
+<p>There is a trick you can use in pattern-matching
+so that you only match operators which are comparison operators.
+It takes advantage of the fact that
+the operators are represented as polymorphic variants.
+The pattern match case looks like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>| Prim (#cmp_op as op, [a1; a2]) -&gt; ...
+</span></code></pre></div>
+<p>This will match a <code>Prim</code> constructor
+whose operator is a comparison operator,
+and give it the local name <code>op</code>.
+The <code>#cmp_op</code> syntax says to take the <em>subset</em> of the operators
+(type <code>core_op</code>) which match the <code>cmp_op</code> polymorphic variant datatype.
+(Both the <code>core_op</code> and the <code>cmp_op</code> types are defined in <code>types.ml</code>.)</p>
+</div>
 <p>Another simple case is when the test expression is a literal boolean.
 In that case, either the "then" tail or the "else" tail
 can be returned immediately (depending on the boolean's value).
@@ -1936,9 +1952,9 @@ to compile them.</p>
    which means that the original <code>if</code> expression
    is a <code>let</code> inside an <code>if</code>.
    This is compiled using this transformation:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>(if (let (x e1) e2) then_tl else_tl)
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>--&gt;
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>(let (x e1) (if e2 then_tl else_tl))
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>(if (let (x e1) e2) then_tl else_tl)
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>--&gt;
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>(let (x e1) (if e2 then_tl else_tl))
 </span></code></pre></div>
 <p>Of course, the <code>let</code> output ends up becoming an
 <code>Assign</code> statement in the "Cif" language.</p>
@@ -1950,9 +1966,9 @@ to compile them.</p>
    This is compiled using this transformation:</p>
 </li>
 </ol>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>(if (if e1 e2 e3) then_tl else_tl)
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>--&gt;
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>(if e1 (if e2 then_tl else_tl) (if e3 then_tl else_tl))
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>(if (if e1 e2 e3) then_tl else_tl)
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>--&gt;
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>(if e1 (if e2 then_tl else_tl) (if e3 then_tl else_tl))
 </span></code></pre></div>
 <p>It's important not to duplicate the tails, so convert them
    to labels using the <code>create_block</code> function.
