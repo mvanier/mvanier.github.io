@@ -11,6 +11,8 @@
         <link rel="canonical" href="https://example.com/assignments/5/testing/">
       
       
+        <link rel="prev" href="../passes/">
+      
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -18,7 +20,7 @@
     
     
       
-        <title>Testing the compiler - The CS 164 book (Fall 2024)</title>
+        <title>Testing - The CS 164 book (Fall 2024)</title>
       
     
     
@@ -108,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Testing the compiler
+              Testing
             
           </span>
         </div>
@@ -780,17 +782,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
@@ -804,7 +808,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Assignments
@@ -1256,6 +1260,172 @@
 
               
             
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 5: Tuples and Garbage Collection
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 5: Tuples and Garbage Collection
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../passes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Compiler passes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#compiling-and-running-the-compiler" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compiling and running the compiler
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-your-compiler-the-test-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing your compiler: the test scripts
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1305,30 +1475,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Testing your compiler: the test scripts">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#run_all_compare_testssh" class="md-nav__link">
-    <span class="md-ellipsis">
-      run_all_compare_tests.sh
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#run_gc_testssh" class="md-nav__link">
-    <span class="md-ellipsis">
-      run_gc_tests.sh
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
     </ul>
@@ -1370,50 +1516,52 @@ of the previous assignment, except for these things:</p>
 are essentially unchanged from the last assignment,
 except for those changes that had to be made
 to accommodate the new compiler pass.</p>
-<p>There are two new test scripts:</p>
+<p>There is one new test script:</p>
 <ul>
-<li><code>scripts/run_all_compare_tests.sh</code></li>
 <li><code>scripts/run_gc_tests.sh</code></li>
 </ul>
-<p>In contrast to the other test scripts, these are <em>shell scripts</em>.
-That means that they are terminal commands collected into a script.</p>
-<p>Both of these scripts can only be run
-if you have compiled your compiler first.</p>
-<h3 id="run_all_compare_testssh"><code>run_all_compare_tests.sh</code></h3>
-<p>This script is not essential,
+<!--
+### `run_all_compare_tests.sh`
+
+This script is not essential,
 but it will simplify the process of running "compare"-type tests.
 One problem with compare tests is that it's easy to skip a pass
 without realizing it.
 This script will run each individual pass in order
 (not skipping any passes),
 it will pause after running each pass so you can look at the output,
-and it will continue until all compare tests have been run.</p>
-<p>To run it, type this into the terminal from the <code>ch6</code> directory:</p>
+and it will continue until all compare tests have been run.
+
+To run it, type this into the terminal from the `ch6` directory:
+
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$<span class="w"> </span>sh<span class="w"> </span>scripts/run_all_compare_tests.sh
 </span></code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Don't type the <code>$</code>, which is just the terminal prompt.</p>
-<p>Also, if the terminal complains about
-not being able to find the <code>sh</code> program,
-try <code>bash</code> or <code>zsh</code> instead.</p>
-</div>
-<p>This will print the name of the tests to be run next
-(<em>e.g.</em> "Type checker tests", "Shrink tests", "Uniquify tests" <em>etc.</em>),
+
+!!! note
+
+    Don't type the `$`, which is just the terminal prompt.
+
+    Also, if the terminal complains about
+    not being able to find the `sh` program,
+    try `bash` or `zsh` instead.
+
+This will print the name of the tests to be run next
+(_e.g._ "Type checker tests", "Shrink tests", "Uniquify tests" _etc._),
 and then it will pause.
 At that point, you should hit the "return" key
 (or "enter" on some keyboards),
 at which point it will run the indicated tests and pause again.
-The tests are run using the <code>-diff</code> option,
-so ideally you will see a bunch of lines ending in <code>OK</code>.
+The tests are run using the `-diff` option,
+so ideally you will see a bunch of lines ending in `OK`.
 Keep pressing the "return" key when the program pauses,
 and eventually all tests will be run.
 If you find an error, you probably will want to exit the script
 so you can track down the error;
-hit "control-C" to do this.</p>
-<h3 id="run_gc_testssh"><code>run_gc_tests.sh</code></h3>
-<p>This script is a short script to test that the garbage collector
-actually does something.
+hit "control-C" to do this.
+-->
+
+<p>This script can only be run if you have compiled your compiler first.
+It tests that the garbage collector actually does something.
 To run it, type</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$ sh scripts/run_gc_tests.sh
 </span></code></pre></div>
@@ -1481,6 +1629,28 @@ these should be the exact return values.
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../passes/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Compiler passes">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Compiler passes
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">

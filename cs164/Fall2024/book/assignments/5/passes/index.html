@@ -11,6 +11,10 @@
         <link rel="canonical" href="https://example.com/assignments/5/passes/">
       
       
+        <link rel="prev" href="../overview/">
+      
+      
+        <link rel="next" href="../testing/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -18,7 +22,7 @@
     
     
       
-        <title>Assignment 5: Compiler passes - The CS 164 book (Fall 2024)</title>
+        <title>Compiler passes - The CS 164 book (Fall 2024)</title>
       
     
     
@@ -108,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Assignment 5: Compiler passes
+              Compiler passes
             
           </span>
         </div>
@@ -780,17 +784,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
@@ -804,7 +810,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Assignments
@@ -1256,6 +1262,349 @@
 
               
             
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 5: Tuples and Garbage Collection
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 5: Tuples and Garbage Collection
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Compiler passes
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Compiler passes
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-passes-that-are-unchanged-from-the-previous-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      A. Passes that are unchanged from the previous assignment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b-passes-that-have-minimal-modifications-from-the-previous-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      B. Passes that have minimal modifications from the previous assignment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c-passes-that-are-new" class="md-nav__link">
+    <span class="md-ellipsis">
+      C. Passes that are new
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C. Passes that are new">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#expose-allocation-expose_allocationml" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expose allocation (expose_allocation.ml)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Expose allocation (expose_allocation.ml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-transformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      The transformation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coding-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coding notes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d-passes-with-significant-modifications-from-the-previous-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      D. Passes with significant modifications from the previous assignment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="D. Passes with significant modifications from the previous assignment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-remove-complex-operands-remove_complexml" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Remove complex operands (remove_complex.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-explicate-control-explicate_controlml" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Explicate control (explicate_control.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-select-instructions-select_instructionsml" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Select instructions (select_instructions.ml)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Select instructions (select_instructions.ml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#collect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Collect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allocate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Allocate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#globalval" class="md-nav__link">
+    <span class="md-ellipsis">
+      GlobalVal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vecref-vecset-and-veclen" class="md-nav__link">
+    <span class="md-ellipsis">
+      VecRef, VecSet and VecLen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-uncover-live-uncover_liveml" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Uncover live (uncover_live.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-build-interference-build_interferenceml" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Build interference (build_interference.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-allocate-registers-allocate_registersml" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Allocate registers (allocate_registers.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-patch-instructions-patch_instructionsml" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Patch instructions (patch_instructions.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-prelude-and-conclusion-prelude_conclusionml" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Prelude and conclusion (prelude_conclusion.ml)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1531,8 +1880,8 @@ and the output language is <code>lalloc</code>.</p>
 <p>The goal of this pass is to replace the <code>vector</code> form
 (the vector constructor) with three lower-level forms:</p>
 <ol>
-<li><code>collect</code> which invokes the garbage collector</li>
-<li><code>allocate</code> which allocates memory on the heap</li>
+<li><code>collect</code> which invokes the garbage collector,</li>
+<li><code>allocate</code> which allocates memory on the heap,</li>
 <li><code>global_value</code> which accesses global variables
    which are used by the garbage collector.</li>
 </ol>
@@ -1683,10 +2032,10 @@ Please also refer to the textbook (section 6.6).</p>
 It has one argument, which is the number of bytes needed.
 It compiles to code to call the <code>collect</code> function of the garbage collector.
 This function (written in C in <code>runtime.c</code>)
-takes two arguments: a pointer to the "root stack"
+takes two arguments: a pointer to the end of the "root stack"
 (the extra stack for storing vector pointers)
 and the number of bytes needed.
-The first is always stored in register <code>%r15</code>;
+The first (the "root stack pointer") is always stored in register <code>%r15</code>;
 the second is the contents of the <code>Collect</code> constructor.</p>
 <p>Recall that function arguments are placed in the registers
 <code>%rdi</code>, <code>%rsi</code>, <code>%rdx</code>, <code>%rcx</code>, <code>%r8</code>, <code>%r9</code>in order;
@@ -1752,7 +2101,7 @@ with this signature:</p>
 </ul>
 <p>The binary number itself contains (in order from left to right):</p>
 <ul>
-<li>some unused bits</li>
+<li>some unused bits, which should all be 0s</li>
 <li>0/1 values corresponding to (up to) 50 slots in the vector;
   if the type of that slot is itself a vector, use a 1,
   else use a 0</li>
@@ -1841,12 +2190,14 @@ This only affects the handling of <code>callq</code> instructions
 when calling the <code>collect</code> function (<code>"collect"</code> label).
 In addition to what was done previously,
 you need to add an edge between all callee-save registers
-and all locations in the after set that correspond to vector-valued variables.</p>
+and all locations in the after set
+that correspond to call-live vector-valued variables.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Edges between <em>caller</em>-save registers and vector-valued variables
 will already be set up from the code from previous assignments.
-Given that we are not allowing pointers to vector-valued variables
+Given that we are not allowing pointers
+to call-live vector-valued variables
 to be stored in <em>any</em> registers or in the regular stack,
 the only place they can be stored in is in the root stack,
 which we will deal with in the next section.</p>
@@ -1861,7 +2212,7 @@ for VVVs like in the ch2 code.
 </div>
 </li>
 <li>
-<p>The <code>addq</code> and <code>sarq</code> instructions need to be processed.
+<p>The <code>andq</code> and <code>sarq</code> instructions need to be processed.
 This can be done much like the other instructions.</p>
 </li>
 <li>
@@ -1983,7 +2334,8 @@ returns a set of all the vector-valued variables.</p>
 <li>
 <p>The <code>allocate_registers</code> function now computes both
 the number of variables spilled to the regular stack
-and the number of variables spilled to the root stack.</p>
+and the number of variables spilled to the root stack.
+This information is stored in the <code>info3</code> datatype.</p>
 </li>
 </ol>
 <h3 id="7-patch-instructions-patch_instructionsml">7. Patch instructions (<code>patch_instructions.ml</code>)</h3>
@@ -2027,7 +2379,7 @@ after which a <code>callq</code> to the function label should be added.</p>
 <p>In the prelude, the address of the <code>rootstack_begin</code> global variable
 (again, use <code>fix_label</code> for global variable labels)
 should be copied to register <code>%r15</code>.
-Use instructions-pointer-relative addressing.</p>
+Use instruction-pointer-relative addressing.</p>
 </li>
 <li>
 <p>In the prelude, all the root stack slots should be initialized to 0.
@@ -2080,6 +2432,44 @@ a single root stack slot and no regular stack slots.</p>
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../overview/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../testing/" class="md-footer__link md-footer__link--next" aria-label="Next: Testing">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Testing
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
