@@ -1449,6 +1449,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#sequence-of-the-transformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sequence of the transformation
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1710,6 +1719,15 @@
   <a href="#coding-notes" class="md-nav__link">
     <span class="md-ellipsis">
       Coding notes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequence-of-the-transformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sequence of the transformation
     </span>
   </a>
   
@@ -2004,6 +2022,29 @@ the nested <code>let</code> expressions at the beginning of the form.</p>
 <p>This kind of "temporary label" is a very common use case
 for polymorphic variants in real-world OCaml code.</p>
 </div>
+<h4 id="sequence-of-the-transformation">Sequence of the transformation</h4>
+<p>We want your code to match the reference code exactly.
+The challenge is that this is an imperative pass, like "uniquify",
+because you are generating new names.
+It's not hard to match the reference code
+for a simple pass like "uniquify",
+but it's considerably harder here.
+To help you with this,
+here is a description of the order
+in which we implemented the transformation
+of expressions of the form <code>Vec (es, t)</code>:</p>
+<ol>
+<li>Recurse on all the subexpressions <code>es</code>.</li>
+<li>Generate all the fresh variable names
+   for non-atomic expressions in <code>es</code>.</li>
+<li>Generate a fresh name for the result vector.</li>
+<li>Generate the <code>if</code> expression.</li>
+<li>Generate all the <code>vector-set!</code> expressions.</li>
+<li>Generate all the nested <code>(let (_ ...) (vector-set! ...))</code> expressions
+   which wrap the <code>vector-set!</code> expressions.</li>
+<li>Generate the outermost <code>(let (_ ...) ...)</code> expression.</li>
+<li>Put everything together.</li>
+</ol>
 <h2 id="d-passes-with-significant-modifications-from-the-previous-assignment">D. Passes with significant modifications from the previous assignment</h2>
 <h3 id="1-remove-complex-operands-remove_complexml">1. Remove complex operands (<code>remove_complex.ml</code>)</h3>
 <p>In this pass, the input language is <code>lalloc_get</code>
