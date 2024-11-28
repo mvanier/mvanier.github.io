@@ -11,6 +11,10 @@
         <link rel="canonical" href="https://example.com/assignments/6/passes/">
       
       
+        <link rel="prev" href="../overview/">
+      
+      
+        <link rel="next" href="../testing/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -18,7 +22,7 @@
     
     
       
-        <title>Assignment 6: Compiler passes - The CS 164 book (Fall 2024)</title>
+        <title>Compiler passes - The CS 164 book (Fall 2024)</title>
       
     
     
@@ -108,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Assignment 6: Compiler passes
+              Compiler passes
             
           </span>
         </div>
@@ -801,17 +805,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
@@ -825,7 +831,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Assignments
@@ -1383,6 +1389,376 @@
 
               
             
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 6: Functions
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_7">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 6: Functions
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Compiler passes
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Compiler passes
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-passes-that-are-unchanged-from-the-previous-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      A. Passes that are unchanged from the previous assignment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b-passes-that-have-minimal-modifications-from-the-previous-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      B. Passes that have minimal modifications from the previous assignment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c-passes-that-are-new" class="md-nav__link">
+    <span class="md-ellipsis">
+      C. Passes that are new
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C. Passes that are new">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reveal-functions-reveal_functionsml" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reveal functions (reveal_functions.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limit-functions-limit_functionsml" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limit functions ("limit_functions.ml")
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Limit functions ("limit_functions.ml")">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coding-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coding notes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimize-optimizeml" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optimize (optimize.ml)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d-passes-with-significant-modifications-from-the-previous-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      D. Passes with significant modifications from the previous assignment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="D. Passes with significant modifications from the previous assignment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-shrink-shrinkml" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Shrink (shrink.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-uniquify-uniquifyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Uniquify (uniquify.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-expose-allocation-expose_allocationml" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Expose allocation (expose_allocation.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-remove-complex-operands-remove_complexml" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Remove complex operands (remove_complex.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-explicate-control-explicate_controlml" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Explicate control (explicate_control.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-select-instructions-select_instructionsml" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Select instructions (select_instructions.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-uncover-live-uncover_liveml" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Uncover live (uncover_live.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-build-interference-build_interferenceml" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Build interference (build_interference.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-patch-instructions-patch_instructionsml" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Patch instructions (patch_instructions.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-prelude-and-conclusion-prelude_conclusionml" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Prelude and conclusion (prelude_conclusion.ml)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e-peephole-optimizations-the-optimize-pass-optimizeml" class="md-nav__link">
+    <span class="md-ellipsis">
+      E. Peephole optimizations: the "optimize" pass (optimize.ml)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="E. Peephole optimizations: the "optimize" pass (optimize.ml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#removing-instructions-with-no-effect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Removing instructions with no effect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trimming-reciprocal-moves-and-identical-moves" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trimming reciprocal moves and identical moves
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1454,18 +1830,42 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#reveal-functions" class="md-nav__link">
+  <a href="#reveal-functions-reveal_functionsml" class="md-nav__link">
     <span class="md-ellipsis">
-      Reveal functions
+      Reveal functions (reveal_functions.ml)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#limit-functions" class="md-nav__link">
+  <a href="#limit-functions-limit_functionsml" class="md-nav__link">
     <span class="md-ellipsis">
-      Limit functions
+      Limit functions ("limit_functions.ml")
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Limit functions ("limit_functions.ml")">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coding-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coding notes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimize-optimizeml" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optimize (optimize.ml)
     </span>
   </a>
   
@@ -1487,90 +1887,123 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-shrink" class="md-nav__link">
+  <a href="#1-shrink-shrinkml" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Shrink
+      1. Shrink (shrink.ml)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-uniquify" class="md-nav__link">
+  <a href="#2-uniquify-uniquifyml" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Uniquify
+      2. Uniquify (uniquify.ml)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-remove-complex-operands-remove_complexml" class="md-nav__link">
+  <a href="#3-expose-allocation-expose_allocationml" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Remove complex operands (remove_complex.ml)
+      3. Expose allocation (expose_allocation.ml)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-explicate-control-explicate_controlml" class="md-nav__link">
+  <a href="#4-remove-complex-operands-remove_complexml" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Explicate control (explicate_control.ml)
+      4. Remove complex operands (remove_complex.ml)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-select-instructions-select_instructionsml" class="md-nav__link">
+  <a href="#5-explicate-control-explicate_controlml" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Select instructions (select_instructions.ml)
+      5. Explicate control (explicate_control.ml)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-uncover-live-uncover_liveml" class="md-nav__link">
+  <a href="#6-select-instructions-select_instructionsml" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Uncover live (uncover_live.ml)
+      6. Select instructions (select_instructions.ml)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-build-interference-build_interferenceml" class="md-nav__link">
+  <a href="#7-uncover-live-uncover_liveml" class="md-nav__link">
     <span class="md-ellipsis">
-      5. Build interference (build_interference.ml)
+      7. Uncover live (uncover_live.ml)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#6-allocate-registers-allocate_registersml" class="md-nav__link">
+  <a href="#8-build-interference-build_interferenceml" class="md-nav__link">
     <span class="md-ellipsis">
-      6. Allocate registers (allocate_registers.ml)
+      8. Build interference (build_interference.ml)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#7-patch-instructions-patch_instructionsml" class="md-nav__link">
+  <a href="#9-patch-instructions-patch_instructionsml" class="md-nav__link">
     <span class="md-ellipsis">
-      7. Patch instructions (patch_instructions.ml)
+      9. Patch instructions (patch_instructions.ml)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#8-prelude-and-conclusion-prelude_conclusionml" class="md-nav__link">
+  <a href="#10-prelude-and-conclusion-prelude_conclusionml" class="md-nav__link">
     <span class="md-ellipsis">
-      8. Prelude and conclusion (prelude_conclusion.ml)
+      10. Prelude and conclusion (prelude_conclusion.ml)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e-peephole-optimizations-the-optimize-pass-optimizeml" class="md-nav__link">
+    <span class="md-ellipsis">
+      E. Peephole optimizations: the "optimize" pass (optimize.ml)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="E. Peephole optimizations: the "optimize" pass (optimize.ml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#removing-instructions-with-no-effect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Removing instructions with no effect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trimming-reciprocal-moves-and-identical-moves" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trimming reciprocal moves and identical moves
     </span>
   </a>
   
@@ -1634,18 +2067,105 @@ and having to apply the conversion over multiple top-level functions.</p>
 but the extensions should be straightforward.</p>
 <ul>
 <li>uncover get!</li>
+<li>allocate registers</li>
 </ul>
 <h2 id="c-passes-that-are-new">C. Passes that are new</h2>
-<h3 id="reveal-functions">Reveal functions</h3>
-<p>TODO</p>
-<h3 id="limit-functions">Limit functions</h3>
-<p>TODO</p>
+<h3 id="reveal-functions-reveal_functionsml">Reveal functions (<code>reveal_functions.ml</code>)</h3>
+<p>The point of this pass is to replace any variable
+which is a function name with a <code>FunRef</code> form
+containing the name and the function arity.
+The supplied code makes an <code>int VarMap.t</code> map called <code>fmap</code>
+which maps all the top-level function names to their arities.
+Your job is to fill in the <code>reveal_functions_exp</code> function,
+which uses this map to identify
+variables which correspond to function names,
+and then replace those <code>Var</code> forms with <code>FunRef</code> forms.
+<code>Var</code> forms that don't involve function names are left alone.
+This pass is straightforward.</p>
+<p>Note that we place this pass after <code>uniquify</code>
+so that there can't any local variable names or function argument names
+which have the same name as any of the top-level function names,
+since all the local variable names
+and argument names have been "uniquified",
+but function names are left alone.</p>
+<h3 id="limit-functions-limit_functionsml">Limit functions ("limit_functions.ml")</h3>
+<p>We don't want to use the stack for argument passing
+in the event that our functions have more than six arguments,
+because this makes tail calls much harder to implement.
+What we do instead is transform the code so that 
+any function that has more than six arguments
+will have <em>exactly</em> six arguments,
+and the last argument will be a tuple (vector)
+of all but the first 5 original arguments.
+This affects both function definitions and function calls.</p>
+<p>A function definition is transformed like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>(define f ([x_1 : ty_1] ... [x_n : ty_n]) ty_ret body)
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>; --&gt;
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>(define f ([x_1 : ty_1] ... [x_5 : ty_5]
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>           [rest : (vector ty_6 ... ty_n)]) ty_ret body&#39;)
+</span></code></pre></div>
+<p>where <code>body'</code> is like <code>body</code>, but any <code>x_i</code> after <code>x_5</code>
+becomes a tuple access to <code>tup</code>.
+So <code>x_6</code> becomes <code>(vector-ref rest 0)</code>,
+<code>x_7</code> becomes <code>(vector-ref rest 1)</code>, <em>etc.</em></p>
+<p>When calling a function with more than 6 arguments,
+pack the extra arguments into a vector:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>(f x_1 ... x_n) 
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>; --&gt;
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>(f x_1 ... x_5 (vector x_6 ... x_n)
+</span></code></pre></div>
+<p>We do this transformation <em>only</em>
+if there are more than six arguments.
+If there are exactly six arguments,
+there is no need to do the transformation.</p>
+<p>We also have to change the arity of all <code>FunRef</code>s
+to limit the arity to at most 6.</p>
+<h4 id="coding-notes">Coding notes</h4>
+<p>We've broken down this pass into a number of functions
+that you should fill in:</p>
+<ul>
+<li><code>limit_type</code></li>
+<li><code>limit_args</code></li>
+<li><code>limit_functions_exp</code></li>
+<li><code>get_extra_args</code></li>
+<li><code>fix_fun_refs</code></li>
+</ul>
+<p>The comments before each function explain what the function does.</p>
+<p>For each user function,
+we compute a record of the extra argument information.
+This record has the type <code>extra_args</code>,
+which is defined in the file.
+It contains the name of the new tuple
+that will hold the extra arguments,
+the number of extra arguments,
+and a <code>VarMap</code> which maps the original argument name
+to the index in the new tuple.
+To generate the names for the new tuple,
+use the supplied <code>new_tup_var</code> function.
+If there are no extra arguments,
+we return the <code>no_extra_args</code> record.</p>
+<p>We store all the names of "limited" functions
+(those that have had their argument counts changed)
+in a variable called <code>limited_names</code>.
+This has the type <code>VarSet.t ref</code>,
+which means that it is a reference to a set of variables.
+In other words, it's a mutable set.
+We use this later in the <code>fix_fun_refs</code> function
+to change the arities of <code>FunRef</code>s for limited functions.</p>
+<p>The library functions <code>take</code> and <code>drop</code> (from <code>Support.Utils</code>)
+will be useful in this pass.
+<code>take n lst</code> returns a list
+which is a copy of the first <code>n</code> elements of the list <code>lst</code>,
+while <code>drop n lst</code> returns a list
+which contains all the elements of <code>lst</code> except for the first <code>n</code> elements.</p>
+<h3 id="optimize-optimizeml">Optimize (<code>optimize.ml</code>)</h3>
+<p>The "optimize" pass is a new pass which will be described in detail below.</p>
 <h2 id="d-passes-with-significant-modifications-from-the-previous-assignment">D. Passes with significant modifications from the previous assignment</h2>
 <p>Here we describe significant changes in some passes.
 All passes have to be extended to handle new constructors (if any)
 and multiple top-level functions;
 what we are describing here is everything else that also needs to change.</p>
-<h3 id="1-shrink">1. Shrink</h3>
+<h3 id="1-shrink-shrinkml">1. Shrink (<code>shrink.ml</code>)</h3>
 <p>There are two significant changes in the <code>shrink</code> pass.</p>
 <p>The first is that the final expression in the program
 is converted into the body of the <code>main</code> function.
@@ -1657,29 +2177,279 @@ as we did in the previous compiler.
 Even though vectors should be typed at this point
 (and you should signal an error if they are not),
 the type field still has the type <code>type option</code>.
-This will be important below in the "limit functions" pass.</p>
-<h3 id="2-uniquify">2. Uniquify</h3>
-<p>TODO</p>
-<h3 id="3-remove-complex-operands-remove_complexml">3. Remove complex operands (<code>remove_complex.ml</code>)</h3>
-<p>TODO</p>
-<h3 id="4-explicate-control-explicate_controlml">4. Explicate control (<code>explicate_control.ml</code>)</h3>
+This is necessary because we create new vectors
+in the "limit functions" pass
+which are initially untyped.
+(They get typed in a subsequent type checking pass.)</p>
+<h3 id="2-uniquify-uniquifyml">2. Uniquify (<code>uniquify.ml</code>)</h3>
+<p>The only significant change here is that the <code>uniquify_exp</code> function
+now takes a name-to-name mapping (a <code>var VarMap.t</code>) as an extra argument.
+This mapping is created in the (new) <code>uniquify_def</code> function,
+and includes the names of the function's arguments,
+since they will usually show up in the body of the function.</p>
+<h3 id="3-expose-allocation-expose_allocationml">3. Expose allocation (<code>expose_allocation.ml</code>)</h3>
+<p>Most of the "expose allocation" pass is identical to the previous compiler.
+The one significant difference is that in the input language (<code>lfun_ref</code>),
+<code>Vec</code> forms contain a <code>ty option</code> field instead of a <code>ty</code> field,
+even though they should be typed at this point.
+In the previous compiler,
+<code>Vec</code> forms contained a <code>ty</code> field, not a <code>ty option</code> field.
+Therefore, when processing a <code>Vec</code> form,
+signal an error if the <code>ty option</code> field is <code>None</code>.</p>
+<h3 id="4-remove-complex-operands-remove_complexml">4. Remove complex operands (<code>remove_complex.ml</code>)</h3>
+<p>There are two new forms that need to be handled here:
+<code>FunRef</code> and <code>Apply</code>.
+Both are classified as complex expressions
+(as explained in section 7.6 of the textbook).
+On the other hand,
+all the arguments of <code>Apply</code> must be atomic expressions.</p>
+<h3 id="5-explicate-control-explicate_controlml">5. Explicate control (<code>explicate_control.ml</code>)</h3>
 <p>In this pass, the input language is <code>lfun_ref_mon</code>
-and the output language is <code>cfun</code>.</p>
-<p>TODO</p>
-<h3 id="3-select-instructions-select_instructionsml">3. Select instructions (<code>select_instructions.ml</code>)</h3>
+and the output language is <code>cfun</code>.
+The <code>cfun</code> language extends the <code>ctup</code> language of assignment 5
+by adding several new forms:</p>
+<ul>
+<li>expressions: <code>FunRef</code> and <code>Call</code></li>
+<li>statements: <code>CallS</code></li>
+<li>tails: <code>TailCall</code></li>
+</ul>
+<p>In addition, there is the <code>fun_contents</code> record type
+which contains all information for a function
+(all types, argument names, local variable names, and the function body).</p>
+<p>The changes that need to be made in this pass are mostly trivial.
+Non-trivial or non-obvious changes include:</p>
+<ul>
+<li>
+<p><code>convert_exp</code>: <code>Apply</code> becomes a <code>Call</code>.</p>
+</li>
+<li>
+<p><code>explicate_pred</code>:
+<code>FunRef</code> are not handled since they can't be booleans.
+The <code>Apply</code> case is handled like a <code>VecRef</code>;
+implement this conversion:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>(if (apply f x1 x2 ...) ...)
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>; --&gt;
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>(let (apply_N (apply f x1 x2)) ;  `apply_N` is a new name
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  (if apply_N ...))
+</span></code></pre></div>
+</li>
+<li>
+<p><code>explicate_effect</code>:
+<code>Apply</code> becomes a <code>CallS</code>; otherwise, this case is handled like other cases.</p>
+</li>
+<li>
+<p><code>explicate_tail</code>: <code>Apply</code> becomes a <code>TailCall</code>.</p>
+</li>
+<li>
+<p><code>create_block</code>: add a case for <code>TailCall</code>.</p>
+</li>
+</ul>
+<h3 id="6-select-instructions-select_instructionsml">6. Select instructions (<code>select_instructions.ml</code>)</h3>
 <p>In this pass, the input language is <code>cfun</code>
-and the output language is <code>x86_var_def</code>.</p>
-<p>TODO</p>
-<h3 id="4-uncover-live-uncover_liveml">4. Uncover live (<code>uncover_live.ml</code>)</h3>
-<p>TODO</p>
-<h3 id="5-build-interference-build_interferenceml">5. Build interference (<code>build_interference.ml</code>)</h3>
-<p>TODO</p>
-<h3 id="6-allocate-registers-allocate_registersml">6. Allocate registers (<code>allocate_registers.ml</code>)</h3>
-<p>TODO</p>
-<h3 id="7-patch-instructions-patch_instructionsml">7. Patch instructions (<code>patch_instructions.ml</code>)</h3>
-<p>TODO</p>
-<h3 id="8-prelude-and-conclusion-prelude_conclusionml">8. Prelude and conclusion (<code>prelude_conclusion.ml</code>)</h3>
-<p>TODO</p>
+and the output language is <code>x86_var_def</code>.
+There are a number of significant changes and additions in this pass.
+(See section 7.8 in the textbook for a detailed walkthrough.)</p>
+<p>For a function named <code>FUNC</code>, <code>start</code> blocks become <code>FUNC_start</code>,
+and <code>conclusion</code> blocks become <code>FUNC_conclusion</code>.
+This is needed because there are multiple functions,
+each with its own <code>start</code> and <code>conclusion</code> block.</p>
+<p>Also, before the first instruction in the <code>FUNC_start</code> block,
+the function arguments must be moved from their designated registers
+(the argument passing registers:
+<code>%rdi</code> for argument 1, <code>%rsi</code> for argument 2, <em>etc.</em>)
+into the function argument names.
+We do this in the <code>add_arg_instrs</code> function.</p>
+<p>A number of new forms need to be handled,
+which we will illustrate schematically.</p>
+<ol>
+<li>
+<p>Assigning a <code>FunRef</code> to a variable:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>var = (FunRef f n)
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>--&gt;
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>leaq f(%rip), var  ; use GlobalArg for f(%rip)
+</span></code></pre></div>
+</li>
+<li>
+<p>Assigning a function call to a variable:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>var = (Call atm atms)
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>--&gt;
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>&lt;movq instructions from atms to registers&gt;
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>callq *atm   ; IndirectCallq
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>movq %rax, var
+</span></code></pre></div>
+</li>
+<li>
+<p>A non-returning function call (<code>CallS</code>): same as the previous case
+   without the final <code>movq</code> instruction.</p>
+</li>
+<li>
+<p>Returning a <code>FunRef</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>return (FunRef f n)
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>--&gt;
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>leaq f(%rip), %rax  ; use GlobalArg for f(%rip)
+</span></code></pre></div>
+</li>
+<li>
+<p>Returning a function call should be signalled as an error,
+   since this should have been converted to a <code>TailCall</code> previously.</p>
+</li>
+<li>
+<p>A <code>TailCall</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>(TailCall atm atms)
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>--&gt;
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>&lt;movq instructions from atms to registers&gt;
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>jmp *atm   ; TailJmp
+</span></code></pre></div>
+</li>
+</ol>
+<p>Don't forget to use <code>fix_label</code> on function names
+when outputting <code>Callq</code> or <code>GlobalArg</code> instructions.</p>
+<h3 id="7-uncover-live-uncover_liveml">7. Uncover live (<code>uncover_live.ml</code>)</h3>
+<p>This pass is the same as the previous compiler,
+except for the new instructions:</p>
+<ul>
+<li>
+<p><code>Leaq</code> writes to the destination register.
+  The label is irrelevant to liveness analysis.</p>
+</li>
+<li>
+<p><code>IndirectCallq</code> and <code>TailJmp</code> are like <code>Callq</code> except that they also
+   read from the argument (register) that stores the function address.</p>
+</li>
+</ul>
+<h3 id="8-build-interference-build_interferenceml">8. Build interference (<code>build_interference.ml</code>)</h3>
+<p>In this compiler, we build an interference graph for each function.</p>
+<p>Other than that,
+the only significant change to this pass
+is in the handling of <code>Callq</code> and <code>IndirectCallq</code> instructions.
+In the previous compiler,
+we ensured that call-live tuple-typed variables
+were not stored in registers (so they can be stored in the root stack).
+We did this by adding interference edges
+between such variables and all registers (caller-saved and callee-saved).
+Note that calls to built-in functions other than <code>collect</code>
+do not have this requirement.</p>
+<p>This is still true, but in addition,
+we need to add these interference edges
+for tuple-typed variables that are call-live
+during calls to user-defined functions, which use <code>IndirectCallq</code>.
+(We never use <code>Callq</code> for user-defined functions,
+only for built-in functions.)</p>
+<p>The reason we do this is that we want to ensure that
+tuple-typed variables are on the root stack
+during every garbage collection.
+A call to <code>collect</code> triggers a garbage collection,
+and a call to a user-defined function
+<em>may</em> trigger a garbage collection.
+To be conservative, we assume that it will.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A more sophisticated compiler could analyze functions
+to see if it could prove that no garbage collection
+was possible when calling that function;
+if so, it would not have to create interference edges
+between call-live tuple-typed variables
+and all registers when calling that function.</p>
+</div>
+<h3 id="9-patch-instructions-patch_instructionsml">9. Patch instructions (<code>patch_instructions.ml</code>)</h3>
+<p>Aside from obvious changes,
+the only things you need to make sure of in this pass are:</p>
+<ul>
+<li>
+<p><code>Leaq</code> instruction: the second (destination) argument must be a register.</p>
+</li>
+<li>
+<p><code>TailJmp</code> instruction: the source register should be <code>%rax</code>.
+The reason for this is discussed in the textbook (section 7.2.2).</p>
+</li>
+</ul>
+<h3 id="10-prelude-and-conclusion-prelude_conclusionml">10. Prelude and conclusion (<code>prelude_conclusion.ml</code>)</h3>
+<p>This pass is very well described in the textbook (section 7.11),
+so we refer you to that.
+Be sure not to forget to add the conclusion code before each tail call.
+Recall that tail calls are indirect jump (<code>TailJmp</code>) instructions.</p>
+<p>Also, unlike in the textbook,
+but like our previous compilers,
+this pass doesn't generate raw assembly code
+but abstract assembly code (see <code>x86_asm.mli</code>).
+This will turn out to be very handy in the final optimization pass,
+which we turn to now.</p>
+<h2 id="e-peephole-optimizations-the-optimize-pass-optimizeml">E. Peephole optimizations: the "optimize" pass (<code>optimize.ml</code>)</h2>
+<p>This pass isn't in the textbook.
+It implements various peephole optimizations.</p>
+<p>A "peephole optimization" is an optimization that can be done
+on a small number of nearby (usually adjacent) instructions.
+The name "peephole" suggests that
+you are looking at the list of instructions
+through a narrow peephole so you can only see a few at one time.
+Despite this, there are many cases in which
+you can replace or remove some of these instructions
+to get equivalent ones that do the same thing.
+So the idea is to</p>
+<ul>
+<li>remove instructions that aren't needed (reducing code size)</li>
+<li>replace instructions with other instructions that are more efficient</li>
+</ul>
+<p>In this pass, you will be working with
+the raw assembly language instructions
+generated by the "prelude and conclusion" pass.
+These instructions are represented in the <code>x86_asm</code> language,
+which is just raw x86-64 instructions
+represented as an OCaml datatype.</p>
+<p>Although there are many possible peephole optimizations,
+we will only be doing two kinds.</p>
+<h3 id="removing-instructions-with-no-effect">Removing instructions with no effect</h3>
+<p>Some instructions can't possibly have any effect,
+and can therefore be removed.
+We remove the following instructions:</p>
+<ol>
+<li>
+<p>Adding <code>0</code> to an integer-valued register/stack location.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>addq $0, %rcx   ; removed!
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>addq %rcx, $0   ; removed!
+</span></code></pre></div>
+</li>
+<li>
+<p>Subtracting <code>0</code> from an integer-valued register/stack location.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>subq $0, %rcx    ; removed!
+</span></code></pre></div>
+<p>Note that <code>subq %rcx, $0</code> <em>can't</em> be removed,
+since it negates the contents of the <code>%rcx</code> register.</p>
+</li>
+<li>
+<p>Self-moves: moving a register/stack location to itself.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>movq %rcx, %rcx  ; removed!
+</span></code></pre></div>
+</li>
+</ol>
+<p>This last case has been handled earlier,
+so it will probably not be necessary,
+but it's trivial to implement, so we do it.</p>
+<h3 id="trimming-reciprocal-moves-and-identical-moves">Trimming reciprocal moves and identical moves</h3>
+<p>In addition to self-moves,
+sometimes you have a pair of instructions of the form</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>movq X, Y
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>movq Y, X   ; removed!
+</span></code></pre></div>
+<p>It's clear that the second instruction can't have any effect,
+since after the first instruction,
+the two locations have the same value.
+So we can remove the second instruction.
+(We still have to keep the first instruction.)</p>
+<p>We also remove consecutive identical moves:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>movq X, Y
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>movq X, Y   ; removed!
+</span></code></pre></div>
+<p>This should work no matter how many consecutive identical moves there are.</p>
+<div class="admonition note">
+<p class="admonition-title">Additional optimizations</p>
+<p>If you think of extra peephole optimizations
+that could be implemented, please let us know!
+But please don't implement them in your compiler,
+or your output will differ from the course compiler's output.</p>
+</div>
 
 
 
@@ -1710,6 +2480,44 @@ and the output language is <code>x86_var_def</code>.</p>
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../overview/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../testing/" class="md-footer__link md-footer__link--next" aria-label="Next: Testing">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Testing
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
