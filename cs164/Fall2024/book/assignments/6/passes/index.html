@@ -2120,6 +2120,28 @@ If there are exactly six arguments,
 there is no need to do the transformation.</p>
 <p>We also have to change the arity of all <code>FunRef</code>s
 to limit the arity to at most 6.</p>
+<div class="admonition tip">
+<p class="admonition-title">Utility function: <code>convert_exp</code></p>
+<p>The "limit functions" pass is a bit unusual
+in that it outputs a program
+with the same datatype as its input.
+("Uniquify" is another pass like this.)
+We are providing a utility function
+called <code>convert_exp</code> in <code>lfun_refs.ml</code>
+which will apply an <code>exp -&gt; exp</code> transformation
+over each subexpression in an expression
+as well as the expression itself.
+We encourage you to use this function
+(though it isn't required)
+because it can shorten the pass quite a bit.
+We use it in <code>limit_functions_exp</code> and <code>fix_fun_refs</code>.</p>
+<p>There are OCaml extensions that allow you
+to automatically generate functions like <code>convert_exp</code>,
+but for simplicity, we aren't using them in this course.</p>
+<p>Also, don't confuse this with the <code>convert_exp</code> function
+in <code>explicate_control</code>!
+That is a different function.</p>
+</div>
 <h4 id="coding-notes">Coding notes</h4>
 <p>We've broken down this pass into a number of functions
 that you should fill in:</p>
