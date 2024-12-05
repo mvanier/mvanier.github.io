@@ -1666,18 +1666,27 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#9-patch-instructions-patch_instructionsml" class="md-nav__link">
+  <a href="#9-remove-jumps-remove_jumpsml" class="md-nav__link">
     <span class="md-ellipsis">
-      9. Patch instructions (patch_instructions.ml)
+      9. Remove jumps (remove_jumps.ml)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#10-prelude-and-conclusion-prelude_conclusionml" class="md-nav__link">
+  <a href="#10-patch-instructions-patch_instructionsml" class="md-nav__link">
     <span class="md-ellipsis">
-      10. Prelude and conclusion (prelude_conclusion.ml)
+      10. Patch instructions (patch_instructions.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-prelude-and-conclusion-prelude_conclusionml" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Prelude and conclusion (prelude_conclusion.ml)
     </span>
   </a>
   
@@ -1959,18 +1968,27 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#9-patch-instructions-patch_instructionsml" class="md-nav__link">
+  <a href="#9-remove-jumps-remove_jumpsml" class="md-nav__link">
     <span class="md-ellipsis">
-      9. Patch instructions (patch_instructions.ml)
+      9. Remove jumps (remove_jumps.ml)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#10-prelude-and-conclusion-prelude_conclusionml" class="md-nav__link">
+  <a href="#10-patch-instructions-patch_instructionsml" class="md-nav__link">
     <span class="md-ellipsis">
-      10. Prelude and conclusion (prelude_conclusion.ml)
+      10. Patch instructions (patch_instructions.ml)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-prelude-and-conclusion-prelude_conclusionml" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Prelude and conclusion (prelude_conclusion.ml)
     </span>
   </a>
   
@@ -2060,7 +2078,6 @@ and having to apply the conversion over multiple top-level functions.</p>
 <ul>
 <li>remove unused blocks</li>
 <li>graph coloring</li>
-<li>remove jumps</li>
 </ul>
 <h2 id="b-passes-that-have-minimal-modifications-from-the-previous-assignment">B. Passes that have minimal modifications from the previous assignment</h2>
 <p>These passes have to be extended to handle the new forms,
@@ -2375,7 +2392,15 @@ if so, it would not have to create interference edges
 between call-live tuple-typed variables
 and all registers when calling that function.</p>
 </div>
-<h3 id="9-patch-instructions-patch_instructionsml">9. Patch instructions (<code>patch_instructions.ml</code>)</h3>
+<h3 id="9-remove-jumps-remove_jumpsml">9. Remove jumps (<code>remove_jumps.ml</code>)</h3>
+<p>Since there are multiple "conclusion" blocks now
+(one for each function),
+you can't just remove the block labelled <code>conclusion</code>
+when considering which blocks to merge;
+you have to remove the block labelled <code>NAME_conclusion</code>
+where <code>NAME</code> is the name of the function.
+Other than this, the pass is basically unchanged.</p>
+<h3 id="10-patch-instructions-patch_instructionsml">10. Patch instructions (<code>patch_instructions.ml</code>)</h3>
 <p>Aside from obvious changes,
 the only things you need to make sure of in this pass are:</p>
 <ul>
@@ -2387,7 +2412,7 @@ the only things you need to make sure of in this pass are:</p>
 The reason for this is discussed in the textbook (section 7.2.2).</p>
 </li>
 </ul>
-<h3 id="10-prelude-and-conclusion-prelude_conclusionml">10. Prelude and conclusion (<code>prelude_conclusion.ml</code>)</h3>
+<h3 id="11-prelude-and-conclusion-prelude_conclusionml">11. Prelude and conclusion (<code>prelude_conclusion.ml</code>)</h3>
 <p>This pass is very well described in the textbook (section 7.11),
 so we refer you to that.
 Be sure not to forget to add the conclusion code before each tail call.
