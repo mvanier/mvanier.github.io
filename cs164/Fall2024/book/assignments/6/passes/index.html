@@ -2365,7 +2365,8 @@ the only significant change to this pass
 is in the handling of <code>Callq</code> and <code>IndirectCallq</code> instructions.
 In the previous compiler,
 we ensured that call-live tuple-typed variables
-were not stored in registers (so they can be stored in the root stack).
+were not stored in registers during a garbage collection
+(so they can be stored in the root stack).
 We did this by adding interference edges
 between such variables and all registers (caller-saved and callee-saved).
 Note that calls to built-in functions other than <code>collect</code>
