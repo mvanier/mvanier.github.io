@@ -1,0 +1,1321 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs4/Winter2025/book/assignments/4/partA_abstraction/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Part A: Abstraction (60 points) - The CS 4 book (Winter 2025)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-a-abstraction-60-points" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The CS 4 book (Winter 2025)" class="md-header__button md-logo" aria-label="The CS 4 book (Winter 2025)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 4 book (Winter 2025)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part A: Abstraction (60 points)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The CS 4 book (Winter 2025)" class="md-nav__button md-logo" aria-label="The CS 4 book (Winter 2025)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The CS 4 book (Winter 2025)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/welcome/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome to CS 4!
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/motivation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Motivation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/history/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    History
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Administrative
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Administrative
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Syllabus
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/collab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Collaboration policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignments
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Assignments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../0/assignment0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Assignment 0: Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Readings
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Readings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../readings/ocaml_cheat_sheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OCaml Cheat Sheet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../readings/subst/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    The Substitution Model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-sicp-exercise-22" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. (SICP exercise 2.2)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-sicp-exercise-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. (SICP exercise 2.3)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-sicp-exercise-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. (SICP exercise 2.4)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-sicp-exercise-25" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. (SICP exercise 2.5)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-unary-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Unary numbers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-sicp-exercise-26-church-numerals" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. (SICP exercise 2.6 : Church numerals)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-church-numerals-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Church numerals: types
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="part-a-abstraction-60-points">Part A: Abstraction (60 points)</h1>
+<h2 id="1-sicp-exercise-22">1. (SICP exercise 2.2)</h2>
+<p>[<strong>10 points</strong>]</p>
+<p>Consider the problem of representing points and line segments in a plane.
+Points will be represented as a record type called <code>point</code>,
+containing two (floating-point) numbers (with field names <code>x</code> and <code>y</code>).
+Line segments will be represented as a record type called <code>segment</code>
+containing two points: a starting point (a field called <code>startp</code>)
+and an ending point (a field called <code>endp</code>).
+Define the two datatypes using OCaml <code>type</code> definitions.</p>
+<p>Using this representation, define the following functions:</p>
+<ol>
+<li>
+<p><code>midpoint_segment</code>:
+this function will take a single <code>segment</code> as its only argument
+and return a <code>point</code> which is the midpoint of the line segment.</p>
+</li>
+<li>
+<p><code>segment_length</code>:
+this function will take a single <code>segment</code> as its only argument
+and return a <code>float</code> which is the length of the line segment.</p>
+</li>
+<li>
+<p><code>print_point</code>:
+this function will take a single <code>point</code> as its only argument
+and print its representation to the terminal.</p>
+</li>
+</ol>
+<p>Use the <code>Printf.printf</code> function with a suitable format string
+to print points.
+Use the <code>%g</code> formatting directive to print floating-point numbers
+without extra trailing zeros.
+The output should look like this
+when tested in the interactive OCaml interpreter:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">#</span> <span class="k">let</span> <span class="n">p1</span> <span class="o">=</span> <span class="o">...</span> <span class="o">;;</span> <span class="c">(* x = 1.0, y = 0.0 *)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">#</span> <span class="n">print_point</span> <span class="n">p1</span><span class="o">;;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="o">#</span> <span class="k">let</span> <span class="n">p2</span> <span class="o">=</span> <span class="o">...</span> <span class="o">;;</span> <span class="c">(* x = 3.4, y = -4.5 *)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="o">#</span> <span class="n">print_point</span> <span class="n">p2</span><span class="o">;;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="o">(</span><span class="mi">3</span><span class="o">.</span><span class="mi">4</span><span class="o">,</span> <span class="o">-</span><span class="mi">4</span><span class="o">.</span><span class="mi">5</span><span class="o">)</span>
+</span></code></pre></div>
+<p>You may find the built-in functions <code>abs_float</code> and <code>sqrt</code> useful
+for computing segment lengths.</p>
+<p>Finally, write the following functions,
+which serve as an abstraction layer for points and segments.</p>
+<ol>
+<li>
+<p><code>make_point</code>:
+this function takes two <code>float</code> arguments
+(representing the <code>x</code> and <code>y</code> coordinates)
+and returns a <code>point</code> in your representation.</p>
+</li>
+<li>
+<p><code>get_coords</code>:
+this function takes a <code>point</code> argument
+and returns a two-tuple of the (x, y) coordinates.</p>
+</li>
+<li>
+<p><code>make_segment</code>:
+this function takes two <code>point</code> arguments
+(representing the start and endpoints)
+and returns a <code>segment</code> in your representation.</p>
+</li>
+<li>
+<p><code>get_points</code>:
+this function takes a <code>segment</code> argument
+and returns a two-tuple of the (start, end) points.</p>
+</li>
+</ol>
+<h2 id="2-sicp-exercise-23">2. (SICP exercise 2.3)</h2>
+<p>[<strong>10 points</strong>]</p>
+<p>Implement a representation for rectangles in a plane.
+Create functions that compute the perimeter and the area of a given rectangle.
+Now implement a different representation for rectangles.
+Can you design your system with suitable abstraction barriers,
+so that the same perimeter and area functions
+will work using either representation?</p>
+<p>The first representation will store only a pair of points,
+representing the lower-left corner and the upper-right corner.
+The second representation will store four numbers,
+representing the lower and upper <code>x</code> values,
+and the lower and upper <code>y</code> values.
+Use the point and segment abstractions
+developed in the previous problem in your solution of this problem
+(you don't have to re-type that code).
+For both representations, define these accessors:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">rectangle_lower_segment</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">rectangle_upper_segment</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">rectangle_left_segment</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">rectangle_right_segment</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Don't define the accessors for one representation
+in terms of the accessors for the other representation even if you can.
+Pretend that the code for each representation
+was written by a different programmer
+with no knowledge of the other representation.</p>
+<p>Use the point and segment abstraction layers, as needed,
+to define these accessors.
+Don't use the internal representation of either points or segments.
+You may also find it useful
+to define new point accessors <code>get_x</code> and <code>get_y</code>
+to extract just the X or Y coordinates of points.
+These should be defined in terms of the <code>get_coords</code> accessor,
+and not in terms of the internal representation of points.</p>
+</div>
+<p>Then define the functions <code>rectangle_perimeter</code> and <code>rectangle_area</code>
+using <em>only</em> these accessors and functions
+from the point representation described above.</p>
+<p>Since we want to be able to test both representations,
+use the following names for the second representation's functions:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">rectangle_lower_segment2</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">rectangle_upper_segment2</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">rectangle_left_segment2</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">rectangle_right_segment2</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">rectangle_perimeter2</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">rectangle_area2</span>
+</span></code></pre></div>
+<p>Note, though,
+that the code for <code>rectangle_perimeter</code> and <code>rectangle_perimeter2</code>
+will be identical except for name changes
+(and similarly for <code>rectangle_area</code> and <code>rectangle_area2</code>).
+The code for the other corresponding functions will necessarily be different,
+because they will use different data representations.</p>
+<p>Judicious use of field punning (see the "OCaml notes" section)
+will make this code much easier to write.
+Also, don't forget about the dot syntax for accessing record fields,
+as it can be useful here too.</p>
+<p>Finally, for testing purposes, write the following functions:</p>
+<ol>
+<li>
+<p><code>make_rectangle</code>: this function takes two <code>point</code> arguments
+and creates a rectangle using the first representation.</p>
+</li>
+<li>
+<p><code>make_rectangle2</code>: this function takes four <code>float</code> arguments
+and creates a rectangle using the second representation.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Technically, <code>make_rectangle</code> and <code>make_rectangle2</code>
+could take their arguments in whatever order you like.
+However, the test scripts expect the order to be</p>
+<ul>
+<li>
+<p><code>make_rectangle ll ur</code>
+where <code>ll</code> is the point representing the lower-left corner,
+and <code>ur</code> is the point representing the upper-right corner</p>
+</li>
+<li>
+<p><code>make_rectangle2 lx ly ux uy</code>,
+where <code>lx</code> is the lower <code>x</code> value,
+<code>ux</code> is the upper <code>x</code> value,
+<code>ly</code> is the lower <code>y</code> value,
+and <code>uy</code> is the upper <code>y</code> value.</p>
+</li>
+</ul>
+<p>so please define your functions that way.</p>
+</div>
+<h2 id="3-sicp-exercise-24">3. (SICP exercise 2.4)</h2>
+<p>[<strong>5 points</strong>]</p>
+<p>There are many ways to represent data types.
+For instance, if we want to represent pairs of values, we could write:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">type</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="n">pair</span> <span class="o">=</span> <span class="nc">Pair</span> <span class="k">of</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">*</span> <span class="k">&#39;</span><span class="n">b</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">let</span> <span class="n">first</span> <span class="o">(</span><span class="nc">Pair</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="o">_))</span> <span class="o">=</span> <span class="n">x</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">let</span> <span class="n">second</span> <span class="o">(</span><span class="nc">Pair</span> <span class="o">(_,</span> <span class="n">y</span><span class="o">))</span> <span class="o">=</span> <span class="n">y</span>
+</span></code></pre></div>
+<p>Note that <code>pair</code> is a polymorphic type,
+with two type variables <code>'a</code> and <code>'b</code>,
+since the same definition will work for arbitrary types.
+(OCaml already defines the built-in functions <code>fst</code> and <code>snd</code>
+to extract the first and second elements of an arbitrary two-tuple.)</p>
+<p>Alternatively, we could just use "bare" two-tuples as our representation,
+or some kind of record type with two fields.
+A more exotic representation of pairs
+uses a function with two arguments as the pair data type.
+Here is part of the code for this representation:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">let</span> <span class="n">make_pair</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="k">fun</span> <span class="n">m</span> <span class="o">-&gt;</span> <span class="n">m</span> <span class="n">x</span> <span class="n">y</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c">(* Or, equivalently: let make_pair x y m = m x y *)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">let</span> <span class="n">first</span> <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">x</span><span class="o">)</span>
+</span></code></pre></div>
+<p>What is the corresponding definition of <code>second</code>?
+Write the code in your answer (not in a comment).
+Then verify (in a comment) that <code>first (make_pair x y)</code> yields <code>x</code>
+for any objects <code>x</code> and <code>y</code>.
+(You don't need to do a full substitution model evaluation;
+just enough to show that you get the correct answer.)
+Then write out (again in a comment)
+the full substitution model evaluation of <code>second (make_pair 1 2)</code>.
+(Spoiler alert: the answer should be <code>2</code>.)
+The evaluation isn't too long (about 25 lines).</p>
+<p>This representation for pairs
+is actually how pairs are represented in lambda calculus (LC),
+which adds strength to the argument that LC is in fact capable
+of representing arbitrary data and computations on that data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Depending on the warning settings,
+OCaml may complain about a function such as this:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">fun</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">x</span>
+</span></code></pre></div>
+<p>because the <code>y</code> argument isn't used.
+In that case, just use <code>_</code> instead:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">fun</span> <span class="n">x</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">x</span>
+</span></code></pre></div>
+</div>
+<h2 id="4-sicp-exercise-25">4. (SICP exercise 2.5)</h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Show that we can represent pairs of nonnegative integers
+using only numbers and arithmetic operations
+if we represent the pair of <span class="arithmatex">\(a\)</span> and <span class="arithmatex">\(b\)</span> as the integer <span class="arithmatex">\(2^a 3^b\)</span>.
+Give the corresponding definitions
+of the functions <code>make_pair</code>, <code>first</code>, and <code>second</code>.
+To avoid name clashes with the previous problem,
+call them <code>make_pairi</code>, <code>firsti</code>, and <code>secondi</code>.</p>
+<p>Before you do this, define the following two helper functions:</p>
+<ol>
+<li>
+<p><code>pow</code>:
+This function takes two <code>int</code> arguments
+and returns the first raised to the power of the second.
+So <code>pow 2 10</code> would give <code>1024</code>.
+(You may have defined this in the last assignment,
+in which case you can re-use that definition.)</p>
+</li>
+<li>
+<p><code>int_log</code>:
+This function takes two <code>int</code> arguments and returns
+the integer logarithm of the second to the base of the first,
+which we define as being the number of times
+that the base can be evenly divided into the number.
+Examples:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">int_log</span> <span class="mi">2</span> <span class="mi">1024</span> <span class="o">--&gt;</span> <span class="mi">10</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">int_log</span> <span class="mi">3</span> <span class="mi">1024</span> <span class="o">--&gt;</span> <span class="mi">0</span>    <span class="c">(* 1024 is not divisible by 3 *)</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">int_log</span> <span class="mi">2</span> <span class="mi">3888</span> <span class="o">--&gt;</span> <span class="mi">4</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">int_log</span> <span class="mi">3</span> <span class="mi">3888</span> <span class="o">--&gt;</span> <span class="mi">5</span>    <span class="c">(* 3888 = 2^4 * 3^5 *)</span>
+</span></code></pre></div>
+<p>In general, if <code>pow a b</code> is <code>c</code>, then <code>int_log a c</code> is <code>b</code>.</p>
+</li>
+</ol>
+<p>Once these functions have been defined,
+you can (and should) trivially define
+<code>make_pairi</code>, <code>firsti</code> and <code>secondi</code> in terms of them.</p>
+<p>You may assume that all arguments are positive integers,
+except that the second argument of <code>pow</code> can also be <code>0</code>.</p>
+<h2 id="5-unary-numbers">5. Unary numbers</h2>
+<p>[<strong>10 points</strong>]</p>
+<p>A very simple representation of non-negative integers
+is called the "unary number" representation.
+One way to represent a non-negative integer in this representation
+is as follows:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="mi">0</span> <span class="o">--&gt;</span> <span class="o">[</span><span class="n">blank</span><span class="o">]</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="mi">1</span> <span class="o">--&gt;</span> <span class="mi">1</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="mi">2</span> <span class="o">--&gt;</span> <span class="mi">11</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="mi">3</span> <span class="o">--&gt;</span> <span class="mi">111</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="mi">4</span> <span class="o">--&gt;</span> <span class="mi">1111</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="mi">5</span> <span class="o">--&gt;</span> <span class="mi">11111</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="c">(* etc. *)</span>
+</span></code></pre></div>
+<p>Clearly, the digit <code>1</code> is just a placeholder;
+we could just as well use anything else.
+In this problem,
+we'll write some functions to work with unary numbers in OCaml.
+Our first representation will use lists:
+zero will be the empty list,
+one will be the list containing only the <code>unit</code> value (<code>[()]</code>),
+two will be the list containing two <code>unit</code> values (<code>[(); ()]</code>),
+and so on.
+So we have:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="mi">0</span> <span class="o">--&gt;</span> <span class="bp">[]</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="mi">1</span> <span class="o">--&gt;</span> <span class="o">[</span><span class="bp">()</span><span class="o">]</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="mi">2</span> <span class="o">--&gt;</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="mi">3</span> <span class="o">--&gt;</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="mi">4</span> <span class="o">--&gt;</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="mi">5</span> <span class="o">--&gt;</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c">(* etc. *)</span>
+</span></code></pre></div>
+<p>This can be expressed as the following OCaml code, which is our
+abstraction layer for working with unary integers:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">let</span> <span class="n">zero</span> <span class="o">=</span> <span class="bp">[]</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="k">let</span> <span class="n">is_zero</span> <span class="o">=</span> <span class="k">function</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>  <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="bp">true</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>  <span class="o">|</span> <span class="bp">()</span> <span class="o">::</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">false</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="k">let</span> <span class="n">succ</span> <span class="n">u</span> <span class="o">=</span> <span class="bp">()</span> <span class="o">::</span> <span class="n">u</span>
+</span></code></pre></div>
+<p>You need to define the following functions:</p>
+<ol>
+<li>
+<p><code>prev</code>:
+This function takes one argument (a unary representation of an integer)
+and returns a unary integer one less than the argument.
+If the argument is (unary) zero,
+use the <code>invalid_arg</code> function
+with a reasonable error message to raise an exception.</p>
+</li>
+<li>
+<p><code>integer_to_unary</code>:
+This function takes one argument (an OCaml <code>int</code>)
+and returns a unary number representation of the same integer.</p>
+</li>
+<li>
+<p><code>unary_to_integer</code>:
+This function takes one argument (a unary representation of an integer)
+and returns the corresponding OCaml <code>int</code>.</p>
+</li>
+<li>
+<p><code>unary_add</code>:
+This function takes two arguments,
+both of which are unary representations of integers.
+It returns the result of adding the two integers together.
+The return value is a unary representation of an integer,
+not an OCaml <code>int</code>.</p>
+</li>
+</ol>
+<p>We are going to insist on a few more restrictions.
+Only the <code>prev</code> function should use pattern matching.
+The rest of the functions should only use <code>if</code>/<code>then</code>/<code>else</code> statements,
+the abstraction layer functions (<code>zero</code>, <code>is_zero</code>, <code>succ</code>, and <code>prev</code>),
+recursion, integer operations where they are essential, and nothing else.</p>
+<p><strong>Do not convert from unary numbers to integers to do any operations</strong>
+(except, obviously, in <code>unary_to_integer</code>).
+Similarly, <strong>do not convert integers to unary numbers to do any operations</strong>
+(except in <code>integer_to_unary</code>).</p>
+<div class="admonition examples">
+<p class="admonition-title">Examples</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="o">#</span> <span class="n">prev</span> <span class="o">[</span><span class="bp">()</span><span class="o">];;</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="bp">[]</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="o">#</span> <span class="n">prev</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">];;</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="o">#</span> <span class="n">integer_to_unary</span> <span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="bp">[]</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="o">#</span> <span class="n">integer_to_unary</span> <span class="mi">1</span><span class="o">;;</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="bp">()</span><span class="o">]</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="o">#</span> <span class="n">integer_to_unary</span> <span class="mi">10</span><span class="o">;;</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="o">#</span> <span class="n">unary_to_integer</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">];;</span>
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">9</span>
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>
+</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="o">#</span> <span class="n">unary_to_integer</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">];;</span>
+</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">3</span>
+</span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>
+</span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="o">#</span> <span class="n">unary_to_integer</span> <span class="o">[</span><span class="bp">()</span><span class="o">];;</span>
+</span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="__span-11-24"><a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>
+</span><span id="__span-11-25"><a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a><span class="o">#</span> <span class="n">unary_to_integer</span> <span class="bp">[]</span><span class="o">;;</span>
+</span><span id="__span-11-26"><a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-11-27"><a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a>
+</span><span id="__span-11-28"><a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a><span class="o">#</span> <span class="n">unary_add</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span> <span class="bp">[]</span><span class="o">;;</span>
+</span><span id="__span-11-29"><a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+</span><span id="__span-11-30"><a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a>
+</span><span id="__span-11-31"><a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a><span class="o">#</span> <span class="n">unary_add</span> <span class="bp">[]</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">];;</span>
+</span><span id="__span-11-32"><a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+</span><span id="__span-11-33"><a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a>
+</span><span id="__span-11-34"><a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a><span class="o">#</span> <span class="n">unary_add</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">];;</span>
+</span><span id="__span-11-35"><a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">;</span> <span class="bp">()</span><span class="o">]</span>
+</span><span id="__span-11-36"><a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a>
+</span><span id="__span-11-37"><a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a><span class="o">#</span> <span class="n">unary_to_integer</span>
+</span><span id="__span-11-38"><a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a>    <span class="o">(</span><span class="n">unary_add</span> <span class="o">(</span><span class="n">integer_to_unary</span> <span class="mi">1001</span><span class="o">)</span> <span class="o">(</span><span class="n">integer_to_unary</span> <span class="mi">65535</span><span class="o">));;</span>
+</span><span id="__span-11-39"><a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">66536</span>
+</span></code></pre></div>
+</div>
+<p>Now consider changing the the list-of-unit representation
+to this alternative unary representation:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">type</span> <span class="n">nat</span> <span class="o">=</span> <span class="nc">Zero</span> <span class="o">|</span> <span class="nc">Succ</span> <span class="k">of</span> <span class="n">nat</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">let</span> <span class="n">zero&#39;</span> <span class="o">=</span> <span class="nc">Zero</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="k">let</span> <span class="n">is_zero&#39;</span> <span class="o">=</span> <span class="k">function</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>  <span class="o">|</span> <span class="nc">Zero</span> <span class="o">-&gt;</span> <span class="bp">true</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>  <span class="o">|</span> <span class="nc">Succ</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">false</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="k">let</span> <span class="n">succ&#39;</span> <span class="n">u</span> <span class="o">=</span> <span class="nc">Succ</span> <span class="n">u</span>
+</span></code></pre></div>
+<p>Define <code>prev'</code> for this representation (you can use pattern matching).
+Do the other definitions
+(<code>integer_to_unary</code>, <code>unary_to_integer</code>, <code>unary_add</code>)
+have to change from their definitions in the previous representation
+(other than obvious name changes <em>e.g.</em> <code>is_zero</code> to <code>is_zero'</code>)?
+Write your answer in a comment.
+If the answer is yes,
+indicate which changes other than name changes have to be made.
+Write the new versions (even if they only require name changes).
+Try to re-use as much code as possible between the two representations.</p>
+<h2 id="6-sicp-exercise-26-church-numerals">6. (SICP exercise 2.6 : Church numerals)</h2>
+<p>[<strong>10 points</strong>]</p>
+<p>In case representing pairs as functions wasn't mind-boggling enough,
+consider that, in a language that can manipulate functions as data,
+we can even get by without <em>numbers</em>
+(at least insofar as nonnegative integers are concerned)
+by implementing zero and the operation of adding one as:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c">(* zerof = &quot;functional zero&quot;; we call it this so as not to be confused with</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="c">   zero or zero&#39; previously defined. *)</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="k">let</span> <span class="n">zerof</span> <span class="o">=</span> <span class="k">fun</span> <span class="n">s</span> <span class="o">-&gt;</span> <span class="k">fun</span> <span class="n">z</span> <span class="o">-&gt;</span> <span class="n">z</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>  <span class="c">(* or equivalently: let zerof = fun s z -&gt; z *)</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>  <span class="c">(* or equivalently: let zerof s z = z *)</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="k">let</span> <span class="n">add1</span> <span class="n">n</span> <span class="o">=</span> <span class="k">fun</span> <span class="n">s</span> <span class="o">-&gt;</span> <span class="k">fun</span> <span class="n">z</span> <span class="o">-&gt;</span> <span class="n">s</span> <span class="o">(</span><span class="n">n</span> <span class="n">s</span> <span class="n">z</span><span class="o">)</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>  <span class="c">(* or equivalently: let add1 n = fun s z -&gt; s (n s z) *)</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>  <span class="c">(* or equivalently: let add1 n s z = s (n s z) *)</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you copy this code directly into your assignment,
+you are likely to get warnings about unused variables,
+such as the <code>s</code> in <code>fun s -&gt; fun z -&gt; z</code>.
+Just replace these with <code>_</code> and the warnings will go away
+<em>e.g.</em> <code>fun _ -&gt; fun z -&gt; z</code>.</p>
+</div>
+<p>This representation is known as the "Church numeral" representation,
+after its inventor,
+<a href="https://en.wikipedia.org/wiki/Alonzo_Church">Alonzo Church</a>,
+the logician who invented the lambda calculus.
+Conceptually, <code>s</code> means "successor" and <code>z</code> means "zero",
+though in reality they don't really mean anything
+since they are just formal arguments of functions.</p>
+<p>Define <code>one</code> and <code>two</code> directly (not in terms of <code>zerof</code> and <code>add1</code>).
+(<em>Hint</em>: Use substitution to evaluate <code>add1 zerof</code> and see what you get.)
+Continue by additionally defining all the integers from <code>three</code> to <code>ten</code>
+as Church numerals.
+Do not use <code>add1</code> or any of the smaller Church numerals
+to define the Church numerals.
+All Church numerals should have two arguments: <code>s</code> and <code>z</code>
+(like <code>zerof</code> does).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Once you see the pattern,
+it will be very easy to define (non-negative) integers as Church numerals.
+You're not required to prove that your definitions are correct,
+but they have to <em>be</em> correct.</p>
+</div>
+<p>Define an addition function called <code>add</code> for Church numerals.
+Don't use <code>add1</code> in this definition,
+and don't use regular OCaml <code>int</code>s in this function either
+(directly or indirectly).
+It should have the form:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">let</span> <span class="n">add</span> <span class="n">m</span> <span class="n">n</span> <span class="n">s</span> <span class="n">z</span> <span class="o">=</span> <span class="o">...</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c">(* equivalent to: let add m n = fun s z -&gt; ... *)</span>
+</span></code></pre></div>
+<p>where <code>m</code> and <code>n</code> are the Church numerals to be added.
+Note that when you pass Church numerals <code>m</code> and <code>n</code> to <code>add</code>
+you get a function of two arguments <code>s</code> and <code>z</code> as the return value;
+that is the Church numeral which is the sum of <code>m</code> and <code>n</code>.
+The definition of <code>add</code> is extremely short.</p>
+<p>Then define a function called <code>church_to_integer</code> which,
+given a Church numeral,
+returns the corresponding non-negative integer.
+This is also a very short function.</p>
+<h2 id="7-church-numerals-types">7. Church numerals: types</h2>
+<p>[<strong>10 points</strong>]</p>
+<p>We cheated a little bit on the previous problem.
+Although we defined Church numerals in OCaml
+and were able to define useful functions on them,
+in fact, Church's original lambda calculus is <em>untyped</em>,
+whereas OCaml is very definitely typed, as you are well aware of by now.
+(Church later invented a typed lambda calculus as well,
+but that's not what we're referring to here.)
+Therefore, OCaml assigns types to all of the Church numerals
+(which are actually functions)
+as well as to the functions on Church numerals (<code>add1</code> and <code>add</code>).
+If you look at the <code>lab4.mli</code> interface file,
+you will see some types that you might not have expected:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">val</span> <span class="n">zerof</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="k">val</span> <span class="n">add1</span> <span class="o">:</span> <span class="o">((</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">c</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">c</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="k">val</span> <span class="n">one</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="k">val</span> <span class="n">two</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="k">val</span> <span class="n">three</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="k">val</span> <span class="n">four</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="k">val</span> <span class="n">five</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="k">val</span> <span class="n">six</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="k">val</span> <span class="n">seven</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="k">val</span> <span class="n">eight</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="k">val</span> <span class="n">nine</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="k">val</span> <span class="n">ten</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="k">val</span> <span class="n">add</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">d</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">d</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">c</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="k">val</span> <span class="n">church_to_integer</span> <span class="o">:</span> <span class="o">((</span><span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span>
+</span></code></pre></div>
+<p>These are the types that were automatically inferred for the functions
+as defined in <code>lab4.ml</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can generate these type signatures yourself by running:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>$<span class="w"> </span>ocamlc<span class="w"> </span>-i<span class="w"> </span>lab4.ml
+</span></code></pre></div>
+<p>on your <code>lab4.ml</code> file (assuming that it's correct).</p>
+</div>
+<p>One peculiar aspect of this is that <code>zerof</code> and <code>one</code>
+don't have the same types as the rest of the Church numerals.
+We might be OK with <code>one</code>,
+because it's more general than the subsequent Church numerals
+but compatible with them,
+but <code>zerof</code> is a completely different type.
+And <code>church_to_integer</code> doesn't even return an <code>int</code>!
+What is <em>that</em> all about?
+Let's compile the code and try it out:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>$ ocamlc -c lab4.mli  (* the code we supplied you with *)
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>$ ocamlc -c lab4.ml   (* your code *)
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>$ utop
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a># #load &quot;lab4.cmo&quot;;;
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a># open Lab4;;
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a># church_to_integer;;
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>- : ((int -&gt; int) -&gt; int -&gt; &#39;a) -&gt; &#39;a = &lt;fun&gt;
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a># zerof;;
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>- : &#39;a -&gt; &#39;b -&gt; &#39;b = &lt;fun&gt;
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a># one;;
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>- : (&#39;a -&gt; &#39;b) -&gt; &#39;a -&gt; &#39;b = &lt;fun&gt;
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a># church_to_integer zerof;;
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>- : int = 0
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a># church_to_integer one;;
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>- : int = 1
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a># church_to_integer ten;;
+</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>- : int = 10
+</span></code></pre></div>
+<p>Somehow, it works:
+<code>church_to_integer</code> returns an <code>int</code> when given
+any of the Church numerals we defined.
+By assigning types to the type variables in <code>church_to_integer</code>
+when the argument of that function is either <code>zerof</code> or <code>one</code>,
+explain why both <code>church_to_integer zerof</code> and <code>church_to_integer one</code>
+return an integer.
+Write your answer as an OCaml comment.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Since type variables are simply arbitrary names,
+you can write the type of <code>church_to_integer</code> as:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">val</span> <span class="n">church_to_integer</span> <span class="o">:</span> <span class="o">((</span><span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">c</span>
+</span></code></pre></div>
+<p>so that there is no chance of confusing the <code>'a</code> in its type with the
+<code>'a</code> in the types of <code>zerof</code> and <code>one</code>, which could refer to
+different types. Similarly, the <code>'a</code> and <code>'b</code> types in <code>zerof</code>
+don't have to be the same as the <code>'a</code> and <code>'b</code> types in <code>one</code> for
+expressions involving <code>zerof</code> or <code>one</code>, and specifically for
+<code>church_to_integer zerof</code> and <code>church_to_integer one</code>.</p>
+</div>
+<p>Your answer should indicate
+what type the type variables <code>'a</code>, <code>'b</code>, and <code>'c</code> have to be
+when evaluating <code>church_to_integer zerof</code> and <code>church_to_integer one</code>.
+They won't all be the same in both cases
+(which is OK because <code>church_to_integer</code> has a polymorphic type!).
+Then use this to argue that
+<code>church_to_integer zerof</code> and <code>church_to_integer one</code>
+both return values of type <code>int</code>.</p>
+<p>Also, don't forget that the "type arrow" (<code>-&gt;</code>)
+associates to the right,
+so the type <code>'a -&gt; 'b -&gt; 'c</code> means <code>'a -&gt; ('b -&gt; 'c)</code>.
+It's a very good idea to "desugar" type expressions in this manner
+before trying to compute type variable assignments.</p>
+<p>This process of assigning types to type variables in a consistent manner
+is called <em>type unification</em>
+and is one of the things that the OCaml compiler does for us.</p>
+<p>This is a somewhat challenging problem,
+so feel free to ask the TAs for help if you need it.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

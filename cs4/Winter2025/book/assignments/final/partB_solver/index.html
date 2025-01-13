@@ -1,0 +1,910 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs4/Winter2025/book/assignments/final/partB_solver/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Part B: The Solver module (30 points) - The CS 4 book (Winter 2025)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-b-the-solver-module-30-points" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The CS 4 book (Winter 2025)" class="md-header__button md-logo" aria-label="The CS 4 book (Winter 2025)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 4 book (Winter 2025)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part B: The Solver module (30 points)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The CS 4 book (Winter 2025)" class="md-nav__button md-logo" aria-label="The CS 4 book (Winter 2025)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The CS 4 book (Winter 2025)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/welcome/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome to CS 4!
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/motivation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Motivation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/history/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    History
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Administrative
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Administrative
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Syllabus
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/collab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Collaboration policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignments
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Assignments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../0/assignment0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Assignment 0: Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Readings
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Readings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../readings/ocaml_cheat_sheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OCaml Cheat Sheet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../readings/subst/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    The Substitution Model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-solve" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. solve
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="part-b-the-solver-module-30-points">Part B: The <code>Solver</code> module (30 points)</h1>
+<p>The code for this file will be written in the file <code>solver.ml</code>.
+You will define a functor called <code>AlgorithmX</code>
+which contains a single function called <code>solve</code>.
+This function can be written in less than 30 lines.
+It will allow you to "solve" a binary matrix,
+which means to find a subset of the rows
+where the column sums of each of the columns in the subset are all 1.
+The solution will be a set of integers
+representing the row indices from the original binary matrix.</p>
+<h2 id="1-solve">1. <code>solve</code></h2>
+<p>[<strong>30 points</strong>]</p>
+<p>Write the <code>solve</code> function in the <code>AlgorithmX</code> functor.</p>
+<p>The <code>AlgorithmX</code> functor looks like this:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">module</span> <span class="nc">AlgorithmX</span><span class="o">(</span><span class="nc">B</span> <span class="o">:</span> <span class="nc">BinaryMatrix</span><span class="o">)</span> <span class="o">=</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  <span class="k">struct</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="c">(* If the algorithm is successful, return a set of integers.</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c">     * Otherwise, return nothing. *)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">let</span> <span class="n">solve</span> <span class="o">(</span><span class="n">matrix</span> <span class="o">:</span> <span class="nn">B</span><span class="p">.</span><span class="n">t</span><span class="o">)</span> <span class="o">:</span> <span class="nn">IntSet</span><span class="p">.</span><span class="n">t</span> <span class="n">option</span> <span class="o">=</span> <span class="n">failwith</span> <span class="s2">&quot;TODO&quot;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  <span class="k">end</span>
+</span></code></pre></div>
+<p>and you have to fill in the code marked <code>failwith "TODO"</code>.</p>
+<p>The <code>solve</code> function takes one argument, which is a binary matrix.
+Because this code is inside a functor,
+the binary matrix doesn't have to be an <code>ImplBinaryMatrix</code>,
+but it has to conform to the <code>BinaryMatrix</code> module type
+(which <code>ImplBinaryMatrix</code> does).
+In fact, we will only be using it with the <code>ImplBinaryMatrix</code> module
+you wrote in the previous section.
+The <code>solve</code> function, if successful,
+will return a set of integers as an <code>IntSet.t option</code> value
+<em>i.e.</em> if the output set is <code>s</code>, it would return <code>Some s</code>.
+If the function is not successful, it will return <code>None</code>.</p>
+<p>Here's an outline of the algorithm to use.
+You start with the entire binary matrix
+and an initially empty set of integers
+representing the indices of the rows to pick.
+Call a helper function taking these as the arguments.
+In that helper function:</p>
+<ol>
+<li>
+<p>If there are no columns left in the matrix at all,
+the algorithm has terminated successfully,
+so return the set of row indices as <code>Some &lt;set of indices&gt;</code>.</p>
+</li>
+<li>
+<p>Otherwise, find the column that has the fewest number of 1s in it.</p>
+</li>
+<li>
+<p>Find the rows which have a 1 at that column index.
+If there was a column with no 1s in it at all,
+then there will be no rows with a 1 at that index,
+which means that the algorithm has terminated unsuccessfully.
+In that case, return <code>None</code>.
+Otherwise, pick a row from the ones that have a 1 at that column index,
+and:</p>
+<ol>
+<li>
+<p>for each column in that row that has a 1:</p>
+<ol>
+<li>
+<p>for each row in that column that has a 1
+(including the row you selected!), delete the row,</p>
+</li>
+<li>
+<p>and then delete the column.</p>
+</li>
+</ol>
+<p>What this does is make sure that the row you selected
+is the <em>only</em> row that has a 1 in that column.
+After that, we don't care about that column anymore,
+so we can delete it.</p>
+</li>
+<li>
+<p>add the index of the row you selected to the set of row indices.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Recursively apply the algorithm to the reduced matrix (go to step 1).
+If it returns <code>None</code>,
+you need to go back to step 3 and try a different row which has a 1 in it.
+(Make sure you also go back to the matrix
+<em>before</em> it had all the rows and columns removed!)
+If it returns <code>Some &lt;set of indices&gt;</code>, you have a solution,
+so just return that.
+If there are no more rows to try, return <code>None</code>.</p>
+</li>
+</ol>
+<p>Our solution used the following functions:</p>
+<ul>
+<li><code>B.cols</code></li>
+<li><code>B.cols_for_row</code></li>
+<li><code>B.delete_col</code></li>
+<li><code>B.delete_row</code></li>
+<li><code>B.min_col_sum_index</code></li>
+<li><code>B.rows_for_col</code></li>
+<li><code>IntSet.add</code></li>
+<li><code>List.fold_left</code></li>
+</ul>
+<p>The <code>B.</code> functions
+are from whichever <code>BinaryMatrix</code> implementation is given to the functor.
+In our case, they will be from the <code>ImplBinaryMatrix</code> module.
+Our solution was about 30 lines of code.
+(However,
+we used higher-order functions like <code>List.fold_left</code> extensively.
+Don't feel bad if your solution is longer, as long as it works!)</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Inside the <code>solve</code> function,
+<strong>do not</strong> hard-code the <code>ImplBinaryMatrix</code> module anywhere;
+use the <code>B</code> module, which is the functor's input argument.</p>
+</div>
+<p>You are encouraged to define and use helper functions as you see fit.
+They will need to go inside the functor
+if they do anything with binary matrices.
+The trickiest part of the algorithm
+is removing the rows and columns correctly.
+That can be done in a single non-recursive helper function
+of less than 10 lines if you use the <code>List.fold_left</code> higher-order function
+for iteration through the rows and columns.
+(Our solution consisted of that function
+and two other mutually-recursive helper functions.)
+Note that since this is functional programming,
+"removing" a row or column from a matrix
+means returning a new matrix without that row or column.</p>
+<p><strong>Make sure that your code is purely functional!</strong>
+Any use of imperative code will result in a significant penalty.
+Don't even use <code>while</code> or <code>for</code> loops.</p>
+<p>The 
+<a href="https://en.wikipedia.org/wiki/Knuth%27s_Algorithm_X">Wikipedia page on Algorithm X</a>
+has a good description of the algorithm.
+We will use their example below.
+We strongly recommend that you read the Wikipedia page
+to see their walkthrough of the algorithm on this example
+(we could reproduce it here, but it wouldn't be any different).</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c">(* </span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c">   First compile binmat.mli and binmat.ml e.g.</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c">   $ ocamlc -c binmat.mli</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c">   $ ocamlc -c binmat.ml</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c">*)</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="o">#</span> <span class="o">#</span><span class="n">load</span> <span class="s2">&quot;binmat.cmo&quot;</span><span class="o">;;</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="o">#</span> <span class="o">#</span><span class="n">use</span> <span class="s2">&quot;solver.ml&quot;</span><span class="o">;;</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="o">#</span> <span class="k">open</span> <span class="nc">ImplBinaryMatrix</span><span class="o">;;</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c">(* Make a binary matrix. *)</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="o">#</span> <span class="k">let</span> <span class="n">m</span> <span class="o">=</span> <span class="n">make</span> <span class="mi">6</span> <span class="mi">7</span> <span class="o">[(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span> <span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span> <span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">6</span><span class="o">);</span> 
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>                    <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span> 
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>                    <span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span> <span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">);</span> <span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">6</span><span class="o">);</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>                    <span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span> <span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">);</span> <span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">5</span><span class="o">);</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>                    <span class="o">(</span><span class="mi">4</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span> <span class="o">(</span><span class="mi">4</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span> <span class="o">(</span><span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">);</span> <span class="o">(</span><span class="mi">4</span><span class="o">,</span> <span class="mi">6</span><span class="o">);</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>                    <span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span> <span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">6</span><span class="o">)];;</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="c">(* This corresponds to this binary matrix:</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="c">   1 0 0 1 0 0 1</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="c">   1 0 0 1 0 0 0</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="c">   0 0 0 1 1 0 1</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="c">   0 0 1 0 1 1 0</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="c">   0 1 1 0 0 1 1</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="c">   0 1 0 0 0 0 1</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="c">*)</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="c">(* Use the AlgorithmX functor to define a module that works with the</span>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="c">   ImplBinaryMatrix module you defined in the previous section. *)</span>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="o">#</span> <span class="k">module</span> <span class="nc">Alg</span> <span class="o">=</span> <span class="nc">AlgorithmX</span><span class="o">(</span><span class="nc">ImplBinaryMatrix</span><span class="o">);;</span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="c">(* Use the Alg module to solve the binary matrix m. *)</span>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="o">#</span> <span class="k">let</span> <span class="n">sol</span> <span class="o">=</span> <span class="nn">Alg</span><span class="p">.</span><span class="n">solve</span> <span class="n">m</span><span class="o">;;</span>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="k">val</span> <span class="n">sol</span> <span class="o">:</span> <span class="nn">Binmat</span><span class="p">.</span><span class="nn">IntSet</span><span class="p">.</span><span class="n">t</span> <span class="n">option</span> <span class="o">=</span> <span class="nc">Some</span> <span class="o">&lt;</span><span class="n">abstr</span><span class="o">&gt;</span>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="c">(* Woo hoo!  We have a solution!  Let&#39;s extract it: *)</span>
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="o">#</span> <span class="k">let</span> <span class="o">(</span><span class="nc">Some</span> <span class="n">sol&#39;</span><span class="o">)</span> <span class="o">=</span> <span class="n">sol</span><span class="o">;;</span>
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="nc">Warning</span> <span class="mi">8</span><span class="o">:</span> <span class="n">this</span> <span class="n">pattern</span><span class="o">-</span><span class="n">matching</span> <span class="n">is</span> <span class="n">not</span> <span class="n">exhaustive</span><span class="o">.</span>
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a><span class="nc">Here</span> <span class="n">is</span> <span class="n">an</span> <span class="n">example</span> <span class="k">of</span> <span class="n">a</span> <span class="n">case</span> <span class="n">that</span> <span class="n">is</span> <span class="n">not</span> <span class="n">matched</span><span class="o">:</span>
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a><span class="nc">None</span>
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="c">(* This warning is not important. *)</span>
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a><span class="k">val</span> <span class="n">sol&#39;</span> <span class="o">:</span> <span class="nn">Binmat</span><span class="p">.</span><span class="nn">IntSet</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">abstr</span><span class="o">&gt;</span>
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a><span class="c">(* Now convert the set of integers into a list of integers. *)</span>
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a><span class="o">#</span> <span class="nn">IntSet</span><span class="p">.</span><span class="n">elements</span> <span class="n">sol&#39;</span><span class="o">;;</span>
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Binmat</span><span class="p">.</span><span class="nn">IntSet</span><span class="p">.</span><span class="n">elt</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">3</span><span class="o">;</span> <span class="mi">5</span><span class="o">]</span>
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>
+</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a><span class="c">(* </span>
+</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>
+</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a><span class="c">   This shows us that rows 1, 3, and 5 solve the problem.  Look at the binary</span>
+</span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a><span class="c">   matrix consisting only of those rows:</span>
+</span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>
+</span><span id="__span-1-58"><a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a><span class="c">   1 0 0 1 0 0 0</span>
+</span><span id="__span-1-59"><a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a><span class="c">   0 0 1 0 1 1 0</span>
+</span><span id="__span-1-60"><a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a><span class="c">   0 1 0 0 0 0 1</span>
+</span><span id="__span-1-61"><a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a>
+</span><span id="__span-1-62"><a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a><span class="c">   Notice how each column has exactly one 1.</span>
+</span><span id="__span-1-63"><a id="__codelineno-1-63" name="__codelineno-1-63" href="#__codelineno-1-63"></a>
+</span><span id="__span-1-64"><a id="__codelineno-1-64" name="__codelineno-1-64" href="#__codelineno-1-64"></a><span class="c">*)</span>
+</span></code></pre></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

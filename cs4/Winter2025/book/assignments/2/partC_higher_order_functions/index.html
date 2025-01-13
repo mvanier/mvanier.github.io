@@ -1,0 +1,1112 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs4/Winter2025/book/assignments/2/partC_higher_order_functions/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Part C. Higher-order functions (30 points) - The CS 4 book (Winter 2025)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-c-higher-order-functions-30-points" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The CS 4 book (Winter 2025)" class="md-header__button md-logo" aria-label="The CS 4 book (Winter 2025)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 4 book (Winter 2025)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part C. Higher-order functions (30 points)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The CS 4 book (Winter 2025)" class="md-nav__button md-logo" aria-label="The CS 4 book (Winter 2025)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The CS 4 book (Winter 2025)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/welcome/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome to CS 4!
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/motivation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Motivation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/history/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    History
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Administrative
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Administrative
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Syllabus
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/collab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Collaboration policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignments
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Assignments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../0/assignment0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Assignment 0: Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Readings
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Readings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../readings/ocaml_cheat_sheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OCaml Cheat Sheet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../readings/subst/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    The Substitution Model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-sicp-exercise-130" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. (SICP exercise 1.30)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-sicp-exercise-131" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. (SICP exercise 1.31)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-sicp-exercise-132" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. (SICP exercise 1.32)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-sicp-exercise-142" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. (SICP exercise 1.42)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-sicp-exercise-143" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. (SICP exercise 1.43)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-sicp-exercise-144" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. (SICP exercise 1.44)
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="part-c-higher-order-functions-30-points">Part C. Higher-order functions (30 points)</h1>
+<p>In this section,
+use <code>num</code> as the numeric type for all operations
+unless otherwise indicated.
+For convenience, put this at the top of the file:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">open</span> <span class="nc">Num</span>
+</span></code></pre></div>
+<p>and define this helper function (really just an alias):</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">let</span> <span class="n">ni</span> <span class="o">=</span> <span class="n">num_of_int</span>     <span class="c">(* convert int -&gt; num *)</span>
+</span></code></pre></div>
+<p>We will use <code>num</code> as the numeric type
+when we want either or both of
+arbitrarily large integers and rational numbers.
+Note that doing arithmetic on <code>num</code>s
+requires the use of the special <code>num</code> operators
+<code>+/</code>, <code>-/</code>, <code>*/</code>, <code>//</code> <em>etc.</em>
+The usual relational operators (<code>&lt;</code>, <code>&lt;=</code>, <code>=</code> <em>etc.</em>)
+will work if used on integers,
+but don't work with rational numbers,
+so use the <code>num</code> equivalents
+<code>&lt;/</code>, <code>&lt;=/</code>, <code>=/</code>
+in these cases.</p>
+<h2 id="1-sicp-exercise-130">1. (SICP exercise 1.30)</h2>
+<p>[<strong>5 points</strong>]</p>
+<p>The following <code>sum</code> function generates a linear recursion:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">let</span> <span class="k">rec</span> <span class="n">sum</span> <span class="n">term</span> <span class="n">a</span> <span class="n">next</span> <span class="n">b</span> <span class="o">=</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;/</span> <span class="n">b</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>     <span class="k">then</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">0</span><span class="o">)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>     <span class="k">else</span> <span class="n">term</span> <span class="n">a</span> <span class="o">+/</span> <span class="o">(</span><span class="n">sum</span> <span class="n">term</span> <span class="o">(</span><span class="n">next</span> <span class="n">a</span><span class="o">)</span> <span class="n">next</span> <span class="n">b</span><span class="o">)</span>
+</span></code></pre></div>
+<p>(Recall that the <code>&gt;/</code> operator is comparison of <code>num</code>s
+and the <code>+/</code> operator is addition of <code>num</code>s.)
+<code>term</code> is a function of one argument
+which generates the current term in a sequence given a sequence value,
+while <code>next</code> is a function of one argument
+which generates the next value in the sequence.
+For instance:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">sum</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">*/</span> <span class="n">x</span><span class="o">)</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">1</span><span class="o">)</span> <span class="o">(</span><span class="k">fun</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">n</span> <span class="o">+/</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">1</span><span class="o">))</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">10</span><span class="o">)</span>
+</span></code></pre></div>
+<p>will compute the sum of all squares of the numbers 1 through 10
+(expressed as <code>num</code>s).</p>
+<p>The function can be rewritten so that the sum is performed iteratively.
+Show how to do this by filling in the missing expressions
+in the following definition:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">let</span> <span class="n">isum</span> <span class="n">term</span> <span class="n">a</span> <span class="n">next</span> <span class="n">b</span> <span class="o">=</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  <span class="k">let</span> <span class="k">rec</span> <span class="n">iter</span> <span class="n">a</span> <span class="n">result</span> <span class="o">=</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="k">if</span> <span class="o">&lt;??&gt;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>       <span class="k">then</span> <span class="o">&lt;??&gt;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>       <span class="k">else</span> <span class="n">iter</span> <span class="o">&lt;??&gt;</span> <span class="o">&lt;??&gt;</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  <span class="k">in</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">iter</span> <span class="o">&lt;??&gt;</span> <span class="o">&lt;??&gt;</span>
+</span></code></pre></div>
+<p>Assume that <code>term</code> is a function of type <code>num -&gt; num</code>.</p>
+<div class="admonition examples">
+<p class="admonition-title">Examples</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">#</span> <span class="k">let</span> <span class="n">square</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*/</span> <span class="n">n</span> <span class="o">;;</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">val</span> <span class="n">square</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">-&gt;</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="o">#</span> <span class="k">let</span> <span class="n">step1</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+/</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">1</span><span class="o">)</span> <span class="o">;;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">val</span> <span class="n">step1</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">-&gt;</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="o">#</span> <span class="n">isum</span> <span class="n">square</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">10</span><span class="o">)</span> <span class="n">step1</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">0</span><span class="o">);;</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">0</span><span class="o">&gt;</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="o">#</span> <span class="n">isum</span> <span class="n">square</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">4</span><span class="o">)</span> <span class="n">step1</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">4</span><span class="o">);;</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">16</span><span class="o">&gt;</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="o">#</span> <span class="n">isum</span> <span class="n">square</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">0</span><span class="o">)</span> <span class="n">step1</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">10</span><span class="o">);;</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">385</span><span class="o">&gt;</span>
+</span></code></pre></div>
+</div>
+<h2 id="2-sicp-exercise-131">2. (SICP exercise 1.31)</h2>
+<p>[<strong>5 points</strong>]</p>
+<ol>
+<li>
+<p>The <code>sum</code> function is only the simplest
+of a vast number of similar abstractions
+that can be captured as higher-order functions.
+Write an analogous function called <code>product</code>
+that returns the product of the values of a function
+at points over a given range.
+Show how to define <code>factorial</code> in terms of product.
+Also use <code>product</code> to compute approximations to <span class="arithmatex">\(\pi\)</span> (3.1415926...)
+using the formula:</p>
+<div class="arithmatex">\[
+\frac{\pi}{4}
+= \frac{2 \cdot 4 \cdot 4 \cdot 6 \cdot 6 \cdot 8}
+       {3 \cdot 3 \cdot 5 \cdot 5 \cdot 7 \cdot 7}
+\]</div>
+</li>
+<li>
+<p>If your product function generates a recursive process,
+write one that generates an iterative process.
+If it generates an iterative process,
+write one that generates a recursive process.</p>
+</li>
+</ol>
+<p>Call your recursive <code>product</code> function <code>product_rec</code>
+and your iterative one <code>product_iter</code>.
+Define a version of <code>factorial</code> using both forms of <code>product</code>,
+calling one <code>factorial_rec</code> and the other <code>factorial_iter</code>.</p>
+<div class="admonition examples">
+<p class="admonition-title">Examples</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="o">#</span> <span class="n">factorial_rec</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">0</span><span class="o">)</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">1</span><span class="o">&gt;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="o">#</span> <span class="n">factorial_iter</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">0</span><span class="o">)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">1</span><span class="o">&gt;</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="o">#</span> <span class="n">factorial_rec</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">10</span><span class="o">)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">3628800</span><span class="o">&gt;</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="o">#</span> <span class="n">factorial_iter</span> <span class="o">(</span><span class="n">ni</span> <span class="mi">10</span><span class="o">)</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">3628800</span><span class="o">&gt;</span>
+</span></code></pre></div>
+</div>
+<p>Also write the code to generate an approximation to <span class="arithmatex">\(\pi\)</span>
+(using either the recursive or iterative version of <code>product</code>)
+by filling in the following definitions using the formula described above.
+Use at least 1000 terms from the product.</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">let</span> <span class="n">pi_product</span> <span class="n">n</span> <span class="o">=</span> <span class="o">&lt;??&gt;</span>   <span class="c">(* infinite product expansion up to n terms *)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">let</span> <span class="n">pi_approx</span> <span class="o">=</span> <span class="o">&lt;??&gt;</span>      <span class="c">(* defined in terms of pi_product *)</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the purposes of this problem,
+consider a "single term" of the <span class="arithmatex">\(\pi\)</span> approximation to be
+two consecutive numerator numbers
+and two consecutive denominator numbers.
+So the first "term" would be </p>
+<div class="arithmatex">\[
+\frac{2 \cdot 4}{3 \cdot 3}
+\]</div>
+<p>the second "term" would be</p>
+<div class="arithmatex">\[
+\frac{4 \cdot 6}{5 \cdot 5}
+\]</div>
+<p><em>etc.</em>
+Multiplying all the terms together
+gives the desired approximation to <span class="arithmatex">\(\pi\)</span>.</p>
+</div>
+<p>Use <code>num</code> as the numeric type for all operations
+except for the <code>pi_approx</code> value, which should be a <code>float</code>.
+Use the <code>float_of_num</code> function
+to convert from a rational approximation to pi
+(obtained by the formula given above) to a <code>float</code>.
+Note that we're using <code>num</code>s in this case
+because we want arbitrarily-precise rational numbers.
+Be careful to use <code>num</code> operators throughout!</p>
+<p>Note that none of these functions need to be more than a few lines long.
+(Our longest function for this problem is 7 lines long.)</p>
+<h2 id="3-sicp-exercise-132">3. (SICP exercise 1.32)</h2>
+<p>[<strong>5 points</strong>]</p>
+<ol>
+<li>
+<p>Show that <code>sum</code> and <code>product</code> from the previous problems
+are both special cases of a still more general notion called <code>accumulate</code><sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>
+that combines a collection of terms,
+using some general accumulation function:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">accumulate</span> <span class="n">combiner</span> <span class="n">null_value</span> <span class="n">term</span> <span class="n">a</span> <span class="n">next</span> <span class="n">b</span>
+</span></code></pre></div>
+<p><code>accumulate</code> takes as arguments the same term and range specifications
+as <code>sum</code> and <code>product</code>,
+together with a <code>combiner</code> function (of two arguments)
+that specifies how the current term is to be combined
+with the accumulation of the preceding terms,
+and a <code>null_value</code> that specifies what base value to use
+when the terms run out.
+Write <code>accumulate</code> and show how <code>sum</code> and <code>product</code>
+can both be defined as simple calls to <code>accumulate</code>.
+Assume that all numeric types are <code>num</code>.</p>
+</li>
+<li>
+<p>If your <code>accumulate</code> function generates a recursive process,
+write one that generates an iterative process.
+If it generates an iterative process,
+write one that generates a recursive process.</p>
+</li>
+</ol>
+<p>Call the recursive <code>accumulate</code> function <code>accumulate_rec</code>
+and the iterative version <code>accumulate_iter</code>.
+You can use either form to define <code>sum</code> and <code>product</code>.
+Note that in order to use an operator as a function,
+you must wrap it in parentheses
+(this is useful when passing an operator as an argument to a function).
+If the operator name starts with an asterisk,
+you have to put a space between it and the open parenthesis
+so OCaml doesn't mistake it for a comment!
+In other words, write <code>( */ )</code> instead of <code>(*/)</code>.</p>
+<h2 id="4-sicp-exercise-142">4. (SICP exercise 1.42)</h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Let <code>f</code> and <code>g</code> be two one-argument functions.
+The <em>composition</em> of function <span class="arithmatex">\(f\)</span> after <span class="arithmatex">\(g\)</span>
+(often written <span class="arithmatex">\(f \circ g\)</span>)
+is defined to be the function <span class="arithmatex">\(x \mapsto f(g(x))\)</span>.
+Define a function <code>compose</code> that implements composition.</p>
+<p>In the examples below,
+we use <code>int</code> instead of <code>num</code> as the numeric type.
+The type of <code>compose</code> doesn't depend on what numeric type we use.</p>
+<div class="admonition examples">
+<p class="admonition-title">Examples</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="o">#</span> <span class="k">let</span> <span class="n">square</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span><span class="o">;;</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="o">#</span> <span class="k">let</span> <span class="n">inc</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;;</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="o">#</span> <span class="o">(</span><span class="n">compose</span> <span class="n">square</span> <span class="n">inc</span><span class="o">)</span> <span class="mi">6</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">49</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="o">#</span> <span class="o">(</span><span class="n">compose</span> <span class="n">inc</span> <span class="n">square</span><span class="o">)</span> <span class="mi">6</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">37</span>
+</span></code></pre></div>
+</div>
+<h2 id="5-sicp-exercise-143">5. (SICP exercise 1.43)</h2>
+<p>[<strong>5 points</strong>]</p>
+<p>If <span class="arithmatex">\(f\)</span> is a numerical function and <span class="arithmatex">\(n\)</span> is a positive integer,
+then we can form the <span class="arithmatex">\(n\)</span>th repeated application of <span class="arithmatex">\(f\)</span>,
+which is defined to be the function whose value at <span class="arithmatex">\(x\)</span> is
+<span class="arithmatex">\(f(f(\ldots(f(x))\ldots))\)</span>
+(with <span class="arithmatex">\(n\)</span> <span class="arithmatex">\(f\)</span>s).</p>
+<p>For example, if <span class="arithmatex">\(f\)</span> is the function <span class="arithmatex">\(x \mapsto x + 1\)</span>,
+then the <span class="arithmatex">\(n\)</span>th repeated application of <span class="arithmatex">\(f\)</span>
+is the function <span class="arithmatex">\(x \mapsto x + n\)</span>.
+If <span class="arithmatex">\(f\)</span> is the operation of squaring a number,
+then the <span class="arithmatex">\(n\)</span>th repeated application of <span class="arithmatex">\(f\)</span>
+is the function that raises its argument to the <span class="arithmatex">\(2n\)</span>th power.</p>
+<p>Write a function that takes as inputs a function that computes <span class="arithmatex">\(f\)</span>
+and a positive integer <span class="arithmatex">\(n\)</span> and returns
+the function that computes the <span class="arithmatex">\(n\)</span>th repeated application of <span class="arithmatex">\(f\)</span>.
+Your function should be able to be used as follows:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="o">#</span> <span class="o">(</span><span class="n">repeated</span> <span class="n">square</span> <span class="mi">2</span><span class="o">)</span> <span class="mi">5</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">625</span>
+</span></code></pre></div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>You may find it convenient to use <code>compose</code> from the previous exercise
+in your definition of <code>repeated</code>.</p>
+</div>
+<p>In the examples below,
+we use <code>int</code> instead of <code>num</code> as the numeric type.
+The type of <code>repeated</code> doesn't depend on what numeric type we use.</p>
+<div class="admonition examples">
+<p class="admonition-title">Examples</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="o">#</span> <span class="k">let</span> <span class="n">square</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span><span class="o">;;</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="o">#</span> <span class="o">(</span><span class="n">repeated</span> <span class="n">square</span> <span class="mi">0</span><span class="o">)</span> <span class="mi">6</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">6</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="o">#</span> <span class="o">(</span><span class="n">repeated</span> <span class="n">square</span> <span class="mi">1</span><span class="o">)</span> <span class="mi">6</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">36</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="o">#</span> <span class="o">(</span><span class="n">repeated</span> <span class="n">square</span> <span class="mi">2</span><span class="o">)</span> <span class="mi">6</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">1296</span>
+</span></code></pre></div>
+</div>
+<p>Note that a function repeated 0 times is the identity function.
+If you do this right, the solution will be very short.</p>
+<h2 id="6-sicp-exercise-144">6. (SICP exercise 1.44)</h2>
+<p>[<strong>5 points</strong>]</p>
+<p>The idea of <em>smoothing</em> a function
+is an important concept in signal processing.
+If <span class="arithmatex">\(f\)</span> is a function of one (numerical) argument
+and <span class="arithmatex">\(dx\)</span> is some small number,
+then the smoothed version of <span class="arithmatex">\(f\)</span>
+is the function whose value at a point <span class="arithmatex">\(x\)</span>
+is the average of <span class="arithmatex">\(f(x - dx)\)</span>, <span class="arithmatex">\(f(x)\)</span>, and <span class="arithmatex">\(f(x + dx)\)</span>.</p>
+<p>Write a function <code>smooth</code> that takes as input
+a function <code>f</code> and a <code>dx</code> value
+and returns a function (of one numerical argument)
+that computes the smoothed <code>f</code>.</p>
+<p>It is sometimes valuable to <em>repeatedly</em> smooth a function
+(that is, smooth the smoothed function, and so on)
+to obtained the <span class="arithmatex">\(n\)</span>-fold smoothed function.
+Show how to generate the <span class="arithmatex">\(n\)</span>-fold smoothed function
+of any given function
+using <code>smooth</code> and the <code>repeated</code> function
+you defined in the previous problem.
+Call this second function <code>nsmoothed</code>.</p>
+<p>For this problem, we use <code>float</code> instead of <code>num</code> as the numeric type.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Be careful with the <code>dx</code> argument to <code>nsmoothed</code>!
+It's actually more convenient to have <code>smooth</code>
+take the <code>dx</code> argument as its <em>first</em> argument,
+because you may need to partially apply <code>smooth</code> to <code>dx</code>
+in the definition of <code>nsmoothed</code>
+(at least, that's one way to do it).</p>
+</div>
+<p>Note that both <code>smooth</code> and <code>nsmoothed</code> are very short if you write
+them the right way.</p>
+<p>Here are some examples. Note that your results may not be identical;
+floating-point math is notoriously hard to reproduce between computers.
+However, your results should be pretty close to these.</p>
+<div class="admonition examples">
+<p class="admonition-title">Examples</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c">(* smooth examples *)</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="c">(* smoothed sin function *)</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="o">#</span> <span class="k">let</span> <span class="n">ssin</span> <span class="o">=</span> <span class="n">smooth</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span> <span class="n">sin</span><span class="o">;;</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="k">val</span> <span class="n">ssin</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">-&gt;</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="o">#</span> <span class="n">sin</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="o">#</span> <span class="n">ssin</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="o">#</span> <span class="n">sin</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="o">;;</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0998334166468281548</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="o">#</span> <span class="n">ssin</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="o">;;</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0995009158139631283</span>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="o">#</span> <span class="n">sin</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">841470984807896505</span>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="o">#</span> <span class="n">ssin</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">838668418165605112</span>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="o">#</span> <span class="n">sin</span> <span class="mi">3</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">141120008059867214</span>
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="o">#</span> <span class="n">ssin</span> <span class="mi">3</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">14064999990238003</span>
+</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="o">#</span> <span class="k">let</span> <span class="n">pi</span> <span class="o">=</span> <span class="mi">4</span><span class="o">.</span><span class="mi">0</span> <span class="o">*.</span> <span class="n">atan</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="o">#</span> <span class="n">sin</span> <span class="o">(</span><span class="n">pi</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">);;</span>
+</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span>
+</span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="o">#</span> <span class="n">ssin</span> <span class="o">(</span><span class="n">pi</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">);;</span>
+</span><span id="__span-12-26"><a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">996669443518683806</span>
+</span><span id="__span-12-27"><a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>
+</span><span id="__span-12-28"><a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a><span class="c">(* nsmoothed examples *)</span>
+</span><span id="__span-12-29"><a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>
+</span><span id="__span-12-30"><a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a><span class="o">#</span> <span class="k">let</span> <span class="n">nssin</span> <span class="n">n</span> <span class="o">=</span> <span class="n">nsmoothed</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span> <span class="n">sin</span> <span class="n">n</span>
+</span><span id="__span-12-31"><a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a><span class="k">val</span> <span class="n">nssin</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">float</span> <span class="o">-&gt;</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+</span><span id="__span-12-32"><a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>
+</span><span id="__span-12-33"><a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a><span class="c">(* ssin0 is the same as sin *)</span>
+</span><span id="__span-12-34"><a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a><span class="o">#</span> <span class="k">let</span> <span class="n">ssin0</span> <span class="o">=</span> <span class="n">nssin</span> <span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-35"><a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a><span class="k">val</span> <span class="n">ssin0</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">-&gt;</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+</span><span id="__span-12-36"><a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a><span class="o">#</span> <span class="n">ssin0</span> <span class="o">(</span><span class="n">pi</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">);;</span>
+</span><span id="__span-12-37"><a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span>
+</span><span id="__span-12-38"><a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a><span class="o">#</span> <span class="n">sin</span> <span class="o">(</span><span class="n">pi</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">);;</span>
+</span><span id="__span-12-39"><a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span>
+</span><span id="__span-12-40"><a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a><span class="o">#</span> <span class="n">ssin0</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-41"><a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">841470984807896505</span>
+</span><span id="__span-12-42"><a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a><span class="o">#</span> <span class="n">sin</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-43"><a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">841470984807896505</span>
+</span><span id="__span-12-44"><a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a>
+</span><span id="__span-12-45"><a id="__codelineno-12-45" name="__codelineno-12-45" href="#__codelineno-12-45"></a><span class="c">(* ssin1 is the same as ssin *)</span>
+</span><span id="__span-12-46"><a id="__codelineno-12-46" name="__codelineno-12-46" href="#__codelineno-12-46"></a><span class="o">#</span> <span class="k">let</span> <span class="n">ssin1</span> <span class="o">=</span> <span class="n">nssin</span> <span class="mi">1</span><span class="o">;;</span>
+</span><span id="__span-12-47"><a id="__codelineno-12-47" name="__codelineno-12-47" href="#__codelineno-12-47"></a><span class="k">val</span> <span class="n">ssin1</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">-&gt;</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+</span><span id="__span-12-48"><a id="__codelineno-12-48" name="__codelineno-12-48" href="#__codelineno-12-48"></a><span class="o">#</span> <span class="n">ssin</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-49"><a id="__codelineno-12-49" name="__codelineno-12-49" href="#__codelineno-12-49"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">838668418165605112</span>
+</span><span id="__span-12-50"><a id="__codelineno-12-50" name="__codelineno-12-50" href="#__codelineno-12-50"></a><span class="o">#</span> <span class="n">ssin1</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-51"><a id="__codelineno-12-51" name="__codelineno-12-51" href="#__codelineno-12-51"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">838668418165605112</span>
+</span><span id="__span-12-52"><a id="__codelineno-12-52" name="__codelineno-12-52" href="#__codelineno-12-52"></a><span class="o">#</span> <span class="n">ssin</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-53"><a id="__codelineno-12-53" name="__codelineno-12-53" href="#__codelineno-12-53"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">906268960387323297</span>
+</span><span id="__span-12-54"><a id="__codelineno-12-54" name="__codelineno-12-54" href="#__codelineno-12-54"></a><span class="o">#</span> <span class="n">ssin1</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-55"><a id="__codelineno-12-55" name="__codelineno-12-55" href="#__codelineno-12-55"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">906268960387323297</span>
+</span><span id="__span-12-56"><a id="__codelineno-12-56" name="__codelineno-12-56" href="#__codelineno-12-56"></a>
+</span><span id="__span-12-57"><a id="__codelineno-12-57" name="__codelineno-12-57" href="#__codelineno-12-57"></a><span class="c">(* ssin10 is flatter than ssin1 *)</span>
+</span><span id="__span-12-58"><a id="__codelineno-12-58" name="__codelineno-12-58" href="#__codelineno-12-58"></a><span class="o">#</span> <span class="k">let</span> <span class="n">ssin10</span> <span class="o">=</span> <span class="n">nssin</span> <span class="mi">10</span><span class="o">;;</span>
+</span><span id="__span-12-59"><a id="__codelineno-12-59" name="__codelineno-12-59" href="#__codelineno-12-59"></a><span class="k">val</span> <span class="n">ssin10</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">-&gt;</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+</span><span id="__span-12-60"><a id="__codelineno-12-60" name="__codelineno-12-60" href="#__codelineno-12-60"></a><span class="o">#</span> <span class="n">ssin10</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-61"><a id="__codelineno-12-61" name="__codelineno-12-61" href="#__codelineno-12-61"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">813861644301632103</span>
+</span><span id="__span-12-62"><a id="__codelineno-12-62" name="__codelineno-12-62" href="#__codelineno-12-62"></a><span class="o">#</span> <span class="n">ssin1</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;;</span>
+</span><span id="__span-12-63"><a id="__codelineno-12-63" name="__codelineno-12-63" href="#__codelineno-12-63"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">838668418165605112</span>
+</span><span id="__span-12-64"><a id="__codelineno-12-64" name="__codelineno-12-64" href="#__codelineno-12-64"></a><span class="o">#</span> <span class="n">ssin1</span> <span class="o">(</span><span class="n">pi</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">);;</span>
+</span><span id="__span-12-65"><a id="__codelineno-12-65" name="__codelineno-12-65" href="#__codelineno-12-65"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">996669443518683806</span>
+</span><span id="__span-12-66"><a id="__codelineno-12-66" name="__codelineno-12-66" href="#__codelineno-12-66"></a><span class="o">#</span> <span class="n">ssin10</span> <span class="o">(</span><span class="n">pi</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">);;</span>
+</span><span id="__span-12-67"><a id="__codelineno-12-67" name="__codelineno-12-67" href="#__codelineno-12-67"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">96718919486859356</span>
+</span></code></pre></div>
+</div>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>The recursive and iterative forms of <code>accumulate</code>
+exist in the OCaml standard library
+as <code>List.fold_right</code> and <code>List.fold_left</code> respectively.
+You are not allowed to use these functions in your solution to this problem.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
