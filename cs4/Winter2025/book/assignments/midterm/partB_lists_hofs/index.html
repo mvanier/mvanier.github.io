@@ -2061,17 +2061,31 @@ to write a function called <code>group_by</code>.
 It takes a function <code>f</code> (that takes <em>two</em> arguments and returns a <code>bool</code>)
 and repeatedly applies <code>span</code>
 to split the list into a list of lists.
-Each sublist in the list of lists
-will be the result of one call to <code>span</code>
-and will be the left list returned in the tuple that <code>span</code> returns.</p>
-<p>In other words:</p>
+These returned sublists should be a partition of the original list;
+appending them all should return the original list.</p>
+<p>Here's how it works:</p>
 <ul>
-<li><code>span</code> is called on the original list, to return two lists.</li>
-<li><code>span</code> is called on the second of those lists, to return two more lists</li>
-<li>and so on until the second of the two lists is empty.</li>
+<li>
+<p>The input list, if non-empty, is split into its head and tail.</p>
+</li>
+<li>
+<p><code>span</code> is called on the tail, to return two lists.
+  The (one-argument) function argument of <code>span</code> 
+  is the (two-argument) function argument of <code>group_by</code>
+  with the head as the left argument of the two-argument function.</p>
+</li>
+<li>
+<p>The first returned sublist of <code>group_by</code>
+  is the head of the input list
+  consed on to the front of the first sublist returned by <code>span</code>.</p>
+</li>
+<li>
+<p>This process is repeated
+  on the second sublist returned by <code>span</code>
+  to get all the resulting lists,
+  which are combined together to get the final result.</p>
+</li>
 </ul>
-<p>All the first lists returned by <code>span</code> are collected
-into the final list of lists.</p>
 <p>This is easiest to see if the function <code>f</code> is just the <code>=</code> operator:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a># group_by (=) [1;1;1;2;3;3;4;4;4;4;5] ;;
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>- : int list list = [[1; 1; 1]; [2]; [3; 3]; [4; 4; 4; 4]; [5]]
@@ -2105,14 +2119,6 @@ Each sublist contains equal values
 </li>
 <li>
 <p>Generative recursion using <code>span</code> is your friend.</p>
-</li>
-<li>
-<p>The function argument to <code>span</code> is a unary (one argument) function,
-  whereas the function argument to <code>group</code> is a binary function
-  (two arguments).
-  Use the head of the list to fill in one of the two arguments
-  to the <code>group</code> function argument
-  to get the function argument for <code>span</code>.</p>
 </li>
 </ul>
 </div>
