@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://mvanier.github.io/cs4/Winter2025/book/assignments/5/ocaml_notes/">
+        <link rel="canonical" href="https://mvanier.github.io/cs4/Winter2025/book/assignments/7/klotski_game/">
       
       
-        <link rel="prev" href="../assignment5/">
+        <link rel="prev" href="../ocaml_notes/">
       
       
-        <link rel="next" href="../partA_imperative/">
+        <link rel="next" href="../partA_klotski_board/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>OCaml notes - The CS 4 book (Winter 2025)</title>
+        <title>The "Klotski" sliding-block puzzle game - The CS 4 book (Winter 2025)</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ocaml-notes" class="md-skip">
+        <a href="#the-klotski-sliding-block-puzzle-game-general-notes" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              OCaml notes
+              The "Klotski" sliding-block puzzle game
             
           </span>
         </div>
@@ -1266,19 +1266,17 @@
                 
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
         
           
           <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
@@ -1292,7 +1290,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             Assignment 5: Tags and objects
@@ -1306,7 +1304,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../assignment5/" class="md-nav__link">
+      <a href="../../5/assignment5/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1324,30 +1322,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    OCaml notes
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../5/ocaml_notes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1356,44 +1334,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Testing
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#imperative-programming-and-arrays" class="md-nav__link">
-    <span class="md-ellipsis">
-      Imperative programming and arrays
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1406,7 +1346,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../partA_imperative/" class="md-nav__link">
+      <a href="../../5/partA_imperative/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1427,7 +1367,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../partB_tagged_data/" class="md-nav__link">
+      <a href="../../5/partB_tagged_data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1448,7 +1388,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../partC_objects/" class="md-nav__link">
+      <a href="../../5/partC_objects/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1643,17 +1583,19 @@
                 
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" checked>
         
           
           <label class="md-nav__link" for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
@@ -1667,7 +1609,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_9">
             <span class="md-nav__icon md-icon"></span>
             Assignment 7: Final exam preparation
@@ -1681,7 +1623,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../7/assignment7/" class="md-nav__link">
+      <a href="../assignment7/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1702,7 +1644,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../7/ocaml_notes/" class="md-nav__link">
+      <a href="../ocaml_notes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1720,10 +1662,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../7/klotski_game/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    The "Klotski" sliding-block puzzle game
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1732,6 +1694,44 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#game-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Game description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-game" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example game
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1744,7 +1744,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../7/partA_klotski_board/" class="md-nav__link">
+      <a href="../partA_klotski_board/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1765,7 +1765,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../7/partB_search/" class="md-nav__link">
+      <a href="../partB_search/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1905,18 +1905,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
+  <a href="#game-description" class="md-nav__link">
     <span class="md-ellipsis">
-      Testing
+      Game description
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#imperative-programming-and-arrays" class="md-nav__link">
+  <a href="#example-game" class="md-nav__link">
     <span class="md-ellipsis">
-      Imperative programming and arrays
+      Example game
     </span>
   </a>
   
@@ -1937,155 +1937,152 @@
                   
 
 
-<h1 id="ocaml-notes">OCaml notes</h1>
-<h2 id="testing">Testing</h2>
-<p>For this assignment, we are supplying you with these support files:</p>
+<h1 id="the-klotski-sliding-block-puzzle-game-general-notes">The "Klotski" sliding-block puzzle game: general notes</h1>
+<h2 id="game-description">Game description</h2>
+<p>The puzzle game <a href="https://en.wikipedia.org/wiki/Klotski">Klotski</a>
+is an example of a "sliding block puzzle game",
+whereby the pieces (blocks) can slide around on the game board,
+and the goal is to reach a desired configuration.
+There are a number of these games ("Rush Hour" is another well-known one).
+Klotski is both extremely simple (in terms of the rules)
+and extremely difficult to solve for many possible puzzles.</p>
+<p>The Wikipedia page for Klotski is
+<a href="https://en.wikipedia.org/wiki/Klotski">here</a>.</p>
+<p>Here are the rules of the game.
+The game is played on a 5x4 grid (5 rows, 4 columns)
+which we'll call the "board".
+The pieces are either</p>
 <ul>
-<li>a <code>.mli</code> OCaml interface file (<code>lab5.mli</code>)</li>
-<li>a test script for parts A and B: (<code>tests_lab5.ml</code>)</li>
-<li>a test script for part C: (<code>tests_lab5c.ml</code>)</li>
-<li>a <code>Makefile</code></li>
+<li>1x1 blocks (1 row by 1 column),</li>
+<li>1x2 horizontal blocks (1 row by 2 columns),</li>
+<li>2x1 vertical blocks (2 rows by 1 column),</li>
+<li>or 2x2 blocks (2 rows by 2 columns).</li>
 </ul>
-<p>These files are all available on the course Canvas site
-in a single zip file called <code>lab5.zip</code>.
-Download this file and use it as you've been doing with previous assignments.</p>
-<p>The automated tests are only for parts A and B.
-The test script for part C is not automated,
-because your results may not be identical
-to the ones we show below
-(though they should be equivalent).
-Instead, it will display the result of evaluating various expressions,
-and you can check by eye that they are correct.
-To run the test script for part C, type this:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">$</span> <span class="n">make</span> <span class="n">testc</span>
+<p>There is always exactly one 2x2 block on the board,
+but there can be any number (including zero) of the other kinds of blocks,
+except that blocks can't overlap each other,
+and there is only enough space for so many blocks.
+The game starts with a number of pieces already placed on the board,
+including the special 2x2 block.
+Once this has been done, you play the game
+by moving one piece per move. 
+Pieces can be moved in either the horizontal or vertical direction,
+but they can't rotate. 
+You can move a piece any number of spaces,
+as long as (a) you don't move any part of the piece off the board,
+and (b) no part of the piece goes over another piece
+or lands on another piece.
+The goal of the game is to move the 2x2 piece
+to the two bottom rows and the two middle columns.
+Conceptually, this puts the piece next to an "exit door"
+right below the middle two columns, so the piece can "escape". 
+The objective of the game
+is to get the 2x2 piece to the target location
+in the fewest number of moves.
+And that is it for rules.</p>
+<p>To illustrate these rules in action,
+see the example game in the next section.</p>
+<p>The name "Klotski" comes from the Polish word "klocki",
+which means "wooden blocks".
+The original Klotski puzzles were physical puzzles
+made from sliding wooden blocks.
+The game may have actually originated in America;
+versions of it were known to exist in 1909.</p>
+<h2 id="example-game">Example game</h2>
+<p>Here is an example of what a complete game will look like
+when you compile the code in the file <code>klotski_interact.ml</code>
+(assuming that all your own code in <code>klotski.ml</code> works properly)
+by typing <code>make interact</code> at the command prompt (or just <code>make</code>).
+You run the game by typing this at the terminal prompt:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$ ./klotski_interact 0
 </span></code></pre></div>
-<p>Or better still:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">$</span> <span class="n">make</span> <span class="n">testc</span> <span class="o">|</span> <span class="n">more</span>
+<p>This will use board number 0 (from <code>klotski_boards.ml</code>)
+as the starting configuration.
+Board numbers can range from 0 to 7,
+with higher numbers requiring many more moves to solve.</p>
+<p>Here is a transcript of an interactive game in its entirety
+with this input board.
+Pieces are displayed using letters,
+with the different locations of a piece
+represented by the same letter on adjacent locations.
+Empty squares are represented by a period (<code>.</code>).
+The goal is to get the 2x2 piece
+(represented on this particular board by the character <code>'f'</code>)
+to the bottom two rows and the middle two columns as described above.</p>
+<p>User input comes after the prompt <code>"Enter move: "</code>.
+User input consists of a string of three characters,
+which are:</p>
+<ol>
+<li>the name (label) of the piece to be moved (for instance, piece <code>c</code>),</li>
+<li>which direction to move it
+   (<code>u</code> for up, <code>d</code> for down, <code>l</code> for left, or <code>r</code> for right),</li>
+<li>and how far to move it (for instance, <code>1</code> or <code>2</code>).</li>
+</ol>
+<p>The distance must be a positive integer no larger than <code>4</code>
+(otherwise, the piece would end up off the board).
+You are not allowed to make a move
+which moves any component of a piece off the board
+or on top of or through another piece.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$ ./klotski_interact 0
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>aabb
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>.cc.
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>ddee
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>ffgh
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>ffij
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Enter move: cl1   (* move piece &quot;c&quot; to the (l)eft one (1) location *)
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>aabb
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>cc..
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>ddee
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>ffgh
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>ffij
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>Enter move: eu1
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>aabb
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>ccee
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>dd..
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>ffgh
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>ffij
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>Enter move: gu1
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>aabb
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>ccee
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>ddg.
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>ff.h
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>ffij
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>Enter move: gr1
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>aabb
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>ccee
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>dd.g
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>ff.h
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>ffij
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>Enter move: iu2
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>aabb
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>ccee
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>ddig
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>ff.h
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>ff.j
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>Enter move: fr1
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>aabb
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>ccee
+</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>ddig
+</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>.ffh
+</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a>.ffj
+</span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a>
+</span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>The board is solved!
 </span></code></pre></div>
-<p>so you can see the results without having to scroll back in your terminal.
-Hit the spacebar to page through the results.</p>
-<p>Note that most of the tests/examples described below
-are also in the test script. 
-However, the test script doesn't test everything
-(particularly in part C),
-so don't assume that your code is perfect if it passes the test script.</p>
-<h2 id="imperative-programming-and-arrays">Imperative programming and arrays</h2>
-<p>Part A of this assignment
-requires you to write some code in an imperative style,
-and to work with OCaml's arrays.
-Here is a quick refresher on imperative syntax in OCaml;
-see recitation lecture 3 and lecture 12 for more details.
-Also check out
-<a href="https://caml.inria.fr/pub/docs/manual-ocaml/coreexamples.html#s%3Aimperative-features">this chapter</a>
-in the OCaml manual as well as
-<a href="http://dev.realworldocaml.org/imperative-programming.html">this chapter</a>
-in <em>Real World OCaml</em>.</p>
-<p>Imperative "variables" are modeled in OCaml using "reference cells"
-or "refs" for short.
-We create these with the <code>ref</code> function:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">#</span> <span class="n">ref</span> <span class="mi">10</span> <span class="o">;;</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">ref</span> <span class="o">=</span> <span class="o">{</span><span class="n">contents</span> <span class="o">=</span> <span class="mi">10</span><span class="o">}</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="o">#</span> <span class="k">let</span> <span class="n">r</span> <span class="o">=</span> <span class="n">ref</span> <span class="mi">42</span> <span class="o">;;</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">val</span> <span class="n">r</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">ref</span> <span class="o">=</span> <span class="o">{</span><span class="n">contents</span> <span class="o">=</span> <span class="mi">42</span><span class="o">}</span>
-</span></code></pre></div>
-<p>A reference is just a record with one mutable field called <code>contents</code>.
-You can access this field's value in two ways:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="o">#</span> <span class="n">r</span><span class="o">.</span><span class="n">contents</span> <span class="o">;;</span>  <span class="c">(* dot syntax for accessing record fields *)</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">42</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="o">#</span> <span class="o">!</span><span class="n">r</span> <span class="o">;;</span>          <span class="c">(* prefix operator ! *)</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">42</span>
-</span></code></pre></div>
-<p>The second way (using the <code>!</code> operator) is much shorter and is greatly
-preferred.  They both do the exact same thing.</p>
-<p>You assign to a ref cell in one of two ways:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="o">#</span> <span class="n">r</span><span class="o">.</span><span class="n">contents</span> <span class="o">&lt;-</span> <span class="mi">1001</span> <span class="o">;;</span>  <span class="c">(* dot syntax for mutating record fields *)</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="o">#</span> <span class="n">r</span> <span class="o">;;</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">ref</span> <span class="o">=</span> <span class="o">{</span><span class="n">contents</span> <span class="o">=</span> <span class="mi">1001</span><span class="o">}</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="o">#</span> <span class="n">r</span> <span class="o">:=</span> <span class="mi">2002</span> <span class="o">;;</span>           <span class="c">(* := operator *)</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="o">#</span> <span class="n">r</span> <span class="o">;;</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">ref</span> <span class="o">=</span> <span class="o">{</span><span class="n">contents</span> <span class="o">=</span> <span class="mi">2002</span><span class="o">}</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="o">#</span> <span class="o">!</span><span class="n">r</span> <span class="o">;;</span>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">2002</span>
-</span></code></pre></div>
-<p>Again, using the <code>:=</code> operator is shorter and is greatly preferred.
-And again, both ways do the same thing.</p>
-<p>Arrays are constructed using this notation:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">#</span> <span class="o">[|</span> <span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">5</span> <span class="o">|]</span> <span class="o">;;</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">array</span> <span class="o">=</span> <span class="o">[|</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">5</span><span class="o">|]</span>
-</span></code></pre></div>
-<p>You can also use the <code>Array.make</code> function:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="o">#</span> <span class="nn">Array</span><span class="p">.</span><span class="n">make</span> <span class="mi">5</span> <span class="s2">&quot;foo&quot;</span> <span class="o">;;</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">string</span> <span class="kt">array</span> <span class="o">=</span> <span class="o">[|</span><span class="s2">&quot;foo&quot;</span><span class="o">;</span> <span class="s2">&quot;foo&quot;</span><span class="o">;</span> <span class="s2">&quot;foo&quot;</span><span class="o">;</span> <span class="s2">&quot;foo&quot;</span><span class="o">;</span> <span class="s2">&quot;foo&quot;</span><span class="o">|]</span>
-</span></code></pre></div>
-<p>Array elements are accessed and mutated using these syntaxes:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="o">#</span> <span class="k">let</span> <span class="n">arr</span> <span class="o">=</span> <span class="nn">Array</span><span class="p">.</span><span class="n">make</span> <span class="mi">5</span> <span class="mi">0</span> <span class="o">;;</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">val</span> <span class="n">arr</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">array</span> <span class="o">=</span> <span class="o">[|</span><span class="mi">0</span><span class="o">;</span> <span class="mi">0</span><span class="o">;</span> <span class="mi">0</span><span class="o">;</span> <span class="mi">0</span><span class="o">;</span> <span class="mi">0</span><span class="o">|]</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="o">#</span> <span class="n">arr</span><span class="o">.(</span><span class="mi">0</span><span class="o">)</span> <span class="o">;;</span>         <span class="c">(* access value at index 0 *)</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="o">#</span> <span class="n">arr</span><span class="o">.(</span><span class="mi">0</span><span class="o">)</span> <span class="o">&lt;-</span> <span class="mi">42</span> <span class="o">;;</span>   <span class="c">(* mutate value at index 0 *)</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="o">#</span> <span class="n">arr</span> <span class="o">;;</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">array</span> <span class="o">=</span> <span class="o">[|</span><span class="mi">42</span><span class="o">;</span> <span class="mi">0</span><span class="o">;</span> <span class="mi">0</span><span class="o">;</span> <span class="mi">0</span><span class="o">;</span> <span class="mi">0</span><span class="o">|]</span>
-</span></code></pre></div>
-<p>Note that arrays are always mutable,
-so any element in an array can be changed with the syntax given above.</p>
-<p>OCaml also has imperative <code>while</code> and <code>for</code> loops.
-Examples:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="o">#</span> <span class="k">let</span> <span class="n">r</span> <span class="o">=</span> <span class="n">ref</span> <span class="mi">10</span> <span class="o">;;</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">val</span> <span class="n">r</span> <span class="o">:</span> <span class="kt">int</span> <span class="n">ref</span> <span class="o">=</span> <span class="o">{</span><span class="n">contents</span> <span class="o">=</span> <span class="mi">10</span><span class="o">}</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="o">#</span> <span class="k">while</span> <span class="o">!</span><span class="n">r</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">do</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">!</span><span class="n">r</span><span class="o">;</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">r</span> <span class="o">:=</span> <span class="o">!</span><span class="n">r</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>  <span class="k">done</span> <span class="o">;;</span>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="mi">10</span>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="mi">9</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="mi">8</span>
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="mi">7</span>
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="mi">6</span>
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="mi">5</span>
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="mi">4</span>
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="mi">3</span>
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="mi">2</span>
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="mi">1</span>
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
-</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>
-</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="o">#</span> <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">to</span> <span class="mi">10</span> <span class="k">do</span>
-</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>    <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="n">i</span>
-</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>  <span class="k">done</span> <span class="o">;;</span>
-</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="mi">1</span>
-</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="mi">2</span>
-</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="mi">3</span>
-</span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="mi">4</span>
-</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="mi">5</span>
-</span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="mi">6</span>
-</span><span id="__span-8-28"><a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a><span class="mi">7</span>
-</span><span id="__span-8-29"><a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a><span class="mi">8</span>
-</span><span id="__span-8-30"><a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="mi">9</span>
-</span><span id="__span-8-31"><a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a><span class="mi">10</span>
-</span><span id="__span-8-32"><a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
-</span><span id="__span-8-33"><a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a>
-</span><span id="__span-8-34"><a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a><span class="o">#</span> <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">10</span> <span class="k">downto</span> <span class="mi">1</span> <span class="k">do</span>
-</span><span id="__span-8-35"><a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a>  <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="n">i</span>
-</span><span id="__span-8-36"><a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a>  <span class="k">done</span> <span class="o">;;</span>
-</span><span id="__span-8-37"><a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a><span class="mi">10</span>
-</span><span id="__span-8-38"><a id="__codelineno-8-38" name="__codelineno-8-38" href="#__codelineno-8-38"></a><span class="mi">9</span>
-</span><span id="__span-8-39"><a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a><span class="mi">8</span>
-</span><span id="__span-8-40"><a id="__codelineno-8-40" name="__codelineno-8-40" href="#__codelineno-8-40"></a><span class="mi">7</span>
-</span><span id="__span-8-41"><a id="__codelineno-8-41" name="__codelineno-8-41" href="#__codelineno-8-41"></a><span class="mi">6</span>
-</span><span id="__span-8-42"><a id="__codelineno-8-42" name="__codelineno-8-42" href="#__codelineno-8-42"></a><span class="mi">5</span>
-</span><span id="__span-8-43"><a id="__codelineno-8-43" name="__codelineno-8-43" href="#__codelineno-8-43"></a><span class="mi">4</span>
-</span><span id="__span-8-44"><a id="__codelineno-8-44" name="__codelineno-8-44" href="#__codelineno-8-44"></a><span class="mi">3</span>
-</span><span id="__span-8-45"><a id="__codelineno-8-45" name="__codelineno-8-45" href="#__codelineno-8-45"></a><span class="mi">2</span>
-</span><span id="__span-8-46"><a id="__codelineno-8-46" name="__codelineno-8-46" href="#__codelineno-8-46"></a><span class="mi">1</span>
-</span><span id="__span-8-47"><a id="__codelineno-8-47" name="__codelineno-8-47" href="#__codelineno-8-47"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">=</span> <span class="bp">()</span>
-</span></code></pre></div>
-<p>The
-<a href="https://caml.inria.fr/pub/docs/manual-ocaml/libref/Array.html">Array module</a>
-has a number of other useful functions on arrays
-(<em>e.g.</em> <code>Array.length</code>).</p>
-<p>That should be enough to get you through this assignment.</p>
+<p>Since the 2x2 <code>f</code> piece is in the final location, the board is solved.
+(Of course, most puzzles will require many more moves than this.)</p>
 
 
 
@@ -2121,7 +2118,7 @@ has a number of other useful functions on arrays
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../assignment5/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
+          <a href="../ocaml_notes/" class="md-footer__link md-footer__link--prev" aria-label="Previous: OCaml notes">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2131,20 +2128,20 @@ has a number of other useful functions on arrays
                 Previous
               </span>
               <div class="md-ellipsis">
-                Overview
+                OCaml notes
               </div>
             </div>
           </a>
         
         
           
-          <a href="../partA_imperative/" class="md-footer__link md-footer__link--next" aria-label="Next: Part A: Imperative programming">
+          <a href="../partA_klotski_board/" class="md-footer__link md-footer__link--next" aria-label="Next: Part A: the Klotski module">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Part A: Imperative programming
+                Part A: the Klotski module
               </div>
             </div>
             <div class="md-footer__button md-icon">
