@@ -2285,6 +2285,17 @@ containing stubs for the two modules you will be implementing:</p>
 </span></code></pre></div>
 <p>Your job is to complete the code in the <code>ImpStorage</code> and <code>FunStorage</code> modules
 (removing the <code>failwith "TODO"</code>s in the process).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>OCaml may give you a warning about the <code>contents</code> field
+of the <code>FunStorage</code> module,
+because OCaml's <code>ref</code> types also have a <code>contents</code> field.
+While this warning won't prevent the code from working,
+it's annoying
+(and in my opinion, overkill since we aren't using <code>ref</code> types).
+To get around this, just rename the <code>contents</code> field to <code>map</code>
+and everything will work without warnings.</p>
+</div>
 <h2 id="data-representations">Data representations</h2>
 <p>As you can see from the code above,
 the <code>ImpStorage</code> and <code>FunStorage</code> modules
