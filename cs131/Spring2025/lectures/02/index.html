@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- <section data-background-color="#ffffd0"> -->
+          <section data-markdown>
+            <textarea data-template>
+# CS 131:<br>Programming Languages
+## _Lecture 2_:<br>The _Imp_ Language
+
+---
+## Today
+
+* Overview of the _Imp_ language
+* Language forms
+* Environments
+* Operational semantics
+
+---
+## Overview
+
+* Our first language will be a simple imperative language called _Imp_
+* Goal: to get familiar with
+  the basic components of a language implementation
+
+* Many aspects will be simplified compared to later languages
+  * only one type: integers
+  * only top-level functions
+  * simple environment model
+
+---
+## Language forms
+
+* To show the different language forms,
+  we will use a standard notation called _BNF_
+  * _BNF_ is _Backus-Naur Form_;
+    John Backus and Peter Naur were two computer scientists
+    who developed the notation
+* There are two main types of language forms: _definitions_ and _expressions_
+
+---
+## Expressions
+
+* Here are the expression forms:
+
+<pre><code>&lt;&#8203;exp&gt; ::=
+  | &lt;&#8203;literal&gt;
+  | &lt;&#8203;variable-name&gt;
+  | (<em>set</em> &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (<em>if</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>while</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>begin</em> {&lt;&#8203;exp&gt;})
+  | (&lt;&#8203;function-name&gt; {&lt;&#8203;exp&gt;})
+</code></pre>
+
+* The `::=` means "can be any of the following"
+
+---
+## Expressions
+
+<pre><code>&lt;&#8203;exp&gt; ::=
+  | &lt;&#8203;literal&gt;
+  | &lt;&#8203;variable-name&gt;
+  | (<em>set</em> &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (<em>if</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>while</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>begin</em> {&lt;&#8203;exp&gt;})
+  | (&lt;&#8203;function-name&gt; {&lt;&#8203;exp&gt;})
+</code></pre>
+
+* Alternatives are identified with the leading `|` symbol
+  * (like OCaml type declarations)
+
+---
+## Expressions
+
+<pre><code>&lt;&#8203;exp&gt; ::=
+  | &lt;&#8203;literal&gt;
+  | &lt;&#8203;variable-name&gt;
+  | (<em>set</em> &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (<em>if</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>while</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>begin</em> {&lt;&#8203;exp&gt;})
+  | (&lt;&#8203;function-name&gt; {&lt;&#8203;exp&gt;})
+</code></pre>
+
+* `<exp>` means "expression"
+* *`set`*, *`if`*, *`while`*, *`begin`* are keywords
+* `<literal>` is a literal number
+
+---
+## Literals
+
+* Here is the syntax for integer literals:
+
+```
+<literal> ::= REGEXP{ [+-]?[0-9]+ }
+```
+
+* The `REGEXP{...}` notation means that this is a regular expression
+
+* Integers are one or more digits, with optional leading `+`/`-` sign
+
+---
+## Evaluating literals
+
+* Evaluating literals is as easy as it gets!
+
+* They always evaluate to themselves
+
+* Moving on...
+
+---
+## Identifiers
+
+* Variable and function names are both "identifiers":
+
+```
+<variable-name> ::= <identifier>
+<function-name> ::= <identifier>
+```
+
+---
+## Identifiers
+
+* Identifier syntax:
+
+```
+<identifier> ::=
+  character sequence,
+  not a number or keyword,
+  not containing whitespace
+  or any of the characters: ( ) [ ] { }
+```
+
+* Our rules for identifiers are much more liberal than most languages
+
+* Symbols like `+`, `-`, `*`, `<=` are valid identifiers
+
+* No operator/identifier distinction!
+
+---
+## Evaluating variable expressions
+
+* Variable names can occur in more than one context
+  * _e.g._ expressions, formal arguments to functions
+
+* When a variable name is an expression,
+  the value of the variable is looked up in an environment
+  and returned as the result of the expression
+
+* We will talk about environments later
+
+---
+## `set` expressions
+
+* A `set` expression has this form:
+
+```
+(set <variable-name> <exp>)
+```
+
+* Assuming that `<variable-name>` is a valid variable
+  (something that can be assigned to),
+  this evaluates the expression `<exp>`
+  and assigns the resulting value to the variable
+
+* The expression returns the value that has been set
+
+* Example: `(set x 10)`
+
+---
+## `if` expressions
+
+* An `if` expression has this form:
+
+```
+(if <exp> <exp> <exp>)
+```
+
+* If the first `<exp>` evaluates to a nonzero value,
+  evaluate the second ("then") `<exp>`,
+  otherwise evaluate the third ("else") `<exp>`
+
+---
+## `while` expressions
+
+* A `while` expression has this form:
+
+```
+(while <exp> <exp>)
+```
+
+* If the first `<exp>` evaluates to a nonzero value,
+  evaluate the second `<exp>` (the "loop body")
+  and re-evaluate the entire expression,
+  otherwise return `0`
+
+* The return value doesn't matter,
+  since `while` loops are performed for their side-effects
+
+* `while` loop body is usually a `begin` expression
+
+---
+## `begin` expressions
+
+* a `begin` expression has this form:
+
+```
+(begin {<exp>})
+```
+
+* the `{` `}` curly braces are _not_ part of the language syntax!
+* they simply mean "zero or more `<exp>` forms"
+
+---
+## `begin` expressions
+
+* a `begin` expression has this form:
+
+```
+(begin {<exp>})
+```
+
+* A `begin` expression evaluates all subexpressions in order
+  and returns the value of the last one
+
+* An "empty `begin`" expression _i.e._ `(begin)` just returns `0`
+
+---
+## Function calls
+
+* A function call looks like this:
+
+```
+(<function-name> {<exp>})
+```
+
+* The `{<exp>}` expressions are the arguments to the function
+
+* The argument expressions are evaluated in order (left-to-right)
+  to give the argument values
+
+---
+## Function calls
+
+* A function call looks like this:
+
+```
+(<function-name> {<exp>})
+```
+
+* The `<function-name>` is looked up in a special "function environment"
+  to get a function
+
+* That function is applied to the argument values to get the result
+
+---
+## Function calls
+
+* There are two kinds of functions:
+  * Primitive
+  * User-defined
+
+* We will need to distinguish these in the evaluator
+
+---
+## Definitions and top-level forms
+
+* In addition to expressions,
+  we need to have several different kinds of top-level forms
+
+* These never occur inside functions (hence the name "top-level")
+
+* They include variable definitions, function definitions, unit tests _etc._
+
+---
+## Definitions and top-level forms
+
+* Here is the BNF syntax for top-level forms:
+
+<pre><code>&lt;&#8203;def&gt; ::=
+  | (<em>val</em> &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (<em>define</em> &lt;&#8203;function-name&gt; ({&lt;&#8203;variable-name&gt;}) &lt;&#8203;exp&gt;)
+  | (<em>use</em> &lt;&#8203;file-name&gt;)
+  | (<em>check-expect</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>check-error</em> &lt;&#8203;exp&gt;)
+  | &lt;&#8203;exp&gt;
+</code></pre>
+
+* Top-level forms are sometimes called "statements"
+  to distinguish them from "expressions"
+
+---
+## `val` statements
+
+* A `val` statement defines a new global variable
+
+* Syntax:
+
+```
+(val <variable-name> <exp>)
+```
+
+* This creates a new global variable called `<variable-name>`
+
+---
+## `val` statements
+
+* A `val` statement defines a new global variable
+
+* Syntax:
+
+```
+(val <variable-name> <exp>)
+```
+
+* Its initial value will be the result of evaluating the expression `<exp>`
+
+* It stores its value in a special "global variable environment"
+
+---
+## `val` statements
+
+* Example:
+
+```
+>>> (val x 10)
+variable x = 10
+>>> (set x 20)
+20
+>>> (val x 30)
+variable x = 30
+```
+
+* _N.B._ the `>>>` is the interpreter prompt
+  * (like Python)
+
+---
+## `val` statements
+
+* Example:
+
+```
+>>> (val x 10)
+variable x = 10
+>>> (set x 20)
+20
+>>> (val x 30)
+variable x = 30
+```
+
+* Note that `set` can change the value of a global set by `val`
+
+* Note that you can redefine a global variable
+
+---
+## `define` statements
+
+* A `define` statement has this syntax:
+
+```
+(define <function-name> ({<variable-name>}) <exp>)
+```
+
+* Parts:
+  * `<function-name>` is the function name (duh)
+  * `{<variable-name>}` are zero or more formal arguments to the function
+  * `<exp>` is the body of the function (often a `begin`)
+
+---
+## `define` statements
+
+* Example:
+
+```
+>>> (define double (n) (+ n n))
+function double defined
+>>> (double 42)
+84
+```
+
+---
+## `use` statements
+
+* To include code from a file, use `use`
+
+* Syntax: `(use <file-name>)`
+
+* Let's say the file `mycode.imp` contains this:
+
+```
+;; mycode.imp
+(define double (n) (+ n n))
+```
+
+---
+## `use` statements
+
+* In the interpreter:
+
+```
+>>> (use mycode.imp)
+0 of 0 unit tests passed
+loaded file: mycode.imp
+>>> (double 42)
+84
+```
+
+---
+## Unit tests
+
+* Files included using `use` can also contain unit tests anywhere in the file
+
+* These tests are collected and run after loading the file into the interpreter
+
+---
+## Unit tests
+
+* There are two kinds of unit tests:
+  * `check-expect`
+  * `check-error`
+
+* `check-expect` checks to see if some expression gives the correct result
+* `check-error` checks that an invalid expression results in an error
+
+---
+## Unit tests
+
+* Let's add tests to `mycode.imp`:
+
+```
+;; mycode.imp
+(define double (n) (+ n n))
+(check-expect (double 42) 84)
+(check-error (double 1 2 3))  ; wrong # of args
+```
+
+* In the interpreter:
+
+```
+>>> (use mycode.imp)
+2 of 2 unit tests passed
+loaded file: mycode.imp
+```
+
+---
+## Unit tests
+
+* Unit tests can't be run directly from the interpreter:
+
+```
+>>> (define double (n) (* n 2))
+function double defined
+>>> (double 42)
+84
+>>> (check-expect (double 42) 84)
+Cannot run unit test in the REPL.
+    at <repl>: 1:2-30
+```
+
+* _N.B._ "REPL" means "Read-Eval-Print-Loop"
+
+---
+## Top-level expressions
+
+* Finally, it's legal to enter expressions at the top-level:
+
+```
+>>> (+ 2 4)
+6
+```
+
+* The interpreter evaluates the expression, prints the result, and assigns it
+to a special interpreter variable called `_`:
+
+```
+>>> _
+6
+```
+
+---
+## Built-in functions
+
+* Built-in functions come in two groups:
+  * primitive
+  * high-level (defined in _Imp_)
+
+---
+## Built-in functions
+
+* Primitive functions:
+  * `+`, `-`, `*`, `/`
+  * `=`, `<`, `>`
+  * `print`, `println`, `printc`
+
+* High-level functions:
+  * `and`, `or`, `not`
+  * `<=`, `>=`, `!=`
+  * `mod`
+
+---
+## Built-in functions
+
+* Arithmetic functions (`+`, `-`, `mod` _etc._)
+  take two integers and return an integer
+
+* Examples:
+
+```
+>>> (+ 10 20)
+30
+>>> (mod 5 2)
+1
+```
+
+---
+## Built-in functions
+
+* Relational functions (`=`, `<`, `<=` _etc._) take two integers
+  and return `0` (false) or `1` (true)
+  * `not` only takes one argument
+  * `and`, `or` don't short-circuit
+
+* Examples:
+
+```
+>>> (> 5 2)
+1
+>>> (not 1)
+0
+>>> (and 0 1)
+0
+```
+
+---
+## Built-in functions
+
+* Printing functions (`print`, `println`, `printc`)
+  print the argument and return it
+  * `print` prints an integer
+  * `println` prints an integer and a newline
+  * `printc` prints a character given its integer ASCII code
+
+---
+## Built-in functions
+
+* Examples:
+
+```
+>>> (print 100)
+100100
+>>> (println 100)
+100
+100
+```
+
+```
+>>> (begin
+      (printc 72)    ; ASCII H
+      (printc 105)   ; ASCII i
+      (printc 33)    ; ASCII !
+      (printc 10))   ; ASCII newline
+Hi!
+10
+```
+
+---
+## Initial basis
+
+* The primitive functions and the built-in _Imp_ functions
+  are collectively called the _initial basis_
+
+* Analogous to the `Stdlib` module in OCaml,
+  the `Prelude` module in Haskell,
+  or the `builtins` module in Python
+
+* We use these as a starting point to write more complex functions
+
+---
+## Environments
+
+* Evaluating any form in _Imp_ can only do three things:
+  * Compute and return a value
+  * Print something (side effect)
+  * Change an environment
+
+---
+## Environments
+
+* _Imp_ has three different environments:
+  * local variable environment ($\rho$ or _"rho"_)
+  * global variable environment ($\xi$ or _"ksee"_)
+  * function environment ($\phi$ or _"fee"_)
+
+---
+## Environments
+
+* These three environments are independent of each other
+  * (so you can have the same name bound in all three
+    at the same time with three different meanings)
+
+---
+## Environments
+
+* Environments consist of a set of _bindings_ between _names_ (identifiers)
+and either functions or values
+
+* Both $\rho$ and $\xi$ map names to values (integers)
+* $\phi$ maps names to either primitive or user-defined functions
+
+---
+## Environments
+
+* There are only two ways you can modify an environment:
+  * Adding a new name binding
+  * Modifying an existing name binding
+
+* The only other thing you can do with an environment
+  is to look up a name
+  * _e.g._ to find the function or value
+    corresponding to a particular name
+
+---
+## Environment example
+
+* Pathological example:
+
+<pre><code>;; define global variable x (in global var env)
+&gt;&gt;&gt; (val <em>x</em> 10)
+variable x = 10
+;; define function x in (in global function env)
+;; arg x is in local var env when function called
+&gt;&gt;&gt; (define <em>x</em> (<em>x</em>) (* <em>x</em> 2))
+function x defined
+;; call function x with argument value x
+&gt;&gt;&gt; (<em>x</em> <em>x</em>)
+20
+</code></pre>
+
+---
+## Operational semantics
+
+* We've informally specified how all the language forms work
+
+* When implementing a language, we need to know _exactly_ how they work
+
+* The language that we will use for this is _operational semantics_
+
+---
+## Operational semantics
+
+* We won't specify everything
+  * unit test forms, printing side effects won't be specified
+
+* But all definitions/expressions will be specified
+  * values computed
+  * changes to environments
+
+---
+## Inference rules
+
+* Operational semantics is specified in terms of _inference rules_
+* Inference rules look like big fractions
+* Above the line we have the _premises_
+* Below the line we have a _judgment_
+
+---
+## Inference rules
+
+* If the premises are true, we can conclude that the judgment is valid
+
+* The judgment usually states that one form reduces to another form or value
+  * and/or that certain environments change in specific ways
+
+---
+## State of the _Imp_ interpreter
+
+* The _Imp_ interpreter state consists of:
+  * A definition $d$ or expression $e$ being evaluated
+  * A function-definition environment $\phi$
+  * A global variable environment $\xi$
+  * A local variable/formal parameter environment $\rho$
+
+---
+## State of the _Imp_ interpreter
+
+* When evaluating a definition,
+  the state is $\langle d, \xi, \phi \rangle$
+
+* When evaluating an expression,
+  the state is $\langle e, \xi, \phi, \rho \rangle$
+
+* We use the "reduction arrow" ($\Downarrow$) to show that
+  one state reduces to another in a judgment
+
+---
+## Initial state
+
+* $\rho$ (local variable environment) is not active when _Imp_ starts
+  * only comes into existence when functions are called
+
+---
+## Initial state
+
+* $\xi$ (global variable environment) starts out empty
+  * we write this as: $\xi = \\{\\}$
+
+---
+## Initial state
+
+* $\phi$ (global function environment)
+  starts out loaded with all built-in functions
+  (initial basis)
+  * can write initial basis as $\phi_0$
+  * so initially:  $\phi = \phi_0$
+
+---
+## Literal values
+
+* OK, now we will get into the actual inference rules of the _Imp_ language
+* We will start with expressions
+* The simplest one is for literal values:
+
+$$
+\frac{}
+{\langle \operatorname{LITERAL}(v), \xi, \phi, \rho \rangle
+\Downarrow
+\langle v, \xi, \phi, \rho \rangle}
+\newline
+\label{}\tag{Literal}
+$$
+
+---
+## Literal values
+
+$$
+\frac{}
+{\langle \operatorname{LITERAL}(v), \xi, \phi, \rho \rangle
+\Downarrow
+\langle v, \xi, \phi, \rho \rangle}
+\newline
+\label{}\tag{Literal}
+$$
+
+* A literal value evaluates to itself
+* Above the line is empty (no requirements)
+* Environments are unchanged
+
+---
+## Variables
+
+$$
+\frac{x \in dom\ \rho}
+{\langle \operatorname{VAR}(x), \xi, \phi, \rho \rangle
+\Downarrow
+\langle \rho(x), \xi, \phi, \rho \rangle}
+\newline
+\label{}\tag{FormalVar}
+$$
+
+* A local variable (function argument) is just looked up
+  in the local variable environment $\rho$
+* This only works if the variable $x$ is in the local environment
+
+---
+## Variables
+
+$$
+\frac{x \notin dom\ \rho \quad x \in dom\ \xi}
+{\langle \operatorname{VAR}(x), \xi, \phi, \rho \rangle
+\Downarrow
+\langle \xi(x), \xi, \phi, \rho \rangle}
+\newline
+\label{}\tag{GlobalVar}
+$$
+
+* If $x$ is not a local variable but is a global variable...
+* ...look up $x$ in the global variable environment
+
+---
+## Variables
+
+* If the same name is both a local and a global variable, the
+  local variable takes precedence
+
+* If a variable being looked up is not in either environment,
+  we say the semantics are "stuck" (no more progress can be made)
+
+* Stuck semantics correspond to error conditions
+  * (Error handling is outside the scope of the semantics)
+
+---
+## Assignment (`set`)
+
+$$
+\frac{x \in dom\ \rho
+\quad
+\langle e, \xi, \phi, \rho \rangle
+\Downarrow
+\langle v, \xi', \phi, \rho' \rangle
+}
+{\langle \operatorname{SET}(x, e), \xi, \phi, \rho \rangle
+\Downarrow
+\langle v, \xi', \phi, \rho'\\{x \mapsto v\\} \rangle
+}
+\newline
+\label{}\tag{FormalAssign}
+$$
+
+* To set a formal parameter/local variable $x$ ...
+* ... first evaluate the expression $e$ ...
+* ... possibly changing the value environments
+  $\xi$ and $\rho$ to $\xi'$ and $\rho'$ ...
+* ... and extend $\rho'$ with the binding: $x \mapsto v$
+
+---
+## Assignment (`set`)
+
+$$
+\frac{x \notin dom\ \rho
+\quad
+x \in dom\ \xi
+\quad
+\langle e, \xi, \phi, \rho \rangle
+\Downarrow
+\langle v, \xi', \phi, \rho' \rangle
+}
+{\langle \operatorname{SET}(x, e), \xi, \phi, \rho \rangle
+\Downarrow
+\langle v, \xi'\\{x \mapsto v\\}, \phi, \rho' \rangle}
+\newline
+\label{}\tag{GlobalAssign}
+$$
+
+* To set a global variable $x$ ...
+* ... first evaluate the expression $e$ ...
+* ... possibly changing the value environments
+  $\xi$ and $\rho$ to $\xi'$ and $\rho'$ ...
+* ... and extend $\xi'$ with the binding: $x \mapsto v$
+
+---
+## Conditionals (`if`)
+
+$$
+\frac{
+\langle e_1, \xi, \phi, \rho \rangle
+\Downarrow
+\langle v_1, \xi', \phi, \rho' \rangle
+\quad
+v_1 \ne 0
+\quad
+\langle e_2, \xi', \phi, \rho' \rangle
+\Downarrow
+\langle v_2, \xi'', \phi, \rho'' \rangle
+}
+{\langle \operatorname{IF}(e_1, e_2, e_3), \xi, \phi, \rho \rangle
+\Downarrow
+\langle v_2, \xi'', \phi, \rho'' \rangle}
+\newline
+\label{}\tag{IfTrue}
+$$
+
+* If $e_1$ reduces to $v_1$ ...
+* ... and $v_1 \ne 0$ ...
+* ... and $e_2$ reduces to $v_2$ ...
+* ... then the `if` expression reduces to $v_2$
+  * (Have to update environments too)
+
+---
+## Conditionals (`if`)
+
+$$
+\frac{
+\langle e_1, \xi, \phi, \rho \rangle
+\Downarrow
+\langle v_1, \xi', \phi, \rho' \rangle
+\quad
+v_1 = 0
+\quad
+\langle e_3, \xi', \phi, \rho' \rangle
+\Downarrow
+\langle v_3, \xi'', \phi, \rho'' \rangle
+}
+{\langle \operatorname{IF}(e_1, e_2, e_3), \xi, \phi, \rho \rangle
+\Downarrow
+\langle v_3, \xi'', \phi, \rho'' \rangle}
+\newline
+\label{}\tag{IfFalse}
+$$
+
+* If $e_1$ reduces to $v_1$ ...
+* ... and $v_1 = 0$ ...
+* ... and $e_3$ reduces to $v_3$ ...
+* ... then the `if` expression reduces to $v_3$
+  * (Have to update environments too)
+
+---
+## Conditionals (`if`)
+
+* Note that the _IfTrue_ and _IfFalse_ rules are mutually exclusive
+  * ($e_1$ must reduce to either 0 or a nonzero integer)
+
+* Therefore, the semantics are deterministic
+  * (Not all semantics are deterministic)
+
+* `set` semantics are also deterministic
+  * always choose local over global variable if there's a choice
+
+---
+## Loops (`while`)
+
+* `while` loops have two parts:
+  * What happens if the test is true
+  * What happens if the test is false
+
+* We'll look at the false case first
+
+---
+## Loops (`while`)
+
+$$
+\frac{
+\langle e_1, \xi, \phi, \rho \rangle
+\Downarrow
+\langle v_1, \xi', \phi, \rho' \rangle
+\quad
+v_1 = 0
+}
+{\langle \operatorname{WHILE}(e_1, e_2), \xi, \phi, \rho \rangle
+\Downarrow
+\langle 0, \xi', \phi, \rho' \rangle}
+\newline
+\label{}\tag{WhileEnd}
+$$
+
+* If $e_1$ reduces to $v_1$ ...
+* ... and $v_1 = 0$ ...
+* ... the `while` expression reduces to $0$
+* (_i.e._ the loop terminates)
+
+---
+## Loops (`while`)
+
+$$
+\frac{
+\begin{gather*}
+\langle e_1, \xi, \phi, \rho \rangle
+\Downarrow
+\langle v_1, \xi', \phi, \rho' \rangle
+\\\\
+v_1 \ne 0
+\\\\
+\langle e_2, \xi', \phi, \rho' \rangle
+\Downarrow
+\langle v_2, \xi'', \phi, \rho'' \rangle
+\\\\
+\langle \operatorname{WHILE}(e_1, e_2), \xi'', \phi, \rho'' \rangle
+\Downarrow
+\langle 0, \xi''', \phi, \rho''' \rangle
+\end{gather*}
+}
+{\langle \operatorname{WHILE}(e_1, e_2), \xi, \phi, \rho \rangle
+\Downarrow
+\langle 0, \xi''', \phi, \rho''' \rangle}
+$$
+
+$$
+\label{}\tag{WhileIterate}
+$$
+
+* If $e_1$ reduces to $v_1$ ...
+
+---
+## Loops (`while`)
+
+$$
+\frac{
+\begin{gather*}
+\langle e_1, \xi, \phi, \rho \rangle
+\Downarrow
+\langle v_1, \xi', \phi, \rho' \rangle
+\\\\
+v_1 \ne 0
+\\\\
+\langle e_2, \xi', \phi, \rho' \rangle
+\Downarrow
+\langle v_2, \xi'', \phi, \rho'' \rangle
+\\\\
+\langle \operatorname{WHILE}(e_1, e_2), \xi'', \phi, \rho'' \rangle
+\Downarrow
+\langle 0, \xi''', \phi, \rho''' \rangle
+\end{gather*}
+}
+{\langle \operatorname{WHILE}(e_1, e_2), \xi, \phi, \rho \rangle
+\Downarrow
+\langle 0, \xi''', \phi, \rho''' \rangle}
+$$
+
+$$
+\label{}\tag{WhileIterate}
+$$
+
+* ... and $v_1 \ne 0$ ...
+
+---
+## Loops (`while`)
+
+$$
+\frac{
+\begin{gather*}
+\langle e_1, \xi, \phi, \rho \rangle
+\Downarrow
+\langle v_1, \xi', \phi, \rho' \rangle
+\\\\
+v_1 \ne 0
+\\\\
+\langle e_2, \xi', \phi, \rho' \rangle
+\Downarrow
+\langle v_2, \xi'', \phi, \rho'' \rangle
+\\\\
+\langle \operatorname{WHILE}(e_1, e_2), \xi'', \phi, \rho'' \rangle
+\Downarrow
+\langle 0, \xi''', \phi, \rho''' \rangle
+\end{gather*}
+}
+{\langle \operatorname{WHILE}(e_1, e_2), \xi, \phi, \rho \rangle
+\Downarrow
+\langle 0, \xi''', \phi, \rho''' \rangle}
+$$
+
+$$
+\label{}\tag{WhileIterate}
+$$
+
+* ... and $\operatorname{WHILE}(e_1, e_2)$ reduces to $0$
+  in the new environments $\xi''$ and $\rho''$ ...
+
+---
+## Loops (`while`)
+
+$$
+\frac{
+\begin{gather*}
+\langle e_1, \xi, \phi, \rho \rangle
+\Downarrow
+\langle v_1, \xi', \phi, \rho' \rangle
+\\\\
+v_1 \ne 0
+\\\\
+\langle e_2, \xi', \phi, \rho' \rangle
+\Downarrow
+\langle v_2, \xi'', \phi, \rho'' \rangle
+\\\\
+\langle \operatorname{WHILE}(e_1, e_2), \xi'', \phi, \rho'' \rangle
+\Downarrow
+\langle 0, \xi''', \phi, \rho''' \rangle
+\end{gather*}
+}
+{\langle \operatorname{WHILE}(e_1, e_2), \xi, \phi, \rho \rangle
+\Downarrow
+\langle 0, \xi''', \phi, \rho''' \rangle}
+$$
+
+$$
+\label{}\tag{WhileIterate}
+$$
+
+* ... the `while` expression reduces to $0$
+  * environments updated to $\xi'''$ and $\rho'''$
+
+---
+## Sequential execution (`begin`)
+
+* `begin` expressions also have two different inference rules
+  in the operational semantics:
+  * for empty `begin` statements
+  * for non-empty `begin` statements
+
+* Again, we'll look at the simpler case first
+
+---
+## Sequential execution (`begin`)
+
+$$
+\frac{}
+{\langle \operatorname{BEGIN}(), \xi, \phi, \rho \rangle
+\Downarrow
+\langle 0, \xi, \phi, \rho \rangle}
+\newline
+\label{}\tag{EmptyBegin}
+$$
+
+* An empty `begin` evaluates to $0$
+* Environments are unchanged
+
+---
+## Sequential execution (`begin`)
+
+$$
+\frac{
+\begin{align*}
+\langle e_1, \xi_0, \phi, \rho_0 \rangle
+& \Downarrow
+\langle v_1, \xi_1, \phi, \rho_1 \rangle
+\\\\
+\langle e_2, \xi_1, \phi, \rho_1 \rangle
+& \Downarrow
+\langle v_2, \xi_2, \phi, \rho_2 \rangle
+\\\\
+& \ \hspace{0.136em} \vdots
+\\\\
+\langle e_n, \xi_{n-1}, \phi, \rho_{n-1} \rangle
+& \Downarrow
+\langle v_n, \xi_n, \phi, \rho_n \rangle
+\end{align*}
+}
+{
+\langle \operatorname{BEGIN}(e_1, e_2, \ldots e_n), \xi_0, \phi, \rho_0 \rangle
+\Downarrow
+\langle v_n, \xi_n, \phi, \rho_n \rangle}
+\newline
+\label{}\tag{Begin}
+$$
+
+* Evaluate expressions in sequence,
+  update environments, return last result
+
+---
+## User-defined functions
+
+$$
+\frac{
+\begin{align*}
+\phi(f) = \ \operatorname{USER}(&\langle x_1 \ldots x_n \rangle, e)
+\\\\
+x_1, \ldots, x_n\ & \text{all distinct}
+\\\\
+\langle e_1, \xi_0, \phi, \rho_0 \rangle
+& \Downarrow
+\langle v_1, \xi_1, \phi, \rho_1 \rangle
+\\\\
+& \ \hspace{0.136em} \vdots
+\\\\
+\langle e_n, \xi_{n-1}, \phi, \rho_{n-1} \rangle
+& \Downarrow
+\langle v_n, \xi_n, \phi, \rho_n \rangle
+\\\\
+\langle e, \xi_n, \phi, \\{ x_1 \mapsto v_1, \ldots, & \ x_n \mapsto v_n \\} \rangle
+\Downarrow
+\langle v, \xi', \phi, \rho' \rangle
+\end{align*}
+}
+{
+\langle \operatorname{APPLY}(f, e_1, e_2, \ldots e_n), \xi_0, \phi, \rho_0 \rangle
+\Downarrow
+\langle v, \xi', \phi, \rho_n \rangle}
+$$
+
+$$
+\label{}\tag{ApplyUser}
+$$
+
+---
+## User-defined functions
+
+* There is a _lot_ going on in that inference rule!
+* Let's break it down into manageable chunks...
+
+---
+## User-defined functions
+
+$$
+\frac{
+\begin{align*}
+\phi(f) = \ &\operatorname{USER}(\langle x_1 \ldots x_n \rangle, e)
+\\\\
+& \cdots
+\end{align*}
+}
+{
+\ldots
+}
+$$
+
+$$
+\label{}\tag{ApplyUser}
+$$
+
+* The function $f$ is a "user function" (function defined in _Imp_)
+* It is found in the function environment $\phi$
+* Its arguments are $x_1, x_2, \ldots x_n$
+* Its body is $e$
+
+---
+## User-defined functions
+
+$$
+\frac{
+\begin{align*}
+& \cdots
+\\\\
+x_1, & \ldots, x_n\ \text{all distinct}
+\\\\
+& \cdots
+\end{align*}
+}
+{
+\ldots
+}
+$$
+
+$$
+\label{}\tag{ApplyUser}
+$$
+
+* Its arguments are $x_1, x_2, \ldots x_n$, all distinct
+
+---
+## User-defined functions
+
+$$
+\frac{
+\begin{align*}
+& \cdots
+\\\\
+\langle e_1, \xi_0, \phi, \rho_0 \rangle
+& \Downarrow
+\langle v_1, \xi_1, \phi, \rho_1 \rangle
+\\\\
+& \ \hspace{0.136em} \vdots
+\\\\
+\langle e_n, \xi_{n-1}, \phi, \rho_{n-1} \rangle
+& \Downarrow
+\langle v_n, \xi_n, \phi, \rho_n \rangle
+\\\\
+& \cdots
+\end{align*}
+}
+{
+\ldots
+}
+$$
+
+$$
+\label{}\tag{ApplyUser}
+$$
+
+* Evaluate arguments:
+  $e_1 \Downarrow v_1, \ldots e_n \Downarrow v_n$
+
+---
+## User-defined functions
+
+$$
+\frac{
+\begin{align*}
+& \cdots
+\\\\
+\langle e_1, \xi_0, \phi, \rho_0 \rangle
+& \Downarrow
+\langle v_1, \xi_1, \phi, \rho_1 \rangle
+\\\\
+& \ \hspace{0.136em} \vdots
+\\\\
+\langle e_n, \xi_{n-1}, \phi, \rho_{n-1} \rangle
+& \Downarrow
+\langle v_n, \xi_n, \phi, \rho_n \rangle
+\\\\
+& \cdots
+\end{align*}
+}
+{
+\ldots
+}
+$$
+
+$$
+\label{}\tag{ApplyUser}
+$$
+
+* Update environments $\xi$ and $\rho$ at each step
+
+---
+## User-defined functions
+
+$$
+\frac{
+\begin{align*}
+& \cdots
+\\\\
+\langle e, \xi_n, \phi, \\{ x_1 \mapsto v_1, \ldots, & \ x_n \mapsto v_n \\} \rangle
+\Downarrow
+\langle v, \xi', \phi, \rho' \rangle
+\\\\
+& \cdots
+\end{align*}
+}
+{
+\ldots
+}
+$$
+
+$$
+\label{}\tag{ApplyUser}
+$$
+
+* Use latest global environment $\xi_n$
+* Throw away local environment $\rho_n$
+* Instead, create new local environment
+  * $\\{x_1 \mapsto v_1, \ldots x_n \mapsto v_n \\}$
+
+---
+## User-defined functions
+
+$$
+\frac{
+\begin{align*}
+& \cdots
+\\\\
+\langle e, \xi_n, \phi, \\{ x_1 \mapsto v_1, \ldots, & \ x_n \mapsto v_n \\} \rangle
+\Downarrow
+\langle v, \xi', \phi, \rho' \rangle
+\\\\
+& \cdots
+\end{align*}
+}
+{
+\ldots
+}
+$$
+
+$$
+\label{}\tag{ApplyUser}
+$$
+
+* In this local environment, $e \Downarrow v$
+* Global environment may change to $\xi'$
+
+---
+## User-defined functions
+
+$$
+\frac{
+\cdots
+}
+{
+\langle \operatorname{APPLY}(f, e_1, e_2, \ldots e_n), \xi_0, \phi, \rho_0 \rangle
+\Downarrow
+\langle v, \xi', \phi, \rho_n \rangle
+}
+$$
+
+$$
+\label{}\tag{ApplyUser}
+$$
+
+* End result of function application:
+  * return value $v$
+  * updated global environment $\xi'$
+
+---
+## User-defined functions
+
+$$
+\frac{
+\cdots
+}
+{
+\langle \operatorname{APPLY}(f, e_1, e_2, \ldots e_n), \xi_0, \phi, \rho_0 \rangle
+\Downarrow
+\langle v, \xi', \phi, \rho_n \rangle
+}
+$$
+
+$$
+\label{}\tag{ApplyUser}
+$$
+
+* End result of function application:
+  * updated local environment $\rho_n$
+  * Local environment created during function call goes away!
+    * $\rho_n$ is the local environment from the _caller_ side
+
+---
+## Primitive functions
+
+* Primitive functions are simpler than user-defined functions
+* We will show a couple of examples
+
+* In principle, _all_ primitives should have operational semantics spelled out
+  * (never really do this in practice)
+
+---
+## Primitive functions: $+$
+
+$$
+\frac{
+\begin{align*}
+\phi(f) &= \ \operatorname{PRIMITIVE}(+)
+\\\\
+\langle e_1, \xi_0, \phi, \rho_0 \rangle
+& \Downarrow
+\langle v_1, \xi_1, \phi, \rho_1 \rangle
+\\\\
+\langle e_2, \xi_1, \phi, \rho_1 \rangle
+& \Downarrow
+\langle v_2, \xi_2, \phi, \rho_2 \rangle
+\end{align*}
+}
+{
+\langle \operatorname{APPLY}(f, e_1, e_2), \xi_0, \phi, \rho_0 \rangle
+\Downarrow
+\langle v_1 + v_2, \xi_2, \phi, \rho_2 \rangle}
+$$
+
+$$
+\label{}\tag{ApplyAdd}
+$$
+
+* The addition doesn't change environments
+* Evaluating the subexpressions may change environments,
+  so must keep track of that
+
+---
+## Primitive functions: $=$
+
+$$
+\frac{
+\begin{align*}
+\phi(f) &= \ \operatorname{PRIMITIVE}(=)
+\\\\
+\langle e_1, \xi_0, \phi, \rho_0 \rangle
+& \Downarrow
+\langle v_1, \xi_1, \phi, \rho_1 \rangle
+\\\\
+\langle e_2, \xi_1, \phi, \rho_1 \rangle
+& \Downarrow
+\langle v_2, \xi_2, \phi, \rho_2 \rangle
+\\\\
+v_1 &= v_2
+\end{align*}
+}
+{
+\langle \operatorname{APPLY}(f, e_1, e_2), \xi_0, \phi, \rho_0 \rangle
+\Downarrow
+\langle 1, \xi_2, \phi, \rho_2 \rangle}
+$$
+
+$$
+\label{}\tag{ApplyEqTrue}
+$$
+
+* If the numbers are equal, return 1
+
+---
+## Primitive functions: $=$
+
+$$
+\frac{
+\begin{align*}
+\phi(f) &= \ \operatorname{PRIMITIVE}(=)
+\\\\
+\langle e_1, \xi_0, \phi, \rho_0 \rangle
+& \Downarrow
+\langle v_1, \xi_1, \phi, \rho_1 \rangle
+\\\\
+\langle e_2, \xi_1, \phi, \rho_1 \rangle
+& \Downarrow
+\langle v_2, \xi_2, \phi, \rho_2 \rangle
+\\\\
+v_1 &\ne v_2
+\end{align*}
+}
+{
+\langle \operatorname{APPLY}(f, e_1, e_2), \xi_0, \phi, \rho_0 \rangle
+\Downarrow
+\langle 0, \xi_2, \phi, \rho_2 \rangle}
+$$
+
+$$
+\label{}\tag{ApplyEqFalse}
+$$
+
+* If not, return 0
+
+---
+## Primitive functions: `println`
+
+$$
+\frac{
+\begin{align*}
+\phi(f) &= \ \operatorname{PRIMITIVE}(println)
+\\\\
+\langle e, \xi, \phi, \rho \rangle
+& \Downarrow
+\langle v, \xi', \phi, \rho' \rangle
+\end{align*}
+}
+{
+\langle \operatorname{APPLY}(f, e), \xi, \phi, \rho \rangle
+\Downarrow
+\langle v, \xi', \phi, \rho' \rangle}
+\\\\
+\text{(while printing $v$)}
+$$
+
+$$
+\label{}\tag{ApplyPrintln}
+$$
+
+* Semantics can't express the notion of printing
+* So `println` appears to be the identity function
+  from the semantics perspective
+
+---
+## Definitions
+
+* We've given the operational semantics for all kinds of expressions
+* Now we have to do the definitions as well
+* Definition rules use judgments of the form
+  $\langle d, \xi, \phi\rangle \longrightarrow \langle \xi', \phi'\rangle$
+
+* In other words, they work by updating the $\xi$ (global variable)
+  and $\phi$ (function) environments
+
+---
+## Aside: notation
+
+* In the previous inference rules, we use the "big down arrow" ($\Downarrow$)
+  to express the final result when evaluating _expressions_
+
+* When evaluating _statements_ (definitions) we use the "right arrow"
+  ($\rightarrow$) to express the result of evaluating the statements
+
+* What's the key difference?
+
+---
+## Aside: notation
+
+* The "big down arrow" ($\Downarrow$) means that an expression
+  is being reduced to a _value_ (since all expressions evaluate to a value),
+  possibly in multiple steps
+
+* The "right arrow" ($\rightarrow$) means that certain environments
+  are updated in one step, and no value is returned
+
+---
+## Aside: notation
+
+* The $\Downarrow$ is an example of "large-step semantics"
+  while the $\rightarrow$ is an example of "small-step semantics"
+
+* We will see later that you can write an entire evaluator
+  in terms of small-step semantics if you want to
+  (and sometimes you do)
+
+---
+## Global variable definitions
+
+$$
+\frac{
+\langle e, \xi, \phi, \\{\\} \rangle
+\Downarrow
+\langle v, \xi', \phi, \\{\\} \rangle
+}
+{
+\langle \operatorname{VAL}(x, e), \xi, \phi \rangle
+\longrightarrow
+\langle \xi'\\{x \mapsto v\\}, \phi \rangle}
+$$
+
+$$
+\label{}\tag{DefineGlobal}
+$$
+
+* Top-level expressions are evaluated with an empty locals environment
+* Global variable environment $\xi$ is extended with the new binding for $x$
+
+---
+## Function definitions
+
+$$
+\frac{
+x_1, \ldots, x_n\ \text{all distinct}
+}
+{
+\begin{gather*}
+\langle \operatorname{DEFINE}(f, \langle x_1, \ldots, x_n\rangle, e), \xi, \phi \rangle
+\\\\
+\longrightarrow
+\\\\
+\langle \xi, \phi\\{f \mapsto \operatorname{USER}(\langle x_1, \ldots, x_n\rangle, e) \\}
+\rangle
+\end{gather*}
+}
+$$
+
+$$
+\label{}\tag{DefineFunction}
+$$
+
+* A newly-defined function is packaged into a user function datatype
+* The $\phi$ function environment is extended with a new binding for $f$
+
+---
+## Top-level expressions
+
+$$
+\frac{
+\langle e, \xi, \phi, \\{\\} \rangle
+\Downarrow
+\langle v, \xi', \phi, \\{\\} \rangle
+}
+{
+\langle \operatorname{EXP}(e), \xi, \phi \rangle
+\longrightarrow
+\langle
+\xi'
+\\{
+\text{\\_}
+\mapsto v
+\\},
+\phi 
+\rangle
+}
+$$
+
+$$
+\label{}\tag{TopLevelExp}
+$$
+
+* Evaluation of a top-level expression occurs as in the `val` rule
+* The result is bound to the special name `_`
+
+---
+## Next time
+
+* We'll begin walking through the _Imp_ code base
+
+            </textarea>
+          </section>
+      </div>
+    </div>
+    <script src="plugin/math/math.js"></script>
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <!-- Uncomment if you want syntax highlighting. -->
+    <!--
+    <link rel="stylesheet" href="plugin/highlight/arduino-light.css">
+    -->
+    <style>
+/* MCV: My new reveal.js styles. */
+
+.reveal {
+  font-family: "Arial", sans-serif;
+  font-size: 28pt;
+  font-weight: normal;
+  color: #000; 
+}
+
+.reveal .slide-number {
+  background: white;
+  /* border: 1px solid black; */
+}
+
+.reveal .slide-number-a {
+  background: white;
+  color: black;
+  font-size: 24px;
+}
+
+.reveal .slides h1 {
+  text-align: center;
+  text-transform: none;
+  padding: 150px 0 20px 0;
+  font-size: 64pt;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif;
+  font-weight: normal;
+  color: #4f271c;
+  background: #d0d0f0;
+  margin-bottom: 0.5em;
+}
+
+.reveal h2 { 
+  text-transform: none;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif !important;
+  /* text-shadow: 2px 2px 3px #a0a0a0; */
+  color: #4f271c !important;
+  font-size: 60pt !important;
+  font-weight: normal !important;
+  /* background: #d0d0d0; */
+  width: 80% !important;
+  margin-left: 10%;
+}
+
+/* First level bullet color. */
+.reveal .slides ul li::marker {
+  color: #3891a7;
+}
+
+/* Second level bullet spacing. */
+.reveal .slides ul li ul {
+  margin-top: 0px;
+}
+
+.reveal .slides li {
+  margin-top: 10px;
+}
+
+/* Second level bullet color. */
+.reveal .slides ul li ul li::marker {
+  color: #3891a7;
+}
+
+.reveal li {
+  font-size: 36pt !important;
+}
+
+.reveal .smaller li {
+  font-size: 32pt !important;
+}
+
+.reveal li ul li {
+  font-size: 32pt !important;
+}
+
+.reveal li .smaller ul li {
+  font-size: 28pt !important;
+}
+
+.reveal ul {
+  width: 80% !important;
+  text-align: left !important;
+}
+
+.reveal code em {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal em code {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal code .comment {
+  color: #cc44cc !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+.reveal blockquote {
+  text-align: left !important;
+  color: #668888 !important;
+}
+
+.katex-display > .katex {
+  color: #0040b0 !important;
+}
+
+.katex-display > .katex > .katex-html > .tag {
+  color: #808080 !important;
+  margin-right: 100px !important;
+}
+
+.katex > .katex-html {
+  color: #0040b0 !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.katex {
+  font-size: 1.1em !important;
+}
+
+.reveal pre {
+  margin-left: 200px !important;
+  width: 75% !important;
+  font-size: 24pt !important;
+}
+
+.reveal pre.smaller {
+  font-size: 20pt !important;
+}
+
+.reveal code {
+  color: #0040b0 !important;
+  font-size: 90%;
+}
+
+.reveal pre code {
+  /* max vertical size of code block */
+  max-height: 700px !important;
+}
+
+.reveal li ul li code {
+  font-size: 80%;
+}
+
+    </style>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        katex: {
+          version: 'latest',
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            "\\eqref": "\\href{###1}{(\\text{#1})}",
+            "\\ref": "\\href{###1}{\\text{#1}}",
+            "\\label": "\\htmlId{#1}{}",
+          },
+        },
+        plugins: [ 
+          RevealMarkdown,
+          // RevealHighlight,
+          RevealMath.KaTeX,
+        ],
+        center: false,
+        controls: false,
+        disableLayout: false,  // set to true to use custom CSS for layout
+        showSlideNumber: 'all',
+        slideNumber: true,
+        transition: 'none',
+        width: 1280,
+        height: 800,
+      });
+    </script>
+  </body>
+</html>
