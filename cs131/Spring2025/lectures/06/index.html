@@ -273,6 +273,8 @@ x \in dom\ \rho
 \hspace{1em}
 \rho(x) = l
 \hspace{1em}
+l \in dom\ \sigma
+\hspace{1em}
 \langle e, \rho, \sigma\rangle
 \Downarrow
 \langle v, \sigma'\rangle
@@ -286,6 +288,7 @@ $$
 $$
 \label{}\tag{Assign}
 $$
+
 
 * Evaluating the expression `<exp>` in<br/>`(set x <exp>)`
   gives a unit value and a (possibly) new store $\sigma'$
@@ -301,6 +304,8 @@ x \in dom\ \rho
 \hspace{1em}
 \rho(x) = l
 \hspace{1em}
+l \in dom\ \sigma
+\hspace{1em}
 \langle e, \rho, \sigma\rangle
 \Downarrow
 \langle v, \sigma'\rangle
@@ -314,6 +319,7 @@ $$
 $$
 \label{}\tag{Assign}
 $$
+
 
 * We modify the store $\sigma'$ by changing the contents of the location of $x$
   ($l$) to $v$
@@ -331,6 +337,8 @@ x \in dom\ \rho
 \hspace{1em}
 \rho(x) = l
 \hspace{1em}
+l \in dom\ \sigma
+\hspace{1em}
 \langle e, \rho, \sigma\rangle
 \Downarrow
 \langle v, \sigma'\rangle
@@ -344,6 +352,7 @@ $$
 $$
 \label{}\tag{Assign}
 $$
+
 
 * We return a unit (`#u`) value
 
@@ -358,6 +367,8 @@ x \in dom\ \rho
 \hspace{1em}
 \rho(x) = l
 \hspace{1em}
+l \in dom\ \sigma
+\hspace{1em}
 \langle e, \rho, \sigma\rangle
 \Downarrow
 \langle v, \sigma'\rangle
@@ -372,30 +383,13 @@ $$
 \label{}\tag{Assign}
 $$
 
+
 * (We will revise this slightly later)
 
 ---
 ## Operational semantics: `let`
 
 * `let` semantics are fairly complicated:
-
-<!--
-\begin{align*}
-\sigma_0 &= \sigma \\\\
-@ang2a{e_1, \rho, \sigma_0}{v_1, \sigma_1} \\\\
-& \ \hspace{0.136em} \vdots \\\\
-@ang2a{e_n, \rho, \sigma_{n-1}}{v_n, \sigma_n} \\\\
-x_1, \ldots x_n & \text{ all distinct} \\\\
-l_1, \ldots l_n \notin dom\ \sigma_n & \text{ (and all distinct)} \\\\
-@ang{
-e,
-\rho\\{x_1 \mapsto l_1, \ldots x_n \mapsto l_n\\},
-&\ \sigma_n\\{l_1 \mapsto v_1 \ldots l_n \mapsto v_n\\}
-}
-\Downarrow
-@ang{v, \sigma'}
-\end{align*}
--->
 
 $$
 \small
@@ -679,12 +673,14 @@ $$
 \begin{aligned}
 x \in dom\ \rho
 \hspace{1em}
-\rho(x) = &\ l
+\rho(&x) = \ l
 \hspace{1em}
-\sigma(l) \neq \text{unspecified}
+l \in dom\ \sigma
 \\\\
+\sigma(l) \neq\ \text{unspecified} &\phantom{ } 
+\hspace{1em}
 \langle e, \rho, \sigma\rangle
-&\Downarrow
+\Downarrow
 \langle v, \sigma'\rangle
 \end{aligned}
 }{
