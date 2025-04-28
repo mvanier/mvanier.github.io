@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- <section data-background-color="#ffffd0"> -->
+          <section data-markdown>
+            <textarea data-template>
+# CS 131:<br/>Programming Languages
+## _Lecture 12_:<br/>The _Typed Imp_ Language
+
+---
+## Today
+
+* A new language: _Typed Imp_
+
+* New topic: type systems and type checking
+
+---
+## Previously
+
+* All of the language we have been implementing so far
+  have been in one of two groups:
+  * Untyped (_Imp_)
+  * Dynamically typed (_$\mu$Scheme_,<br/>_$\mu$Scheme+_)
+
+* (Technically, the _Imp_ language is not "untyped" but _**uni**typed_
+  _i.e._ there is only one type (integers))
+
+---
+## Dynamically typed $\rightarrow$<br/>Statically Typed
+
+* Now we will start looking into the world of _statically typed_ languages
+
+* Primary difference:
+  * a statically-typed language knows the types of all values
+    before the code is run
+  * a dynamically-typed language (or untyped language) doesn't
+
+---
+## _Aside_: unsafe statically-typed languages
+
+* There are also languages that are nominally statically typed,
+  but provide big escape hatches to circumvent the type system
+  * C is the canonical example of such a language
+
+* These languages are _unsafe_,
+  and we won't be dealing with them further in this course
+
+---
+## _Aside_: unsafe statically-typed languages
+
+* That isn't because they are "bad"
+  but because they are difficult to treat formally
+
+* Newer languages (_e.g._ Rust, Zig)
+  attempt to provide the features of unsafe languages like C
+  in a much safer setting
+  * Research is ongoing!
+
+---
+## Static typing: pros and cons
+
+* One would hope that after programming in OCaml in CS 4 and this class,
+  I don't have to sell you on the benefits of static type checking
+
+* However, it's still worth going over the advantages
+  and (perceived?) disadvantages of static typing
+
+* Such discussions crop up all the time on internet forums,
+  and many ignorant opinions are routinely offered for supporting either side
+
+---
+## Advantages of dynamic typing
+
+* Easier to learn (no type rules!)
+
+* Easier to write code (no type annotations!)
+
+---
+## Advantages of dynamic typing
+
+* Some code idioms are available
+  that are hard/impossible to write in statically-typed languages
+---
+## Advantages of dynamic typing
+
+* Some code idioms are available
+  that are hard/impossible to write in statically-typed languages
+  * Lists containing arbitrarily-typed elements (including other lists!)
+  * Returning different types from same function
+  * "Duck typing"
+---
+## Advantages of dynamic typing
+
+* Some code idioms are available
+  that are hard/impossible to write in statically-typed languages
+  * "Actor"-style message-passing systems (_e.g._ Erlang language)
+  * Reflection (inspecting the behavior of running code)
+
+---
+## Advantages of static typing
+
+* IMO, pretty much everything else
+  * Much easier to get code working correctly
+  * Debugging is much faster (though more "up-front")
+  * Refactoring is massively easier
+---
+## Advantages of static typing
+
+* IMO, pretty much everything else
+  * Types are good documentation
+  * Types help you structure/design the code
+  * Types allow compilers to generate more efficient code
+
+---
+## Advantages of static typing
+
+* Also, most of the perceived benefits of dynamic languages
+  can be achieved with sufficiently advanced type systems
+  * and new type system/features introduced all the time,
+    so static type systems keep improving
+
+---
+## However...
+
+* There is one benefit of dynamically-typed languages I didn't mention:
+  * Dynamically-typed languages are _much_ easier to implement!
+
+---
+## However...
+
+* Designing and implementing a good type system is challenging
+  * _Proving_ that a type system does what it's supposed to
+    is even more challenging!
+
+* Therefore, the vast majority of languages
+  designed by amateurs/non-academics are dynamically-typed
+
+---
+## Where we are
+
+* We've spent a considerable amount of time
+  implementing dynamically-typed languages
+
+---
+## Where we are
+
+* We've seen that they break down into a series of stages:
+  * Concrete syntax (what the programmer writes)
+  * Converting to abstract syntax trees (ASTs)
+  * (sometimes) converting to simpler intermediate representation (IR)
+  * Evaluating the AST/IR
+
+---
+## Where we're going
+
+* Here are the corresponding stages for statically-typed languages:
+  * Concrete syntax (what the programmer writes)
+  * Converting to abstract syntax trees (ASTs)
+  * (sometimes) converting to simpler intermediate representation (IR)
+  * **Type checking**
+  * Evaluating the AST/IR
+
+* One extra stage!  Piece of cake! &#9786;
+* However, this extra stage can be extremely involved
+
+---
+## A simple statically-typed language
+
+* We started this course
+  with a simple imperative language called _Imp_
+
+* This allowed us to learn how to implement languages
+  in as simple a setting as possible
+
+* We will follow a similar strategy for typed languages,
+  and implement _Typed Imp_, which is _Imp_ with type checking
+
+---
+## A conundrum
+
+* One obvious problem: how can we create
+  a typed version of a language that has only one type?
+  * The type checker would be _really_ simple!
+
+---
+## A conundrum
+
+* To make this more realistic and interesting,
+  we will have to extend the types that can be manipulated in the language
+
+* _Imp_ had integers as the only type
+
+* _Typed Imp_ has integers, booleans, the unit type, and arrays
+  * Implementing arrays will be left up to you!
+
+---
+## Structure of Typed Imp
+
+* Most of _Typed Imp_ will be identical to _Imp_
+
+* There will be a few new forms,
+  and the `define` form will be extended with type annotations
+
+* There will be some new types
+
+* There will be a type checker
+
+* The evaluator will be almost identical,
+  except for new features (_e.g._ arrays)
+
+* Let's get into the details
+
+---
+## Syntax of Typed Imp
+
+* We'll use BNF notation to describe the syntax as usual
+
+* Here is the expression syntax:
+
+<pre><code>&lt;&#8203;exp&gt; ::==
+  | &lt;&#8203;literal&gt;
+  | &lt;&#8203;variable-name&gt;
+  | (<em>set</em> &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (<em>if</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>while</em> &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (<em>begin</em> {&lt;&#8203;exp&gt;})
+  | (&lt;&#8203;function-name&gt; {&lt;&#8203;exp&gt;})
+</code></pre>
+
+* Good news!  This is identical to _Imp_!
+
+---
+## Literals
+
+* Actually, it's not _exactly_ identical...
+
+* We've got more literal values:
+  * integers (same as _Imp_)
+  * booleans (`#f` and `#t`)
+  * unit values (`#u`)
+
+* (We don't have array literals)
+
+---
+## Literals
+
+<pre><code>&lt;&#8203;literal&gt; ::==
+  | &lt;&#8203;integer&gt;
+  | <em>#t</em>
+  | <em>#f</em>
+  | <em>#u</em>
+</code></pre>
+
+---
+## Types
+
+* Types are explicitly specified in _Typed Imp_
+
+* Here is the syntax:
+
+<pre><code>&lt;&#8203;type&gt; ::==
+  | <em>int</em>
+  | <em>bool</em>
+  | <em>unit</em>
+  | <em>(array &lt;&#8203;type&gt;)</em>
+</code></pre>
+
+---
+## Definitions
+
+* Definitions are more complex than in _Imp_:
+
+<pre><code>&lt;&#8203;def&gt; ::==
+  | &lt;&#8203;exp&gt;
+  | (<em>use</em> &lt;&#8203;file-name&gt;)
+  | (<em>val</em> &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (<em>define</em> &lt;&#8203;type&gt; &lt;&#8203;function-name&gt; ({&lt;&#8203;formal&gt;}) &lt;&#8203;exp&gt;)
+  | &lt;&#8203;unit-test&gt;
+
+&lt;&#8203;formal&gt; ::== [&lt;&#8203;variable-name&gt; <em>: &lt;&#8203;type&gt;</em>]
+</code></pre>
+
+---
+## Definitions
+
+* Definitions are more complex than in _Imp_:
+
+<pre><code>&lt;&#8203;def&gt; ::==
+  | &lt;&#8203;exp&gt;
+  | (use &lt;&#8203;file-name&gt;)
+  | (val &lt;&#8203;variable-name&gt; &lt;&#8203;exp&gt;)
+  | (define <em>&lt;&#8203;type&gt;</em> &lt;&#8203;function-name&gt; ({&lt;&#8203;formal&gt;}) &lt;&#8203;exp&gt;)
+  | &lt;&#8203;unit-test&gt;
+
+&lt;&#8203;formal&gt; ::== [&lt;&#8203;variable-name&gt; <em>: &lt;&#8203;type&gt;</em>]
+</code></pre>
+
+* Note that the type of all function arguments,
+  and the function return type, are explicitly annotated
+
+---
+## Unit tests
+
+* There are some new unit test forms:
+
+<pre><code>&lt;&#8203;unit-test&gt; ::==
+  | (check-expect &lt;&#8203;exp&gt; &lt;&#8203;exp&gt;)
+  | (check-error &lt;&#8203;exp&gt;)
+  | (<em>check-type</em> &lt;&#8203;exp&gt; &lt;&#8203;type&gt;)
+  | (<em>check-type-error</em> &lt;&#8203;exp&gt;)
+  | (<em>check-function-type</em> &lt;&#8203;function-name&gt;
+      ({&lt;&#8203;type&gt;} <em>-&gt;</em> &lt;&#8203;type&gt;))
+</code></pre>
+
+* And that's it for the syntax!
+
+---
+## Examples
+
+<pre><code>&gt;&gt;&gt; (define <em>int</em> add1 ([x : <em>int</em>]) (+ x 1))
+add1 : (<em>int</em> -&gt; <em>int</em>)
+&gt;&gt;&gt; (add1 4)
+5 : <em>int</em>
+&gt;&gt;&gt; (define <em>int</em> double ([x : <em>int</em>]) (+ x x))
+double : (<em>int</em> -&gt; <em>int</em>)
+&gt;&gt;&gt; (double 4)
+8 : <em>int</em>
+</code></pre>
+
+---
+## Examples
+
+* In a file, it's good style to put `check-function-type`
+  before a function definition (like a declaration)
+
+<pre><code>(check-function-type add1 (<em>int</em> -&gt; <em>int</em>))
+(define <em>int</em> add1 ([x : <em>int</em>]) (+ x 1))
+
+(check-function-type double (<em>int</em> -&gt; <em>int</em>))
+(define <em>int</em> double ([x : <em>int</em>]) (+ x x))
+
+(check-function-type positive? (<em>int</em> -&gt; <em>bool</em>))
+(define <em>bool</em> positive? ([n : <em>int</em>]) (&gt; n 0))
+</code></pre>
+
+---
+## Examples
+
+* Logical expressions return a boolean value, not an integer:
+
+<pre><code>&gt;&gt;&gt; (&gt; 1 0)
+#t : bool
+&gt;&gt;&gt; (&lt;&#8203; 10 5)
+#f : bool
+</code></pre>
+
+* Similarly, the test part of an `if` expression must be a boolean,
+  not an integer:
+
+<pre><code>&gt;&gt;&gt; (if 1 77 88)
+Type error: expected bool; got int
+</code></pre>
+
+---
+## Arrays
+
+* _Typed Imp_ also supports arrays as a fundamental built-in construct
+
+* The array interface is _functional_; there is no special syntax for arrays
+
+---
+## Arrays
+
+* The functional interface for arrays is as follows:
+
+<pre><code>;; make an array of size &lt;&#8203;size&gt; containing value of
+;; &lt;&#8203;init&gt; in each array location
+(<em>make-array</em> &lt;&#8203;size&gt; &lt;&#8203;init&gt;)
+
+;; get array element at index &lt;&#8203;index&gt;
+(<em>array-at</em> &lt;&#8203;array&gt; &lt;&#8203;index&gt;)
+
+;; set array element at index &lt;&#8203;index&gt;
+;; to whatever &lt;&#8203;exp&gt; evaluates to
+(<em>array-put</em> &lt;&#8203;array&gt; &lt;&#8203;index&gt; &lt;&#8203;exp&gt;)
+
+;; return the size of &lt;&#8203;array&gt;
+(<em>array-size</em> &lt;&#8203;array&gt;)
+</code></pre>
+
+---
+## Array examples
+
+* Here are some examples of the use of arrays:
+
+<pre><code>&gt;&gt;&gt; (val truth-vector (<em>make-array</em> 3 #f))
+[#f #f #f] : (array bool)
+
+&gt;&gt;&gt; (<em>array-put</em> truth-vector 1 #t)
+#t : bool
+
+&gt;&gt;&gt; (<em>array-get</em> truth-vector 2)
+#f : bool
+
+&gt;&gt;&gt; (<em>array-size</em> truth-vector)
+3 : int
+
+&gt;&gt;&gt; truth-vector
+[#f #t #f] : (array bool)
+</code></pre>
+
+---
+## Array examples
+
+<pre><code>(define (array (array int)) <em>matrix-using-a-and-i</em>
+   ; return square matrix of side length;
+   ; a and i are for local use only
+   ([length : int] [a : (array (array int))] [i : int])
+  (begin
+    (set a (make-array length (make-array 0 0)))
+    (set i 0)
+    (while (&lt;&#8203; i length)
+      (begin
+        (array-put a i (make-array length 0))
+        (set i (+ i 1))))
+    a))
+(define (array (array int)) <em>matrix</em> ([length : int])
+  (matrix-using-a-and-i length
+    (make-array 0 (make-array 0 0)) 0))
+</code></pre>
+
+* (Note lack of local variables!)
+
+---
+## Array examples
+
+<pre><code>&gt;&gt;&gt; (val a (matrix 3))
+a : (array (array int)) = [[0 0 0] [0 0 0] [0 0 0]]
+&gt;&gt;&gt; (val i 0)
+i : int = 0
+&gt;&gt;&gt; (val j 0)
+j : int = 0
+&gt;&gt;&gt; (while (&lt;&#8203; i 3)
+      (begin
+        (set j 0)
+        (while (&lt;&#8203; j 3)
+          (begin
+            (array-put (array-at a i) j (+ i j))
+            (set j (+ j 1))))
+        (set i (+ i 1))))
+&gt;&gt;&gt; a
+a : (array (array int)) : [[0 1 2] [1 2 3] [2 3 4]]
+</code></pre>
+
+---
+## Next time
+
+* Operational semantics of type checking
+
+            </textarea>
+          </section>
+      </div>
+    </div>
+    <script src="plugin/math/math.js"></script>
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <!-- Uncomment if you want syntax highlighting. -->
+    <!--
+    <link rel="stylesheet" href="plugin/highlight/arduino-light.css">
+    -->
+    <style>
+/* MCV: My new reveal.js styles. */
+
+.reveal {
+  font-family: "Arial", sans-serif;
+  font-size: 28pt;
+  font-weight: normal;
+  color: #000; 
+}
+
+.reveal .slide-number {
+  background: white;
+  /* border: 1px solid black; */
+}
+
+.reveal .slide-number-a {
+  background: white;
+  color: black;
+  font-size: 24px;
+}
+
+.reveal .slides h1 {
+  text-align: center;
+  text-transform: none;
+  padding: 150px 0 20px 0;
+  font-size: 64pt;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif;
+  font-weight: normal;
+  color: #4f271c;
+  background: #d0d0f0;
+  margin-bottom: 0.5em;
+}
+
+.reveal h2 { 
+  text-transform: none;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif !important;
+  /* text-shadow: 2px 2px 3px #a0a0a0; */
+  color: #4f271c !important;
+  font-size: 60pt !important;
+  font-weight: normal !important;
+  /* background: #d0d0d0; */
+  width: 80% !important;
+  margin-left: 10%;
+}
+
+/* First level bullet color. */
+.reveal .slides ul li::marker {
+  color: #3891a7;
+}
+
+/* Second level bullet spacing. */
+.reveal .slides ul li ul {
+  margin-top: 0px;
+}
+
+.reveal .slides li {
+  margin-top: 10px;
+}
+
+/* Second level bullet color. */
+.reveal .slides ul li ul li::marker {
+  color: #3891a7;
+}
+
+.reveal li {
+  font-size: 36pt !important;
+}
+
+.reveal .smaller li {
+  font-size: 32pt !important;
+}
+
+.reveal li ul li {
+  font-size: 32pt !important;
+}
+
+.reveal li .smaller ul li {
+  font-size: 28pt !important;
+}
+
+.reveal ul {
+  width: 80% !important;
+  text-align: left !important;
+}
+
+.reveal code em {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal em code {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal code .comment {
+  color: #cc44cc !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+.reveal blockquote {
+  text-align: left !important;
+  color: #668888 !important;
+}
+
+.katex-display > .katex {
+  color: #0040b0 !important;
+}
+
+.katex-display > .katex > .katex-html > .tag {
+  color: #808080 !important;
+  margin-right: 100px !important;
+}
+
+.katex > .katex-html {
+  color: #0040b0 !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.katex {
+  font-size: 1.1em !important;
+}
+
+.reveal pre {
+  margin-left: 200px !important;
+  width: 75% !important;
+  font-size: 24pt !important;
+}
+
+.reveal pre.smaller {
+  font-size: 20pt !important;
+}
+
+.reveal code {
+  color: #0040b0 !important;
+  font-size: 90%;
+}
+
+.reveal pre code {
+  /* max vertical size of code block */
+  max-height: 700px !important;
+}
+
+.reveal li ul li code {
+  font-size: 80%;
+}
+
+    </style>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        katex: {
+          version: 'latest',
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            "\\eqref": "\\href{###1}{(\\text{#1})}",
+            "\\ref": "\\href{###1}{\\text{#1}}",
+            "\\label": "\\htmlId{#1}{}",
+          },
+        },
+        plugins: [ 
+          RevealMarkdown,
+          // RevealHighlight,
+          RevealMath.KaTeX,
+        ],
+        center: false,
+        controls: false,
+        disableLayout: false,  // set to true to use custom CSS for layout
+        showSlideNumber: 'all',
+        slideNumber: true,
+        transition: 'none',
+        width: 1280,
+        height: 800,
+      });
+    </script>
+  </body>
+</html>
