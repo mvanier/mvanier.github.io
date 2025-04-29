@@ -1,0 +1,1706 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs115/Spring2025/book/assignments/3/partC_sparse_matrices/">
+      
+      
+        <link rel="prev" href="../partB_operators/">
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Part C: Miniproject: Sparse matrices - The CS 115 book (Spring 2025)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-c-miniproject-sparse-matrices-50-points" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The CS 115 book (Spring 2025)" class="md-header__button md-logo" aria-label="The CS 115 book (Spring 2025)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 115 book (Spring 2025)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part C: Miniproject: Sparse matrices
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The CS 115 book (Spring 2025)" class="md-nav__button md-logo" aria-label="The CS 115 book (Spring 2025)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The CS 115 book (Spring 2025)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/welcome/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome to CS 115!
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/software/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installing the course software
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/books/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Books and resources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/papers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interesting papers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Administrative
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Administrative
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Syllabus
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/collab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Collaboration policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignments
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Assignments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../0/assignment0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Assignment 0: Getting set up
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 1: Evaluation and recursion
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 1: Evaluation and recursion
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/assignment1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partA_exercises/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part A: Exercises
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partB_pitfalls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part B: Pitfalls
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partC_evaluation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part C: Evaluation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 2: Algebraic datatypes
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 2: Algebraic datatypes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/assignment2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/background/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Background information
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/partA_red_black_trees/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part A: Red-black trees
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/partB_sets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part B: Sets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Assignment 3: A touch of class
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 3: A touch of class
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assignment3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partA_exercises/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part A: Exercises
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partB_operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part B: Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Part C: Miniproject: Sparse matrices
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Part C: Miniproject: Sparse matrices
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sparse-matrix-representation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sparse matrix representation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structure-of-the-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Structure of the code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-library-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful library functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Useful library functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#from-datamap" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Data.Map
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Data.Set
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-datalist" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Data.List
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-sparsematrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. sparseMatrix
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-addsm" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. addSM
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-negatesm" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. negateSM
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-subsm" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. subSM
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-mulsm" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. mulSM
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-accessors" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Accessors
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Operators
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-num-instance-of-sparsematrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Num instance of SparseMatrix?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#things-to-watch-out-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      Things to watch out for
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sparse-matrix-representation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sparse matrix representation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structure-of-the-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Structure of the code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-library-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful library functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Useful library functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#from-datamap" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Data.Map
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Data.Set
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-datalist" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Data.List
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-sparsematrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. sparseMatrix
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-addsm" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. addSM
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-negatesm" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. negateSM
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-subsm" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. subSM
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-mulsm" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. mulSM
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-accessors" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Accessors
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Operators
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-num-instance-of-sparsematrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Num instance of SparseMatrix?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#things-to-watch-out-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      Things to watch out for
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="part-c-miniproject-sparse-matrices-50-points">Part C: Miniproject: Sparse Matrices (50 points)</h1>
+<p>In this section,
+you will be implementing a Haskell module
+which includes datatypes and functions
+to represent and compute with sparse matrices.
+A sparse matrix is a matrix which contains a large number of zero elements,
+which are not represented explicitly.
+Typically, the vast majority of the elements in the matrix are zeros.
+Sparse matrices arise naturally in a wide variety of applications.</p>
+<p>Because of the large number of zero elements,
+computing with sparse matrices
+requires different algorithms than with non-sparse ("dense") matrices,
+or else the resulting code will be very inefficient.
+(Note that here we use the term "matrix"
+to include not only square matrices
+but matrices with any number of rows or columns.)
+In this module, you will be implementing sparse matrix addition,
+subtraction, multiplication, and negation.
+<strong>While doing so, it is very important
+that you take advantage of the sparseness of the matrices
+in your implementation.</strong>
+If you implement any of the functions
+by treating sparse matrices as dense matrices,
+the code will be considered invalid
+and you will get no credit on the problem.</p>
+<p>In addition to the challenge
+of implementing efficient functions for computing with sparse matrices,
+this miniproject has some other goals.
+You will learn to work with
+some of the data structures from the Haskell libraries,
+and you will learn to use <a href="https://hoogle.haskell.org/">Hoogle</a> to search through the APIs.
+The total amount of code you need to write for this section is not large;
+our code is about 100 lines of non-comment code.
+(Note that we do expect you
+to write a reasonable amount of comments in your code
+explaining what your functions do.)</p>
+<h2 id="sparse-matrix-representation">Sparse matrix representation</h2>
+<p>A particular element of each sparse matrix
+is identified by its row index and its column index.
+Row and column indices start at 1 (not 0!).
+Therefore, the basic representation for sparse matrices
+will be a map between pairs of <code>Integer</code>s (don't use <code>Int</code>s) and values,
+where the integers must be at least 1
+and values can be any Haskell type
+which instantiates the <code>Num</code> type class.
+To represent the map you will use the <code>Data.Map</code> module
+and the <code>Map</code> datatype.
+Browse through the <a href="https://hoogle.haskell.org/">Hoogle</a> documentation on <code>Data.Map</code>
+to learn how to use <code>Map</code>s.
+Note that you don't have to know how <code>Map</code>s are <em>implemented</em>,
+though you can browse the source code if you're curious; what's
+important here is that you know how to use them.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you use 0-based indexing you will get at most half points
+on this section of the assignment.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Don't confuse the <code>Map</code> type
+(which is a container type similar to a Python dictionary,
+but immutable)
+to the <code>map</code> higher-order function.
+There is no connection between them.</p>
+</div>
+<p>In addition to the map between pairs of <code>Integer</code>s and values,
+we need some extra bookkeeping information in each sparse matrix.
+Specifically, we have to store:</p>
+<ul>
+<li>
+<p>The bounds of the matrix (number of rows and columns),
+as a pair of <code>Integer</code>s.</p>
+</li>
+<li>
+<p>A set of row indices,
+representing all rows that have nonzero elements.</p>
+</li>
+<li>
+<p>A set of column indices,
+representing all columns that have nonzero elements.</p>
+</li>
+</ul>
+<p>The row and column indices are stored to allow us
+to skip rows and columns that contain only zeros.
+This is particularly important when implementing multiplication.
+To implement sets, use the <code>Set</code> datatype
+contained in the <code>Data.Set</code> module.
+Again, see <a href="https://hoogle.haskell.org/">Hoogle</a> for details.</p>
+<p>Here is the definition of the sparse matrix datatype you should use:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kr">import</span><span class="w"> </span><span class="k">qualified</span><span class="w"> </span><span class="nn">Data.Map</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">M</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kr">import</span><span class="w"> </span><span class="k">qualified</span><span class="w"> </span><span class="nn">Data.Set</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">S</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kr">data</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="kt">SM</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">bounds</span><span class="w">     </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="kt">Integer</span><span class="p">),</span><span class="w">  </span><span class="c1">-- number of rows, columns</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">       </span><span class="n">rowIndices</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">S</span><span class="o">.</span><span class="kt">Set</span><span class="w"> </span><span class="kt">Integer</span><span class="p">,</span><span class="w">       </span><span class="c1">-- row indices with nonzeros</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">       </span><span class="n">colIndices</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">S</span><span class="o">.</span><span class="kt">Set</span><span class="w"> </span><span class="kt">Integer</span><span class="p">,</span><span class="w">       </span><span class="c1">-- column indices with nonzeros</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">       </span><span class="n">vals</span><span class="w">       </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="kt">M</span><span class="o">.</span><span class="kt">Map</span><span class="w"> </span><span class="p">(</span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="kt">Integer</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">}</span><span class="w">  </span><span class="c1">-- values</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="kr">deriving</span><span class="w"> </span><span class="p">(</span><span class="kt">Eq</span><span class="p">,</span><span class="w"> </span><span class="kt">Show</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Note that this is a polymorphic type
+where the type <code>a</code> must be an instance of the <code>Num</code> type class.
+(We don't include that as a datatype context
+because Haskell doesn't allow adding contexts to datatypes by default,
+so this must be enforced by functions that act on the datatype.)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You are not allowed to choose a different sparse matrix representation.</p>
+</div>
+<p>The <code>import qualified ... as ...</code> lines indicate
+that you should import the indicated modules
+and give a one-letter prefix to names in those modules.
+(It doesn't have to be one-letter, but that's what we're doing here.)
+So the <code>Set</code> datatype in <code>Data.Set</code>
+becomes <code>S.Set</code> instead of <code>Data.Set.Set</code>,
+and the <code>Map</code> datatype in <code>Data.Map</code>
+becomes <code>M.Map</code> instead of <code>Data.Map.Map</code>.
+This allows you to keep different namespaces separate
+without having to do too much extra typing.
+This is important here because the <code>Set</code> and <code>Map</code> modules
+contain a number of functions with the same names.</p>
+<p>One important point about the data representation
+is that after any sparse matrix operation
+(including the function to construct a sparse matrix!),
+you must make sure that:</p>
+<ul>
+<li>
+<p>there are no zeros stored in the matrix (<em>i.e.</em> in the <code>vals</code> map)</p>
+</li>
+<li>
+<p>the <code>rowIndices</code> and <code>colIndices</code> fields have been updated
+so that they contain all (and only!) the rows/columns with nonzero elements.</p>
+</li>
+</ul>
+<h2 id="structure-of-the-code">Structure of the code</h2>
+<p>The Haskell code for the sparse matrix module
+will be called <code>SparseMatrix.hs</code>
+and will implement the <code>SparseMatrix</code> module.
+The first few lines will be as follows (add comments as you see fit):</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">module</span><span class="w"> </span><span class="nn">SparseMatrix</span><span class="w"> </span><span class="kr">where</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kr">import</span><span class="w"> </span><span class="k">qualified</span><span class="w"> </span><span class="nn">Data.Map</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">M</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kr">import</span><span class="w"> </span><span class="k">qualified</span><span class="w"> </span><span class="nn">Data.Set</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">S</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="kr">data</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="kt">SM</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">bounds</span><span class="w">     </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="kt">Integer</span><span class="p">),</span><span class="w">  </span><span class="c1">-- number of rows, columns</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">       </span><span class="n">rowIndices</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">S</span><span class="o">.</span><span class="kt">Set</span><span class="w"> </span><span class="kt">Integer</span><span class="p">,</span><span class="w">       </span><span class="c1">-- row indices with nonzeros</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">       </span><span class="n">colIndices</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">S</span><span class="o">.</span><span class="kt">Set</span><span class="w"> </span><span class="kt">Integer</span><span class="p">,</span><span class="w">       </span><span class="c1">-- column indices with nonzeros</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">       </span><span class="n">vals</span><span class="w">       </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="kt">M</span><span class="o">.</span><span class="kt">Map</span><span class="w"> </span><span class="p">(</span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="kt">Integer</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">}</span><span class="w">  </span><span class="c1">-- values</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="kr">deriving</span><span class="w"> </span><span class="p">(</span><span class="kt">Eq</span><span class="p">,</span><span class="w"> </span><span class="kt">Show</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Following this, write the code for your function/operator definitions,
+along with any helper functions you may want to write.</p>
+<h2 id="useful-library-functions">Useful library functions</h2>
+<p>Here are the names of some library functions you may find useful.
+Look them up in <a href="https://hoogle.haskell.org/">Hoogle</a> to find out how they work.
+You aren't required to use them if you don't need to. 
+You may also find other functions in these modules to be useful;
+use whichever ones you like. Don't use other modules.</p>
+<h3 id="from-datamap">From <code>Data.Map</code></h3>
+<ul>
+<li><code>elems</code></li>
+<li><code>filter</code></li>
+<li><code>filterWithKey</code></li>
+<li><code>findWithDefault</code></li>
+<li><code>foldr</code></li>
+<li><code>fromList</code></li>
+<li><code>intersectionWith</code></li>
+<li><code>keys</code></li>
+<li><code>lookup</code></li>
+<li><code>map</code></li>
+<li><code>mapKeys</code></li>
+<li><code>toList</code></li>
+<li><code>unionWith</code></li>
+</ul>
+<p>Note that the functions called <code>map</code> and <code>filter</code> in this module
+are not the same as those called <code>map</code> and <code>filter</code> in the Prelude
+(<em>i.e.</em> that work on lists).
+This is another reason
+why we use <code>import qualified</code> when importing this module.</p>
+<h3 id="from-dataset">From <code>Data.Set</code></h3>
+<ul>
+<li><code>fromList</code></li>
+<li><code>toList</code></li>
+</ul>
+<p>Again, note that these two functions
+are not the same as the functions with the same name
+from the <code>Data.Map</code> module.
+(And again,
+this is why we use <code>import qualified</code> when importing these modules.)</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Avoid converting <code>Set</code>s to or from lists unless you have to.
+(For one thing, this can make your functions much less efficient.)
+If a <code>Set</code> function can do the same thing as a similar list function,
+use the <code>Set</code> version.</p>
+<p>Similarly, avoid converting <code>Map</code>s to or from lists unless you have to.
+Check to see if one of the <code>Map</code> functions referred to above
+can do what you need before doing a conversion to lists.</p>
+</div>
+<h3 id="from-datalist">From <code>Data.List</code></h3>
+<ul>
+<li><code>all</code></li>
+</ul>
+<p>Here are the functions you have to implement.</p>
+<h2 id="1-sparsematrix">1. <code>sparseMatrix</code></h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Implement a function called <code>sparseMatrix</code>
+which creates a sparse matrix
+from a list of index/value pairs and the array bounds.</p>
+<p>The type signature of this function will be:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nf">sparseMatrix</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="kt">Eq</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">Num</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="ow">=&gt;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="p">[((</span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="kt">Integer</span><span class="p">),</span><span class="w"> </span><span class="n">a</span><span class="p">)]</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="kt">Integer</span><span class="p">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span>
+</span></code></pre></div>
+<p>The first argument is the list of index/value pairs;
+the second are the bounds of the array
+(the number of rows and columns, respectively).</p>
+<p>Note that the indices in the index/value pairs
+are themselves pairs of integers.
+The function must check that the given bounds are valid
+(<em>i.e.</em> at least 1 each),
+and that all the index pairs given are within those bounds.
+If not, an error must be signalled.</p>
+<p>The function must not put zero values into the sparse matrix,
+even if some of the values in the input index/value pair list are zeros.
+Similarly, the function must store the row indices and column indices
+of only the rows/columns that have nonzero values.</p>
+<p>You can assume that the list of index/value pairs
+will not have duplicated indices.
+If there are duplicated indices,
+you can do whatever is most convenient.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The number <code>0</code> is a valid value of any type
+that is an instance of the <code>Num</code> type class.
+This makes it easy to check for.</p>
+</div>
+<h2 id="2-addsm">2. <code>addSM</code></h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Implement a function called <code>addSM</code>
+which adds two compatible sparse matrices.</p>
+<p>The type signature of this function will be:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nf">addSM</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="p">(</span><span class="kt">Eq</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">Num</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span>
+</span></code></pre></div>
+<p>If the two sparse matrices cannot be added
+(<em>i.e.</em> they don't have the same number of rows or columns)
+an error must be signalled.
+Be sure to adjust the <code>rowIndices</code> and <code>colIndices</code> after adding,
+and make sure that there are no zero elements in the matrix after adding.</p>
+<h2 id="3-negatesm">3. <code>negateSM</code></h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Implement a function called <code>negateSM</code> which negates a sparse matrix.</p>
+<h2 id="4-subsm">4. <code>subSM</code></h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Implement a function called <code>subSM</code> which subtracts two compatible
+sparse matrices.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This function can trivially be defined in terms of the previous two.</p>
+</div>
+<h2 id="5-mulsm">5. <code>mulSM</code></h2>
+<p>[<strong>15 points</strong>]</p>
+<p>Implement a function called <code>mulSM</code>
+which multiplies two compatible sparse matrices.</p>
+<p>Recall that for two matrices to be compatible for multiplication,
+the number of columns in the first matrix
+must equal the number of rows in the second matrix.
+Your function must check for this
+and signal an error if the two matrices cannot be multiplied.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function is by far the trickiest one to implement
+of all the sparse matrix functions in this miniproject.
+We recommend that you write a helper function
+to multiply a row of one matrix (a row vector)
+by a column of the other (a column vector),
+and use that to construct the product matrix.
+Use the <code>rowIndices</code> and <code>colIndices</code> fields of the matrices
+to avoid multiplying empty rows or columns.</p>
+<p>As always, make sure that
+none of the stored entries of the sparse matrix are zeros.</p>
+</div>
+<h2 id="6-accessors">6. Accessors</h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Define three accessor functions for sparse matrices:</p>
+<ul>
+<li>
+<p><code>getSM</code>,
+which retrieves a value from a sparse matrix given the row and column</p>
+</li>
+<li>
+<p><code>rowsSM</code>, which returns the number of rows in a sparse matrix</p>
+</li>
+<li>
+<p><code>colsSM</code>, which returns the number of columns in a sparse matrix</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>rowsSM</code>/<code>colsSM</code> return the <em>total</em> number of rows/columns in
+the sparse matrix, <em>not</em> the number of nonzero rows/columns.</p>
+</div>
+<p>Here are the type signatures:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nf">getSM</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Num</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="kt">Integer</span><span class="p">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nf">rowsSM</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Num</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Integer</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nf">colsSM</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Num</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">=&gt;</span><span class="w"> </span><span class="kt">SparseMatrix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Integer</span>
+</span></code></pre></div>
+<p><code>getSM</code> retrieves the value
+at the index represented by the pair of integers.
+If this row/column location is invalid (out of bounds of the matrix),
+signal an error.
+If it's in bounds
+but there is no value stored in the matrix at that location,
+return a zero.</p>
+<h2 id="7-operators">7. Operators</h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Define operator shortcuts
+for the <code>addSM</code>, <code>subSM</code>, <code>mulSM</code>, and <code>getSM</code> functions
+defined previously.</p>
+<p>Use <code>&lt;|+|&gt;</code> as the operator for <code>addSM</code>,
+<code>&lt;|-|&gt;</code> for <code>subSM</code>, <code>&lt;|*|&gt;</code> for <code>mulSM</code> and <code>&lt;!&gt;</code> for <code>getSM</code>.
+The type signatures of these operators
+are identical to those of the corresponding functions
+(but you should write them out anyway).</p>
+<h2 id="8-num-instance-of-sparsematrix">8. <code>Num</code> instance of <code>SparseMatrix</code>?</h2>
+<p>[<strong>5 points</strong>]</p>
+<p>Why doesn't it make sense to define
+the <code>SparseMatrix</code> datatype as an instance of the <code>Num</code> type class?
+Write your answer in a comment.</p>
+<h2 id="things-to-watch-out-for">Things to watch out for</h2>
+<p>By far the biggest pitfall when writing sparse matrix code
+is writing code that inadvertently breaks the sparse matrix invariants
+<em>i.e.</em> where explicit zero elements are stored in the sparse matrix,
+or where the row/column indices stored are invalid
+(<em>e.g.</em> by containing indices for rows with no nonzero elements).
+Pay special attention to this when writing the code,
+especially the <code>sparseMatrix</code> function
+and the addition and multiplication functions.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Don't forget to run the test suite on your code!</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../partB_operators/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part B: Operators">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Part B: Operators
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
