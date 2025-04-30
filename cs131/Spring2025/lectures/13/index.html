@@ -33,8 +33,8 @@
 
 * It takes an expression or definition (along with type annotations)
   and outputs one of two things:
-  * "Thumbs up!" if no type errors
-  * "Thumbs down!" plus an error message if there are type errors
+  * <span style="color:red">"Thumbs up!"</span> if no type errors
+  * <span style="color:red">"Thumbs down!"</span> plus an error message if there are type errors
 
 ---
 ## Monomorphic _vs._ polymorphic
@@ -161,7 +161,8 @@ $$\Large\Gamma_\xi, \Gamma_\phi, \Gamma_\rho \vdash e : \tau$$
 * The bottom half of each inference rule is a "type judgment"
 
 * These judgments use the "turnstile symbol" $\vdash$
-  * To the left of the turnstile go the type environments _e.g._ $\Gamma_\xi$
+  * To the left of the turnstile go the type environments
+    _e.g._ $\Gamma_\xi$, $\Gamma_\phi$, $\Gamma_\rho$
   * To the right go some expression $e$ and its type $\tau$
 
 ---
@@ -612,6 +613,8 @@ $$
 {
 \Gamma_\xi, \Gamma_\phi, \\{\\} \vdash e : \tau
 \hspace{2em}
+x \in \text{dom}\\, \Gamma_\xi
+\hspace{2em}
 \Gamma_\xi(x) = \tau
 }
 {
@@ -751,6 +754,7 @@ $$
 {
 \begin{gathered}
 \tau_1, \ldots, \tau_n\ \text{are types} \newline
+f\\, \in \text{dom}\\,\Gamma_\phi \newline
 \Gamma_\phi(f\hspace{0.05em}) = \tau_1 \times \cdots \times \tau_n \rightarrow \tau \newline
 \Gamma_\xi, \Gamma_\phi
 \\{f \mapsto \tau_1 \times \cdots \times \tau_n \rightarrow \tau \\},
