@@ -468,6 +468,33 @@ val fun_ty_eq : function_type -&gt; function_type -&gt; bool
 ---
 ## Some useful utilities
 
+<pre><code><span class="comment">(* Type equality. *)</span>
+let rec ty_eq ty1 ty2 = 
+  match (ty1, ty2) with
+    | (IntType,  IntType)  -&gt; true
+    | (UnitType, UnitType) -&gt; true
+    | (BoolType, BoolType) -&gt; true
+    | _ -&gt; false
+</code></pre>
+
+---
+## Some useful utilities
+
+<pre class="smaller"><code><span class="comment">(* Function-type equality. *)</span>
+let fun_ty_eq ty1 ty2 =
+  if List.length ty1.params != List.length ty2.params then
+    false
+  else 
+    if not
+      (all_true (combine_with ty_eq ty1.params ty2.params)) then
+      false
+    else 
+      ty_eq ty1.ret ty2.ret
+</code></pre>
+
+---
+## Some useful utilities
+
 <pre><code><span class="comment">(* in typecheck.ml *)</span>
 let err l ty1 ty2 = 
   Error.type_err l 
