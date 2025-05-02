@@ -1063,7 +1063,7 @@ in addition to the functions described.</p>
 <p>Since <em>Imp</em> doesn't (yet) have local variables
 other than function arguments
 (you'll implement this in part B),
-if you need them you can either</p>
+if you need them you should</p>
 <ul>
 <li>
 <p>define a global variable instead</p>
@@ -1076,6 +1076,13 @@ which you use as local variables</p>
 <p>The second strategy should be familiar from CS 4.
 Note that you can change the values of function arguments
 using the <code>set</code> form.</p>
+<p><strong>If you use global variables in a function,
+be sure to set the global variable to zero
+in the function before you use it!</strong>
+Not doing this can cause tests to fail,
+since the value of the global variable changed by one test
+will be used as the starting value for the next test.
+In addition, it's just plain incorrect!</p>
 </div>
 <h2 id="1-sigma">1. <code>sigma</code></h2>
 <p>[<strong>3 points</strong>]</p>
@@ -1086,13 +1093,6 @@ your implementation may do anything you like.
 Write two versions of this function.
 <code>sigma1</code> will work recursively
 while <code>sigma2</code> will work imperatively using a <code>while</code> loop.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><code>sigma2</code> should <em>not</em> change the global environment.
-Therefore, you should not use global variables in your solution.
-Instead, write a helper function that uses a <code>while</code> loop
-and call that from <code>sigma2</code>.</p>
-</div>
 <h2 id="2-exp-and-log">2. <code>exp</code> and <code>log</code></h2>
 <p>[<strong>3 points</strong>]</p>
 <p>Define the functions <code>exp</code> and <code>log</code>.
