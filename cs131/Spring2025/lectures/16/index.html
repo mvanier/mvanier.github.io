@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- <section data-background-color="#ffffd0"> -->
+          <section data-markdown>
+            <textarea data-template>
+# CS 131:<br/>Programming Languages
+## _Lecture 16_:<br/>The _Typed $\mu$Scheme_ Language:<br/>Operational semantics, part 1
+
+---
+## Previously
+
+* Polymorphic types
+* Concrete syntax of _Typed $\mu$Scheme_
+
+---
+## Today
+
+* The type system of _Typed $\mu$Scheme_
+* Kinds and kind formation
+* Operational semantics of kind checking
+* Types and type formation
+* [Next time: Operational semantics of type checking]
+
+---
+## Overview
+
+* The _Typed $\mu$Scheme_ type system has a number of interesting features:
+  * Universally-quantified types _i.e._ `forall` types
+  * Type variables _e.g._ `'a`
+  * The `type-lambda` type abstraction form
+  * The &hairsp;`@`&hairsp; type application form
+  * The `val-rec` definition form
+
+---
+## `forall` types and type variables
+
+* Types can include _type variables_
+
+* Type variables are identifiers
+  (usually single lowercase letters)
+  written with a leading single quote mark (like `'a`, `'b`)
+  * Don't confuse them with quoted symbols!
+
+---
+## `forall` types and type variables
+
+* A type with type variables has to have a leading `forall` binding
+  * _e.g._ `(forall ['a] ('a -> 'a))`
+  * All type variables in type names need to be bound by some `forall` binder
+
+---
+## `forall` types and type variables
+
+* A `forall` type says that the type (_e.g._ of a function)
+  is valid "for all" concrete types that could be bound to the type variables
+* For a particular call to the function,
+  the type variables are _instantiated_
+  to whatever particular type they need to be
+---
+## `forall` types and type variables
+
+* We also refer to these types as
+  * "universally-quantified types"
+  * "quantified types"
+  * or just "polymorphic types" for short
+
+---
+## `forall` types and type variables
+
+* Example: a function that computes a length of a list
+  would have the type<br/>`(forall ['a] ((list 'a) -> int))`<br/>
+  because if the list has element type `'a`
+  the function has type `((list 'a) -> int)`
+  * Mathematically, we write this as
+    $\forall \alpha\\, . \\, (list\ \alpha) \rightarrow int$
+
+---
+## `forall` types and type variables
+
+* If applied to a list of type `(list int)`,
+  the type variable `'a` becomes `int` in this case,
+  and the function as a whole has type<br/>`((list int) -> int)`
+
+---
+## The `type-lambda` form
+
+* To create an expression which has a polymorphic type,
+  we use the `type-lambda` form
+* This is commonly found in definitions of functions
+  with polymorphic types
+
+---
+## The `type-lambda` form
+
+* Here's the function to compute the length of a list in regular _$\mu$Scheme_:
+
+<pre><code>(define length (lst)
+  (if (null? lst)
+      0
+      (+ 1 (cdr lst))))
+</code></pre>
+
+* What would this look like in Typed _$\mu$Scheme_?
+
+---
+## The `type-lambda` form
+
+* This defines a polymorphic recursive function,
+  so we need to use the `val-rec` definition form instead of just `define`:
+
+<pre><code>(<em>val-rec</em>
+  ...)
+</code></pre>
+
+---
+## The `type-lambda` form
+
+* The first argument in a `val-rec` form is the return type,
+  which can be a polymorphic type:
+
+<pre><code>(val-rec
+  <em>(forall ['a] ((list 'a) -&gt; int))</em>
+  ...)
+</code></pre>
+
+* Note that the `forall` keyword is part of the _type_ language,
+  while `type-lambda` is part of the _expression_ language
+
+---
+## The `type-lambda` form
+
+* Then we have the function name:
+
+<pre><code>(val-rec
+  (forall ['a] ((list 'a) -&gt; int))
+  <em>length</em>
+  ...)
+</code></pre>
+
+---
+## The `type-lambda` form
+
+* Then the `type-lambda` form which introduces type variables into expressions;
+  these will be bound to concrete types during "type application"
+
+<pre><code>(val-rec
+  (forall ['a] ((list 'a) -&gt; int))
+  length
+  <em>(type-lambda ['a]</em>
+    <em>...)</em>)
+</code></pre>
+
+* Here, there is only one type variable: `'a`
+---
+## The `type-lambda` form
+
+* Then the `type-lambda` form which introduces type variables into expressions;
+  these will be bound to concrete types during "type application"
+
+<pre><code>(val-rec
+  (forall ['a] ((list 'a) -&gt; int))
+  length
+  <em>(type-lambda ['a]</em>
+    <em>...)</em>)
+</code></pre>
+
+* At run-time, this will be bound to a concrete type
+
+---
+## The `type-lambda` form
+
+* Then we have the (value) `lambda` form:
+
+<pre><code>(val-rec
+  (forall ['a] ((list 'a) -&gt; int))
+  length
+  (type-lambda ['a]
+    <em>(lambda ([lst : (list 'a)])</em>
+      ...)))
+</code></pre>
+
+* Note that we have to spell out the type of the arguments to `lambda`
+* This is the first place we use the type variable `'a` in the function body
+
+---
+## The `type-lambda` form
+
+<pre><code>(val-rec
+  (forall ['a] ((list 'a) -&gt; int))
+  length
+  (type-lambda ['a]
+    (lambda ([lst : (list 'a)])
+      <em>(if ((@ null? 'a) lst)</em>
+          <em>0</em>
+          <em>(+ 1 ((@ length 'a) ((@ cdr 'a) lst))))</em>)))
+</code></pre>
+
+* The rest of the code is basically the same as the untyped version...
+
+---
+## The `type-lambda` form
+
+<pre><code>(val-rec
+  (forall ['a] ((list 'a) -&gt; int))
+  length
+  (type-lambda ['a]
+    (lambda ([lst : (list 'a)])
+      <em>(if ((@ null? 'a) lst)</em>
+          <em>0</em>
+          <em>(+ 1 ((@ length 'a) ((@ cdr 'a) lst))))</em>)))
+</code></pre>
+
+* ... except that all polymorphic values/functions
+  must be applied explicitly to types using the `@` type application operator
+
+---
+## The `type-lambda` form
+
+<pre><code>(val-rec
+  (forall ['a] ((list 'a) -&gt; int))
+  length
+  (type-lambda ['a]
+    (lambda ([lst : (list 'a)])
+      (if (<em>(@ null? 'a)</em> lst)
+          0
+          (+ 1 (<em>(@ length 'a)</em> (<em>(@ cdr 'a)</em> lst)))))))
+</code></pre>
+
+* Here, we apply them to the type variable `'a`
+  * Forgetting to explicitly instantiate type-polymorphic values
+    with `@` is the most common pitfall in this language
+---
+## The `type-lambda` form
+
+<pre><code>(val-rec
+  (forall ['a] ((list 'a) -&gt; int))
+  length
+  (type-lambda ['a]
+    (lambda ([lst : (list 'a)])
+      (if (<em>(@ null? 'a)</em> lst)
+          0
+          (+ 1 (<em>(@ length 'a)</em> (<em>(@ cdr 'a)</em> lst)))))))
+</code></pre>
+
+* Here, we apply them to the type variable `'a`
+  * ("Real" languages can infer this automatically most of the time)
+
+---
+## Kinds
+
+* We saw in _Typed Imp_ that adding a new polymorphic type (arrays)
+  required changes to the abstract syntax of the language
+  and new type formation rules
+---
+## Kinds
+
+* That approach is not scalable;
+  there are potentially an unbound number of new polymorphic types
+  we might want to add
+  * ultimately, want to allow users to add them as well
+    (but not in this language!)
+
+* How do we do this?
+
+---
+## Kinds
+
+* We can consider polymorphic types as "functions from types to types"
+  and make it easy to add new such functions
+* To make this more precise, we introduce the notion of "kinds"
+* A "kind" is a "type of types"
+* Kinds classify types in the same way that types classify values
+
+---
+## Kinds
+
+* Informally, the rules for forming kinds are pretty simple:
+  * Concrete types (`int`, `bool`, _etc._) have kind `*`
+  * Type constructors (_e.g._ `list`) have function kinds
+    * Arguments are a tuple of kinds (often just one)
+    * Result is a kind
+
+---
+## Kinds
+
+* So `list` has the kind `* -> *` because it is a "type function"
+  taking a type argument of kind `*` and returning a type of kind `*`
+
+* A 2-tuple type (perhaps called `pair`) would have the kind
+  `* * -> *`
+  * because it takes a pair of two input types (_e.g._ `int` and `bool`)
+  * and returns a concrete type<br/>`(pair int bool)` of kind `*`
+
+---
+## Kinds: notation
+
+* When we write out pair kinds in equations,
+  we write them as a product _e.g._ $* \times *$
+
+* So the pair type constructor's kind is $* \times * \Rightarrow *$
+
+---
+## Kinds
+
+* More complex kinds are possible
+
+* _e.g._ Haskell monad transformers have the kind<br/>
+  `(* -> *) -> (* -> *)`,
+  which means they map a unary type constructor
+  to another unary type constructor
+
+* We won't need anything that complex here
+
+---
+## Kinds
+
+* Mathematically, we can represent kinds as follows:
+
+$$
+\large{
+\kappa ::= \hspace{0.2em} * \hspace{0.5em} | \hspace{0.5em}
+\kappa_1 \times \ldots \times \kappa_n \Rightarrow \kappa
+}
+$$
+
+* A kind of &nbsp;`*`&nbsp; is the kind of a simple type
+
+* A kind of
+  `$\kappa_1 \  \times \ \ldots \  \times \kappa_n
+   \Rightarrow \kappa$`
+  is the kind of a "type function" (type constructor)
+
+---
+## Kinds
+
+* Mathematically, we can represent kinds as follows:
+
+$$
+\large{
+\kappa ::= \hspace{0.2em} * \hspace{0.5em} | \hspace{0.5em}
+\kappa_1 \times \ldots \times \kappa_n \Rightarrow \kappa
+}
+$$
+
+* A different way of thinking of kinds
+  is to consider _all_ kinds as the kinds of type constructors
+  where simple types (of kind `$*$`)
+  are "nullary" type constructors (_i.e._ having no type arguments)
+
+---
+## Kind formation rules
+
+* Abstractly, the "typing rules" for forming kinds
+  ("kind formation rules") are quite simple:
+
+$$
+\frac{}{* \hspace{0.3em} \text{is a kind}}
+$$
+
+$$
+\label{}\tag{KindFormationType}
+$$
+
+$$
+\frac{\kappa_1, \ldots , \kappa_n \hspace{0.3em} \text{are kinds}
+\hskip{1em} \kappa \hspace{0.3em} \text{is a kind}
+}
+{\kappa_1 \times \ldots \times \kappa_n
+ \Rightarrow \kappa \ \hspace{0.1em} \text{is a kind}}
+$$
+
+$$
+\label{}\tag{KindFormationArrow}
+$$
+
+* That's it!
+
+---
+## Kind formation rules
+
+* Actually, these kind formation rules are more general than we will need
+
+* In our language,
+  the function kinds will always have arguments and types that have kind `*`
+
+---
+## Review: environments
+
+* Before we go further, we should review the notion of *environment*
+
+* We already have two environments:
+  * value environment (for evaluation)
+  * type environment (for type checking)
+
+* ... and we are going to add a third:
+  * a kind environment
+
+---
+## Value environment
+
+* The "value environment" is the same as the environment used in an
+  untyped language like _$\mu$Scheme_
+
+* It consists of bindings between *variable names* and *values*
+
+* It's used by the evaluator to assign *values* to *expressions*
+  being evaluated
+
+---
+## Value environment
+
+* (Note that _Typed $\mu$Scheme_ uses only a single value environment; 
+  it doesn't split them into three parts like _Typed Imp_)
+
+---
+## Type environment
+
+* Like _Typed Imp_, _Typed $\mu$Scheme_ will also have a _type environment_
+  * represented in equations by the symbol $\Gamma$
+
+* It consists of bindings between *variable names* and *types*
+
+* It's used by the type checker to assign *types* to *expressions*
+  being type-checked
+
+---
+## Kind environment
+
+* OK, so what the heck is a *kind environment*?
+
+* It consists of bindings between "type names" and *kinds*
+
+* It's used by a "kind checker" to assign *kinds* to *types*
+  during type checking
+
+---
+## Kind environment
+
+* One difference: the "type names" are not "variable names"
+
+* There are actually three distinct groups of "type names":
+  * *base types* (like `int`, `bool`, `unit`)
+  * *type constructors* (like `list`, `pair`)
+  * *type variables* (like $\alpha$, $\beta$ _etc._)
+
+---
+## Kind environment
+
+* You could consider base types as "nullary type constructors"
+  (_i.e._ type constructors with no arguments) if you prefer
+
+---
+## Kind environment
+
+* What the kind environment does is tell you which types are valid
+  and which ones are not
+
+* The kind environment is represented symbolically as `$\Delta$`
+
+* We represent membership in `$\Delta$`
+  by the notation `$\tau :: \kappa$`
+  where `$\tau$` is a type constructor and `$\kappa$` is a kind
+
+---
+## Kind environment
+
+* For instance: given this type environment:
+
+$$
+\Delta_0 = \\{
+int :: *, \\ bool :: *, \\ unit :: *, \\\\
+pair :: * \times * \Rightarrow *, \\\\
+list :: * \Rightarrow *
+\\}
+$$
+
+* Which of the following types are valid?
+<div class="smaller">
+
+  * `int`, `bool`, `unit`, `list`, `pair`
+  * `(list int)`, `(pair int)`, `(list list)`, `(unit bool)`
+  * `(list int bool)`, `(pair int bool)`
+  * `(list (list int))`, `(pair (list int))`
+
+</div>
+
+---
+## Kind Environment
+
+* Advantage of having a kind environment:
+  we can add new type constructors
+  simply by adding them to the kind environment (no new rules!)
+
+  * However, in _Typed $\mu$Scheme_
+    the set of type constructors will be fixed<br/>(not user-extensible)
+
+* We can also add type variables temporarily during type checking
+
+---
+## Kind Environment
+
+* The kind environment $\Delta$ doesn't contain kinds for
+  all _possible_ types...
+
+* ... but it must be possible to _deduce_ any type's kind given the
+  kind environment
+
+* Example: `list` has kind `* -> *` and `int` has kind `*`,
+  so `(list int)` has kind `*`
+
+* Figuring out the kind of arbitrary types is _kind checking_
+
+---
+## Kind Environment
+
+* This is analogous to type checking:
+
+  * Type environment $\Gamma$ doesn't contain types for all possible
+    expressions...
+
+  * ... but the types of all possible expressions must be
+    *deducible* from the type environment
+
+* Actual types can be viewed as "kind expressions" in a sense
+
+---
+## Type formation rules (informal)
+
+* Now we'll present the (informal) rules for constructing types,
+  assuming a kind environment `$\Delta$`
+
+* For the purposes of these rules, we'll consider
+  type constructors to be "types"
+
+  * Essentially, anything with a valid kind is a "type"
+    according to these rules
+
+---
+## Type formation rules (informal)
+
+* A type can be formed by writing a type constructor
+  * including nullary type constructors<br/>(base types)
+
+* This is valid as long as the type constructor
+  is bound in the kind environment `$\Delta$`
+
+* For instance, in the kind environment `$\Delta_0$` presented previously,
+  we can immediately get the types `int`, `bool`, and `unit`
+
+---
+## Type formation rules (informal)
+
+* A type can be formed by writing a type constructor
+  * including nullary type constructors<br/>(base types)
+
+* This is valid as long as the type constructor
+  is bound in the kind environment `$\Delta$`
+
+* We can also get the type constructors `list` and `pair`
+
+---
+## Type formation rules (informal)
+
+* A type can be formed by applying a "type" (type constructor) to other types
+
+* For instance, `(list int)` is the type of lists of integers,
+  and `(pair int bool)` is the type of integer/boolean pairs
+
+---
+## Type formation rules (informal)
+
+* A type can be formed by applying a "type" (type constructor) to other types
+
+* For a type application to be well-formed,
+  the type arguments must have the right number
+  and kind for the type constructor
+  * So `(list int bool)` is invalid, as is<br/>`(list list)`
+
+---
+## Type formation rules (informal)
+
+* A type can be formed as a function type,
+  by specifying the argument and result types
+
+* We restrict ourselves to function types
+  where the argument and result types have kind `*`
+  * This is a common restriction in typed functional languages
+  * Some languages (_e.g._ Haskell) don't have this restriction!
+
+---
+## Type formation rules (informal)
+
+* _Note_: Don't confuse function _types_ (the types of functions)
+  with function _kinds_
+  (the kinds of non-nullary type constructors like `list`)
+
+---
+## Type formation rules (informal)
+
+* So for function types, if:
+  * the argument types are `$\tau_1, \ldots, \tau_n$`<br/>(all of kind `*`)
+  * ... and the result type is `$\tau$` (of kind `*`)
+  * ... and all types are bound in (or deducible from)
+    the kind environment `$\Delta$`
+  * ... then the function type
+    `$\tau_1 \times \cdots \times \tau_n \rightarrow \tau$`
+    is well-formed (valid)
+
+---
+## Type formation rules (informal)
+
+* We also need rules for type variables and universally-quantified types
+
+* We stipulate that all type variables are well-formed and have kind `*`
+  * We don't allow type variables
+    to be instantiated with non-nullary type constructors
+    like `list`, for instance
+
+---
+## Type formation rules (informal)
+
+* A universally-quantified type (`forall` type) is well-formed if:
+  * Given an initial kind environment `$\Delta_0$`
+  * ... add all the type variables of the `forall` type
+    with kinds `*`, and call the resulting kind environment `$\Delta_1$`
+  * ... and assuming that in `$\Delta_1$` the type `$\tau$` has kind `*` too
+  * ... then the original `forall` type is well-formed
+
+---
+## Type formation rules (formal)
+
+* You can see that the type formation rules get complicated pretty fast
+* Fortunately, we have a secret weapon: math!
+
+---
+## Type formation rules (formal)
+
+* We'll now spell out
+  the formal versions of the previous type formation rules
+* For any given type,
+  we deduce a _kinding judgment_ of the form
+  `$\Delta \vdash \tau :: \kappa$`; this gives the kind of the given type
+* Note that this only tells us which types are _valid_
+  _i.e._ have valid kinds ("kind checking");
+  we haven't even gotten to type checking yet!
+
+---
+## Note 1
+
+* Note that conceptually,
+  our kind environment only binds type _constructors_ to kinds
+
+* (Although some of these are _nullary_ type constructors
+  like `int`, `bool`, and `unit`)
+
+* Think of these as the "building blocks" of types
+
+---
+## Note
+
+* We can use type _variables_ to stand for (unknown, nullary) constructors
+
+* We can add type variables to kind environments
+  as constructors with special names,
+  because type variable names
+  are distinct from actual type constructor names
+  * (they have to start with the quote character `(')`)
+  * This is a bit of a hack, but it works
+
+---
+## Type formation rules (formal)
+
+* The type formation rules give the valid types (and their kinds)
+  for any types that can be created in the language
+
+---
+## Type formation rules (formal)
+
+* In code, the types are formed using the OCaml type `ty_expr`:
+
+<pre><code>type ty_expr =
+  | TyCon        of id
+  | TyConApp     of ty_expr * ty_expr list
+  | FunctionType of ty_expr list * ty_expr
+  | ForAll       of id list * ty_expr
+  | TyVar        of id
+</code></pre>
+
+---
+## Type formation rules (formal)
+
+* In code, the types are formed using the OCaml type `ty_expr`:
+
+<pre><code>type ty_expr =
+  | <em>TyCon        of id</em>
+  | TyConApp     of ty_expr * ty_expr list
+  | FunctionType of ty_expr list * ty_expr
+  | ForAll       of id list * ty_expr
+  | TyVar        of id
+</code></pre>
+
+* `TyCon` represents type constructors
+  * the things that are in the kind environment
+
+---
+## Type formation rules (formal)
+
+* In code, the types are formed using the OCaml type `ty_expr`:
+
+<pre><code>type ty_expr =
+  | TyCon        of id
+  | <em>TyConApp     of ty_expr * ty_expr list</em>
+  | FunctionType of ty_expr list * ty_expr
+  | ForAll       of id list * ty_expr
+  | TyVar        of id
+</code></pre>
+
+* `TyConApp` represents _application_ of type constructors
+  to one or more types
+
+---
+## Type formation rules (formal)
+
+* In code, the types are formed using the OCaml type `ty_expr`:
+
+<pre><code>type ty_expr =
+  | TyCon        of id
+  | TyConApp     of ty_expr * ty_expr list
+  | <em>FunctionType of ty_expr list * ty_expr</em>
+  | ForAll       of id list * ty_expr
+  | TyVar        of id
+</code></pre>
+
+* `FunctionType` represents types of functions
+
+---
+## Type formation rules (formal)
+
+* In code, the types are formed using the OCaml type `ty_expr`:
+
+<pre><code>type ty_expr =
+  | TyCon        of id
+  | TyConApp     of ty_expr * ty_expr list
+  | FunctionType of ty_expr list * ty_expr
+  | <em>ForAll       of id list * ty_expr</em>
+  | TyVar        of id
+</code></pre>
+
+* `ForAll` represents types with `forall` _i.e._ &hairsp;
+  polymorphic types with type variables
+
+---
+## Type formation rules (formal)
+
+* In code, the types are formed using the OCaml type `ty_expr`:
+
+<pre><code>type ty_expr =
+  | TyCon        of id
+  | TyConApp     of ty_expr * ty_expr list
+  | FunctionType of ty_expr list * ty_expr
+  | ForAll       of id list * ty_expr
+  | <em>TyVar        of id</em>
+</code></pre>
+
+* `TyVar` represents type variables
+
+---
+## Type formation rules (formal)
+
+* Here is the rule for type constructors:
+
+$$
+\frac{\mu \in \text{dom}\ \Delta}
+{\Delta \vdash \text{TYCON}(\mu) :: \Delta(\mu)}
+$$
+
+$$
+\label{}\tag{KindIntroCon}
+$$
+
+* This says that for a type expression
+  of the form `$\text{TYCON}(\mu)$`,
+  where `$\mu$` is a type constructor,
+  look up `$\mu$` in the kind environment `$\Delta$`
+  to get its kind
+
+---
+## Type formation rules (formal)
+
+* Here is the rule for type constructors:
+
+$$
+\frac{\mu \in \text{dom}\ \Delta}
+{\Delta \vdash \text{TYCON}(\mu) :: \Delta(\mu)}
+$$
+
+$$
+\label{}\tag{KindIntroCon}
+$$
+
+* Note that `$\text{TYCON}(\mu)$` is abstract syntax
+  * We'll be seeing more abstract syntax
+    for type expressions in the next few slides
+
+---
+## Type formation rules (formal)
+
+* Here is the rule for applying type constructors to type arguments:
+
+$$
+\frac
+{\Delta \vdash \tau :: \kappa_1 \times \cdots \times \kappa_n
+\Rightarrow \kappa \hskip{1em}
+\Delta \vdash \tau_i :: \kappa_i, \hskip{1em}
+1 \leq i \leq n}
+{\Delta \vdash \text{CONAPP}(\tau, [\tau_1, \ldots, \tau_n]) :: \kappa}
+$$
+
+$$
+\label{}\tag{KindApp}
+$$
+
+---
+## Type formation rules (formal)
+
+* This says that for a type expression
+  `$\text{CONAPP}(\tau, [\tau_1, \ldots, \tau_n])$`...
+---
+## Type formation rules (formal)
+
+* This says that for a type expression
+  `$\text{CONAPP}(\tau, [\tau_1, \ldots, \tau_n])$`...
+  * ...where the type constructor `$\tau$`
+  is applied to type arguments `$\tau_1, \ldots, \tau_n$`
+  * ...the type expression is valid<br/>(and has kind `$\kappa$`)...
+---
+## Type formation rules (formal)
+
+* This says that for a type expression
+  `$\text{CONAPP}(\tau, [\tau_1, \ldots, \tau_n])$`...
+  * ...if the type constructor `$\tau$`
+       is in the kind environment `$\Delta$`
+  * ...has a function kind
+  * ...there are the right number of argument types $\tau_i$
+  * ...and each of them has the right kind `$\kappa_i$`
+
+---
+## Type formation rules (formal)
+
+* Note that these rules are more general than we need!
+
+* In our language, type constructor applications will always have
+  kind `*`
+  * _e.g._ `(list int)`, `(pair int bool)`,<br/>`(list (list int))`
+    _etc._
+
+* In some more complex languages (like Haskell),
+  there can be type constructor applications that yield type constructors
+
+---
+## Type formation rules (formal)
+
+* Here is the rule for forming function types:
+
+$$
+\frac
+{
+\Delta \vdash
+\tau_i :: *, \\ 1 \leq i \leq n
+\hskip{1em}
+\Delta \vdash
+\tau :: *
+}
+{
+\Delta \vdash
+\tau_1 \times \cdots \times \tau_n \rightarrow
+\tau :: *
+}
+$$
+
+$$
+\label{}\tag{KindFunction}
+$$
+
+---
+## Type formation rules (formal)
+
+* This says that if all the `$\tau_i$` have kinds `*` in `$\Delta$`
+  and there are the right number of them,
+  and the result type `$\tau$` also has kind `*` in `$\Delta$`,
+  then we can form the function type
+
+$$
+\tau_1 \times \cdots \times \tau_n \rightarrow \tau :: *
+$$
+
+* which will have kind `*`
+
+
+---
+## Type formation rules (formal)
+
+* We still have to have formal type formation rules for:
+  * type variables
+  * universally-quantified types
+
+---
+## Type formation rules (formal)
+
+* Type variables are simple: just look them up in the kind environment:
+
+$$
+\frac
+{
+\alpha \in dom\ \Delta
+}
+{
+\Delta \vdash \text{TYVAR}(\alpha) :: \Delta(\alpha)
+}
+$$
+
+* (Just like type constructors!)
+
+* We will assume that type variables always have kind `*` in our language
+
+---
+## Type formation rules (formal)
+
+* The rule for forming universally-quantified types is:
+
+$$
+\frac
+{
+\Delta\\{\alpha_1 :: *, \ldots, \alpha_n :: *\\} \vdash \tau :: *
+}
+{
+\Delta \vdash
+\text{FORALL}(\langle
+\alpha_1, \ldots, \alpha_n
+\rangle, \tau) :: *
+}
+$$
+
+$$
+\label{}\tag{KindForAll}
+$$
+
+---
+## Type formation rules (formal)
+
+* This says that if you:
+  * add to the kind environment `$\Delta$` the type variables `$\alpha_i$`,
+    each with kind `*`,
+  * and can then deduce that type `$\tau$` has kind `*`,
+  * then the type
+    $\text{FORALL}(\langle \alpha_1, \ldots, \alpha_n \rangle, \tau)$
+    is a valid type with kind `*`
+
+* (Presumably, `$\tau$` will contain some/all
+  of the type variables `$\alpha_i$`)
+
+---
+## Whew!
+
+* That's it for type formation rules!
+
+* Take a deep breath.  We're done for today!
+
+![Whew!](./images/whew.webp "Whew!")
+
+---
+## Next time
+
+* We'll discuss the operational semantics of type checking
+
+            </textarea>
+          </section>
+      </div>
+    </div>
+    <script src="plugin/math/math.js"></script>
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <!-- Uncomment if you want syntax highlighting. -->
+    <!--
+    <link rel="stylesheet" href="plugin/highlight/arduino-light.css">
+    -->
+    <style>
+/* MCV: My new reveal.js styles. */
+
+.reveal {
+  font-family: "Arial", sans-serif;
+  font-size: 28pt;
+  font-weight: normal;
+  color: #000; 
+}
+
+.reveal .slide-number {
+  background: white;
+  /* border: 1px solid black; */
+}
+
+.reveal .slide-number-a {
+  background: white;
+  color: black;
+  font-size: 24px;
+}
+
+.reveal .slides h1 {
+  text-align: center;
+  text-transform: none;
+  padding: 150px 0 20px 0;
+  font-size: 64pt;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif;
+  font-weight: normal;
+  color: #4f271c;
+  background: #d0d0f0;
+  margin-bottom: 0.5em;
+}
+
+.reveal h2 { 
+  text-transform: none;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif !important;
+  /* text-shadow: 2px 2px 3px #a0a0a0; */
+  color: #4f271c !important;
+  font-size: 60pt !important;
+  font-weight: normal !important;
+  /* background: #d0d0d0; */
+  width: 80% !important;
+  margin-left: 10%;
+}
+
+/* First level bullet color. */
+.reveal .slides ul li::marker {
+  color: #3891a7;
+}
+
+/* Second level bullet spacing. */
+.reveal .slides ul li ul {
+  margin-top: 0px;
+}
+
+.reveal .slides li {
+  margin-top: 10px;
+}
+
+/* Second level bullet color. */
+.reveal .slides ul li ul li::marker {
+  color: #3891a7;
+}
+
+.reveal li {
+  font-size: 36pt !important;
+}
+
+.reveal .smaller li {
+  font-size: 32pt !important;
+}
+
+.reveal li ul li {
+  font-size: 32pt !important;
+}
+
+.reveal li .smaller ul li {
+  font-size: 28pt !important;
+}
+
+.reveal ul {
+  width: 80% !important;
+  text-align: left !important;
+}
+
+.reveal code em {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal em code {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal code .comment {
+  color: #cc44cc !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+.reveal blockquote {
+  text-align: left !important;
+  color: #668888 !important;
+}
+
+.katex-display > .katex {
+  color: #0040b0 !important;
+}
+
+.katex-display > .katex > .katex-html > .tag {
+  color: #808080 !important;
+  margin-right: 100px !important;
+}
+
+.katex > .katex-html {
+  color: #0040b0 !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.katex {
+  font-size: 1.1em !important;
+}
+
+.reveal pre {
+  margin-left: 200px !important;
+  width: 75% !important;
+  font-size: 24pt !important;
+}
+
+.reveal pre.smaller {
+  font-size: 20pt !important;
+}
+
+.reveal code {
+  color: #0040b0 !important;
+  font-size: 90%;
+}
+
+.reveal pre code {
+  /* max vertical size of code block */
+  max-height: 700px !important;
+}
+
+.reveal li ul li code {
+  font-size: 80%;
+}
+
+    </style>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        katex: {
+          version: 'latest',
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            "\\eqref": "\\href{###1}{(\\text{#1})}",
+            "\\ref": "\\href{###1}{\\text{#1}}",
+            "\\label": "\\htmlId{#1}{}",
+          },
+        },
+        plugins: [ 
+          RevealMarkdown,
+          // RevealHighlight,
+          RevealMath.KaTeX,
+        ],
+        center: false,
+        controls: false,
+        disableLayout: false,  // set to true to use custom CSS for layout
+        showSlideNumber: 'all',
+        slideNumber: true,
+        transition: 'none',
+        width: 1280,
+        height: 800,
+      });
+    </script>
+  </body>
+</html>
