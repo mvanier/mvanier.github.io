@@ -471,6 +471,8 @@ $$
 * All arguments of a `lambda`
   must be explicitly typed and the kinds of the types must all be `*`
 
+* (The `::` notation means "has kind" _e.g._ type $\tau$ has kind $\*$)
+
 ---
 ## Type checking: `lambda`
 
@@ -560,14 +562,14 @@ $$
 $$
 \frac
 {
-\Delta, \Gamma \vdash e : \forall a_1, \ldots, a_n \thinspace . \thinspace \tau
+\Delta, \Gamma \vdash e : \forall \alpha_1, \ldots, \alpha_n \thinspace . \thinspace \tau
 \hskip{1em}
 \Delta \vdash \tau_i :: *, \\ 1 \leq i \leq n
 }
 {
 \Delta, \Gamma \vdash
 \text{TYAPPLY}(e, \tau_1, \ldots, \tau_n) :
-\tau[a_1 \mapsto \tau_1, \ldots, a_n \mapsto \tau_n]
+\tau[\alpha_1 \mapsto \tau_1, \ldots, \alpha_n \mapsto \tau_n]
 }
 $$
 
@@ -586,14 +588,14 @@ $$
 $$
 \frac
 {
-\Delta, \Gamma \vdash e : \forall a_1, \ldots, a_n \thinspace . \thinspace \tau
+\Delta, \Gamma \vdash e : \forall \alpha_1, \ldots, \alpha_n \thinspace . \thinspace \tau
 \hskip{1em}
 \Delta \vdash \tau_i :: *, \\ 1 \leq i \leq n
 }
 {
 \Delta, \Gamma \vdash
 \text{TYAPPLY}(e, \tau_1, \ldots, \tau_n) :
-\tau[a_1 \mapsto \tau_1, \ldots, a_n \mapsto \tau_n]
+\tau[\alpha_1 \mapsto \tau_1, \ldots, \alpha_n \mapsto \tau_n]
 }
 $$
 
@@ -611,14 +613,14 @@ $$
 $$
 \frac
 {
-\Delta, \Gamma \vdash e : \forall a_1, \ldots, a_n \thinspace . \thinspace \tau
+\Delta, \Gamma \vdash e : \forall \alpha_1, \ldots, \alpha_n \thinspace . \thinspace \tau
 \hskip{1em}
 \Delta \vdash \tau_i :: *, \\ 1 \leq i \leq n
 }
 {
 \Delta, \Gamma \vdash
 \text{TYAPPLY}(e, \tau_1, \ldots, \tau_n) :
-\tau[a_1 \mapsto \tau_1, \ldots, a_n \mapsto \tau_n]
+\tau[\alpha_1 \mapsto \tau_1, \ldots, \alpha_n \mapsto \tau_n]
 }
 $$
 
@@ -628,6 +630,7 @@ $$
 
 * The result type is the type $\tau$
   with types $\tau_i$ substituted for the type variables $\alpha_i$
+  inside $\tau$
   * (This type also has kind `*`)
 
 ---
@@ -1074,6 +1077,7 @@ $$
 $$
 
 * The type `$\tau$` must be specified and must have kind `*`
+  * _i.e._ the type `$\tau$` is a simple type, not a type constructor
 
 ---
 ## Type checking: `val-rec`
