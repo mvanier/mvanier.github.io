@@ -190,7 +190,7 @@
   we get $\forall \beta : \beta \to \beta$,
   which is a completely different type!
 
-* We say that the (bad) renaming has _captured_ the type variable $\alpha$
+* We say that the (bad) renaming has _captured_ the type variable $\beta$
   * The $\alpha$ in the $\forall$ binding part (before the $:$)
     "captures" a formerly "free" variable
   * (We'll be precise about what a free variable is soon)
@@ -406,12 +406,12 @@ $$
 {
 \tau_i\equiv\tau_i'\\,, \\;
 1\leq i \leq n, \hspace{1.5em}
-\tau\equiv\tau'
+\mu\equiv\mu'
 }
 {
-\tau(\tau_1,\ldots,\tau_n)
+\mu(\tau_1,\ldots,\tau_n)
 \\,\equiv\\,
-\tau'(\tau'_1,\ldots,\tau'_n)
+\mu'(\tau'_1,\ldots,\tau'_n)
 }
 $$
 
@@ -430,12 +430,12 @@ $$
 {
 \tau_i\equiv\tau_i'\\,, \\;
 1\leq i \leq n, \hspace{1.5em}
-\tau\equiv\tau'
+\mu\equiv\mu'
 }
 {
-\tau(\tau_1,\ldots,\tau_n)
+\mu(\tau_1,\ldots,\tau_n)
 \\,\equiv\\,
-\tau'(\tau'_1,\ldots,\tau'_n)
+\mu'(\tau'_1,\ldots,\tau'_n)
 }
 $$
 
@@ -446,7 +446,7 @@ $$
 * Two type applications
   (type constructor applied to type arguments, like `(list int)`)
   are equivalent if
-  * the type constructors $\tau$ and $\tau'$ are equivalent
+  * the type constructors $\mu$ and $\mu'$ are equivalent
 ---
 ## Rules for type equivalence
 
@@ -455,12 +455,12 @@ $$
 {
 \tau_i\equiv\tau_i'\\,, \\;
 1\leq i \leq n, \hspace{1.5em}
-\tau\equiv\tau'
+\mu\equiv\mu'
 }
 {
-\tau(\tau_1,\ldots,\tau_n)
+\mu(\tau_1,\ldots,\tau_n)
 \\,\equiv\\,
-\tau'(\tau'_1,\ldots,\tau'_n)
+\mu'(\tau'_1,\ldots,\tau'_n)
 }
 $$
 
@@ -480,12 +480,12 @@ $$
 {
 \tau_i\equiv\tau_i'\\,, \\;
 1\leq i \leq n, \hspace{1.5em}
-\tau\equiv\tau'
+\mu\equiv\mu'
 }
 {
-\tau(\tau_1,\ldots,\tau_n)
+\mu(\tau_1,\ldots,\tau_n)
 \\,\equiv\\,
-\tau'(\tau'_1,\ldots,\tau'_n)
+\mu'(\tau'_1,\ldots,\tau'_n)
 }
 $$
 
@@ -788,7 +788,7 @@ $$
 $$
 \frac
 {\alpha \in \text{ftv}(\tau_i)}
-{\alpha \in \text{ftv}(\tau(\tau_1,\ldots,\tau_n))}
+{\alpha \in \text{ftv}(\mu(\tau_1,\ldots,\tau_n))}
 $$
 
 $$
@@ -808,17 +808,17 @@ $$
 
 $$
 \frac
-{\alpha \in \text{ftv}(\tau)}
-{\alpha \in \text{ftv}(\tau(\tau_1,\ldots,\tau_n))}
+{\alpha \in \text{ftv}(\mu)}
+{\alpha \in \text{ftv}(\mu(\tau_1,\ldots,\tau_n))}
 $$
 
 $$
 \label{}\tag{FreeTyConApp2}
 $$
 
-* If a type variable $\alpha$ is free in a type $\tau$,
-  it's free in a type constructor application where $\tau$
-  is a type constructor
+* If a type variable $\alpha$ is free in a type constructor $\mu$,
+  it's free in a type constructor application where $\mu$
+  is applied to types $\tau_i$
 
 ---
 ## Free type variables: inference rules
@@ -829,8 +829,8 @@ $$
 
 $$
 \frac
-{\alpha \in \text{ftv}(\tau)}
-{\alpha \in \text{ftv}(\tau(\tau_1,\ldots,\tau_n))}
+{\alpha \in \text{ftv}(\mu)}
+{\alpha \in \text{ftv}(\mu(\tau_1,\ldots,\tau_n))}
 $$
 
 $$
