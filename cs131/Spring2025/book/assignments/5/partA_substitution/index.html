@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://mvanier.github.io/cs131/Spring2025/book/assignments/1/partB/">
+        <link rel="canonical" href="https://mvanier.github.io/cs131/Spring2025/book/assignments/5/partA_substitution/">
       
       
-        <link rel="prev" href="../partA/">
+        <link rel="prev" href="../assignment5/">
       
       
-        <link rel="next" href="../partC/">
+        <link rel="next" href="../partB_type_checking/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Part B: Extending Imp - The CS 131 book (Spring 2025)</title>
+        <title>Part A: Implementing capture-avoiding substitution - The CS 131 book (Spring 2025)</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#part-b-extending-imp-70-points" class="md-skip">
+        <a href="#part-a-implementing-capture-avoiding-substitution-50-points" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Part B: Extending Imp
+              Part A: Implementing capture-avoiding substitution
             
           </span>
         </div>
@@ -467,20 +467,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
@@ -496,7 +494,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Assignment 1: The Imp language
@@ -510,7 +508,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../assignment1/" class="md-nav__link">
+      <a href="../../1/assignment1/" class="md-nav__link">
         
   
   
@@ -533,7 +531,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../partA/" class="md-nav__link">
+      <a href="../../1/partA/" class="md-nav__link">
         
   
   
@@ -553,32 +551,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Part B: Extending Imp
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../1/partB/" class="md-nav__link">
         
   
   
@@ -589,104 +565,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-read" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. read
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-adding-syntactic-sugar" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Adding syntactic sugar
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2. Adding syntactic sugar">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-do-while" class="md-nav__link">
-    <span class="md-ellipsis">
-      a. do-while
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-while" class="md-nav__link">
-    <span class="md-ellipsis">
-      b. while*
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-for" class="md-nav__link">
-    <span class="md-ellipsis">
-      c. for
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-and-and-or" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. and and or
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-improving-while-and-begin" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Improving while and begin
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-adding-support-for-local-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Adding support for local variables
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -699,7 +577,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../partC/" class="md-nav__link">
+      <a href="../../1/partC/" class="md-nav__link">
         
   
   
@@ -1137,18 +1015,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
           <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
@@ -1164,7 +1044,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             Assignment 5: The Typed uScheme language
@@ -1178,7 +1058,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../5/assignment5/" class="md-nav__link">
+      <a href="../assignment5/" class="md-nav__link">
         
   
   
@@ -1198,10 +1078,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../5/partA_substitution/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Part A: Implementing capture-avoiding substitution
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1212,6 +1114,86 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-substmli-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      The subst.mli file
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-substml-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      The subst.ml file
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-implementing-subst" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Implementing subst
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Implementing subst">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-capture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variable capture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#substitution-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Substitution algorithm
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-implementing-rename_for_all_avoiding" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Implementing rename_for_all_avoiding
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1224,7 +1206,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../5/partB_type_checking/" class="md-nav__link">
+      <a href="../partB_type_checking/" class="md-nav__link">
         
   
   
@@ -1274,46 +1256,46 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-read" class="md-nav__link">
+  <a href="#the-substmli-file" class="md-nav__link">
     <span class="md-ellipsis">
-      1. read
+      The subst.mli file
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-adding-syntactic-sugar" class="md-nav__link">
+  <a href="#the-substml-file" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Adding syntactic sugar
+      The subst.ml file
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Adding syntactic sugar">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-implementing-subst" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Implementing subst
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Implementing subst">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#a-do-while" class="md-nav__link">
+  <a href="#variable-capture" class="md-nav__link">
     <span class="md-ellipsis">
-      a. do-while
+      Variable capture
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#b-while" class="md-nav__link">
+  <a href="#substitution-algorithm" class="md-nav__link">
     <span class="md-ellipsis">
-      b. while*
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-for" class="md-nav__link">
-    <span class="md-ellipsis">
-      c. for
+      Substitution algorithm
     </span>
   </a>
   
@@ -1325,27 +1307,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-and-and-or" class="md-nav__link">
+  <a href="#2-implementing-rename_for_all_avoiding" class="md-nav__link">
     <span class="md-ellipsis">
-      3. and and or
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-improving-while-and-begin" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Improving while and begin
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-adding-support-for-local-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Adding support for local variables
+      2. Implementing rename_for_all_avoiding
     </span>
   </a>
   
@@ -1367,298 +1331,317 @@
 
 
 
-<h1 id="part-b-extending-imp-70-points">Part B: Extending <em>Imp</em> (70 points)</h1>
-<p>All the changes you make in this section are to the file <code>imp.ml</code>.</p>
-<h2 id="1-read">1. <code>read</code></h2>
-<p>[<strong>10 points</strong>]</p>
-<p>Add the primitive <code>read</code> to the <em>Imp</em> interpreter and the initial basis.
-The <code>read</code> function is executed for its side effects;
-it takes no arguments, reads a number from standard input,
-and returns the number.
-The <code>read</code> primitive reads an entire line
-before converting it to an integer.
-If the input is invalid,
-it should raise a <code>Runtime_err</code> exception with an appropriate error message.</p>
-<p>Note that OCaml provides the <code>read_line</code> function
-as a built-in function (in the <code>Stdlib</code> module).
-You can use it,
-or alternatively use <code>read_int</code> or <code>read_int_opt</code> to read the number.</p>
-<h2 id="2-adding-syntactic-sugar">2. Adding syntactic sugar</h2>
-<p>[<strong>20 points</strong>]</p>
-<p>One interesting way to extend a language
-is to add <em>syntactic sugar</em> to it.
-This means to add forms that are trivially convertible to existing forms.
-For this problem, we want you to add a few language forms
-<em>without</em> changing the abstract syntax tree (AST)
-representation of the language.
-Instead, extend the S-expression to AST conversion
-(the <code>parse_expr</code> function)
-so that it recognizes the following forms
-and emits the correct AST forms.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This is <em>not</em> usually the best way
-to add syntactic sugar to a language.
-An alternative way, which we'll explore in other languages,
-is to convert the AST to a simpler AST
-(an intermediate representation).
-Working with bare S-expressions in OCaml is fairly tedious.
-On the other hand, Scheme and
-<a href="https://racket-lang.org/">Racket</a>
-macros are a very sophisticated user-programmable way
-to add syntactic sugar to the Scheme and Racket languages,
-and they work by converting S-expressions to other S-expressions
-(to a first approximation).</p>
-</div>
-<p>In each case, if a syntax error arises,
-a <code>Syntax_err</code> exception must be raised
-with a meaningful error message.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Don't forget to add any new keywords
-to the <code>keywords</code> list in the interpreter!</p>
-</div>
-<h3 id="a-do-while">a. <code>do-while</code></h3>
-<p>Add a C-like <code>do-while</code> form with this translation:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>(do-while &lt;exp&gt; &lt;test-exp&gt;) ==&gt; (begin &lt;exp&gt; (while &lt;test-exp&gt; &lt;exp&gt;))
+<h1 id="part-a-implementing-capture-avoiding-substitution-50-points">Part A: Implementing capture-avoiding substitution (50 points)</h1>
+<p>The code you will write for this section is in the <code>Subst</code> module,
+which consists of the files <code>subst.ml</code> and <code>subst.mli</code>.
+You will only have to modify the <code>subst.ml</code> file.</p>
+<h2 id="the-substmli-file">The <code>subst.mli</code> file</h2>
+<p>The exported functions are given in the <code>subst.mli</code> file; they are:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c">(** Return a set of all the free type variables in a type environment. *)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">val</span> <span class="n">free_tyvars_gamma</span> <span class="o">:</span> <span class="nn">Type</span><span class="p">.</span><span class="n">type_env</span> <span class="o">-&gt;</span> <span class="nn">IdSet</span><span class="p">.</span><span class="n">t</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c">(** Instantiate a quantified type by substituting actual types for</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c">    type variables.  All substituted types must be of kind &quot;*&quot;.</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c">    The `loc` argument is for error cases. *)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">val</span> <span class="n">ty_instantiate</span> <span class="o">:</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  <span class="nn">Loc</span><span class="p">.</span><span class="n">loc</span> <span class="o">-&gt;</span> <span class="n">ty_expr</span> <span class="o">-&gt;</span> <span class="n">ty_expr</span> <span class="kt">list</span> <span class="o">-&gt;</span> <span class="nn">Type</span><span class="p">.</span><span class="n">kind_env</span> <span class="o">-&gt;</span> <span class="n">ty_expr</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c">(** Check if two types are equivalent. *)</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">val</span> <span class="n">equiv_type</span> <span class="o">:</span> <span class="n">ty_expr</span> <span class="o">-&gt;</span> <span class="n">ty_expr</span> <span class="o">-&gt;</span> <span class="kt">bool</span>
 </span></code></pre></div>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt;&gt;&gt; (val x 5)
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>variable x = 5
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>&gt;&gt;&gt; (do-while (println x) (set x (- x 1)))
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>5
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>4
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>3
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>2
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>1
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>0
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>;; Note that `println` returns the value printed,
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>;; and 0 is false, so the loop stops after printing 0.
-</span></code></pre></div>
-</div>
-<h3 id="b-while">b. <code>while*</code></h3>
-<p>Add a <code>while*</code> form with this translation:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>(while* &lt;test-exp&gt; &lt;exp1&gt; &lt;exp2&gt; ... &lt;expN&gt;)
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  ==&gt; (while &lt;test-exp&gt; (begin &lt;exp1&gt; &lt;exp2&gt; ... &lt;expN&gt;))
-</span></code></pre></div>
-<p>This allows you to write <code>while</code> loops
-with multiple body expressions
-without having an explicit <code>begin</code>,
-which is very convenient.
-A <code>while*</code> expression with no non-test expressions
-is a syntax error,
-as is one with no expressions at all.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt;&gt;&gt; (val x 5)
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>variable x = 5
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>&gt;&gt;&gt; (while* (&gt; x 0) (println x) (set x (- x 1)))
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>5
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>4
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>3
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>2
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>1
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>0
-</span></code></pre></div>
-</div>
-<h3 id="c-for">c. <code>for</code></h3>
-<p>Add a C-like <code>for</code> loop with this translation:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>(for &lt;begin-exp&gt; &lt;test-exp&gt; &lt;incr-exp&gt; (&lt;body-exp1&gt; &lt;body-exp2&gt; ... &lt;body-expN))
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>==&gt;
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>(begin &lt;begin-exp&gt;
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  (while &lt;test-exp&gt;
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    (begin &lt;body-exp1&gt; &lt;body-exp2&gt; ... &lt;body-expN&gt; &lt;incr-exp&gt;)))
-</span></code></pre></div>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&gt;&gt;&gt; (val x 0)
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>variable x = 0
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>&gt;&gt;&gt; (val n 0)
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>variable n = 0
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>&gt;&gt;&gt; (for (set x 5) (&gt; x 0) (set x (- x 1)) ((println x) (set n (+ n 1))))
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>5
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>4
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>3
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>2
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>1
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>0
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>&gt;&gt;&gt; n
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>5
-</span></code></pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Don't forget the parentheses around the body expressions!
-Think of it as a <code>begin</code> expression without the <code>begin</code> keyword.</p>
-</div>
-<p>Note that for all of these changes,
-you will have to decide
-what the location of the newly-created forms are.
-Here are some guidelines:</p>
+<p>Even though you won't be directly implementing any of these,
+it's worth spending a little time describing what they do.</p>
 <ul>
 <li>
-<p>For <code>do-while</code>,
-use the <code>do-while</code> location for the generated <code>begin</code> and <code>while</code> forms.</p>
+<p><code>free_tyvars_gamma</code></p>
+<p>We have been using the Greek letter "gamma" (<em>i.e.</em> <span class="arithmatex">\(\Gamma\)</span>)
+in our type checking equations to refer to type environments.
+A type environment maps variable names to their types,
+and at certain points in type checking,
+these types can contain type variables.
+The function <code>free_tyvars_gamma</code> will return
+a set of all the free type variables
+from all the types in a type environment.
+It uses an internal function called <code>free_tyvars</code>
+to compute the free type variables of each type.</p>
+<p>This function is implemented for you
+and is used in a couple of places in the type checker.</p>
 </li>
 <li>
-<p>For <code>while*</code>,
-use the <code>while*</code> location for the generated <code>while</code> and <code>begin</code> forms.</p>
+<p><code>ty_instantiate</code></p>
+<p>This function takes a type expression (<code>ty_expr</code>),
+which should be a <code>ForAll</code> type (or else it's an error).
+It also takes a list of types to substitute
+for the type variables of the <code>ForAll</code> type,
+as well as a kind environment.
+The function checks that
+the number of type variables in the <code>ForAll</code> type
+is the same as the number of supplied types,
+and that all the supplied types have kind <code>*</code>
+(which is a restriction of this language).<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>
+If these checks pass,
+the function substitutes the given types for the type variables.
+It does this by creating a new type environment
+and calling the <code>subst</code> function.</p>
+<p>This function is implemented for you and is used in the type checker.</p>
 </li>
 <li>
-<p>For <code>for</code>,
-use the <code>for</code> location for the outer generated <code>begin</code> form
-and the generated <code>while</code> form.
-For the inner generated <code>begin</code> form,
-use the location of the S-expression <code>List</code> constructor
-that contains the <code>begin</code> expressions.</p>
-</li>
-<li>
-<p>For expressions that pass through unchanged,
-keep the location the same.</p>
+<p><code>equiv_type</code></p>
+<p>The <code>equiv_type</code> function compares two type expressions
+and returns <code>true</code> if they are equivalent.
+As discussed in lecture 18,
+two type expressions don't have to be identical to be equivalent.
+For instance, <code>(forall ['a] ('a -&gt; 'a))</code> and <code>(forall ['b] ('b -&gt; 'b))</code>
+are not identical but they are equivalent.</p>
+<p>This function is implemented for you,
+based on the specification given in lecture 18.
+The only complicated case is the <code>ForAll</code> case,
+which uses the <code>rename</code> function,
+which itself is defined in terms of the <code>subst</code> function.</p>
+<p>This function is used in the type checker.</p>
 </li>
 </ul>
-<h2 id="3-and-and-or">3. <code>and</code> and <code>or</code></h2>
-<p>[<strong>10 points</strong>]</p>
-<p>The initial basis of the <em>Imp</em> language
-is split between primitive functions and user functions.
-The user functions are defined in the string <code>initial_basis</code>
-near the end of the file.
-Two of these definitions are quite unsatisfying:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>(define and (b c) (if b c b))
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>(define or (b c) (if b b c))
+<h2 id="the-substml-file">The <code>subst.ml</code> file</h2>
+<p>Even though all of the exported functions in the <code>Subst</code> module
+(those described above) have been written for you,
+the last two (<code>ty_instantiate</code> and <code>equiv_type</code>)
+depend on a function called <code>subst</code>.
+<code>subst</code>, in turn, depends on another function
+called <code>rename_for_all_avoiding</code>,
+which depends on a function called <code>rename</code>,
+which depends on <code>subst</code>
+(so the three functions are mutually recursive).
+You will only need to complete the implementations
+of <code>subst</code> and <code>rename_for_all_avoiding</code>.</p>
+<p>The type signatures of these functions are as follows,
+with some explanatory comments:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c">(* Substitute type variables in a type expression with the bindings of those</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c">   variables, yielding a new type. *)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">val</span> <span class="n">subst</span> <span class="o">:</span> <span class="n">ty_expr</span> <span class="o">-&gt;</span> <span class="nn">Type</span><span class="p">.</span><span class="n">type_env</span> <span class="o">-&gt;</span> <span class="n">ty_expr</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c">(* Rename a list of type variable names to a new list of type variable names</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c">   in a type, yielding a new type. *)</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">val</span> <span class="n">rename</span> <span class="o">:</span> <span class="n">id</span> <span class="kt">list</span> <span class="o">-&gt;</span> <span class="n">id</span> <span class="kt">list</span> <span class="o">-&gt;</span> <span class="n">ty_expr</span> <span class="o">-&gt;</span> <span class="n">ty_expr</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c">(* Rename all type variables in a `ForAll` type so as to avoid a particular</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c">   set of possibly-captured variable names, yielding a new type. *)</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">val</span> <span class="n">rename_for_all_avoiding</span> <span class="o">:</span> <span class="n">id</span> <span class="kt">list</span> <span class="o">-&gt;</span> <span class="n">ty_expr</span> <span class="o">-&gt;</span> <span class="nn">IdSet</span><span class="p">.</span><span class="n">t</span> <span class="o">-&gt;</span> <span class="n">ty_expr</span>
 </span></code></pre></div>
-<p>The reason these are bad is that <code>and</code> and <code>or</code>
-should have short-circuit semantics:
-if the first argument is <code>0</code> (for <code>and</code>) or <code>1</code> (for <code>or</code>)
-the second argument should never be evaluated.
-In this problem we will implement a correct version of <code>and</code> and <code>or</code>
-with the appropriate semantics.</p>
-<p>Before we begin,
-note that this <em>could</em> be done the same way
-we implemented <code>while*</code> and <code>do-while</code>:
-by making <code>and</code> and <code>or</code> syntactic sugar for <code>if</code> expressions.
-However, it's instructive to do it a different way.
-Here is what we want you to do:</p>
+<p>We need to say a few more things about these functions.</p>
+<ul>
+<li>
+<p><code>subst</code></p>
+<p>In this function, the first argument can be any type expression.
+The second is a "type environment", which in this program
+just means a binding between identifiers and types.
+However, this is <em>not</em> the usual type environment <span class="arithmatex">\(\Gamma\)</span>
+that is in all the type checking equations.
+It's not really an "environment" at all;
+it's just a mapping between identifiers (in this case, type variables)
+and the types that should be substituted for those type variables.
+All this means is that you are substituting
+multiple types for multiple type variables
+simultaneously in a particular type,
+yielding a new type.</p>
+<p>In lecture 18, we listed the specification
+for substituting a <em>single</em> type for a <em>single</em> type variable
+while avoiding variable capture;
+in your code you will need to generalize this
+to handle multiple substitutions.
+(Don't worry; you don't have to write out new equations!)</p>
+<p>This function has five different cases
+(because types have five different constructors);
+four of these are trivial and are provided for you.
+The one non-trivial case is for <code>ForAll</code> types,
+which you have to write yourself.
+The reason this is non-trivial
+is that this is the only case where variable capture can occur.
+We provide a walkthrough of the algorithm below.</p>
+</li>
+<li>
+<p><code>rename</code></p>
+<p>This function takes two equal-length lists of identifiers
+representing type variables,
+and renames all of the identifiers in the first list
+to those of the second list in a type expression.
+It does this by creating a mapping
+between the original and the new names
+and calling the <code>subst</code> function.</p>
+</li>
+<li>
+<p><code>rename_for_all_avoiding</code></p>
+<p>This function renames the type variables of a <code>ForAll</code> type
+to avoid variable captures.
+The first two arguments are the components of the <code>Forall</code> type
+(the list of type variables and the rest of the expression).
+The <code>IdSet.t</code> argument is a set of type variables which may be captured;
+this is determined in the <code>subst</code> function.
+The return value is the new <code>ForAll</code> type
+with all the substitutions made.
+The new type must be equivalent to the original type.</p>
+</li>
+</ul>
+<p>Now we'll go into more detail
+on how to implement <code>subst</code> and <code>rename_for_all_avoiding</code>.</p>
+<h2 id="1-implementing-subst">1. Implementing <code>subst</code></h2>
+<p>[<strong>30 points</strong>]</p>
+<p><code>subst</code> takes two arguments:
+a type (represented as a <code>ty_expr</code>)
+and a mapping between type variable names and types
+(represented as a <code>type_env</code>).
+The mapping represents
+the type variable substitutions that are to be made in the type.
+We'll refer to the first argument as the "source type"
+and the mapping as the "type map".
+We'll refer to the output type as the "result type".</p>
+<h3 id="variable-capture">Variable capture</h3>
+<p>Naively,
+you might think that all you have to do is to find
+the locations of the type variables from the type map in the source type,
+and then replace them with the types that the type variables map to.
+However, this can easily lead to variable capture.
+For instance,
+naively substituting the type variable <code>'a</code>
+for the type <code>('b -&gt; 'b)</code>
+in the source type <code>(forall ['b] ('a -&gt; 'b))</code>
+would yield the result type <code>(forall ['b] (('b -&gt; 'b) -&gt; 'b))</code>,
+which is clearly wrong.
+In this case we say that the <code>(forall ['b] ...)</code>
+has <em>captured</em> the type variable <code>'b</code>,
+which was originally a <em>free</em> variable in <code>('b -&gt; 'b)</code>.
+This changes the meaning of the source type,
+so that the result type is no longer equivalent to the source type,
+and substitution is broken.</p>
+<p>Instead, this substitution should yield a result type which is like
+<code>(forall ['c] (('b -&gt; 'b) -&gt; 'c))</code>.
+We can get this if we rename the source type
+from <code>(forall ['b] ('a -&gt; 'b))</code>
+to the equivalent type <code>(forall ['c] ('a -&gt; 'c))</code>
+before doing the substitution.
+But to do this correctly
+we must make sure that we know how to do the renaming.</p>
+<h3 id="substitution-algorithm">Substitution algorithm</h3>
+<p>The substitution algorithm is as follows.
+We will use the term "alphas list"
+to refer to the list of quantified variables in the <code>ForAll</code> type.</p>
 <ol>
 <li>
-<p>Remove the definitions of <code>and</code> and <code>or</code> from the <code>initial_basis</code> string.</p>
+<p>Compute all the free type variables in the <code>ForAll</code> type.
+(By definition, these do <em>not</em> include any of the quantified variables.)</p>
 </li>
 <li>
-<p>Add <code>and</code> and <code>or</code> to the keywords list.</p>
+<p>Collect all the types in the type map that the free type variables map to.
+These types can potentially cause variable captures.
+If a free type variable isn't mapped to a type in the type map,
+include it too.
+(Wrap it in a <code>TyVar</code> constructor,
+since a type variable name by itself isn't a type).</p>
 </li>
 <li>
-<p>Extend the AST <code>exp</code> type definition with two new constructors:
-<code>And (&lt;loc&gt;, &lt;exp&gt;, &lt;exp&gt;)</code> and <code>Or (&lt;loc&gt;, &lt;exp&gt;, &lt;exp&gt;)</code>.</p>
+<p>Collect all the free type variables in all of the types from step 2
+(including the unmapped free type variables).
+Call these "potential captures".</p>
 </li>
 <li>
-<p>Extend <code>parse_expr</code>
-so that the S-expression corresponding to <code>(and &lt;exp&gt; &lt;exp&gt;)</code>
-gets converted to the corresponding AST form
-and similarly for <code>(or &lt;exp&gt; &lt;exp&gt;)</code>.</p>
+<p>Check to see if any of the free type variables
+are also in the alphas list.</p>
+<ol>
+<li>
+<p>If not, then we are in luck! No variable capture can occur.
+Remove all the type variables in the alphas list
+from the type map
+(because the alphas list prevents them from being substituted)
+and substitute the remaining type map
+into the body of the <code>ForAll</code> type.
+(This will involve a recursive call to <code>subst</code>.)</p>
 </li>
 <li>
-<p>Extend <code>eval_expr</code> with cases for <code>And</code> and <code>Or</code> AST forms.
-These should just dispatch to <code>If</code> AST forms according to the rules:</p>
+<p>Otherwise, we have a variable capture situation.
+Rename all the quantified values (the alphas list)
+in the <code>ForAll</code> type so that they don't conflict
+with any of the potential captures.
+You'll do this by calling the <code>rename_for_all_avoiding</code> function
+described in the next section.
+Once this is done, then do the substitution.</p>
 </li>
 </ol>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>And (l, e1, e2) ==&gt; If (l, e1, e2, e1)
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Or (l, e1, e2) ==&gt; If (l, e1, e1, e2)
-</span></code></pre></div>
-<p>with one caveat:
-make sure you do not compute the value of <code>e1</code> or <code>e2</code> more than once.
-(There are different ways to achieve this.)</p>
-<p>Again, make sure that the locations used in derived forms are reasonable ones.</p>
-<h2 id="4-improving-while-and-begin">4. Improving <code>while</code> and <code>begin</code></h2>
-<p>[<strong>10 points</strong>]</p>
-<p>The way that <code>while</code> and <code>begin</code> expressions
-are evaluated in the <code>eval_expr</code> function is somewhat inefficient.
-In both cases, we sometimes have to create new <code>while</code>/<code>begin</code> expressions
-and evaluate them in order to evaluate the full expression
-(this was spelled out in the operational semantics).
-However,
-why should we dispatch the <code>while</code>/<code>begin</code> subexpression to <code>eval_expr</code>
-just so it can wind up in the exact same point in the code
-we are already in?
-The extra case analysis is completely unnecessary.
-Rewrite the code for these forms
-so that you never have to recurse
-on a newly-created <code>while</code> or <code>begin</code> subexpression.</p>
-<p>There are two ways to do this: imperatively and functionally.
-The imperative way would use an OCaml <code>while</code> loop and reference variables.
-We want you to do it the other way:
-using a tail-recursive helper function (for <code>while</code>)
-or using either a tail-recursive helper function
-or an equivalent higher-order function (for <code>begin</code>).</p>
-<h2 id="5-adding-support-for-local-variables">5. Adding support for local variables</h2>
+</li>
+</ol>
+<p>This is not particularly hard code to write,
+but small mistakes can lead to extremely subtle bugs
+that are hard to track down.
+The algorithm we give is purposely very conservative
+so as to avoid problems.</p>
+<p>Our solution required us to write less than 25 extra lines of code
+(not including comments).</p>
+<h2 id="2-implementing-rename_for_all_avoiding">2. Implementing <code>rename_for_all_avoiding</code></h2>
 <p>[<strong>20 points</strong>]</p>
-<p>One glaring weakness of the <em>Imp</em> language
-is that it has no local variables,
-even though it has an environment for storing them.
-In this problem we will implement them.</p>
-<p>The syntax for function definitions will change to the following:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>(define function-name (formals) {(locals &lt;locals&gt;)} expression)
-</span></code></pre></div>
-<p>The curly braces are not part of the concrete syntax;
-they mean that the <code>locals</code> declaration can be omitted,
-in which case the locals list is empty. In other words:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>(define foo (x y z) &lt;exp&gt;)
-</span></code></pre></div>
-<p>is the same as:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>(define foo (x y z) (locals) &lt;exp&gt;)  ; empty locals list
-</span></code></pre></div>
-<p>Here's an example of a function that uses locals:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>(define dumb-add (x y z)
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>  (locals sum)
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>  (begin
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    (set sum x)
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    (set sum (+ sum y))
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    (set sum (+ sum z))
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    sum))
-</span></code></pre></div>
-<p>Here's the function being called:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>&gt;&gt;&gt; (dumb-add 1 2 3)
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>6
-</span></code></pre></div>
-<p>Here are the steps we want you to go through to implement locals:</p>
+<p>The function <code>rename_for_all_avoiding</code> takes three arguments:</p>
 <ol>
 <li>
-<p>Add <code>locals</code> to the keywords list.</p>
+<p>the alphas list from a <code>ForAll</code> type
+(<em>i.e.</em> the list of quantified variable names)</p>
 </li>
 <li>
-<p>Extend the <code>Define</code> AST form in the <code>def</code> type
-to contain a list of identifiers corresponding to local variables.
-This list should be separate from the <code>id list</code> of function arguments
-(and should come after that list).</p>
+<p>the body of a <code>ForAll</code> type
+(<em>i.e.</em> everything but the list of quantified variable names)</p>
 </li>
 <li>
-<p>Extend <code>parse_def</code>
-so that it recognizes function definitions with locals
-and parses them to the new <code>Define</code> form.
-Function definitions without locals
-will also be parsed to the new <code>Define</code> form,
-but the locals list will be empty.
-Check that all the locals identifiers are valid
-and that they are unique
-(as is currently done for the function parameters).
-Note that it's OK to use the same name
-for a local variable and a function parameter;
-in such cases, the local variable takes precedence.</p>
-</li>
-<li>
-<p>Extend the <code>UserFunction</code> definition so it includes locals.</p>
-</li>
-<li>
-<p>When a function call with a <code>UserFunction</code> is evaluated,
-all locals are added to the local variable environment
-with an initial value of <code>0</code>.
-(Make sure this happens <em>after</em> the argument variable/value pairs
-are added to the local variable environment,
-in order to get the correct shadowing behavior.)
-Then evaluation proceeds normally.</p>
+<p>a list of potentially captured type variables</p>
 </li>
 </ol>
-<p>Try to do this without copying code unnecessarily.</p>
+<p>Note that the first two arguments are obtained
+by taking the parts of a <code>ForAll</code> type.</p>
+<p>The function returns a new <code>ForAll</code> type
+formed by renaming any type variables
+that are in the list of potential captures.
+A partial implementation is provided for you.</p>
+<p>Here is the renaming algorithm:</p>
+<ol>
+<li>
+<p>If a type variable in the alphas list
+is not in the potential captures list,
+it can remain as it is.</p>
+</li>
+<li>
+<p>Otherwise, pick a new type variable:</p>
+<ul>
+<li>
+<p>which is different from all other type variables in the alphas list,</p>
+</li>
+<li>
+<p>which is different from any new type variables
+that may have been added previously in this algorithm,</p>
+</li>
+<li>
+<p>which is not in the set of free variables
+of the body of the <code>ForAll</code> type,</p>
+</li>
+<li>
+<p>and which is not in the list of potential captures.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Repeat the previous two steps
+for all the type variables in the alphas list.
+Then use the list of new type variables
+to rename the entire type expression
+(by calling the <code>rename</code> function, provided for you)
+and construct a <code>ForAll</code> type out of the result.</p>
+</li>
+</ol>
+<p>Our solution required us to write less than 10 extra lines of code
+(not including comments).</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Some languages, notably Haskell, don't have this restriction,
+so we say that they support "higher-kinded types".&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
@@ -1694,7 +1677,7 @@ Then evaluation proceeds normally.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../partA/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part A: Programming in Imp">
+          <a href="../assignment5/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1704,20 +1687,20 @@ Then evaluation proceeds normally.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Part A: Programming in Imp
+                Overview
               </div>
             </div>
           </a>
         
         
           
-          <a href="../partC/" class="md-footer__link md-footer__link--next" aria-label="Next: Part C: Programming in extended Imp">
+          <a href="../partB_type_checking/" class="md-footer__link md-footer__link--next" aria-label="Next: Part B: Implementing the type checker">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Part C: Programming in extended Imp
+                Part B: Implementing the type checker
               </div>
             </div>
             <div class="md-footer__button md-icon">
