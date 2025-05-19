@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://mvanier.github.io/cs115/Spring2025/book/assignments/4/partC_sudoku/">
+        <link rel="canonical" href="https://mvanier.github.io/cs115/Spring2025/book/assignments/6/partB_Reader/">
       
       
-        <link rel="prev" href="../partB_standalone/">
+        <link rel="prev" href="../partA_State/">
       
       
-        <link rel="next" href="../../5/assignment5/">
+        <link rel="next" href="../partC_Sexpr/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Part C: Miniproject: Sudoku - The CS 115 book (Spring 2025)</title>
+        <title>Part B: Deriving the reader monad - The CS 115 book (Spring 2025)</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#part-c-miniproject-sudoku-50-points" class="md-skip">
+        <a href="#part-b-deriving-the-reader-monad-25-points" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Part C: Miniproject: Sudoku
+              Part B: Deriving the reader monad
             
           </span>
         </div>
@@ -907,19 +907,17 @@
                 
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
           <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
@@ -933,7 +931,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             Assignment 4: IO, IO, it's off to work we go!
@@ -947,7 +945,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../assignment4/" class="md-nav__link">
+      <a href="../../4/assignment4/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -968,7 +966,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../partA_exercises/" class="md-nav__link">
+      <a href="../../4/partA_exercises/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -989,7 +987,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../partB_standalone/" class="md-nav__link">
+      <a href="../../4/partB_standalone/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1007,30 +1005,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Part C: Miniproject: Sudoku
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../4/partC_sudoku/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1039,80 +1017,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#program-description" class="md-nav__link">
-    <span class="md-ellipsis">
-      Program description
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#solution-algorithm" class="md-nav__link">
-    <span class="md-ellipsis">
-      Solution algorithm
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#inputs-and-outputs" class="md-nav__link">
-    <span class="md-ellipsis">
-      Inputs and outputs
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#template-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      Template file
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#compiling-the-program" class="md-nav__link">
-    <span class="md-ellipsis">
-      Compiling the program
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sample-input-boards-and-running-the-program" class="md-nav__link">
-    <span class="md-ellipsis">
-      Sample input boards and running the program
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1236,17 +1140,19 @@
                 
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
           <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
@@ -1260,7 +1166,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             Assignment 6: Fun with parsing
@@ -1274,7 +1180,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../6/assignment6/" class="md-nav__link">
+      <a href="../assignment6/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1295,7 +1201,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../6/partA_State/" class="md-nav__link">
+      <a href="../partA_State/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1313,10 +1219,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../6/partB_Reader/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Part B: Deriving the reader monad
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1325,6 +1251,35 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deriving-the-operator-and-the-return-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deriving the &gt;&gt;= operator and the return method
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1337,7 +1292,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../6/partC_Sexpr/" class="md-nav__link">
+      <a href="../partC_Sexpr/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1358,7 +1313,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../6/partD_XML/" class="md-nav__link">
+      <a href="../partD_XML/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1414,54 +1369,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#program-description" class="md-nav__link">
+  <a href="#deriving-the-operator-and-the-return-method" class="md-nav__link">
     <span class="md-ellipsis">
-      Program description
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#solution-algorithm" class="md-nav__link">
-    <span class="md-ellipsis">
-      Solution algorithm
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#inputs-and-outputs" class="md-nav__link">
-    <span class="md-ellipsis">
-      Inputs and outputs
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#template-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      Template file
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#compiling-the-program" class="md-nav__link">
-    <span class="md-ellipsis">
-      Compiling the program
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sample-input-boards-and-running-the-program" class="md-nav__link">
-    <span class="md-ellipsis">
-      Sample input boards and running the program
+      Deriving the &gt;&gt;= operator and the return method
     </span>
   </a>
   
@@ -1482,190 +1392,135 @@
                   
 
 
-<h1 id="part-c-miniproject-sudoku-50-points">Part C: Miniproject: Sudoku (50 points)</h1>
-<p>Most of you probably already know how to play Sudoku.
-If by chance you don't,
-<a href="https://en.wikipedia.org/wiki/Sudoku">here</a>
-is a page which will teach you the rules.
-Sudoku puzzles range from quite easy to extremely difficult.
-However, computers have a much easier time solving Sudoku puzzles
-than humans do,
-and in this section you'll be writing a Haskell program to do just that.
-Your program should be able to solve
-the sample Sudoku puzzles we'll supply you with
-in no more than about 30 seconds per puzzle,
-though it may take longer on other Sudoku puzzles.</p>
-<h2 id="program-description">Program description</h2>
-<p>The program will read in a file
-containing a representation of a Sudoku puzzle,
-compute the solution to the puzzle,
-and print the solution to standard output (the terminal).</p>
-<h2 id="solution-algorithm">Solution algorithm</h2>
-<p><strong>We want you to solve this problem imperatively.</strong>
-It is possible to write very concise and elegant Sudoku solvers
-in a purely functional manner (which is a good exercise)
-but that's not how we want you to do it here.
-The whole purpose of this project is to demonstrate
-that it's possible to write imperative code
-even in a purely functional language like Haskell.</p>
-<p>The program will read the input board's contents
-into an array (specifically, an <code>IOArray</code>).
-From there, it will mutate the contents of the array
-until a solution is reached
-or until it can be determined that there is no solution.</p>
-<p>The solution algorithm works as follows.</p>
-<ol>
-<li>
-<p>Iterate over the 81 locations in the board
-row-by-row and column-by-column within rows.</p>
-</li>
-<li>
-<p>If the location is already filled
-(<em>i.e.</em> it contains a number between 1 and 9),
-leave it alone and keep going.</p>
-</li>
-<li>
-<p>If it's empty (it contains a 0),
-you have to pick a number to put into the location.
-Compute all the possible numbers that could be in this location
-(<em>i.e.</em> numbers that don't conflict
-with other numbers in the same row, column, or 3x3 box).
-For each of these numbers:</p>
-<ul>
-<li>Set the location to contain that number.</li>
-<li>Try to (recursively) solve the board starting from the next location.</li>
-</ul>
-<p>If this works, you have your solution, so return <code>True</code>
-(the board will have mutated to the solution value).</p>
-<p>If not, unmake the move (write a zero back into the location)
-and try the next move.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p><strong>Unmaking the move is very important!</strong>
-If you forget to do this, your program will not work!</p>
+<h1 id="part-b-deriving-the-reader-monad-25-points">Part B: Deriving the reader monad (25 points)</h1>
+<p>We have discussed state monads in class
+and derived them from first principles.
+There is another kind of state-like monad called the "reader" monad;
+this is used in stateful computations
+that only require read-only access to the state.
+In this section you will derive the reader monad from first principles.
+In fact, the datatypes we will use
+are simpler than the ones actually found in the GHC libraries,
+because they are less general.
+Nevertheless, the principles are the same.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The reader monad is actually a very practical monad
+which is used in many real-world applications.
+Whenever there is some read-only state
+(like, for instance, configuration settings)
+that has to be shared among many functions
+but which will never be modified after it is initially set,
+a reader monad is often a good choice.</p>
+<p>You might be wondering why we would use a reader monad
+instead of just defining global constants.
+Typically, the values passed in a reader monad are read once
+(<em>e.g.</em> from a file), put into the monad and then never modified.
+Since they may come from an external source
+(<em>e.g.</em> a file), they can't be global constants.</p>
 </div>
-</li>
-<li>
-<p>If you can't find a suitable number to put in a location, return <code>False</code>.
-The board is unsolvable.</p>
-</li>
-</ol>
-<h2 id="inputs-and-outputs">Inputs and outputs</h2>
-<p>The compiled program will be called <code>sudoku</code>
-and will take a single argument,
-which is the name of a file containing a representation of a board.
-An example board looks like this:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>.........
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>....1..92
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>.86....4.
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>..156....
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>.....362.
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>......5.7
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>.3.....8.
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>.9.8.2...
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>..7..43..
+<p>The reader monad represents computations that can access read-only data.
+Represented conceptually, functions in this monad would look like:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>a -------[read from a stored state]------&gt; b
 </span></code></pre></div>
-<p>The (<code>.</code>)s represent empty squares,
-and numbers from 1 to 9 mean that
-this location in the board has that (fixed) number.
-The file must contain nothing else but these characters
-(not even whitespace at the ends of lines,
-other than the necessary newline character).</p>
-<p>The internal representation of the board
-is as a two-dimensional <code>IOArray</code> (indexed by (<code>Int</code>, <code>Int</code>) pairs)
-where an empty square is represented by a zero
-and a digit from 1 to 9 is represented by the corresponding <code>Int</code> value.
-The first <code>Int</code> of an (<code>Int</code>, <code>Int</code>) pair
-is a row index (starting from 1)
-and the second is a column index (starting from 1).</p>
-<p>The job of the program
-is to fill in the locations marked with (<code>.</code>)s
-so that the board is solved.
-In this case,
-the program would output the following (unique) solution
-to the Sudoku puzzle:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>412985763
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>753416892
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>986327145
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>271568934
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>549173628
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>368249517
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>634751289
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>195832476
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>827694351
+<p>By analogy to state monads, we can write these functions as:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">b</span>
 </span></code></pre></div>
-<p>This output is printed to standard output (the terminal).</p>
-<h2 id="template-file">Template file</h2>
-<p>To get you started,
-in the <code>lab4.zip</code> file on Canvas,
-we are supplying you with a template file called <code>Sudoku.hs</code>
-that contains some of the less interesting function definitions
-pre-written for you.
-This will allow you to concentrate on the interesting part
-(the board solving code).
-You are not absolutely required to use our code
-(if you think you can do things better all on your own, you may),
-but using it will probably significantly cut down
-on the time requirement for this problem.
-If you do use our code as a template,
-you should substitute your own code
-in the location marked <code>{- TODO -}</code>.
-Please remove the <code>{- TODO -}</code> comment as well!</p>
-<p>We are also including the type signatures and comments
-of all the helper functions we used in the <code>solveSudoku</code> function.
-You may use these to guide you in your solution,
-or you may write different helper functions as you see fit.
-<strong>Note, though, that the solution has to be imperative, not functional.</strong>
-Nevertheless, it will be recursive, as described above.</p>
-<p>Note that one thing you are not allowed to change
-is the representation of the Sudoku board
-<em>i.e.</em> the type definition:</p>
-<div class="language-haskell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kr">type</span><span class="w"> </span><span class="kt">Sudoku</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">IOArray</span><span class="w"> </span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="kt">Int</span>
+<p>for some state type <code>r</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The state type <code>r</code> goes into the computation but doesn't come out,
+so even if it was locally modified,
+nothing outside of this function would ever see the modifications.
+That's what we mean by "read-only".</p>
+</div>
+<p>We can curry this to get:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nf">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">b</span>
 </span></code></pre></div>
-<p>Since this problem is an exercise in doing imperative programming in Haskell,
-we want you to solve this program using the <code>IO</code> monad and <code>IOArray</code>s.</p>
-<h2 id="compiling-the-program">Compiling the program</h2>
-<p>Compile the program by typing this line:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$ ghc -W -o sudoku Sudoku.hs -package array
+<p>which is effectively equivalent to the uncurried version.
+We can parenthesize it as follows:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nf">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span>
 </span></code></pre></div>
-<p>or just type <code>make sudoku</code> if you are using the <code>Makefile</code>.</p>
-<h2 id="sample-input-boards-and-running-the-program">Sample input boards and running the program</h2>
-<p>In the <code>lab4.zip</code> file,
-we are including a directory called <code>boards</code> containing ten input boards.
-You should use these board files to test your program.
-None of them should take your program more than 30 seconds to solve,
-and most should take much less time than that.</p>
-<p>Test a particular board by running it like this:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$ ./sudoku boards/board1
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>412985763
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>753416892
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>986327145
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>271568934
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>549173628
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>368249517
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>634751289
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>195832476
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>827694351
+<p>because the <code>-&gt;</code> associates to the right.</p>
+<p>We will therefore define the <code>Reader</code> datatype as follows:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kr">data</span><span class="w"> </span><span class="kt">Reader</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Reader</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span>
 </span></code></pre></div>
-<p>If you want to time it, this should work on any Unix-like system
-(Linux, MacOS, Windows using WSL):</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$ /usr/bin/time ./sudoku boards/board1
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>412985763
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>753416892
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>986327145
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>271568934
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>549173628
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>368249517
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>634751289
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>195832476
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>827694351
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>        4.74 real         4.68 user         0.04 sys
+<p>so we can write
+the characteristic monadic functions in the reader monad as:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nf">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Reader</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="n">b</span>
 </span></code></pre></div>
-<p>The <code>user</code> time gives the actual elapsed time for the run in seconds.</p>
-<p>If your program solves the boards but takes too long, you will lose marks.
-Try to figure out what you are doing that may be causing the slowdown,
-and come to office hours or ask questions on Piazza
-if you are still having trouble.</p>
+<p>and the only difference is that
+values of the type <code>(r -&gt; b)</code> are now
+values of the type <code>(Reader r b)</code>
+which is just a <code>Reader</code> wrapper
+around the same function type.</p>
+<p>This is equivalent to the monadic function form:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nf">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="n">b</span>
+</span></code></pre></div>
+<p>with <code>(Reader r)</code> as the <code>Monad</code> instance.</p>
+<p>We will also define this helper function:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nf">runReader</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Reader</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nf">runReader</span><span class="w"> </span><span class="p">(</span><span class="kt">Reader</span><span class="w"> </span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">f</span>
+</span></code></pre></div>
+<p>This will extract the function from the <code>Reader</code> datatype.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is more obvious if you write the type signature like this:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nf">runReader</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Reader</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">a</span><span class="p">)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nf">runReader</span><span class="w"> </span><span class="p">(</span><span class="kt">Reader</span><span class="w"> </span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">f</span>
+</span></code></pre></div>
+<p>This is equivalent to the previous definition.</p>
+</div>
+<p>We will use this definition of the <code>Monad</code> instance for the <code>Reader</code>
+monad:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kr">instance</span><span class="w"> </span><span class="kt">Monad</span><span class="w"> </span><span class="p">(</span><span class="kt">Reader</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="kr">where</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="n">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Reader</span><span class="w"> </span><span class="p">(</span><span class="nf">\</span><span class="n">r</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="n">mx</span><span class="w"> </span><span class="o">&gt;&gt;=</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Reader</span><span class="w"> </span><span class="p">(</span><span class="nf">\</span><span class="n">r</span><span class="w"> </span><span class="ow">-&gt;</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">               </span><span class="kr">let</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">runReader</span><span class="w"> </span><span class="n">mx</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="kr">in</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">                 </span><span class="n">runReader</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">r</span><span class="p">)</span>
+</span></code></pre></div>
+<p>The <code>&gt;&gt;=</code> operator can also be written without <code>runReader</code> as:</p>
+<div class="language-haskell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nf">mx</span><span class="w"> </span><span class="o">&gt;&gt;=</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Reader</span><span class="w"> </span><span class="p">(</span><span class="nf">\</span><span class="n">r</span><span class="w"> </span><span class="ow">-&gt;</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">             </span><span class="kr">let</span><span class="w"> </span><span class="p">(</span><span class="kt">Reader</span><span class="w"> </span><span class="n">g</span><span class="p">)</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">mx</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">                 </span><span class="n">x</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="n">r</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">                 </span><span class="p">(</span><span class="kt">Reader</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="n">x</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">             </span><span class="kr">in</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="n">r</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="deriving-the-operator-and-the-return-method">Deriving the <code>&gt;&gt;=</code> operator and the <code>return</code> method</h2>
+<p>[<strong>25 points</strong>]</p>
+<p>Derive the definitions of <code>return</code> and <code>&gt;&gt;=</code> that we have given above
+from first principles.
+Recall that <code>return</code> must conceptually be
+the identity function in the monad
+and the <code>&gt;&gt;=</code> operator must be defined
+so that monadic function composition
+(the <code>&gt;=&gt;</code> operator from the <code>Control.Monad</code> module)
+works correctly.
+Use the derivation of the <code>Monad</code> instance for state monads
+as a model for your derivation.
+(The reader monad is basically a simplified state monad.)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You do <em>not</em> have to prove
+that the <code>Monad</code> instance for the reader monad
+satisfies the monad laws.</p>
+</div>
+<p>Please write your answer in a multi-line Haskell comment
+(between <code>{-</code> and <code>-}</code> symbols).</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Start by deriving the <code>&gt;&gt;=</code> operator
+and then derive the <code>return</code> method.
+Recall that the <code>&gt;&gt;=</code> operator has to be defined
+to make monadic function composition work correctly,
+and the <code>return</code> operator is a monadic identity function.
+Again, the derivation will proceed much like the state monad derivation,
+though it will be simpler.</p>
+<p>For the <code>&gt;&gt;=</code> operator,
+you can derive either version given above.
+You don't have to derive both versions.</p>
+</div>
 
 
 
@@ -1701,7 +1556,7 @@ if you are still having trouble.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../partB_standalone/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part B: Simple stand-alone programs">
+          <a href="../partA_State/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part A: IORefs and state monads">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1711,20 +1566,20 @@ if you are still having trouble.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Part B: Simple stand-alone programs
+                Part A: IORefs and state monads
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../5/assignment5/" class="md-footer__link md-footer__link--next" aria-label="Next: Overview">
+          <a href="../partC_Sexpr/" class="md-footer__link md-footer__link--next" aria-label="Next: Part C: Extending an S-expression parser">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Overview
+                Part C: Extending an S-expression parser
               </div>
             </div>
             <div class="md-footer__button md-icon">
