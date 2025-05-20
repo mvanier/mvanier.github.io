@@ -1463,7 +1463,10 @@ We provide a walkthrough of the algorithm below.</p>
 <p>This function takes two equal-length lists of identifiers
 representing type variables,
 and renames all of the identifiers in the first list
-to those of the second list in a type expression.
+to the corresponding identifiers of the second list in a type expression.
+("Corresponding" means "in the same location",
+so the first identifier in list 1 is renamed to
+the first identifier in list 2, <em>etc.</em>)
 It does this by creating a mapping
 between the original and the new names
 and calling the <code>subst</code> function.</p>
@@ -1509,8 +1512,8 @@ which is clearly wrong.
 In this case we say that the <code>(forall ['b] ...)</code>
 has <em>captured</em> the type variable <code>'b</code>,
 which was originally a <em>free</em> variable in <code>('b -&gt; 'b)</code>.
-This changes the meaning of the source type,
-so that the result type is no longer equivalent to the source type,
+This changes the meaning of the type
+(it's no longer a specialization of the source type)
 and substitution is broken.</p>
 <p>Instead, this substitution should yield a result type which is like
 <code>(forall ['c] (('b -&gt; 'b) -&gt; 'c))</code>.
@@ -1519,7 +1522,7 @@ from <code>(forall ['b] ('a -&gt; 'b))</code>
 to the equivalent type <code>(forall ['c] ('a -&gt; 'c))</code>
 before doing the substitution.
 But to do this correctly
-we must make sure that we know how to do the renaming.</p>
+we must make sure that we know <em>how</em> to do the renaming.</p>
 <h3 id="substitution-algorithm">Substitution algorithm</h3>
 <p>The substitution algorithm is as follows.
 We will use the term "alphas list"
@@ -1528,6 +1531,8 @@ to refer to the list of quantified variables in the <code>ForAll</code> type.</p
 <li>
 <p>Compute all the free type variables in the <code>ForAll</code> type.
 (By definition, these do <em>not</em> include any of the quantified variables.)</p>
+<p>For the example type <code>(forall ['b] ('a -&gt; 'b))</code>,
+that would just be the type <code>'a</code>.</p>
 </li>
 <li>
 <p>Collect all the types in the type map that the free type variables map to.
@@ -1536,11 +1541,15 @@ If a free type variable isn't mapped to a type in the type map,
 include it too.
 (Wrap it in a <code>TyVar</code> constructor,
 since a type variable name by itself isn't a type).</p>
+<p>In the example, the free variable <code>'a</code> maps to <code>'b -&gt; 'b</code>,
+which contains the type <code>'b</code>.
+The type <code>'b</code> could cause a variable capture.</p>
 </li>
 <li>
 <p>Collect all the free type variables in all of the types from step 2
 (including the unmapped free type variables).
 Call these "potential captures".</p>
+<p>In the example, the only potential capture is <code>'b</code>.</p>
 </li>
 <li>
 <p>Check to see if any of the free type variables
@@ -1563,6 +1572,12 @@ with any of the potential captures.
 You'll do this by calling the <code>rename_for_all_avoiding</code> function
 described in the next section.
 Once this is done, then do the substitution.</p>
+<p>In the example, we have to rename the type <code>'b</code>
+in the type <code>(forall ['b] ('a -&gt; 'b))</code>
+to something else (say <code>'c</code>).
+This gives the equivalent type <code>(forall ['c] ('a -&gt; 'c)</code>.
+Doing the substitution of <code>'a</code> for <code>'b -&gt; 'b</code> gives the type
+<code>(forall ['c] (('b -&gt; 'b) -&gt; 'c)</code>.</p>
 </li>
 </ol>
 </li>
