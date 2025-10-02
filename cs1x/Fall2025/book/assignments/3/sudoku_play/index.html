@@ -1,0 +1,1483 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://example.com/assignments/3/sudoku_play/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Program: An interactive Sudoku program - The CS 1x book (Fall 2025)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#program-an-interactive-sudoku-program" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The CS 1x book (Fall 2025)" class="md-header__button md-logo" aria-label="The CS 1x book (Fall 2025)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 1x book (Fall 2025)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Program: An interactive Sudoku program
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The CS 1x book (Fall 2025)" class="md-nav__button md-logo" aria-label="The CS 1x book (Fall 2025)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The CS 1x book (Fall 2025)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/welcome/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Welcome to CS 1x!
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Administrative
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Administrative
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Syllabus
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/collab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Collaboration policies
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Assignments
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Assignments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Assignment 1: Tic-Tac-Toe
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 1: Tic-Tac-Toe
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Assignment 1: Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Assignment 1: Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/programs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Assignment 1: Programs to write
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      Learning objectives
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#program-to-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program to write
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coding-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coding notes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Coding notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compiling-and-running" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compiling and running
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifications-to-sudokujava" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modifications to Sudoku.java
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Template code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exception-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exception handling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-move-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Move class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-sudokuplay-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      The SudokuPlay class
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The SudokuPlay class">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fields-to-define" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fields to define
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods-to-define" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods to define
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-interface-the-play-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      User interface: the play method
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incremental-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incremental development
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-hand-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      What to hand in
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="program-an-interactive-sudoku-program">Program: An interactive Sudoku program</h1>
+<p>For this program, we will extend the Sudoku program from assignment 2
+to allow your users to solve Sudoku puzzles interactively.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<ul>
+<li>
+<p>Learn how to use inheritance to add functionality to a class.</p>
+</li>
+<li>
+<p>Learn about access modifiers (<code>private</code>, <code>protected</code> and <code>public</code>) in Java.</p>
+</li>
+<li>
+<p>Learn about overriding methods.</p>
+</li>
+</ul>
+<h2 id="program-to-write">Program to write</h2>
+<p>You will write a program that allows you to solve Sudoku puzzles interactively
+with the help of the computer.  The program will:</p>
+<ul>
+<li>read in a Sudoku file,</li>
+<li>display the state of the board,</li>
+<li>prompt you to enter your move (row, column, number) or another command,</li>
+<li>check moves for validity,</li>
+<li>update the board and re-display it,</li>
+<li>announce when the board has been solved and exit.</li>
+</ul>
+<p>In addition, there will be some special features:</p>
+<ul>
+<li>
+<p>you can undo moves,</p>
+</li>
+<li>
+<p>you can ask the program for a hint; it may give you one, or it may not
+be able to,</p>
+</li>
+<li>
+<p>you can ask the program if a position is solvable,</p>
+</li>
+<li>
+<p>you can ask the program to check for solvability
+  automatically after each move.</p>
+</li>
+</ul>
+<h2 id="coding-notes">Coding notes</h2>
+<h3 id="compiling-and-running">Compiling and running</h3>
+<p>For this assignment, you will be writing a file called <code>SudokuPlay.java</code>.
+This contains a class called <code>SudokuPlay</code>,
+which extends the <code>Sudoku</code> class you wrote in assignment 2.</p>
+<p>You will need to compile both files together <em>e.g.</em> something like this:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$<span class="w"> </span>javac<span class="w"> </span>sudoku/Sudoku.java<span class="w"> </span>sudoku/SudokuPlay.java
+</span></code></pre></div>
+<p>and run it like this:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$<span class="w"> </span>java<span class="w"> </span>sudoku.SudokuPlay.java<span class="w"> </span>boards/board1
+</span></code></pre></div>
+<p>(where <code>boards/board1</code> is the path of a Sudoku board file;
+your path to the Sudoku board files can be different, of course).</p>
+<p>Note that you only need to recompile <code>Sudoku.java</code>
+when you make changes to it.
+If you've only edited <code>SudokuPlay.java</code>
+(which will be the case most of the time),
+you can just compile it like this:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$<span class="w"> </span>javac<span class="w"> </span>sudoku/SudokuPlay.java
+</span></code></pre></div>
+<h3 id="modifications-to-sudokujava">Modifications to <code>Sudoku.java</code></h3>
+<p>You should use your <code>Sudoku.java</code> program from assignment 2 unaltered,
+with one exception:
+you are allowed to change the accessibility of the <code>Sudoku</code> class'
+methods and fields that are <code>private</code> to <code>protected</code> if you want.
+All this does is allow subclasses of <code>Sudoku</code> (like <code>SudokuPlay</code>)
+to use these methods and fields directly.
+(If they are <code>private</code>, they can only be used inside the <code>Sudoku</code> class.)
+You may or may not have defined <code>private</code> methods in <code>Sudoku.java</code>,
+but fields in classes are normally marked <code>private</code> unless there is a good
+reason for them not to be.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only make this change if you need to, and where you need to.
+Don't just blindly change all the access specifiers
+from <code>private</code> to <code>protected</code>.
+You may decide not to make this change at all,
+which is totally fine as long as the code works correctly.</p>
+</div>
+<h3 id="template-code">Template code</h3>
+<p>As usual, the template code for the assignment is called <code>lab3.zip</code>.
+In it, we are supplying you with a template file called <code>SudokuPlay.java</code>.
+This contains the definitions of some classes and "stubs"
+(placeholder implementations) for methods you need to write.
+We've written <code>// TODO</code> comments where you need to add code
+(and you should remove these comments when you do).
+You can also add extra methods as you see fit.</p>
+<p>For testing purposes, you should re-use the sample boards
+in the <code>boards</code> directory from the previous assignment.</p>
+<h3 id="exception-handling">Exception handling</h3>
+<p>The template code defines one new Sudoku-specific exception class, which
+is a subclass of <code>SudokuException</code> from <code>Sudoku.java</code>:</p>
+<ul>
+<li>
+<p><code>SudokuInvalidMoveException</code></p>
+<p>This exception is thrown when an invalid move is input.</p>
+</li>
+</ul>
+<p>The exception classes used in last week's assignment
+are also used in this assignment;
+we'll point out where below.</p>
+<h3 id="the-move-class">The <code>Move</code> class</h3>
+<p>We have included a simple class called <code>Move</code>
+which is used to represent moves in a Sudoku game:
+one instance of <code>Move</code> represents a single (row, column, number) move.
+This class is basically just boilerplate<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>,
+so there isn't much point in making you implement it yourselves.</p>
+<p>The only subtlety of the <code>Move</code> class
+is that moves are represented <em>internally</em> in 0-indexed form
+but <em>externally</em> (<em>e.g.</em> when constructed or printed) in 1-indexed form.
+"0-indexing" means that the first location in <em>e.g.</em> a row is location 0,
+while 1-indexing would have it as location 1.
+This is done because interacting with the Sudoku board representation
+is more natural with 0-indexing
+(because this is how we interact with arrays in Java)
+but interacting with human players is more natural with 1-indexing.</p>
+<p>You might wonder why <code>Move</code> wasn't made into a separate file
+<em>i.e.</em> <code>Move.java</code>.
+We could have done this (and it wouldn't be wrong)
+but since it's only going to be used inside the <code>SudokuPlay.java</code> file
+it seemed simpler to just leave it in the file.</p>
+<h3 id="the-sudokuplay-class">The <code>SudokuPlay</code> class</h3>
+<p>The rest of the program consists of the <code>SudokuPlay</code> class.
+This class inherits from the <code>Sudoku</code> class
+you defined in last week's assignment.
+Java programs indicate inheritance using the <code>extends</code> keyword, so we have:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">SudokuPlay</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Sudoku</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="c1">// ...</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>We say that <code>SudokuPlay</code> is a <em>subclass</em> of <code>Sudoku</code>,
+and <code>Sudoku</code> is the <em>superclass</em> of <code>SudokuPlay</code>.
+What this means, in effect, is that instances of <code>SudokuPlay</code>
+can do everything that <code>Sudoku</code> instances can do, and other things too.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Making <code>SudokuPlay</code> a subclass of <code>Sudoku</code> is a design decision.
+Like many design decisions,
+there are different possibilities and different tradeoffs.</p>
+<p>A different design would have been
+to <em>not</em> make <code>SudokuPlay</code> a subclass of <code>Sudoku</code>,
+but instead to have it <em>contain</em> an instance of the <code>Sudoku</code> class
+as a field.
+This is known as "composition" of classes.
+Many books have been written about different design patterns in Java,
+and the topic of whether inheritance or composition is better
+is discussed extensively in these books.
+Usually it depends on the specific circumstances.</p>
+<p>Our purpose here is not to argue that
+this is the best possible design of the <code>SudokuPlay</code> class,
+but to give you some experience working with inheritance.
+Understanding when to use inheritance (and when not to)
+only comes with a lot of experience.</p>
+</div>
+<h4 id="fields-to-define">Fields to define</h4>
+<p>We won't tell you what fields to define in the <code>SudokuPlay</code> class;
+define whichever fields work best for you.  We <em>do</em> ask:</p>
+<ul>
+<li>
+<p>that you not redefine fields that are already in the <code>Sudoku</code> class,
+  since <code>SudokuPlay</code> extends <code>Sudoku</code>
+  (<em>i.e.</em> is a subclass of <code>Sudoku</code>,
+  which means that any fields of <code>Sudoku</code> are also fields of <code>SudokuPlay</code>);</p>
+</li>
+<li>
+<p>that you not add any new fields to the <code>Sudoku</code> class.</p>
+</li>
+</ul>
+<p>However (as mentioned above)
+you are allowed to change the access of <code>Sudoku</code> class fields
+from <code>private</code> to <code>protected</code> if you need to (and <em>only</em> if you need to).</p>
+<p>Make all the fields of <code>SudokuPlay</code> itself that you define <code>private</code>.</p>
+<h4 id="methods-to-define">Methods to define</h4>
+<ul>
+<li>
+<p><code>public static void main(String[] args)</code></p>
+<p>This method should:</p>
+<ul>
+<li>
+<p>Check that the program received only one command-line argument
+  (a filename) and if not, print a usage message (see below).</p>
+</li>
+<li>
+<p>Create a new <code>SudokuPlay</code> instance.</p>
+</li>
+<li>
+<p>Load the board filename (the command-line argument).</p>
+</li>
+<li>
+<p>Start playing the game by calling the <code>play</code> method.</p>
+</li>
+<li>
+<p>Handle whatever exceptions it needs to handle,
+  and <em>only</em> those exceptions.
+  (So don't just catch <code>Exception</code>
+  if you can catch more specific exceptions instead.)</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>usage</code></p>
+<p>This method prints a usage message and exits.
+It's supplied to you in the template code.
+You should call it when the number of arguments to <code>main</code> are incorrect.</p>
+</li>
+<li>
+<p><code>SudokuPlay</code></p>
+<p>This method calls the superclass constructor (the <code>super()</code> call)
+and initializes the fields of the <code>SudokuPlay</code> object.</p>
+</li>
+<li>
+<p><code>printBoard</code></p>
+<p>This method overrides the <code>printBoard</code> method of the <code>Sudoku</code> class.
+It prints the board in a "pretty" way,
+so that it's easy to see the row/column coordinates of cells in the board
+(in 1-based coordinates).
+Calling this method prints out the board looking like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>   123 456 789
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  +---+---+---+
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>1 |...|...|...|
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>2 |...|.1.|.92|
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>3 |.86|...|.4.|
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  +---+---+---+
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>4 |..1|56.|...|
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>5 |...|..3|62.|
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>6 |...|...|5.7|
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  +---+---+---+
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>7 |.3.|...|.8.|
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>8 |.9.|8.2|...|
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>9 |..7|..4|3..|
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  +---+---+---+
+</span></code></pre></div>
+<p>(This is <code>boards/board1</code>.)</p>
+<p>Note the 1-based coordinates of the rows (on the side) and columns (on top).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Try to write this code in a reasonably concise way.
+If you write a brute-force implementation with a single <code>println</code> call
+which goes on for <em>e.g.</em> 50 lines or more we will take marks off.
+You might consider writing some private helper methods.
+<em>Hint</em>: the helper methods can print out one kind of line each.</p>
+</div>
+</li>
+<li>
+<p><code>place</code></p>
+<p>This method takes one argument
+(a <code>Move</code> as described above,
+containing a row and column location,
+and a number to write into that location)
+and attempts to make the move on the board.
+It can fail if the cell is already filled,
+or if there is a row, column or box conflict.
+In that case, the method will throw a <code>SudokuInvalidMoveException</code>
+with a good error message.
+If the move is valid, it will make the move
+and save it to an internal list
+(to allow undoing the move later).</p>
+<p>Remember that <code>Move</code> objects store the move row/column coordinates
+in 0-indexed form,
+but your error messages report errors
+using 1-indexed row/column coordinates.</p>
+<p>Ideally, you already have methods in your <code>Sudoku</code>
+class that can help with the implementation of this method.
+If not, add them in this class.</p>
+</li>
+<li>
+<p><code>isSolved</code></p>
+<p>This method tests to see if a board is solved
+by checking if all cells are filled with numbers.
+The <code>play</code> method below will validate any such solution,
+so this method doesn't have to do that.
+(Also, illegal moves aren't allowed,
+so if the board is full it should be a valid solution.)
+It returns a boolean (<code>true</code> if solved, otherwise <code>false</code>).</p>
+</li>
+<li>
+<p><code>isSolvable</code></p>
+<p>This method tests if the board is solvable
+without changing the state of the board.
+One way to do this is to make a copy of the board representation,
+try to solve the board using the <code>solveBoard</code> method of the <code>Sudoku</code> class,
+and then restoring the original board state.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is one situation where having direct access
+to the internal state of the board from the <code>Sudoku</code> class
+is really useful!</p>
+</div>
+</li>
+<li>
+<p><code>undo</code></p>
+<p>This undoes the last move,
+returning the board to the state before the last move.
+If there have been no moves,
+it does nothing but print <code>"no moves to undo!"</code>.</p>
+<p>Note that for this to work correctly,
+you either have to store the board state after each move,
+or store the moves themselves.
+It's much more efficient to store the moves, so please do that.</p>
+<p>When you undo moves, make sure to decrement the move count by 1,
+unless there are no moves to undo.</p>
+</li>
+<li>
+<p><code>hint</code></p>
+<p>This method supplies a "hint" move given the current board state.
+It does this by checking each empty cell of the board
+to see if only one possible number could go there.
+This shouldn't involve any heavy computation;
+if a candidate number doesn't have a row, column or box conflict,
+we say that that number can go in that cell.
+For a particular cell,
+if only one of the 9 numbers can go there, that's a valid hint.
+There can be multiple possible hints;
+collect all of them and pick one of them at random.
+Then make the hinted move.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is another case
+where there are probably one or more methods in your <code>Sudoku</code> class
+that will be very useful to you when writing this method.</p>
+</div>
+<p>Note that you will need
+to have a random number generator to pick a random hint;
+don't just pick <em>e.g.</em> the first one or you will lose marks!
+The Java <code>Random</code> class
+is the easiest way to get a random number generator.
+Also, only create one random number generator per program;
+don't create a new one every time this method is called.
+(<em>Hint</em>: Don't create the random number generator in this method.)</p>
+<p>If there are no hints, return the <code>null</code> value.
+<code>null</code> can substitute for any object,
+and is used when there is no move to return.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">4</a></sup></p>
+</li>
+<li>
+<p><code>printCommands</code></p>
+<p>This method's implementation is supplied to you in the template code.
+It prints a list of all the commands and what they mean to the terminal.</p>
+</li>
+<li>
+<p><code>play</code></p>
+<p>See the next section.</p>
+</li>
+</ul>
+<h4 id="user-interface-the-play-method">User interface: the <code>play</code> method</h4>
+<p>The <code>SudokuPlay</code> class' <code>play</code> method is special:
+it constitutes the user interface for the entire program.
+It's basically a command-line interface;
+it presents you with a terminal prompt,
+you type in a command, it does what you asked,
+and the cycle repeats until you either quit or the puzzle is solved.</p>
+<p>We've supplied you with a partial implementation of this method.
+The implementation handles reading from the terminal
+(called <code>System.in</code> in Java),
+starting the interaction loop, checking if the board is solved,
+reading a line of input from the user,
+and breaking it up into an array of strings called <code>words</code>.
+The implementation also contains a <code>try</code>/<code>catch</code> statement
+with multiple <code>catch</code> blocks;
+you shouldn't have to add any more (unless we've forgotten something!).</p>
+<p>What you <em>do</em> have to add to the method
+(in the spot marked by the <code>// TODO</code> comments)
+is the code to execute the commands.
+After executing a command,
+the program should print the board
+and the number of moves that have been played up to that point,
+unless otherwise specified.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The number of moves must be correct, even after undoing moves.
+Undoing a move decreases the move count
+(the undo itself doesn't count as a move).</p>
+<p>Also, for some commands (like saving a board to a file)
+the board state doesn't change, so don't print the board in those cases.
+<em>Hint</em>: you may find the <code>continue</code> statement to be useful.</p>
+</div>
+<p>There are two kinds of commands:</p>
+<ul>
+<li>
+<p>"letter commands",
+  so named because the name of the command is a single letter;</p>
+</li>
+<li>
+<p>a "move command",
+  which consists of three numbers between 1 and 9,
+  and which represents a move to make on the Sudoku board.
+  The first two numbers are the row and column coordinates
+  of an empty cell on the board
+  (using 1-based indexing, so the first row is row 1, not row 0),
+  and the last one is the number to write into that cell.</p>
+</li>
+</ul>
+<p>The code for the move command should come after the code for the letter
+commands for clarity, though there is no way that they can be confused with
+each other.  Basically, if the first word in the command is not one of the
+letters in the letter commands, it should be assumed to be a move command.  If
+it's not a valid move command, throw the <code>SudokuInvalidMoveException</code>
+exception.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When checking for a letter command,
+please use the <code>equals</code> method on strings;
+<em>do not</em> use the <code>==</code> operator,
+because that only checks if two strings are identical.
+(This is an incredibly easy mistake to make.)<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup></p>
+</div>
+<p>Here are the commands that can be entered at the prompt:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>?</code></td>
+<td>print a list of all the commands</td>
+</tr>
+<tr>
+<td><code>a [on/off]</code></td>
+<td>set (a)uto-check on or off</td>
+</tr>
+<tr>
+<td><code>f</code></td>
+<td>(f)inish solving</td>
+</tr>
+<tr>
+<td><code>h</code></td>
+<td>give a (h)int</td>
+</tr>
+<tr>
+<td><code>q</code></td>
+<td>(q)uit the program</td>
+</tr>
+<tr>
+<td><code>r filename</code></td>
+<td>(r)estore (load) the board state from the file <code>filename</code></td>
+</tr>
+<tr>
+<td><code>s filename</code></td>
+<td>(s)ave the board state to the file <code>filename</code></td>
+</tr>
+<tr>
+<td><code>u</code></td>
+<td>(u)ndo the last move</td>
+</tr>
+<tr>
+<td><code>v</code></td>
+<td>check if the board is sol(v)able</td>
+</tr>
+<tr>
+<td><code>n1 n2 n3</code></td>
+<td>place number <code>n3</code> at location <code>(n1, n2)</code></td>
+</tr>
+</tbody>
+</table>
+<p>For the last command,
+<code>n1</code> is the row number (1-indexed) and <code>n2</code> is the column number.
+All three numbers are integers in the range 1 to 9.</p>
+<p>Clearly, the code for many of these commands will just call a method;
+<code>?</code> calls the <code>printCommands</code> method,
+<code>h</code> calls the <code>hint</code> method,
+<code>u</code> calls the <code>undo</code> method,
+<code>r</code> and <code>s</code> calls the load and save methods in the <code>Sudoku</code> class, <em>etc.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We don't want you to implement real functionality in the <code>play</code> method!
+If a particular command's code is complicated,
+make that code into a separate method and call it from <code>play</code>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Some programmers think that you should only make code into a method
+if it gets called in more than one place.
+While that <em>is</em> a good reason for making a method,
+sometimes it's also good to make a chunk of code into a method
+even if it is only called in one place,
+as long as that makes the overall code easier to understand.</p>
+</div>
+<p>Also, <em>do not</em> duplicate functionality that is already in the <code>Sudoku</code> class!
+For instance, the commands to check if a board can be solved
+can call the <code>solveBoard</code> method in the <code>Sudoku</code> class,
+but <strong>don't copy that method to this class</strong>.
+(You don't need to, since it's already available.)</p>
+<p>Some notes about the commands:</p>
+<ul>
+<li>
+<p>The <code>?</code> (list commands) command doesn't need to print the board,
+  and shouldn't.</p>
+</li>
+<li>
+<p>The <code>a</code> (autocheck) command
+  will only accept the commands <code>a off</code> and <code>a on</code>.
+  If invoked correctly, it will print a message <em>e.g.</em> <code>"autocheck ON"</code>.
+  If invoked incorrectly, it will print an error message and continue.
+  It doesn't need to print the board.</p>
+</li>
+<li>
+<p>The <code>f</code> (finish solving) command will warn if the board is unsolvable,
+  but will not change the state of the board in that case.
+  If it can solve the board,
+  it will of course change the board state to the solved state.</p>
+</li>
+<li>
+<p>The <code>h</code> (hint) command will make the hint move
+  if one is returned from the <code>hint</code> method.
+  It will also print out the move made.
+  If there is no hint move, it will print <code>"Sorry, no hints available."</code>.
+  It should print the board only if a hint move is made.</p>
+</li>
+<li>
+<p>The <code>q</code> command doesn't need to print the board.</p>
+</li>
+<li>
+<p>The <code>r</code> and <code>s</code> commands will print an error message
+  if there isn't exactly one filename argument
+  <em>e.g.</em> <code>r boardX</code> or <code>s boardX</code> are ok
+  but <code>r</code> or <code>s</code> by themselves are not.</p>
+</li>
+<li>
+<p>The <code>s</code> command doesn't need to print the board.</p>
+</li>
+<li>
+<p>The <code>v</code> (check if solvable) command
+  will print whether the board is solvable or not,
+  but it doesn't have to print the board.</p>
+</li>
+<li>
+<p>The move command, after the move has been made,
+  needs to check if the board is solvable if auto-checking is on.</p>
+</li>
+<li>
+<p>Extra unused arguments for any command are not allowed,
+  and if they occur, an error message should be printed.</p>
+</li>
+</ul>
+<p>The <code>play</code> method is not particularly hard to write,
+but getting everything working well is a bit tedious
+because of all the little details.<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">2</a></sup>
+For one thing,
+you'll want to print the board after some commands but not after others.
+Use your judgment,
+but solving a puzzle with your program should feel natural,
+and try not to repeat code or make the code convoluted.</p>
+<h3 id="incremental-development">Incremental development</h3>
+<p>You can write this program any way you like, but here is our suggested sequence
+for incremental development.</p>
+<ol>
+<li>
+<p>Start by writing the <code>SudokuPlay</code> constructor and the <code>printBoard</code> method.
+   In <code>main</code>, load a board from the first command-line argument
+   and print it using <code>printBoard</code>.</p>
+</li>
+<li>
+<p>Then extend <code>main</code> to check that there is only one command-line argument,
+   and to print a usage message and exit if not.</p>
+</li>
+<li>
+<p>Change <code>main</code> so it calls <code>play</code> after loading the board
+   instead of just printing the board.
+   In <code>play</code>, add the <code>q</code> command for quitting the game.
+   Also write the <code>isSolved</code> method, which is called from <code>play</code>.</p>
+</li>
+<li>
+<p>In <code>play</code>, add the ability to read moves (row, column, number).
+   You might want to define a helper function for this.
+   (We called ours <code>getMove</code> and it took the words array as its only argument.)
+   Note that you only check for moves
+   <em>after</em> all the letter commands have been checked;
+   a move command is the default if no letter command was chosen.<sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup></p>
+</li>
+<li>
+<p>In <code>play</code>, add the <code>?</code> command to print the list of commands.</p>
+</li>
+<li>
+<p>Implement the <code>undo</code> method.
+   In <code>play</code>, add the <code>u</code> command to undo the last move.</p>
+</li>
+<li>
+<p>In <code>play</code>, add the <code>v</code> command
+   to check if the board is solvable from the current state.</p>
+</li>
+<li>
+<p>In <code>play</code>, add the <code>f</code> command
+   to solve the board from the current state if possible.</p>
+</li>
+<li>
+<p>In <code>play</code>, add the <code>s</code> and <code>r</code> commands
+   to (s)ave and (r)estore a board state to/from a file.
+   You'll need to check the <code>words</code> array for the filename, which is required.</p>
+</li>
+<li>
+<p>In <code>play</code>, add the <code>a</code> command to turn auto-checking on or off.
+   You'll need to check the <code>words</code> array for additional words,
+   since you need to specify <code>on</code> or <code>off</code> as arguments to the <code>a</code> command
+   (no other words are accepted).</p>
+</li>
+<li>
+<p>Implement the <code>hint</code> method.
+   In <code>play</code>, add the <code>h</code> command to give a hint.</p>
+</li>
+</ol>
+<p>At this point, the program is complete!</p>
+<h2 id="testing">Testing</h2>
+<p>Use the <code>boards</code> directory you used for testing in the previous assignment.
+Test your program on some or all of the boards.
+Most importantly, try all of the commands given above.
+<strong>Enter invalid input to try to "break" the commands.</strong>
+If something makes the program crash, you still have work to do!</p>
+<h2 id="what-to-hand-in">What to hand in</h2>
+<p>Please submit your completed <code>SudokuPlay.java</code> file to CodePost
+as <code>Assignment 3</code>.
+Also submit your (possibly modified) <code>Sudoku.java</code> file.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>"Boilerplate" means obvious code
+that anyone can write without thinking
+but which is still necessary.
+Compared to many languages,
+Java tends to have a large amount of boilerplate.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>User interface code is typically like this,
+which is why many programmers dislike writing it.&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>Which is another way of saying that we've done it numerous times
+while developing these assignments.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>The existence of <code>null</code> is actually very controversial,
+and many other languages (<em>e.g.</em> Rust and OCaml)
+don't allow you to substitute <code>null</code>-like values for objects.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:5">
+<p>We could easily have made moves into a letter command
+<em>e.g.</em> <code>m 1 2 3</code> could mean
+"make a move by placing the number 3 at row 1 and column 2".
+We chose not to because move commands are the most common command,
+so they should require as little typing as possible.&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
