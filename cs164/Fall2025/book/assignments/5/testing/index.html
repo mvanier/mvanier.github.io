@@ -911,6 +911,121 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Assignment 1: Var
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 1: Var
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/passes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compiler passes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Testing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1006,55 +1121,15 @@ to accommodate the new compiler pass.</p>
 <ul>
 <li><code>scripts/run_gc_tests.sh</code></li>
 </ul>
-<!--
-### `run_all_compare_tests.sh`
-
-This script is not essential,
-but it will simplify the process of running "compare"-type tests.
-One problem with compare tests is that it's easy to skip a pass
-without realizing it.
-This script will run each individual pass in order
-(not skipping any passes),
-it will pause after running each pass so you can look at the output,
-and it will continue until all compare tests have been run.
-
-To run it, type this into the terminal from the `ch6` directory:
-
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$<span class="w"> </span>sh<span class="w"> </span>scripts/run_all_compare_tests.sh
-</span></code></pre></div>
-
-!!! note
-
-    Don't type the `$`, which is just the terminal prompt.
-
-    Also, if the terminal complains about
-    not being able to find the `sh` program,
-    try `bash` or `zsh` instead.
-
-This will print the name of the tests to be run next
-(_e.g._ "Type checker tests", "Shrink tests", "Uniquify tests" _etc._),
-and then it will pause.
-At that point, you should hit the "return" key
-(or "enter" on some keyboards),
-at which point it will run the indicated tests and pause again.
-The tests are run using the `-diff` option,
-so ideally you will see a bunch of lines ending in `OK`.
-Keep pressing the "return" key when the program pauses,
-and eventually all tests will be run.
-If you find an error, you probably will want to exit the script
-so you can track down the error;
-hit "control-C" to do this.
--->
-
 <p>This script can only be run if you have compiled your compiler first.
 It tests that the garbage collector actually does something.
 To run it, type</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$ sh scripts/run_gc_tests.sh
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$ sh scripts/run_gc_tests.sh
 </span></code></pre></div>
 <p>If you are running this on a Mac with an M-series processor
 (not an x86-64 processor),
 you will need to add the <code>-arm64</code> argument:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$ sh scripts/run_gc_tests.sh -arm64
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$ sh scripts/run_gc_tests.sh -arm64
 </span></code></pre></div>
 <p>This script compiles and runs three tests:</p>
 <ul>
@@ -1067,12 +1142,12 @@ with small enough heap sizes in each case to force garbage collection.
 In addition, the file <code>runtime.c</code> is compiled with debugging enabled,
 so that a message will get printed out on each garbage collection.</p>
 <p>You should see this exact output when the script is run:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>collecting, need 408
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>42
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>collecting, need 408
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>41
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>collecting, need 408
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>42
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>collecting, need 408
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>42
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>collecting, need 408
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>41
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>collecting, need 408
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>42
 </span></code></pre></div>
 <p>If the <code>collecting</code> messages are missing,
 garbage collection isn't happening,
