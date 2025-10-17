@@ -1453,10 +1453,23 @@ you will probably want to do the same.)</p>
 <code>rco_atom</code> may need to call <code>rco_exp</code>.
 If so, the two functions should be mutually recursive.
 (Mutually-recursive functions are common in compilers.)</p>
-<p>Note that the immediate subexpressions of a <code>let</code> expression (both of them)
-do <em>not</em> need to be atomic, so don't try to make them atomic!
+<div class="admonition tip">
+<p class="admonition-title"><code>let</code> expressions</p>
+<p><code>let</code> expressions are processed differently in the <code>rco_atom</code> and <code>rco_exp</code>
+functions.</p>
+<p>In <code>rco_exp</code>,
+note that the immediate subexpressions of a <code>let</code> expression (both of them)
+do <em>not</em> need to be atomic,
+so don't try to make them atomic!
 That means that you can have arbitrarily nested <code>let</code> expressions.
 If this bothers you, don't worry: we'll fix it in the next pass!</p>
+<p>However, in <code>rco_atom</code>, the whole point of the function
+is to convert the expression into an atom (plus some bindings).
+If you think about it, that means that
+you need to convert the <em>body</em> of the <code>let</code> expression into an atom.
+The binding part of the <code>let</code> (suitably converted)
+is just included as part of the bindings that <code>rco_atom</code> has to return.</p>
+</div>
 <h2 id="explicate-control">Explicate control</h2>
 <p>[File: <code>explicate_control.ml</code>]</p>
 <p>The purpose of this pass is to "flatten" the code representation
