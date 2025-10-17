@@ -1,0 +1,1511 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://example.com/assignments/2/sudoku/">
+      
+      
+        <link rel="prev" href="../overview/">
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Assignment 2: Program to write - The CS 1x book (Fall 2025)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#program-a-simple-sudoku-solver" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The CS 1x book (Fall 2025)" class="md-header__button md-logo" aria-label="The CS 1x book (Fall 2025)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 1x book (Fall 2025)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Assignment 2: Program to write
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The CS 1x book (Fall 2025)" class="md-nav__button md-logo" aria-label="The CS 1x book (Fall 2025)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The CS 1x book (Fall 2025)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/welcome/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Welcome to CS 1x!
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Administrative
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Administrative
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Syllabus
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/collab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Collaboration policies
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Assignments
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Assignments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Assignment 1: Tic-Tac-Toe
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 1: Tic-Tac-Toe
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Assignment 1: Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Assignment 1: Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/programs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Assignment 1: Programs to write
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Assignment 2: Sudoku
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 2: Sudoku
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Assignment 2: Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Assignment 2: Program to write
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Assignment 2: Program to write
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      Learning objectives
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#about-sudoku" class="md-nav__link">
+    <span class="md-ellipsis">
+      About Sudoku
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#program-to-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program to write
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#board-representation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Board representation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-line-arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command-line arguments
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution algorithm
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coding-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coding notes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Coding notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#template-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Template code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exception-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exception handling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods-to-define" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods to define
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incremental-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incremental development
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-hand-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      What to hand in
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      Learning objectives
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#about-sudoku" class="md-nav__link">
+    <span class="md-ellipsis">
+      About Sudoku
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#program-to-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program to write
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#board-representation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Board representation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-line-arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command-line arguments
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution algorithm
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coding-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coding notes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Coding notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#template-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Template code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exception-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exception handling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods-to-define" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods to define
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incremental-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incremental development
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-hand-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      What to hand in
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="program-a-simple-sudoku-solver">Program: A simple Sudoku solver</h1>
+<p>For this assignment,
+you will write a program
+that can read the description of a Sudoku puzzle from a file,
+solve the puzzle, and print the solution onto the terminal.
+It will also save the solution to a file.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<ul>
+<li>
+<p>Write a program which solves a non-trivial problem using a recursive
+  algorithm.</p>
+</li>
+<li>
+<p>Learn about file input/output in Java, and accessing command-line arguments.</p>
+</li>
+<li>
+<p>Learn about how to use exceptions effectively.</p>
+</li>
+<li>
+<p>Get more practice with incremental software development.</p>
+</li>
+</ul>
+<h2 id="about-sudoku">About Sudoku</h2>
+<p>You probably already know how to play Sudoku, but if not,
+<a href="https://en.wikipedia.org/wiki/Sudoku">this page</a>
+will tell you all you need to know.
+Briefly, Sudoku is a pencil-and-paper puzzle done on a 9x9 grid,
+where each square in the grid needs to be filled with a digit from 1 to 9.
+Some digits are filled in at the beginning of the puzzle,
+and the goal is to fill in the rest.
+A good Sudoku puzzle should only have one solution.  The constraints are:</p>
+<ul>
+<li>
+<p>each row should have exactly one of all the digits from 1 to 9</p>
+</li>
+<li>
+<p>each column should have exactly one of all the digits from 1 to 9</p>
+</li>
+<li>
+<p>each 3x3 non-overlapping "box" (outlined in the puzzle) should have exactly
+one of all the digits from 1 to 9</p>
+</li>
+</ul>
+<p>Note that since the 3x3 boxes are non-overlapping, there are only 9 of them.</p>
+<p>Playing Sudoku means filling in the empty squares with numbers so that the
+constraints are not violated, and eventually figuring out which number goes
+into all the empty squares.  It's generally a good idea to use a pencil or
+erasable pen, because it's easy to make mistakes and have to erase numbers you
+mistakenly thought were a particular digit!</p>
+<h2 id="program-to-write">Program to write</h2>
+<p>Your program, when run, will read in a file containing a description of a
+single Sudoku puzzle.  The file's contents might look like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>.........
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>....1..92
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>.86....4.
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>..156....
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>.....362.
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>......5.7
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>.3.....8.
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>.9.8.2...
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>..7..43..
+</span></code></pre></div>
+<p>This is a text file with 9 lines of 9 characters each (not counting the newline
+characters at the ends of lines).  Each character is either a digit (meaning
+that the corresponding location in the Sudoku puzzle must be filled with that
+digit), or is a <code>.</code> character (meaning that the corresponding location in the
+Sudoku puzzle is empty).  The name of the file is provided on the command line:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$ java sudoku.Sudoku boards/board1
+</span></code></pre></div>
+<p>assuming the input file is called <code>board1</code>
+and is located in the <code>boards</code> directory.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code>sudoku.Sudoku</code> argument is because
+we define a Java <em>package</em> called <code>sudoku</code>
+(in a directory of the same name)
+and then define the <code>Sudoku</code> class in that package.</p>
+</div>
+<p>The program will read in the contents of the file, store it in an internal
+representation of the Sudoku board, solve the puzzle, and print out the
+solution to the terminal.  So a successful run of the program on the previous
+file would look like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$ java sudoku.Sudoku board1
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>412985763
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>753416892
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>986327145
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>271568934
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>549173628
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>368249517
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>634751289
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>195832476
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>827694351
+</span></code></pre></div>
+<p>This is the correct solution of the Sudoku puzzle given above.
+(You might want to take a minute to verify that this is the case.)</p>
+<p>The program will also save the solution into a file called <code>sudoku.out</code>.
+If you print it out, you'll see the same thing:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$ cat sudoku.out
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>412985763
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>753416892
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>986327145
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>271568934
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>549173628
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>368249517
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>634751289
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>195832476
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>827694351
+</span></code></pre></div>
+<p>(The <code>cat</code> program is a Unix-specific program;
+it won't work on Windows unless you are using WSL,
+but <code>type</code> should work.) <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<p>If the board is unsolvable, the program should not crash,
+but should print out a message stating that it's unsolvable.
+In this case, it should <em>not</em> save the board state to a file.</p>
+<p>You can assume that all the input boards we provide are valid
+<em>i.e.</em> don't contain impossible configurations like multiple 1s on one line.
+Some input files (<code>board11</code> and <code>board12</code>) will be unsolvable.</p>
+<h2 id="board-representation">Board representation</h2>
+<p>We will leave the board representation (mostly) up to your judgment.
+Add whatever fields are necessary.
+We do insist on storing the board elements as integers (not characters)
+and using a <code>0</code> to represent an empty square.</p>
+<h2 id="command-line-arguments">Command-line arguments</h2>
+<p>This program will read the path to the input board from the command line.
+Command-line arguments are available
+as the <code>args</code> argument to the <code>main</code> method.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="c1">//                               ^ command-line arguments</span>
+</span></code></pre></div>
+<p>Too few or too many command-line arguments is an error,
+and should lead to the printing of a usage message (see below).</p>
+<h2 id="solution-algorithm">Solution algorithm</h2>
+<p>There are a number of solution algorithms for solving Sudoku problems,
+some better than others.
+For our purposes, we will use a simple algorithm,
+but be aware that much more sophisticated algorithms exist.</p>
+<p>Our algorithm consists of traversing the Sudoku board row-by-row
+and looking at each location (which we'll call a "cell") in the row.
+If the cell is already filled with a number,
+continue to the next number in the row,
+and if you're at the end of the row, go to the beginning of the next row.
+(If there is no next row, the board is solved!)
+Otherwise, you have to pick a number between 1 and 9.
+First, collect all the numbers that <em>could</em> be at that location.
+These numbers are the numbers that don't have row, column, or box conflicts:</p>
+<ul>
+<li>
+<p>A row conflict is when the number is already present in the same row.</p>
+</li>
+<li>
+<p>A column conflict is when the number is already present in the same column.</p>
+</li>
+<li>
+<p>A box conflict is when the number is already present in the 3x3 box which
+  contains the location.</p>
+</li>
+</ul>
+<p>So far, so good.  But since any of the numbers that don't have conflicts (which
+we'll call "allowed numbers") could be the number that goes in the cell, which
+one should we choose?  This is the key step in the algorithm.</p>
+<p>The idea is to choose any of the allowed numbers and try to solve the resulting
+board (this is where the recursion comes in).  If the board can be solved,
+you're done, so return.  If not, try the next number and again try to solve the
+resulting board.  Continue until you either solve the board, or you run out of
+numbers.  If you run out of numbers, there is no number that works for that
+board in that location, so that board is unsolvable.  In that case, clear the
+number from the location (fill it with a 0) and return.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Filling the location with a 0 "unmakes" the move.
+It may not be obvious,
+but this step of unmaking the move when no number works
+is critical to making the algorithm work.
+Think about why that should be.</p>
+</div>
+<p>Your solving function should return a boolean value: <code>true</code> if a solution is
+found and <code>false</code> if not.  Returning <code>false</code> only means that a <em>particular</em>
+board is unsolvable; it may not mean that the original puzzle is unsolvable.
+In fact, this is how the algorithm works: try a number, see if the resulting
+board is solvable, and if not, try the next number, <em>etc.</em>
+When no number works in a location,
+clear the location (fill it with a 0) and return <code>false</code>.</p>
+<h2 id="coding-notes">Coding notes</h2>
+<h3 id="template-code">Template code</h3>
+<p>In the template code base (<code>lab2.zip</code> in Canvas)
+we are supplying you with a template file called <code>Sudoku.java</code>.
+This contains the definitions of some exception classes
+and some stubs<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> for methods you need to write.
+We've written <code>// TODO</code> comments
+where you need to add code
+(and you should remove these comments when you do).
+You can also add extra methods as you see fit
+(and you will probably want to do this).</p>
+<h3 id="exception-handling">Exception handling</h3>
+<p>The template code defines three Sudoku-specific exception classes:</p>
+<ul>
+<li>
+<p><code>SudokuException</code></p>
+<p>This is a generic Sudoku exception which should never be thrown by itself.
+Its purpose is to act as a superclass for more specific kinds of Sudoku
+exceptions.</p>
+</li>
+<li>
+<p><code>SudokuInputException</code></p>
+<p>This exception is thrown when reading in a Sudoku board from a file
+when the input format is incorrect.  This could mean invalid characters,
+too many or too few lines, <em>etc.</em></p>
+</li>
+<li>
+<p><code>SudokuInvalidSolutionException</code></p>
+<p>This exception is thrown when validating the Sudoku solution
+if the solution turns out to be invalid
+(<em>i.e.</em> contains the same number
+in two or more places in a row, column, or box).</p>
+</li>
+</ul>
+<p>We'll point out below which methods should throw which exceptions.  All
+exceptions should be caught in the <code>main</code> method (don't let an uncaught
+exception crash the program!).  When caught, just print out the exception's
+error message (use the <code>getMessage()</code> method of the exception classes to return
+the exception error message, and then print it out).
+Error messages should be printed to <code>System.err</code>, not <code>System.out</code>.</p>
+<p>When throwing exceptions, always provide a meaningful error message as an
+argument to the exception constructor.
+(This is not a general rule, just what we want you to do in this assignment.)</p>
+<h3 id="methods-to-define">Methods to define</h3>
+<ul>
+<li>
+<p><code>public static void main(String[] args)</code></p>
+<p>This method should:</p>
+<ul>
+<li>
+<p>create a new <code>Sudoku</code> instance</p>
+</li>
+<li>
+<p>load a board specified by the first command-line argument (<code>args[0]</code>)</p>
+</li>
+<li>
+<p>try to solve the board</p>
+</li>
+<li>
+<p>if solved, print the solution, validate the solution, and save the board to
+  the file <code>sudoku.out</code></p>
+</li>
+<li>
+<p>if not, print a message indicating that the board is unsolvable</p>
+</li>
+<li>
+<p>catch any exceptions thrown and print the error messages</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Sudoku</code></p>
+<p>This constructor method should create a new, empty Sudoku board.</p>
+</li>
+<li>
+<p><code>loadBoard</code></p>
+<p>This method takes a single <code>String</code> argument (the pathname of a file which
+represents a Sudoku board).
+It loads that board into the current Sudoku object's board.
+It throws a <code>SudokuInputException</code> if the file's format is incorrect.
+If the file doesn't exist,
+it should catch the <code>FileNotFoundException</code> that is thrown
+and re-throw it as a <code>SudokuInputException</code>.</p>
+<p>The file should consist of exactly 9 lines of 9 characters each
+(not counting the newline character at the end of each line).
+Each character should be a digit from 1 to 9 or a dot character (<code>.</code>).
+Anything else (<em>e.g.</em> a space) is an error.</p>
+<p>Useful Java classes you might use include <code>File</code> and <code>Scanner</code>.
+Some methods you might find useful include:</p>
+<ul>
+<li><code>Character.isDigit</code></li>
+<li><code>Character.getNumericValue</code></li>
+</ul>
+<p>See the 
+<a href="https://docs.oracle.com/en/java/javase/25/docs/api/index.html">Java documentation</a>
+for more about these methods.<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup></p>
+<p>You don't have to check that the Sudoku board in the file has no repeated
+numbers in the rows/columns/boxes.
+(If it does, the board will not be solvable anyway.)</p>
+<p>You should close the file you opened.
+(If you use the <code>Scanner</code> class, it has a <code>close</code> method,
+while <code>File</code> (curiously) doesn't.)</p>
+</li>
+<li>
+<p><code>saveBoard</code></p>
+<p>This method takes one argument: a filename.
+It saves the current board state to the file with the given name
+(overwriting any file contents that may exist
+or creating a new file if not).
+The format of the saved board is the same as the format of <code>loadBoard</code>:
+9 lines of 9 characters,
+and all characters are digits in the range 1-9 or the <code>.</code> character.
+Don't forget that each line has to end in a newline character (<code>\n</code>),
+and this is a real character that you have to put in.
+Also, never write the <code>0</code> character;
+write a <code>.</code> character in its place instead.</p>
+<p>The <code>FileWriter</code> class will be useful here.</p>
+</li>
+<li>
+<p><code>printBoard</code></p>
+<p>This method takes no arguments and prints the board state to the terminal.
+The format is the same as that described above for <code>loadBoard</code> and <code>saveBoard</code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Since both the <code>saveBoard</code> and the <code>printBoard</code> methods have to convert the
+state of the board into characters with the same format, you can re-use this
+code by defining a method that converts the board state to a <code>String</code>, and
+simply calling that method in <code>saveBoard</code> and <code>printBoard</code>.  The method that
+converts an object to a string is called <code>toString</code>, and it's defined for all
+objects.  If you want to redefine it, you should put the <em>annotation</em>
+<code>@Override</code> before the method <em>e.g.</em></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>@Override
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>public String toString() {
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    // ...
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>}
+</span></code></pre></div>
+<p>This just tells Java that you know that you are overriding an existing
+implementation of <code>toString</code>.  Annotations like these make some common bugs
+less likely.</p>
+<p>This process of taking code that is repeated in two methods and moving it to a
+separate method is called <em>factoring</em>.  This is one of the most common tricks
+that programmers use to keep their code clean.</p>
+</div>
+</li>
+<li>
+<p><code>solveBoard</code></p>
+<p>This method takes no arguments.  It attempts to solve the board using the
+algorithm described above.  If successful, it returns <code>true</code>.  If not, it
+returns <code>false</code>.</p>
+</li>
+<li>
+<p><code>validateSolution</code></p>
+<p>This method takes no arguments.  It should only be called when the board is
+solved.  It checks that the solution is valid.  This means:</p>
+<ul>
+<li>each row contains all digits from 1 to 9</li>
+<li>each column contains all digits from 1 to 9</li>
+<li>each 3x3 box contains all digits from 1 to 9</li>
+</ul>
+<p>The method returns <code>void</code>, but if the solution is invalid, it throws a
+<code>SudokuInvalidSolutionException</code> with an error message indicating what the
+problem is.  For instance, an error message might say that a row doesn't
+contain a particular digit or has too many of a particular digit.  (Note that
+if a digit is repeated, another digit will be absent.  You can choose which
+error to report.)</p>
+</li>
+</ul>
+<h3 id="incremental-development">Incremental development</h3>
+<p>Start by defining the <code>Sudoku</code> constructor, <code>loadBoard</code>, and <code>printBoard</code>.
+Your first version of the <code>main</code> method should simply load a Sudoku file and
+print it.</p>
+<p>Then add the <code>saveBoard</code> method.  Have the program load a file, print it, and
+save it.  Check that the saved file (<code>sudoku.out</code>) looks OK.</p>
+<p>Then write the <code>solveBoard</code> method.  This is by far the most interesting method
+to write, and also the one that may cause you the most grief.  Let us know if
+you're having problems!</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You should definitely define extra methods to help with the <code>solveBoard</code>
+method.  In particular, we suggest that you define a <code>solveBoardFrom</code> method
+that solves a board starting from a particular location.  This is the only
+method that needs to be recursive.  Then <code>solveBoard</code> just has to call this
+method with the initial location.</p>
+<p>It's not necesssary, but you may also find it useful to define a method or
+methods to check if a number can be placed in a particular location without
+violating the row, column or box constraints.  In general, many small methods
+are usually a better design than one big method.</p>
+</div>
+<p>Finally, write the <code>validateSolution</code> method.  Validating rows and columns
+should be easy; boxes are a bit trickier.</p>
+<h2 id="testing">Testing</h2>
+<p>We are providing a few Sudoku boards in the <code>boards/</code> subdirectory.
+This consists of a number of text files representing boards,
+ranging from <code>board1</code> to <code>board12</code>.
+<code>board1</code> to <code>board10</code> are solvable, while <code>board11</code> and <code>board12</code> aren't.
+Test your program on all the boards.
+The solvable boards shouldn't take too long to solve;
+if your program takes more than a few seconds on any of the boards,
+you've probably done something wrong
+(or at least, your program could be more efficient).</p>
+<p>Also, try running the program with invalid inputs <em>e.g.</em></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$ java sudoku.Sudoku
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>$ java sudoku.Sudoku foo bar baz
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>$ java sudoku.Sudoku 1 2 3 4 5
+</span></code></pre></div>
+<p>In these cases, the program should report an error.  The accepted way to do
+this is to print a "usage message" when the program is invoked with the wrong
+number of command-line arguments.  For instance, the program could print this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>usage: java sudoku.Sudoku filename
+</span></code></pre></div>
+<p>This tells the user that the program only takes one argument, which should
+represent a filename.</p>
+<h2 id="what-to-hand-in">What to hand in</h2>
+<p>Please submit your completed <code>Sudoku.java</code> file to GradeScope as <code>Assignment 2</code>.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p><code>cat</code> is short for "concatenate"
+since the program can also concatenate files.
+It has nothing to do with adorable pets.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>A <em>stub</em> is a piece of code without an implementation,
+intended to be filled in later.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>Learning how to find your way around the documentation
+may be tricky at first,
+but this is an essential skill for Java programmers.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../overview/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Assignment 2: Overview">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Assignment 2: Overview
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
