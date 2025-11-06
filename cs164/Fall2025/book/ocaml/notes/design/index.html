@@ -867,9 +867,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#be-careful-with-catch-all-match-cases" class="md-nav__link">
+  <a href="#avoid-catch-all-match-cases" class="md-nav__link">
     <span class="md-ellipsis">
-      Be careful with catch-all match cases!
+      Avoid catch-all match cases!
     </span>
   </a>
   
@@ -1536,9 +1536,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#be-careful-with-catch-all-match-cases" class="md-nav__link">
+  <a href="#avoid-catch-all-match-cases" class="md-nav__link">
     <span class="md-ellipsis">
-      Be careful with catch-all match cases!
+      Avoid catch-all match cases!
     </span>
   </a>
   
@@ -1596,7 +1596,7 @@ Then assume that <em>that</em> function exists
 and write your main function using the assumed function.
 When that's done, go back and write the body of the assumed function.</p>
 <p>This is one of <em>the</em> most useful programming tips.
-It's explored at some length in the CS 4 textbook 
+It's explored at some length in the CS 4 textbook
 <a href="https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book.html">Structure and Interpretation of Computer Programs</a>
 (SICP).</p>
 <h2 id="use-the-support-library">Use the <code>support</code> library!</h2>
@@ -1707,7 +1707,7 @@ which is a function of type <code>(unit -&gt; 'a)</code>,
 where <code>'a</code> is the value type.
 You can use this to return a default value,
 or to raise an arbitrary exception on lookup failure.</p>
-<h2 id="be-careful-with-catch-all-match-cases">Be careful with catch-all <code>match</code> cases!</h2>
+<h2 id="avoid-catch-all-match-cases">Avoid catch-all <code>match</code> cases!</h2>
 <p>Many functions in your compilers will be large <code>match</code> expressions
 handling a lot of different constructors.
 In addition, new constructors for many types will be added with each
@@ -1727,14 +1727,62 @@ when you add them in later compilers.
 If that happens, the new constructors will be handled by the
 generic code (the catch-all handler), which will probably be wrong
 and which may be hard to debug.</p>
+<div class="admonition note">
+<p class="admonition-title">Fragile pattern matches</p>
+<p>OCaml's documentation refers to this case as a "fragile pattern match".
+There is even a warning option in the OCaml compiler (warning 4)
+to flag this case.
+For instance, consider this code:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">type</span> <span class="n">foo</span> <span class="o">=</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  <span class="o">|</span> <span class="nc">Foo</span> <span class="k">of</span> <span class="kt">int</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  <span class="o">|</span> <span class="nc">Bar</span> <span class="k">of</span> <span class="kt">float</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  <span class="o">|</span> <span class="nc">Baz</span> <span class="k">of</span> <span class="kt">string</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  <span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="o">|</span> <span class="nc">Foo</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="sc">&#39;f&#39;</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="sc">&#39;x&#39;</span>
+</span></code></pre></div>
+<p>If you save it in a file called <code>foo.ml</code> and compile it like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$ ocamlc -w +4 foo.ml
+</span></code></pre></div>
+<p>you get this warning:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>File &quot;foo.ml&quot;, lines 7-9, characters 2-14:
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>7 | ..match x with
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>8 |     | Foo _ -&gt; &#39;f&#39;
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>9 |     | _ -&gt; &#39;x&#39;
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>Warning 4 [fragile-match]: this pattern-matching is fragile.
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>  It will remain exhaustive when constructors are added to type foo.
+</span></code></pre></div>
+<p>This is nice, so why don't we enable this warning in our <code>dune</code> files?
+It's because some of the libraries we depend on
+(like the S-expression conversion libraries)
+have fragile pattern matches,
+and we don't want to look at a bunch of warnings we can't fix!
+In addition, some trivial uses of fragile pattern matches are harmless.
+However, if you want to try it out, go to the <code>dune</code> file
+and change these lines:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>(env
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  (dev
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    (flags (:standard -warn-error -A))))
+</span></code></pre></div>
+<p>to:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>(env
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  (dev
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    (flags (:standard -warn-error -A -w +4))))
+</span></code></pre></div>
+<p>Then recompile.
+We think you'll quickly want to go back
+to the original warning settings <img alt="😄" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f604.svg" title=":smile:" /></p>
+</div>
 <p>Instead of this, we recommend this style:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">match</span> <span class="o">&lt;</span><span class="n">thing</span> <span class="k">to</span> <span class="k">match</span><span class="o">&gt;</span> <span class="k">with</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span> <span class="n">code</span><span class="o">&gt;</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">1</span><span class="o">&gt;</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">2</span><span class="o">&gt;</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">3</span><span class="o">&gt;</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  <span class="o">|</span> <span class="o">...</span> <span class="o">-&gt;</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="o">&lt;</span><span class="n">generic</span> <span class="n">code</span> <span class="k">for</span> <span class="n">all</span> <span class="n">other</span> <span class="n">cases</span><span class="o">&gt;</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">match</span> <span class="o">&lt;</span><span class="n">thing</span> <span class="k">to</span> <span class="k">match</span><span class="o">&gt;</span> <span class="k">with</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span> <span class="n">code</span><span class="o">&gt;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">1</span><span class="o">&gt;</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">2</span><span class="o">&gt;</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">3</span><span class="o">&gt;</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>  <span class="o">|</span> <span class="o">...</span> <span class="o">-&gt;</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="o">&lt;</span><span class="n">generic</span> <span class="n">code</span> <span class="k">for</span> <span class="n">all</span> <span class="n">other</span> <span class="n">cases</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <p>Each <code>&lt;case N&gt;</code> form is a constructor
 with a wildcard for the constructor arguments
@@ -1745,10 +1793,10 @@ and you forget to handle that case,
 you will get a warning about a non-exhaustive pattern match,
 and you will be able to fix the problem right away!</p>
 <p>You can also write this more concisely as:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">match</span> <span class="o">&lt;</span><span class="n">thing</span> <span class="k">to</span> <span class="k">match</span><span class="o">&gt;</span> <span class="k">with</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span> <span class="n">code</span><span class="o">&gt;</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">1</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">3</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">...</span> <span class="o">-&gt;</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="o">&lt;</span><span class="n">generic</span> <span class="n">code</span> <span class="k">for</span> <span class="n">all</span> <span class="n">other</span> <span class="n">cases</span><span class="o">&gt;</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">match</span> <span class="o">&lt;</span><span class="n">thing</span> <span class="k">to</span> <span class="k">match</span><span class="o">&gt;</span> <span class="k">with</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span> <span class="n">code</span><span class="o">&gt;</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">1</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">3</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">...</span> <span class="o">-&gt;</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="o">&lt;</span><span class="n">generic</span> <span class="n">code</span> <span class="k">for</span> <span class="n">all</span> <span class="n">other</span> <span class="n">cases</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <p>This is a bit easier on the eyes.</p>
 
