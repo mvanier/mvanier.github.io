@@ -873,6 +873,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Avoid catch-all match cases!">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fragile-pattern-matches" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fragile pattern matches
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1542,6 +1557,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Avoid catch-all match cases!">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fragile-pattern-matches" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fragile pattern matches
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1727,68 +1757,14 @@ when you add them in later compilers.
 If that happens, the new constructors will be handled by the
 generic code (the catch-all handler), which will probably be wrong
 and which may be hard to debug.</p>
-<div class="admonition note">
-<p class="admonition-title">Fragile pattern matches</p>
-<p>OCaml's documentation refers to this case as a "fragile pattern match".
-There is even a warning option in the OCaml compiler (warning 4)
-to flag this case.
-For instance, consider this code:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">type</span> <span class="n">foo</span> <span class="o">=</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  <span class="o">|</span> <span class="nc">Foo</span> <span class="k">of</span> <span class="kt">int</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  <span class="o">|</span> <span class="nc">Bar</span> <span class="k">of</span> <span class="kt">float</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  <span class="o">|</span> <span class="nc">Baz</span> <span class="k">of</span> <span class="kt">string</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  <span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="o">|</span> <span class="nc">Foo</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="sc">&#39;f&#39;</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="sc">&#39;x&#39;</span>
-</span></code></pre></div>
-<p>If you save it in a file called <code>foo.ml</code> and compile it like this:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$ ocamlc -w +4 foo.ml
-</span></code></pre></div>
-<p>you get this warning:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>File &quot;foo.ml&quot;, lines 7-9, characters 2-14:
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>7 | ..match x with
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>8 |     | Foo _ -&gt; &#39;f&#39;
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>9 |     | _ -&gt; &#39;x&#39;
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>Warning 4 [fragile-match]: this pattern-matching is fragile.
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>  It will remain exhaustive when constructors are added to type foo.
-</span></code></pre></div>
-<p>This is nice, so why don't we enable this warning in our <code>dune</code> files?
-It's because some of the libraries we depend on
-(like the S-expression conversion libraries)
-have fragile pattern matches,
-and we don't want to look at a bunch of warnings we can't fix!
-In addition, some trivial uses of fragile pattern matches are harmless.
-However, if you want to try it out, go to the <code>dune</code> file
-and change these lines:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>(env
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  (dev
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    (flags (:standard -warn-error -A))))
-</span></code></pre></div>
-<p>to:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>(env
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  (dev
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    (flags (:standard -warn-error -A -w +4))))
-</span></code></pre></div>
-<p>Then recompile.
-We think you'll quickly want to go back
-to the original warning settings <img alt="😄" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f604.svg" title=":smile:" /></p>
-<p>An alternative is to enable this warning on a per-file basis;
-just put this at the top of the file:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>[@@@ocaml.warnings &quot;+4&quot;]
-</span></code></pre></div>
-<p>This shouldn't generate any spurious warnings
-if used on any of the files you need to edit.</p>
-</div>
 <p>Instead of this, we recommend this style:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">match</span> <span class="o">&lt;</span><span class="n">thing</span> <span class="k">to</span> <span class="k">match</span><span class="o">&gt;</span> <span class="k">with</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span> <span class="n">code</span><span class="o">&gt;</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">1</span><span class="o">&gt;</span>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">2</span><span class="o">&gt;</span>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">3</span><span class="o">&gt;</span>
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>  <span class="o">|</span> <span class="o">...</span> <span class="o">-&gt;</span>
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    <span class="o">&lt;</span><span class="n">generic</span> <span class="n">code</span> <span class="k">for</span> <span class="n">all</span> <span class="n">other</span> <span class="n">cases</span><span class="o">&gt;</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">match</span> <span class="o">&lt;</span><span class="n">thing</span> <span class="k">to</span> <span class="k">match</span><span class="o">&gt;</span> <span class="k">with</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span> <span class="n">code</span><span class="o">&gt;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">1</span><span class="o">&gt;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">2</span><span class="o">&gt;</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">3</span><span class="o">&gt;</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  <span class="o">|</span> <span class="o">...</span> <span class="o">-&gt;</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="o">&lt;</span><span class="n">generic</span> <span class="n">code</span> <span class="k">for</span> <span class="n">all</span> <span class="n">other</span> <span class="n">cases</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <p>Each <code>&lt;case N&gt;</code> form is a constructor
 with a wildcard for the constructor arguments
@@ -1799,12 +1775,116 @@ and you forget to handle that case,
 you will get a warning about a non-exhaustive pattern match,
 and you will be able to fix the problem right away!</p>
 <p>You can also write this more concisely as:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">match</span> <span class="o">&lt;</span><span class="n">thing</span> <span class="k">to</span> <span class="k">match</span><span class="o">&gt;</span> <span class="k">with</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span> <span class="n">code</span><span class="o">&gt;</span>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">1</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">3</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">...</span> <span class="o">-&gt;</span>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="o">&lt;</span><span class="n">generic</span> <span class="n">code</span> <span class="k">for</span> <span class="n">all</span> <span class="n">other</span> <span class="n">cases</span><span class="o">&gt;</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">match</span> <span class="o">&lt;</span><span class="n">thing</span> <span class="k">to</span> <span class="k">match</span><span class="o">&gt;</span> <span class="k">with</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">special</span> <span class="n">case</span> <span class="n">code</span><span class="o">&gt;</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">1</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">case</span> <span class="mi">3</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">...</span> <span class="o">-&gt;</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="o">&lt;</span><span class="n">generic</span> <span class="n">code</span> <span class="k">for</span> <span class="n">all</span> <span class="n">other</span> <span class="n">cases</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <p>This is a bit easier on the eyes.</p>
+<h3 id="fragile-pattern-matches">Fragile pattern matches</h3>
+<p>OCaml's documentation refers to a catch-all case in a pattern match
+as a "fragile pattern match"
+when matching against constructors of an algebraic datatype.
+There is even a warning option in the OCaml compiler (warning 4)
+to flag this case.
+For instance, consider this code:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">type</span> <span class="n">foo</span> <span class="o">=</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  <span class="o">|</span> <span class="nc">Foo</span> <span class="k">of</span> <span class="kt">int</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>  <span class="o">|</span> <span class="nc">Bar</span> <span class="k">of</span> <span class="kt">float</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>  <span class="o">|</span> <span class="nc">Baz</span> <span class="k">of</span> <span class="kt">string</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">let</span> <span class="n">is_Foo</span> <span class="n">x</span> <span class="o">=</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>  <span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="o">|</span> <span class="nc">Foo</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="sc">&#39;f&#39;</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="sc">&#39;x&#39;</span>
+</span></code></pre></div>
+<p>If you save it in a file called <code>foo.ml</code> and compile it like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>$ ocamlc -w +4 foo.ml
+</span></code></pre></div>
+<p>you get this warning:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>File &quot;foo.ml&quot;, lines 7-9, characters 2-14:
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>7 | ..match x with
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>8 |     | Foo _ -&gt; &#39;f&#39;
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>9 |     | _ -&gt; &#39;x&#39;
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>Warning 4 [fragile-match]: this pattern-matching is fragile.
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>  It will remain exhaustive when constructors are added to type foo.
+</span></code></pre></div>
+<p>This is nice, so why don't we
+enable this warning globally in our <code>dune</code> files?
+It's because some of the libraries we depend on
+(like the S-expression conversion libraries)
+have fragile pattern matches,
+and we don't want to look at a bunch of warnings we can't fix!
+In addition, some trivial uses of fragile pattern matches are harmless.</p>
+<p>A better alternative is to enable this warning on a per-file basis;
+just put this at the top of the file:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>[@@@warning &quot;+4&quot;]
+</span></code></pre></div>
+<p>This shouldn't generate any spurious warnings
+if used on any of the files you need to edit.
+You can even locally disable and re-enable the warning if you want:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>[@@@warning &quot;+4&quot;]
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>(* warning is enabled *)
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>...
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>[@@@warning &quot;-4&quot;]
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>(* warning is locally disabled *)
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>...
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>let is_Foo x =
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>  match x with
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>    | Foo _ -&gt; &quot;foo&quot;
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>    | _ -&gt; &quot;bar&quot;  (* won&#39;t give a warning about a fragile match *)
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>...
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>[@@@warning &quot;+4&quot;]
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>(* warning is re-enabled *)
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>...
+</span></code></pre></div>
+<p>Needless to say, be careful when turning off warnings,
+because then you are fully responsible for checking
+that you haven't missed any cases you should be handling.
+One case where this might be desirable
+is when matching against more than one value
+of an algebraic datatype with multiple constructors:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>let are_Foos x y =
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>  match (x, y) with
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    | (Foo _, Foo _) -&gt; &quot;two foos&quot;
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    | _ -&gt; &quot;not two foos&quot;
+</span></code></pre></div>
+<p>If the datatype that includes the <code>Foo</code> constructor
+(<em>e.g.</em> the <code>foo</code> datatype given above)
+has several other constructors,
+enumerating them all exhaustively is pretty painful:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>let are_Foos x y =
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>  match (x, y) with
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    | (Foo _, Foo _) -&gt; &quot;two foos&quot;
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    | (Foo _, Bar _)
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    | (Foo _, Baz _)
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    | (Bar _, Foo _)
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    | (Bar _, Bar _)
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    | (Bar _, Baz _)
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    | (Baz _, Foo _)
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>    | (Baz _, Bar _)
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>    | (Baz _, Baz _) -&gt; &quot;not two foos&quot;
+</span></code></pre></div>
+<p>There are some pattern-matching tricks you can use to make this shorter:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>let are_Foos x y =
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>  match (x, y) with
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    | (Foo _, Foo _) -&gt; true
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    | (Foo _, (Bar _ | Baz _))
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    | ((Bar _ | Baz _), (Foo _ | Bar _ | Baz _)) -&gt; false
+</span></code></pre></div>
+<p>but this is still pretty bad.
+Switching off the warning in this case seems justified,
+unless the behavior of the function will change significantly
+when new constructors are added.</p>
+<p>There are other ways to disable warnings locally.
+For instance, this will work:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>let [@warning &quot;-4&quot;] are_Foos x y =
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>  match (x, y) with
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    | (Foo _, Foo _) -&gt; true
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    | _ -&gt; false
+</span></code></pre></div>
+<p>This only turns off warning 4 for the <code>are_Foos</code> function.
+Don't use this unless you really need to!</p>
 
 
 
