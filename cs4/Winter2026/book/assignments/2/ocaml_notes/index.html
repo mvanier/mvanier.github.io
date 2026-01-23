@@ -1,0 +1,1790 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs4/Winter2026/book/assignments/2/ocaml_notes/">
+      
+      
+        <link rel="prev" href="../assignment2/">
+      
+      
+        <link rel="next" href="../partA_orders_of_growth/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>OCaml notes - The CS 4 book (Winter 2026)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ocaml-notes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The CS 4 book (Winter 2026)" class="md-header__button md-logo" aria-label="The CS 4 book (Winter 2026)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 4 book (Winter 2026)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              OCaml notes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The CS 4 book (Winter 2026)" class="md-nav__button md-logo" aria-label="The CS 4 book (Winter 2026)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The CS 4 book (Winter 2026)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Introduction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/welcome/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome to CS 4!
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/motivation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Administrative
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Administrative
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/collab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collaboration policies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignments
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignments
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../0/assignment0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 0: Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 1: Evaluation and recursion
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 1: Evaluation and recursion
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/assignment1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/ocaml_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partA_exercises/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: Exercises
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partB_evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partC_recursion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Recursion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 2: Complexity and HOFs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 2: Complexity and HOFs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assignment2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#packages-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packages needed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compiler-warnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compiler warnings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-libraries-in-ocaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using libraries in OCaml
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-the-utop-interactive-interpreter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In the utop interactive interpreter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-compiled-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In compiled code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-num-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using the Num library
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partA_orders_of_growth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: Orders of growth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partB_evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partC_higher_order_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Higher-order functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partD_additional_problems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part D: Additional problems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Readings
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Readings
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../readings/ocaml_cheat_sheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml Cheat Sheet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../readings/subst/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Substitution Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#packages-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packages needed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compiler-warnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compiler warnings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-libraries-in-ocaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using libraries in OCaml
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-the-utop-interactive-interpreter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In the utop interactive interpreter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-compiled-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In compiled code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-num-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using the Num library
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ocaml-notes">OCaml notes</h1>
+<h2 id="packages-needed">Packages needed</h2>
+<p>For this assignment,
+you’ll need to have the following <code>opam</code> packages installed:</p>
+<ul>
+<li><code>ocamlfind</code> (various compilation utilities)</li>
+<li><code>ounit2</code> (unit testing)</li>
+<li><code>num</code> (arbitrary-precision integer/rational number arithmetic)</li>
+</ul>
+<p><code>ocamlfind</code> should already be installed
+if you followed the instructions in assignment 0.
+Install the other packages using <code>opam</code> as follows:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$ opam update
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>$ opam install ounit2 num
+</span></code></pre></div>
+<p>As you can see, you can install multiple packages using one <code>opam</code> command.
+Type this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$ opam list
+</span></code></pre></div>
+<p>after installation and verify
+that the <code>ocamlfind</code>, <code>ounit2</code>, and <code>num</code> packages are installed.
+If not, consult with a TA or the instructor.</p>
+<h2 id="testing">Testing</h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In what follows,
+we're assuming that you are editing and running your code
+in a Unix-like environment
+(MacOS X, Linux, or Windows with WSL).
+If you aren't
+(<em>e.g.</em> if you are running Windows and are using Powershell
+instead of the WSL <code>bash</code> shell),
+things will not work correctly.
+In that case, you should install WSL from
+<a href="https://learn.microsoft.com/en-us/windows/wsl/install">this site</a>.</p>
+<p>Note that you can easily run WSL shells from inside Visual Studio Code,
+and this is recommended if you're using Windows.</p>
+<p>See a TA if you are having problems getting set up.
+(Also review assignment 0, which contains detailed instructions
+on how to get set up.)</p>
+</div>
+<p>For this assignment, we are supplying you with these support files:</p>
+<ol>
+<li>An OCaml interface file: <code>lab2.mli</code></li>
+<li>a test script: <code>tests_lab2.ml</code></li>
+<li>a <code>Makefile</code> to automate compilation.</li>
+</ol>
+<p>These files are all available on the course Canvas site
+in a single zip file called <code>lab2.zip</code>.
+Download this file and unzip it:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$ unzip lab2.zip
+</span></code></pre></div>
+<p>This will create a <code>lab2</code> directory with the files inside it.
+You should not change these files,
+and you should not submit them as part of your assignment submission.
+You should create and edit the file <code>lab2.ml</code>
+(which you will be handing in) in the same directory.</p>
+<p>In order to run the test script,
+you will need to use the <code>ounit2</code> unit testing libraries,
+which you should have installed (see above).
+<code>ounit2</code> is a set of libraries which make it easy
+to write unit tests for OCaml code
+(sort of like <code>pytest</code> for Python).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The term <em>library</em> is vague.
+The technical terms are <em>package</em> (used mainly by <code>opam</code>)
+and <em>module</em> (used by OCaml itself).
+We'll often use the word "library" informally
+to refer to the set of modules in a package.</p>
+</div>
+<p>Once your assignment is done,
+you should compile it and check
+that it conforms to the interface file
+by entering this command:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$ make compile
+</span></code></pre></div>
+<p>Of course,
+you can also compile your code
+from inside the <code>utop</code> OCaml interpreter using the <code>#use</code> directive.
+Using <code>#use</code> is recommended while developing code
+to check that the code has no type errors.
+Using the <code>make</code> command is useful when the code is finished
+to make sure that all your functions, types <em>etc.</em>
+have the correct type signatures
+(which they should, if you have been following the directions).
+Note that it’s possible to write a function that type checks
+but doesn’t have the type we want it to have;
+that’s why using <code>make</code> is important.
+The type signatures we expect are in the <code>lab2.mli</code> interface file,
+and these are used by the <code>Makefile</code> when compiling the code.</p>
+<p>Finally, to run the test script,
+type this <em>after</em> compiling the code with <code>make compile</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$ make test
+</span></code></pre></div>
+<p>This will compile the <code>tests_lab2.ml</code> file
+(which contains the unit tests)
+and output an executable program called <code>tests_lab2</code>.
+Then it will run that program and report all test failures.
+If the test program doesn’t compile,
+you probably haven’t installed the <code>ounit2</code> library; see above.
+If you did and it still doesn’t work, ask a TA or the instructor for help.</p>
+<p>If you want to compile the code and immediately run the test script
+(useful during development/debugging), type:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$ make all
+</span></code></pre></div>
+<p>or just type:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$ make
+</span></code></pre></div>
+<p>which does the same thing.
+This is equivalent to typing <code>make compile</code> followed by <code>make test</code>.</p>
+<p>Running the tests generates some log files;
+to get rid of them (as well as all compiled OCaml files), type:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$ make clean
+</span></code></pre></div>
+<p>It’s worthwhile taking a look at the code in the <code>tests_lab2.ml</code> file,
+even though you don’t have to change it.
+Most of the tests are very straightforward;
+they use a function called <code>assert_equal</code> to test
+that a particular function call gives a particular result.
+There are some interesting operators in the file
+(such as <code>&gt;:::</code> and <code>&gt;::</code>) which are defined in the <code>ounit2</code> libraries;
+one of the cool things about OCaml is that you can define new operators!</p>
+<p>Finally, be aware that the test scripts are in no way exhaustive! Some
+functions are just inherently hard to test, or else hard to test in a
+way that wouldn’t give away the answer to a student who looked at the
+test script code. We recommend that you experiment with the code on your
+own as well (using the <code>utop</code> interactive interpreter)
+in addition to running the test script.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Don’t assume that just because your code passes all the tests
+that everything is perfect!
+It's necessary but not sufficient, as the math folks like to say.</p>
+</div>
+<h3 id="compiler-warnings">Compiler warnings</h3>
+<p>The <code>Makefile</code> commands to compile OCaml code turn on most of
+the OCaml compiler warning options,
+even ones that are normally turned off.
+Therefore, you might see some warnings when compiling your code
+that you don't see when loading it into the interpreter.
+Compiling your code shouldn't give rise to any warnings,
+so if there are any, fix them.
+If you don't understand what a compiler warning means, ask us!</p>
+<p>A list of compiler warnings is on
+<a href="https://v2.ocaml.org/manual/toplevel.html">this page</a>;
+scroll down to find it (under the <code>-w</code> command-line option).
+Don't expect to understand all of them,
+but the ones you are likely to encounter
+should be comprehensible.</p>
+<h2 id="using-libraries-in-ocaml">Using libraries in OCaml</h2>
+<p>Some of the problems below
+require the use of arbitrary-precision integers and rational numbers.
+The easiest way to get this in OCaml is by using the <code>Num</code> library.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>
+Here we will show you how to use OCaml libraries in two different ways:
+in the <code>utop</code> interactive interpreter
+(useful for debugging and testing code)
+and while compiling code.
+We’ll use the <code>Num</code> library as an example,
+but the information will apply to any OCaml library.</p>
+<h2 id="in-the-utop-interactive-interpreter">In the <code>utop</code> interactive interpreter</h2>
+<p>The most basic way to use an OCaml library inside <code>utop</code>
+(which we don't recommend)
+is to use the <code>#load</code> command.
+This requires that you know the full name of the compiled library file.
+This means that you have to enter the following commands
+before using the <code>Num</code> library interactively:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a># #load &quot;nums.cma&quot;;;
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a># open Num;;
+</span></code></pre></div>
+<p>(In all the interactive OCaml examples,
+the first <code>#</code> is the interactive prompt that you shouldn’t type.)</p>
+<p>Here, we have to know that the library file is called <code>"nums.cma"</code>,
+which is a bit annoying.
+The line <code># open Num;;</code> brings all the contents of the <code>Num</code> library
+into the top-level namespace,
+so you don’t have to use the <code>Num</code> prefix
+when using any of the functions in the <code>Num</code> library.
+(This is like entering <code>from Num import *</code> in Python.)</p>
+<p>If the library file is in a non-standard location, it’s even worse;
+you have to add this line before the <code>#load</code> line:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>#directory /path/to/the/library/directory
+</span></code></pre></div>
+<p>(where you should substitute the real path for
+<code>/path/to/the/library/directory</code>)
+or else start <code>utop</code> with the <code>-I</code> argument:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>$ utop -I /path/to/the/library/directory
+</span></code></pre></div>
+<p>Either way, it’s a nuisance.</p>
+<p>Fortunately, the <code>utop</code> interactive interpreter
+supports a much simpler way of loading libraries.
+(Internally, it uses the <code>ocamlfind</code> library to do this,
+but you don't need to know exactly how this works.)
+All you need to do is type the following commands inside <code>utop</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a># #require &quot;num&quot;;;
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a># open Num;;
+</span></code></pre></div>
+<p>Now you can use anything in the <code>Num</code> module
+without having to qualify it with the <code>Num.</code> prefix.</p>
+<p>We’d like to reiterate here that all the <code>#</code>-commands
+like <code>#use</code>, <code>#require</code> <em>etc.</em>
+are <em>not</em> part of the OCaml language
+but are specific to the interactive interpreter.
+Please do not use these commands in compiled OCaml code
+(<em>i.e.</em> <code>.ml</code> and <code>.mli</code> files)!</p>
+<h2 id="in-compiled-code">In compiled code</h2>
+<p>If you want to compile an executable program that uses the <code>Num</code> library,
+there are three ways to do it:
+the hard way, the easy way, and the automatic way.</p>
+<p>The hard way is to specify the library information explicitly
+when you compile your code.
+For instance, if you have a file <code>"myprog.ml"</code>
+that uses the <code>Num</code> library,
+you can compile it like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>$ ocamlc nums.cma myprog.mli myprog.ml -o myprog
+</span></code></pre></div>
+<p>Here, <code>ocamlc</code> is the name of the OCaml compiler program.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></p>
+<p>Note again that you have to specify the library name in full.
+If the directory where <code>nums.cma</code> is located is not a standard location
+(which it probably isn’t),
+you would additionally have to specify the directory
+with the <code>-I</code> option, <em>e.g.</em>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>$ ocamlc -I /path/to/the/library/directory nums.cma myprog.mli myprog.ml -o myprog
+</span></code></pre></div>
+<p>Clearly, this is a nuisance,
+and the easy way to do this involves using the <code>ocamlfind</code> package.
+In this case we will use the <code>ocamlfind</code> program
+(which is part of the <code>ocamlfind</code> package;
+don’t confuse the two distinct uses of <code>ocamlfind</code>):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>$ ocamlfind ocamlc -package num myprog.mli myprog.ml -o myprog -linkpkg
+</span></code></pre></div>
+<p>You can also use <code>ocamlfind</code> for compiling non-executables
+(<em>e.g.</em> object code files or libraries);
+in that case you leave off the <code>-linkpkg</code> argument
+and adjust the <code>ocamlc</code> arguments as necessary.
+For instance,
+if we were compiling a library <code>mylib.ml</code>
+that used the <code>Num</code> library we would compile it like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>$ ocamlfind ocamlc -c  -package num mylib.mli mylib.ml
+</span></code></pre></div>
+<p>Since this is still kind of annoying,
+we automate this by putting these kinds of commands
+in a <code>Makefile</code> that we will supply to you.
+Then, in order to compile your program, you will just have to type:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>$ make
+</span></code></pre></div>
+<p>as previously discussed.</p>
+<p>The "automatic" way,
+which is used for more complicated programs
+containing multiple files of OCaml code,
+requires the
+<a href="https://dune.readthedocs.io/en/stable/">Dune</a>
+compilation manager.
+We'll learn more about Dune in later assignments.</p>
+<h2 id="using-the-num-library">Using the <code>Num</code> library</h2>
+<p>The <code>Num</code> library defines a data type called <code>num</code>
+which can represent arbitrarily-large integers
+and rational numbers composed of arbitrarily-large integers.
+The library documentation is
+<a href="https://ocaml.org/releases/4.05/htmlman/libref/Num.html">here</a>.
+(It's pretty sparse!)</p>
+<p>The <code>num</code> type is <em>abstract</em>,
+which means that its internal structure is not exposed to users.
+Therefore, you have to convert <em>e.g.</em> integers to and from <code>num</code>s
+in order to use them.
+To convert an integer to a <code>num</code>,
+use the <code>num_of_int</code> function,
+and to convert back,
+use the <code>int_of_num</code> function.
+The <code>string_of_num</code> function converts a <code>num</code> to a string,
+while <code>float_of_num</code> converts a <code>num</code> to a floating-point number.
+The numeric operators in the <code>Num</code> library all have a <code>/</code> suffix,
+so instead of <code>+ - * /</code> <em>etc.</em> we have <code>+/ -/ */ //</code> <em>etc.</em>
+This is analogous to floating-point numbers which use <code>+. -. *. /.</code> <em>etc.</em>
+It’s not terribly pleasant to use, but it works.</p>
+<p>There are also <code>num</code>-specific relational operators
+(<code>&lt;/</code>, <code>&lt;=/</code>, <code>&gt;/</code>, <em>etc.</em>).
+You should use these on <code>num</code>s
+instead of the (overloaded) built-in ones (<code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <em>etc.</em>)
+because the overloaded ones won’t always work properly on <code>num</code>s. 
+This includes the equality operators, which for <code>num</code>s are <code>=/</code> and <code>&lt;&gt;/</code>.</p>
+<p>Here are some examples of the <code>Num</code> library in use in the interactive
+interpreter:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="o">$</span> <span class="n">utop</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="o">#</span> <span class="o">#</span><span class="n">require</span> <span class="s2">&quot;num&quot;</span><span class="o">;;</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="o">#</span> <span class="k">open</span> <span class="nc">Num</span><span class="o">;;</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="o">#</span> <span class="k">let</span> <span class="n">n1</span> <span class="o">=</span> <span class="n">num_of_int</span> <span class="mi">42</span><span class="o">;;</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="k">val</span> <span class="n">n1</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">42</span><span class="o">&gt;</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="o">#</span> <span class="k">let</span> <span class="n">n2</span> <span class="o">=</span> <span class="n">num_of_int</span> <span class="mi">57</span><span class="o">;;</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="k">val</span> <span class="n">n2</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">57</span><span class="o">&gt;</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="o">#</span> <span class="n">n1</span> <span class="o">+/</span> <span class="n">n2</span><span class="o">;;</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">99</span><span class="o">&gt;</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="o">#</span> <span class="n">n1</span> <span class="o">*/</span> <span class="n">n2</span><span class="o">;;</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">2394</span><span class="o">&gt;</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="o">#</span> <span class="n">n1</span> <span class="o">//</span> <span class="n">n2</span><span class="o">;;</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">14</span><span class="o">/</span><span class="mi">19</span><span class="o">&gt;</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="o">#</span> <span class="n">float_of_num</span> <span class="o">(</span><span class="n">n1</span> <span class="o">//</span> <span class="n">n2</span><span class="o">);;</span>
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">736842105263</span>
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="o">#</span> <span class="n">string_of_num</span> <span class="o">(</span><span class="n">n1</span> <span class="o">//</span> <span class="n">n2</span><span class="o">);;</span>
+</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;14/19&quot;</span>
+</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="o">#</span> <span class="n">int_of_num</span> <span class="o">(</span><span class="n">n1</span> <span class="o">//</span> <span class="n">n2</span><span class="o">);;</span>
+</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="nc">Exception</span><span class="o">:</span> <span class="nc">Failure</span> <span class="s2">&quot;integer argument required&quot;</span><span class="o">.</span>
+</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="o">#</span> <span class="n">int_of_num</span> <span class="o">((</span><span class="n">num_of_int</span> <span class="mi">42</span><span class="o">)</span> <span class="o">//</span> <span class="o">(</span><span class="n">num_of_int</span> <span class="mi">21</span><span class="o">));;</span>
+</span><span id="__span-17-21"><a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">2</span>
+</span></code></pre></div>
+<p>This should be enough to get you through this assignment.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>The <code>Num</code> package is pretty much deprecated in favor of the
+<code>Zarith</code> package, but we still use <code>Num</code> because it’s simpler.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>More specifically, this is the OCaml <em>bytecode</em> compiler,
+which is optimized for very fast compilation.
+There is also a native-code OCaml compiler called <code>ocamlopt</code>,
+which is slower but produces much faster code.
+We will usually just use <code>ocamlc</code>, because it will be fast enough
+for our purposes.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../assignment2/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../partA_orders_of_growth/" class="md-footer__link md-footer__link--next" aria-label="Next: Part A: Orders of growth">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Part A: Orders of growth
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
