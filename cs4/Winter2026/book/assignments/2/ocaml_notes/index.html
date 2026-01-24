@@ -925,6 +925,39 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#supplied-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supplied files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-the-tests-once-all-the-code-is-written" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the tests once all the code is written
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-the-tests-before-all-the-code-is-written" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the tests before all the code is written
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#compiler-warnings" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1280,6 +1313,39 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#supplied-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supplied files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-the-tests-once-all-the-code-is-written" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the tests once all the code is written
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-the-tests-before-all-the-code-is-written" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the tests before all the code is written
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#compiler-warnings" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1359,24 +1425,23 @@
 <h1 id="ocaml-notes">OCaml notes</h1>
 <h2 id="packages-needed">Packages needed</h2>
 <p>For this assignment,
-you’ll need to have the following <code>opam</code> packages installed:</p>
+you'll need to have the following <code>opam</code> packages installed:</p>
 <ul>
 <li><code>ocamlfind</code> (various compilation utilities)</li>
-<li><code>ounit2</code> (unit testing)</li>
 <li><code>num</code> (arbitrary-precision integer/rational number arithmetic)</li>
 </ul>
 <p><code>ocamlfind</code> should already be installed
 if you followed the instructions in assignment 0.
 Install the other packages using <code>opam</code> as follows:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$ opam update
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>$ opam install ounit2 num
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>$ opam install num
 </span></code></pre></div>
 <p>As you can see, you can install multiple packages using one <code>opam</code> command.
 Type this:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$ opam list
 </span></code></pre></div>
-<p>after installation and verify
-that the <code>ocamlfind</code>, <code>ounit2</code>, and <code>num</code> packages are installed.
+<p>after installation to verify
+that the <code>ocamlfind</code> and <code>num</code> packages are installed.
 If not, consult with a TA or the instructor.</p>
 <h2 id="testing">Testing</h2>
 <div class="admonition note">
@@ -1397,6 +1462,7 @@ and this is recommended if you're using Windows.</p>
 (Also review assignment 0, which contains detailed instructions
 on how to get set up.)</p>
 </div>
+<h3 id="supplied-files">Supplied files</h3>
 <p>For this assignment, we are supplying you with these support files:</p>
 <ol>
 <li>An OCaml interface file: <code>lab2.mli</code></li>
@@ -1413,20 +1479,7 @@ You should not change these files,
 and you should not submit them as part of your assignment submission.
 You should create and edit the file <code>lab2.ml</code>
 (which you will be handing in) in the same directory.</p>
-<p>In order to run the test script,
-you will need to use the <code>ounit2</code> unit testing libraries,
-which you should have installed (see above).
-<code>ounit2</code> is a set of libraries which make it easy
-to write unit tests for OCaml code
-(sort of like <code>pytest</code> for Python).</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The term <em>library</em> is vague.
-The technical terms are <em>package</em> (used mainly by <code>opam</code>)
-and <em>module</em> (used by OCaml itself).
-We'll often use the word "library" informally
-to refer to the set of modules in a package.</p>
-</div>
+<h3 id="running-the-tests-once-all-the-code-is-written">Running the tests once all the code is written</h3>
 <p>Once your assignment is done,
 you should compile it and check
 that it conforms to the interface file
@@ -1442,9 +1495,9 @@ Using the <code>make</code> command is useful when the code is finished
 to make sure that all your functions, types <em>etc.</em>
 have the correct type signatures
 (which they should, if you have been following the directions).
-Note that it’s possible to write a function that type checks
-but doesn’t have the type we want it to have;
-that’s why using <code>make</code> is important.
+Note that it's possible to write a function that type checks
+but doesn't have the type we want it to have;
+that's why using <code>make</code> is important.
 The type signatures we expect are in the <code>lab2.mli</code> interface file,
 and these are used by the <code>Makefile</code> when compiling the code.</p>
 <p>Finally, to run the test script,
@@ -1454,10 +1507,7 @@ type this <em>after</em> compiling the code with <code>make compile</code>:</p>
 <p>This will compile the <code>tests_lab2.ml</code> file
 (which contains the unit tests)
 and output an executable program called <code>tests_lab2</code>.
-Then it will run that program and report all test failures.
-If the test program doesn’t compile,
-you probably haven’t installed the <code>ounit2</code> library; see above.
-If you did and it still doesn’t work, ask a TA or the instructor for help.</p>
+Then it will run that program and report all test failures.</p>
 <p>If you want to compile the code and immediately run the test script
 (useful during development/debugging), type:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$ make all
@@ -1467,27 +1517,37 @@ If you did and it still doesn’t work, ask a TA or the instructor for help.</p>
 </span></code></pre></div>
 <p>which does the same thing.
 This is equivalent to typing <code>make compile</code> followed by <code>make test</code>.</p>
-<p>Running the tests generates some log files;
-to get rid of them (as well as all compiled OCaml files), type:</p>
+<p>Type</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$ make clean
 </span></code></pre></div>
-<p>It’s worthwhile taking a look at the code in the <code>tests_lab2.ml</code> file,
-even though you don’t have to change it.
-Most of the tests are very straightforward;
-they use a function called <code>assert_equal</code> to test
-that a particular function call gives a particular result.
-There are some interesting operators in the file
-(such as <code>&gt;:::</code> and <code>&gt;::</code>) which are defined in the <code>ounit2</code> libraries;
-one of the cool things about OCaml is that you can define new operators!</p>
-<p>Finally, be aware that the test scripts are in no way exhaustive! Some
-functions are just inherently hard to test, or else hard to test in a
-way that wouldn’t give away the answer to a student who looked at the
-test script code. We recommend that you experiment with the code on your
-own as well (using the <code>utop</code> interactive interpreter)
+<p>to get rid of the <code>tests_lab2</code> executable
+and all files ending in <code>.cmo</code> and <code>.cmi</code> (compilation artifacts).</p>
+<h3 id="running-the-tests-before-all-the-code-is-written">Running the tests before all the code is written</h3>
+<p>While writing your assignment code,
+you probably will want to edit the <code>tests_lab2.ml</code> file
+and comment out the lines at the bottom of the file
+corresponding to tests of functions you haven't yet written.
+(See the note in the file at the end.)
+This will allow you to test your code as you are writing it,
+which we recommend.
+Don't forget to uncomment all the test lines
+once all the functions are written!
+(There are 76 tests in all.)</p>
+<p>You can also write stubs for functions you haven't yet written
+<em>i.e.</em> something like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>let function_not_yet_written = failwith &quot;TODO&quot;
+</span></code></pre></div>
+<p>This will at least allow the test script to compile.</p>
+<p><strong>Be aware that the test scripts are in no way exhaustive!</strong>
+Some functions are just inherently hard to test,
+or else hard to test in a way that wouldn't give away the answer
+to a student who looked at the test script code. 
+We recommend that you experiment with the code on your own
+(using the <code>utop</code> interactive interpreter)
 in addition to running the test script.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Don’t assume that just because your code passes all the tests
+<p>Don't assume that just because your code passes all the tests
 that everything is perfect!
 It's necessary but not sufficient, as the math folks like to say.</p>
 </div>
@@ -1514,7 +1574,7 @@ Here we will show you how to use OCaml libraries in two different ways:
 in the <code>utop</code> interactive interpreter
 (useful for debugging and testing code)
 and while compiling code.
-We’ll use the <code>Num</code> library as an example,
+We'll use the <code>Num</code> library as an example,
 but the information will apply to any OCaml library.</p>
 <h2 id="in-the-utop-interactive-interpreter">In the <code>utop</code> interactive interpreter</h2>
 <p>The most basic way to use an OCaml library inside <code>utop</code>
@@ -1523,39 +1583,39 @@ is to use the <code>#load</code> command.
 This requires that you know the full name of the compiled library file.
 This means that you have to enter the following commands
 before using the <code>Num</code> library interactively:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a># #load &quot;nums.cma&quot;;;
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a># open Num;;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a># #load &quot;nums.cma&quot;;;
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a># open Num;;
 </span></code></pre></div>
 <p>(In all the interactive OCaml examples,
-the first <code>#</code> is the interactive prompt that you shouldn’t type.)</p>
+the first <code>#</code> is the interactive prompt that you shouldn't type.)</p>
 <p>Here, we have to know that the library file is called <code>"nums.cma"</code>,
 which is a bit annoying.
 The line <code># open Num;;</code> brings all the contents of the <code>Num</code> library
 into the top-level namespace,
-so you don’t have to use the <code>Num</code> prefix
+so you don't have to use the <code>Num</code> prefix
 when using any of the functions in the <code>Num</code> library.
 (This is like entering <code>from Num import *</code> in Python.)</p>
-<p>If the library file is in a non-standard location, it’s even worse;
+<p>If the library file is in a non-standard location, it's even worse;
 you have to add this line before the <code>#load</code> line:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>#directory /path/to/the/library/directory
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>#directory /path/to/the/library/directory
 </span></code></pre></div>
 <p>(where you should substitute the real path for
 <code>/path/to/the/library/directory</code>)
 or else start <code>utop</code> with the <code>-I</code> argument:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>$ utop -I /path/to/the/library/directory
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>$ utop -I /path/to/the/library/directory
 </span></code></pre></div>
-<p>Either way, it’s a nuisance.</p>
+<p>Either way, it's a nuisance.</p>
 <p>Fortunately, the <code>utop</code> interactive interpreter
 supports a much simpler way of loading libraries.
 (Internally, it uses the <code>ocamlfind</code> library to do this,
 but you don't need to know exactly how this works.)
 All you need to do is type the following commands inside <code>utop</code>:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a># #require &quot;num&quot;;;
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a># open Num;;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a># #require &quot;num&quot;;;
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a># open Num;;
 </span></code></pre></div>
 <p>Now you can use anything in the <code>Num</code> module
 without having to qualify it with the <code>Num.</code> prefix.</p>
-<p>We’d like to reiterate here that all the <code>#</code>-commands
+<p>We'd like to reiterate here that all the <code>#</code>-commands
 like <code>#use</code>, <code>#require</code> <em>etc.</em>
 are <em>not</em> part of the OCaml language
 but are specific to the interactive interpreter.
@@ -1570,22 +1630,22 @@ when you compile your code.
 For instance, if you have a file <code>"myprog.ml"</code>
 that uses the <code>Num</code> library,
 you can compile it like this:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>$ ocamlc nums.cma myprog.mli myprog.ml -o myprog
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>$ ocamlc nums.cma myprog.mli myprog.ml -o myprog
 </span></code></pre></div>
 <p>Here, <code>ocamlc</code> is the name of the OCaml compiler program.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></p>
 <p>Note again that you have to specify the library name in full.
 If the directory where <code>nums.cma</code> is located is not a standard location
-(which it probably isn’t),
+(which it probably isn't),
 you would additionally have to specify the directory
 with the <code>-I</code> option, <em>e.g.</em>:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>$ ocamlc -I /path/to/the/library/directory nums.cma myprog.mli myprog.ml -o myprog
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>$ ocamlc -I /path/to/the/library/directory nums.cma myprog.mli myprog.ml -o myprog
 </span></code></pre></div>
 <p>Clearly, this is a nuisance,
 and the easy way to do this involves using the <code>ocamlfind</code> package.
 In this case we will use the <code>ocamlfind</code> program
 (which is part of the <code>ocamlfind</code> package;
-don’t confuse the two distinct uses of <code>ocamlfind</code>):</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>$ ocamlfind ocamlc -package num myprog.mli myprog.ml -o myprog -linkpkg
+don't confuse the two distinct uses of <code>ocamlfind</code>):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>$ ocamlfind ocamlc -package num myprog.mli myprog.ml -o myprog -linkpkg
 </span></code></pre></div>
 <p>You can also use <code>ocamlfind</code> for compiling non-executables
 (<em>e.g.</em> object code files or libraries);
@@ -1594,13 +1654,13 @@ and adjust the <code>ocamlc</code> arguments as necessary.
 For instance,
 if we were compiling a library <code>mylib.ml</code>
 that used the <code>Num</code> library we would compile it like this:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>$ ocamlfind ocamlc -c  -package num mylib.mli mylib.ml
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>$ ocamlfind ocamlc -c  -package num mylib.mli mylib.ml
 </span></code></pre></div>
 <p>Since this is still kind of annoying,
 we automate this by putting these kinds of commands
 in a <code>Makefile</code> that we will supply to you.
 Then, in order to compile your program, you will just have to type:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>$ make
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>$ make
 </span></code></pre></div>
 <p>as previously discussed.</p>
 <p>The "automatic" way,
@@ -1630,36 +1690,36 @@ while <code>float_of_num</code> converts a <code>num</code> to a floating-point 
 The numeric operators in the <code>Num</code> library all have a <code>/</code> suffix,
 so instead of <code>+ - * /</code> <em>etc.</em> we have <code>+/ -/ */ //</code> <em>etc.</em>
 This is analogous to floating-point numbers which use <code>+. -. *. /.</code> <em>etc.</em>
-It’s not terribly pleasant to use, but it works.</p>
+It's not terribly pleasant to use, but it works.</p>
 <p>There are also <code>num</code>-specific relational operators
 (<code>&lt;/</code>, <code>&lt;=/</code>, <code>&gt;/</code>, <em>etc.</em>).
 You should use these on <code>num</code>s
 instead of the (overloaded) built-in ones (<code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <em>etc.</em>)
-because the overloaded ones won’t always work properly on <code>num</code>s. 
+because the overloaded ones won't always work properly on <code>num</code>s. 
 This includes the equality operators, which for <code>num</code>s are <code>=/</code> and <code>&lt;&gt;/</code>.</p>
 <p>Here are some examples of the <code>Num</code> library in use in the interactive
 interpreter:</p>
-<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="o">$</span> <span class="n">utop</span>
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="o">#</span> <span class="o">#</span><span class="n">require</span> <span class="s2">&quot;num&quot;</span><span class="o">;;</span>
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="o">#</span> <span class="k">open</span> <span class="nc">Num</span><span class="o">;;</span>
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="o">#</span> <span class="k">let</span> <span class="n">n1</span> <span class="o">=</span> <span class="n">num_of_int</span> <span class="mi">42</span><span class="o">;;</span>
-</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="k">val</span> <span class="n">n1</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">42</span><span class="o">&gt;</span>
-</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="o">#</span> <span class="k">let</span> <span class="n">n2</span> <span class="o">=</span> <span class="n">num_of_int</span> <span class="mi">57</span><span class="o">;;</span>
-</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="k">val</span> <span class="n">n2</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">57</span><span class="o">&gt;</span>
-</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="o">#</span> <span class="n">n1</span> <span class="o">+/</span> <span class="n">n2</span><span class="o">;;</span>
-</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">99</span><span class="o">&gt;</span>
-</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="o">#</span> <span class="n">n1</span> <span class="o">*/</span> <span class="n">n2</span><span class="o">;;</span>
-</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">2394</span><span class="o">&gt;</span>
-</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="o">#</span> <span class="n">n1</span> <span class="o">//</span> <span class="n">n2</span><span class="o">;;</span>
-</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">14</span><span class="o">/</span><span class="mi">19</span><span class="o">&gt;</span>
-</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="o">#</span> <span class="n">float_of_num</span> <span class="o">(</span><span class="n">n1</span> <span class="o">//</span> <span class="n">n2</span><span class="o">);;</span>
-</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">736842105263</span>
-</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="o">#</span> <span class="n">string_of_num</span> <span class="o">(</span><span class="n">n1</span> <span class="o">//</span> <span class="n">n2</span><span class="o">);;</span>
-</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;14/19&quot;</span>
-</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="o">#</span> <span class="n">int_of_num</span> <span class="o">(</span><span class="n">n1</span> <span class="o">//</span> <span class="n">n2</span><span class="o">);;</span>
-</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="nc">Exception</span><span class="o">:</span> <span class="nc">Failure</span> <span class="s2">&quot;integer argument required&quot;</span><span class="o">.</span>
-</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="o">#</span> <span class="n">int_of_num</span> <span class="o">((</span><span class="n">num_of_int</span> <span class="mi">42</span><span class="o">)</span> <span class="o">//</span> <span class="o">(</span><span class="n">num_of_int</span> <span class="mi">21</span><span class="o">));;</span>
-</span><span id="__span-17-21"><a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">2</span>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="o">$</span> <span class="n">utop</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="o">#</span> <span class="o">#</span><span class="n">require</span> <span class="s2">&quot;num&quot;</span><span class="o">;;</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="o">#</span> <span class="k">open</span> <span class="nc">Num</span><span class="o">;;</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="o">#</span> <span class="k">let</span> <span class="n">n1</span> <span class="o">=</span> <span class="n">num_of_int</span> <span class="mi">42</span><span class="o">;;</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="k">val</span> <span class="n">n1</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">42</span><span class="o">&gt;</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="o">#</span> <span class="k">let</span> <span class="n">n2</span> <span class="o">=</span> <span class="n">num_of_int</span> <span class="mi">57</span><span class="o">;;</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="k">val</span> <span class="n">n2</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">57</span><span class="o">&gt;</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="o">#</span> <span class="n">n1</span> <span class="o">+/</span> <span class="n">n2</span><span class="o">;;</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">99</span><span class="o">&gt;</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="o">#</span> <span class="n">n1</span> <span class="o">*/</span> <span class="n">n2</span><span class="o">;;</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">2394</span><span class="o">&gt;</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="o">#</span> <span class="n">n1</span> <span class="o">//</span> <span class="n">n2</span><span class="o">;;</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="o">-</span> <span class="o">:</span> <span class="nn">Num</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">num</span> <span class="mi">14</span><span class="o">/</span><span class="mi">19</span><span class="o">&gt;</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="o">#</span> <span class="n">float_of_num</span> <span class="o">(</span><span class="n">n1</span> <span class="o">//</span> <span class="n">n2</span><span class="o">);;</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">736842105263</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="o">#</span> <span class="n">string_of_num</span> <span class="o">(</span><span class="n">n1</span> <span class="o">//</span> <span class="n">n2</span><span class="o">);;</span>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;14/19&quot;</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="o">#</span> <span class="n">int_of_num</span> <span class="o">(</span><span class="n">n1</span> <span class="o">//</span> <span class="n">n2</span><span class="o">);;</span>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="nc">Exception</span><span class="o">:</span> <span class="nc">Failure</span> <span class="s2">&quot;integer argument required&quot;</span><span class="o">.</span>
+</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="o">#</span> <span class="n">int_of_num</span> <span class="o">((</span><span class="n">num_of_int</span> <span class="mi">42</span><span class="o">)</span> <span class="o">//</span> <span class="o">(</span><span class="n">num_of_int</span> <span class="mi">21</span><span class="o">));;</span>
+</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">2</span>
 </span></code></pre></div>
 <p>This should be enough to get you through this assignment.</p>
 <div class="footnote">
@@ -1667,7 +1727,7 @@ interpreter:</p>
 <ol>
 <li id="fn:1">
 <p>The <code>Num</code> package is pretty much deprecated in favor of the
-<code>Zarith</code> package, but we still use <code>Num</code> because it’s simpler.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<code>Zarith</code> package, but we still use <code>Num</code> because it's simpler.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:2">
 <p>More specifically, this is the OCaml <em>bytecode</em> compiler,
