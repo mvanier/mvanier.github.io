@@ -1,0 +1,2572 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs4/Winter2026/book/assignments/midterm/partB_lists_hofs/">
+      
+      
+        <link rel="prev" href="../partA_complexity/">
+      
+      
+        <link rel="next" href="../partC_data_structures/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Part B: Lists and HOFs - The CS 4 book (Winter 2026)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-b-lists-and-higher-order-functions-30-points" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The CS 4 book (Winter 2026)" class="md-header__button md-logo" aria-label="The CS 4 book (Winter 2026)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 4 book (Winter 2026)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part B: Lists and HOFs
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The CS 4 book (Winter 2026)" class="md-nav__button md-logo" aria-label="The CS 4 book (Winter 2026)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The CS 4 book (Winter 2026)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Introduction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/welcome/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome to CS 4!
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/motivation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Administrative
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Administrative
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/collab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collaboration policies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignments
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignments
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../0/assignment0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 0: Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 1: Evaluation and recursion
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 1: Evaluation and recursion
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/assignment1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/ocaml_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partA_exercises/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: Exercises
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partB_evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partC_recursion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Recursion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 2: Complexity and HOFs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 2: Complexity and HOFs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/assignment2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/ocaml_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/partA_orders_of_growth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: Orders of growth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/partB_evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/partC_higher_order_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Higher-order functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/partD_additional_problems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part D: Additional problems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 3: Lists
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 3: Lists
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/assignment3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/ocaml_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/partA_lists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: Working with lists
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/partB_structural_generative_recursion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: Structural and Generative Recursion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/partC_more_lists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Some harder problems with lists
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 4: Data abstraction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 4: Data abstraction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/assignment4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/ocaml_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/partA_abstraction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: Abstraction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/partB_more_abstraction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: More abstraction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/partC_algebra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Algebraic expressions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Midterm exam
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Midterm exam
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ocaml_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partA_complexity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: Complexity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: Lists and HOFs
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: Lists and HOFs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-split2-3-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. split2 &nbsp; [3 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-merge2-3-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. merge2 &nbsp; [3 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-split3-4-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. split3 &nbsp; [4 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-merge3-4-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. merge3 &nbsp; [4 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-mergesort3-3-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. mergesort3 &nbsp; [3 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generating-sorting-functions-genrec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generating sorting functions (genrec)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-generating-mergesort-3-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Generating mergesort &nbsp; [3 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-generating-mergesort3-3-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Generating mergesort3 &nbsp; [3 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-generating-quicksort-3-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Generating quicksort &nbsp; [3 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-generating-quicksort3-4-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Generating quicksort3 &nbsp; [4 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partC_data_structures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Data structures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Readings
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Readings
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../readings/ocaml_cheat_sheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml Cheat Sheet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../readings/subst/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Substitution Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-split2-3-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. split2 &nbsp; [3 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-merge2-3-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. merge2 &nbsp; [3 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-split3-4-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. split3 &nbsp; [4 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-merge3-4-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. merge3 &nbsp; [4 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-mergesort3-3-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. mergesort3 &nbsp; [3 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generating-sorting-functions-genrec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generating sorting functions (genrec)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-generating-mergesort-3-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Generating mergesort &nbsp; [3 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-generating-mergesort3-3-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Generating mergesort3 &nbsp; [3 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-generating-quicksort-3-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Generating quicksort &nbsp; [3 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-generating-quicksort3-4-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Generating quicksort3 &nbsp; [4 points]
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="part-b-lists-and-higher-order-functions-30-points">Part B: Lists and higher-order functions (30 points)</h1>
+<p>In this section, you'll write some functions involving lists
+and some higher-order functions.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Don't use any OCaml library functions
+to write these functions
+unless we explicitly say it's OK.</p>
+<p>The one exception to this is the <code>List.rev</code> function,
+which you are allowed to use anywhere.</p>
+</div>
+<p>The theme of this section
+is increasingly elaborate and abstract sorting functions.</p>
+<h2 id="1-split2-3-points">1. <code>split2</code> &nbsp; [<strong>3 points</strong>]</h2>
+<p>We are going to be re-creating the merge sort function
+we explored in the lectures.
+We'll start by writing a function called <code>split2</code>
+which takes a list and splits it into two equal halves
+(or as nearly equal as we can get).</p>
+<p>In constrast to the splitting functions described in the lectures,
+this function:</p>
+<ul>
+<li>will be iterative,</li>
+<li>will only do a single pass through the input list,</li>
+<li>and will assign successive values in the input list
+  to the first and second output lists,
+  alternating between them.</li>
+</ul>
+<p>If there are an odd number of elements in the input list,
+the first output list will get one more element
+than the second output list.</p>
+<p>Asymptotic time complexity: <span class="arithmatex">\(\Theta(N)\)</span>
+where <span class="arithmatex">\(N\)</span> is the length of the input list.</p>
+<div class="admonition note">
+<p class="admonition-title">Examples</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">#</span> <span class="n">split2</span> <span class="bp">[]</span> <span class="o">;;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">(</span><span class="bp">[]</span><span class="o">,</span> <span class="bp">[]</span><span class="o">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="o">#</span> <span class="n">split2</span> <span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">0</span><span class="o">],</span> <span class="bp">[]</span><span class="o">)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="o">#</span> <span class="n">split2</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">1</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">1</span><span class="o">],</span> <span class="o">[</span><span class="mi">1</span><span class="o">])</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="o">#</span> <span class="n">split2</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">1</span><span class="o">],</span> <span class="o">[</span><span class="mi">2</span><span class="o">])</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="o">#</span> <span class="n">split2</span> <span class="o">[</span><span class="mi">12</span><span class="o">;</span> <span class="mi">7</span><span class="o">;</span> <span class="mi">0</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">12</span><span class="o">;</span> <span class="mi">0</span><span class="o">],</span> <span class="o">[</span><span class="mi">7</span><span class="o">])</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="o">#</span> <span class="n">split2</span> <span class="o">[</span><span class="mi">6</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">6</span><span class="o">;</span> <span class="mi">14</span><span class="o">],</span> <span class="o">[</span><span class="mi">14</span><span class="o">])</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="o">#</span> <span class="n">split2</span> <span class="o">[</span><span class="mi">6</span><span class="o">;</span> <span class="mi">1</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">4</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">6</span><span class="o">;</span> <span class="mi">4</span><span class="o">],</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">4</span><span class="o">])</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="o">#</span> <span class="n">split2</span> <span class="o">[</span><span class="mi">12</span><span class="o">;</span> <span class="mi">7</span><span class="o">;</span> <span class="mi">13</span><span class="o">;</span> <span class="mi">9</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">12</span><span class="o">;</span> <span class="mi">13</span><span class="o">],</span> <span class="o">[</span><span class="mi">7</span><span class="o">;</span> <span class="mi">9</span><span class="o">])</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="o">#</span> <span class="n">split2</span> <span class="o">[</span><span class="mi">13</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">0</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">11</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">13</span><span class="o">;</span> <span class="mi">0</span><span class="o">;</span> <span class="mi">11</span><span class="o">],</span> <span class="o">[</span><span class="mi">11</span><span class="o">;</span> <span class="mi">14</span><span class="o">])</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="o">#</span> <span class="n">split2</span> <span class="o">[</span><span class="mi">14</span><span class="o">;</span> <span class="mi">13</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">10</span><span class="o">;</span> <span class="mi">1</span><span class="o">;</span> <span class="mi">12</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">11</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">1</span><span class="o">;</span> <span class="mi">14</span><span class="o">],</span> <span class="o">[</span><span class="mi">13</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">10</span><span class="o">;</span> <span class="mi">12</span><span class="o">;</span> <span class="mi">11</span><span class="o">])</span>
+</span></code></pre></div>
+</div>
+<p>Write this function in an iterative (tail-recursive) way.
+(The <code>split</code> function itself doesn't need to be recursive,
+but there needs to be a tail-recursive helper function.)</p>
+<h2 id="2-merge2-3-points">2. <code>merge2</code> &nbsp; [<strong>3 points</strong>]</h2>
+<p>The next part of a merge sort function is the merge function.
+Write a function called <code>merge2</code> which merges two sorted lists
+to make one larger list containing all of (and only) the elements
+of the two input lists in sorted (ascending) order.
+It does this by picking off the smaller value of the heads of each list,
+making that the next element of the output list,
+and recursing on the other parts of the input lists.</p>
+<p>In constrast to the function described in the lectures, this function
+will only merge in ascending order, and it must be iterative.</p>
+<p>Asymptotic time complexity: <span class="arithmatex">\(\Theta(N)\)</span>
+where <span class="arithmatex">\(N\)</span> is the sum of the lengths of the input lists.</p>
+<div class="admonition note">
+<p class="admonition-title">Examples</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">#</span> <span class="n">merge2</span> <span class="bp">[]</span> <span class="bp">[]</span> <span class="o">;;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="bp">[]</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">#</span> <span class="n">merge2</span> <span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="bp">[]</span> <span class="o">;;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="o">#</span> <span class="n">merge2</span> <span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">1</span><span class="o">]</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="o">#</span> <span class="n">merge2</span> <span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">]</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="o">#</span> <span class="n">merge2</span> <span class="o">[</span><span class="mi">0</span><span class="o">;</span> <span class="mi">12</span><span class="o">]</span> <span class="o">[</span><span class="mi">7</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">0</span><span class="o">;</span> <span class="mi">7</span><span class="o">;</span> <span class="mi">12</span><span class="o">]</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="o">#</span> <span class="n">merge2</span> <span class="o">[</span><span class="mi">6</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span> <span class="o">[</span><span class="mi">14</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">6</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="o">#</span> <span class="n">merge2</span> <span class="o">[</span><span class="mi">4</span><span class="o">;</span> <span class="mi">6</span><span class="o">]</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">4</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">6</span><span class="o">]</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="o">#</span> <span class="n">merge2</span> <span class="o">[</span><span class="mi">12</span><span class="o">;</span> <span class="mi">13</span><span class="o">]</span> <span class="o">[</span><span class="mi">7</span><span class="o">;</span> <span class="mi">9</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">7</span><span class="o">;</span> <span class="mi">9</span><span class="o">;</span> <span class="mi">12</span><span class="o">;</span> <span class="mi">13</span><span class="o">]</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="o">#</span> <span class="n">merge2</span> <span class="o">[</span><span class="mi">0</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">13</span><span class="o">]</span> <span class="o">[</span><span class="mi">11</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">0</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">13</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="o">#</span> <span class="n">merge2</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span> <span class="o">[</span><span class="mi">4</span><span class="o">;</span> <span class="mi">10</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">12</span><span class="o">;</span> <span class="mi">13</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">10</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">12</span><span class="o">;</span> <span class="mi">13</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span>
+</span></code></pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Watch out for the base cases!
+Whenever one input list is empty,
+you should immediately finish the merge
+without doing any more recursive calls to <code>merge2</code>.
+(This is a <strong>requirement</strong> of this problem.)
+Hint: the <code>List.rev</code> function is your friend!</p>
+</div>
+<h2 id="3-split3-4-points">3. <code>split3</code> &nbsp; [<strong>4 points</strong>]</h2>
+<p>Write a function called <code>split3</code> which is exactly like <code>split2</code>
+except that it splits the input list into <strong>three</strong> equal lists
+(or as nearly equal as is possible).</p>
+<p>Like <code>split2</code>, this function:</p>
+<ul>
+<li>will be iterative,</li>
+<li>and will only do a single pass through the input list.</li>
+</ul>
+<p>It will assign successive values in the input list
+to the first, second, and third output lists,
+alternating between them in that order.</p>
+<p>If the number of elements in the input list is not divisible by 3,
+the first (and maybe the second) output list(s)
+will get the extra elements.</p>
+<p>Asymptotic time complexity: <span class="arithmatex">\(\Theta(N)\)</span>,
+where <span class="arithmatex">\(N\)</span> is the length of the input list.</p>
+<div class="admonition note">
+<p class="admonition-title">Examples</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">#</span> <span class="n">split3</span> <span class="bp">[]</span> <span class="o">;;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">(</span><span class="bp">[]</span><span class="o">,</span> <span class="bp">[]</span><span class="o">,</span> <span class="bp">[]</span><span class="o">)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="o">#</span> <span class="n">split3</span> <span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">0</span><span class="o">],</span> <span class="bp">[]</span><span class="o">,</span> <span class="bp">[]</span><span class="o">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="o">#</span> <span class="n">split3</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">1</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">1</span><span class="o">],</span> <span class="o">[</span><span class="mi">1</span><span class="o">],</span> <span class="bp">[]</span><span class="o">)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="o">#</span> <span class="n">split3</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">1</span><span class="o">],</span> <span class="o">[</span><span class="mi">2</span><span class="o">],</span> <span class="bp">[]</span><span class="o">)</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="o">#</span> <span class="n">split3</span> <span class="o">[</span><span class="mi">12</span><span class="o">;</span> <span class="mi">7</span><span class="o">;</span> <span class="mi">0</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">12</span><span class="o">],</span> <span class="o">[</span><span class="mi">7</span><span class="o">],</span> <span class="o">[</span><span class="mi">0</span><span class="o">])</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="o">#</span> <span class="n">split3</span> <span class="o">[</span><span class="mi">6</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">6</span><span class="o">],</span> <span class="o">[</span><span class="mi">14</span><span class="o">],</span> <span class="o">[</span><span class="mi">14</span><span class="o">])</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="o">#</span> <span class="n">split3</span> <span class="o">[</span><span class="mi">6</span><span class="o">;</span> <span class="mi">1</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">4</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">6</span><span class="o">;</span> <span class="mi">4</span><span class="o">],</span> <span class="o">[</span><span class="mi">1</span><span class="o">],</span> <span class="o">[</span><span class="mi">4</span><span class="o">])</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="o">#</span> <span class="n">split3</span> <span class="o">[</span><span class="mi">12</span><span class="o">;</span> <span class="mi">7</span><span class="o">;</span> <span class="mi">13</span><span class="o">;</span> <span class="mi">9</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">12</span><span class="o">;</span> <span class="mi">9</span><span class="o">],</span> <span class="o">[</span><span class="mi">7</span><span class="o">],</span> <span class="o">[</span><span class="mi">13</span><span class="o">])</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="o">#</span> <span class="n">split3</span> <span class="o">[</span><span class="mi">13</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">0</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">11</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">13</span><span class="o">;</span> <span class="mi">14</span><span class="o">],</span> <span class="o">[</span><span class="mi">11</span><span class="o">;</span> <span class="mi">11</span><span class="o">],</span> <span class="o">[</span><span class="mi">0</span><span class="o">])</span>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="o">#</span> <span class="n">split3</span> <span class="o">[</span><span class="mi">14</span><span class="o">;</span> <span class="mi">13</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">10</span><span class="o">;</span> <span class="mi">1</span><span class="o">;</span> <span class="mi">12</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">11</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">*</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">([</span><span class="mi">14</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">1</span><span class="o">;</span> <span class="mi">11</span><span class="o">],</span> <span class="o">[</span><span class="mi">13</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">12</span><span class="o">],</span> <span class="o">[</span><span class="mi">14</span><span class="o">;</span> <span class="mi">10</span><span class="o">;</span> <span class="mi">14</span><span class="o">])</span>
+</span></code></pre></div>
+</div>
+<h2 id="4-merge3-4-points">4. <code>merge3</code> &nbsp; [<strong>4 points</strong>]</h2>
+<p>Write a function called <code>merge3</code> that will merge three sorted lists into one
+sorted list.  (All lists are sorted in ascending order.)
+<strong>Do not</strong> do this by using <code>merge2</code> on two of the lists,
+and passing the result and the remaining list to <code>merge2</code>.
+Instead, your function must merge the three input lists
+in a <strong>single pass</strong> through them.</p>
+<p>Asymptotic time complexity: <span class="arithmatex">\(\Theta(N)\)</span>,
+where <span class="arithmatex">\(N\)</span> is the sum of the lengths of the input lists.</p>
+<p>Like <code>merge2</code>, this function will merge in ascending order,
+and it must be iterative.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tips</p>
+<p>In this function, there are four base cases:
+where all of the lists are empty (one case),
+or where any two of the three lists are empty (three cases).
+In these cases, you should finish the merge without having to do
+any more recursive calls to <code>merge3</code>.
+(This is a <strong>requirement</strong> of this problem.)</p>
+<p>Also, when only one of the three lists are empty,
+you are permitted (but not required) to use the <code>merge2</code> function
+you defined above to complete the merge
+without having to do any further recursive calls to <code>merge3</code>.
+This is the <strong>only</strong> use of <code>merge2</code> that is allowed in the function.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Examples</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="o">#</span> <span class="n">merge3</span> <span class="bp">[]</span> <span class="bp">[]</span> <span class="bp">[]</span> <span class="o">;;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="bp">[]</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="o">#</span> <span class="n">merge3</span> <span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="bp">[]</span> <span class="bp">[]</span> <span class="o">;;</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="o">#</span> <span class="n">merge3</span> <span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="bp">[]</span> <span class="o">;;</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">1</span><span class="o">]</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="o">#</span> <span class="n">merge3</span> <span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="bp">[]</span> <span class="o">;;</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">]</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="o">#</span> <span class="n">merge3</span> <span class="o">[</span><span class="mi">12</span><span class="o">]</span> <span class="o">[</span><span class="mi">7</span><span class="o">]</span> <span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">0</span><span class="o">;</span> <span class="mi">7</span><span class="o">;</span> <span class="mi">12</span><span class="o">]</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="o">#</span> <span class="n">merge3</span> <span class="o">[</span><span class="mi">6</span><span class="o">]</span> <span class="o">[</span><span class="mi">14</span><span class="o">]</span> <span class="o">[</span><span class="mi">14</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">6</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="o">#</span> <span class="n">merge3</span> <span class="o">[</span><span class="mi">4</span><span class="o">;</span> <span class="mi">6</span><span class="o">]</span> <span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">[</span><span class="mi">4</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">6</span><span class="o">]</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="o">#</span> <span class="n">merge3</span> <span class="o">[</span><span class="mi">9</span><span class="o">;</span> <span class="mi">12</span><span class="o">]</span> <span class="o">[</span><span class="mi">7</span><span class="o">]</span> <span class="o">[</span><span class="mi">13</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">7</span><span class="o">;</span> <span class="mi">9</span><span class="o">;</span> <span class="mi">12</span><span class="o">;</span> <span class="mi">13</span><span class="o">]</span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="o">#</span> <span class="n">merge3</span> <span class="o">[</span><span class="mi">13</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span> <span class="o">[</span><span class="mi">11</span><span class="o">;</span> <span class="mi">11</span><span class="o">]</span> <span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">0</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">13</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>
+</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="o">#</span> <span class="n">merge3</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span> <span class="o">[</span><span class="mi">2</span><span class="o">;</span> <span class="mi">12</span><span class="o">;</span> <span class="mi">13</span><span class="o">]</span> <span class="o">[</span><span class="mi">10</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">10</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">12</span><span class="o">;</span> <span class="mi">13</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span>
+</span></code></pre></div>
+</div>
+<h2 id="5-mergesort3-3-points">5. <code>mergesort3</code> &nbsp; [<strong>3 points</strong>]</h2>
+<p>Now that <code>split3</code> and <code>merge3</code> are defined,
+put them together into a function called <code>mergesort3</code>
+that sorts an input list in ascending order
+by breaking it into three equal parts,
+sorting the parts,
+and merging the results.</p>
+<p>This function does <em>not</em> need to be iterative,
+and it's much easier to define as a recursive process.</p>
+<div class="admonition note">
+<p class="admonition-title">Examples</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="o">#</span> <span class="n">mergesort3</span> <span class="bp">[]</span> <span class="o">;;</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="bp">[]</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="o">#</span> <span class="n">mergesort3</span> <span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="o">#</span> <span class="n">mergesort3</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">1</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">1</span><span class="o">]</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="o">#</span> <span class="n">mergesort3</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">]</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="o">#</span> <span class="n">mergesort3</span> <span class="o">[</span><span class="mi">12</span><span class="o">;</span> <span class="mi">7</span><span class="o">;</span> <span class="mi">0</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">0</span><span class="o">;</span> <span class="mi">7</span><span class="o">;</span> <span class="mi">12</span><span class="o">]</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="o">#</span> <span class="n">mergesort3</span> <span class="o">[</span><span class="mi">6</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">6</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="o">#</span> <span class="n">mergesort3</span> <span class="o">[</span><span class="mi">6</span><span class="o">;</span> <span class="mi">1</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">4</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">6</span><span class="o">]</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="o">#</span> <span class="n">mergesort3</span> <span class="o">[</span><span class="mi">12</span><span class="o">;</span> <span class="mi">7</span><span class="o">;</span> <span class="mi">13</span><span class="o">;</span> <span class="mi">9</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">7</span><span class="o">;</span> <span class="mi">9</span><span class="o">;</span> <span class="mi">12</span><span class="o">;</span> <span class="mi">13</span><span class="o">]</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="o">#</span> <span class="n">mergesort3</span> <span class="o">[</span><span class="mi">13</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">0</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">11</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">0</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">13</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="o">#</span> <span class="n">mergesort3</span> <span class="o">[</span><span class="mi">14</span><span class="o">;</span> <span class="mi">13</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">10</span><span class="o">;</span> <span class="mi">1</span><span class="o">;</span> <span class="mi">12</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">11</span><span class="o">]</span> <span class="o">;;</span>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">4</span><span class="o">;</span> <span class="mi">10</span><span class="o">;</span> <span class="mi">11</span><span class="o">;</span> <span class="mi">12</span><span class="o">;</span> <span class="mi">13</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">;</span> <span class="mi">14</span><span class="o">]</span>
+</span></code></pre></div>
+</div>
+<h2 id="generating-sorting-functions-genrec">Generating sorting functions (<code>genrec</code>)</h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is nothing to hand in for this subsection,
+but the material discussed is essential in solving
+the remaining problems, so read on!</p>
+</div>
+<p>One of the themes of this course is that any recursive pattern
+can be encapsulated in a higher-order function.
+You've seen <code>mergesort</code> in the lectures,
+<code>quicksort</code> in the assignments,
+and you've implemented <code>mergesort3</code> above.
+Can we encapsulate all their recursion patterns
+using a single higher-order function?
+The answer is yes!</p>
+<p>For the remaining problems, you will be using this higher-order function:</p>
+<div class="language-ocaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<span class="normal"><a href="#__codelineno-5-2">2</a></span>
+<span class="normal"><a href="#__codelineno-5-3">3</a></span>
+<span class="normal"><a href="#__codelineno-5-4">4</a></span>
+<span class="normal"><a href="#__codelineno-5-5">5</a></span>
+<span class="normal"><a href="#__codelineno-5-6">6</a></span>
+<span class="normal"><a href="#__codelineno-5-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="k">let</span> <span class="k">rec</span> <span class="n">genrec</span> <span class="n">base</span> <span class="n">split</span> <span class="n">combine</span> <span class="n">lst</span> <span class="o">=</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a>  <span class="k">if</span> <span class="n">base</span> <span class="n">lst</span> <span class="k">then</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a>    <span class="n">lst</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a>  <span class="k">else</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a>    <span class="k">let</span> <span class="o">(</span><span class="n">preserve</span><span class="o">,</span> <span class="n">recurse</span><span class="o">)</span> <span class="o">=</span> <span class="n">split</span> <span class="n">lst</span> <span class="k">in</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a>    <span class="k">let</span> <span class="n">recursed</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="n">genrec</span> <span class="n">base</span> <span class="n">split</span> <span class="n">combine</span><span class="o">)</span> <span class="n">recurse</span> <span class="k">in</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a>      <span class="n">combine</span> <span class="n">preserve</span> <span class="n">recursed</span> 
+</span></code></pre></div></td></tr></table></div>
+<p>This encapsulates the recursion patterns found in both mergesort
+and quicksort functions:</p>
+<ul>
+<li>
+<p><code>base</code> is a function which returns <code>true</code> when the input list
+   to be sorted is in one of its base case configurations
+   (and thus, doesn't need to be sorted).</p>
+</li>
+<li>
+<p><code>split</code> is a function which splits the input list.
+  It returns two lists:</p>
+<ol>
+<li>
+<p><code>preserve</code> : 
+   a list of elements of the input list
+   which are to pass through unaltered
+   (for instance, the pivot value in a quicksort function).
+   If this isn't needed (<em>e.g.</em> in a merge sort function),
+   this will be an empty list.</p>
+</li>
+<li>
+<p><code>recurse</code> : 
+   a list of lists, each of which was generated from the input list.
+   These lists will get processed by recursive calls to <code>genrec</code>.
+   There could be any number of sublists,
+   depending on the algorithm being implemented.
+   For instance, simple merge sort and quicksort would have two sublists,
+   whereas <code>mergesort3</code> would have three.</p>
+</li>
+</ol>
+</li>
+<li>
+<p><code>combine</code> is a function which combines the <code>preserve</code>d values
+  with the <code>recurse</code>d lists (after they have been recursively processed)
+  to get the final result.</p>
+</li>
+</ul>
+<p>Using <code>genrec</code> means that we can generete sorting functions simply by
+specifying the base case function, the splitting function,
+and the combining function.
+The base case function is pretty trivial.
+The splitting and combining functions may be simple or complex,
+depending on the algorithm.
+However, since we've implemented a few of these above,
+we can re-use them here!</p>
+<h2 id="6-generating-mergesort-3-points">6. Generating <code>mergesort</code> &nbsp; [<strong>3 points</strong>]</h2>
+<p>Use <code>genrec</code> to generate a simple <code>mergesort</code> function
+that splits the input list into two lists, sorts the lists,
+and merges the sorted sublists.
+Use the <code>split2</code> and <code>merge2</code> functions to create the
+input splitting (<code>split</code>) and merging (<code>combine</code>)
+function arguments to <code>genrec</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Tips</p>
+<p>You can't use <code>split2</code> and <code>merge2</code> directly
+as the <code>split</code> and <code>combine</code> arguments,
+but the actual <code>split</code> and <code>combine</code> functions you need
+can be defined easily in terms of <code>split2</code> and <code>merge2</code>,
+respectively.</p>
+<p>Remember that both the <code>split</code> and <code>combine</code> functions
+allow for <code>preserve</code>d values,
+though in the case of merge sort, there aren't any.
+So the <code>split</code> function will need to return the empty list
+as the <code>preserve</code> output,
+and the <code>combine</code> function will receive the empty list
+as the <code>preserve</code> input.</p>
+<p>In the <code>combine</code> function,
+when unpacking the <code>recursed</code> argument (a list of lists)
+there will be cases that can't happen;
+in this case use the <code>failwith</code> command with a meaningful error message
+to indicate this.
+(This applies to the problems below as well.)</p>
+</div>
+<p>The sorting examples are the same as in problem 5.</p>
+<h2 id="7-generating-mergesort3-3-points">7. Generating <code>mergesort3</code> &nbsp; [<strong>3 points</strong>]</h2>
+<p>Use <code>genrec</code> to generate a <code>mergesort3</code>-like function;
+call it <code>mergesort3'</code> (note the single quote (<code>'</code>) at the end of the name).
+Use the <code>split3</code> function you defined above
+to define the <code>split</code> function argument to <code>genrec</code>;
+as described above, it won't work as-is,
+so you will need to adjust its output to be compatible with what
+<code>split</code> is supposed to return.
+Similarly, use the <code>merge3</code> function to define
+the <code>combine</code> function argument to <code>genrec</code>;
+again, you can't use it as-is.</p>
+<p>The sorting examples are the same as in problem 5.</p>
+<h2 id="8-generating-quicksort-3-points">8. Generating <code>quicksort</code> &nbsp; [<strong>3 points</strong>]</h2>
+<p>Now use <code>genrec</code> to generate a <code>quicksort</code> function.
+Recall that the quicksort algorithm works as follows:</p>
+<ol>
+<li>
+<p>If the list has a length &lt;= 1, return it unchanged.</p>
+</li>
+<li>
+<p>Otherwise, take the first element (head) of the list
+   (called the "pivot"), and set it aside.</p>
+</li>
+<li>
+<p>Take the tail of the list, and split it into two sublists:</p>
+<ol>
+<li>all elements strictly less than the pivot</li>
+<li>all elements greater than or equal to the pivot</li>
+</ol>
+</li>
+<li>
+<p>Sort the sublists, then combine</p>
+<ol>
+<li>the sorted less-than sublist</li>
+<li>the pivot</li>
+<li>the sorted greater-than-or-equal sublist</li>
+</ol>
+<p>to get the final answer.</p>
+</li>
+</ol>
+<p>Use the same <code>base</code> function you've been using for the previous two problems.</p>
+<p>You will have to define the <code>split</code> function yourself
+(don't use any previously-defined functions);
+note that the <code>preserve</code>d output list will <em>not</em> be empty.
+(<em>Hint</em>: It just contains the pivot.)
+If there are any input cases you can't split
+(for instance, an empty list),
+use the <code>failwith</code> function and a meaningful error message
+to handle those cases.</p>
+<p>Use the <code>List.filter</code> function to easily generate the sublists.
+(Look it up in the
+<a href="https://ocaml.org/manual/5.4.0/api/List.html">OCaml <code>List</code> module documentation</a>.)
+You must also define the <code>combine</code> function yourself,
+based on how the quicksort algorithm works.</p>
+<p>The sorting examples are the same as in problem 5.</p>
+<h2 id="9-generating-quicksort3-4-points">9. Generating <code>quicksort3</code> &nbsp; [<strong>4 points</strong>]</h2>
+<p>We extended <code>mergesort</code> to <code>mergesort3</code> above.
+Can we do the same to quicksort?
+Indeed we can!</p>
+<p>Here's the algorithm:</p>
+<ol>
+<li>
+<p>If the list has a length &lt;= 1, return it unchanged.</p>
+</li>
+<li>
+<p>Otherwise, take the first <em>two</em> elements (<code>head1</code> and <code>head2</code>) of the list
+   (called the "pivots"), and set them aside.
+   Order them by size;
+   the smaller is <code>pivot_small</code> and the larger is <code>pivot_large</code>.
+   If they are equal, both values will be the same (that still works).</p>
+</li>
+<li>
+<p>Take the rest of the list, and split it into <em>three</em> sublists:</p>
+<ol>
+<li>all elements strictly less than <code>pivot_small</code></li>
+<li>all elements greater than or equal to <code>pivot_small</code>
+   but strictly less than <code>pivot_large</code></li>
+<li>all elements greater than or equal to <code>pivot_large</code></li>
+</ol>
+</li>
+<li>
+<p>Sort the sublists, then combine</p>
+<ol>
+<li>the sorted sublist which is less than <code>pivot_small</code></li>
+<li><code>pivot_small</code></li>
+<li>the sorted sublist which is between <code>pivot_small</code> and <code>pivot_large</code></li>
+<li><code>pivot_large</code></li>
+<li>the sorted sublist which is greater than or equal to <code>pivot_large</code></li>
+</ol>
+<p>to get the final answer.</p>
+</li>
+</ol>
+<p>Once again, use <code>genrec</code> to write the function.
+Despite the increase in complexity,
+this only requires a couple of lines more
+than the <code>quicksort</code> function did.
+Again, use <code>List.filter</code> to generate the sublists.</p>
+<p>The sorting examples are the same as in problem 5.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../partA_complexity/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part A: Complexity">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Part A: Complexity
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../partC_data_structures/" class="md-footer__link md-footer__link--next" aria-label="Next: Part C: Data structures">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Part C: Data structures
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
