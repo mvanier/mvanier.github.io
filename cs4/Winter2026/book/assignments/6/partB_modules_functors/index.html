@@ -2553,15 +2553,15 @@ Don't change the <code>PRIORITY_QUEUE</code> module type!</p>
 one unexported helper function you will definitely want to implement
 is the <code>merge</code> function.</p>
 </div>
-<p>Note that since the type <code>elem</code> is abstract,
+<p>Note that since the type <code>elem</code> is abstract
+in the <code>PRIORITY_QUEUE</code> module type,
 if you want to use a real type
 as the elements of your priority queue
 (and it would be pretty useless otherwise),
 you have to specify which type you want
-the <code>PRIORITY_QUEUE</code>'s <code>elem</code> value to represent.
-(This is fairly clunky syntax.)
-Also, you might ask why you can't just make it parametric,
-like a type <code>'a list</code>.
+<code>PRIORITY_QUEUE</code>'s <code>elem</code> value to represent in the module signature
+(the <code>with type elem = int</code> part) - this is fairly clunky syntax.
+You might ask why you can't just make it parametric, like a type <code>'a list</code>.
 You actually can in some cases,
 but here we need a type with an ordering relation,
 and there is no way to guarantee
