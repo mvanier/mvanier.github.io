@@ -1,0 +1,9 @@
+#! /opt/homebrew/bin/zsh
+
+foreach f (*.dot)
+  echo $f
+  # Remove the `.dot` file extension from the filename.
+  g=`echo $f | cut -f 1 -d '.'`
+  dot -Tsvg -o $g.svg $g.dot
+end
+

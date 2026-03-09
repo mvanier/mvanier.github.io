@@ -1,0 +1,3219 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mvanier.github.io/cs4/Winter2026/book/assignments/5/partC_modules_functors/">
+      
+      
+        <link rel="prev" href="../partB_poly/">
+      
+      
+        <link rel="next" href="../partD_Y_combinator/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Part C: Modules and functors - The CS 4 book (Winter 2026)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-c-modules-and-functors-40-points" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The CS 4 book (Winter 2026)" class="md-header__button md-logo" aria-label="The CS 4 book (Winter 2026)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The CS 4 book (Winter 2026)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part C: Modules and functors
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to medium mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to medium mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="medium" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18V6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The CS 4 book (Winter 2026)" class="md-nav__button md-logo" aria-label="The CS 4 book (Winter 2026)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The CS 4 book (Winter 2026)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Introduction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/welcome/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome to CS 4!
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../intro/motivation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Administrative
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Administrative
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../admin/collab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collaboration policies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignments
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignments
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../0/assignment0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 0: Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 1: Evaluation and recursion
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 1: Evaluation and recursion
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/assignment1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/ocaml_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partA_exercises/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: Exercises
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partB_evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1/partC_recursion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Recursion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 2: Complexity and HOFs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 2: Complexity and HOFs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/assignment2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/ocaml_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/partA_orders_of_growth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: Orders of growth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/partB_evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/partC_higher_order_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Higher-order functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2/partD_additional_problems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part D: Additional problems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 3: Lists
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 3: Lists
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/assignment3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/ocaml_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/partA_lists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: Working with lists
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/partB_structural_generative_recursion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: Structural and Generative Recursion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3/partC_more_lists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Some harder problems with lists
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 4: Data abstraction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 4: Data abstraction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/assignment4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/ocaml_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/partA_abstraction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: Abstraction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/partB_more_abstraction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: More abstraction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4/partC_algebra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Algebraic expressions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Midterm exam
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Midterm exam
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../midterm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../midterm/ocaml_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../midterm/partA_complexity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: Complexity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../midterm/partB_lists_hofs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: Lists and HOFs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../midterm/partC_data_structures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Data structures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 5: Modules and mutation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 5: Modules and mutation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assignment5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ocaml_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partA_imperative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: Imperative programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partB_poly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: Polymorphic variants
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Modules and functors
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Modules and functors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-stack-module-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The STACK module type
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-functional-stacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Functional stacks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-imperative-stacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Imperative stacks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-functor-on-stacks-compiling-arithmetic-expressions-to-postfix-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A functor on stacks: compiling arithmetic expressions to postfix form
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-to_list-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The to_list function
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-compile-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The compile function
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partD_Y_combinator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part D: The Y combinator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 6: Environmentally-friendly
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 6: Environmentally-friendly
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/assignment6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/ocaml_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/partA_environment_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: Environment model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/partB_modules_functors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: Modules and functors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6/partC_special_topics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part C: Special topics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 7: Final exam preparation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 7: Final exam preparation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7/assignment7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7/ocaml_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7/klotski_game/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The "Klotski" sliding-block puzzle game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7/partA_klotski_board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part A: the Klotski module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7/partB_search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part B: the Search functor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Readings
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Readings
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../readings/ocaml_cheat_sheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCaml Cheat Sheet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../readings/subst/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Substitution Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-stack-module-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The STACK module type
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-functional-stacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Functional stacks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-imperative-stacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Imperative stacks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-functor-on-stacks-compiling-arithmetic-expressions-to-postfix-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A functor on stacks: compiling arithmetic expressions to postfix form
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-to_list-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The to_list function
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-compile-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The compile function
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="part-c-modules-and-functors-40-points">Part C: Modules and functors (40 points)</h1>
+<p>The purpose of this section is to give you practice
+working with modules and functors.</p>
+<p>There are two ways in which modules are typically used in OCaml.</p>
+<ol>
+<li>
+<p>Each file of OCaml code defines a module, where the <code>.mli</code> file
+   is the interface of the module
+   and the <code>.ml</code> file is the implementation of the module.
+   This is the way we have been using modules up until now in the course.</p>
+</li>
+<li>
+<p>A module can be defined inside of a <code>.ml</code> file;
+   this usually represents some kind of data structure
+   or unit of functionality.
+   This use of modules is what we will be dealing with in this section.</p>
+</li>
+</ol>
+<p>We will define a stack interface and two different implementations of stacks,
+one purely functional and one imperative.
+Then we will use stacks to do an interesting computation.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>OCaml has a <code>Stack</code> module as part of its standard library.
+You are <strong>not</strong> allowed to use any part of it in this section.</p>
+</div>
+<h2 id="the-stack-module-type">The <code>STACK</code> module type</h2>
+<p>When working with modules,
+it's usually a good idea to define a "module type"
+which describes the capabilities of the module.
+The distinction between module and module type
+is exactly the distinction between <code>.ml</code> files and <code>.mli</code> files,
+except that modules and module types can occur inside <code>.ml</code> files.</p>
+<p>Here, we will be working with the following module type,
+which represents stacks:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">module</span> <span class="k">type</span> <span class="nc">STACK</span> <span class="o">=</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  <span class="k">sig</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="c">(* The type of stacks. *)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="c">(* Create a new, empty stack. *)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">val</span> <span class="n">make</span> <span class="o">:</span> <span class="kt">unit</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="c">(* Push a value to a stack, returning a new stack. *)</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="k">val</span> <span class="n">push</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="c">(* Pop a value from a stack, returning either</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c">       - the value popped, plus the remaining stack</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c">       - None (to indicate that the stack was empty) *)</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="k">val</span> <span class="n">pop</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">*</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span><span class="o">)</span> <span class="n">option</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>  <span class="k">end</span>
+</span></code></pre></div>
+<p>(You will need to copy this into your submission.)</p>
+<p>The code between the keywords <code>sig</code> (which stands for "signature")
+and <code>end</code> is the stack interface.
+It includes one type (the type of stacks),
+and three functions on stacks.</p>
+<p>The type of stacks is <code>type 'a t</code>
+because a stack is allowed to store any type of value
+(<code>'a</code> refers to the type of stack elements),
+as long as all the different values in the stack have the same type.
+The <code>t</code> is just a short name that refers to the stack type.
+(It's a convention in OCaml for modules that define a single datatype
+to use the letter <code>t</code> to refer to that datatype;
+we could have alternatively called it <code>stack</code> or anything else we wanted.)</p>
+<p>The functions on stacks have these meanings:</p>
+<ol>
+<li>
+<p><code>make</code> takes a <code>unit</code> value (<code>()</code>) and makes a new, empty stack.</p>
+</li>
+<li>
+<p><code>push</code> takes a value and a stack and pushes that value onto the stack,
+   returning a new stack.</p>
+</li>
+<li>
+<p><code>pop</code> takes a stack and tries to pop the top value off the stack,
+   returning the popped value and the remaining stack;
+   if it succeeds, it returns <code>Some (&lt;value&gt;, &lt;stack&gt;)</code>,
+   and if it fails, it returns <code>None</code>.</p>
+<p>Writing the <code>pop</code> function this way
+means that we don't need another function
+to check if the stack is empty or not.</p>
+</li>
+</ol>
+<p>The <code>STACK</code> module type doesn't actually allow us to create stacks;
+for that, we have to create modules that conform to that interface.
+In fact, we could create stack modules without defining a module type,
+but we will see below (when we get to functors)
+why having a module type is essential.</p>
+<h2 id="1-functional-stacks">1. Functional stacks</h2>
+<p>[<strong>5 points</strong>]</p>
+<p>One of the simplest ways of implementing a stack
+in a purely functional way is as a list:</p>
+<ol>
+<li>
+<p>To push something onto a list, put it at the front of the list
+   using the <code>::</code> list constructor, giving a new list.</p>
+</li>
+<li>
+<p>To pop something from a list, split it into its head and tail;
+   the head is the value popped, and the tail is the remaining "stack".
+   If the stack is empty, return <code>None</code>,
+   and if not, return <code>Some (&lt;head&gt;, &lt;tail&gt;)</code>.</p>
+</li>
+</ol>
+<p>Here's a template for writing this as an OCaml module:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">module</span> <span class="nc">Fstack</span> <span class="o">:</span> <span class="nc">STACK</span> <span class="o">=</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  <span class="k">struct</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="k">let</span> <span class="n">make</span> <span class="bp">()</span> <span class="o">=</span> <span class="n">failwith</span> <span class="s2">&quot;TODO&quot;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="k">let</span> <span class="n">push</span> <span class="n">v</span> <span class="n">s</span> <span class="o">=</span> <span class="n">failwith</span> <span class="s2">&quot;TODO&quot;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="k">let</span> <span class="n">pop</span> <span class="n">s</span> <span class="o">=</span> <span class="n">failwith</span> <span class="s2">&quot;TODO&quot;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  <span class="k">end</span>
+</span></code></pre></div>
+<p>The line</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">module</span> <span class="nc">Fstack</span> <span class="o">:</span> <span class="nc">STACK</span> <span class="o">=</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>indicates that the name of the module is <code>Fstack</code> (for "functional stack")
+and it must conform to the <code>STACK</code> interface.
+You could define it like this:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">module</span> <span class="nc">Fstack</span> <span class="o">=</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>without the <code>STACK</code> module type;
+in that case, you could put whatever you like inside the module.
+Having the <code>: STACK</code> constraint does two things:</p>
+<ol>
+<li>
+<p>It means that the module <em>must</em> implement all the types and functions
+   specified in the <code>STACK</code> module type, with the correct types.</p>
+</li>
+<li>
+<p>It means that nothing other than the <code>STACK</code> types and functions
+   are exported from the module.</p>
+</li>
+</ol>
+<p>You can have extra functions in the module if you like,
+but nothing that uses the module will be able to access them.
+Similarly, the internal representation of the stack datatype
+will not be visible from outside the module.</p>
+<p>Here's what this would look like in the OCaml interpreter.
+Let's suppose we want to create a stack of <code>int</code>s,
+and add a couple of values to it.</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="o">#</span> <span class="k">let</span> <span class="n">s</span> <span class="o">=</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">make</span> <span class="bp">()</span> <span class="o">;;</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">val</span> <span class="n">s</span> <span class="o">:</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak2</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">abstr</span><span class="o">&gt;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="o">#</span> <span class="k">let</span> <span class="n">s&#39;</span> <span class="o">=</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">push</span> <span class="mi">1</span> <span class="n">s</span> <span class="o">;;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">val</span> <span class="n">s&#39;</span> <span class="o">:</span> <span class="kt">int</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">abstr</span><span class="o">&gt;</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="o">#</span> <span class="k">let</span> <span class="n">s&#39;&#39;</span> <span class="o">=</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">push</span> <span class="mi">2</span> <span class="n">s&#39;</span> <span class="o">;;</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="k">val</span> <span class="n">s&#39;&#39;</span> <span class="o">:</span> <span class="kt">int</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">abstr</span><span class="o">&gt;</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="o">#</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">pop</span> <span class="n">s&#39;&#39;</span> <span class="o">;;</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="o">-</span> <span class="o">:</span> <span class="o">(</span><span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span><span class="o">)</span> <span class="n">option</span> <span class="o">=</span> <span class="nc">Some</span> <span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="o">&lt;</span><span class="n">abstr</span><span class="o">&gt;)</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="o">#</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">pop</span> <span class="n">s&#39;</span> <span class="o">;;</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="o">-</span> <span class="o">:</span> <span class="o">(</span><span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span><span class="o">)</span> <span class="n">option</span> <span class="o">=</span> <span class="nc">Some</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="o">&lt;</span><span class="n">abstr</span><span class="o">&gt;)</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="o">#</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">pop</span> <span class="n">s</span> <span class="o">;;</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="o">-</span> <span class="o">:</span> <span class="o">(</span><span class="kt">int</span> <span class="o">*</span> <span class="kt">int</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span><span class="o">)</span> <span class="n">option</span> <span class="o">=</span> <span class="nc">None</span>
+</span></code></pre></div>
+<p>Notice that pushing a value to a stack returns a new stack,
+and popping a value off a stack also returns a new stack
+plus the popped value (unless the stack is empty).</p>
+<p>The one weird thing here is the type of the newly-created stack:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">#</span> <span class="k">let</span> <span class="n">s</span> <span class="o">=</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">make</span> <span class="bp">()</span> <span class="o">;;</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">val</span> <span class="n">s</span> <span class="o">:</span> <span class="k">&#39;</span><span class="o">_</span><span class="n">weak2</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">abstr</span><span class="o">&gt;</span>
+</span></code></pre></div>
+<p>Don't worry about this <code>'_weak2</code> business.
+It just means that OCaml doesn't know enough at that point
+to know what the type of the stack elements are.
+The <code>_weak2</code> name means "type to be determined later".
+If we wanted to specify the type up front,
+we could have written it with a type annotation:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="o">#</span> <span class="k">let</span> <span class="o">(</span><span class="n">s</span> <span class="o">:</span> <span class="kt">int</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span><span class="o">)</span> <span class="o">=</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">make</span> <span class="bp">()</span> <span class="o">;;</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">val</span> <span class="n">s</span> <span class="o">:</span> <span class="kt">int</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">abstr</span><span class="o">&gt;</span>
+</span></code></pre></div>
+<p>The <code>&lt;abstr&gt;</code> value is also interesting.
+It's OCaml's way of saying
+"There is a value there, but it's abstract,
+which means that you can't know anything about what it is internally."
+The module type <code>STACK</code> prevents us from looking inside the stack
+to see anything about its implementation -
+this is called "data hiding" and helps enforce module boundaries.
+If we didn't use the <code>STACK</code> module type to constrain the module,
+you could see that the stack was implemented as a list,
+and it would have looked like this:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="o">#</span> <span class="k">let</span> <span class="o">(</span><span class="n">s</span> <span class="o">:</span> <span class="kt">int</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span><span class="o">)</span> <span class="o">=</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">make</span> <span class="bp">()</span> <span class="o">;;</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">val</span> <span class="n">s</span> <span class="o">:</span> <span class="kt">int</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="bp">[]</span>
+</span></code></pre></div>
+<p>The implementation of the stack functions (<code>make</code>, <code>push</code>, and <code>pop</code>)
+is simple; <code>make</code> and <code>push</code> are trivial one-liners,
+while <code>pop</code> has to be a little longer to deal with the empty stack case.</p>
+<h2 id="2-imperative-stacks">2. Imperative stacks</h2>
+<p>[<strong>5 points</strong>]</p>
+<p>It's often useful to have multiple implementations
+of the same data structure.
+For this problem, define an imperative stack module.
+Here is the template:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">module</span> <span class="nc">Istack</span> <span class="o">:</span> <span class="nc">STACK</span> <span class="o">=</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  <span class="k">struct</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span> <span class="n">ref</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="k">let</span> <span class="n">make</span> <span class="bp">()</span> <span class="o">=</span> <span class="n">failwith</span> <span class="s2">&quot;TODO&quot;</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="k">let</span> <span class="n">push</span> <span class="n">v</span> <span class="n">s</span> <span class="o">=</span> <span class="n">failwith</span> <span class="s2">&quot;TODO&quot;</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="k">let</span> <span class="n">pop</span> <span class="n">s</span> <span class="o">=</span> <span class="n">failwith</span> <span class="s2">&quot;TODO&quot;</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>  <span class="k">end</span>
+</span></code></pre></div>
+<p>An imperative stack is implemented here as a reference cell
+storing a list.  The type <code>'a list ref</code> should be read as
+<code>('a list) ref</code> <em>i.e.</em> a <code>ref</code> cell containing a value of type <code>'a list</code>.
+Your job is to fill in the definitions
+of the <code>make</code>, <code>push</code> and <code>pop</code> functions.
+Again, <code>make</code> and <code>push</code> are very simple,
+while <code>pop</code> is a little bit more complicated.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Most implementations of imperative stacks would redefine
+the types of <code>push</code> and <code>pop</code> to the following:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">val</span> <span class="n">push</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="kt">unit</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">val</span> <span class="n">pop</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">option</span>
+</span></code></pre></div>
+<p>In other words, these functions would not return the updated stacks,
+since the stack updates would be reflected in changes
+to the contents of the <code>ref</code> cell.</p>
+<p>We aren't doing this here, because we want both the functional
+and imperative stacks to have the same interface.
+This will be useful when we discuss functors below.
+Nevertheless, the implementations of <code>push</code> and <code>pop</code>
+<strong>must</strong> change the <code>ref</code> cell contents
+(unless you are popping an empty stack, of course).</p>
+</div>
+<h2 id="a-functor-on-stacks-compiling-arithmetic-expressions-to-postfix-form">A functor on stacks: compiling arithmetic expressions to postfix form</h2>
+<p>Now that we have a stack module type
+and two different implementations of stacks,
+we can do something with them.
+We are going to do a simple computation to compile
+arithmetic expressions (the <code>expr</code> type we saw in assignment 4)
+to a lower-level form.</p>
+<p>Recall that the <code>expr</code> datatype looks like this:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">type</span> <span class="n">expr</span> <span class="o">=</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  <span class="o">|</span> <span class="nc">Int</span> <span class="k">of</span> <span class="kt">int</span>           <span class="c">(* constant *)</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>  <span class="o">|</span> <span class="nc">Var</span> <span class="k">of</span> <span class="kt">string</span>        <span class="c">(* variable *)</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>  <span class="o">|</span> <span class="nc">Add</span> <span class="k">of</span> <span class="n">expr</span> <span class="o">*</span> <span class="n">expr</span>   <span class="c">(* expr1 + expr2 *)</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>  <span class="o">|</span> <span class="nc">Mul</span> <span class="k">of</span> <span class="n">expr</span> <span class="o">*</span> <span class="n">expr</span>   <span class="c">(* expr1 * expr2 *)</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>  <span class="o">|</span> <span class="nc">Pow</span> <span class="k">of</span> <span class="n">expr</span> <span class="o">*</span> <span class="kt">int</span>    <span class="c">(* expr^n *)</span>
+</span></code></pre></div>
+<p>Expressions of this type could be generated by parsing
+arithmetic expressions entered by a user in a calculator program,
+for instance.  They could be interpreted directly,
+but it's not uncommon in actual programming language implementations
+to convert this representation to a "postfix" representation,
+where the expressions would become "instructions".
+Here is the target datatype:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">type</span> <span class="n">inst</span> <span class="o">=</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>  <span class="o">|</span> <span class="nc">Push_int</span> <span class="k">of</span> <span class="kt">int</span>      <span class="c">(* push an integer onto a stack *)</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>  <span class="o">|</span> <span class="nc">Push_var</span> <span class="k">of</span> <span class="kt">string</span>   <span class="c">(* push the value of a variable onto a stack *)</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>  <span class="o">|</span> <span class="nc">Op_add</span>               <span class="c">(* add the top two values on the stack *)</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>  <span class="o">|</span> <span class="nc">Op_mul</span>               <span class="c">(* multiply the top two values on the stack *)</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>  <span class="o">|</span> <span class="nc">Op_pow</span>               <span class="c">(* take the power of the top two stack values *)</span>
+</span></code></pre></div>
+<p>These are called "postfix" instructions because (for instance)
+an input expression of the form</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nc">Expr</span> <span class="o">(</span><span class="nc">Int</span> <span class="mi">1</span><span class="o">,</span> <span class="nc">Int</span> <span class="mi">2</span><span class="o">)</span>
+</span></code></pre></div>
+<p>would be converted to the list of expressions</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="o">[</span><span class="nc">Push_int</span> <span class="mi">1</span><span class="o">,</span> <span class="nc">Push_int</span> <span class="mi">2</span><span class="o">,</span> <span class="nc">Op_add</span><span class="o">]</span>
+</span></code></pre></div>
+<p>This puts the operator (+) after the operands (1 and 2),
+which is called a postfix representation.</p>
+<p>Instructions of this sort would normally be passed to an evaluator function
+which would convert the instructions into the final value (an integer).
+For instance, Python's internal bytecode includes instructions
+that are very similar to these.</p>
+<p>However, we aren't going to worry about evaluating instructions.
+Instead, we are just going to use our stack datatypes
+to compile expressions (of type <code>expr</code>)
+into a list of instructions (of type <code>inst</code>).<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>
+We also want to be able to use either the functional stack implementation
+or the imperative stack implementation in our code,
+and we want to make it easy to switch between them
+(in other words, we don't want to hard-code the implementation choice
+in the compiler code).</p>
+<p>In OCaml, we do this kind of thing using <strong>functors</strong>.
+A functor is basically a kind of higher-level function on modules:
+you give it an input module, and it returns an output module.
+Often the input module represents a particular implementation
+of a data structure,
+while the output module represents one or more functions
+that use that implementation.
+That will be the case here.
+The input module will be a stack implementation module
+(either the functional <code>Fstack</code> module
+or the imperative <code>Istack</code> module).
+The output will be the expression-to-postfix compiler module
+that uses the particular stack module that was input
+to perform its computations.</p>
+<p>Here is the template for the functor code:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">module</span> <span class="nc">MakeCompiler</span> <span class="o">(</span><span class="nc">S</span> <span class="o">:</span> <span class="nc">STACK</span><span class="o">)</span> <span class="o">=</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>  <span class="k">struct</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="c">(* Convert the stack to a list. *)</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="k">let</span> <span class="n">to_list</span> <span class="o">(</span><span class="n">s</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="nn">S</span><span class="p">.</span><span class="n">t</span><span class="o">)</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span> <span class="o">=</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>      <span class="n">failwith</span> <span class="s2">&quot;TODO&quot;</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    <span class="c">(* Compile an expression to a list of postfix instructions. *)</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    <span class="k">let</span> <span class="n">compile</span> <span class="o">(</span><span class="n">e</span> <span class="o">:</span> <span class="n">expr</span><span class="o">)</span> <span class="o">:</span> <span class="n">inst</span> <span class="kt">list</span> <span class="o">=</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>      <span class="k">let</span> <span class="k">rec</span> <span class="n">iter</span> <span class="n">in_s</span> <span class="n">out_s</span> <span class="o">=</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>        <span class="k">match</span> <span class="nn">S</span><span class="p">.</span><span class="n">pop</span> <span class="n">in_s</span> <span class="k">with</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>          <span class="o">|</span> <span class="nc">None</span> <span class="o">-&gt;</span> <span class="n">to_list</span> <span class="n">out_s</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>          <span class="o">|</span> <span class="nc">Some</span> <span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">in_s&#39;</span><span class="o">)</span> <span class="o">-&gt;</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>              <span class="n">failwith</span> <span class="s2">&quot;TODO&quot;</span>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>      <span class="k">in</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>        <span class="k">let</span> <span class="n">input_stack</span> <span class="o">=</span> <span class="nn">S</span><span class="p">.</span><span class="n">push</span> <span class="o">(`</span><span class="nc">Expr</span> <span class="n">e</span><span class="o">)</span> <span class="o">(</span><span class="nn">S</span><span class="p">.</span><span class="n">make</span> <span class="bp">()</span><span class="o">)</span> <span class="k">in</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>        <span class="k">let</span> <span class="n">output_stack</span> <span class="o">=</span> <span class="nn">S</span><span class="p">.</span><span class="n">make</span> <span class="bp">()</span> <span class="k">in</span>
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>          <span class="n">iter</span> <span class="n">input_stack</span> <span class="n">output_stack</span>
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>  <span class="k">end</span>
+</span></code></pre></div>
+<p>We'll discuss the implemenations
+of the <code>to_list</code> and <code>compile</code> functions below.
+Before we get to that,
+let's see how the functor can be used.</p>
+<p>The first line of the functor:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">module</span> <span class="nc">MakeCompiler</span> <span class="o">(</span><span class="nc">S</span> <span class="o">:</span> <span class="nc">STACK</span><span class="o">)</span> <span class="o">=</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>indicates that this is a "function" from an input module called <code>S</code>
+(which must conform to the interface of the module type <code>STACK</code>)
+to an output module which uses the stack implementation
+in the functions it defines.
+Because the functor code doesn't know <em>anything</em>
+about the internal implementation of the stack module,
+it can <em>only</em> use the stack module functions <code>make</code>, <code>push</code>, and <code>pop</code>.
+Since the name given to the <code>STACK</code> implementation is <code>S</code>
+inside the functor, these functions are called by writing
+<code>S.make</code>, <code>S.push</code>, and <code>S.pop</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We've also put type annotations on the <code>to_list</code> and <code>compile</code>
+functions; we could have left them out,
+but type annotations are good documentation,
+so we'll keep them.</p>
+</div>
+<p>This functor code can't be used without "instantiating" the functor.
+That means supplying a concrete module as the argument to the
+<code>MakeCompiler</code> functor.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>
+We can do this as follows:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">module</span> <span class="nc">Fcompiler</span> <span class="o">=</span> <span class="nc">MakeCompiler</span> <span class="o">(</span><span class="nc">Fstack</span><span class="o">)</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="k">module</span> <span class="nc">Icompiler</span> <span class="o">=</span> <span class="nc">MakeCompiler</span> <span class="o">(</span><span class="nc">Istack</span><span class="o">)</span>
+</span></code></pre></div>
+<p>This uses the <code>MakeCompiler</code> functor to create two modules:</p>
+<ul>
+<li>
+<p>the <code>Fcompiler</code> module uses the functional stack module
+  for all of its stack operations;</p>
+</li>
+<li>
+<p>the <code>Icompiler</code> module uses the imperative stack module
+  for all of its stack operations.</p>
+</li>
+</ul>
+<p>If both of the functional and imperative stack modules behave similarly,
+both the <code>Fcompiler</code> and <code>Icompiler</code> modules
+should compute the exact same outputs given the same inputs
+to the <code>compile</code> function.
+(Of course, the asymptotic efficiency may not be the same,
+though in this particular case, it is.)</p>
+<p>Here is a trivial test of the compiler(s):</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="o">#</span> <span class="k">let</span> <span class="n">e1</span> <span class="o">=</span> <span class="nc">Pow</span> <span class="o">(</span><span class="nc">Add</span> <span class="o">(</span><span class="nc">Mul</span> <span class="o">(</span><span class="nc">Int</span> <span class="mi">10</span><span class="o">,</span> <span class="nc">Var</span> <span class="s2">&quot;x&quot;</span><span class="o">),</span> <span class="nc">Var</span> <span class="s2">&quot;y&quot;</span><span class="o">),</span> <span class="mi">10</span><span class="o">)</span> <span class="o">;;</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="k">val</span> <span class="n">e1</span> <span class="o">:</span> <span class="n">expr</span> <span class="o">=</span> <span class="nc">Pow</span> <span class="o">(</span><span class="nc">Add</span> <span class="o">(</span><span class="nc">Mul</span> <span class="o">(</span><span class="nc">Int</span> <span class="mi">10</span><span class="o">,</span> <span class="nc">Var</span> <span class="s2">&quot;x&quot;</span><span class="o">),</span> <span class="nc">Var</span> <span class="s2">&quot;y&quot;</span><span class="o">),</span> <span class="mi">10</span><span class="o">)</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="o">#</span> <span class="k">let</span> <span class="n">e2</span> <span class="o">=</span> <span class="nn">Fcompiler</span><span class="p">.</span><span class="n">compile</span> <span class="n">e1</span> <span class="o">;;</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="k">val</span> <span class="n">e2</span> <span class="o">:</span> <span class="n">inst</span> <span class="kt">list</span> <span class="o">=</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>  <span class="o">[</span><span class="nc">Push_int</span> <span class="mi">10</span><span class="o">;</span> <span class="nc">Push_var</span> <span class="s2">&quot;y&quot;</span><span class="o">;</span> <span class="nc">Push_var</span> <span class="s2">&quot;x&quot;</span><span class="o">;</span> <span class="nc">Push_int</span> <span class="mi">10</span><span class="o">;</span> <span class="nc">Op_mul</span><span class="o">;</span> <span class="nc">Op_add</span><span class="o">;</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>   <span class="nc">Op_pow</span><span class="o">]</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="o">#</span> <span class="k">let</span> <span class="n">e2</span> <span class="o">=</span> <span class="nn">Icompiler</span><span class="p">.</span><span class="n">compile</span> <span class="n">e1</span> <span class="o">;;</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="k">val</span> <span class="n">e2</span> <span class="o">:</span> <span class="n">inst</span> <span class="kt">list</span> <span class="o">=</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>  <span class="o">[</span><span class="nc">Push_int</span> <span class="mi">10</span><span class="o">;</span> <span class="nc">Push_var</span> <span class="s2">&quot;y&quot;</span><span class="o">;</span> <span class="nc">Push_var</span> <span class="s2">&quot;x&quot;</span><span class="o">;</span> <span class="nc">Push_int</span> <span class="mi">10</span><span class="o">;</span> <span class="nc">Op_mul</span><span class="o">;</span> <span class="nc">Op_add</span><span class="o">;</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>   <span class="nc">Op_pow</span><span class="o">]</span>
+</span></code></pre></div>
+<p>Both the <code>Fcompiler</code> and <code>Icompiler</code> modules' <code>compiler</code> functions
+give the same result with the same input, as expected.</p>
+<p>With all of that out of the way,
+we can get to the two functions you need to write.</p>
+<h2 id="3-the-to_list-function">3. The <code>to_list</code> function</h2>
+<p>[<strong>10 points</strong>]</p>
+<p>We are going to be accumulating the postfix instructions on an output stack.
+In order to actually generate the list of instructions as output,
+we have to convert the contents of the stack to a list.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This could have also been a function in the <code>STACK</code> interface.
+Doing it here means that we only need to define it once.
+The price we pay is that we have to define it in terms
+of the <code>STACK</code> interface functions;
+we can't directly access the internal representation of the stack
+(which would be faster).
+Programming is all about trade-offs!</p>
+</div>
+<p>The <code>to_list</code> function will use the <code>S.pop</code> stack function
+to generate the output list.
+The topmost item in the stack will be the item at the end of the output list.
+Here's an example:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="o">#</span> <span class="k">let</span> <span class="o">(</span><span class="n">s</span> <span class="o">:</span> <span class="kt">int</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span><span class="o">)</span> <span class="o">=</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">make</span> <span class="bp">()</span><span class="o">;;</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">val</span> <span class="n">s</span> <span class="o">:</span> <span class="kt">int</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">abstr</span><span class="o">&gt;</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="o">#</span> <span class="k">let</span> <span class="n">s1</span> <span class="o">=</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">push</span> <span class="mi">1</span> <span class="n">s</span><span class="o">;;</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="k">val</span> <span class="n">s1</span> <span class="o">:</span> <span class="kt">int</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">abstr</span><span class="o">&gt;</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="o">#</span> <span class="k">let</span> <span class="n">s2</span> <span class="o">=</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">push</span> <span class="mi">2</span> <span class="n">s1</span><span class="o">;;</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="k">val</span> <span class="n">s2</span> <span class="o">:</span> <span class="kt">int</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">abstr</span><span class="o">&gt;</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="o">#</span> <span class="k">let</span> <span class="n">s3</span> <span class="o">=</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">push</span> <span class="mi">3</span> <span class="n">s2</span><span class="o">;;</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="k">val</span> <span class="n">s3</span> <span class="o">:</span> <span class="kt">int</span> <span class="nn">Fstack</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">abstr</span><span class="o">&gt;</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="o">#</span> <span class="nn">Fcompiler</span><span class="p">.</span><span class="n">to_list</span> <span class="n">s3</span> <span class="o">;;</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">]</span>
+</span></code></pre></div>
+<p>This would work the same way with <code>Istack</code> and <code>Icompiler</code>.</p>
+<p>This function is quite short, and should be done iteratively.</p>
+<h2 id="4-the-compile-function">4. The <code>compile</code> function</h2>
+<p>[<strong>20 points</strong>]</p>
+<p>Now we get to the actual compiler function.</p>
+<div class="admonition note">
+<p class="admonition-title">Terminology</p>
+<p>We are not using the word "compiler" here to mean
+"something that converts source code all the way to assembly language".
+Instead, we mean
+"something that converts some representation of code
+to a different representation of code".
+In this case, the representations are the <code>expr</code> and <code>inst</code> types,
+and the compiler converts <code>expr</code> expressions into lists of <code>inst</code>s.</p>
+</div>
+<p>Here is the template code given above:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">let</span> <span class="k">rec</span> <span class="n">compile</span> <span class="o">(</span><span class="n">e</span> <span class="o">:</span> <span class="n">expr</span><span class="o">)</span> <span class="o">:</span> <span class="n">inst</span> <span class="kt">list</span> <span class="o">=</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>  <span class="k">let</span> <span class="k">rec</span> <span class="n">iter</span> <span class="n">in_s</span> <span class="n">out_s</span> <span class="o">=</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="k">match</span> <span class="nn">S</span><span class="p">.</span><span class="n">pop</span> <span class="n">in_s</span> <span class="k">with</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>      <span class="o">|</span> <span class="nc">None</span> <span class="o">-&gt;</span> <span class="n">to_list</span> <span class="n">out_s</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>      <span class="o">|</span> <span class="nc">Some</span> <span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">in_s&#39;</span><span class="o">)</span> <span class="o">-&gt;</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>          <span class="n">failwith</span> <span class="s2">&quot;TODO&quot;</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>  <span class="k">in</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>    <span class="k">let</span> <span class="n">input_stack</span> <span class="o">=</span> <span class="nn">S</span><span class="p">.</span><span class="n">push</span> <span class="o">(`</span><span class="nc">Expr</span> <span class="n">e</span><span class="o">)</span> <span class="o">(</span><span class="nn">S</span><span class="p">.</span><span class="n">make</span> <span class="bp">()</span><span class="o">)</span> <span class="k">in</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>    <span class="k">let</span> <span class="n">output_stack</span> <span class="o">=</span> <span class="nn">S</span><span class="p">.</span><span class="n">make</span> <span class="bp">()</span> <span class="k">in</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>      <span class="n">iter</span> <span class="n">input_stack</span> <span class="n">output_stack</span>
+</span></code></pre></div>
+<p>The compilation algorithm requires two stacks:
+an input stack and an output stack.
+Both will use the <code>S</code> module,
+so either both will be functional stacks
+or both will be imperative stacks.</p>
+<p>To create the input stack,
+an empty stack is made (using <code>S.make ()</code>),
+and the input expression is pushed onto it,
+wrapped in the polymorphic variant tag <code>`Expr</code>.<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>
+We use polymorphic variants because the input stack
+will contain a mixture of expressions
+(which use the <code>`Expr</code> tag)
+operators
+(which use the <code>`Add</code>, <code>`Mul</code>, and <code>`Pow</code> tags),
+and integers (which use the <code>`Int</code> tag).
+None of these tags are used in the outputs of the function;
+they are only there temporarily to allow us to put
+different kinds of things on the input stack.</p>
+<p>The output stack starts off as an empty stack created by <code>S.make ()</code>.
+We will add instructions to it in the course of compilation.</p>
+<p>The <code>iter</code> function works as follows:</p>
+<ul>
+<li>
+<p>If the input stack is empty,
+  the output stack is converted to a list, and the list is returned.</p>
+</li>
+<li>
+<p>Otherwise, it takes values off of the input stack and either:</p>
+<ul>
+<li>pushes values back onto the input stack, or</li>
+<li>pushes instructions onto the output stack.</li>
+</ul>
+</li>
+<li>
+<p>It repeats until there are no more instructions on the input stack.</p>
+</li>
+</ul>
+<p>There are five kinds of expressions
+(all wrapped in <code>`Expr</code> constructors on the input stack),
+corresponding to the five <code>expr</code> constructors.
+They are compiled as follows:</p>
+<ul>
+<li>
+<p>The <code>Int</code> and <code>Var</code> constructors
+can be immediately converted to <code>Push_int</code> and <code>Push_var</code> instructions
+and pushed onto the output stack.</p>
+</li>
+<li>
+<p>The <code>Add</code>, <code>Mul</code>, and <code>Pow</code> constructors each have two subexpressions.
+In each case, they are compiled by taking them apart
+and putting their components back onto the input stack,
+with the operator first, then the second expression, then the first expression.
+The operators are represented by the polymorphic variant tags
+<code>`Add</code>, <code>`Mul</code>, and <code>`Pow</code> respectively.
+The expressions are wrapped in <code>`Expr</code> constructors.
+One exception is the exponent of the <code>Pow</code> constructor;
+it's not an expression but an integer.
+Push it back to the input stack using the <code>`Int</code> tag.</p>
+</li>
+</ul>
+<p>To handle the <code>`Add</code>, <code>`Mul</code>, <code>`Pow</code> values on the input stack,
+push them onto the output stack as
+<code>Op_add</code>, <code>Op_mul</code>, and <code>Op_pow</code> instructions, respectively.
+To handle an <code>`Int &lt;int&gt;</code> value on the input stack
+(generated by compiling a <code>Pow</code> expression),
+convert it to a <code>Push_int &lt;int&gt;</code> instruction
+and push it to the output stack.</p>
+<p>That is the entire compiler!
+The only thing to add is that in some cases,
+you have to push multiple values back onto the input stack.
+This can be tedious to write:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c">(* Example of pushing multiple values onto the input stack. *)</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="k">let</span> <span class="n">s1</span> <span class="o">=</span> <span class="nn">S</span><span class="p">.</span><span class="n">push</span> <span class="o">&lt;</span><span class="n">value1</span><span class="o">&gt;</span> <span class="n">input_stack</span> <span class="k">in</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="k">let</span> <span class="n">s2</span> <span class="o">=</span> <span class="nn">S</span><span class="p">.</span><span class="n">push</span> <span class="o">&lt;</span><span class="n">value2</span><span class="o">&gt;</span> <span class="n">s1</span> <span class="k">in</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>  <span class="nn">S</span><span class="p">.</span><span class="n">push</span> <span class="o">&lt;</span><span class="n">value3</span><span class="o">&gt;</span> <span class="n">s2</span>
+</span></code></pre></div>
+<p>Even though this code works perfectly well,
+there are nicer ways to write it.
+Note that the output of each line is the input to the next.
+So we can write it like this:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nn">S</span><span class="p">.</span><span class="n">push</span> <span class="o">&lt;</span><span class="n">value3</span><span class="o">&gt;</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>  <span class="o">(</span><span class="nn">S</span><span class="p">.</span><span class="n">push</span> <span class="o">&lt;</span><span class="n">value2</span><span class="o">&gt;</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    <span class="o">(</span><span class="nn">S</span><span class="p">.</span><span class="n">push</span> <span class="o">&lt;</span><span class="n">value1</span><span class="o">&gt;</span> <span class="n">input_stack</span><span class="o">))</span>
+</span></code></pre></div>
+<p>This is better, but it's still kind of gross.
+We can use the <code>|&gt;</code> (pipe) operator to make it look a lot nicer!
+The pipe operator (which is built-in to OCaml)
+can be defined like this:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">let</span> <span class="o">(</span> <span class="o">|&gt;</span> <span class="o">)</span> <span class="n">x</span> <span class="n">f</span> <span class="o">=</span> <span class="n">f</span> <span class="n">x</span>
+</span></code></pre></div>
+<p>So it's just reverse function application.
+Big deal!  Why does this matter?
+It's because using this operator, we can rewrite our code like this:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="o">(</span><span class="nn">S</span><span class="p">.</span><span class="n">push</span> <span class="o">&lt;</span><span class="n">value1</span><span class="o">&gt;</span> <span class="n">input_stack</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>  <span class="o">|&gt;</span> <span class="nn">S</span><span class="p">.</span><span class="n">push</span> <span class="o">&lt;</span><span class="n">value2</span><span class="o">&gt;)</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>  <span class="o">|&gt;</span> <span class="nn">S</span><span class="p">.</span><span class="n">push</span> <span class="o">&lt;</span><span class="n">value3</span><span class="o">&gt;</span>
+</span></code></pre></div>
+<p>Because of the left-associativity of the <code>|&gt;</code> operator,
+we can drop the parentheses:</p>
+<div class="language-ocaml highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nn">S</span><span class="p">.</span><span class="n">push</span> <span class="o">&lt;</span><span class="n">value1</span><span class="o">&gt;</span> <span class="n">input_stack</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>  <span class="o">|&gt;</span> <span class="nn">S</span><span class="p">.</span><span class="n">push</span> <span class="o">&lt;</span><span class="n">value2</span><span class="o">&gt;</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>  <span class="o">|&gt;</span> <span class="nn">S</span><span class="p">.</span><span class="n">push</span> <span class="o">&lt;</span><span class="n">value3</span><span class="o">&gt;</span>
+</span></code></pre></div>
+<p>We read this as "push <code>&lt;value1&gt;</code> onto the input stack,
+then push <code>&lt;value2&gt;</code> onto the resulting stack,
+then push <code>&lt;value3&gt;</code> onto the resulting stack.
+OCaml programmers prize concise and readable code,
+of which this is a good example.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>In fact, real implementations of programming languages
+often use stacks at multiple levels:</p>
+<ul>
+<li>Parsing the concrete syntax of the language
+  to expressions is done using a parsing stack.</li>
+<li>Converting the expressions to instructions
+  (as we are doing here) is done using a compiler stack.</li>
+<li>Interpreting the list of instructions is done using a value stack.</li>
+<li>Storing partially-interpreted expressions is done using a runtime stack.</li>
+</ul>
+<p>If you are interested in learning more about interpreters,
+take CS 131 (which also uses OCaml as the implementation language).&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>Actual functor names often start with <code>Make</code>
+(or are just the word <code>Make</code>)
+to emphasize that this is not a module but something that "makes" a module.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>This function is an excellent example
+of how polymorphic variants are actually used in practice.
+Notice that we didn't have to define a special datatype
+to use the <code>`Expr</code> polymorphic variant constructor.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../partB_poly/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part B: Polymorphic variants">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Part B: Polymorphic variants
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../partD_Y_combinator/" class="md-footer__link md-footer__link--next" aria-label="Next: Part D: The Y combinator">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Part D: The Y combinator
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.top"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
