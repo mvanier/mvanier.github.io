@@ -34,6 +34,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'  # You can also use '24.x' or '24.8.0'
+          # check-latest: true # Optional: ensures the most recent patch is used
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
