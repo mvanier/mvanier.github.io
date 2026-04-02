@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- <section data-background-color="#ffffd0"> -->
+          <section data-markdown>
+            <textarea data-template>
+# CS 115:<br/>Functional Programming
+## _Lecture 23_:<br/>Strictness
+
+---
+## Previously
+
+* Monad transformers 
+
+---
+## Today
+
+* We will look more deeply into laziness in Haskell 
+
+* We will learn to control strictness
+  using special functions, operators, and strictness annotations 
+
+---
+## Topics
+
+* Why strictness matters (sometimes) 
+* Thunks 
+* Normal form (NF)
+* Weak Head Normal Form (WHNF) 
+* The `seq` function and the `$!` operator 
+* Strictness annotations 
+---
+## Topics
+
+* The `Control.DeepSeq` module<br/>(when all else fails)
+  * The `NFData` type class and the `rnf` method 
+  * The `deepseq` function and the `$!!` operator 
+
+---
+## Laziness: the good
+
+* Haskell uses lazy evaluation 
+* Lazy evaluation has some very nice properties!
+
+---
+## Laziness: the good
+
+* Lazy evaluation can be more space-efficient:
+  * Example: `map (2*) (filter (/= 0) lst)` 
+    doesn't create intermediate list
+
+---
+## Laziness: the good
+
+* Lazy evaluation can be more time-efficient:
+  * Example: `smallest = head . sort` usually doesn't sort entire list
+
+---
+## Laziness: the good
+
+* Lazy evaluation allows us to use infinite lists when appropriate
+  * Haskell lists are called "streams" in most other languages 
+
+---
+## Laziness: the bad
+
+* Lazy evaluation can cause problems!
+* Seemingly simple expressions can cause "space leaks"
+  which would not be there in strict languages
+* Simple functional idioms from strict languages
+  (Scheme, OCaml) may not translate to Haskell
+
+---
+## Laziness: the bad
+
+* Classic example: factorials using tail-recursive accumulator:
+
+<pre><code>factorial :: Integer -&gt; Integer
+factorial n = iter n 1
+  where
+    iter :: Integer -&gt; Integer -&gt; Integer
+    iter 0 r = r
+    iter n r = iter (n - 1) (n * r)
+</code></pre>
+
+* Which arguments of `iter` are strict?
+
+---
+## Laziness: the bad
+
+<pre><code>iter :: Integer -&gt; Integer -&gt; Integer
+iter 0 r = r
+iter n r = iter (n - 1) (n * r)
+</code></pre>
+
+* Recall: a "strict" argument x is one in which <br/> `f $\bot$ = $\bot$`  
+  * where $\bot$ is "bottom" (an infinite loop)
+
+* Intuitively: a strict argument must be evaluated
+  for the evaluation of the function as a whole to proceed
+
+---
+## Laziness: the bad
+
+<pre><code>iter :: Integer -&gt; Integer -&gt; Integer
+iter <em>0</em> r = r
+iter <em>n</em> r = iter (n - 1) (n * r)
+</code></pre>
+
+* Clearly, here `n` is a strict argument
+  * We need to evaluate `n` in order to know which equation to use!
+
+---
+## Laziness: the bad
+
+<pre><code>iter :: Integer -&gt; Integer -&gt; Integer
+iter <em>0</em> r = r
+iter <em>n</em> r = iter (n - 1) (n * r)
+</code></pre>
+
+* Typically, strict arguments are found in `case` statements
+  or in function definitions which desugar to `case` statements
+
+* The `case` statement must evaluate the argument
+  to decide which case to evaluate 
+
+---
+## Laziness: the bad
+
+<pre><code>iter :: Integer -&gt; Integer -&gt; Integer
+iter 0 <em>r</em> = r
+iter n <em>r</em> = iter (n - 1) (n * r)
+</code></pre>
+
+* Just as clearly, here `r` is _not_ a strict argument
+* We can see this because `r` is identical
+  on the left-hand side of both equations,
+  which means that the choice of which equation to evaluate
+  does not depend on `r`
+
+---
+## Laziness: the bad
+
+* Sample evaluation:
+
+<pre><code>iter 3 1
+= iter (3 - 1) (3 * 1)
+= iter 2 (3 * 1)
+= iter (2 - 1) (2 * (3 * 1))
+= iter 1 (2 * (3 * 1))
+= iter (1 - 1)  (1 * (2 * (3 * 1)))
+= iter 0 (1 * (2 * (3 * 1)))
+</code></pre>
+
+* Result: `1 * (2 * (3 * 1))`
+
+---
+## Laziness: the bad
+
+* Similarly:
+
+<pre><code>iter 8 1
+</code></pre>
+
+* Result:
+
+<pre><code>1 * (2 * (3 * (4 * (5 * (6 * (7 * (8 * 1)))))))
+</code></pre>
+
+* Recall: Why write functions in tail-recursive form to begin with?
+* Answer: to avoid unbounded use of stack space
+
+---
+## Laziness: the bad
+
+* Similarly:
+
+<pre><code>iter 8 1
+</code></pre>
+
+* Result:
+
+<pre><code>1 * (2 * (3 * (4 * (5 * (6 * (7 * (8 * 1)))))))
+</code></pre>
+
+* This version of `iter` does not use unbounded *stack* space,
+  but uses unbounded space for pending multiplications!
+
+---
+## Laziness: the bad
+
+* Why doesn't Haskell evaluate the pending multiplications as it gets them?
+
+* Answer: because nothing requires it to! (Laziness)
+
+* The multiplications won't be forced
+  until something needs a concrete value as the result of `iter`
+
+---
+## Laziness: the bad
+
+* However, this means that we have a "space leak"
+  which is not what we wanted!
+
+* Is there a way to make Haskell behave strictly
+  with respect to the `r` argument of `iter`?
+
+---
+## Laziness: the bad
+
+* Is there a way to make Haskell behave strictly
+  with respect to the `r` argument of `iter`?
+
+* The answer is yes, and we will get to that shortly
+* First, we need to talk about some theoretical terms:
+  * thunk
+  * normal form (NF)
+  * weak head normal form (WHNF)
+
+---
+## Thunk
+
+* A *thunk* is an unevaluated expression
+
+* Unlike strict languages, Haskell doesn't evaluate function arguments
+  unless they're needed
+
+* Instead, it wraps them in a thunk, ready for evaluation if required
+
+* If it gets evaluated, the thunk is replaced with the value of the thunk
+  * This is a "hidden effect" of Haskell
+
+---
+## Normal Form
+
+* An expression is in *normal form* (NF) if it is fully evaluated
+  _i.e._ if it has been evaluated all the way to a Haskell value
+  * This value cannot contain thunks, or it isn't in NF
+  * An expression in NF cannot be evaluated further
+
+* Strict languages always reduce function arguments to NF
+  (so they don't need thunks!)
+
+---
+## Weak Head Normal Form
+
+* There exist intermediate points between "not evaluated at all" (thunk)
+  and "completely evaluated" (normal form)
+* In Haskell, one such point is called "weak head normal form" (WHNF)
+
+---
+## Weak Head Normal Form
+
+* An expression in WHNF has been evaluated to either
+  * the outermost data constructor
+  * the outermost lambda abstraction
+    * These are called the "head" of the expression
+  * or a built-in function applied to too few arguments (like `(+) 2`)
+
+---
+## Weak Head Normal Form
+
+* Examples:
+  * `1 + 2` &nbsp; (not evaluated)
+  * `"foo" ++ "bar"` &nbsp; (not evaluated)
+  * `1 : 2 : 3 : []` &nbsp; (fully evaluated &nbsp; (NF))
+  * `1 : 2 + 2 : 3 + 3 : []` &nbsp; (WHNF)
+  * `1 + 1 : 2 + 2 : []` &nbsp; (still WHNF)
+
+---
+## Weak Head Normal Form
+
+* Examples:
+  * `(1 + 1, 2 + 2)` &nbsp; (still WHNF; tuple constructor)
+  * `(\x -> x + x) 2` &nbsp; (not evaluated)
+  * `\x -> 2 + 2` &nbsp; (WHNF)
+  * `Just (2 + 2)` &nbsp; (WHNF)
+* _N.B._ For scalars like integers,<br/>WHNF is the same as NF
+
+---
+## NF and WHNF
+
+* _N.B._ If an expression is in NF, it is also in WHNF
+
+---
+## Why do we care?
+
+* It is sometimes important to be able to control evaluation
+  in ways that pure lazy evaluation won't give you
+* There are ways to force evaluation to WHNF, or even to NF if desired
+
+---
+## The `seq` function
+
+* The most fundamental way to force evaluation of an expression
+  is the `seq` function
+* It has this type:
+
+<pre><code>seq :: a -&gt; b -&gt; b
+</code></pre>
+
+* `seq` takes two arguments
+* It forces evaluation of the first one to WHNF, and returns the second
+
+---
+## The `seq` function
+
+* One way to fix the accumulator example:
+
+<pre><code>iter :: Integer -&gt; Integer -&gt; Integer
+iter 0 r = <em>seq</em> r r
+iter n r = <em>seq</em> r $ iter (n - 1) (n * r)
+</code></pre>
+
+---
+## The `seq` function
+
+* We often write this using operator notation:
+
+<pre><code>iter :: Integer -&gt; Integer -&gt; Integer
+iter 0 r = r <em>`seq`</em> r
+iter n r = r <em>`seq`</em> iter (n - 1) (n * r)
+</code></pre>
+
+* _N.B._ `seq` is a primitive function
+  * It can't be defined in Haskell
+
+---
+## The `$!` operator
+
+* A very common scenario is &nbsp; ``x `seq` f x``
+  to make the argument `x` strict when calling `f`.
+
+* There is a shortcut for this: `f $! x`
+
+* The `$!` operator has precedence 0, like the `$` operator
+  * It's a "strict `$`"
+
+---
+## Strictness annotations
+
+* Most of the time, we want to "strictify"
+  one or more of the arguments to a function
+
+* We could use `seq` or `$!`, but an easier way is to annotate the function
+  argument with a _strictness annotation_
+
+---
+## Strictness annotations
+
+* A strictness annotation is just a `!` before the function argument
+
+* Strictness annotations are informally referred to as "bang patterns"
+  * "bang" is slang for the `!` (exclamation mark)
+
+---
+## Strictness annotations
+
+* Example:
+
+<pre><code>iter :: Integer -&gt; Integer -&gt; Integer
+iter 0 <em>!</em>r = r
+iter n <em>!</em>r = iter (n - 1) (n * r)
+</code></pre>
+
+* The strictness annotation ensures that the argument
+  is reduced to WHNF before evaluating the right-hand side
+* Since, for integers, WHNF is the same as NF,
+  this function is strict in _both_ arguments (O(n) time, O(1) space usage)
+
+---
+## Strictness annotations
+
+* Bang patterns can be put inside patterns:
+
+<pre><code>f (<em>!</em>x, y) = [x, y]
+</code></pre>
+
+* Here, `x` will be evaluated to WHNF before computing the result
+
+---
+## Strictness annotations
+
+* You can even do this:
+
+<pre><code>f <em>!</em>(x, y) = [x, y]
+</code></pre>
+
+* but it will be no different from:
+
+<pre><code>f (x, y) = [x, y]
+</code></pre>
+
+* (Why not?)
+  * _Hint_: What is WHNF for a tuple?
+
+---
+## Constructors
+
+* Data constructors, like functions, don't evaluate their arguments unless
+  necessary
+
+* This makes _e.g._ lists in Haskell into streams (lazy lists)
+
+---
+## Constructors
+
+* There are advantages to this:
+  * `[1..]` &nbsp; is an infinite list which we can still work with
+  * `map (2 *) $ filter (/= 0) very_long_list` doesn't create large
+    intermediate lists
+
+* Sometimes, though, we may want a datatype whose arguments are strictly
+  evaluated
+
+---
+## Constructors
+
+* Example: Strict lists
+
+<pre><code>data List a =
+  Nil
+| Cons <em>!</em>a (List a)
+</code></pre>
+
+* This is a list, each of whose elements is reduced to WHNF
+* Note the strictness annotation `!` in the `Cons` constructor
+
+---
+## Constructors
+
+* Another example: the complex number type (from the module `Data.Complex`):
+
+<pre><code>data Complex a = <em>!</em>a :+ <em>!</em>a
+</code></pre>
+
+* Here, both the real and imaginary arguments have strictness annotations
+  * meaning that both will be reduced to WHNF before making the `Complex`
+  value
+
+* Note that `Complex` is parameterized on a (presumably numeric) type
+
+---
+## Constructors
+
+<pre><code>data Complex a = <em>!</em>a :+ <em>!</em>a
+</code></pre>
+
+* _N.B._ The `:+` is an _infix constructor_
+  * these have to start with `:` and contain only symbolic characters
+
+---
+## `let`-bindings
+
+* By default, `let` bindings are lazy
+  * You are just saying that a name corresponds to an expression that may or
+  may not be evaluated
+
+* You can add strictness annotations to let bindings to force the expression
+  to be evaluated to WHNF before it is bound to the name
+* The syntax should be familiar by now:
+
+<pre><code>let <em>!</em>x = ... in ...
+</code></pre>
+
+---
+## Strict Haskell
+
+* Sometimes, you want all function arguments and data constructor arguments
+  to be evaluated to WHNF
+
+* It's a pain to have to put strictness annotations on all functions and
+  constructors!
+
+---
+## Strict Haskell
+
+* If you turn on the `Strict`
+  language extension:<br/>`{-# LANGUAGE Strict #-}`<br/>
+  then all function arguments and data constructor arguments in the module
+  will act as if they have bang patterns (evaluate to WHNF)
+
+* Don't use this unless there is a compelling reason to!
+
+---
+## Evaluating to normal form
+
+* Sometimes, evaluating an expression to WHNF isn't enough
+
+* You may want to be certain that an expression is evaluated 
+  all the way to NF
+
+---
+## Evaluating to normal form
+
+* Example: a list of integers in `ghci`:
+
+<pre><code>ghci&gt; let lst = [1 + 1, 2 + 2, 3 + 3, undefined]
+</code></pre>
+
+* Note that evaluating `undefined` gives an error:
+
+<pre><code>ghci&gt; undefined
+*** Exception: Prelude.undefined
+</code></pre>
+
+* Let's play with this a bit
+
+---
+## Evaluating to normal form
+
+* Evaluating `lst` to WHNF doesn't give rise to an error:
+
+<pre><code>ghci&gt; let <em>!</em>lst = [1 + 1, 2 + 2, 3 + 3, undefined]
+</code></pre>
+
+---
+## Evaluating to normal form
+
+* We could also do it this way:
+
+<pre><code>ghci&gt; let lst = [1 + 1, 2 + 2, 3 + 3, undefined]
+ghci&gt; let !lst' = lst
+</code></pre>
+
+* Still no error!  The list `lst` hasn't been evaluated to NF
+* How can we _force_ the evaluation of the entire list? 
+
+---
+## `Control.DeepSeq`
+
+* First, we import the `Control.DeepSeq` module:
+
+<pre><code>import Control.DeepSeq
+</code></pre>
+
+* This module defines the `NFData` type class,
+  as well as functions and operators to help evaluate expressions to NF
+
+---
+## `Control.DeepSeq`
+
+* The `NFData` type class defines the `rnf` (_reduce to normal form_) 
+  method with this type signature:
+
+<pre><code>rnf :: a -&gt; ()
+</code></pre>
+
+* `rnf` reduces a value of type `a` to normal form
+* The default definition of `rnf` is:
+
+<pre><code>rnf x = x `seq` ()
+</code></pre>
+
+---
+## `NFData` and `rnf`
+
+* We know that for some datatypes (_e.g._ `Int`), reducing to WHNF using
+  `seq` is equivalent to reducing to NF
+* What the `NFData` type class allows us to do is to define how to reduce
+  _arbitrary_ types to NF
+
+---
+## `NFData` and `rnf`
+
+* For simple scalar types like `Int`,
+  the default definition for `rnf` suffices 
+
+* For something like `[Int]`, though, it doesn't
+  * Lists can be reduced to WHNF without being reduced to NF
+
+---
+## `NFData` and `rnf`
+
+* How could we define what `rnf` means for a list of values?
+* Here is one way:
+  * Require each element of the list to be an instance of `NFData`
+  * Call `seq` on the list, reducing it to WHNF
+  * Call `rnf` on the head of the list, then on the tail
+  * And we're done!
+
+---
+## `NFData` and `rnf`
+
+* In fact, the definition of `rnf` for lists is as follows:
+
+<pre><code>instance NFData a =&gt; NFData [a] where
+  rnf [] = ()
+  rnf (x:xs) = rnf x `seq` rnf xs
+</code></pre>
+
+* which is the same definition we came up with
+
+---
+## The `deepseq` function
+
+* Normally, when we want to evaluate an expression to NF, we use the
+  `deepseq` function from `Control.DeepSeq`
+* It has this definition:
+
+<pre><code>deepseq :: NFData a =&gt; a -&gt; b -&gt; b
+deepseq a b = rnf a `seq` b
+</code></pre>
+
+* In other words, `deepseq` is just like `seq` except that it evaluates all
+  the way to normal form
+
+---
+## The `$!!` operator
+
+* Similarly, there is an analog to the `$!` operator which evaluates its
+  right-hand argument all the way to normal form before applying the function
+  which is its left-hand argument
+* This is the `$!!` operator, defined as:
+
+<pre><code>($!!) :: (NFData a) =&gt; (a -&gt; b) -&gt; a -&gt; b
+f $!! x = x `deepseq` f x
+</code></pre>
+
+---
+## The `force` function
+
+* There is also the `force` function, with this definition:
+
+<pre><code>force :: (NFData a) =&gt; a -&gt; a
+force x = x `deepseq` x
+</code></pre>
+
+* We can try it on our previous example:
+
+<pre><code>ghci&gt; import Control.DeepSeq
+ghci&gt; let lst = [1 + 1, 2 + 2, 3 + 3, undefined]
+ghci&gt; let lst' = force lst
+</code></pre>
+
+* Nothing happens!  Why?
+
+---
+## The `force` function
+
+* The problem was that we didn't ask the second `let` to evaluate
+   anything!
+  * so the `force lst` is still wrapped in a thunk
+  * _i.e._ `force` hasn't been forced!
+
+* To fix this, we can try to use a strictness annotation
+  to force the `force lst` thunk
+
+* Let's try it again
+
+---
+## The `force` function
+
+<pre><code>ghci&gt; import Control.DeepSeq
+ghci&gt; let lst = [1 + 1, 2 + 2, 3 + 3, undefined]
+ghci&gt; let !lst' = force lst
+</code></pre>
+
+* Still doesn't work &#9785;
+
+---
+## The `force` function
+
+<pre><code>ghci&gt; import Control.DeepSeq
+ghci&gt; let lst = [1 + 1, 2 + 2, 3 + 3, undefined]
+ghci&gt; let lst' = force lst in head lst'
+*** Exception: Prelude.undefined
+</code></pre>
+
+* _This_ works, because:
+  * `head lst'` forces evaluation of `lst'`,
+  * which will then force evaluation of the entire list to NF via `force`,
+  * and the `undefined` value at the end of the list
+    caused an exception to be signalled
+
+---
+## The `force` function
+
+* Without `force`, you get:
+
+<pre><code>ghci&gt; import Control.DeepSeq
+ghci&gt; let lst = [1 + 1, 2 + 2, 3 + 3, undefined]
+ghci&gt; let lst' = lst in head lst'
+2
+</code></pre>
+
+* The `undefined` value never gets evaluated, as you'd expect
+
+---
+## Pitfalls with `deepseq`
+
+* The biggest pitfall with `deepseq` and `$!!`
+  is thinking that you actually need them!
+* Programmers with experience with strict languages
+  coming to Haskell often find that lazy evaluation makes them nervous
+* There is a temptation to want to reduce everything to NF
+  "just to be on the safe side"
+* This is a _very bad idea_ in a lazy language like Haskell!
+
+---
+## Pitfalls with `deepseq`
+
+* In fact, `deepseq` is very rarely needed
+  * Almost always, `seq` and `$!` are sufficient
+  * (If you need strictness at all!)
+* And sometimes, laziness is _essential_
+  to get a function working correctly and/or efficiently
+
+---
+## Pitfalls with `deepseq`
+
+* We've seen that `rnf` can be quite a costly function
+  * For lists, need to traverse the entire list,
+    calling `rnf` on each element
+* If we end up calling `rnf` on the same data structure repeatedly,
+  we'll have to repeat that costly computation over and over
+  * _Very_ wasteful!
+
+---
+## Pitfalls with `deepseq`
+
+* There are tricks that can ensure
+  that an `rnf` is only called once for a given argument,
+  but they aren't part of the `Control.DeepSeq` module (yet)
+  * Still part of "Haskell folklore"
+
+* We don't recommend routine/casual use of `deepseq` and friends
+  for normal Haskell programming
+
+---
+## When to use `deepseq`
+
+* Often used as a way to debug a space leak that you suspect exists
+  * Add `deepseq`, see if your space leak goes away
+
+* The module `Control.Parallel.Strategies` contains a version of
+  `deepseq` suitable for parallel evaluation
+  * where you need fine-grained control over
+    what gets evaluated when, and how much
+
+---
+## Conclusion
+
+* Haskell is lazy by default
+* This has benefits for modularity and sometimes efficiency
+* On the other hand, sometimes the interplay between evaluated expressions 
+  and unevaluated thunks can be very subtle
+  * Worst case: you get space leaks!
+* Sometimes we need or just want Haskell to be more strict
+  than it is by default
+
+---
+## Conclusion
+
+* We have several tools to help force evaluation of expressions to WHNF:
+  * the `seq` function
+  * the `$!` operator
+  * strictness annotations on functions
+  * strictness annotations on constructors
+  * strictness annotations on `let`-bindings
+
+---
+## Conclusion
+
+* When even this isn't enough,
+  we can force evaluation all the way to NF
+  using tools from the `Control.DeepSeq` module:
+  * the `NFData` type class
+  * the `deepseq` function
+  * the `$!!` operator
+
+* Have to use `deepseq` judiciously
+  or it will actually make code _less_ efficient
+
+---
+## Wrapping up
+
+* Thanks for taking the class!
+* I hope you had fun, and learned something useful!
+* I'd appreciate TQFR feedback (ideally constructive!)
+
+---
+## Further study
+
+* I _strongly_ recommend reading the GHC user guide:
+  * `https://downloads.haskell.org/ghc/latest/docs/html/users_guide`
+
+* Specific sections of interest:
+  * `ghci` documentation
+  * GHC optional language extensions<br/>(*tons* of them!)
+  * GHC debugger
+
+---
+## Further study
+
+* Mailing lists:
+  * `Haskell-cafe`
+  * `Haskell-beginners`
+
+---
+## Further study
+
+* Haskell Reddit site has useful stuff:
+  * links to blog posts
+  * discussion of research papers
+  * announcements of new libraries/programs
+
+---
+## Further study
+
+* Haskell Discourse
+  * `https://discourse.haskell.org/`
+  * Best Haskell discussion site
+
+---
+## Further study
+
+* Most importantly: write code, and have fun!
+
+            </textarea>
+          </section>
+      </div>
+    </div>
+    <script src="plugin/math/math.js"></script>
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <!-- Uncomment if you want syntax highlighting. -->
+    <!--
+    <link rel="stylesheet" href="plugin/highlight/arduino-light.css">
+    -->
+    <style>
+/* MCV: My new reveal.js styles. */
+
+.reveal {
+  font-family: "Arial", sans-serif;
+  font-size: 28pt;
+  font-weight: normal;
+  color: #000; 
+}
+
+.reveal .slide-number {
+  background: white;
+  /* border: 1px solid black; */
+}
+
+.reveal .slide-number-a {
+  background: white;
+  color: black;
+  font-size: 24px;
+}
+
+.reveal .slides h1 {
+  text-align: center;
+  text-transform: none;
+  padding: 150px 0 20px 0;
+  font-size: 64pt;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif;
+  font-weight: normal;
+  color: #4f271c;
+  background: #d0d0f0;
+  margin-bottom: 0.5em;
+}
+
+.reveal h2 { 
+  text-transform: none;
+  font-family: Gill Sans MT, Gill Sans, Calibri, sans-serif !important;
+  /* text-shadow: 2px 2px 3px #a0a0a0; */
+  color: #4f271c !important;
+  font-size: 60pt !important;
+  font-weight: normal !important;
+  /* background: #d0d0d0; */
+  width: 80% !important;
+  margin-left: 10%;
+}
+
+/* First level bullet color. */
+.reveal .slides ul li::marker {
+  color: #3891a7;
+}
+
+/* Second level bullet spacing. */
+.reveal .slides ul li ul {
+  margin-top: 0px;
+}
+
+.reveal .slides li {
+  margin-top: 10px;
+}
+
+/* Second level bullet color. */
+.reveal .slides ul li ul li::marker {
+  color: #3891a7;
+}
+
+.reveal li {
+  font-size: 36pt !important;
+}
+
+.reveal .smaller li {
+  font-size: 32pt !important;
+}
+
+.reveal li ul li {
+  font-size: 32pt !important;
+}
+
+.reveal li .smaller ul li {
+  font-size: 28pt !important;
+}
+
+.reveal ul {
+  width: 80% !important;
+  text-align: left !important;
+}
+
+.reveal code em {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal em code {
+  color: #800000 !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.reveal code .comment {
+  color: #cc44cc !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+
+.reveal blockquote {
+  text-align: left !important;
+  color: #668888 !important;
+}
+
+.katex-display > .katex {
+  color: #0040b0 !important;
+}
+
+.katex-display > .katex > .katex-html > .tag {
+  color: #808080 !important;
+  margin-right: 100px !important;
+}
+
+.katex > .katex-html {
+  color: #0040b0 !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.katex {
+  font-size: 1.1em !important;
+}
+
+.reveal pre {
+  margin-left: 200px !important;
+  width: 75% !important;
+  font-size: 24pt !important;
+}
+
+.reveal pre.smaller {
+  font-size: 20pt !important;
+}
+
+.reveal code {
+  color: #0040b0 !important;
+  font-size: 90%;
+}
+
+.reveal pre code {
+  /* max vertical size of code block */
+  max-height: 700px !important;
+}
+
+.reveal li ul li code {
+  font-size: 80%;
+}
+
+    </style>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        katex: {
+          version: 'latest',
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            "\\eqref": "\\href{###1}{(\\text{#1})}",
+            "\\ref": "\\href{###1}{\\text{#1}}",
+            "\\label": "\\htmlId{#1}{}",
+          },
+        },
+        plugins: [ 
+          RevealMarkdown,
+          // RevealHighlight,
+          RevealMath.KaTeX,
+        ],
+        center: false,
+        controls: false,
+        disableLayout: false,  // set to true to use custom CSS for layout
+        showSlideNumber: 'all',
+        slideNumber: true,
+        transition: 'none',
+        width: 1280,
+        height: 800,
+      });
+    </script>
+  </body>
+</html>
